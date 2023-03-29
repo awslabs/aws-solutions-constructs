@@ -14,7 +14,7 @@
 import { IotToLambda, IotToLambdaProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as cdk from "aws-cdk-lib";
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: IotToLambdaProps = {
@@ -64,7 +64,8 @@ test('check lambda function properties for deploy: true', () => {
 
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": [
@@ -81,7 +82,8 @@ test('check lambda function permission for deploy: true', () => {
 
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::Lambda::Permission', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Permission', {
     Action: "lambda:InvokeFunction",
     FunctionName: {
       "Fn::GetAtt": [
@@ -104,7 +106,8 @@ test('check iot lambda function role for deploy: true', () => {
 
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::IAM::Role', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Role', {
     AssumeRolePolicyDocument: {
       Statement: [
         {
@@ -163,7 +166,8 @@ test('check iot topic rule properties for deploy: true', () => {
 
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::IoT::TopicRule', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IoT::TopicRule', {
     TopicRulePayload: {
       Actions: [
         {
@@ -189,7 +193,8 @@ test('check lambda function properties for deploy: false', () => {
 
   useExistingFunc(stack);
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": [
@@ -206,7 +211,8 @@ test('check lambda function permissions for deploy: false', () => {
 
   useExistingFunc(stack);
 
-  expect(stack).toHaveResource('AWS::Lambda::Permission', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Permission', {
     Action: "lambda:InvokeFunction",
     FunctionName: {
       "Fn::GetAtt": [
@@ -229,7 +235,8 @@ test('check iot lambda function role for deploy: false', () => {
 
   useExistingFunc(stack);
 
-  expect(stack).toHaveResource('AWS::IAM::Role', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Role', {
     AssumeRolePolicyDocument: {
       Statement: [
         {

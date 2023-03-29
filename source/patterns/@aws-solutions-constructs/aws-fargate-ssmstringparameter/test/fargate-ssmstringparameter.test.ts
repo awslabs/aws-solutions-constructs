@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
 import { FargateToSsmstringparameter } from "../lib";
@@ -52,7 +52,8 @@ test('New service/new parameter store, public API, new VPC', () => {
   expect(construct.container !== null);
   expect(construct.stringParameter !== null);
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName,
     LaunchType: 'FARGATE',
     DesiredCount: 2,
@@ -63,16 +64,16 @@ test('New service/new parameter store, public API, new VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Cluster", {
+  template.hasResourceProperties("AWS::ECS::Cluster", {
     ClusterName: clusterName
   });
 
-  expect(stack).toHaveResourceLike("AWS::SSM::Parameter", {
+  template.hasResourceProperties("AWS::SSM::Parameter", {
     Name: parameterName,
     Value: stringValue
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -111,7 +112,7 @@ test('New service/new parameter store, public API, new VPC', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     Family: familyName,
     ContainerDefinitions: [
       {
@@ -140,11 +141,11 @@ test('New service/new parameter store, public API, new VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     ServiceName: {
       "Fn::Join": [
         "",
@@ -160,10 +161,10 @@ test('New service/new parameter store, public API, new VPC', () => {
   });
 
   // Confirm we created a Public/Private VPC
-  expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::SSM::Parameter', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  template.hasResourceProperties('AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::SSM::Parameter', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('New service/new parameter store, private API, new VPC', () => {
@@ -181,7 +182,8 @@ test('New service/new parameter store, private API, new VPC', () => {
     stringParameterPermissions: 'readwrite',
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -191,7 +193,7 @@ test('New service/new parameter store, private API, new VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Environment: [
@@ -227,16 +229,16 @@ test('New service/new parameter store, private API, new VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::SSM::Parameter", {
+  template.hasResourceProperties("AWS::SSM::Parameter", {
     Name: parameterName,
     Value: stringValue
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -303,7 +305,7 @@ test('New service/new parameter store, private API, new VPC', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     ServiceName: {
       "Fn::Join": [
         "",
@@ -319,10 +321,10 @@ test('New service/new parameter store, private API, new VPC', () => {
   });
 
   // Confirm we created an Isolated VPC
-  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::SSM::Parameter', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::SSM::Parameter', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('New service/existing parameter store, private API, existing VPC', () => {
@@ -340,7 +342,8 @@ test('New service/existing parameter store, private API, existing VPC', () => {
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -350,7 +353,7 @@ test('New service/existing parameter store, private API, existing VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Environment: [
@@ -386,15 +389,15 @@ test('New service/existing parameter store, private API, existing VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::SSM::Parameter", {
+  template.hasResourceProperties("AWS::SSM::Parameter", {
     Name: parameterName,
     Value: stringValue
   });
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -433,7 +436,7 @@ test('New service/existing parameter store, private API, existing VPC', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     ServiceName: {
       "Fn::Join": [
         "",
@@ -449,10 +452,10 @@ test('New service/existing parameter store, private API, existing VPC', () => {
   });
 
   // Confirm we created an Isolated VPC
-  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
-  expect(stack).toCountResources('AWS::SSM::Parameter', 1);
+  defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
+  template.resourceCountIs('AWS::SSM::Parameter', 1);
 });
 
 test('Existing service/new parameter store, public API, existing VPC', () => {
@@ -484,11 +487,12 @@ test('Existing service/new parameter store, public API, existing VPC', () => {
     stringParameterPermissions: 'readwrite'
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Environment: [
@@ -524,16 +528,16 @@ test('Existing service/new parameter store, public API, existing VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::SSM::Parameter", {
+  template.hasResourceProperties("AWS::SSM::Parameter", {
     Name: parameterName,
     Value: stringValue
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -600,7 +604,7 @@ test('Existing service/new parameter store, public API, existing VPC', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     ServiceName: {
       "Fn::Join": [
         "",
@@ -616,10 +620,10 @@ test('Existing service/new parameter store, public API, existing VPC', () => {
   });
 
   // Confirm we created a Public/Private VPC
-  expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
-  expect(stack).toCountResources('AWS::SSM::Parameter', 1);
+  template.hasResourceProperties('AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
+  template.resourceCountIs('AWS::SSM::Parameter', 1);
 });
 
 test('Existing service/existing parameter store, private API, existing VPC', () => {
@@ -648,11 +652,12 @@ test('Existing service/existing parameter store, private API, existing VPC', () 
     existingStringParameterObj: existingParameterStore
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Environment: [
@@ -688,15 +693,15 @@ test('Existing service/existing parameter store, private API, existing VPC', () 
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::SSM::Parameter", {
+  template.hasResourceProperties("AWS::SSM::Parameter", {
     Name: parameterName,
     Value: stringValue
   });
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -735,7 +740,7 @@ test('Existing service/existing parameter store, private API, existing VPC', () 
     }
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     ServiceName: {
       "Fn::Join": [
         "",
@@ -751,10 +756,10 @@ test('Existing service/existing parameter store, private API, existing VPC', () 
   });
 
   // Confirm we created an Isolated VPC
-  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
-  expect(stack).toCountResources('AWS::SSM::Parameter', 1);
+  defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
+  template.resourceCountIs('AWS::SSM::Parameter', 1);
 });
 
 test('Test error invalid string parameter permission', () => {

@@ -15,7 +15,7 @@
 import { Stack } from "aws-cdk-lib";
 import { SqsToLambda, SqsToLambdaProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as kms from 'aws-cdk-lib/aws-kms';
 
 // --------------------------------------------------------------
@@ -44,7 +44,8 @@ test('Pattern deployment w/ new Lambda function and overridden props', () => {
   // Assertion 1
   expect(app.sqsQueue).toHaveProperty('fifo', true);
   // Assertion 2
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Environment: {
       Variables: {
         OVERRIDE: "TRUE",
@@ -132,7 +133,8 @@ test('Pattern deployment w/ batch size', () => {
   };
   new SqsToLambda(stack, 'test-sqs-lambda', props);
 
-  expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::EventSourceMapping', {
     BatchSize: 5
   });
 });
@@ -153,7 +155,8 @@ test('Queue is encrypted with imported CMK when set on encryptionKey prop', () =
     encryptionKey: cmk
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "cmk01DE03DA",
@@ -181,7 +184,8 @@ test('Queue is encrypted with imported CMK when set on queueProps.encryptionMast
     }
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "cmk01DE03DA",
@@ -208,7 +212,8 @@ test('Queue is encrypted with provided encrytionKeyProps', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::Queue', {
     KmsMasterKeyId: {
       'Fn::GetAtt': [
         'testconstructEncryptionKey6153B053',
@@ -217,7 +222,7 @@ test('Queue is encrypted with provided encrytionKeyProps', () => {
     },
   });
 
-  expect(stack).toHaveResource('AWS::KMS::Alias', {
+  template.hasResourceProperties('AWS::KMS::Alias', {
     AliasName: 'alias/new-key-alias-from-props',
     TargetKeyId: {
       'Fn::GetAtt': [
@@ -242,7 +247,8 @@ test('Queue is encrypted by default with SQS-managed KMS key when no other encry
     },
   });
 
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::Queue', {
     KmsMasterKeyId: "alias/aws/sqs"
   });
 });
@@ -262,7 +268,8 @@ test('Queue is encrypted with customer managed KMS Key when enable encryption fl
     enableEncryptionWithCustomerManagedKey: true
   });
 
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::Queue', {
     KmsMasterKeyId: {
       'Fn::GetAtt': [
         'testconstructEncryptionKey6153B053',

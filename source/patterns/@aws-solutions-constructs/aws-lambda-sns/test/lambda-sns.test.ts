@@ -18,8 +18,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as sns from "aws-cdk-lib/aws-sns";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToSns, LambdaToSnsProps } from '../lib';
-import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 // --------------------------------------------------------------
 // Test deployment with new Lambda function
@@ -40,7 +39,8 @@ test('Test deployment with new Lambda function', () => {
   });
 
   expect(testConstruct.snsTopic).toBeDefined();
-  expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     Environment: {
       Variables: {
         LAMBDA_NAME: 'deployed-function',
@@ -56,7 +56,7 @@ test('Test deployment with new Lambda function', () => {
       }
     }
   });
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::Join": [
         "",
@@ -104,9 +104,10 @@ test('Test deployment with existing existingTopicObj', () => {
     existingTopicObj: topic
   });
 
-  expectCDK(stack).to(haveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     TopicName: "custom-topic"
-  }));
+  });
 });
 
 // --------------------------------------------------------------
@@ -128,9 +129,10 @@ test('override topicProps', () => {
 
   new LambdaToSns(stack, 'test-sns-lambda', props);
 
-  expectCDK(stack).to(haveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     TopicName: "custom-topic"
-  }));
+  });
 });
 
 // --------------------------------------------------------------
@@ -171,7 +173,8 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -192,17 +195,17 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
 // --------------------------------------------------------------
@@ -226,7 +229,8 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -247,18 +251,18 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: "192.68.0.0/16",
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
 // --------------------------------------------------------------
@@ -280,7 +284,8 @@ test("Test minimal deployment with an existing VPC", () => {
     existingVpc: testVpc,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -301,7 +306,7 @@ test("Test minimal deployment with an existing VPC", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 });
@@ -382,7 +387,8 @@ test('Test lambda function custom environment variable', () => {
   });
 
   // Assertion
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
     Runtime: 'nodejs14.x',
     Environment: {
@@ -418,7 +424,8 @@ test('Topic is encrypted with imported CMK when set on encryptionKey prop', () =
     encryptionKey: cmk
   });
 
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "cmk01DE03DA",
@@ -446,7 +453,8 @@ test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop
     }
   });
 
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "cmk01DE03DA",
@@ -473,7 +481,8 @@ test('Topic is encrypted with provided encrytionKeyProps', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::SNS::Topic', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       'Fn::GetAtt': [
         'testconstructEncryptionKey6153B053',
@@ -482,7 +491,7 @@ test('Topic is encrypted with provided encrytionKeyProps', () => {
     },
   });
 
-  expect(stack).toHaveResource('AWS::KMS::Alias', {
+  template.hasResourceProperties('AWS::KMS::Alias', {
     AliasName: 'alias/new-key-alias-from-props',
     TargetKeyId: {
       'Fn::GetAtt': [
@@ -507,7 +516,8 @@ test('Topic is encrypted by default with AWS-managed KMS key when no other encry
     },
   });
 
-  expect(stack).toHaveResource('AWS::SNS::Topic', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       "Fn::Join": [
         "",
@@ -546,7 +556,8 @@ test('Topic is encrypted with customer managed KMS Key when enable encryption fl
     enableEncryptionWithCustomerManagedKey: true
   });
 
-  expect(stack).toHaveResource('AWS::SNS::Topic', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       'Fn::GetAtt': [
         'testconstructEncryptionKey6153B053',

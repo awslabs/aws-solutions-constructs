@@ -17,7 +17,7 @@ import { LambdaToSagemakerEndpoint, LambdaToSagemakerEndpointProps } from '../li
 import * as defaults from '@aws-solutions-constructs/core';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 // -----------------------------------------------------------------------------------------
 // Pattern deployment with new Lambda function, new Sagemaker endpoint and deployVpc = true
@@ -43,7 +43,8 @@ test('Pattern deployment with new Lambda function, new Sagemaker endpoint, deplo
   };
   new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
 
-  expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Environment: {
       Variables: {
         SAGEMAKER_ENDPOINT_NAME: {
@@ -68,7 +69,7 @@ test('Pattern deployment with new Lambda function, new Sagemaker endpoint, deplo
     },
   });
   // Assertion 3
-  expect(stack).toHaveResourceLike('AWS::SageMaker::Model', {
+  template.hasResourceProperties('AWS::SageMaker::Model', {
     ExecutionRoleArn: {
       'Fn::GetAtt': ['testlambdasagemakerSagemakerRoleD84546B8', 'Arn'],
     },
@@ -94,7 +95,7 @@ test('Pattern deployment with new Lambda function, new Sagemaker endpoint, deplo
   });
 
   // Assertion 4
-  expect(stack).toHaveResourceLike('AWS::SageMaker::EndpointConfig', {
+  template.hasResourceProperties('AWS::SageMaker::EndpointConfig', {
     ProductionVariants: [
       {
         InitialInstanceCount: 1,
@@ -112,7 +113,7 @@ test('Pattern deployment with new Lambda function, new Sagemaker endpoint, deplo
   });
 
   // Assertion 5
-  expect(stack).toHaveResourceLike('AWS::SageMaker::Endpoint', {
+  template.hasResourceProperties('AWS::SageMaker::Endpoint', {
     EndpointConfigName: {
       'Fn::GetAtt': ['testlambdasagemakerSagemakerEndpointConfig6BABA334', 'EndpointConfigName'],
     },
@@ -145,7 +146,8 @@ test('Pattern deployment with existing Lambda function, new Sagemaker endpoint, 
   };
   new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
 
-  expect(stack).toHaveResourceLike('AWS::SageMaker::Model', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SageMaker::Model', {
     ExecutionRoleArn: {
       'Fn::GetAtt': ['testlambdasagemakerSagemakerRoleD84546B8', 'Arn'],
     },
@@ -156,7 +158,7 @@ test('Pattern deployment with existing Lambda function, new Sagemaker endpoint, 
   });
 
   // Assertion 3
-  expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Environment: {
       Variables: {
         SAGEMAKER_ENDPOINT_NAME: {
@@ -198,7 +200,8 @@ test('Pattern deployment with new Lambda function, new Sagemaker endpoint, deplo
   };
   new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
   // Assertion 1
-  expect(stack).toHaveResourceLike('AWS::IAM::Role', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Role', {
     AssumeRolePolicyDocument: {
       Statement: [
         {
@@ -214,21 +217,21 @@ test('Pattern deployment with new Lambda function, new Sagemaker endpoint, deplo
   });
 
   // Assertion 2: ReplaceDefaultSecurityGroup, ReplaceEndpointDefaultSecurityGroup, and ReplaceModelDefaultSecurityGroup
-  expect(stack).toCountResources('AWS::EC2::SecurityGroup', 3);
+  template.resourceCountIs('AWS::EC2::SecurityGroup', 3);
   // Assertion 3
-  expect(stack).toCountResources('AWS::EC2::Subnet', 2);
+  template.resourceCountIs('AWS::EC2::Subnet', 2);
   // Assertion 4
-  expect(stack).toCountResources('AWS::EC2::InternetGateway', 0);
+  template.resourceCountIs('AWS::EC2::InternetGateway', 0);
   // Assertion 5: SAGEMAKER_RUNTIME VPC Interface
-  expect(stack).toHaveResource('AWS::EC2::VPCEndpoint', {
+  template.hasResourceProperties('AWS::EC2::VPCEndpoint', {
     VpcEndpointType: 'Interface',
   });
   // Assertion 6: S3 VPC Endpoint
-  expect(stack).toHaveResource('AWS::EC2::VPCEndpoint', {
+  template.hasResourceProperties('AWS::EC2::VPCEndpoint', {
     VpcEndpointType: 'Gateway',
   });
   // Assertion 7
-  expect(stack).toHaveResource('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
@@ -311,21 +314,22 @@ test('Pattern deployment with existing Lambda function (with VPC), new Sagemaker
   new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
 
   // Assertion 2: ReplaceDefaultSecurityGroup, ReplaceEndpointDefaultSecurityGroup, and ReplaceModelDefaultSecurityGroup
-  expect(stack).toCountResources('AWS::EC2::SecurityGroup', 3);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::EC2::SecurityGroup', 3);
   // Assertion 3
-  expect(stack).toCountResources('AWS::EC2::Subnet', 2);
+  template.resourceCountIs('AWS::EC2::Subnet', 2);
   // Assertion 4
-  expect(stack).toCountResources('AWS::EC2::InternetGateway', 0);
+  template.resourceCountIs('AWS::EC2::InternetGateway', 0);
   // Assertion 5: SAGEMAKER_RUNTIME VPC Interface
-  expect(stack).toHaveResource('AWS::EC2::VPCEndpoint', {
+  template.hasResourceProperties('AWS::EC2::VPCEndpoint', {
     VpcEndpointType: 'Interface',
   });
   // Assertion 6: S3 VPC Endpoint
-  expect(stack).toHaveResource('AWS::EC2::VPCEndpoint', {
+  template.hasResourceProperties('AWS::EC2::VPCEndpoint', {
     VpcEndpointType: 'Gateway',
   });
   // Assertion 7
-  expect(stack).toHaveResource('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
@@ -565,7 +569,8 @@ test('Test lambda function custom environment variable', () => {
   });
 
   // Assertion
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
     Runtime: 'python3.8',
     Environment: {

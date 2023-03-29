@@ -14,8 +14,7 @@
 import * as path from "path";
 import * as s3assets from "aws-cdk-lib/aws-s3-assets";
 import * as s3 from "aws-cdk-lib/aws-s3";
-import { ResourcePart } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import { CfnDatabase, CfnJob } from 'aws-cdk-lib/aws-glue';
 import { Stream, StreamEncryption } from 'aws-cdk-lib/aws-kinesis';
 import { Duration, Stack } from "aws-cdk-lib";
@@ -62,7 +61,8 @@ test('Pattern minimal deployment', () => {
   expect(construct.outputBucket![1]).toBeDefined();
 
   // check for role creation
-  expect(stack).toHaveResourceLike('AWS::IAM::Role', {
+  const template = Template.fromStack(stack);
+  template.hasResource('AWS::IAM::Role', {
     Properties: {
       AssumeRolePolicyDocument: {
         Statement: [{
@@ -77,10 +77,10 @@ test('Pattern minimal deployment', () => {
       Description: "Service role that Glue custom ETL jobs will assume for exeuction",
     },
     Type: "AWS::IAM::Role"
-  }, ResourcePart.CompleteDefinition);
+  });
 
   // check for Kinesis Stream
-  expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
+  template.hasResource('AWS::Kinesis::Stream', {
     Properties: {
       RetentionPeriodHours: 24,
       ShardCount: 1,
@@ -90,10 +90,10 @@ test('Pattern minimal deployment', () => {
       },
     },
     Type: "AWS::Kinesis::Stream"
-  }, ResourcePart.CompleteDefinition);
+  });
 
   // check policy to allow read access to Kinesis Stream
-  expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
+  template.hasResource('AWS::IAM::Policy', {
     Type: "AWS::IAM::Policy",
     Properties: {
       PolicyDocument: {
@@ -256,10 +256,10 @@ test('Pattern minimal deployment', () => {
         ]
       }
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 
   // Check for cloudwatch alarm
-  expect(stack).toCountResources('AWS::CloudWatch::Alarm', 2);
+  template.resourceCountIs('AWS::CloudWatch::Alarm', 2);
 
   // Check for properties
   expect(construct.database).toBeDefined();
@@ -308,7 +308,8 @@ test('Test if existing Glue Job is provided', () => {
   expect(construct.outputBucket).not.toBeDefined();
 
   // check for Kinesis Stream
-  expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
+  const template = Template.fromStack(stack);
+  template.hasResource('AWS::Kinesis::Stream', {
     Properties: {
       RetentionPeriodHours: 24,
       ShardCount: 1,
@@ -318,7 +319,7 @@ test('Test if existing Glue Job is provided', () => {
       },
     },
     Type: "AWS::Kinesis::Stream"
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 test('When S3 bucket location for script exists', () => {
@@ -360,7 +361,8 @@ test('When S3 bucket location for script exists', () => {
   expect(construct.outputBucket![0]).toBeDefined();
   expect(construct.outputBucket![1]).toBeDefined();
 
-  expect(stack).toHaveResourceLike('AWS::Glue::Job', {
+  const template = Template.fromStack(stack);
+  template.hasResource('AWS::Glue::Job', {
     Type: 'AWS::Glue::Job',
     Properties: {
       Command: {
@@ -369,7 +371,7 @@ test('When S3 bucket location for script exists', () => {
         ScriptLocation: "s3://fakelocation/etl/fakefile.py",
       }
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 test('create glue job with existing kinesis stream', () => {
@@ -412,14 +414,15 @@ test('create glue job with existing kinesis stream', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
+  const template = Template.fromStack(stack);
+  template.hasResource('AWS::Kinesis::Stream', {
     Type: 'AWS::Kinesis::Stream',
     Properties: {
       Name: 'fakename',
       RetentionPeriodHours: 30,
       ShardCount: 3
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 test('Do not pass s3ObjectUrlForScript or scriptLocationPath, error out', () => {
@@ -524,7 +527,8 @@ test('When database and table are provided', () => {
   expect(construct.outputBucket![0]).toBeDefined();
   expect(construct.outputBucket![1]).toBeDefined();
 
-  expect(stack).toHaveResourceLike('AWS::Glue::Database', {
+  const template = Template.fromStack(stack);
+  template.hasResource('AWS::Glue::Database', {
     Type: "AWS::Glue::Database",
     Properties: {
       CatalogId: "fakecatalogId",
@@ -532,7 +536,7 @@ test('When database and table are provided', () => {
         Description: "a fake glue db"
       }
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 test('When database and table are not provided & cloudwatch alarms set to false', () => {
@@ -571,7 +575,8 @@ test('When database and table are not provided & cloudwatch alarms set to false'
   expect(construct.outputBucket![0]).toBeDefined();
   expect(construct.outputBucket![1]).toBeDefined();
 
-  expect(stack).toHaveResourceLike('AWS::Glue::Database', {
+  const template = Template.fromStack(stack);
+  template.hasResource('AWS::Glue::Database', {
     Type: "AWS::Glue::Database",
     Properties: {
       CatalogId: {
@@ -581,9 +586,9 @@ test('When database and table are not provided & cloudwatch alarms set to false'
         Description: "An AWS Glue database generated by AWS Solutions Construct"
       }
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 
-  expect(stack).toHaveResourceLike('AWS::Glue::Table', {
+  template.hasResource('AWS::Glue::Table', {
     Type: 'AWS::Glue::Table',
     Properties: {
       CatalogId: {
@@ -593,9 +598,9 @@ test('When database and table are not provided & cloudwatch alarms set to false'
         Ref: "GlueDatabase"
       }
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 
-  expect(stack).toHaveResourceLike('AWS::Glue::Table', {
+  template.hasResource('AWS::Glue::Table', {
     Type: "AWS::Glue::Table",
     Properties: {
       CatalogId: {
@@ -666,10 +671,10 @@ test('When database and table are not provided & cloudwatch alarms set to false'
         TableType: "EXTERNAL_TABLE"
       }
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 
   // Cloudwatch alarms is set to false, no CFN def should exist
-  expect(stack).not.toHaveResource('AWS::CloudWatch::Alarm');
+  template.resourceCountIs('AWS::CloudWatch::Alarm', 0);
 
   // Since alarms is set to false, cloudwatch alarms property should be undefined
   expect(construct.cloudwatchAlarms).toBeUndefined();
@@ -723,11 +728,23 @@ test('When Asset for local file is defined', () => {
   expect(construct.glueJobRole).toBeDefined();
   expect(construct.cloudwatchAlarms).toBeDefined();
 
-  expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {
-          Action: [],
+          Action: [
+            "s3:GetObject*",
+            "s3:GetBucket*",
+            "s3:List*",
+            "s3:DeleteObject*",
+            "s3:PutObject",
+            "s3:PutObjectLegalHold",
+            "s3:PutObjectRetention",
+            "s3:PutObjectTagging",
+            "s3:PutObjectVersionTagging",
+            "s3:Abort*"
+          ],
           Effect: "Allow",
           Resource: [
             {
@@ -796,9 +813,9 @@ test('When Asset for local file is defined', () => {
         Ref: "testkinesisstreamslambdaJobRole42199B9C"
       }
     ]
-  }, ResourcePart.Properties);
+  });
 
-  expect(stack).toHaveResourceLike('AWS::Glue::Job', {
+  template.hasResource('AWS::Glue::Job', {
     Type: 'AWS::Glue::Job',
     Properties: {
       Command: {
@@ -813,7 +830,7 @@ test('When Asset for local file is defined', () => {
       SecurityConfiguration: "ETLJobSecurityConfig",
       WorkerType: "G.1X"
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 test('Check properties when output bucket is provided', () => {

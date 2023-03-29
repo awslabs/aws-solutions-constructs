@@ -14,9 +14,9 @@
 // Imports
 import { Stack } from "aws-cdk-lib";
 import { ApiGatewayToDynamoDB, ApiGatewayToDynamoDBProps } from "../lib";
-import "@aws-cdk/assert/jest";
 import * as ddb from "aws-cdk-lib/aws-dynamodb";
 import * as api from "aws-cdk-lib/aws-apigateway";
+import { Template } from "aws-cdk-lib/assertions";
 
 test("check properties", () => {
   const stack = new Stack();
@@ -42,7 +42,8 @@ test("check allow CRUD operations", () => {
   };
   new ApiGatewayToDynamoDB(stack, "test-api-gateway-dynamodb", apiGatewayToDynamoDBProps);
 
-  expect(stack).toHaveResource("AWS::IAM::Policy", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -84,27 +85,27 @@ test("check allow CRUD operations", () => {
     ],
   });
 
-  expect(stack).toHaveResource("AWS::ApiGateway::Method", {
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "GET",
     AuthorizationType: "AWS_IAM",
   });
 
-  expect(stack).toHaveResource("AWS::ApiGateway::Method", {
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "POST",
     AuthorizationType: "AWS_IAM",
   });
 
-  expect(stack).toHaveResource("AWS::ApiGateway::Method", {
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "PUT",
     AuthorizationType: "AWS_IAM",
   });
 
-  expect(stack).toHaveResource("AWS::ApiGateway::Method", {
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "DELETE",
     AuthorizationType: "AWS_IAM",
   });
 
-  expect(stack).toHaveResource("AWS::ApiGateway::Resource", {
+  template.hasResourceProperties("AWS::ApiGateway::Resource", {
     PathPart: "{id}",
   });
 });
@@ -117,7 +118,8 @@ test("check allow read and update only", () => {
   };
   new ApiGatewayToDynamoDB(stack, "test-api-gateway-dynamodb", apiGatewayToDynamoDBProps);
 
-  expect(stack).toHaveResource("AWS::IAM::Policy", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -145,7 +147,7 @@ test("check allow read and update only", () => {
     ],
   });
 
-  expect(stack).toHaveResource("AWS::ApiGateway::Method", {
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "GET",
     AuthorizationType: "AWS_IAM",
   });
@@ -163,7 +165,8 @@ test("check using custom partition key for dynamodb", () => {
   };
   new ApiGatewayToDynamoDB(stack, "test-api-gateway-dynamodb", apiGatewayToDynamoDBProps);
 
-  expect(stack).toHaveResource("AWS::ApiGateway::Resource", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Resource", {
     PathPart: "{page_id}",
   });
 });
@@ -177,7 +180,8 @@ test("override apiGatewayProps for api gateway", () => {
   };
   new ApiGatewayToDynamoDB(stack, "test-api-gateway-dynamodb", apiGatewayToDynamoDBProps);
 
-  expect(stack).toHaveResource("AWS::ApiGateway::RestApi", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::RestApi", {
     Description: "This is a sample description for api gateway",
   });
 });
@@ -192,7 +196,8 @@ test("Test deployment ApiGateway AuthorizationType override", () => {
     },
   });
 
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "GET",
     AuthorizationType: "NONE",
   });
@@ -216,16 +221,17 @@ test("Test deployment with existing DynamoDB table", () => {
   };
   new ApiGatewayToDynamoDB(stack, "test-api-gateway-dynamodb-default", apiGatewayToDynamoDBProps);
   // Confirm there is only the one table
-  expect(stack).toCountResources("AWS::DynamoDB::Table", 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::DynamoDB::Table", 1);
 
   // Confirm that the one table is the one create here
-  expect(stack).toHaveResourceLike("AWS::DynamoDB::Table", {
+  template.hasResourceProperties("AWS::DynamoDB::Table", {
     ProvisionedThroughput: {
       ReadCapacityUnits: oddReadCapacity,
     }
   });
 
-  expect(stack).toHaveResource("AWS::ApiGateway::Resource", {
+  template.hasResourceProperties("AWS::ApiGateway::Resource", {
     PathPart: `{${oddPartitionKeyName}}`,
   });
 });
@@ -239,7 +245,7 @@ test("check setting allowReadOperation=false for dynamodb", () => {
   });
 
   // Expect two APIG Methods (GET, DELETE) for allowReadOperation and allowDeleteOperation
-  expect(stack1).toCountResources("AWS::ApiGateway::Method", 2);
+  Template.fromStack(stack1).resourceCountIs("AWS::ApiGateway::Method", 2);
 
   const stack2 = new Stack();
 
@@ -249,7 +255,7 @@ test("check setting allowReadOperation=false for dynamodb", () => {
   });
 
   // Expect only one APIG Method (DELETE) for allowDeleteOperation
-  expect(stack2).toCountResources("AWS::ApiGateway::Method", 1);
+  Template.fromStack(stack2).resourceCountIs("AWS::ApiGateway::Method", 1);
 });
 
 test('Construct can override default create request template type', () => {
@@ -259,7 +265,8 @@ test('Construct can override default create request template type', () => {
     createRequestTemplate: 'ok',
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'POST',
     Integration: {
       RequestTemplates: {
@@ -276,7 +283,8 @@ test('Construct can override default read request template type', () => {
     readRequestTemplate: 'ok',
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'GET',
     Integration: {
       RequestTemplates: {
@@ -293,7 +301,8 @@ test('Construct can override default update request template type', () => {
     updateRequestTemplate: 'ok',
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'PUT',
     Integration: {
       RequestTemplates: {
@@ -310,7 +319,8 @@ test('Construct can override default delete request template type', () => {
     deleteRequestTemplate: 'ok',
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'DELETE',
     Integration: {
       RequestTemplates: {
@@ -330,7 +340,8 @@ test('Construct accepts additional create request templates', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'POST',
     Integration: {
       RequestTemplates: {
@@ -350,7 +361,8 @@ test('Construct accepts additional read request templates', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'GET',
     Integration: {
       RequestTemplates: {
@@ -370,7 +382,8 @@ test('Construct accepts additional update request templates', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'PUT',
     Integration: {
       RequestTemplates: {
@@ -390,7 +403,8 @@ test('Construct accepts additional delete request templates', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'DELETE',
     Integration: {
       RequestTemplates: {
@@ -406,7 +420,8 @@ test('Construct can customize the api resourceName', () => {
     resourceName: 'my-resource-name',
   });
 
-  expect(stack).toHaveResource("AWS::ApiGateway::Resource", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Resource", {
     PathPart: "{my-resource-name}",
   });
 });
@@ -422,7 +437,8 @@ test('Construct uses default integration responses', () => {
     updateRequestTemplate: 'update'
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'POST',
     Integration: {
       IntegrationResponses: [
@@ -440,7 +456,7 @@ test('Construct uses default integration responses', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'GET',
     Integration: {
       IntegrationResponses: [
@@ -458,7 +474,7 @@ test('Construct uses default integration responses', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'PUT',
     Integration: {
       IntegrationResponses: [
@@ -476,7 +492,7 @@ test('Construct uses default integration responses', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'DELETE',
     Integration: {
       IntegrationResponses: [
@@ -510,7 +526,8 @@ test('Construct uses custom createIntegrationResponses property', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'POST',
     Integration: {
       IntegrationResponses: [
@@ -539,7 +556,8 @@ test('Construct uses custom readIntegrationResponses property', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'GET',
     Integration: {
       IntegrationResponses: [
@@ -569,7 +587,8 @@ test('Construct uses custom updateIntegrationResponses property', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'PUT',
     Integration: {
       IntegrationResponses: [
@@ -598,7 +617,8 @@ test('Construct uses custom deleteIntegrationResponses property', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'DELETE',
     Integration: {
       IntegrationResponses: [

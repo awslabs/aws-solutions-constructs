@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
 import { FargateToOpenSearch } from "../lib";
@@ -55,11 +55,12 @@ test('Test domain and cognito domain name', () => {
     cognitoDomainName: COGNITO_DOMAIN_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::OpenSearchService::Domain", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
     DomainName: DOMAIN_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::Cognito::UserPoolDomain", {
+  template.hasResourceProperties("AWS::Cognito::UserPoolDomain", {
     Domain: COGNITO_DOMAIN_NAME
   });
 });
@@ -87,7 +88,8 @@ test('Test cognito dashboard role IAM policy', () => {
 
   deployStackWithNewResources(stack, publicApi);
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -187,7 +189,8 @@ test('Test custom environment variable name', () => {
     domainEndpointEnvironmentVariableName: CUSTOM_ENV_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Environment: [
@@ -235,7 +238,8 @@ test('New service/new domain, public API, new VPC', () => {
 
   deployStackWithNewResources(stack, publicApi);
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -246,11 +250,11 @@ test('New service/new domain, public API, new VPC', () => {
     ServiceName: SERVICE_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::OpenSearchService::Domain", {
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
     DomainName: DOMAIN_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -260,11 +264,11 @@ test('New service/new domain, public API, new VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Cluster", {
+  template.hasResourceProperties("AWS::ECS::Cluster", {
     ClusterName: CLUSTER_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Environment: [
@@ -304,15 +308,15 @@ test('New service/new domain, public API, new VPC', () => {
     Family: FAMILY_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
 
   // Confirm we created a Public/Private VPC
-  expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::OpenSearchService::Domain', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  template.hasResourceProperties('AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::OpenSearchService::Domain', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('New service/new domain, private API, new VPC', () => {
@@ -321,11 +325,12 @@ test('New service/new domain, private API, new VPC', () => {
 
   deployStackWithNewResources(stack, publicApi);
 
-  expect(stack).toHaveResourceLike("AWS::OpenSearchService::Domain", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
     DomainName: DOMAIN_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -336,11 +341,11 @@ test('New service/new domain, private API, new VPC', () => {
     ServiceName: SERVICE_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Cluster", {
+  template.hasResourceProperties("AWS::ECS::Cluster", {
     ClusterName: CLUSTER_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Environment: [
@@ -380,15 +385,15 @@ test('New service/new domain, private API, new VPC', () => {
     Family: FAMILY_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
 
   // Confirm we created an Isolated VPC
-  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::OpenSearchService::Domain', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::OpenSearchService::Domain', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('New service/new domain, public API, existing VPC', () => {
@@ -403,11 +408,12 @@ test('New service/new domain, public API, existing VPC', () => {
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
   });
 
-  expect(stack).toHaveResourceLike("AWS::OpenSearchService::Domain", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
     DomainName: DOMAIN_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -417,7 +423,7 @@ test('New service/new domain, public API, existing VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Environment: [
@@ -456,15 +462,15 @@ test('New service/new domain, public API, existing VPC', () => {
     ],
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
 
   // Confirm we created a Public/Private VPC
-  expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
-  expect(stack).toCountResources('AWS::OpenSearchService::Domain', 1);
+  template.hasResourceProperties('AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
+  template.resourceCountIs('AWS::OpenSearchService::Domain', 1);
 });
 
 test('New service/new domain, private API, existing VPC', () => {
@@ -479,11 +485,12 @@ test('New service/new domain, private API, existing VPC', () => {
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
   });
 
-  expect(stack).toHaveResourceLike("AWS::OpenSearchService::Domain", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
     DomainName: DOMAIN_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -493,7 +500,7 @@ test('New service/new domain, private API, existing VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Environment: [
@@ -532,15 +539,15 @@ test('New service/new domain, private API, existing VPC', () => {
     ],
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
 
   // Confirm we created an Isolated VPC
-  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
-  expect(stack).toCountResources('AWS::OpenSearchService::Domain', 1);
+  defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
+  template.resourceCountIs('AWS::OpenSearchService::Domain', 1);
 });
 
 test('Existing service/new domain, public API, existing VPC', () => {
@@ -567,15 +574,16 @@ test('Existing service/new domain, public API, existing VPC', () => {
     openSearchDomainName: DOMAIN_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::OpenSearchService::Domain", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
     DomainName: DOMAIN_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: SERVICE_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Environment: [
@@ -614,15 +622,15 @@ test('Existing service/new domain, public API, existing VPC', () => {
     ],
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
 
   // Confirm we created a Public/Private VPC
-  expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
-  expect(stack).toCountResources('AWS::OpenSearchService::Domain', 1);
+  template.hasResourceProperties('AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
+  template.resourceCountIs('AWS::OpenSearchService::Domain', 1);
 });
 
 test('Existing service/new domain, private API, existing VPC', () => {
@@ -649,15 +657,16 @@ test('Existing service/new domain, private API, existing VPC', () => {
     openSearchDomainName: DOMAIN_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::OpenSearchService::Domain", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
     DomainName: DOMAIN_NAME
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: SERVICE_NAME,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Environment: [
@@ -696,15 +705,15 @@ test('Existing service/new domain, private API, existing VPC', () => {
     ],
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
 
   // Confirm we created an Isolated VPC
-  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
-  expect(stack).toCountResources('AWS::OpenSearchService::Domain', 1);
+  defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
+  template.resourceCountIs('AWS::OpenSearchService::Domain', 1);
 });
 
 test('Check error for using OpenSearch VPC prop parameter', () => {

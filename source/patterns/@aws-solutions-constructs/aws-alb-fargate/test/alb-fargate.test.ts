@@ -12,12 +12,11 @@
  */
 
 import { AlbToFargate, AlbToFargateProps } from "../lib";
-// import * as ecs from '@aws-cdk/aws-ecs';
 import * as elb from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as cdk from "aws-cdk-lib";
-import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import { Template } from "aws-cdk-lib/assertions";
 
 test('Test new vpc, load balancer, service', () => {
   // An environment with region is required to enable logging on an ALB
@@ -34,16 +33,17 @@ test('Test new vpc, load balancer, service', () => {
 
   new AlbToFargate(stack, 'test-construct', testProps);
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE'
   });
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
-  expect(stack).not.toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  defaults.expectNonexistence(stack, 'AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTPS'
   });
-  expect(stack).toHaveResource('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
     CidrBlock: '10.0.0.0/16',
   });
@@ -64,17 +64,18 @@ test('Test new load balancer, service, existing vpc', () => {
 
   new AlbToFargate(stack, 'test-construct', testProps);
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE'
   });
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
-  expect(stack).toHaveResource('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
     CidrBlock: '172.168.0.0/16'
   });
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::EC2::VPC', 1);
 });
 
 test('Test new service, existing load balancer, vpc', () => {
@@ -103,23 +104,24 @@ test('Test new service, existing load balancer, vpc', () => {
 
   new AlbToFargate(stack, 'test-construct', testProps);
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE'
   });
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.resourceCountIs('AWS::ECS::Service', 1);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
-  expect(stack).toCountResources('AWS::ElasticLoadBalancingV2::Listener', 1);
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  template.resourceCountIs('AWS::ElasticLoadBalancingV2::Listener', 1);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Name: testName
   });
-  expect(stack).toCountResources('AWS::ElasticLoadBalancingV2::LoadBalancer', 1);
-  expect(stack).toHaveResource('AWS::EC2::VPC', {
+  template.resourceCountIs('AWS::ElasticLoadBalancingV2::LoadBalancer', 1);
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
     CidrBlock: '172.168.0.0/16'
   });
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::EC2::VPC', 1);
 });
 
 test('Test existing load balancer, vpc, service', () => {
@@ -155,23 +157,24 @@ test('Test existing load balancer, vpc, service', () => {
 
   new AlbToFargate(stack, 'test-construct', testProps);
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE'
   });
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.resourceCountIs('AWS::ECS::Service', 1);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
-  expect(stack).toCountResources('AWS::ElasticLoadBalancingV2::Listener', 1);
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  template.resourceCountIs('AWS::ElasticLoadBalancingV2::Listener', 1);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Name: testName
   });
-  expect(stack).toCountResources('AWS::ElasticLoadBalancingV2::LoadBalancer', 1);
-  expect(stack).toHaveResource('AWS::EC2::VPC', {
+  template.resourceCountIs('AWS::ElasticLoadBalancingV2::LoadBalancer', 1);
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
     CidrBlock: '172.168.0.0/16'
   });
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::EC2::VPC', 1);
 });
 
 test('Test add a second target with rules', () => {
@@ -203,15 +206,16 @@ test('Test add a second target with rules', () => {
 
   new AlbToFargate(stack, 'test-two-construct', testPropsTwo);
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE'
   });
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
-  expect(stack).toCountResources('AWS::ElasticLoadBalancingV2::TargetGroup', 2);
-  expect(stack).toCountResources('AWS::ElasticLoadBalancingV2::ListenerRule', 1);
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::ListenerRule', {
+  template.resourceCountIs('AWS::ElasticLoadBalancingV2::TargetGroup', 2);
+  template.resourceCountIs('AWS::ElasticLoadBalancingV2::ListenerRule', 1);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::ListenerRule', {
     Conditions: [
       {
         Field: "path-pattern",
@@ -223,11 +227,11 @@ test('Test add a second target with rules', () => {
       }
     ],
   });
-  expect(stack).toHaveResource('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
     CidrBlock: '172.168.0.0/16'
   });
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::EC2::VPC', 1);
 });
 
 test('Test new vpc, load balancer, service - custom Service Props', () => {
@@ -249,17 +253,18 @@ test('Test new vpc, load balancer, service - custom Service Props', () => {
 
   new AlbToFargate(stack, 'test-construct', testProps);
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     ServiceName: serviceName,
   });
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
-  expect(stack).not.toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  defaults.expectNonexistence(stack, 'AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTPS'
   });
-  expect(stack).toHaveResource('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true
   });
 });
@@ -281,16 +286,17 @@ test('Test new vpc, load balancer, service - custom VPC Props', () => {
 
   new AlbToFargate(stack, 'test-construct', testProps);
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
   });
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
-  expect(stack).not.toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  defaults.expectNonexistence(stack, 'AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTPS'
   });
-  expect(stack).toHaveResource('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
     CidrBlock: testCidr,
   });
@@ -319,22 +325,23 @@ test('Test new vpc, load balancer, service - custom LoadBalancer and targetGroup
 
   new AlbToFargate(stack, 'test-construct', testProps);
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
   });
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP'
   });
-  expect(stack).not.toHaveResource('AWS::ElasticLoadBalancingV2::Listener', {
+  defaults.expectNonexistence(stack, 'AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTPS'
   });
-  expect(stack).toHaveResource('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
   });
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Name: testLoadBalancerName
   });
-  expect(stack).toHaveResource('AWS::ElasticLoadBalancingV2::TargetGroup', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
     Name: testTargetGroupName
   });
 });
@@ -356,10 +363,11 @@ test('Test HTTPS API with new vpc, load balancer, service', () => {
 
   new AlbToFargate(stack, 'test-construct', testProps);
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE'
   });
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP',
     DefaultActions: [
       {
@@ -372,11 +380,11 @@ test('Test HTTPS API with new vpc, load balancer, service', () => {
       }
     ],
   });
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTPS',
     Port: 443,
   });
-  expect(stack).toHaveResource('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true
   });
 });
@@ -398,10 +406,11 @@ test('Test HTTPS API with new vpc, load balancer, service and private API', () =
 
   new AlbToFargate(stack, 'test-construct', testProps);
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE'
   });
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP',
     DefaultActions: [
       {
@@ -414,15 +423,15 @@ test('Test HTTPS API with new vpc, load balancer, service and private API', () =
       }
     ],
   });
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTPS',
     Port: 443,
   });
-  expect(stack).toHaveResource('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
   });
-  expect(stack).toCountResources("AWS::EC2::Subnet", 3);
-  expect(stack).toHaveResource("AWS::EC2::Subnet", {
+  template.resourceCountIs("AWS::EC2::Subnet", 3);
+  template.hasResourceProperties("AWS::EC2::Subnet", {
     Tags: [
       {
         Key: "aws-cdk:subnet-name",
@@ -438,7 +447,7 @@ test('Test HTTPS API with new vpc, load balancer, service and private API', () =
       }
     ]
   });
-  expect(stack).not.toHaveResource("AWS::EC2::Subnet", {
+  defaults.expectNonexistence(stack, "AWS::EC2::Subnet", {
     Tags: [
       {
         Key: "aws-cdk:subnet-name",
