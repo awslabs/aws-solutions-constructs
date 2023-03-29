@@ -230,7 +230,7 @@ test('s3 bucket with LoggingBucket and versioning turned off', () => {
 
   expect(buildS3BucketResponse.bucket).toBeDefined();
   // The line below fails, this appears to be a bug. Entered Issue 906
-  //  expect(response.loggingBucket).toBeDefined();
+  expect(buildS3BucketResponse.loggingBucket).toBeDefined();
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::S3::Bucket", {
