@@ -17,7 +17,6 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as defaults from '@aws-solutions-constructs/core';
 import { LambdaToSqsToLambda, LambdaToSqsToLambdaProps } from '../lib';
-import { haveResourceLike } from '@aws-cdk/assert';
 import { Template } from 'aws-cdk-lib/assertions';
 
 // --------------------------------------------------------------
@@ -254,11 +253,12 @@ test('Test deployment w/ DLQ explicitly disabled', () => {
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
   // Assertion 2: test for a non-existing DLQ
-  expect(!haveResourceLike('AWS::SQS::Queue', {
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::SQS::Queue', 1);
+  defaults.expectNonexistence(stack, 'AWS::SQS::Queue', {
     RedrivePolicy: {
-      deadLetterTargetArn: "a-target-arn"
     }
-  }));
+  });
 });
 
 // --------------------------------------------------------------
@@ -284,18 +284,19 @@ test('Test deployment w/ DLQ explicitly enabled and w/ MRC override', () => {
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
+  const template = Template.fromStack(stack);
   // Assertion 2: test for an existing DLQ
-  expect(haveResourceLike('AWS::SQS::Queue', {
+  template.resourceCountIs('AWS::SQS::Queue', 2);
+  template.hasResourceProperties('AWS::SQS::Queue', {
     RedrivePolicy: {
-      deadLetterTargetArn: "a-target-arn"
     }
-  }));
+  });
   // Assertion 3: test for the overridden max receive count
-  expect(haveResourceLike('AWS::SQS::Queue', {
+  template.hasResourceProperties('AWS::SQS::Queue', {
     RedrivePolicy: {
       maxReceiveCount: 6
     }
-  }));
+  });
 });
 
 // --------------------------------------------------------------

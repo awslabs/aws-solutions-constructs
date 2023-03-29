@@ -14,8 +14,6 @@ const awsCdkLibVersion = '2.68.0';
 const constructsVersion = '10.0.0';
 const MODULE_EXEMPTIONS = new Set([
   '@aws-cdk/cloudformation-diff',
-  '@aws-cdk/assert',
-  '@aws-cdk/assert/jest',
   'aws-cdk'
 ]);
 
