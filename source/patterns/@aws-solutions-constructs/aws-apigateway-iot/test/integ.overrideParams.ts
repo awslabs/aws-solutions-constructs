@@ -40,14 +40,14 @@ const policyJSON = {
       Action: [
         "iot:UpdateThingShadow"
       ],
-      Resource: `arn:${cdk.Aws.PARTITION}:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:thing/*`,
+      Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:thing/*`,
       Effect: "Allow"
     },
     {
       Action: [
         "iot:Publish"
       ],
-      Resource: `arn:${arn:${Aws.PARTITION}:Aws.PARTITION}:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:topic/*`,
+      Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:topic/*`,
       Effect: "Allow"
     }
   ]
