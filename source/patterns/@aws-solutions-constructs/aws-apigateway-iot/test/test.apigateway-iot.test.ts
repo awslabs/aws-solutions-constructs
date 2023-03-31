@@ -302,14 +302,14 @@ test('Test for overriden IAM Role', () => {
         Action: [
           "iot:UpdateThingShadow"
         ],
-        Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:thing/mything1`,
+        Resource: `arn:$${cdk.Aws.PARTITION}:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:thing/mything1`,
         Effect: "Allow"
       },
       {
         Action: [
           "iot:Publish"
         ],
-        Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:topic/topic-abc`,
+        Resource: `arn:${cdk.Aws.PARTITION}:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:topic/topic-abc`,
         Effect: "Allow"
       }
     ]

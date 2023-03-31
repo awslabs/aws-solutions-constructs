@@ -87,7 +87,11 @@ test('Test override SnapshotOptions for buildElasticSearch', () => {
             "Fn::Join": [
               "",
               [
-                "arn:aws:es:",
+                "arn:",
+                {
+                  Ref: "AWS::Partition"
+                },
+                ":es:",
                 {
                   Ref: "AWS::Region"
                 },
@@ -319,7 +323,11 @@ test('Test override ES version for buildElasticSearch', () => {
             "Fn::Join": [
               "",
               [
-                "arn:aws:es:",
+                "arn:",
+                {
+                  Ref: "AWS::Partition"
+                },
+                ":es:",
                 {
                   Ref: "AWS::Region"
                 },
@@ -410,7 +418,11 @@ test('Test ES with lambdaRoleARN', () => {
             "Fn::Join": [
               "",
               [
-                "arn:aws:es:",
+                "arn:",
+                {
+                  Ref: "AWS::Partition"
+                },
+                ":es:",
                 {
                   Ref: "AWS::Region"
                 },

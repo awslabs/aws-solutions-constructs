@@ -219,7 +219,11 @@
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:cognito-identity:",
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":cognito-identity:",
                       {
                         "Ref": "AWS::Region"
                       },
@@ -238,7 +242,11 @@
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:es:",
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":es:",
                       {
                         "Ref": "AWS::Region"
                       },
@@ -298,8 +306,12 @@
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:es:",
+                    "arn:",
                     {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":es:",
+                  {
                       "Ref": "AWS::Region"
                     },
                     ":",
