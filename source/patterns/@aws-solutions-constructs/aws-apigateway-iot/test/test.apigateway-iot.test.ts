@@ -72,7 +72,11 @@ test('Test for default IAM Role', () => {
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:iot:",
+                    "arn:",
+                    {
+                      Ref: "AWS::Partition"
+                    },
+                    ":iot:",
                     {
                       Ref: "AWS::Region"
                     },
@@ -92,7 +96,11 @@ test('Test for default IAM Role', () => {
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:iot:",
+                    "arn:",
+                    {
+                      Ref: "AWS::Partition"
+                    },
+                    ":iot:",
                     {
                       Ref: "AWS::Region"
                     },
@@ -302,14 +310,14 @@ test('Test for overriden IAM Role', () => {
         Action: [
           "iot:UpdateThingShadow"
         ],
-        Resource: `arn:$${cdk.Aws.PARTITION}:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:thing/mything1`,
+        Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:thing/mything1`,
         Effect: "Allow"
       },
       {
         Action: [
           "iot:Publish"
         ],
-        Resource: `arn:${cdk.Aws.PARTITION}:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:topic/topic-abc`,
+        Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:topic/topic-abc`,
         Effect: "Allow"
       }
     ]
