@@ -31,7 +31,7 @@ const mediaStoreContainerProps: mediastore.CfnContainerProps = {
       Effect: 'Allow',
       Principal: '*',
       Action: 'mediastore:*',
-      Resource: `arn:${Aws.PARTITION}:mediastore:${Aws.REGION}:${Aws.ACCOUNT_ID}:container/MyOwnMediaStoreContainer/*`,
+      Resource: `arn:aws:mediastore:${Aws.REGION}:${Aws.ACCOUNT_ID}:container/MyOwnMediaStoreContainer/*`,
       Condition: {
         Bool: { "aws:SecureTransport": "true" }
       }
