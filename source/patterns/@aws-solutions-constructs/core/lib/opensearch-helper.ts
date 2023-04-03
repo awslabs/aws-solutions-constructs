@@ -282,8 +282,8 @@ function createDashboardCognitoRole(
           ],
           resources: [
             userPool.userPoolArn,
-            `arn:aws:cognito-identity:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:identitypool/${identitypool.ref}`,
-            `arn:aws:es:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:domain/${domainName}`,
+            `arn:${cdk.Aws.PARTITION}:cognito-identity:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:identitypool/${identitypool.ref}`,
+            `arn:${cdk.Aws.PARTITION}:es:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:domain/${domainName}`,
           ],
         }),
         new iam.PolicyStatement({

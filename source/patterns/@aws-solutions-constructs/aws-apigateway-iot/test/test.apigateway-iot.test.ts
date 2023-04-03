@@ -72,7 +72,11 @@ test('Test for default IAM Role', () => {
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:iot:",
+                    "arn:",
+                    {
+                      Ref: "AWS::Partition"
+                    },
+                    ":iot:",
                     {
                       Ref: "AWS::Region"
                     },
@@ -92,7 +96,11 @@ test('Test for default IAM Role', () => {
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:iot:",
+                    "arn:",
+                    {
+                      Ref: "AWS::Partition"
+                    },
+                    ":iot:",
                     {
                       Ref: "AWS::Region"
                     },
