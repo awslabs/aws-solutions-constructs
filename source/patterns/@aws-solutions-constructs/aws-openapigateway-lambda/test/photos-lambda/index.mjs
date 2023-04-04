@@ -1,4 +1,4 @@
-exports.handler = async (event) => {
+export const handler = async (event) => {
   console.log(JSON.stringify(event, null, 2));
 
   switch (event.httpMethod) {
@@ -6,13 +6,13 @@ exports.handler = async (event) => {
       console.log(`handling POST`);
       return {
         statusCode: 200,
-        body: JSON.stringify({"message": "successfully handled POST from messages lambda"})
+        body: JSON.stringify({"message": "successfully handled POST from photos lambda"})
       };
     case 'GET':
       console.log(`handling GET`);
       return {
         statusCode: 200,
-        body: JSON.stringify({"message": "successfully handled GET from messages lambda"})
+        body: JSON.stringify({"message": "successfully handled GET from photos lambda"})
       };
     default:
       throw new Error(`cannot handle httpMethod: ${event.httpMethod}`);
