@@ -36,7 +36,7 @@ export interface WafwebaclToApiGatewayProps {
    *
    * @default - Default properties are used.
    */
-  readonly webaclProps?: waf.CfnWebACLProps,
+  readonly webaclProps?: waf.CfnWebACLProps | any,
 }
 
 /**

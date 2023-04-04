@@ -28,7 +28,7 @@ function deployAppsyncGraphqlApi(stack: cdk.Stack) {
 
 function deployConstruct(
   stack: cdk.Stack,
-  webaclProps?: waf.CfnWebACLProps,
+  webaclProps?: waf.CfnWebACLProps | any,
   existingWebaclObj?: waf.CfnWebACL
 ) {
   const api = deployAppsyncGraphqlApi(stack);
@@ -212,9 +212,6 @@ test("Test default deployment", () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test web acl with user provided acl props
-// --------------------------------------------------------------
 test("Test user provided acl props", () => {
   const stack = new cdk.Stack();
   const webaclProps: waf.CfnWebACLProps = {
@@ -280,6 +277,21 @@ test("Test user provided acl props", () => {
         },
       },
     ],
+  });
+});
+
+test("Test user provided partial acl props", () => {
+  const stack = new cdk.Stack();
+  const testName = 'test-name';
+  const webaclProps = {
+    name: testName
+  };
+
+  deployConstruct(stack, webaclProps);
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
+    Name: testName
   });
 });
 
