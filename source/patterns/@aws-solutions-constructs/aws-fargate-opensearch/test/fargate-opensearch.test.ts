@@ -119,7 +119,11 @@ test('Test cognito dashboard role IAM policy', () => {
               "Fn::Join": [
                 "",
                 [
-                  "arn:aws:cognito-identity:",
+                  "arn:",
+                  {
+                    Ref: "AWS::Partition"
+                  },
+                  ":cognito-identity:",
                   {
                     Ref: "AWS::Region"
                   },
@@ -138,7 +142,11 @@ test('Test cognito dashboard role IAM policy', () => {
               "Fn::Join": [
                 "",
                 [
-                  "arn:aws:es:",
+                  "arn:",
+                  {
+                    Ref: "AWS::Partition"
+                  },
+                  ":es:",
                   {
                     Ref: "AWS::Region"
                   },

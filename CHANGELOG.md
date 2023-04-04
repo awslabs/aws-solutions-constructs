@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.37.0](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/compare/v2.14.0...v2.37.0) (2023-04-04)
+
+test release
+
+### Features
+
+* **aws-apigateway-*:** add optional request templates for non-default content-types. ([#888](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/888)) ([ace70f0](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/ace70f0ff9efed0cd1cdf46cabd8fa2e9f0e1bcc))
+* **aws-apigateway-dynamodb:** add optional resourceName parameter ([#898](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/898)) ([09e54ec](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/09e54ec2150257be3e2c1cb1aa42124aa4e8f55e))
+* **aws-dynamodbstreams-lambda-elasticsearch-kibana:** Added VPC support ([#816](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/816)) ([30a5160](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/30a5160ce3165fa838e571fabb0d31c13961bb8f))
+* **aws-iot-lambda-dynamodb:** add vpc and environment variable name to construct interface ([#894](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/894)) ([8ee687a](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/8ee687a8d644be8c7db8f905a55e5fced5a70bfc))
+* **aws-lambda-kinesisstream:** created new construct  ([#873](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/873)) ([81592de](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/81592de3b14a9d6f01a7e61519be6c6b90695cff))
+* **aws-lambda-opensearch:** created new construct ([#818](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/818)) ([f31f59d](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/f31f59d1ce4d945508f999d58905b1775f26a891))
+* **aws-wafwebacl-agigateway:** enable govcloud ([#900](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/900)) ([dd19d93](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/dd19d9363fa6c33b0c616a1a5392c26369bc02b2))
+* **aws-wafwebacl-appsync:** created new construct ([#833](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/833)) ([1c708b9](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/1c708b9bb2527ba2cbec974eab3a0e272ad26ad4))
+* **new construct:** aws-fargate-kinesisfirehose ([#881](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/881)) ([3a74a27](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/3a74a27f9c3e895a44b485ee1bb8fe9adc50a80e))
+* **new construct:** aws-fargate-kinesisstreams ([#877](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/877)) ([08b7975](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/08b79756743e4a3f9930128e8318670666e01367)), closes [#875](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/875)
+* **new construct:** aws-lambda-kinesisfirehose ([#875](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/875)) ([aef3efa](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/aef3efab4b4658f12ed82937683d08997162d9bc))
+
+
+### Bug Fixes
+
+* **all constructs:** use aws.partition where value could refer to govcloud ([#941](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/941)) ([e4cc3c0](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/e4cc3c090d669a8f163adb013c26fcd3796b5d8b))
+* **readme.md files:** update all documentation links to v2 ([#815](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/815)) ([ad1f9d7](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/ad1f9d77ad956f6a139adceec1891132996611ee))
+* **s3-bucket-helper:** not populating response.loggingBucket when bucket supplied ([#934](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/934)) ([b65986d](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/b65986d7d1791c2ed19e62c8f39ffe42b6f2a274))
+* **StepFunctions:** Address LogGroup behavior problems ([#922](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/922)) ([84e581c](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/84e581cad10f59daf827fb6e8f8101e1ec6b11f3))
+
 ## [2.36.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.35.0...v2.36.0) (2023-03-29)
 
 Built on CDK v2.71.0
