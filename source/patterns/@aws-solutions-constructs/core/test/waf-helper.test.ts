@@ -17,9 +17,6 @@ import * as defaults from '..';
 import { Template } from 'aws-cdk-lib/assertions';
 import { buildWebacl } from '..';
 
-// --------------------------------------------------------------
-// Test construct with default props
-// --------------------------------------------------------------
 test('Test construct with default props', () => {
   // Stack
   const stack = new Stack();
@@ -168,9 +165,6 @@ test('Test construct with default props', () => {
   template.resourceCountIs('AWS::WAFv2::WebACLAssociation', 0);
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ user provided custom properties
-// --------------------------------------------------------------
 test('Test deployment w/ user provided custom properties', () => {
   // Stack
   const stack = new Stack();
@@ -241,6 +235,24 @@ test('Test deployment w/ user provided custom properties', () => {
         }
       }
     ]
+  });
+});
+
+test('Test deployment w/ user provided partial custom properties', () => {
+  // Stack
+  const stack = new Stack();
+  const testName = 'test-name';
+  // Build WAF web ACL
+  const props = {
+    name: testName
+  };
+
+  defaults.buildWebacl(stack, 'CLOUDFRONT', {
+    webaclProps: props
+  });
+
+  Template.fromStack(stack).hasResourceProperties("AWS::WAFv2::WebACL", {
+    Name: testName
   });
 });
 
