@@ -79,7 +79,11 @@ test('Test override SnapshotOptions for buildOpenSearch', () => {
             "Fn::Join": [
               "",
               [
-                "arn:aws:es:",
+                "arn:",
+                {
+                  Ref: "AWS::Partition"
+                },
+                ":es:",
                 {
                   Ref: "AWS::Region"
                 },
@@ -283,7 +287,11 @@ test('Test engine version override for buildOpenSearch', () => {
             "Fn::Join": [
               "",
               [
-                "arn:aws:es:",
+                "arn:",
+                {
+                  Ref: "AWS::Partition"
+                },
+                ":es:",
                 {
                   Ref: "AWS::Region"
                 },
@@ -370,7 +378,11 @@ test('Test deployment with lambdaRoleARN', () => {
             "Fn::Join": [
               "",
               [
-                "arn:aws:es:",
+                "arn:",
+                {
+                  Ref: "AWS::Partition"
+                },
+                ":es:",
                 {
                   Ref: "AWS::Region"
                 },
