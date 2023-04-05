@@ -22,6 +22,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 import { Provider } from 'aws-cdk-lib/custom-resources';
 import { RestApiBaseProps } from 'aws-cdk-lib/aws-apigateway';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
+import { addCfnSuppressRules } from '@aws-solutions-constructs/core';
 
 export interface ApiIntegration {
   /**
@@ -141,51 +142,71 @@ export class OpenApiGatewayToLambda extends Construct {
       path: path.join(__dirname, 'placeholder')
     });
 
-    const apiTemplateWriterLambda = new lambda.Function(this, 'ApiTemplateWriterLambda', {
-      runtime: lambda.Runtime.NODEJS_18_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(`${__dirname}/custom-resource`),
-      role: new iam.Role(this, 'ApiTemplateWriterLambdaRole', {
-        assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-        description: 'Role used by the ApiTemplateWriterLambda to update the open api spec with resolved lambda proxy arn',
-        inlinePolicies: {
-          CloudWatchLogs: new iam.PolicyDocument({
-            statements: [
-              new iam.PolicyStatement({
-                actions: [
-                  'logs:CreateLogGroup',
-                  'logs:CreateLogStream',
-                  'logs:PutLogEvents'
-                ],
-                resources: [ `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/lambda/*` ]
-              })
-            ]
-          }),
-          ReadOpenApiSpecPolicy: new iam.PolicyDocument({
-            statements: [
-              new iam.PolicyStatement({
-                actions: [ 's3:GetObject' ],
-                effect: iam.Effect.ALLOW,
-                resources: [ `arn:${Aws.PARTITION}:s3:::${specBucket}/${specKey}`]
-              })
-            ]
-          }),
-          WriteOpenApiSpecPolicy: new iam.PolicyDocument({
-            statements: [
-              new iam.PolicyStatement({
-                actions: [ 's3:PutObject' ],
-                effect: iam.Effect.ALLOW,
-                resources: [ `arn:${Aws.PARTITION}:s3:::${outputApiDefinitionAsset.s3BucketName}/*`]
-              })
-            ]
-          })
-        }
-      })
+    const apiTemplateWriterLambda = defaults.buildLambdaFunction(this, {
+      lambdaFunctionProps: {
+        functionName: 'TemplateWriterCustomResource',
+        runtime: lambda.Runtime.NODEJS_18_X,
+        handler: 'index.handler',
+        code: lambda.Code.fromAsset(`${__dirname}/custom-resource`),
+        role: new iam.Role(this, 'ApiTemplateWriterLambdaRole', {
+          assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+          description: 'Role used by the ApiTemplateWriterLambda to update the open api spec with resolved lambda proxy arn',
+          inlinePolicies: {
+            CloudWatchLogs: new iam.PolicyDocument({
+              statements: [
+                new iam.PolicyStatement({
+                  actions: [
+                    'logs:CreateLogGroup',
+                    'logs:CreateLogStream',
+                    'logs:PutLogEvents'
+                  ],
+                  resources: [ `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/lambda/*` ]
+                })
+              ]
+            }),
+            ReadOpenApiSpecPolicy: new iam.PolicyDocument({
+              statements: [
+                new iam.PolicyStatement({
+                  actions: [ 's3:GetObject' ],
+                  effect: iam.Effect.ALLOW,
+                  resources: [ `arn:${Aws.PARTITION}:s3:::${specBucket}/${specKey}`]
+                })
+              ]
+            }),
+            WriteOpenApiSpecPolicy: new iam.PolicyDocument({
+              statements: [
+                new iam.PolicyStatement({
+                  actions: [ 's3:PutObject' ],
+                  effect: iam.Effect.ALLOW,
+                  resources: [ `arn:${Aws.PARTITION}:s3:::${outputApiDefinitionAsset.s3BucketName}/*`]
+                })
+              ]
+            })
+          }
+        })
+      }
     });
 
     const apiTemplateWriterProvider = new Provider(this, 'ApiTemplateWriterProvider', {
       onEventHandler: apiTemplateWriterLambda
     });
+
+    const providerFrameworkFunction = apiTemplateWriterProvider.node.children[0].node.findChild('Resource') as lambda.CfnFunction;
+
+    addCfnSuppressRules(providerFrameworkFunction, [
+      {
+        id: 'W58',
+        reason: `Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.`
+      },
+      {
+        id: 'W89',
+        reason: `This is not a rule for the general case, just for specific use cases/industries`
+      },
+      {
+        id: 'W92',
+        reason: `Impossible for us to define the correct concurrency for clients`
+      }
+    ]);
 
     const apiIntegrationUris = lambdaHandlers.map(lambdaHandler => {
       return {
