@@ -30,7 +30,7 @@ function deployLambdaToOpenSearch(stack: cdk.Stack) {
 function getDefaultTestLambdaProps(): lambda.FunctionProps {
   return {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
   };
 }
@@ -75,7 +75,7 @@ test('Check for an existing Lambda object', () => {
   const existingLambdaObj = defaults.buildLambdaFunction(stack, {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       functionName: 'test-function'
     }
@@ -108,7 +108,7 @@ test('Check Lambda function custom environment variable', () => {
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
-    Runtime: 'nodejs14.x',
+    Runtime: 'nodejs16.x',
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',

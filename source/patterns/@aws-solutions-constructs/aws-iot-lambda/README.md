@@ -37,7 +37,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 const constructProps: IotToLambdaProps = {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   },
   iotTopicRuleProps: {
@@ -94,7 +94,7 @@ import software.amazon.awsconstructs.services.iotlambda.*;
 
 new IotToLambda(this, "test-iot-lambda-integration", new IotToLambdaProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_14_X)
+                .runtime(Runtime.NODEJS_16_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())

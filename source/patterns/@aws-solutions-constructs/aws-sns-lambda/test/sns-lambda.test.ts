@@ -22,7 +22,7 @@ function deployNewFunc(stack: cdk.Stack) {
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
   };
@@ -45,7 +45,7 @@ test('override topicProps', () => {
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     topicProps: {
@@ -71,7 +71,7 @@ test('provide existingTopicObj', () => {
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     existingTopicObj: topic
@@ -91,7 +91,7 @@ test('Topic is encrypted with imported CMK when set on encryptionKey prop', () =
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     encryptionKey: cmk
@@ -116,7 +116,7 @@ test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     topicProps: {
@@ -143,7 +143,7 @@ test('Topic is encrypted with provided encrytionKeyProps', () => {
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     encryptionKeyProps: {
@@ -180,7 +180,7 @@ test('Topic is encrypted by default with AWS-managed KMS key when no other encry
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
   };
@@ -218,7 +218,7 @@ test('Topic is encrypted with customer managed KMS Key when enable encryption fl
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     enableEncryptionWithCustomerManagedKey: true

@@ -25,7 +25,7 @@ stack.templateOptions.description = 'Integration Test for aws-apigateway-lambda'
 
 // Lambda function setup
 const lambdaFunctionProps = {
-  runtime: lambda.Runtime.NODEJS_14_X,
+  runtime: lambda.Runtime.NODEJS_16_X,
   handler: 'index.handler',
   code: lambda.Code.fromAsset(`${__dirname}/lambda`)
 };

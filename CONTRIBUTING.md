@@ -208,7 +208,7 @@ Additional scripts that take part in the versioning mechanism:
 
 ```console
 $ cd <root-of-aws-solutions-constructs-repo>
-$ docker run -u root --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain:1-buster-slim-node14
+$ docker run -u root --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain:1-buster-slim-node16
 # The build-patterns.sh command can take along time, be sure to allocate enough resources in the Docker dashboard
 # (6 CPUs is good)
 docker$ ./deployment/v2/build-patterns.sh
@@ -224,7 +224,7 @@ build and test individual constructs by following the steps below.
 
 ```console
 $ cd <root-of-aws-solutions-constructs-repo>
-$ docker run -u root --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain:1-buster-slim-node14
+$ docker run -u root --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain:1-buster-slim-node16
 docker$ source ./deployment/v2/allow-partial-builds.sh
 docker$ cd my-module
 docker$ npm run build+lint+test

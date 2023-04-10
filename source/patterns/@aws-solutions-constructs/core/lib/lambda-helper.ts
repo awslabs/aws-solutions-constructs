@@ -152,9 +152,9 @@ export function deployLambdaFunction(scope: Construct,
 
   const lambdafunction = new lambda.Function(scope, _functionId, finalLambdaFunctionProps);
 
-  if (lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_14_X ||
-    lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_14_X ||
-    lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_14_X) {
+  if (lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_16_X ||
+    lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_16_X ||
+    lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_16_X) {
     lambdafunction.addEnvironment('AWS_NODEJS_CONNECTION_REUSE_ENABLED', '1', { removeInEdge: true });
   }
 

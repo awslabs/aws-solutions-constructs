@@ -44,7 +44,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 const constructProps: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps = {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   },
   domainName: 'test-domain',
@@ -91,7 +91,7 @@ import software.amazon.awsconstructs.services.dynamodbstreamslambdaelasticsearch
 new DynamoDBStreamsToLambdaToElasticSearchAndKibana(this, "test-dynamodb-stream-lambda-elasticsearch-kibana",
         new DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps.Builder()
                 .lambdaFunctionProps(new FunctionProps.Builder()
-                        .runtime(Runtime.NODEJS_14_X)
+                        .runtime(Runtime.NODEJS_16_X)
                         .code(Code.fromAsset("lambda"))
                         .handler("index.handler")
                         .build())

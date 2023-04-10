@@ -33,7 +33,7 @@ import { S3ToLambdaProps, S3ToLambda } from '@aws-solutions-constructs/aws-s3-la
 new S3ToLambda(this, 'test-s3-lambda', {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   },
 });
@@ -70,7 +70,7 @@ import software.amazon.awsconstructs.services.s3lambda.*;
 
 new S3ToLambda(this, "test-s3-lambda'", new S3ToLambdaProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_14_X)
+                .runtime(Runtime.NODEJS_16_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())

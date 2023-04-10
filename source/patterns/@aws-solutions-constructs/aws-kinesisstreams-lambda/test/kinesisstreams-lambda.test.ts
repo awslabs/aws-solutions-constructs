@@ -26,7 +26,7 @@ test('Test properties', () => {
   const stack = new Stack();
   const props: KinesisStreamsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
@@ -48,7 +48,7 @@ test('Test existing resources', () => {
   const stack = new Stack();
 
   const fn = new lambda.Function(stack, 'test-fn', {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   });
@@ -75,7 +75,7 @@ test('Test existing resources', () => {
 
   template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
-    Runtime: 'nodejs14.x',
+    Runtime: 'nodejs16.x',
   });
 });
 
@@ -86,7 +86,7 @@ test('test sqsDlqQueueProps override', () => {
   const stack = new Stack();
   const props: KinesisStreamsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -112,7 +112,7 @@ test('Test properties with no CW Alarms', () => {
   const stack = new Stack();
   const props: KinesisStreamsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
