@@ -66,11 +66,10 @@ Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "5fec086605565b291ca1224e3f1e0fd0426daef8d94a60e13094691c360b2d61.zip",
+          "S3Key": "f7e78725db82a6bcdfb3881f27ecf9760863196f64e16042f3eb567f522d9449.zip",
         },
         "Environment": Object {
           "Variables": Object {
-            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "DDB_TABLE_NAME": Object {
               "Fn::ImportValue": "SharedStack:ExportsOutputRefordertable80C5609084F626AD",
             },
@@ -241,11 +240,10 @@ Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "8d832041090c6117ec13ab972ef4301b41a5e5a8c030546b56f79be55b45a691.zip",
+          "S3Key": "f3fb724d107c92bcdc47f3123f612fd2cd0eecd312331259982cb439df89f4eb.zip",
         },
         "Environment": Object {
           "Variables": Object {
-            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "DDB_TABLE_NAME": Object {
               "Fn::ImportValue": "SharedStack:ExportsOutputRefordertable80C5609084F626AD",
             },
@@ -591,7 +589,7 @@ Object {
         },
       },
       "Properties": Object {
-        "Description": "Automatically created by the RestApi construct",
+        "Description": "Demo: Service staff API",
         "RestApiId": Object {
           "Ref": "servicestaffapiLambdaRestApi81C353A0",
         },
