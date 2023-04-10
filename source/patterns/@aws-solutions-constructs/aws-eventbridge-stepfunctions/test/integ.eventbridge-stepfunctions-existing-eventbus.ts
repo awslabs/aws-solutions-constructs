@@ -26,7 +26,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
 const submitLambda = deployLambdaFunction(stack, {
-  runtime: lambda.Runtime.NODEJS_14_X,
+  runtime: lambda.Runtime.NODEJS_16_X,
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   handler: 'index.handler'
 });

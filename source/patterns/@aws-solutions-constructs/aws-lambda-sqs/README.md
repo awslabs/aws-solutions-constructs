@@ -32,7 +32,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new LambdaToSqs(this, 'LambdaToSqsPattern', {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`lambda`)
   }
@@ -70,7 +70,7 @@ import software.amazon.awsconstructs.services.lambdasqs.*;
 
 new LambdaToSqs(this, "test-lambda-sqs-stack", new LambdaToSqsProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_14_X)
+                .runtime(Runtime.NODEJS_16_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())

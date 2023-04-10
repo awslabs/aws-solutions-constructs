@@ -28,7 +28,7 @@ const testVpc = getTestVpc(stack, false);
 const testSG = buildSecurityGroup(stack, 'test-sg', { vpc: testVpc }, [], []);
 
 const testFunction = new lambda.Function(stack, 'test-function', {
-  runtime: lambda.Runtime.NODEJS_14_X,
+  runtime: lambda.Runtime.NODEJS_16_X,
   handler: 'index.handler',
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   vpc: testVpc,

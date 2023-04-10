@@ -41,7 +41,7 @@ const lambdaRole = new iam.Role(stack, 'test-role', {
 });
 
 const lambdaFn = new lambda.Function(stack, 'test-fn', {
-  runtime: lambda.Runtime.NODEJS_14_X,
+  runtime: lambda.Runtime.NODEJS_16_X,
   handler: 'index.handler',
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   role: lambdaRole,

@@ -36,7 +36,7 @@ const existingFirehoseDeliveryStream = previouslyCreatedKinesisFirehoseToS3Const
 
 new LambdaToKinesisFirehose(this, 'LambdaToFirehosePattern', {
   lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`lambda`)
   },
@@ -84,7 +84,7 @@ existingFirehoseDeliveryStream = previouslyCreatedKinesisFirehoseToS3Construct.k
 new LambdaToKinesisFirehose(this, "LambdaToFirehosePattern", new LambdaToKinesisFirehoseProps.Builder()
         .existingKinesisFirehose(existingFirehoseDeliveryStream)
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_14_X)
+                .runtime(Runtime.NODEJS_16_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())
