@@ -64,7 +64,7 @@ export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigure
             'es:ESHttp*'
           ],
           resources: [
-            `arn:aws:es:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:domain/${domainName}/*`
+            `arn:${cdk.Aws.PARTITION}:es:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:domain/${domainName}/*`
           ]
         })
       ]

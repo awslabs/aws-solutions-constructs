@@ -157,7 +157,7 @@
           }
         },
         "Handler": "index.handler",
-        "Runtime": "nodejs14.x",
+        "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
         },
@@ -419,7 +419,11 @@
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:cognito-identity:",
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":cognito-identity:",
                       {
                         "Ref": "AWS::Region"
                       },
@@ -438,7 +442,11 @@
                   "Fn::Join": [
                     "",
                     [
-                      "arn:aws:es:",
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":es:",
                       {
                         "Ref": "AWS::Region"
                       },
@@ -506,8 +514,12 @@
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:es:",
+                    "arn:",
                     {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":es:",
+                  {
                       "Ref": "AWS::Region"
                     },
                     ":",

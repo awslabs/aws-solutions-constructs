@@ -57,12 +57,12 @@ test("Test fail Lambda function check", () => {
   const props: defaults.VerifiedProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
     },
     existingLambdaObj: new lambda.Function(stack, "placeholder", {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
     }),
   };

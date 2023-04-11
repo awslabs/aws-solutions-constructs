@@ -228,7 +228,7 @@ test('test cloudfront disable cloudfront logging', () => {
 test('test cloudfront with custom domain names', () => {
   const stack = new cdk.Stack();
 
-  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012');
+  const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:${Aws.PARTITION}:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012');
 
   const props: CloudFrontToS3Props = {
     cloudFrontDistributionProps: {

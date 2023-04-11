@@ -36,12 +36,12 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new LambdaToSqsToLambda(this, 'LambdaToSqsToLambdaPattern', {
   producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`producer-lambda`)
   },
   consumerLambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`consumer-lambda`)
   }
@@ -84,12 +84,12 @@ import software.amazon.awsconstructs.services.lambdasqslambda.*;
 
 new LambdaToSqsToLambda(this, "LambdaToSqsToLambdaPattern", new LambdaToSqsToLambdaProps.Builder()
         .producerLambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_14_X)
+                .runtime(Runtime.NODEJS_16_X)
                 .code(Code.fromAsset("producer-lambda"))
                 .handler("index.handler")
                 .build())
         .consumerLambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_14_X)
+                .runtime(Runtime.NODEJS_16_X)
                 .code(Code.fromAsset("consumer-lambda"))
                 .handler("index.handler")
                 .build())

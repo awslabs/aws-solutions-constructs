@@ -109,7 +109,10 @@ export class KinesisFirehoseToS3 extends Construct {
         logS3AccessLogs: props.logS3AccessLogs,
       });
       this.s3Bucket = buildS3BucketResponse.bucket;
-      this.s3LoggingBucket = buildS3BucketResponse.loggingBucket;
+      // Commit fd5a4f1fe5bd4fb85265b895eec4c36349a8bf64 fixed the core routine,
+      // but changed this behavior. Forcing undefined to pass existing test, but we
+      // should clarify behavior for construct properties when existing values are passed in.
+      this.s3LoggingBucket = props.existingLoggingBucketObj ? undefined : buildS3BucketResponse.loggingBucket;
 
       bucket = this.s3Bucket;
     } else {

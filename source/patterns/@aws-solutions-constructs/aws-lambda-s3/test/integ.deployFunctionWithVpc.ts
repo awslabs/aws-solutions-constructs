@@ -27,7 +27,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 // Definitions
 const props: LambdaToS3Props = {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   },

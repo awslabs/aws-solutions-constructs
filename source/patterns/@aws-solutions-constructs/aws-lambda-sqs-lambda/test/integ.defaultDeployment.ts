@@ -25,12 +25,12 @@ stack.templateOptions.description = 'Integration Test for aws-lambda-sqs-lambda'
 // Definitions
 const props: LambdaToSqsToLambdaProps = {
   producerLambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`)
   },
   consumerLambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`)
   }

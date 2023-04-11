@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.37.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.36.0...v2.37.0) (2023-04-11)
+
+Built on CDK v2.73.0
+
+### Features
+
+* **wafwebacl-all:** allow any type for webAclProps ([#943](https://github.com/awslabs/aws-solutions-constructs/pull/943))
+
+### Bug Fixes
+
+* **all constructs:** use aws.partition where value could refer to govcloud ([#941](https://github.com/awslabs/aws-solutions-constructs/issues/941)) ([e4cc3c0](https://github.com/awslabs/aws-solutions-constructs/commit/e4cc3c090d669a8f163adb013c26fcd3796b5d8b))
+* **s3-bucket-helper:** not populating response.loggingBucket when bucket supplied ([#934](https://github.com/awslabs/aws-solutions-constructs/issues/934)) ([b65986d](https://github.com/awslabs/aws-solutions-constructs/commit/b65986d7d1791c2ed19e62c8f39ffe42b6f2a274))
+
 ## [2.36.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.35.0...v2.36.0) (2023-03-29)
 
 Built on CDK v2.71.0

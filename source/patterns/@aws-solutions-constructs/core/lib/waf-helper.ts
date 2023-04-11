@@ -29,7 +29,7 @@ export interface BuildWebaclProps {
   /**
    * User provided props to override the default ACL props for WAF web ACL.
    */
-  readonly webaclProps?: waf.CfnWebACLProps;
+  readonly webaclProps?: waf.CfnWebACLProps | any;
 }
 
 /**

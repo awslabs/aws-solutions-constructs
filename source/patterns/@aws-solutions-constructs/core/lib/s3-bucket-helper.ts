@@ -130,8 +130,8 @@ export function buildS3Bucket(scope: Construct,
   // Create the Application Bucket
   let customBucketProps: s3.BucketProps;
   let loggingBucket;
-  const _bucketId = bucketId ? bucketId + 'S3Bucket' : 'S3Bucket';
-  const _loggingBucketId = bucketId ? bucketId + 'S3LoggingBucket' : 'S3LoggingBucket';
+  const resolvedBucketId = bucketId ? bucketId + 'S3Bucket' : 'S3Bucket';
+  const loggingBucketId = bucketId ? bucketId + 'S3LoggingBucket' : 'S3LoggingBucket';
 
   // If logging S3 access logs is enabled/undefined and an existing bucket object is not provided
   if (props.logS3AccessLogs !== false && !(props.bucketProps?.serverAccessLogsBucket)) {
@@ -147,8 +147,11 @@ export function buildS3Bucket(scope: Construct,
       loggingBucketProps = overrideProps(loggingBucketProps, { removalPolicy: props.bucketProps.removalPolicy });
     }
 
-    loggingBucket = createLoggingBucket(scope, _loggingBucketId, loggingBucketProps);
+    loggingBucket = createLoggingBucket(scope, loggingBucketId, loggingBucketProps);
+  } else if (props.bucketProps?.serverAccessLogsBucket) {
+    loggingBucket = props.bucketProps?.serverAccessLogsBucket as s3.Bucket;
   }
+
   // Attach the Default Life Cycle policy ONLY IF the versioning is ENABLED
   if (props.bucketProps?.versioned === undefined || props.bucketProps.versioned) {
     customBucketProps = DefaultS3Props(loggingBucket, lifecycleRules);
@@ -158,7 +161,7 @@ export function buildS3Bucket(scope: Construct,
 
   customBucketProps = props.bucketProps ? overrideProps(customBucketProps, props.bucketProps) : customBucketProps;
 
-  const s3Bucket: s3.Bucket = new s3.Bucket(scope, _bucketId, customBucketProps );
+  const s3Bucket: s3.Bucket = new s3.Bucket(scope, resolvedBucketId, customBucketProps );
 
   return { bucket: s3Bucket, loggingBucket };
 }

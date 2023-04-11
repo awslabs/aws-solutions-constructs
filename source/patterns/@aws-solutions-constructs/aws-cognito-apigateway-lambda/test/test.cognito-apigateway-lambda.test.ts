@@ -21,7 +21,7 @@ import { Template } from "aws-cdk-lib/assertions";
 function deployNewFunc(stack: cdk.Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
 
@@ -35,7 +35,7 @@ test('override cognito properties', () => {
 
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
 
@@ -103,7 +103,7 @@ test('override cognito cognitoUserPoolClientProps', () => {
 
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
 
@@ -132,7 +132,7 @@ test('Check for default Cognito Auth Type', () => {
 
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
 
@@ -171,7 +171,7 @@ test('override Auth Type to COGNITO', () => {
 
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
 
@@ -215,7 +215,7 @@ test('Try to override Auth Type to NONE', () => {
 
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
 
@@ -259,7 +259,7 @@ test('Override apiGatewayProps', () => {
 
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
 
@@ -305,7 +305,7 @@ test('Override apiGatewayProps to support CORS', () => {
 
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
 
@@ -371,7 +371,7 @@ test('Override apiGatewayProps with proxy = false and add POST method', () => {
 
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
 
@@ -410,7 +410,7 @@ test('Override apiGatewayProps with proxy = false and add OPTIONS method', () =>
 
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
 

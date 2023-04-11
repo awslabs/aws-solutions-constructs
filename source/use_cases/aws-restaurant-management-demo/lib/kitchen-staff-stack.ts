@@ -40,7 +40,7 @@ export class KitchenStaffStack extends Stack {
     // Create a Lambda function that lists all open orders in the database
     const getOpenOrders = new LambdaToDynamoDB(this, 'get-open-orders', {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/kitchen-staff/get-open-orders`),
         handler: 'index.handler',
         timeout: Duration.seconds(15)
@@ -51,7 +51,7 @@ export class KitchenStaffStack extends Stack {
     // Create a Lambda function that marks an order as completed in the database
     const completeOrder = new LambdaToDynamoDB(this, 'complete-order', {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/kitchen-staff/complete-order`),
         handler: 'index.handler',
         timeout: Duration.seconds(15)
