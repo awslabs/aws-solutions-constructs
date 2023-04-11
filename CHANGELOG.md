@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.37.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.36.0...v2.37.0) (2023-04-11)
 
+Built on CDK v2.73.0
+
+### Features
+
+* **wafwebacl-all:** allow any type for webAclProps ([#943](https://github.com/awslabs/aws-solutions-constructs/pull/943))
 
 ### Bug Fixes
 
