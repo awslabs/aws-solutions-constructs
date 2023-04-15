@@ -227,7 +227,7 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::S3::Bucket", {
-    AccessControl: "LogDeliveryWrite"
+    OwnershipControls: { Rules: [ { ObjectOwnership: "ObjectWriter" } ] },
   });
 
   template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
