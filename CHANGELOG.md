@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.38.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.37.0...v2.38.0) (2023-04-16)
+
+
+### Bug Fixes
+
+* **s3-constructs:** accommodate s3 change that disables acls by default ([#949](https://github.com/awslabs/aws-solutions-constructs/issues/949)) ([46d02cc](https://github.com/awslabs/aws-solutions-constructs/commit/46d02ccf98e368206b59c27a16003dc3b16d4236))
+
 ## [2.37.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.36.0...v2.37.0) (2023-04-11)
 
 Built on CDK v2.73.0
