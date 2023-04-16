@@ -77,6 +77,7 @@ async function main() {
       const actual = await test.cdkSynthFast(
         deepmerge(DEFAULT_SYNTH_OPTIONS, {
           context: {
+            "@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy": true,
             "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": true,
             "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021": true,
             "@aws-cdk/aws-rds:lowercaseDbIdentifier": true,

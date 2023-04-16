@@ -4,18 +4,6 @@
     "MyFunction3BAA72D1": {
       "Type": "AWS::CloudFront::Function",
       "Properties": {
-        "Name": {
-          "Fn::Join": [
-            "",
-            [
-              {
-                "Ref": "AWS::Region"
-              },
-              "customsecurityheadersMyFunctionFAC550FB"
-            ]
-          ]
-        },
-        "AutoPublish": true,
         "FunctionCode": "function handler(event) { var response = event.response;     var headers = response.headers;     headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};     headers['content-security-policy'] = { value: \"default-src 'none'; base-uri 'self'; img-src 'self'; script-src 'self'; style-src 'self' https:; object-src 'none'; frame-ancestors 'none'; font-src 'self' https:; form-action 'self'; manifest-src 'self'; connect-src 'self'\" };     headers['x-content-type-options'] = { value: 'nosniff'};     headers['x-frame-options'] = {value: 'DENY'};     headers['x-xss-protection'] = {value: '1; mode=block'};     headers['referrer-policy'] = { value: 'same-origin' };     return response;   }",
         "FunctionConfig": {
           "Comment": {
@@ -30,13 +18,24 @@
             ]
           },
           "Runtime": "cloudfront-js-1.0"
-        }
+        },
+        "Name": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "AWS::Region"
+              },
+              "customsecurityheadersMyFunctionFAC550FB"
+            ]
+          ]
+        },
+        "AutoPublish": true
       }
     },
     "testcloudfronts3S3LoggingBucket90D239DD": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
-        "AccessControl": "LogDeliveryWrite",
         "BucketEncryption": {
           "ServerSideEncryptionConfiguration": [
             {
@@ -110,6 +109,42 @@
                   ]
                 }
               ]
+            },
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "ArnLike": {
+                  "aws:SourceArn": {
+                    "Fn::GetAtt": [
+                      "testcloudfronts3S3BucketE0C5F76E",
+                      "Arn"
+                    ]
+                  }
+                },
+                "StringEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "logging.s3.amazonaws.com"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "testcloudfronts3S3LoggingBucket90D239DD",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
             }
           ],
           "Version": "2012-10-17"
@@ -308,13 +343,13 @@
     "testcloudfronts3SetHttpSecurityHeaders6C5A1E69": {
       "Type": "AWS::CloudFront::Function",
       "Properties": {
-        "Name": "SetHttpSecurityHeadersc8132e0ba07d4c8fdbdb431ae46eef456c0589cb21",
-        "AutoPublish": true,
         "FunctionCode": "function handler(event) { var response = event.response;       var headers = response.headers;       headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};       headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"};       headers['x-content-type-options'] = { value: 'nosniff'};       headers['x-frame-options'] = {value: 'DENY'};       headers['x-xss-protection'] = {value: '1; mode=block'};       return response;     }",
         "FunctionConfig": {
           "Comment": "SetHttpSecurityHeadersc8132e0ba07d4c8fdbdb431ae46eef456c0589cb21",
           "Runtime": "cloudfront-js-1.0"
-        }
+        },
+        "Name": "SetHttpSecurityHeadersc8132e0ba07d4c8fdbdb431ae46eef456c0589cb21",
+        "AutoPublish": true
       }
     },
     "testcloudfronts3CloudfrontLoggingBucket985C0FE8": {
@@ -327,6 +362,13 @@
               "ServerSideEncryptionByDefault": {
                 "SSEAlgorithm": "AES256"
               }
+            }
+          ]
+        },
+        "OwnershipControls": {
+          "Rules": [
+            {
+              "ObjectOwnership": "ObjectWriter"
             }
           ]
         },
@@ -570,7 +612,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "15684a15d07860e99d2a8079150ad33dd2cb743677fcd7016dd07345e1b69538.zip"
+          "S3Key": "40aa87cdf43c4095cec18bc443965f22ab2f8c1ace47e482a0ba4e35d83b0cc9.zip"
         },
         "Timeout": 900,
         "MemorySize": 128,

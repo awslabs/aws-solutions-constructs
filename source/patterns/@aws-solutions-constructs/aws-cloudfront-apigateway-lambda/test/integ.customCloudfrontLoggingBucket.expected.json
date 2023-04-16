@@ -589,13 +589,13 @@
     "cfapigwlambdaCloudFrontToApiGatewaySetHttpSecurityHeadersE20F2933": {
       "Type": "AWS::CloudFront::Function",
       "Properties": {
-        "Name": "SetHttpSecurityHeadersc8273ed23dc12ef2b23814ad425355213a41659e4f",
-        "AutoPublish": true,
         "FunctionCode": "function handler(event) { var response = event.response;       var headers = response.headers;       headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};       headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"};       headers['x-content-type-options'] = { value: 'nosniff'};       headers['x-frame-options'] = {value: 'DENY'};       headers['x-xss-protection'] = {value: '1; mode=block'};       return response;     }",
         "FunctionConfig": {
           "Comment": "SetHttpSecurityHeadersc8273ed23dc12ef2b23814ad425355213a41659e4f",
           "Runtime": "cloudfront-js-1.0"
-        }
+        },
+        "Name": "SetHttpSecurityHeadersc8273ed23dc12ef2b23814ad425355213a41659e4f",
+        "AutoPublish": true
       }
     },
     "cfapigwlambdaCloudFrontToApiGatewayCloudfrontLoggingBucket2E8E3DC2": {
@@ -608,6 +608,13 @@
               "ServerSideEncryptionByDefault": {
                 "SSEAlgorithm": "AES256"
               }
+            }
+          ]
+        },
+        "OwnershipControls": {
+          "Rules": [
+            {
+              "ObjectOwnership": "ObjectWriter"
             }
           ]
         },
@@ -884,7 +891,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "15684a15d07860e99d2a8079150ad33dd2cb743677fcd7016dd07345e1b69538.zip"
+          "S3Key": "40aa87cdf43c4095cec18bc443965f22ab2f8c1ace47e482a0ba4e35d83b0cc9.zip"
         },
         "Timeout": 900,
         "MemorySize": 128,

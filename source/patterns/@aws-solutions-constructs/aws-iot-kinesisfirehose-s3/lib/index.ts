@@ -91,6 +91,11 @@ export class IotToKinesisFirehoseToS3 extends Construct {
    */
   constructor(scope: Construct, id: string, props: IotToKinesisFirehoseToS3Props) {
     super(scope, id);
+
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+
     defaults.CheckProps(props);
 
     const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
