@@ -3,7 +3,6 @@
     "testiotkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucket03F0BA8E": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
-        "AccessControl": "LogDeliveryWrite",
         "BucketEncryption": {
           "ServerSideEncryptionConfiguration": [
             {
@@ -78,6 +77,42 @@
                   ]
                 }
               ]
+            },
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "ArnLike": {
+                  "aws:SourceArn": {
+                    "Fn::GetAtt": [
+                      "testiotkinesisfirehoses3KinesisFirehoseToS3S3BucketAEE2D91B",
+                      "Arn"
+                    ]
+                  }
+                },
+                "StringEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "logging.s3.amazonaws.com"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "testiotkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucket03F0BA8E",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
             }
           ],
           "Version": "2012-10-17"

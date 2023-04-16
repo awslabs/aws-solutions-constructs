@@ -155,6 +155,7 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("Custom::S3BucketNotifications", {});
+  template.resourceCountIs("AWS::S3::Bucket", 2);
 
   template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {

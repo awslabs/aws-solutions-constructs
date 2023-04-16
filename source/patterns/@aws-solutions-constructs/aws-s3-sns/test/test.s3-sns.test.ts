@@ -48,6 +48,7 @@ test('construct creates default event notification', () => {
       ]
     }
   });
+  template.resourceCountIs("AWS::S3::Bucket", 2);
 });
 
 test('construct uses existingBucketObj property', () => {

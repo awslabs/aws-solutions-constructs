@@ -62,9 +62,6 @@ export function createLoggingBucket(scope: Construct,
   // Extract the CfnBucket from the loggingBucket
   const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
 
-  // Override accessControl configuration and add metadata for the logging bucket
-  loggingBucketResource.addPropertyOverride('AccessControl', 'LogDeliveryWrite');
-
   // Remove the default LifecycleConfiguration for the Logging Bucket
   loggingBucketResource.addPropertyDeletionOverride('LifecycleConfiguration.Rules');
 
