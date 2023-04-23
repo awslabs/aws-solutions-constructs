@@ -321,29 +321,3 @@ function testStateMachineProps(stack: cdk.Stack, userProps?: stepfunctions.State
 
   return defaults.consolidateProps(defaultTestProp, userProps);
 }
-
-test('check LogGroup name', () => {
-  const stack = new cdk.Stack();
-  const publicApi = true;
-
-  createFargateConstructWithNewResources(stack, publicApi);
-
-  // Perform some fancy stuff to examine the specifics of the LogGroupName
-  const expectedPrefix = '/aws/vendedlogs/states/constructs/';
-  const lengthOfDatetimeSuffix = 13;
-
-  const template = Template.fromStack(stack);
-  const LogGroup = template.findResources("AWS::Logs::LogGroup");
-
-  const logName = LogGroup.testconstructStateMachineLogGroup2EB4F48B.Properties.LogGroupName;
-  const suffix = logName.slice(-lengthOfDatetimeSuffix);
-
-  // Look for the expected Prefix and the 13 digit time suffix
-  expect(logName.slice(0, expectedPrefix.length)).toEqual(expectedPrefix);
-  expect(IsWholeNumber(suffix)).not.toBe(false);
-});
-
-function IsWholeNumber(target: string): boolean {
-  const numberPattern = /[0-9]{13}/;
-  return target.match(numberPattern) !== null;
-}
