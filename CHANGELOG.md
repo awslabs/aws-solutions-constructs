@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.39.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.38.0...v2.39.0) (2023-04-23)
+
+Built on CDK v2.76.0
+
+### Bug Fixes
+
+* **aws-*-stepfunctions:** generate stack specific physical log group name ([#945](https://github.com/awslabs/aws-solutions-constructs/issues/945)) ([3e46579](https://github.com/awslabs/aws-solutions-constructs/commit/3e46579ef02e726143cf437be293c9435d013f5f))
+
 ## [2.38.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.37.0...v2.38.0) (2023-04-16)
 
 Build on CDK v2.74.0
