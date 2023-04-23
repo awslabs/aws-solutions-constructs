@@ -3,7 +3,27 @@
     "testeventbridgestepfunctionsconstructStateMachineLogGroup3098B32C": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "integ-test-no-arguments"
+        "LogGroupName": {
+          "Fn::Join": [
+            "",
+            [
+              "/aws/vendedlogs/states/constructs/eventbridge-stepfunctions-no-argumenttest-eventbridge-stepfunctions-constructStateMachineLog-",
+              {
+                "Fn::Select": [
+                  2,
+                  {
+                    "Fn::Split": [
+                      "/",
+                      {
+                        "Ref": "AWS::StackId"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        }
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
