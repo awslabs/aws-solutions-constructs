@@ -21,7 +21,7 @@ import * as logs from 'aws-cdk-lib/aws-logs';
 import * as cdk from 'aws-cdk-lib';
 import * as smDefaults from './step-function-defaults';
 import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
-import { overrideProps, generateResourceName, addCfnSuppressRules } from './utils';
+import { overrideProps, addCfnSuppressRules, generatePhysicalName } from './utils';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 import { buildLogGroup } from './cloudwatch-log-group-helper';
@@ -59,16 +59,18 @@ export function buildStateMachine(scope: Construct, stateMachineProps: sfn.State
     if (!consolidatedLogGroupProps) {
       consolidatedLogGroupProps = {};
     }
+
+    const maxLogGroupNameLength = 255;
     if (!consolidatedLogGroupProps?.logGroupName) {
       const logGroupPrefix = '/aws/vendedlogs/states/constructs/';
-      const maxResourceNameLength = 255 - logGroupPrefix.length;
+      const maxGeneratedNameLength = maxLogGroupNameLength - logGroupPrefix.length;
       const nameParts: string[] = [
         cdk.Stack.of(scope).stackName, // Name of the stack
         scope.node.id,                 // Construct ID
         'StateMachineLog'              // Literal string for log group name portion
       ];
 
-      const logGroupName = logGroupPrefix + generateResourceName(nameParts, maxResourceNameLength, true);
+      const logGroupName = generatePhysicalName(logGroupPrefix, nameParts, maxGeneratedNameLength);
       consolidatedLogGroupProps = overrideProps(consolidatedLogGroupProps, { logGroupName });
     }
 

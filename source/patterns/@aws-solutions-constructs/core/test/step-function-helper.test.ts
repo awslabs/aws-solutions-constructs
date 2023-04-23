@@ -194,7 +194,7 @@ test('Test deployment with custom role', () => {
 
 test('Confirm format of name', () => {
   // Stack
-  const stack = new Stack();
+  const stack = new Stack(undefined, 'teststack');
   // Step function definition
   const startState = new sfn.Pass(stack, 'StartState');
   // Build state machine
@@ -211,19 +211,10 @@ test('Confirm format of name', () => {
   });
 
   // Perform some fancy stuff to examine the specifics of the LogGroupName
-  const expectedPrefix = '/aws/vendedlogs/states/constructs/';
-  const lengthOfDatetimeSuffix = 13;
-
   const LogGroup = template.findResources("AWS::Logs::LogGroup");
   const logName = LogGroup.StateMachineLogGroup15B91BCB.Properties.LogGroupName;
-  const suffix = logName.slice(-lengthOfDatetimeSuffix);
 
-  // Look for the expected Prefix and the 13 digit time suffix
-  expect(logName.slice(0, expectedPrefix.length)).toEqual(expectedPrefix);
-  expect(IsWholeNumber(suffix)).not.toBe(false);
+  expect(logName['Fn::Join']).toBeDefined();
+  expect(logName['Fn::Join'].length).toEqual(2);
+  expect(logName['Fn::Join'][1][1]['Fn::Select'][1]['Fn::Split'][1].Ref).toEqual("AWS::StackId");
 });
-
-function IsWholeNumber(target: string): boolean {
-  const numberPattern = /[0-9]{13}/;
-  return target.match(numberPattern) !== null;
-}

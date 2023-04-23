@@ -33,7 +33,6 @@ const props: EventbridgeToStepfunctionsProps = {
   },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-    logGroupName: "integ-test-no-arguments"
   },
 };
 

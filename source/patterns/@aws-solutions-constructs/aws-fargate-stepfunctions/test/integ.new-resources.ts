@@ -50,7 +50,6 @@ const constructProps: FargateToStepfunctionsProps = {
   stateMachineEnvironmentVariableName: 'CUSTOM_NAME',
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-    logGroupName: "with-lambda"
   }
 };
 
