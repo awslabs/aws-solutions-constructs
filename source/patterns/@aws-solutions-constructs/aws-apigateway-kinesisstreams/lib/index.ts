@@ -26,11 +26,21 @@ import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
  */
 export interface ApiGatewayToKinesisStreamsProps {
   /**
+   * Optional adds the app name as a prefix to the put record and records resources.
+   * @default - record
+   */
+  readonly appNamePrefix?: string,
+  /**
    * Optional user-provided props to override the default props for the API Gateway.
    *
    * @default - Default properties are used.
    */
   readonly apiGatewayProps?: api.RestApiProps,
+  /**
+   * Optional override of the put record endpoint resource name
+   * @default - record
+   */
+  readonly putRecordResourceName?: string,
   /**
    * API Gateway request template for the PutRecord action.
    * If not provided, a default one will be used.
@@ -45,7 +55,7 @@ export interface ApiGatewayToKinesisStreamsProps {
    *
    * @default - None
    */
-    readonly additionalPutRecordRequestTemplates?: { [contentType: string]: string; };
+  readonly additionalPutRecordRequestTemplates?: { [contentType: string]: string; };
   /**
    * API Gateway request model for the PutRecord action.
    * If not provided, a default one will be created.
@@ -60,6 +70,11 @@ export interface ApiGatewayToKinesisStreamsProps {
    * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
    */
   readonly putRecordIntegrationResponses?: api.IntegrationResponse[];
+  /**
+   * Optional override of the put records endpoint resource name
+   * @default - records
+   */
+    readonly putRecordsResourceName?: string,
   /**
    * API Gateway request template for the PutRecords action for the default `application/json` content-type.
    * If not provided, a default one will be used.
@@ -157,14 +172,17 @@ export class ApiGatewayToKinesisStreams extends Construct {
     });
     this.kinesisStream.grantWrite(this.apiGatewayRole);
 
-    // Setup API Gateway methods
+    // Set up API Gateway methods
     const requestValidator = this.apiGateway.addRequestValidator('request-validator', {
       requestValidatorName: 'request-body-validator',
       validateRequestBody: true
-    });
+    })
+
+    // If the app's name prefix has been specified, append it to the api gateway root resource
+    const rootResource: api.IResource = props.appNamePrefix ? this.apiGateway.root.addResource(props.appNamePrefix) : this.apiGateway.root
 
     // PutRecord
-    const putRecordResource = this.apiGateway.root.addResource('record');
+    const putRecordResource = rootResource.addResource(props.putRecordResourceName ?? 'record')
     defaults.addProxyMethodToApiResource({
       service: 'kinesis',
       action: 'PutRecord',
@@ -180,7 +198,7 @@ export class ApiGatewayToKinesisStreams extends Construct {
     });
 
     // PutRecords
-    const putRecordsResource = this.apiGateway.root.addResource('records');
+    const putRecordsResource = rootResource.addResource(props.putRecordsResourceName ?? 'records')
     defaults.addProxyMethodToApiResource({
       service: 'kinesis',
       action: 'PutRecords',
