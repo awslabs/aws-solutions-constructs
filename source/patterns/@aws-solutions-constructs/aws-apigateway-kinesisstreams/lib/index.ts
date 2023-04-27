@@ -198,7 +198,7 @@ export class ApiGatewayToKinesisStreams extends Construct {
     });
 
     // PutRecords
-    const putRecordsResource = rootResource.addResource(props.putRecordsResourceName ?? 'records')
+    const putRecordsResource = rootResource.addResource(props.putRecordsResourceName ?? 'records');
     defaults.addProxyMethodToApiResource({
       service: 'kinesis',
       action: 'PutRecords',
