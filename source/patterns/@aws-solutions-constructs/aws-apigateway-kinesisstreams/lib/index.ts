@@ -176,13 +176,13 @@ export class ApiGatewayToKinesisStreams extends Construct {
     const requestValidator = this.apiGateway.addRequestValidator('request-validator', {
       requestValidatorName: 'request-body-validator',
       validateRequestBody: true
-    })
+    });
 
     // If the app's name prefix has been specified, append it to the api gateway root resource
-    const rootResource: api.IResource = props.appNamePrefix ? this.apiGateway.root.addResource(props.appNamePrefix) : this.apiGateway.root
+    const rootResource: api.IResource = props.appNamePrefix ? this.apiGateway.root.addResource(props.appNamePrefix) : this.apiGateway.root;
 
     // PutRecord
-    const putRecordResource = rootResource.addResource(props.putRecordResourceName ?? 'record')
+    const putRecordResource = rootResource.addResource(props.putRecordResourceName ?? 'record');
     defaults.addProxyMethodToApiResource({
       service: 'kinesis',
       action: 'PutRecord',
