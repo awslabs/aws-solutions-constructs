@@ -59,9 +59,9 @@ new ApiGatewayToKinesisStreams(this, "test-apigw-kinesis", new ApiGatewayToKines
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-|appNamePrefix?|`string`|Optional prefix to insert in the resource path. Default is to not insert a prefix.|
+|appNamePrefix?|`string`|Optional prefix to insert in the resource path, e.g. `/appNamePrefix/records`. Default is to not insert a prefix.|
 |apiGatewayProps?|[`api.RestApiProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.RestApiProps.html)|Optional user-provided props to override the default props for the API Gateway.|
-|putRecordResourceName?|`string`|Override the default name for the `/record` resource|
+|putRecordResourceName?|`string`|Override the default name for the `/record` resource.|
 |putRecordRequestTemplate?|`string`|API Gateway request template for the PutRecord action. If not provided, a default one will be used.|
 |additionalPutRecordRequestTemplates?|`{ [contentType: string]: string; }`|Optional PutRecord Request Templates for content-types other than `application/json`. Use the `putRecordRequestTemplate` property to set the request template for the `application/json` content-type.|
 |putRecordRequestModel?|[`api.ModelOptions`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.ModelOptions.html)|API Gateway request model for the PutRecord action. If not provided, a default one will be created.|

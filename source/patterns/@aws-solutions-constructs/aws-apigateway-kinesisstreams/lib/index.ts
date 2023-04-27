@@ -27,7 +27,7 @@ import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 export interface ApiGatewayToKinesisStreamsProps {
   /**
    * Optional adds the app name as a prefix to the put record and records resources.
-   * @default - record
+   * @default - empty
    */
   readonly appNamePrefix?: string,
   /**
