@@ -61,7 +61,7 @@ export class WafwebaclToAppsync extends Construct {
       webaclProps: props.webaclProps,
     });
 
-    const aclAssociationId = `${id}-WebACLAssociation`
+    const aclAssociationId = `${id}-WebACLAssociation`;
     const aclAssociationProps: waf.CfnWebACLAssociationProps = {
       webAclArn: this.webacl.attrArn,
       resourceArn: props.existingAppsyncApi.attrArn,
