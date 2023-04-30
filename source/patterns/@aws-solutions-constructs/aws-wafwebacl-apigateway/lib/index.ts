@@ -64,7 +64,7 @@ export class WafwebaclToApiGateway extends Construct {
 
     const resourceArn = `arn:${Aws.PARTITION}:apigateway:${Aws.REGION}::/restapis/${props.existingApiGatewayInterface.restApiId}/stages/${props.existingApiGatewayInterface.deploymentStage.stageName}`;
 
-    const aclAssociationId = `${id}-WebACLAssociation`
+    const aclAssociationId = `${id}-WebACLAssociation`;
     const aclAssociationProps: waf.CfnWebACLAssociationProps = {
       webAclArn: this.webacl.attrArn,
       resourceArn

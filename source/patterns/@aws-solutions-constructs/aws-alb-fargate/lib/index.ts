@@ -177,7 +177,7 @@ export class AlbToFargate extends Construct {
     });
 
     // Set up the ALB
-    this.loadBalancer = defaults.ObtainAlb(scope, `${id}-lb`,{
+    this.loadBalancer = defaults.ObtainAlb(scope, `${id}-lb`, {
       vpc: this.vpc,
       publicApi: props.publicApi,
       existingLoadBalancerObj: props.existingLoadBalancerObj,

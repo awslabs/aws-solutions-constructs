@@ -134,7 +134,6 @@ test('Test existing load balancer, vpc, service', () => {
 
   const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
     constructVpc: existingVpc,
-    clientClusterProps: undefined,
     ecrRepositoryArn: defaults.fakeEcrRepoArn
   });
 

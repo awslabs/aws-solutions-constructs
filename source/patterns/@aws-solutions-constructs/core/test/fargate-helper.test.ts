@@ -26,7 +26,6 @@ test('Test with all defaults', () => {
   const testVpc = defaults.getTestVpc(stack);
   const createFargateServiceResponse = CreateFargateService(stack, 'test', {
     constructVpc: testVpc,
-    clientClusterProps: undefined,
     ecrRepositoryArn: defaults.fakeEcrRepoArn
   });
 

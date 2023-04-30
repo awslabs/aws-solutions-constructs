@@ -51,7 +51,6 @@ const lambdaFunction = defaults.buildLambdaFunction(stack, {
 const loadBalancer = defaults.ObtainAlb(stack, "existing-alb", {
   vpc: myVpc,
   publicApi: false,
-  existingLoadBalancerObj: undefined,
   loadBalancerProps: {
     internetFacing: false,
     vpc: myVpc,

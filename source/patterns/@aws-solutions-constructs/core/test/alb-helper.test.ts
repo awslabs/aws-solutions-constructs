@@ -57,7 +57,6 @@ test('Test ObtainAlb for new ALB with provided props', () => {
   defaults.ObtainAlb(stack, 'test', {
     vpc,
     publicApi: true,
-    existingLoadBalancerObj: undefined,
     loadBalancerProps: {
       loadBalancerName: 'new-loadbalancer',
       vpc,
@@ -110,8 +109,6 @@ test('Test with custom logging bucket props', () => {
   defaults.ObtainAlb(stack, 'test', {
     vpc,
     publicApi: false,
-    existingLoadBalancerObj: undefined,
-    loadBalancerProps: undefined,
     logAccessLogs: true,
     loggingBucketProps: {
       bucketName: testName
