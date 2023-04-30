@@ -644,7 +644,10 @@ test('test error invalid table permission', () => {
   const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
     constructVpc: existingVpc,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    clientFargateServiceProps: { serviceName });
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   const existingTable = new dynamodb.Table(stack, 'MyTablet', {
     tableName,

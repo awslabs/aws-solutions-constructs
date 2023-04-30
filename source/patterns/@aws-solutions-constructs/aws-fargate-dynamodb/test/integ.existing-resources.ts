@@ -32,8 +32,10 @@ const image = ecs.ContainerImage.fromRegistry('nginx');
 
 const createFargateServiceResponse = CreateFargateService(stack, 'test', {
   constructVpc: existingVpc,
-  clientContainerDefinitionProps: { image },
-);
+  clientContainerDefinitionProps: {
+    image
+  },
+});
 
 const constructProps: FargateToDynamoDBProps = {
   publicApi: true,
