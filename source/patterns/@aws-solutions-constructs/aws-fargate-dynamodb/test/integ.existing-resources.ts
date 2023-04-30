@@ -30,14 +30,9 @@ const buildDynamoDBTableResponse = defaults.buildDynamoDBTable(stack, {});
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
-const createFargateServiceResponse = CreateFargateService(stack,
-  'test',
-  existingVpc,
-  undefined,
-  undefined,
-  undefined,
-  undefined,
-  { image },
+const createFargateServiceResponse = CreateFargateService(stack, 'test', {
+  constructVpc: existingVpc,
+  clientContainerDefinitionProps: { image },
 );
 
 const constructProps: FargateToDynamoDBProps = {

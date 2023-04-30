@@ -83,7 +83,7 @@ function findOverrides(defaultProps: object, userProps: object) {
 function formatOverridePath(path: string | string[]) {
   return (path !== undefined && path.length > 1) ? path.toString()
     .replace(/,/g, '][')
-    .replace(/\]{1}/, '')
+    .replace(/\]/, '')
     .replace(/$/, ']') : path;
 }
 

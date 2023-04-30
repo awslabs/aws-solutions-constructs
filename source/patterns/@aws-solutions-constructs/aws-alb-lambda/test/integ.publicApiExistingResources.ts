@@ -48,22 +48,20 @@ const lambdaFunction = defaults.buildLambdaFunction(stack, {
   },
 });
 
-const loadBalancer = defaults.ObtainAlb(
-  stack,
-  "existing-alb",
-  myVpc,
-  false,
-  undefined,
-  {
+const loadBalancer = defaults.ObtainAlb(stack, "existing-alb", {
+  vpc: myVpc,
+  publicApi: false,
+  existingLoadBalancerObj: undefined,
+  loadBalancerProps: {
     internetFacing: false,
     vpc: myVpc,
   },
-  true,
-  {
+  logAccessLogs: true,
+  loggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
   }
-);
+});
 
 const props: AlbToLambdaProps = {
   existingLambdaObj: lambdaFunction,

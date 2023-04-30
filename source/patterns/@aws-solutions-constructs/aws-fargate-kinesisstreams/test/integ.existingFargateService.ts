@@ -24,15 +24,12 @@ const existingVpc = getTestVpc(stack);
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
-const createFargateServiceResponse = CreateFargateService(stack,
-  'test',
-  existingVpc,
-  undefined,
-  undefined,
-  undefined,
-  undefined,
-  { image },
-);
+const createFargateServiceResponse = CreateFargateService(stack, 'test', {
+  constructVpc: existingVpc,
+  clientContainerDefinitionProps: {
+    image
+  },
+});
 
 new FargateToKinesisStreams(stack, 'test-fargate-kinesisstreams', {
   publicApi: true,

@@ -437,15 +437,13 @@ test('Existing service/new bucket, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   new FargateToS3(stack, 'test-construct', {
     publicApi,
@@ -581,15 +579,13 @@ test('Existing service/existing bucket, private API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   const existingBucket = new s3.Bucket(stack, 'MyBucket', {
     bucketName

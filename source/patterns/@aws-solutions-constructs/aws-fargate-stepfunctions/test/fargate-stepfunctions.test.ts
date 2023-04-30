@@ -64,15 +64,22 @@ test('Check for an existing service', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    { clusterName },
-    defaults.fakeEcrRepoArn,
-    undefined,
-    { family: familyName },
-    { containerName },
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    clientClusterProps: {
+      clusterName
+    },
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateTaskDefinitionProps: {
+      family: familyName
+    },
+    clientContainerDefinitionProps: {
+      containerName
+    },
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,

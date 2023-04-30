@@ -24,11 +24,11 @@ test('Test with all defaults', () => {
   const stack = new Stack();
 
   const testVpc = defaults.getTestVpc(stack);
-  const createFargateServiceResponse = CreateFargateService(stack,
-    'test',
-    testVpc,
-    undefined,
-    defaults.fakeEcrRepoArn);
+  const createFargateServiceResponse = CreateFargateService(stack, 'test', {
+    constructVpc: testVpc,
+    clientClusterProps: undefined,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn
+  });
 
   expect(createFargateServiceResponse.containerDefinition).toBeDefined();
   expect(createFargateServiceResponse.service).toBeDefined();
@@ -107,11 +107,10 @@ test('Test with all defaults in isolated VPC', () => {
   const stack = new Stack();
 
   const testVpc = CreateIsolatedTestVpc(stack);
-  CreateFargateService(stack,
-    'test',
-    testVpc,
-    undefined,
-    defaults.fakeEcrRepoArn);
+  CreateFargateService(stack, 'test', {
+    constructVpc: testVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn
+  });
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::ECS::Service", {
@@ -184,17 +183,12 @@ test('Test with custom task definition', () => {
   const stack = new Stack();
 
   const testVpc = CreateIsolatedTestVpc(stack);
-  CreateFargateService(stack,
-    'test',
-    testVpc,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    {
+  CreateFargateService(stack, 'test', {
+    constructVpc: testVpc,
+    clientContainerDefinitionProps: {
       image: CreateImage(stack)
     }
-  );
+  });
 
   Template.fromStack(stack).hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
@@ -220,14 +214,14 @@ test('Test with custom container definition', () => {
   const stack = new Stack();
 
   const testVpc = CreateIsolatedTestVpc(stack);
-  CreateFargateService(stack,
-    'test',
-    testVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    { cpu: 256, memoryLimitMiB: 512  }
-  );
+  CreateFargateService(stack, 'test', {
+    constructVpc: testVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateTaskDefinitionProps: {
+      cpu: 256,
+      memoryLimitMiB: 512
+    }
+  });
 
   Template.fromStack(stack).hasResourceProperties("AWS::ECS::TaskDefinition", {
     Cpu: '256',
@@ -240,13 +234,13 @@ test('Test with custom cluster props', () => {
   const clusterName = 'test-value';
 
   const testVpc = CreateIsolatedTestVpc(stack);
-  CreateFargateService(stack,
-    'test',
-    testVpc,
-    { clusterName },
-    defaults.fakeEcrRepoArn,
-    undefined,
-  );
+  CreateFargateService(stack, 'test', {
+    constructVpc: testVpc,
+    clientClusterProps: {
+      clusterName
+    },
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+  });
 
   Template.fromStack(stack).hasResourceProperties("AWS::ECS::Cluster", {
     ClusterName: clusterName,
@@ -258,16 +252,13 @@ test('Test with custom Fargate Service props', () => {
   const serviceName = 'test-value';
 
   const testVpc = CreateIsolatedTestVpc(stack);
-  CreateFargateService(stack,
-    'test',
-    testVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName  }
-  );
+  CreateFargateService(stack, 'test', {
+    constructVpc: testVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   Template.fromStack(stack).hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName,
@@ -287,16 +278,11 @@ test('Test with custom security group', () => {
     description: groupDescription
   });
 
-  CreateFargateService(stack,
-    'test',
-    testVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { securityGroups: [ customSg ]  }
-  );
+  CreateFargateService(stack, 'test', {
+    constructVpc: testVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: { securityGroups: [ customSg ]  }
+  });
 
   Template.fromStack(stack).hasResourceProperties("AWS::EC2::SecurityGroup", {
     GroupDescription: groupDescription,
@@ -312,9 +298,9 @@ test('Test no image repo or image is an error', () => {
 
   const testVpc = CreateIsolatedTestVpc(stack);
   const app = () => {
-    CreateFargateService(stack,
-      'test',
-      testVpc);
+    CreateFargateService(stack, 'test', {
+      constructVpc: testVpc
+    });
   };
 
   expect(app).toThrowError(

@@ -32,7 +32,11 @@ test('Test ObtainAlb with existing ALB', () => {
     loadBalancerName: 'unique-name'
   });
 
-  defaults.ObtainAlb(stack, 'test', vpc, true, existingLoadBalancer);
+  defaults.ObtainAlb(stack, 'test', {
+    vpc,
+    publicApi: true,
+    existingLoadBalancerObj: existingLoadBalancer
+  });
 
   const template = Template.fromStack(stack);
 
@@ -50,10 +54,15 @@ test('Test ObtainAlb for new ALB with provided props', () => {
     defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
   });
 
-  defaults.ObtainAlb(stack, 'test', vpc, true, undefined, {
-    loadBalancerName: 'new-loadbalancer',
+  defaults.ObtainAlb(stack, 'test', {
     vpc,
-    internetFacing: true
+    publicApi: true,
+    existingLoadBalancerObj: undefined,
+    loadBalancerProps: {
+      loadBalancerName: 'new-loadbalancer',
+      vpc,
+      internetFacing: true
+    }
   });
 
   const template = Template.fromStack(stack);
@@ -73,7 +82,10 @@ test('Test ObtainAlb for new ALB with default props', () => {
     defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
   });
 
-  defaults.ObtainAlb(stack, 'test', vpc, false);
+  defaults.ObtainAlb(stack, 'test', {
+    vpc,
+    publicApi: false
+  });
 
   const template = Template.fromStack(stack);
 
@@ -95,7 +107,16 @@ test('Test with custom logging bucket props', () => {
 
   const testName = 'test-name';
 
-  defaults.ObtainAlb(stack, 'test', vpc, false, undefined, undefined, true, { bucketName: testName });
+  defaults.ObtainAlb(stack, 'test', {
+    vpc,
+    publicApi: false,
+    existingLoadBalancerObj: undefined,
+    loadBalancerProps: undefined,
+    logAccessLogs: true,
+    loggingBucketProps: {
+      bucketName: testName
+    }
+  });
 
   const template = Template.fromStack(stack);
 
@@ -111,7 +132,11 @@ test('Test with no logging', () => {
     defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
   });
 
-  defaults.ObtainAlb(stack, 'test', vpc, false, undefined, undefined, false);
+  defaults.ObtainAlb(stack, 'test', {
+    vpc,
+    publicApi: false,
+    logAccessLogs: false
+  });
 
   const template = Template.fromStack(stack);
 
@@ -558,12 +583,12 @@ function CreateTestFunction(stack: Stack, id: string): lambda.Function {
 }
 
 function CreateTestFargateService(stack: Stack, id: string, vpc: ec2.IVpc): ecs.FargateService {
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    `${id}-fg-svc`,
-    vpc,
-    undefined,
-    'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo',
-    'latest');
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, `${id}-fg-svc`, {
+    constructVpc: vpc,
+    clientClusterProps: undefined,
+    ecrRepositoryArn: 'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo',
+    ecrImageVersion: 'latest'
+  });
   return createFargateServiceResponse.service;
 }
 
