@@ -81,7 +81,7 @@ test('Check for an existing service', () => {
     constructVpc: existingVpc,
     clientClusterProps: { clusterName },
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    clientFargateTaskDefinitionProps:{ family: familyName },
+    clientFargateTaskDefinitionProps: { family: familyName },
     clientContainerDefinitionProps: { containerName },
     clientFargateServiceProps: { serviceName }
   });
