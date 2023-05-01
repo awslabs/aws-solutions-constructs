@@ -128,7 +128,7 @@ export class LambdaToKinesisFirehose extends Construct {
     // Configure environment variables
     const deliveryStreamEnvironmentVariableName = props.firehoseEnvironmentVariableName || 'FIREHOSE_DELIVERYSTREAM_NAME';
     // We can use ! because we checked for a stream name on props.existingKinesisFirehose at the top of this function
-    this.lambdaFunction.addEnvironment(deliveryStreamEnvironmentVariableName, this.kinesisFirehose!.deliveryStreamName!);
+    this.lambdaFunction.addEnvironment(deliveryStreamEnvironmentVariableName, this.kinesisFirehose.deliveryStreamName!);
 
   }
 }

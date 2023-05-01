@@ -16,7 +16,6 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
-import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import { getPartitionKeyNameFromTable } from '@aws-solutions-constructs/core';
 import * as logs from 'aws-cdk-lib/aws-logs';
@@ -77,7 +76,7 @@ export interface ApiGatewayToDynamoDBProps {
    *
    * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
    */
-  readonly createIntegrationResponses?: apigateway.IntegrationResponse[];
+  readonly createIntegrationResponses?: api.IntegrationResponse[];
   /**
    * Whether to deploy an API Gateway Method for GET HTTP operations on DynamoDB table (i.e. dynamodb:Query).
    *
@@ -112,7 +111,7 @@ export interface ApiGatewayToDynamoDBProps {
    *
    * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
    */
-  readonly readIntegrationResponses?: apigateway.IntegrationResponse[];
+  readonly readIntegrationResponses?: api.IntegrationResponse[];
   /**
    * Whether to deploy API Gateway Method for PUT HTTP operations on DynamoDB table (i.e. dynamodb:UpdateItem).
    *
@@ -140,7 +139,7 @@ export interface ApiGatewayToDynamoDBProps {
    *
    * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
    */
-  readonly updateIntegrationResponses?: apigateway.IntegrationResponse[];
+  readonly updateIntegrationResponses?: api.IntegrationResponse[];
   /**
    * Whether to deploy API Gateway Method for DELETE HTTP operations on DynamoDB table (i.e. dynamodb:DeleteItem).
    *
@@ -176,7 +175,7 @@ export interface ApiGatewayToDynamoDBProps {
    *
    * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
    */
-  readonly deleteIntegrationResponses?: apigateway.IntegrationResponse[];
+  readonly deleteIntegrationResponses?: api.IntegrationResponse[];
   /**
    * User provided props to override the default props for the CloudWatchLogs LogGroup.
    *

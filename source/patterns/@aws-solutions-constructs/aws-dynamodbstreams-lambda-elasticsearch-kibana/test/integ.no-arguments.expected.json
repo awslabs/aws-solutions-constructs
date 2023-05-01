@@ -524,7 +524,7 @@
                       "Ref": "AWS::Partition"
                     },
                     ":es:",
-                  {
+                    {
                       "Ref": "AWS::Region"
                     },
                     ":",
@@ -553,6 +553,9 @@
           "UserPoolId": {
             "Ref": "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPool97EA2952"
           }
+        },
+        "DomainEndpointOptions": {
+          "TLSSecurityPolicy": "Policy-Min-TLS-1-2-2019-07"
         },
         "DomainName": "domaintest-7c94db",
         "EBSOptions": {

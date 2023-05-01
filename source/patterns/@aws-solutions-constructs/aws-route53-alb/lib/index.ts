@@ -146,23 +146,25 @@ export class Route53ToAlb extends Construct {
       }
     }
 
-    this.loadBalancer = defaults.ObtainAlb(
-      this,
-      id,
-      this.vpc,
-      props.publicApi,
-      props.existingLoadBalancerObj,
-      props.loadBalancerProps,
-      props.logAlbAccessLogs,
-      props.albLoggingBucketProps
-    );
+    this.loadBalancer = defaults.ObtainAlb(this, id, {
+      vpc: this.vpc,
+      publicApi: props.publicApi,
+      existingLoadBalancerObj: props.existingLoadBalancerObj,
+      loadBalancerProps: props.loadBalancerProps,
+      logAccessLogs: props.logAlbAccessLogs,
+      loggingBucketProps: props.albLoggingBucketProps
+    });
 
     // Add the ALB to the HostedZone as a target
     const hostedZoneTarget = new r53t.LoadBalancerTarget(this.loadBalancer);
 
-    new r53.ARecord(this, `${id}-alias`, {
+    const arecordId = `${id}-alias`;
+    const arecordProps: r53.ARecordProps = {
       target: { aliasTarget: hostedZoneTarget },
       zone: this.hostedZone
-    });
+    };
+
+    // Before turning off SonarQube for the line, reduce the line to it's minimum
+    new r53.ARecord(this, arecordId, arecordProps); // NOSONAR
   }
 }

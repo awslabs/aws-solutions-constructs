@@ -219,9 +219,9 @@ export class KinesisstreamsToGluejob extends Construct {
     const buildGlueJobResponse = defaults.buildGlueJob(this, {
       existingCfnJob: props.existingGlueJob,
       glueJobProps: props.glueJobProps,
-      table: this.table!,
-      database: this.database!,
-      outputDataStore: props.outputDataStore!,
+      table: this.table,
+      database: this.database,
+      outputDataStore: props.outputDataStore,
       etlCodeAsset: props.etlCodeAsset
     });
     this.glueJob = buildGlueJobResponse.job;

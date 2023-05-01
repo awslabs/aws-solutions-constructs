@@ -27,15 +27,10 @@ const image = ecs.ContainerImage.fromRegistry('nginx');
 
 const destination = GetTestFirehoseDestination(stack, 'destination-firehose');
 
-const createFargateServiceResponse = CreateFargateService(stack,
-  'test',
-  existingVpc,
-  undefined,
-  undefined,
-  undefined,
-  undefined,
-  { image },
-);
+const createFargateServiceResponse = CreateFargateService(stack, 'test', {
+  constructVpc: existingVpc,
+  clientContainerDefinitionProps: { image },
+});
 
 new FargateToKinesisFirehose(stack, 'test-fargate-kinesisstreams', {
   publicApi: true,

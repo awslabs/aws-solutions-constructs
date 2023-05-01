@@ -29,6 +29,15 @@ import { DefaultListenerProps } from "./alb-defaults";
 import { createAlbLoggingBucket } from "./s3-bucket-helper";
 import { DefaultLoggingBucketProps } from "./s3-bucket-defaults";
 
+export interface ObtainAlbProps {
+  readonly vpc: ec2.IVpc,
+  readonly publicApi: boolean,
+  readonly existingLoadBalancerObj?: elb.ApplicationLoadBalancer,
+  readonly loadBalancerProps?: elb.ApplicationLoadBalancerProps | any,
+  readonly logAccessLogs?: boolean,
+  readonly loggingBucketProps?: s3.BucketProps
+}
+
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  *
@@ -38,26 +47,21 @@ import { DefaultLoggingBucketProps } from "./s3-bucket-defaults";
 export function ObtainAlb(
   scope: Construct,
   id: string,
-  vpc: ec2.IVpc,
-  publicApi: boolean,
-  existingLoadBalancerObj?: elb.ApplicationLoadBalancer,
-  loadBalancerProps?: elb.ApplicationLoadBalancerProps | any,
-  logAccessLogs?: boolean,
-  loggingBucketProps?: s3.BucketProps
+  props: ObtainAlbProps
 ): elb.ApplicationLoadBalancer {
   let loadBalancer: elb.ApplicationLoadBalancer;
 
-  if (existingLoadBalancerObj) {
-    loadBalancer = existingLoadBalancerObj;
+  if (props.existingLoadBalancerObj) {
+    loadBalancer = props.existingLoadBalancerObj;
   } else {
-    const consolidatedProps = consolidateProps({}, loadBalancerProps, { vpc, internetFacing: publicApi });
+    const consolidatedProps = consolidateProps({}, props.loadBalancerProps, { vpc: props.vpc, internetFacing: props.publicApi });
     loadBalancer = new elb.ApplicationLoadBalancer(
       scope,
       `${id}-alb`,
       consolidatedProps
     );
-    if (logAccessLogs === undefined || logAccessLogs === true) {
-      const consolidatedLoggingBucketProps = consolidateProps(DefaultLoggingBucketProps(), loggingBucketProps);
+    if (props.logAccessLogs === undefined || props.logAccessLogs === true) {
+      const consolidatedLoggingBucketProps = consolidateProps(DefaultLoggingBucketProps(), props.loggingBucketProps);
       const loggingBucket = createAlbLoggingBucket(scope, id, consolidatedLoggingBucketProps);
       loadBalancer.logAccessLogs(loggingBucket);
     }

@@ -122,6 +122,9 @@ test('Test override SnapshotOptions for buildElasticSearch', () => {
         Ref: "CognitoUserPool53E37E69"
       }
     },
+    DomainEndpointOptions: {
+      TLSSecurityPolicy: elasticsearch.TLSSecurityPolicy.TLS_1_2,
+    },
     DomainName: "test-domain",
     EBSOptions: {
       EBSEnabled: true,

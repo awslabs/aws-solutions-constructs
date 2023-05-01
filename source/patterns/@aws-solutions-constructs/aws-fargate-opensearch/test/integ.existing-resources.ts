@@ -28,15 +28,12 @@ stack.templateOptions.description = 'Integration Test with existing VPC, Service
 const existingVpc = getTestVpc(stack);
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
-const createFargateServiceResponse = CreateFargateService(stack,
-  'test',
-  existingVpc,
-  undefined,
-  undefined,
-  undefined,
-  undefined,
-  { image },
-);
+const createFargateServiceResponse = CreateFargateService(stack, 'test', {
+  constructVpc: existingVpc,
+  clientContainerDefinitionProps: {
+    image
+  },
+});
 
 const testProps: FargateToOpenSearchProps = {
   publicApi: true,

@@ -58,15 +58,6 @@ function isPlainObject(o: object) {
   return true;
 }
 
-function combineMerge(target: any[], source: any[]) {
-  return target.concat(source);
-}
-
-function overwriteMerge(target: any[], source: any[]) {
-  target = source;
-  return target;
-}
-
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
@@ -79,12 +70,12 @@ export function overrideProps(DefaultProps: object, userProps: object, concatArr
   // Override the sensible defaults with user provided props
   if (concatArray) {
     return deepmerge(DefaultProps, userProps, {
-      arrayMerge: combineMerge,
+      arrayMerge: (destinationArray, sourceArray) =>  destinationArray.concat(sourceArray),
       isMergeableObject: isPlainObject
     });
   } else {
     return deepmerge(DefaultProps, userProps, {
-      arrayMerge: overwriteMerge,
+      arrayMerge: (_destinationArray, sourceArray) => sourceArray, // underscore allows arg to be ignored
       isMergeableObject: isPlainObject
     });
   }

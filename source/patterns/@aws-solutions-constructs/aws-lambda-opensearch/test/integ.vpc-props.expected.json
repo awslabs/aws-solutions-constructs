@@ -525,7 +525,7 @@
                       "Ref": "AWS::Partition"
                     },
                     ":es:",
-                  {
+                    {
                       "Ref": "AWS::Region"
                     },
                     ":",
@@ -563,6 +563,9 @@
           "UserPoolId": {
             "Ref": "testlambdaopensearchCognitoUserPoolA09096F9"
           }
+        },
+        "DomainEndpointOptions": {
+          "TLSSecurityPolicy": "Policy-Min-TLS-1-2-2019-07"
         },
         "DomainName": "deploytestwithvpcprops",
         "EBSOptions": {
@@ -992,7 +995,6 @@
           "Ref": "Vpc8378EB38"
         },
         "ResourceType": "VPC",
-        "TrafficType": "ALL",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -1008,7 +1010,8 @@
             "Key": "Name",
             "Value": "vpc-props/Vpc"
           }
-        ]
+        ],
+        "TrafficType": "ALL"
       }
     }
   },
