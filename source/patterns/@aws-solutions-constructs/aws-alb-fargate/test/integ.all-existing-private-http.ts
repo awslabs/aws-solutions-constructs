@@ -17,7 +17,6 @@ import { AlbToFargate, AlbToFargateProps } from "../lib";
 import * as elb from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
-// import * as ecr from 'aws-cdk-lib/aws-ecr';
 import { CfnSecurityGroup } from "aws-cdk-lib/aws-ec2";
 
 // Setup
