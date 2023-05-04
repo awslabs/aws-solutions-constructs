@@ -26,7 +26,8 @@ const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
 });
 stack.templateOptions.description = 'Integration Test for private HTTPS API with existing VPC, LoadBalancer and Service';
 
-const image = ecs.ContainerImage.fromRegistry('nginx');
+// This is a minimal web server in our account that passes health checks
+const image = ecs.ContainerImage.fromRegistry('public.ecr.aws/m7z7i5e4/integration-test-image:latest');
 
 const testExistingVpc = defaults.getTestVpc(stack);
 
