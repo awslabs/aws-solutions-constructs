@@ -26,6 +26,7 @@ const stack = new Stack(app, generateIntegStackName(__filename), {
 });
 stack.templateOptions.description = 'Integration Test for public HTTP API with new VPC, LoadBalancer and Service';
 
+// This is a minimal web server in our account that passes health checks
 const image = ecs.ContainerImage.fromRegistry('public.ecr.aws/m7z7i5e4/integration-test-image:latest');
 
 const testProps: AlbToFargateProps = {
