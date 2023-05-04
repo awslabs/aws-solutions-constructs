@@ -26,7 +26,7 @@ const stack = new Stack(app, generateIntegStackName(__filename), {
 });
 stack.templateOptions.description = 'Integration Test for public HTTP API with new VPC, LoadBalancer and Service';
 
-const image = ecs.ContainerImage.fromRegistry('nginx');
+const image = ecs.ContainerImage.fromRegistry('public.ecr.aws/m7z7i5e4/integration-test-image:latest');
 
 const testProps: AlbToFargateProps = {
   publicApi: true,

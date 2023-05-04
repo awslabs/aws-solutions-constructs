@@ -17,6 +17,7 @@ import { AlbToFargate, AlbToFargateProps } from "../lib";
 import * as elb from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+// import * as ecr from 'aws-cdk-lib/aws-ecr';
 import { CfnSecurityGroup } from "aws-cdk-lib/aws-ec2";
 
 // Setup
@@ -26,7 +27,10 @@ const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
 });
 stack.templateOptions.description = 'Integration Test for private HTTPS API with existing VPC, LoadBalancer and Service';
 
-const image = ecs.ContainerImage.fromRegistry('nginx');
+// const repo = ecr.Repository.fromRepositoryName(stack, 'integ', 'integration-test')
+
+// const image = new ecs.EcrImage(repo, 'latest');
+const image = ecs.ContainerImage.fromRegistry('public.ecr.aws/m7z7i5e4/integration-test-image:latest');
 
 const testExistingVpc = defaults.getTestVpc(stack);
 

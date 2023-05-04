@@ -651,7 +651,6 @@
           "Ref": "Vpc8378EB38"
         },
         "ResourceType": "VPC",
-        "TrafficType": "ALL",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -667,7 +666,8 @@
             "Key": "Name",
             "Value": "all-existing-private-http/Vpc"
           }
-        ]
+        ],
+        "TrafficType": "ALL"
       }
     },
     "VpcECRAPI9A3B6A2B": {
@@ -913,7 +913,7 @@
         "ContainerDefinitions": [
           {
             "Essential": true,
-            "Image": "nginx",
+            "Image": "public.ecr.aws/m7z7i5e4/integration-test-image:latest",
             "MemoryReservation": 512,
             "Name": "test-container",
             "PortMappings": [
