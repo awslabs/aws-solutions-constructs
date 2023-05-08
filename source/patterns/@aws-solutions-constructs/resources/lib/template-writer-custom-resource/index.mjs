@@ -25,33 +25,33 @@ export const handler = async (event, context) => {
 
   if (event.RequestType === 'Create' || event.RequestType === 'Update') {
     try {
-      const apiIntegrationUrisJson = event.ResourceProperties.ApiIntegrationUris;
-      const apiDefinitionInputBucket = event.ResourceProperties.ApiDefinitionInputBucket;
-      const apiDefinitionInputKey = event.ResourceProperties.ApiDefinitionInputKey;
-      const apiDefinitionOutputBucket = event.ResourceProperties.ApiDefinitionOutputBucket;
-      const apiDefinitionOutputKey = crypto.randomBytes(32).toString('hex');
+      const templateValues = event.ResourceProperties.TemplateValues;
+      const templateInputBucket = event.ResourceProperties.TemplateInputBucket;
+      const templateInputKey = event.ResourceProperties.TemplateInputKey;
+      const templateOutputBucket = event.ResourceProperties.TemplateOutputBucket;
+      const templateOutputKey = crypto.randomBytes(32).toString('hex');
 
       const getObjectResponse = await s3Client.send(new GetObjectCommand({
-        Bucket: apiDefinitionInputBucket,
-        Key: apiDefinitionInputKey
+        Bucket: templateInputBucket,
+        Key: templateInputKey
       }));
 
-      const apiIntegrationUrisObject = JSON.parse(apiIntegrationUrisJson);
-      let apiDefinition = await getObjectResponse.Body?.transformToString();
+      const templateValuesObj = JSON.parse(templateValues);
+      let template = await getObjectResponse.Body?.transformToString();
 
-      for (const apiIntegration of apiIntegrationUrisObject.apiIntegrationUris) {
-        const re = new RegExp(apiIntegration.id, 'g');
-        apiDefinition = apiDefinition?.replace(re, apiIntegration.uri);
+      for (const templateValue of templateValuesObj.templateValues) {
+        const re = new RegExp(templateValue.id, 'g');
+        template = template?.replace(re, templateValue.value);
       }
 
       await s3Client.send(new PutObjectCommand({
-        Bucket: apiDefinitionOutputBucket,
-        Key: apiDefinitionOutputKey,
-        Body: apiDefinition
+        Bucket: templateOutputBucket,
+        Key: templateOutputKey,
+        Body: template
       }));
 
       responseData = {
-        ApiDefinitionOutputKey: apiDefinitionOutputKey
+        TemplateOutputKey: templateOutputKey
       };
     } catch (err) {
       status = 'FAILED';

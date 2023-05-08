@@ -11,18 +11,17 @@
  *  and limitations under the License.
  */
 
-import { Aws, CustomResource } from 'aws-cdk-lib';
+import { Aws } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import * as path from 'path';
 import * as defaults from '@aws-solutions-constructs/core';
-import { Provider } from 'aws-cdk-lib/custom-resources';
+import * as resources from '@aws-solutions-constructs/resources';
 import { RestApiBaseProps } from 'aws-cdk-lib/aws-apigateway';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
-import { addCfnSuppressRules } from '@aws-solutions-constructs/core';
+import { overrideProps } from '@aws-solutions-constructs/core';
 
 export interface ApiIntegration {
   /**
@@ -127,110 +126,51 @@ export class OpenApiGatewayToLambda extends Construct {
     // transform the incoming lambda function/lambda function props into a single group of lambda functions,
     // preserving the handler id to be used later in the custom resource
     const lambdaHandlers: InternalApiIntegration[] = props.apiIntegrations.map(apiIntegration => {
-      return {
-        id: apiIntegration.id,
-        lambdaFunction: defaults.buildLambdaFunction(this, {
-          existingLambdaObj: apiIntegration.existingLambdaObj,
-          lambdaFunctionProps: apiIntegration.lambdaFunctionProps
-        })
-      };
+
+      if (apiIntegration.existingLambdaObj) {
+        return {
+          id: apiIntegration.id,
+          lambdaFunction: defaults.buildLambdaFunction(this, {
+            existingLambdaObj: apiIntegration.existingLambdaObj,
+            lambdaFunctionProps: apiIntegration.lambdaFunctionProps
+          })
+        };
+      } else if (apiIntegration.lambdaFunctionProps) {
+        let lambdaFunctionProps = apiIntegration.lambdaFunctionProps;
+        if (lambdaFunctionProps?.functionName === undefined) {
+          lambdaFunctionProps = overrideProps(lambdaFunctionProps, {
+            functionName: '<replace me>'
+          }, true);
+        }
+
+        return {
+          id: apiIntegration.id,
+          lambdaFunction: defaults.buildLambdaFunction(this, {
+            existingLambdaObj: apiIntegration.existingLambdaObj,
+            lambdaFunctionProps: apiIntegration.lambdaFunctionProps
+          })
+        };
+      } else {
+        throw new Error(`One of existingLambdaObj or lambdaFunctionProps must be specified for the api integration with id: ${apiIntegration.id}`);
+      }
     });
 
     this.lambdaFunctions = lambdaHandlers.map(handler => handler.lambdaFunction);
 
-    const outputApiDefinitionAsset = new Asset(this, 'OutputApiDefinitionAsset', {
-      path: path.join(__dirname, 'placeholder')
-    });
-
-    const apiTemplateWriterLambda = defaults.buildLambdaFunction(this, {
-      lambdaFunctionProps: {
-        functionName: 'TemplateWriterCustomResource',
-        runtime: lambda.Runtime.NODEJS_18_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/custom-resource`),
-        role: new iam.Role(this, 'ApiTemplateWriterLambdaRole', {
-          assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-          description: 'Role used by the ApiTemplateWriterLambda to update the open api spec with resolved lambda proxy arn',
-          inlinePolicies: {
-            CloudWatchLogs: new iam.PolicyDocument({
-              statements: [
-                new iam.PolicyStatement({
-                  actions: [
-                    'logs:CreateLogGroup',
-                    'logs:CreateLogStream',
-                    'logs:PutLogEvents'
-                  ],
-                  resources: [ `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/lambda/*` ]
-                })
-              ]
-            }),
-            ReadOpenApiSpecPolicy: new iam.PolicyDocument({
-              statements: [
-                new iam.PolicyStatement({
-                  actions: [ 's3:GetObject' ],
-                  effect: iam.Effect.ALLOW,
-                  resources: [ `arn:${Aws.PARTITION}:s3:::${specBucket}/${specKey}`]
-                })
-              ]
-            }),
-            WriteOpenApiSpecPolicy: new iam.PolicyDocument({
-              statements: [
-                new iam.PolicyStatement({
-                  actions: [ 's3:PutObject' ],
-                  effect: iam.Effect.ALLOW,
-                  resources: [ `arn:${Aws.PARTITION}:s3:::${outputApiDefinitionAsset.s3BucketName}/*`]
-                })
-              ]
-            })
-          }
-        })
-      }
-    });
-
-    const apiTemplateWriterProvider = new Provider(this, 'ApiTemplateWriterProvider', {
-      onEventHandler: apiTemplateWriterLambda
-    });
-
-    const providerFrameworkFunction = apiTemplateWriterProvider.node.children[0].node.findChild('Resource') as lambda.CfnFunction;
-
-    addCfnSuppressRules(providerFrameworkFunction, [
-      {
-        id: 'W58',
-        reason: `Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.`
-      },
-      {
-        id: 'W89',
-        reason: `This is not a rule for the general case, just for specific use cases/industries`
-      },
-      {
-        id: 'W92',
-        reason: `Impossible for us to define the correct concurrency for clients`
-      }
-    ]);
-
-    const apiIntegrationUris = lambdaHandlers.map(lambdaHandler => {
+    const templateValues = lambdaHandlers.map(lambdaHandler => {
       return {
         id: lambdaHandler.id,
-        uri: `arn:${Aws.PARTITION}:apigateway:${Aws.REGION}:lambda:path/2015-03-31/functions/${lambdaHandler.lambdaFunction.functionArn}/invocations`
+        value: `arn:${Aws.PARTITION}:apigateway:${Aws.REGION}:lambda:path/2015-03-31/functions/${lambdaHandler.lambdaFunction.functionArn}/invocations`
       };
     });
 
-    const apiTemplateWriter = new CustomResource(this, 'ApiTemplateWriter', {
-      resourceType: 'Custom::ApiTemplateWriter',
-      serviceToken: apiTemplateWriterProvider.serviceToken,
-      properties: {
-        ApiIntegrationUris: JSON.stringify({ apiIntegrationUris }),
-        ApiDefinitionInputBucket: specBucket,
-        ApiDefinitionInputKey: specKey,
-        ApiDefinitionOutputBucket: outputApiDefinitionAsset.s3BucketName
-      },
-    });
+    const templateWriter = resources.createTemplateWriterCustomResource(this, 'TemplateWriter', specBucket, specKey, templateValues);
 
     const specRestApiResponse = defaults.CreateSpecRestApi(this, {
       ...props.apiGatewayProps,
       apiDefinition: apigateway.ApiDefinition.fromBucket(
-        outputApiDefinitionAsset.bucket,
-        apiTemplateWriter.getAttString('ApiDefinitionOutputKey')
+        templateWriter.s3Bucket,
+        templateWriter.s3Key
       )
     }, props.logGroupProps);
 
