@@ -20,7 +20,7 @@ import * as path from 'path';
 test('TemplateWriter sets properties correctly', () => {
   const stack = new Stack();
 
-  const templateAsset = new Asset(stack, 'ApiDefinitionAsset', {
+  const templateAsset = new Asset(stack, 'TemplateAsset', {
     path: path.join(__dirname, 'sample-template')
   });
 
