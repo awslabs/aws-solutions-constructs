@@ -27,7 +27,7 @@ test('Pattern deployment w/ new Lambda function and overridden props', () => {
   const stack = new Stack();
   const props: SqsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -63,7 +63,7 @@ test('Test getter methods', () => {
   const stack = new Stack();
   const props: SqsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -123,7 +123,7 @@ test('Pattern deployment w/ batch size', () => {
   const stack = new Stack();
   const props: SqsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -145,7 +145,7 @@ test('Queue is encrypted with imported CMK when set on encryptionKey prop', () =
   const cmk = new kms.Key(stack, 'cmk');
   new SqsToLambda(stack, 'test-construct', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -172,7 +172,7 @@ test('Queue is encrypted with imported CMK when set on queueProps.encryptionMast
   const cmk = new kms.Key(stack, 'cmk');
   new SqsToLambda(stack, 'test-construct', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -200,7 +200,7 @@ test('Queue is encrypted with provided encrytionKeyProps', () => {
 
   new SqsToLambda(stack, 'test-construct', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -238,7 +238,7 @@ test('Queue is encrypted by default with SQS-managed KMS key when no other encry
 
   new SqsToLambda(stack, 'test-construct', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -258,7 +258,7 @@ test('Queue is encrypted with customer managed KMS Key when enable encryption fl
 
   new SqsToLambda(stack, 'test-construct', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {

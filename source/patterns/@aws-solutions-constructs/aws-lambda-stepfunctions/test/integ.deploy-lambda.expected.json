@@ -3,7 +3,27 @@
     "testlambdastepfunctionsconstructStateMachineLogGroup1FD4C0D4": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "with-lambda"
+        "LogGroupName": {
+          "Fn::Join": [
+            "",
+            [
+              "/aws/vendedlogs/states/constructs/deploy-lambdatest-lambda-stepfunctions-constructStateMachineLog-",
+              {
+                "Fn::Select": [
+                  2,
+                  {
+                    "Fn::Split": [
+                      "/",
+                      {
+                        "Ref": "AWS::StackId"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        }
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -265,7 +285,7 @@
           }
         },
         "Handler": "index.handler",
-        "Runtime": "nodejs14.x",
+        "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
         }

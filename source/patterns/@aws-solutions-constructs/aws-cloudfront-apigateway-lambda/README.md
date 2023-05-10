@@ -33,7 +33,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 new CloudFrontToApiGatewayToLambda(this, 'test-cloudfront-apigateway-lambda', {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   }
 });
@@ -70,7 +70,7 @@ import software.amazon.awsconstructs.services.cloudfrontapigatewaylambda.*;
 new CloudFrontToApiGatewayToLambda(this, "test-cloudfront-apigateway-lambda",
         new CloudFrontToApiGatewayToLambdaProps.Builder()
                 .lambdaFunctionProps(new FunctionProps.Builder()
-                        .runtime(Runtime.NODEJS_14_X)
+                        .runtime(Runtime.NODEJS_16_X)
                         .code(Code.fromAsset("lambda"))
                         .handler("index.handler")
                         .build())

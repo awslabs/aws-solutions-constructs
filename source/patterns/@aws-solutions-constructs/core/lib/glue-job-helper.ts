@@ -116,7 +116,7 @@ export function buildGlueJob(scope: Construct, props: BuildGlueJobProps): BuildG
       }
 
       const deployGlueJobResponse =
-        deployGlueJob(scope, props.glueJobProps, props.database!, props.table!, props.outputDataStore!, props.etlCodeAsset);
+        deployGlueJob(scope, props.glueJobProps, props.database, props.table, props.outputDataStore!, props.etlCodeAsset);
       return {
         job: deployGlueJobResponse.job,
         role: deployGlueJobResponse.role,
@@ -149,7 +149,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
     glueSecurityConfigName = 'ETLJobSecurityConfig';
     const glueKMSKey = `arn:${Aws.PARTITION}:kms:${Aws.REGION}:${Aws.ACCOUNT_ID}:alias/aws/glue`;
 
-    new glue.CfnSecurityConfiguration(scope, 'GlueSecurityConfig', {
+    const securityConfigurationProps: glue.CfnSecurityConfigurationProps = {
       name: glueSecurityConfigName,
       encryptionConfiguration: {
         jobBookmarksEncryption: {
@@ -160,7 +160,11 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
           s3EncryptionMode: 'SSE-S3'
         }]
       }
-    });
+    };
+
+    // Before turning off SonarQube for the line, reduce the line to it's minimum
+    new glue.CfnSecurityConfiguration(scope, 'GlueSecurityConfig', securityConfigurationProps);  // NOSONAR
+
   } else {
     glueSecurityConfigName = glueJobProps.securityConfiguration;
   }
@@ -204,7 +208,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
     ...glueJobProps.defaultArguments
   };
 
-  const newGlueJobProps: glue.CfnJobProps = overrideProps(defaults.DefaultGlueJobProps(jobRole!, glueJobProps,
+  const newGlueJobProps: glue.CfnJobProps = overrideProps(defaults.DefaultGlueJobProps(jobRole, glueJobProps,
     glueSecurityConfigName, jobArgumentsList, etlCodeAsset), glueJobProps);
   if (etlCodeAsset) {
     etlCodeAsset.grantRead(jobRole);
@@ -216,7 +220,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
       }
       const scriptLocation = newGlueJobProps.command.scriptLocation;
 
-      const scriptBucketLocation: IBucket = Bucket.fromBucketArn(scope, 'ScriptLocaiton', getS3ArnfromS3Url(scriptLocation!));
+      const scriptBucketLocation: IBucket = Bucket.fromBucketArn(scope, 'ScriptLocaiton', getS3ArnfromS3Url(scriptLocation));
       scriptBucketLocation.grantRead(jobRole);
     }
   }

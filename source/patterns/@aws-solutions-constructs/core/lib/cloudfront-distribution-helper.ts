@@ -26,7 +26,7 @@ import {
   DefaultCloudFrontWebDistributionForApiGatewayProps,
   DefaultCloudFrontDisributionForMediaStoreProps
 } from './cloudfront-distribution-defaults';
-import { overrideProps, addCfnSuppressRules, consolidateProps } from './utils';
+import { addCfnSuppressRules, consolidateProps } from './utils';
 import { createLoggingBucket } from './s3-bucket-helper';
 import { DefaultS3Props } from './s3-bucket-defaults';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
@@ -55,15 +55,14 @@ function defaultCloudfrontFunction(scope: Construct): cloudfront.Function {
 
   return new cloudfront.Function(scope, "SetHttpSecurityHeaders", {
     functionName: functionId,
-    code: cloudfront.FunctionCode.fromInline("function handler(event) { var response = event.response; \
-      var headers = response.headers; \
-      headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'}; \
-      headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"}; \
-      headers['x-content-type-options'] = { value: 'nosniff'}; \
-      headers['x-frame-options'] = {value: 'DENY'}; \
-      headers['x-xss-protection'] = {value: '1; mode=block'}; \
-      return response; \
-    }")
+    code: cloudfront.FunctionCode.fromInline("function handler(event) { " +
+      "var response = event.response; " +
+      "var headers = response.headers; " +
+      "headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'}; " +
+      "headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"}; " +
+      "headers['x-content-type-options'] = { value: 'nosniff'}; headers['x-frame-options'] = {value: 'DENY'}; " +
+      "headers['x-xss-protection'] = {value: '1; mode=block'}; " +
+      "return response; }")
   });
 }
 
@@ -245,12 +244,21 @@ function getLoggingBucket(
     throw Error('Either cloudFrontDistributionProps.logBucket or cloudFrontLoggingBucketProps can be set.');
   }
 
-  return isLoggingDisabled
-    ? undefined
-    : userSuppliedLogBucket ?? createLoggingBucket(
+  let bucketResult: s3.Bucket | undefined;
+  if (isLoggingDisabled) {
+    bucketResult = undefined;
+  } else if (userSuppliedLogBucket) {
+    bucketResult = userSuppliedLogBucket;
+  } else {
+    bucketResult = createLoggingBucket(
       scope,
       'CloudfrontLoggingBucket',
-      cloudFrontLoggingBucketProps ? overrideProps(DefaultS3Props(), cloudFrontLoggingBucketProps) : DefaultS3Props());
+      consolidateProps(DefaultS3Props(), cloudFrontLoggingBucketProps, { objectOwnership: s3.ObjectOwnership.OBJECT_WRITER }));
+
+    const loggingBucketResource = bucketResult.node.findChild('Resource') as s3.CfnBucket;
+    loggingBucketResource.addPropertyOverride('AccessControl', 'LogDeliveryWrite');
+  }
+  return bucketResult;
 }
 
 function getCloudfrontFunction(httpSecurityHeaders: boolean, scope: Construct) {

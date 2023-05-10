@@ -25,7 +25,7 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 
 new LambdaToS3(stack, 'test-lambda-s3', {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   },

@@ -30,7 +30,7 @@ const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existin
 const props: LambdaToS3Props = {
   existingBucketObj: mybucket,
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   }

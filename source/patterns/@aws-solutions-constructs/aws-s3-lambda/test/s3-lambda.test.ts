@@ -22,7 +22,7 @@ function deployNewFunc(stack: cdk.Stack) {
   const props: S3ToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     bucketProps: {
@@ -74,7 +74,7 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   new S3ToLambda(stack, 's3-lambda', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     bucketProps: {
@@ -87,9 +87,7 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   });
 
   const template = Template.fromStack(stack);
-  template.hasResourceProperties("AWS::S3::Bucket", {
-    AccessControl: "LogDeliveryWrite"
-  });
+  template.resourceCountIs("AWS::S3::Bucket", 2);
 
   template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
@@ -113,7 +111,7 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
   new S3ToLambda(stack, 's3-lambda', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     bucketProps: {
@@ -132,7 +130,7 @@ test('check properties with existing S3 bucket', () => {
   const construct = new S3ToLambda(stack, 's3-lambda', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     existingBucketObj: existingBucket

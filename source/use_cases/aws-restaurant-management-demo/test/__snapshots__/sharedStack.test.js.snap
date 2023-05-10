@@ -118,13 +118,13 @@ Object {
     "shareddbfunctionslayerA9CFEC5A": Object {
       "Properties": Object {
         "CompatibleRuntimes": Array [
-          "nodejs14.x",
+          "nodejs16.x",
         ],
         "Content": Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-us-east-1",
           },
-          "S3Key": "1e2da15c61e02d6b4d9a0d275ac198d3772dc45465f064a330f35db63a01bb00.zip",
+          "S3Key": "10564c98f41d5ddbd78ce6aa50e29a44184e170be4b504e0bdcdb341bf04f129.zip",
         },
         "Description": "Layer for common database access functions",
         "LicenseInfo": "Apache-2.0",

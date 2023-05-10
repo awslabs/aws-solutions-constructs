@@ -132,16 +132,14 @@ export class AlbToLambda extends Construct {
       constructVpcProps: props.publicApi ? {} : { enableDnsHostnames: true, enableDnsSupport: true }
     });
 
-    this.loadBalancer = defaults.ObtainAlb(
-      this,
-      id,
-      this.vpc,
-      props.publicApi,
-      props.existingLoadBalancerObj,
-      props.loadBalancerProps,
-      props.logAlbAccessLogs,
-      props.albLoggingBucketProps
-    );
+    this.loadBalancer = defaults.ObtainAlb(this, id, {
+      vpc: this.vpc,
+      publicApi: props.publicApi,
+      existingLoadBalancerObj: props.existingLoadBalancerObj,
+      loadBalancerProps: props.loadBalancerProps,
+      logAccessLogs: props.logAlbAccessLogs,
+      loggingBucketProps: props.albLoggingBucketProps
+    });
 
     // Obtain Lambda function for construct (existing or created)
     this.lambdaFunction = defaults.buildLambdaFunction(this, {

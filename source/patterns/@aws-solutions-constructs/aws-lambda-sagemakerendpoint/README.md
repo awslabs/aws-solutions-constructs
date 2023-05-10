@@ -109,7 +109,7 @@ new LambdaToSagemakerEndpoint(this, "LambdaToSagemakerEndpointPattern",
                         .executionRoleArn("executionRoleArn")
                         .build())
                 .lambdaFunctionProps(new FunctionProps.Builder()
-                        .runtime(Runtime.NODEJS_14_X)
+                        .runtime(Runtime.NODEJS_16_X)
                         .code(Code.fromAsset("lambda"))
                         .handler("index.handler")
                         .timeout(Duration.minutes(5))

@@ -651,7 +651,6 @@
           "Ref": "Vpc8378EB38"
         },
         "ResourceType": "VPC",
-        "TrafficType": "ALL",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -667,7 +666,8 @@
             "Key": "Name",
             "Value": "existing-resources/Vpc"
           }
-        ]
+        ],
+        "TrafficType": "ALL"
       }
     },
     "VpcECRAPI9A3B6A2B": {
@@ -1333,7 +1333,7 @@
                       "Ref": "AWS::Partition"
                     },
                     ":es:",
-                  {
+                    {
                       "Ref": "AWS::Region"
                     },
                     ":",
@@ -1371,6 +1371,9 @@
           "UserPoolId": {
             "Ref": "testconstructCognitoUserPoolA4991355"
           }
+        },
+        "DomainEndpointOptions": {
+          "TLSSecurityPolicy": "Policy-Min-TLS-1-2-2019-07"
         },
         "DomainName": "solution-constructs",
         "EBSOptions": {

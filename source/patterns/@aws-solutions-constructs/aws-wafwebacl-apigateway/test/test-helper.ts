@@ -19,7 +19,7 @@ import { addCfnSuppressRules } from "@aws-solutions-constructs/core";
 export function CreateTestApi(stack: Stack, id: string): api.LambdaRestApi {
   const lamdaFunction = new lambda.Function(stack, `${id}Function`, {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: ".handler",
   });
   addCfnSuppressRules(lamdaFunction, [{ id: "W58", reason: "Test Resource" }]);

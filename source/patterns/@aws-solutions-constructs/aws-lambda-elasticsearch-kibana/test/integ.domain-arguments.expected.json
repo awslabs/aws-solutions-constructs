@@ -116,7 +116,7 @@
           }
         },
         "Handler": "index.handler",
-        "Runtime": "nodejs14.x",
+        "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -491,6 +491,9 @@
           "UserPoolId": {
             "Ref": "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA"
           }
+        },
+        "DomainEndpointOptions": {
+          "TLSSecurityPolicy": "Policy-Min-TLS-1-2-2019-07"
         },
         "DomainName": "domain-args-7c94",
         "EBSOptions": {

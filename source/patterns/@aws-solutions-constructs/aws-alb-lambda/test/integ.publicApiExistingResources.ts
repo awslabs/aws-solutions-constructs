@@ -41,29 +41,26 @@ const testSg = new SecurityGroup(stack, "lambda-sg", {
 const lambdaFunction = defaults.buildLambdaFunction(stack, {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     vpc: myVpc,
     securityGroups: [testSg],
   },
 });
 
-const loadBalancer = defaults.ObtainAlb(
-  stack,
-  "existing-alb",
-  myVpc,
-  false,
-  undefined,
-  {
+const loadBalancer = defaults.ObtainAlb(stack, "existing-alb", {
+  vpc: myVpc,
+  publicApi: false,
+  loadBalancerProps: {
     internetFacing: false,
     vpc: myVpc,
   },
-  true,
-  {
+  logAccessLogs: true,
+  loggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
   }
-);
+});
 
 const props: AlbToLambdaProps = {
   existingLambdaObj: lambdaFunction,

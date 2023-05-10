@@ -128,12 +128,15 @@ export function setupCognitoForSearchService(scope: Construct, domainName: strin
   });
 
   // Attach the IAM Role for Cognito Authorized Users
-  new cognito.CfnIdentityPoolRoleAttachment(scope, 'IdentityPoolRoleMapping', {
+  const props: cognito.CfnIdentityPoolRoleAttachmentProps = {
     identityPoolId: options.identitypool.ref,
     roles: {
       authenticated: cognitoAuthorizedRole.roleArn
     }
-  });
+  };
+
+  // Minimize code in a NOSONA line
+  new cognito.CfnIdentityPoolRoleAttachment(scope, 'IdentityPoolRoleMapping', props); // NOSONAR
 
   return cognitoAuthorizedRole;
 }

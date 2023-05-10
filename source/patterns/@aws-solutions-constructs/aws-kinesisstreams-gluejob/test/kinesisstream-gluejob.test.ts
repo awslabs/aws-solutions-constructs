@@ -716,10 +716,6 @@ test('When Asset for local file is defined', () => {
   const id = 'test-kinesisstreams-lambda';
   const construct = new KinesisstreamsToGluejob(stack, id, props);
 
-  expect(construct.outputBucket).toBeDefined();
-  expect(construct.outputBucket![0]).toBeDefined();
-  expect(construct.outputBucket![1]).toBeDefined();
-
   // Check for properties
   expect(construct.database).toBeDefined();
   expect(construct.glueJob).toBeDefined();
@@ -727,8 +723,14 @@ test('When Asset for local file is defined', () => {
   expect(construct.kinesisStream).toBeDefined();
   expect(construct.glueJobRole).toBeDefined();
   expect(construct.cloudwatchAlarms).toBeDefined();
+  expect(construct.outputBucket).toBeDefined();
+  expect(construct.outputBucket![0]).toBeDefined();
+  expect(construct.outputBucket![1]).toBeDefined();
 
+  // Each output bucket should have a logging bucket
   const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::S3::Bucket", 2);
+
   template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [

@@ -48,7 +48,7 @@ export class ManagerStack extends Stack {
     // Create a Lambda function that lists all orders from the database
     const getAllOrders = new LambdaToDynamoDB(this, 'get-all-orders', {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/get-all-orders`),
         handler: 'index.handler',
         timeout: Duration.seconds(15),
@@ -61,7 +61,7 @@ export class ManagerStack extends Stack {
     // Runs as part of the close-out process
     const createReport = new LambdaToDynamoDB(this, 'create-report', {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/create-report`),
         handler: 'index.handler',
         timeout: Duration.seconds(15),
@@ -79,7 +79,7 @@ export class ManagerStack extends Stack {
     // Runs as part of the close-out process
     const calculateTips = new LambdaToDynamoDB(this, 'calculate-tips', {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/calculate-tips`),
         handler: 'index.handler',
         timeout: Duration.seconds(15),
@@ -96,7 +96,7 @@ export class ManagerStack extends Stack {
     // Runs as part of the close-out process
     const archiveOrders = new LambdaToDynamoDB(this, 'archive-orders', {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/archive-orders`),
         handler: 'index.handler',
         timeout: Duration.seconds(15),
@@ -133,7 +133,7 @@ export class ManagerStack extends Stack {
     // 5. Setup the Step Functions integration with Lambda trigger
     const closeOutService = new LambdaToStepfunctions(this, 'close-out-service', {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/close-out-service`),
         handler: 'index.handler',
         timeout: Duration.seconds(15)
@@ -146,7 +146,7 @@ export class ManagerStack extends Stack {
     // Create a Lambda function that will retrieve a specific report from the bucket
     const getReport = new LambdaToS3(this, 'get-report', {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/get-report`),
         handler: 'index.handler',
         timeout: Duration.seconds(15)
@@ -190,7 +190,7 @@ export class ManagerStack extends Stack {
     // Create a Lambda function for identifying orders that have been open for too long
     const checkLateOrders = new LambdaToDynamoDB(this, 'check-late-orders', {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/manager/check-late-orders`),
         handler: 'index.handler',
         environment: {

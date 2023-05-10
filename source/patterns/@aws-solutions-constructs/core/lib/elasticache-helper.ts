@@ -105,7 +105,7 @@ export function getCachePort(
   existingCache?: cache.CfnCacheCluster
 ): any {
   if (existingCache) {
-    return existingCache.attrConfigurationEndpointPort!;
+    return existingCache.attrConfigurationEndpointPort;
   } else if (clientCacheProps?.port) {
     return clientCacheProps.port;
   } else {

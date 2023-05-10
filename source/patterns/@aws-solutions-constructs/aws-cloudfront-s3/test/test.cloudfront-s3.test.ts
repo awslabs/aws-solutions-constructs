@@ -255,19 +255,21 @@ test('test cloudfront with custom domain names', () => {
 test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   const stack = new cdk.Stack();
 
+  const testName = "test-name";
   new CloudFrontToS3(stack, 'cloudfront-s3', {
     bucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     },
     loggingBucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true
+      autoDeleteObjects: true,
+      bucketName: testName
     }
   });
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::S3::Bucket", {
-    AccessControl: "LogDeliveryWrite"
+    BucketName: testName
   });
 
   template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
@@ -289,16 +291,19 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
 test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
   const stack = new cdk.Stack();
 
+  const cloudfrontLogBucketName = 'cf-log-bucket';
   new CloudFrontToS3(stack, 'cloudfront-s3', {
     cloudFrontLoggingBucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true
+      autoDeleteObjects: true,
+      bucketName: cloudfrontLogBucketName
     }
   });
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::S3::Bucket", {
-    AccessControl: "LogDeliveryWrite"
+    OwnershipControls: { Rules: [ { ObjectOwnership: "ObjectWriter" } ] },
+    BucketName: cloudfrontLogBucketName,
   });
 
   template.hasResourceProperties("Custom::S3AutoDeleteObjects", {

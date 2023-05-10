@@ -29,15 +29,12 @@ const existingVpc = defaults.getTestVpc(stack);
 const startState = new stepfunctions.Pass(stack, 'StartState');
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
-const createFargateServiceResponse = defaults.CreateFargateService(stack,
-  'test',
-  existingVpc,
-  undefined,
-  undefined,
-  undefined,
-  undefined,
-  { image },
-);
+const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+  constructVpc: existingVpc,
+  clientContainerDefinitionProps: {
+    image
+  },
+});
 
 const constructProps: FargateToStepfunctionsProps = {
   publicApi: true,
@@ -50,7 +47,6 @@ const constructProps: FargateToStepfunctionsProps = {
   stateMachineEnvironmentVariableName: 'CUSTOM_NAME',
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-    logGroupName: "with-lambda"
   }
 };
 

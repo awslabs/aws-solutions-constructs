@@ -45,7 +45,7 @@ const certificate = acm.Certificate.fromCertificateArn(
 const constructProps: AlbToLambdaProps = {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   },
   listenerProps: {
@@ -121,7 +121,7 @@ ListenerCertificate listenerCertificate = ListenerCertificate
 //                 .build());
 new AlbToLambda(this, "AlbToLambdaPattern", new AlbToLambdaProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_14_X)
+                .runtime(Runtime.NODEJS_16_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())

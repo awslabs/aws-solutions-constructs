@@ -28,7 +28,7 @@ const startState = new stepfunctions.Pass(stack, 'StartState');
 // Setup the pattern props
 const props: LambdaToStepfunctionsProps = {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   },
@@ -37,7 +37,6 @@ const props: LambdaToStepfunctionsProps = {
   },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-    logGroupName: "with-lambda"
   }
 };
 

@@ -27,13 +27,15 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 const props: S3ToLambdaProps = {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
   },
-  logS3AccessLogs: false
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+  },
 };
 
 const construct = new S3ToLambda(stack, 'test-s3-lambda', props);

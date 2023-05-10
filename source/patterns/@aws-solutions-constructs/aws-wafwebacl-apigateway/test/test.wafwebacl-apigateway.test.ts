@@ -19,7 +19,7 @@ import * as waf from "aws-cdk-lib/aws-wafv2";
 import * as defaults from '@aws-solutions-constructs/core';
 import { Template } from 'aws-cdk-lib/assertions';
 
-function deployConstruct(stack: cdk.Stack, constructProps?: waf.CfnWebACLProps) {
+function deployConstruct(stack: cdk.Stack, constructProps?: waf.CfnWebACLProps | any) {
   const restApi = new api.RestApi(stack, 'test-api', {});
   restApi.root.addMethod('ANY');
 
@@ -30,9 +30,6 @@ function deployConstruct(stack: cdk.Stack, constructProps?: waf.CfnWebACLProps) 
   return new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway', props);
 }
 
-// --------------------------------------------------------------
-// Test error handling for existing WAF web ACL and user provided web ACL props
-// --------------------------------------------------------------
 test('Test error handling for existing WAF web ACL and user provider web ACL props', () => {
   const stack = new cdk.Stack();
   const props: waf.CfnWebACLProps = {
@@ -59,9 +56,6 @@ test('Test error handling for existing WAF web ACL and user provider web ACL pro
   }).toThrowError();
 });
 
-// --------------------------------------------------------------
-// Test default deployment
-// --------------------------------------------------------------
 test('Test default deployment', () => {
   const stack = new cdk.Stack();
   const construct = deployConstruct(stack);
@@ -202,9 +196,6 @@ test('Test default deployment', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test web acl with user provided acl props
-// --------------------------------------------------------------
 test('Test user provided acl props', () => {
   const stack = new cdk.Stack();
   const webaclProps: waf.CfnWebACLProps =  {
@@ -273,9 +264,21 @@ test('Test user provided acl props', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test existing web ACL
-// --------------------------------------------------------------
+test('Test user provided partial acl props', () => {
+  const stack = new cdk.Stack();
+  const testName = 'test-name';
+  const webaclProps =  {
+    name: testName
+  };
+
+  deployConstruct(stack, webaclProps);
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
+    Name: testName
+  });
+});
+
 test('Test existing web ACL', () => {
   const stack = new cdk.Stack();
   const webacl: waf.CfnWebACL =  new waf.CfnWebACL(stack, 'test-webacl', {
