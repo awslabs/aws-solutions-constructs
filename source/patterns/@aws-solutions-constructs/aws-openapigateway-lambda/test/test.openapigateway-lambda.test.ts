@@ -17,6 +17,7 @@ import { OpenApiGatewayToLambda } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import * as path from 'path';
+import { Template } from "aws-cdk-lib/assertions";
 
 test('Simple deployment works', () => {
   const stack = new Stack();
@@ -67,6 +68,92 @@ test('Throws error when both api definition asset and s3 object are specified', 
     });
   };
   expect(app).toThrowError('Either apiDefinitionBucket/apiDefinitionKey or apiDefinitionAsset must be specified, but not both');
+});
+
+test('Multiple Lambda Functions can be specified', () => {
+  const stack = new Stack();
+
+  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
+    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
+  });
+
+  new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
+    apiDefinitionAsset,
+    apiIntegrations: [
+      {
+        id: 'MessagesHandler',
+        lambdaFunctionProps: {
+          runtime: lambda.Runtime.NODEJS_18_X,
+          handler: 'index.handler',
+          code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+        }
+      }, {
+        id: 'PhotosHandler',
+        lambdaFunctionProps: {
+          runtime: lambda.Runtime.NODEJS_18_X,
+          handler: 'index.handler',
+          code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),
+        }
+      }
+    ]
+  });
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Lambda::Function', 4);
+});
+
+test('Existing lambda function can be specified', () => {
+  const stack = new Stack();
+
+  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
+    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
+  });
+
+  const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
+    runtime: lambda.Runtime.NODEJS_18_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+  });
+
+  new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
+    apiDefinitionAsset,
+    apiIntegrations: [
+      {
+        id: 'MessagesHandler',
+        existingLambdaObj
+      }, {
+        id: 'PhotosHandler',
+        lambdaFunctionProps: {
+          runtime: lambda.Runtime.NODEJS_18_X,
+          handler: 'index.handler',
+          code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),
+        }
+      }
+    ]
+  });
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Lambda::Function', 4);
+});
+
+test('Throws error when neither existingLambdaObj or lambdaFunctionProps is specified', () => {
+  const stack = new Stack();
+
+  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
+    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
+  });
+
+  const app = () => {
+    new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
+      apiDefinitionAsset,
+      apiIntegrations: [
+        {
+          id: 'MessagesHandler'
+        }
+      ]
+    });
+  };
+  expect(app).toThrowError('One of existingLambdaObj or lambdaFunctionProps must be specified for the api integration with id: MessagesHandler');
 });
 
 test('Throws error when no api definition is specified', () => {

@@ -22,7 +22,7 @@ class CfnNagAspect implements IAspect {
     const resource = node as CfnResource;
     if (resource.cfnResourceType === 'AWS::Lambda::Function') {
       defaults.addCfnSuppressRules(resource, [
-        { id: 'W58', reason: 'Test Resource' }, 
+        { id: 'W58', reason: 'Test Resource' },
         { id: 'W89', reason: 'Test Resource' },
         { id: 'W92', reason: 'Test Resource' }
       ]);

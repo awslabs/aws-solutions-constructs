@@ -1,7 +1,7 @@
 {
   "Description": "Integration Test for aws-apigateway-lambda",
   "Resources": {
-    "OpenApiGatewayToLambdaMessagesLambdaServiceRoleBB9A8559": {
+    "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction1ServiceRole05B970B2": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -56,7 +56,7 @@
         ]
       }
     },
-    "OpenApiGatewayToLambdaMessagesLambdaServiceRoleDefaultPolicyC8E9C1A2": {
+    "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction1ServiceRoleDefaultPolicy81CC82BF": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -72,10 +72,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "OpenApiGatewayToLambdaMessagesLambdaServiceRoleDefaultPolicyC8E9C1A2",
+        "PolicyName": "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction1ServiceRoleDefaultPolicy81CC82BF",
         "Roles": [
           {
-            "Ref": "OpenApiGatewayToLambdaMessagesLambdaServiceRoleBB9A8559"
+            "Ref": "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction1ServiceRole05B970B2"
           }
         ]
       },
@@ -90,7 +90,7 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaMessagesLambda504DE62F": {
+    "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction16DF7378F": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -101,11 +101,11 @@
         },
         "Role": {
           "Fn::GetAtt": [
-            "OpenApiGatewayToLambdaMessagesLambdaServiceRoleBB9A8559",
+            "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction1ServiceRole05B970B2",
             "Arn"
           ]
         },
-        "FunctionName": "MessagesLambda",
+        "FunctionName": "OpenApiGatewayToLambda-Function1",
         "Handler": "index.handler",
         "Runtime": "nodejs18.x",
         "TracingConfig": {
@@ -113,8 +113,8 @@
         }
       },
       "DependsOn": [
-        "OpenApiGatewayToLambdaMessagesLambdaServiceRoleDefaultPolicyC8E9C1A2",
-        "OpenApiGatewayToLambdaMessagesLambdaServiceRoleBB9A8559"
+        "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction1ServiceRoleDefaultPolicy81CC82BF",
+        "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction1ServiceRole05B970B2"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -135,13 +135,13 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaMessagesLambdaPermitAPIGInvocation4EE21648": {
+    "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction1PermitAPIGInvocation13DEC124": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "OpenApiGatewayToLambdaMessagesLambda504DE62F",
+            "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction16DF7378F",
             "Arn"
           ]
         },
@@ -172,7 +172,7 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaPhotosLambdaServiceRole29E439A4": {
+    "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction2ServiceRole770A1865": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -227,7 +227,7 @@
         ]
       }
     },
-    "OpenApiGatewayToLambdaPhotosLambdaServiceRoleDefaultPolicy797AD5AF": {
+    "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction2ServiceRoleDefaultPolicy81A0C3AD": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -243,10 +243,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "OpenApiGatewayToLambdaPhotosLambdaServiceRoleDefaultPolicy797AD5AF",
+        "PolicyName": "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction2ServiceRoleDefaultPolicy81A0C3AD",
         "Roles": [
           {
-            "Ref": "OpenApiGatewayToLambdaPhotosLambdaServiceRole29E439A4"
+            "Ref": "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction2ServiceRole770A1865"
           }
         ]
       },
@@ -261,7 +261,7 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaPhotosLambda8DE02304": {
+    "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction21031FA41": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -272,11 +272,11 @@
         },
         "Role": {
           "Fn::GetAtt": [
-            "OpenApiGatewayToLambdaPhotosLambdaServiceRole29E439A4",
+            "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction2ServiceRole770A1865",
             "Arn"
           ]
         },
-        "FunctionName": "PhotosLambda",
+        "FunctionName": "OpenApiGatewayToLambda-Function2",
         "Handler": "index.handler",
         "Runtime": "nodejs18.x",
         "TracingConfig": {
@@ -284,8 +284,8 @@
         }
       },
       "DependsOn": [
-        "OpenApiGatewayToLambdaPhotosLambdaServiceRoleDefaultPolicy797AD5AF",
-        "OpenApiGatewayToLambdaPhotosLambdaServiceRole29E439A4"
+        "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction2ServiceRoleDefaultPolicy81A0C3AD",
+        "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction2ServiceRole770A1865"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -306,13 +306,13 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaPhotosLambdaPermitAPIGInvocationDBBAA170": {
+    "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction2PermitAPIGInvocation20179849": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "OpenApiGatewayToLambdaPhotosLambda8DE02304",
+            "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction21031FA41",
             "Arn"
           ]
         },
@@ -669,7 +669,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "e8fea7e029780f03a78580d41b7ffbc4551d6e7d6caa190a451880191c166189.zip"
+          "S3Key": "1eabd374284db340b74179e3429008132f5b6b0b7b28d472d852807d7f5f9746.zip"
         },
         "Role": {
           "Fn::GetAtt": [
@@ -739,7 +739,7 @@
               ":lambda:path/2015-03-31/functions/",
               {
                 "Fn::GetAtt": [
-                  "OpenApiGatewayToLambdaMessagesLambda504DE62F",
+                  "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction16DF7378F",
                   "Arn"
                 ]
               },
@@ -754,7 +754,7 @@
               ":lambda:path/2015-03-31/functions/",
               {
                 "Fn::GetAtt": [
-                  "OpenApiGatewayToLambdaPhotosLambda8DE02304",
+                  "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction21031FA41",
                   "Arn"
                 ]
               },

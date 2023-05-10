@@ -123,9 +123,14 @@ export class OpenApiGatewayToLambda extends Construct {
       throw new Error('At least one ApiIntegration must be specified in the apiIntegrations property');
     }
 
+    // keep a counter to uniquely name lambda functions to avoid naming conflicts in the underlying lambda helper functions.
+    let lambdaCounter = 0;
+
     // transform the incoming lambda function/lambda function props into a single group of lambda functions,
     // preserving the handler id to be used later in the custom resource
     const lambdaHandlers: InternalApiIntegration[] = props.apiIntegrations.map(apiIntegration => {
+
+      lambdaCounter++;
 
       if (apiIntegration.existingLambdaObj) {
         return {
@@ -136,14 +141,10 @@ export class OpenApiGatewayToLambda extends Construct {
           })
         };
       } else if (apiIntegration.lambdaFunctionProps) {
-
-        // Because this construct can create one or more lambda functions, we need to 
-        // make sure the function names are unique to avoid naming collisions in the 
-        // underlying resources created by the core helper
-        let lambdaFunctionProps = apiIntegration.lambdaFunctionProps;
+        let lambdaFunctionProps: lambda.FunctionProps = apiIntegration.lambdaFunctionProps;
         if (lambdaFunctionProps?.functionName === undefined) {
           lambdaFunctionProps = overrideProps(lambdaFunctionProps, {
-            functionName: '<replace me>'
+            functionName: `OpenApiGatewayToLambda-Function${lambdaCounter}`
           }, true);
         }
 
@@ -151,7 +152,7 @@ export class OpenApiGatewayToLambda extends Construct {
           id: apiIntegration.id,
           lambdaFunction: defaults.buildLambdaFunction(this, {
             existingLambdaObj: apiIntegration.existingLambdaObj,
-            lambdaFunctionProps: apiIntegration.lambdaFunctionProps
+            lambdaFunctionProps
           })
         };
       } else {
