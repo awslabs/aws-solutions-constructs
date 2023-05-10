@@ -1,0 +1,89 @@
+Arguments: 
+  /usr/bin/node /usr/share/yarn/bin/yarn.js install --frozen-lockfile
+
+PATH: 
+  /Users/biffgaut/Documents/Active/AWS/Constructs/github/CodeSmellsRoundTwo/aws-solutions-constructs/source/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/cargo/bin:/opt/golang/go/bin:/opt/apache/maven/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.19.1
+
+Platform: 
+  linux arm64
+
+Trace: 
+  Error: getaddrinfo EAI_AGAIN registry.yarnpkg.com
+      at GetAddrInfoReqWrap.onlookup [as oncomplete] (node:dns:109:26)
+
+npm manifest: 
+  {
+    "name": "aws-solutions-constructs",
+    "version": "2.39.0",
+    "description": "AWS Solutions Constructs Library",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/awslabs/aws-solutions-constructs.git",
+      "directory": "source"
+    },
+    "license": "Apache-2.0",
+    "author": {
+      "name": "Amazon Web Services",
+      "url": "https://aws.amazon.com"
+    },
+    "private": true,
+    "dependencies": {
+      "@typescript-eslint/eslint-plugin": "^2.14.0",
+      "@typescript-eslint/parser": "^2.14.0",
+      "eslint": "^6.8.0",
+      "eslint-import-resolver-node": "^0.3.2",
+      "eslint-import-resolver-typescript": "^2.0.0",
+      "eslint-plugin-import": "^2.19.1",
+      "eslint-plugin-license-header": "^0.2.0",
+      "fs-extra": "^8.1.0",
+      "jest": "^27.4.0",
+      "jsii": "^1.49.0",
+      "jsii-pacmak": "^1.49.0",
+      "tslint": "^5.20.1",
+      "typescript": "4.7.4",
+      "aws-cdk-migration": "^1.135.0"
+    },
+    "devDependencies": {
+      "lerna": "^3.22.1",
+      "aws-cdk-lib": "2.76.0",
+      "constructs": "^10.0.0"
+    },
+    "workspaces": {
+      "packages": [
+        "./patterns/@aws-solutions-constructs/*"
+      ],
+      "nohoist": [
+        "**/deepmerge",
+        "**/deepmerge/**",
+        "**/npmlog",
+        "**/npmlog/**",
+        "**/@types/npmlog",
+        "**/@types/npmlog/**",
+        "**/deep-diff",
+        "**/deep-diff/**",
+        "**/@types/deep-diff",
+        "**/@types/deep-diff/**"
+      ]
+    },
+    "resolutions": {
+      "@types/babel__traverse": "7.18.2",
+      "**/@typescript-eslint/eslint-plugin": "^4.1.1",
+      "**/@typescript-eslint/parser": "^4.1.1"
+    },
+    "peerDependencies": {
+      "aws-cdk-lib": "^2.76.0",
+      "constructs": "^10.0.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

@@ -61,11 +61,13 @@ export class WafwebaclToAlb extends Construct {
       webaclProps: props.webaclProps,
     });
 
-    // Setup the Web ACL Association
-    new waf.CfnWebACLAssociation(scope, `${id}-WebACLAssociation`, {
+    const aclProps: waf.CfnWebACLAssociationProps = {
       webAclArn: this.webacl.attrArn,
       resourceArn: props.existingLoadBalancerObj.loadBalancerArn
-    });
+    };
+
+    // Setup the Web ACL Association
+    new waf.CfnWebACLAssociation(scope, `${id}-WebACLAssociation`, aclProps);
 
     this.loadBalancer = props.existingLoadBalancerObj;
   }
