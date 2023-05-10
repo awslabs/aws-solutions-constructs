@@ -11,20 +11,18 @@
  *  and limitations under the License.
  */
 
-// Imports
 import { App, Stack } from "aws-cdk-lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import * as path from 'path';
 import { createTemplateWriterCustomResource } from "../lib/template-writer";
 
-// Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for Tempalte Writer Resource';
 
 const templateAsset = new Asset(stack, 'TemplateAsset', {
-  path: path.join(__dirname, 'sample-template')
+  path: path.join(__dirname, 'template/sample-template')
 });
 
 const templateValues = [
@@ -36,5 +34,4 @@ const templateValues = [
 
 createTemplateWriterCustomResource(stack, 'TemplateWriter', templateAsset.s3BucketName, templateAsset.s3ObjectKey, templateValues);
 
-// Synth
 app.synth();

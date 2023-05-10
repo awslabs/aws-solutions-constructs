@@ -136,6 +136,10 @@ export class OpenApiGatewayToLambda extends Construct {
           })
         };
       } else if (apiIntegration.lambdaFunctionProps) {
+
+        // Because this construct can create one or more lambda functions, we need to 
+        // make sure the function names are unique to avoid naming collisions in the 
+        // underlying resources created by the core helper
         let lambdaFunctionProps = apiIntegration.lambdaFunctionProps;
         if (lambdaFunctionProps?.functionName === undefined) {
           lambdaFunctionProps = overrideProps(lambdaFunctionProps, {
