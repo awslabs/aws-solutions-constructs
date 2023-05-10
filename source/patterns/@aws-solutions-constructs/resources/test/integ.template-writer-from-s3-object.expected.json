@@ -15,6 +15,10 @@
         },
         "Tags": [
           {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true"
+          },
+          {
             "Key": "aws-cdk:cr-owned:07615cd7",
             "Value": "true"
           }
@@ -39,6 +43,152 @@
             {
               "id": "W41",
               "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct"
+            }
+          ]
+        }
+      }
+    },
+    "existingScriptLocationPolicy276EC326": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "existingScriptLocation845F3C51"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn"
+                  ]
+                }
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "existingScriptLocation845F3C51",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "existingScriptLocation845F3C51",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "existingScriptLocationAutoDeleteObjectsCustomResource0F729F9B": {
+      "Type": "Custom::S3AutoDeleteObjects",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn"
+          ]
+        },
+        "BucketName": {
+          "Ref": "existingScriptLocation845F3C51"
+        }
+      },
+      "DependsOn": [
+        "existingScriptLocationPolicy276EC326"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+          }
+        ]
+      }
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "40aa87cdf43c4095cec18bc443965f22ab2f8c1ace47e482a0ba4e35d83b0cc9.zip"
+        },
+        "Timeout": 900,
+        "MemorySize": 128,
+        "Handler": "__entrypoint__.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs14.x",
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Lambda function for auto-deleting objects in ",
+              {
+                "Ref": "existingScriptLocation845F3C51"
+              },
+              " S3 bucket."
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W89",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W92",
+              "reason": "Test Resource"
             }
           ]
         }
@@ -213,7 +363,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "2bc265c5e0569aeb24a6349c15bd54e76e845892376515e036627ab0cc70bb64.zip"
+          "S3Key": "de91205450df70f943fbde8ad6f4eec685d4c82c11ddec668199a8d2ec4d7065.zip"
         },
         "Role": {
           "Fn::GetAtt": [
@@ -233,7 +383,25 @@
       "DependsOn": [
         "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
         "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
-      ]
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W89",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W92",
+              "reason": "Test Resource"
+            }
+          ]
+        }
+      }
     },
     "TemplateWriterTemplateWriterLambdaRole8C61D206": {
       "Type": "AWS::IAM::Role",
@@ -476,6 +644,18 @@
             {
               "id": "W92",
               "reason": "Impossible for us to define the correct concurrency for clients"
+            },
+            {
+              "id": "W58",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W89",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W92",
+              "reason": "Test Resource"
             }
           ]
         }
@@ -561,7 +741,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "e8fea7e029780f03a78580d41b7ffbc4551d6e7d6caa190a451880191c166189.zip"
+          "S3Key": "1eabd374284db340b74179e3429008132f5b6b0b7b28d472d852807d7f5f9746.zip"
         },
         "Role": {
           "Fn::GetAtt": [
@@ -602,6 +782,18 @@
             {
               "id": "W92",
               "reason": "Impossible for us to define the correct concurrency for clients"
+            },
+            {
+              "id": "W58",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W89",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W92",
+              "reason": "Test Resource"
             }
           ]
         }
