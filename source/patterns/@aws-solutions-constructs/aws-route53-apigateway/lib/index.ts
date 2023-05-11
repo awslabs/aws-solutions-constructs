@@ -132,10 +132,12 @@ export class Route53ToApiGateway extends Construct {
       certificate: this.certificate
     });
 
-    // Create A Record in custom domain to route traffic to API Gateway
-    new route53.ARecord(this, 'CustomDomainAliasRecord', {
+    const arecordProps: route53.ARecordProps = {
       zone: this.hostedZone,
       target: route53.RecordTarget.fromAlias(new targets.ApiGateway(this.apiGateway))
-    });
+    };
+
+    // Create A Record in custom domain to route traffic to API Gateway
+    new route53.ARecord(this, 'CustomDomainAliasRecord', arecordProps); // NOSONAR
   }
 }

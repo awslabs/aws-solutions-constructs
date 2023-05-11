@@ -57,7 +57,8 @@ export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigure
       roleArn: cognitoKibanaConfigureRole.roleArn
     },
     domainEndpointOptions: {
-      tlsSecurityPolicy: elasticsearch.TLSSecurityPolicy.TLS_1_2,
+      enforceHttps: true,
+      tlsSecurityPolicy: 'Policy-Min-TLS-1-2-2019-07',
     },
     accessPolicies: new iam.PolicyDocument({
       statements: [

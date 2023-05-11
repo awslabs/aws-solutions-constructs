@@ -171,7 +171,8 @@ export function buildDeadLetterQueue(scope: Construct, props: BuildDeadLetterQue
     // Return the dead letter queue interface
     return dlqInterface;
   }
-  return;
+  // ESLint requires this return statement, so disabling SonarQube warning
+  return; // NOSONAR
 }
 
 function applySecureQueuePolicy(queue: sqs.Queue): void {

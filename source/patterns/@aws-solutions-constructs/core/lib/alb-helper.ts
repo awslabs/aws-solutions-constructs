@@ -27,7 +27,7 @@ import * as elbt from "aws-cdk-lib/aws-elasticloadbalancingv2-targets";
 import { printWarning, consolidateProps } from "./utils";
 import { DefaultListenerProps } from "./alb-defaults";
 import { createAlbLoggingBucket } from "./s3-bucket-helper";
-import { DefaultLoggingBucketProps } from "./s3-bucket-defaults";
+import { DefaultS3Props } from "./s3-bucket-defaults";
 
 export interface ObtainAlbProps {
   readonly vpc: ec2.IVpc,
@@ -61,7 +61,7 @@ export function ObtainAlb(
       consolidatedProps
     );
     if (props.logAccessLogs === undefined || props.logAccessLogs === true) {
-      const consolidatedLoggingBucketProps = consolidateProps(DefaultLoggingBucketProps(), props.loggingBucketProps);
+      const consolidatedLoggingBucketProps = consolidateProps(DefaultS3Props(), props.loggingBucketProps);
       const loggingBucket = createAlbLoggingBucket(scope, id, consolidatedLoggingBucketProps);
       loadBalancer.logAccessLogs(loggingBucket);
     }

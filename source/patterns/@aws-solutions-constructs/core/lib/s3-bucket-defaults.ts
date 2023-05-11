@@ -35,18 +35,5 @@ export function DefaultS3Props(loggingBucket?: Bucket, lifecycleRules?: s3.Lifec
   } as BucketProps;
 }
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
-export function DefaultLoggingBucketProps(): s3.BucketProps {
-  return {
-    encryption: s3.BucketEncryption.S3_MANAGED,
-    versioned: true,
-    blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-    removalPolicy: RemovalPolicy.RETAIN,
-    enforceSSL: true,
-  } as BucketProps;
-}
-
 // Default event types to trigger S3 notifications
 export const defaultS3NotificationEventTypes = [s3.EventType.OBJECT_CREATED];
