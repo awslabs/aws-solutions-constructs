@@ -11,28 +11,14 @@
  *  and limitations under the License.
  */
 
-import { App, Aspects, CfnResource, IAspect, Stack } from "aws-cdk-lib";
+import { App, Stack } from "aws-cdk-lib";
 import * as defaults from '@aws-solutions-constructs/core';
 import { createTemplateWriterCustomResource } from "../lib/template-writer";
 import * as s3deployment from "aws-cdk-lib/aws-s3-deployment";
-import { IConstruct } from "constructs";
-
-class CfnNagAspect implements IAspect {
-  public visit(node: IConstruct): void {
-    const resource = node as CfnResource;
-    if (resource.cfnResourceType === 'AWS::Lambda::Function') {
-      defaults.addCfnSuppressRules(resource, [
-        { id: 'W58', reason: 'Test Resource' },
-        { id: 'W89', reason: 'Test Resource' },
-        { id: 'W92', reason: 'Test Resource' }
-      ]);
-    }
-  }
-}
 
 const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename));
-stack.templateOptions.description = 'Integration Test for Tempalte Writer Resource';
+stack.templateOptions.description = 'Integration Test for Template Writer Resource';
 
 const templateBucket = defaults.CreateScrapBucket(stack, {
   autoDeleteObjects: true
@@ -50,8 +36,8 @@ const templateValues = [
   }
 ];
 
-createTemplateWriterCustomResource(stack, 'TemplateWriter', templateBucket.bucketName, 'sample-template', templateValues);
+createTemplateWriterCustomResource(stack, templateBucket, 'sample-template', templateValues);
 
-Aspects.of(stack).add(new CfnNagAspect());
+defaults.SuppressCfnNagLambdaWarnings(stack);
 
 app.synth();

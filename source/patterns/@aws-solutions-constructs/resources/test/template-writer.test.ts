@@ -31,7 +31,7 @@ test('TemplateWriter sets properties correctly', () => {
     }
   ];
 
-  createTemplateWriterCustomResource(stack, 'TemplateWriter', templateAsset.s3BucketName, templateAsset.s3ObjectKey, templateValues);
+  createTemplateWriterCustomResource(stack, templateAsset.bucket, templateAsset.s3ObjectKey, templateValues);
 
   const cfnTemplate = Template.fromStack(stack);
 

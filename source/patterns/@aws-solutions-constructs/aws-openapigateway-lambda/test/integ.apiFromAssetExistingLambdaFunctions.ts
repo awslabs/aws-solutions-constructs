@@ -11,21 +11,37 @@
  *  and limitations under the License.
  */
 
-// Imports
 import { App, Stack } from "aws-cdk-lib";
 import { OpenApiGatewayToLambda } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import * as defaults from '@aws-solutions-constructs/core';
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import * as path from 'path';
 
-// Setup
 const app = new App();
-const stack = new Stack(app, generateIntegStackName(__filename));
-stack.templateOptions.description = 'Integration Test for aws-apigateway-lambda';
+const stack = new Stack(app, defaults.generateIntegStackName(__filename));
+stack.templateOptions.description = 'Integration Test for aws-openapigateway-lambda';
 
 const apiDefinitionAsset = new Asset(stack, 'ApiDefinitionAsset', {
   path: path.join(__dirname, 'openapi/apiDefinition.yaml')
+});
+
+const messagesLambda = defaults.buildLambdaFunction(stack, {
+  lambdaFunctionProps: {
+    functionName: 'MessagesLambdaTestFromAsset',
+    runtime: lambda.Runtime.NODEJS_18_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+  }
+});
+
+const photosLambda = defaults.buildLambdaFunction(stack, {
+  lambdaFunctionProps: {
+    functionName: 'PhotosLambdaTestFromAsset',
+    runtime: lambda.Runtime.NODEJS_18_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),
+  }
 });
 
 new OpenApiGatewayToLambda(stack, 'OpenApiGatewayToLambda', {
@@ -33,19 +49,11 @@ new OpenApiGatewayToLambda(stack, 'OpenApiGatewayToLambda', {
   apiIntegrations: [
     {
       id: 'MessagesHandler',
-      lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_18_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
-      }
+      existingLambdaObj: messagesLambda
     },
     {
       id: 'PhotosHandler',
-      lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_18_X,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),
-      }
+      existingLambdaObj: photosLambda
     }
   ]
 });

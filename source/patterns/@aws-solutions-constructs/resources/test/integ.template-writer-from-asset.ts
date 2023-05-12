@@ -19,7 +19,7 @@ import { createTemplateWriterCustomResource } from "../lib/template-writer";
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
-stack.templateOptions.description = 'Integration Test for Tempalte Writer Resource';
+stack.templateOptions.description = 'Integration Test for Template Writer Resource';
 
 const templateAsset = new Asset(stack, 'TemplateAsset', {
   path: path.join(__dirname, 'template/sample-template')
@@ -32,6 +32,6 @@ const templateValues = [
   }
 ];
 
-createTemplateWriterCustomResource(stack, 'TemplateWriter', templateAsset.s3BucketName, templateAsset.s3ObjectKey, templateValues);
+createTemplateWriterCustomResource(stack, templateAsset.bucket, templateAsset.s3ObjectKey, templateValues);
 
 app.synth();

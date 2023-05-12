@@ -17,6 +17,7 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as resources from '@aws-solutions-constructs/resources';
 import { RestApiBaseProps } from 'aws-cdk-lib/aws-apigateway';
@@ -51,7 +52,7 @@ export interface OpenApiGatewayToLambdaProps {
   /**
    * S3 Bucket where the open-api spec file is located. When specifying this property, apiDefinitionKey must also be specified.
    */
-  readonly apiDefinitionBucket?: string;
+  readonly apiDefinitionBucket?: s3.IBucket;
   /**
    * S3 Object name of the open-api spec file. When specifying this property, apiDefinitionBucket must also be specified.
    */
@@ -112,10 +113,10 @@ export class OpenApiGatewayToLambda extends Construct {
       throw new Error('Either apiDefinitionBucket/apiDefinitionKey or apiDefinitionAsset must be specified, but not both');
     }
 
-    const specBucket = props.apiDefinitionBucket ?? props.apiDefinitionAsset?.s3BucketName;
-    const specKey = props.apiDefinitionKey ?? props.apiDefinitionAsset?.s3ObjectKey;
+    const apiDefinitionBucket = props.apiDefinitionBucket ?? props.apiDefinitionAsset?.bucket;
+    const apiDefinitionKey = props.apiDefinitionKey ?? props.apiDefinitionAsset?.s3ObjectKey;
 
-    if (specBucket === undefined || specKey === undefined) {
+    if (apiDefinitionBucket === undefined || apiDefinitionKey === undefined) {
       throw new Error('Either apiDefinitionBucket/apiDefinitionKey or apiDefinitionAsset must be specified');
     }
 
@@ -123,15 +124,12 @@ export class OpenApiGatewayToLambda extends Construct {
       throw new Error('At least one ApiIntegration must be specified in the apiIntegrations property');
     }
 
-    // keep a counter to uniquely name lambda functions to avoid naming conflicts in the underlying lambda helper functions.
     let lambdaCounter = 0;
 
     // transform the incoming lambda function/lambda function props into a single group of lambda functions,
     // preserving the handler id to be used later in the custom resource
     const lambdaHandlers: InternalApiIntegration[] = props.apiIntegrations.map(apiIntegration => {
-
       lambdaCounter++;
-
       if (apiIntegration.existingLambdaObj) {
         return {
           id: apiIntegration.id,
@@ -144,7 +142,7 @@ export class OpenApiGatewayToLambda extends Construct {
         let lambdaFunctionProps: lambda.FunctionProps = apiIntegration.lambdaFunctionProps;
         if (lambdaFunctionProps?.functionName === undefined) {
           lambdaFunctionProps = overrideProps(lambdaFunctionProps, {
-            functionName: `OpenApiGatewayToLambda-Function${lambdaCounter}`
+            functionName: defaults.generateName(this, `Function${lambdaCounter}`)
           }, true);
         }
 
@@ -169,13 +167,13 @@ export class OpenApiGatewayToLambda extends Construct {
       };
     });
 
-    const templateWriter = resources.createTemplateWriterCustomResource(this, 'TemplateWriter', specBucket, specKey, templateValues);
+    const apiDefinitionWriter = resources.createTemplateWriterCustomResource(this, apiDefinitionBucket, apiDefinitionKey, templateValues);
 
     const specRestApiResponse = defaults.CreateSpecRestApi(this, {
       ...props.apiGatewayProps,
       apiDefinition: apigateway.ApiDefinition.fromBucket(
-        templateWriter.s3Bucket,
-        templateWriter.s3Key
+        apiDefinitionWriter.s3Bucket,
+        apiDefinitionWriter.s3Key
       )
     }, props.logGroupProps);
 
@@ -183,7 +181,7 @@ export class OpenApiGatewayToLambda extends Construct {
     this.apiGatewayCloudWatchRole = specRestApiResponse.role;
     this.apiGatewayLogGroup = specRestApiResponse.logGroup;
 
-    this.apiGateway.latestDeployment?.addToLogicalId(specKey); // trigger deployment any time the api definition changes
+    this.apiGateway.latestDeployment?.addToLogicalId(apiDefinitionKey); // trigger deployment any time the api definition changes
 
     lambdaHandlers.map(lambdaHandler => {
       lambdaHandler.lambdaFunction.addPermission('PermitAPIGInvocation', {

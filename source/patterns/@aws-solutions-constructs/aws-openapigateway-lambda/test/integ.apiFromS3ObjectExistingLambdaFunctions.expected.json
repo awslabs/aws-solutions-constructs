@@ -1,7 +1,409 @@
 {
-  "Description": "Integration Test for aws-apigateway-lambda",
+  "Description": "Integration Test for aws-openapigateway-lambda",
   "Resources": {
-    "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction1ServiceRole05B970B2": {
+    "existingScriptLocation845F3C51": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "Tags": [
+          {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true"
+          },
+          {
+            "Key": "aws-cdk:cr-owned:8a504ef4",
+            "Value": "true"
+          }
+        ],
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W51",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
+            },
+            {
+              "id": "W41",
+              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct"
+            }
+          ]
+        }
+      }
+    },
+    "existingScriptLocationPolicy276EC326": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "existingScriptLocation845F3C51"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn"
+                  ]
+                }
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "existingScriptLocation845F3C51",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "existingScriptLocation845F3C51",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "existingScriptLocationAutoDeleteObjectsCustomResource0F729F9B": {
+      "Type": "Custom::S3AutoDeleteObjects",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn"
+          ]
+        },
+        "BucketName": {
+          "Ref": "existingScriptLocation845F3C51"
+        }
+      },
+      "DependsOn": [
+        "existingScriptLocationPolicy276EC326"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+          }
+        ]
+      }
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "40aa87cdf43c4095cec18bc443965f22ab2f8c1ace47e482a0ba4e35d83b0cc9.zip"
+        },
+        "Timeout": 900,
+        "MemorySize": 128,
+        "Handler": "__entrypoint__.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs14.x",
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Lambda function for auto-deleting objects in ",
+              {
+                "Ref": "existingScriptLocation845F3C51"
+              },
+              " S3 bucket."
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W89",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W92",
+              "reason": "CDK generated custom resource"
+            }
+          ]
+        }
+      }
+    },
+    "ApiDefinitionBucketAwsCliLayerC6731C43": {
+      "Type": "AWS::Lambda::LayerVersion",
+      "Properties": {
+        "Content": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "6a28458f7bc3d04e4d2b17f9c3da0709bf456e34b06ea7c96111eecb2fddd054.zip"
+        },
+        "Description": "/opt/awscli/aws"
+      }
+    },
+    "ApiDefinitionBucketCustomResource1405D43C": {
+      "Type": "Custom::CDKBucketDeployment",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
+            "Arn"
+          ]
+        },
+        "SourceBucketNames": [
+          {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          }
+        ],
+        "SourceObjectKeys": [
+          "5677816d308c06897d123dff3a54ed42598c041d6bdeef3d8085780f9294da7f.zip"
+        ],
+        "DestinationBucketName": {
+          "Ref": "existingScriptLocation845F3C51"
+        },
+        "Prune": true
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject",
+                "s3:PutObjectLegalHold",
+                "s3:PutObjectRetention",
+                "s3:PutObjectTagging",
+                "s3:PutObjectVersionTagging",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "existingScriptLocation845F3C51",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "existingScriptLocation845F3C51",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+        "Roles": [
+          {
+            "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+          }
+        ]
+      }
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "de91205450df70f943fbde8ad6f4eec685d4c82c11ddec668199a8d2ec4d7065.zip"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+            "Arn"
+          ]
+        },
+        "Handler": "index.handler",
+        "Layers": [
+          {
+            "Ref": "ApiDefinitionBucketAwsCliLayerC6731C43"
+          }
+        ],
+        "Runtime": "python3.9",
+        "Timeout": 900
+      },
+      "DependsOn": [
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W89",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W92",
+              "reason": "CDK generated custom resource"
+            }
+          ]
+        }
+      }
+    },
+    "MessagesLambdaTestFromS3ObjectServiceRole46C586D5": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -56,7 +458,7 @@
         ]
       }
     },
-    "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction1ServiceRoleDefaultPolicy81CC82BF": {
+    "MessagesLambdaTestFromS3ObjectServiceRoleDefaultPolicyC7F7E97D": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -72,10 +474,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction1ServiceRoleDefaultPolicy81CC82BF",
+        "PolicyName": "MessagesLambdaTestFromS3ObjectServiceRoleDefaultPolicyC7F7E97D",
         "Roles": [
           {
-            "Ref": "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction1ServiceRole05B970B2"
+            "Ref": "MessagesLambdaTestFromS3ObjectServiceRole46C586D5"
           }
         ]
       },
@@ -90,7 +492,7 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction16DF7378F": {
+    "MessagesLambdaTestFromS3Object5D32998B": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -101,11 +503,11 @@
         },
         "Role": {
           "Fn::GetAtt": [
-            "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction1ServiceRole05B970B2",
+            "MessagesLambdaTestFromS3ObjectServiceRole46C586D5",
             "Arn"
           ]
         },
-        "FunctionName": "OpenApiGatewayToLambda-Function1",
+        "FunctionName": "MessagesLambdaTestFromS3Object",
         "Handler": "index.handler",
         "Runtime": "nodejs18.x",
         "TracingConfig": {
@@ -113,8 +515,8 @@
         }
       },
       "DependsOn": [
-        "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction1ServiceRoleDefaultPolicy81CC82BF",
-        "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction1ServiceRole05B970B2"
+        "MessagesLambdaTestFromS3ObjectServiceRoleDefaultPolicyC7F7E97D",
+        "MessagesLambdaTestFromS3ObjectServiceRole46C586D5"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -130,18 +532,30 @@
             {
               "id": "W92",
               "reason": "Impossible for us to define the correct concurrency for clients"
+            },
+            {
+              "id": "W58",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W89",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W92",
+              "reason": "CDK generated custom resource"
             }
           ]
         }
       }
     },
-    "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction1PermitAPIGInvocation13DEC124": {
+    "MessagesLambdaTestFromS3ObjectPermitAPIGInvocation6E2B7AD8": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction16DF7378F",
+            "MessagesLambdaTestFromS3Object5D32998B",
             "Arn"
           ]
         },
@@ -172,7 +586,7 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction2ServiceRole770A1865": {
+    "PhotosLambdaTestFromS3ObjectServiceRole3D2FCC8F": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -227,7 +641,7 @@
         ]
       }
     },
-    "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction2ServiceRoleDefaultPolicy81A0C3AD": {
+    "PhotosLambdaTestFromS3ObjectServiceRoleDefaultPolicy350E3C7A": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -243,10 +657,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction2ServiceRoleDefaultPolicy81A0C3AD",
+        "PolicyName": "PhotosLambdaTestFromS3ObjectServiceRoleDefaultPolicy350E3C7A",
         "Roles": [
           {
-            "Ref": "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction2ServiceRole770A1865"
+            "Ref": "PhotosLambdaTestFromS3ObjectServiceRole3D2FCC8F"
           }
         ]
       },
@@ -261,7 +675,7 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction21031FA41": {
+    "PhotosLambdaTestFromS3Object0B18DC58": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -272,11 +686,11 @@
         },
         "Role": {
           "Fn::GetAtt": [
-            "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction2ServiceRole770A1865",
+            "PhotosLambdaTestFromS3ObjectServiceRole3D2FCC8F",
             "Arn"
           ]
         },
-        "FunctionName": "OpenApiGatewayToLambda-Function2",
+        "FunctionName": "PhotosLambdaTestFromS3Object",
         "Handler": "index.handler",
         "Runtime": "nodejs18.x",
         "TracingConfig": {
@@ -284,8 +698,8 @@
         }
       },
       "DependsOn": [
-        "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction2ServiceRoleDefaultPolicy81A0C3AD",
-        "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction2ServiceRole770A1865"
+        "PhotosLambdaTestFromS3ObjectServiceRoleDefaultPolicy350E3C7A",
+        "PhotosLambdaTestFromS3ObjectServiceRole3D2FCC8F"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -301,18 +715,30 @@
             {
               "id": "W92",
               "reason": "Impossible for us to define the correct concurrency for clients"
+            },
+            {
+              "id": "W58",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W89",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W92",
+              "reason": "CDK generated custom resource"
             }
           ]
         }
       }
     },
-    "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction2PermitAPIGInvocation20179849": {
+    "PhotosLambdaTestFromS3ObjectPermitAPIGInvocation4223510C": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction21031FA41",
+            "PhotosLambdaTestFromS3Object0B18DC58",
             "Arn"
           ]
         },
@@ -343,7 +769,7 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaTemplateWriterTemplateWriterLambdaRoleB8F1B236": {
+    "OpenApiGatewayToLambdaTemplateWriterLambdaRole9616EF74": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -412,9 +838,9 @@
                         },
                         ":s3:::",
                         {
-                          "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                          "Ref": "existingScriptLocation845F3C51"
                         },
-                        "/57155bbfcfa2d9e7a3dd72c8cbb87a2f9340552c306b889ed5153ef768f03cc6.yaml"
+                        "/apiDefinition.yaml"
                       ]
                     ]
                   }
@@ -455,7 +881,7 @@
         ]
       }
     },
-    "OpenApiGatewayToLambdaTemplateWriterTemplateWriterLambdaRoleDefaultPolicy47A8F1A5": {
+    "OpenApiGatewayToLambdaTemplateWriterLambdaRoleDefaultPolicyB2BA0763": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -471,10 +897,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "OpenApiGatewayToLambdaTemplateWriterTemplateWriterLambdaRoleDefaultPolicy47A8F1A5",
+        "PolicyName": "OpenApiGatewayToLambdaTemplateWriterLambdaRoleDefaultPolicyB2BA0763",
         "Roles": [
           {
-            "Ref": "OpenApiGatewayToLambdaTemplateWriterTemplateWriterLambdaRoleB8F1B236"
+            "Ref": "OpenApiGatewayToLambdaTemplateWriterLambdaRole9616EF74"
           }
         ]
       },
@@ -489,7 +915,7 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaTemplateWriterTemplateWriterLambdaServiceRole02E6D7B0": {
+    "OpenApiGatewayToLambdaLambdaFunctionServiceRoleACE09A85": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -544,7 +970,7 @@
         ]
       }
     },
-    "OpenApiGatewayToLambdaTemplateWriterTemplateWriterLambdaB52BEB3E": {
+    "OpenApiGatewayToLambdaLambdaFunctionC7227471": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -555,11 +981,10 @@
         },
         "Role": {
           "Fn::GetAtt": [
-            "OpenApiGatewayToLambdaTemplateWriterTemplateWriterLambdaRoleB8F1B236",
+            "OpenApiGatewayToLambdaTemplateWriterLambdaRole9616EF74",
             "Arn"
           ]
         },
-        "FunctionName": "TemplateWriterTemplateWriterLambda",
         "Handler": "index.handler",
         "Runtime": "nodejs18.x",
         "TracingConfig": {
@@ -567,8 +992,8 @@
         }
       },
       "DependsOn": [
-        "OpenApiGatewayToLambdaTemplateWriterTemplateWriterLambdaRoleDefaultPolicy47A8F1A5",
-        "OpenApiGatewayToLambdaTemplateWriterTemplateWriterLambdaRoleB8F1B236"
+        "OpenApiGatewayToLambdaTemplateWriterLambdaRoleDefaultPolicyB2BA0763",
+        "OpenApiGatewayToLambdaTemplateWriterLambdaRole9616EF74"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -584,6 +1009,18 @@
             {
               "id": "W92",
               "reason": "Impossible for us to define the correct concurrency for clients"
+            },
+            {
+              "id": "W58",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W89",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W92",
+              "reason": "CDK generated custom resource"
             }
           ]
         }
@@ -631,7 +1068,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "OpenApiGatewayToLambdaTemplateWriterTemplateWriterLambdaB52BEB3E",
+                    "OpenApiGatewayToLambdaLambdaFunctionC7227471",
                     "Arn"
                   ]
                 },
@@ -641,7 +1078,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "OpenApiGatewayToLambdaTemplateWriterTemplateWriterLambdaB52BEB3E",
+                          "OpenApiGatewayToLambdaLambdaFunctionC7227471",
                           "Arn"
                         ]
                       },
@@ -677,12 +1114,12 @@
             "Arn"
           ]
         },
-        "Description": "AWS CDK resource provider framework - onEvent (simpleDeployment/OpenApiGatewayToLambda/TemplateWriterProvider)",
+        "Description": "AWS CDK resource provider framework - onEvent (apiFromS3ObjectExistingLambdaFunctions/OpenApiGatewayToLambda/TemplateWriterProvider)",
         "Environment": {
           "Variables": {
             "USER_ON_EVENT_FUNCTION_ARN": {
               "Fn::GetAtt": [
-                "OpenApiGatewayToLambdaTemplateWriterTemplateWriterLambdaB52BEB3E",
+                "OpenApiGatewayToLambdaLambdaFunctionC7227471",
                 "Arn"
               ]
             }
@@ -710,12 +1147,24 @@
             {
               "id": "W92",
               "reason": "Impossible for us to define the correct concurrency for clients"
+            },
+            {
+              "id": "W58",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W89",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W92",
+              "reason": "CDK generated custom resource"
             }
           ]
         }
       }
     },
-    "OpenApiGatewayToLambdaTemplateWriterTemplateWriterCustomResourceE4CD4D75": {
+    "OpenApiGatewayToLambdaTemplateWriterCustomResourceF4BD1049": {
       "Type": "Custom::ApiTemplateWriter",
       "Properties": {
         "ServiceToken": {
@@ -739,7 +1188,7 @@
               ":lambda:path/2015-03-31/functions/",
               {
                 "Fn::GetAtt": [
-                  "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction16DF7378F",
+                  "MessagesLambdaTestFromS3Object5D32998B",
                   "Arn"
                 ]
               },
@@ -754,7 +1203,7 @@
               ":lambda:path/2015-03-31/functions/",
               {
                 "Fn::GetAtt": [
-                  "OpenApiGatewayToLambdaOpenApiGatewayToLambdaFunction21031FA41",
+                  "PhotosLambdaTestFromS3Object0B18DC58",
                   "Arn"
                 ]
               },
@@ -763,9 +1212,9 @@
           ]
         },
         "TemplateInputBucket": {
-          "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          "Ref": "existingScriptLocation845F3C51"
         },
-        "TemplateInputKey": "57155bbfcfa2d9e7a3dd72c8cbb87a2f9340552c306b889ed5153ef768f03cc6.yaml",
+        "TemplateInputKey": "apiDefinition.yaml",
         "TemplateOutputBucket": {
           "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
         }
@@ -801,7 +1250,7 @@
           },
           "Key": {
             "Fn::GetAtt": [
-              "OpenApiGatewayToLambdaTemplateWriterTemplateWriterCustomResourceE4CD4D75",
+              "OpenApiGatewayToLambdaTemplateWriterCustomResourceF4BD1049",
               "TemplateOutputKey"
             ]
           }
@@ -809,7 +1258,7 @@
         "Name": "SpecRestApi"
       }
     },
-    "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD07750e0692d17d6d2e982f366f353eb30ef6": {
+    "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775eec0a517f2961603059e8e1a41efe890": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -844,7 +1293,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD07750e0692d17d6d2e982f366f353eb30ef6"
+          "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775eec0a517f2961603059e8e1a41efe890"
         },
         "MethodSettings": [
           {

@@ -29,23 +29,21 @@ export interface TemplateWriterResponse {
 
 export function createTemplateWriterCustomResource(
   scope: Construct,
-  id: string,
-  inputTemplateBucket: string,
+  inputTemplateBucket: s3.IBucket,
   inputTemplateKey: string,
   templateValues: Array<{ id: string; value: string; }>
 ): TemplateWriterResponse {
 
-  const outputAsset = new Asset(scope, `${id}OutputAsset`, {
+  const outputAsset = new Asset(scope, 'OutputAsset', {
     path: path.join(__dirname, 'placeholder')
   });
 
   const templateWriterLambda = buildLambdaFunction(scope, {
     lambdaFunctionProps: {
-      functionName: `${id}TemplateWriterLambda`,
       runtime: lambda.Runtime.NODEJS_18_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/template-writer-custom-resource`),
-      role: new iam.Role(scope, `${id}TemplateWriterLambdaRole`, {
+      role: new iam.Role(scope, 'TemplateWriterLambdaRole', {
         assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         description: 'Role used by the TemplateWriterLambda to transform the incoming asset',
         inlinePolicies: {
@@ -66,7 +64,7 @@ export function createTemplateWriterCustomResource(
               new iam.PolicyStatement({
                 actions: [ 's3:GetObject' ],
                 effect: iam.Effect.ALLOW,
-                resources: [ `arn:${Aws.PARTITION}:s3:::${inputTemplateBucket}/${inputTemplateKey}`]
+                resources: [ `arn:${Aws.PARTITION}:s3:::${inputTemplateBucket.bucketName}/${inputTemplateKey}`]
               })
             ]
           }),
@@ -84,7 +82,7 @@ export function createTemplateWriterCustomResource(
     }
   });
 
-  const templateWriterProvider = new Provider(scope, `${id}Provider`, {
+  const templateWriterProvider = new Provider(scope, 'TemplateWriterProvider', {
     onEventHandler: templateWriterLambda
   });
 
@@ -105,12 +103,12 @@ export function createTemplateWriterCustomResource(
     }
   ]);
 
-  const customResource = new CustomResource(scope, `${id}TemplateWriterCustomResource`, {
+  const customResource = new CustomResource(scope, 'TemplateWriterCustomResource', {
     resourceType: 'Custom::ApiTemplateWriter',
     serviceToken: templateWriterProvider.serviceToken,
     properties: {
       TemplateValues: JSON.stringify({ templateValues }),
-      TemplateInputBucket: inputTemplateBucket,
+      TemplateInputBucket: inputTemplateBucket.bucketName,
       TemplateInputKey: inputTemplateKey,
       TemplateOutputBucket: outputAsset.s3BucketName
     }

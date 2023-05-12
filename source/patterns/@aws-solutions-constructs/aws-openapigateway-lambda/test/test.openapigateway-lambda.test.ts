@@ -15,6 +15,7 @@
 import { Stack } from "aws-cdk-lib";
 import { OpenApiGatewayToLambda } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import * as path from 'path';
 import { Template } from "aws-cdk-lib/assertions";
@@ -53,7 +54,7 @@ test('Throws error when both api definition asset and s3 object are specified', 
   const app = () => {
     new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
       apiDefinitionAsset,
-      apiDefinitionBucket: 'bucket',
+      apiDefinitionBucket: new s3.Bucket(stack, 'ApiDefinitionBucket'),
       apiDefinitionKey: 'key',
       apiIntegrations: [
         {
