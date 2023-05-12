@@ -188,7 +188,8 @@ export function AddAwsServiceEndpoint(
     AddInterfaceEndpoint(scope, vpc, service, interfaceTag);
   }
 
-  return;
+  // ESLint requires this return statement, so disabling SonarQube warning
+  return; // NOSONAR
 }
 
 function CheckIfEndpointAlreadyExists(vpc: ec2.IVpc, interfaceTag: ServiceEndpointTypes): boolean {

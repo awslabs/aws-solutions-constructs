@@ -115,7 +115,8 @@ test('Test override SnapshotOptions for buildOpenSearch', () => {
       }
     },
     DomainEndpointOptions: {
-      TLSSecurityPolicy: opensearch.TLSSecurityPolicy.TLS_1_2,
+      EnforceHTTPS: true,
+      TLSSecurityPolicy: 'Policy-Min-TLS-1-2-2019-07',
     },
     DomainName: "test-domain",
     EBSOptions: {
