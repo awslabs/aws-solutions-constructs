@@ -18,7 +18,7 @@ import * as s3deployment from "aws-cdk-lib/aws-s3-deployment";
 
 const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename));
-stack.templateOptions.description = 'Integration Test for Template Writer Resource';
+stack.templateOptions.description = 'Integration Test for Template Writer Resource from s3 object';
 
 const templateBucket = defaults.CreateScrapBucket(stack, {
   autoDeleteObjects: true
