@@ -56,47 +56,62 @@ Python
 ``` python
 from aws_solutions_constructs.aws_openapigateway_lambda import ApiGatewayToLambda
 from aws_cdk import (
-    aws_lambda as _lambda,
     Stack
 )
-from constructs import Construct
 
-ApiGatewayToLambda(self, 'OpenApiGatewayToLambdaPattern',
-  api_definition_bucket='s3-bucket-that-holds-openapi-spec-file',
-  api_definition_key='s3-object-key-of-openapi-spec-file',
-  api_integrations=[(
-    id='MessagesHandler',
-    lambda_function_props=_lambda.FunctionProps(
-      runtime=_lambda.Runtime.PYTHON_3_9,
-      handler='index.handler',
-      code=_lambda.Code.from_asset('lambda')
-    )
-  )]
+import aws_cdk.aws_s3_assets as s3_assets
+import aws_cdk.aws_lambda as lambda_
+from constructs import Construct
+from .api_definition import ApiDefinition
+
+api_definition_asset = s3_assets.Asset(self, "ApiDefinitionAsset",
+  path="openapispec.yaml"
+)
+
+api_integration = ApiDefinition("MessagesHandler", (
+  runtime=lambda_.Runtime.NODEJS_18_X,
+  handler="index.handler",
+  code=lambda_.Code.from_inline("exports.handler = handler.toString()")
+))
+
+ApiGatewayToLambda(self, "OpenApiGatewayToLambda",
+  api_definition_asset = api_definition_asset,
+  api_integrations = [ api_integration]
 )
 ```
 
 Java
 ``` java
+import software.amazon.awscdk.services.lambda.Code;
+import software.amazon.awscdk.services.lambda.FunctionProps;
+import software.amazon.awscdk.services.s3.assets.Asset;
+import software.amazon.awscdk.services.s3.assets.AssetProps;
+import software.amazon.awsconstructs.services.openapigatewaylambda.ApiIntegration;
+import software.amazon.awsconstructs.services.openapigatewaylambda.OpenApiGatewayToLambda;
+import software.amazon.awsconstructs.services.openapigatewaylambda.OpenApiGatewayToLambdaProps;
 import software.constructs.Construct;
-
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
-import software.amazon.awscdk.services.lambda.*;
-import software.amazon.awscdk.services.lambda.Runtime;
-import software.amazon.awsconstructs.services.openapigatewaylambda.*;
 
-new ApiGatewayToLambda(this, "OpenApiGatewayToLambdaPattern", new ApiGatewayToLambdaProps.Builder()
-        .apiDefinitionBucket("s3-bucket-that-holds-openapi-spec-file")
-        .apiDefinitionKey("s3-object-key-of-openapi-spec-file")
-        .apiIntegrations(ApiIntegration.Builder()
-          .id('MessagesHandler')
-          .lambdaFunctionProps(new FunctionProps.Builder()
-            .runtime(Runtime.NODEJS_18_X)
-            .code(Code.fromAsset("lambda"))
-            .handler("index.handler")
-            .build())
-          .build()
-        ).build());
+import java.util.Collections;
+
+import static software.amazon.awscdk.services.lambda.Runtime.NODEJS_18_X;
+
+final Asset apiDefintionAsset = new Asset(this, "ApiDefinition", AssetProps.builder().path("openapispec.yaml").build());
+
+final ApiIntegration apiIntegration = ApiIntegration.builder()
+    .id("MessagesHandler")
+    .lambdaFunctionProps(new FunctionProps.Builder()
+        .runtime(NODEJS_18_X)
+        .code(Code.fromAsset("lambda"))
+        .handler("index.handler")
+        .build())
+    .build();
+
+new OpenApiGatewayToLambda(this, "OpenApiGatewayToLambda", OpenApiGatewayToLambdaProps.builder()
+    .apiDefinitionAsset(apiDefintionAsset)
+    .apiIntegrations(Collections.singletonList(apiIntegration))
+    .build());
 ```
 
 ## Pattern Construct Props
