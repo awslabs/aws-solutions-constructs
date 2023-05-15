@@ -24,28 +24,38 @@ import { RestApiBaseProps } from 'aws-cdk-lib/aws-apigateway';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
 import { overrideProps } from '@aws-solutions-constructs/core';
 
+/**
+ * The ApiIntegration interface is used to correlate a user-specified id with either a existing lambda function or set of lambda props.
+ *
+ * See the 'Overview of how the OpenAPI file transformation works' section of the README.md for more details on its usage.
+ */
 export interface ApiIntegration {
   /**
    * Id of the ApiIntegration, used to correlate this lambda function to the api integration in the open api definition.
    */
   readonly id: string;
   /**
-   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
-   *
-   * @default - None
+   * Existing instance of Lambda Function object. Providing both this and `lambdaFunctionProps` will cause an error.
    */
-  readonly existingLambdaObj?: lambda.Function,
+  readonly existingLambdaObj?: lambda.Function;
   /**
-   * User provided props to override the default props for the Lambda function.
-   *
-   * @default - Default props are used.
+   * User provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` will cause an error.
    */
-  readonly lambdaFunctionProps?: lambda.FunctionProps
+  readonly lambdaFunctionProps?: lambda.FunctionProps;
 }
 
-interface InternalApiIntegration {
+/**
+ * Helper object to map an ApiIntegration id to its resolved lambda.Function.
+ */
+export interface ApiLambdaFunction {
+  /**
+   * Id of the ApiIntegration, used to correlate this lambda function to the api integration in the open api definition.
+   */
   readonly id: string;
-  readonly lambdaFunction: lambda.Function
+  /**
+   * The instantiated lambda.Function.
+   */
+  readonly lambdaFunction: lambda.Function;
 }
 
 export interface OpenApiGatewayToLambdaProps {
@@ -104,7 +114,7 @@ export class OpenApiGatewayToLambda extends Construct {
   public readonly apiGateway: apigateway.SpecRestApi;
   public readonly apiGatewayCloudWatchRole?: iam.Role;
   public readonly apiGatewayLogGroup: logs.LogGroup;
-  public readonly lambdaFunctions: lambda.Function[];
+  public readonly apiLambdaFunctions: ApiLambdaFunction[];
 
   constructor(scope: Construct, id: string, props: OpenApiGatewayToLambdaProps) {
     super(scope, id);
@@ -124,11 +134,10 @@ export class OpenApiGatewayToLambda extends Construct {
       throw new Error('At least one ApiIntegration must be specified in the apiIntegrations property');
     }
 
+    // store a counter to be able to uniquely name lambda functions to avoid naming collisions
     let lambdaCounter = 0;
 
-    // transform the incoming lambda function/lambda function props into a single group of lambda functions,
-    // preserving the handler id to be used later in the custom resource
-    const lambdaHandlers: InternalApiIntegration[] = props.apiIntegrations.map(apiIntegration => {
+    this.apiLambdaFunctions = props.apiIntegrations.map(apiIntegration => {
       lambdaCounter++;
       if (apiIntegration.existingLambdaObj) {
         return {
@@ -139,6 +148,7 @@ export class OpenApiGatewayToLambda extends Construct {
           })
         };
       } else if (apiIntegration.lambdaFunctionProps) {
+        // we need to pass unique name to the underlying buildLambdaFunction call to avoid naming collisions
         let lambdaFunctionProps: lambda.FunctionProps = apiIntegration.lambdaFunctionProps;
         if (lambdaFunctionProps?.functionName === undefined) {
           lambdaFunctionProps = overrideProps(lambdaFunctionProps, {
@@ -158,16 +168,16 @@ export class OpenApiGatewayToLambda extends Construct {
       }
     });
 
-    this.lambdaFunctions = lambdaHandlers.map(handler => handler.lambdaFunction);
-
-    const templateValues = lambdaHandlers.map(lambdaHandler => {
+    // Map each id and lambda function pair to the required format for the template writer custom resource
+    const apiIntegrationUris = this.apiLambdaFunctions.map(apiLambdaFunction => {
       return {
-        id: lambdaHandler.id,
-        value: `arn:${Aws.PARTITION}:apigateway:${Aws.REGION}:lambda:path/2015-03-31/functions/${lambdaHandler.lambdaFunction.functionArn}/invocations`
+        id: apiLambdaFunction.id,
+        value: `arn:${Aws.PARTITION}:apigateway:${Aws.REGION}:lambda:path/2015-03-31/functions/${apiLambdaFunction.lambdaFunction.functionArn}/invocations`
       };
     });
 
-    const apiDefinitionWriter = resources.createTemplateWriterCustomResource(this, apiDefinitionBucket, apiDefinitionKey, templateValues);
+    // This custom resource will overwrite the string placeholders in the openapi definition with the resolved values of the lambda URIs
+    const apiDefinitionWriter = resources.createTemplateWriterCustomResource(this, apiDefinitionBucket, apiDefinitionKey, apiIntegrationUris);
 
     const specRestApiResponse = defaults.CreateSpecRestApi(this, {
       ...props.apiGatewayProps,
@@ -181,10 +191,12 @@ export class OpenApiGatewayToLambda extends Construct {
     this.apiGatewayCloudWatchRole = specRestApiResponse.role;
     this.apiGatewayLogGroup = specRestApiResponse.logGroup;
 
-    this.apiGateway.latestDeployment?.addToLogicalId(apiDefinitionKey); // trigger deployment any time the api definition changes
+    // Redeploy the API any time the incoming API definition changes (from asset or s3 object)
+    this.apiGateway.latestDeployment?.addToLogicalId(apiDefinitionKey);
 
-    lambdaHandlers.map(lambdaHandler => {
-      lambdaHandler.lambdaFunction.addPermission('PermitAPIGInvocation', {
+    // Grant APIGW invocation rights of the backing lambda functions
+    this.apiLambdaFunctions.map(apiLambdaFunction => {
+      apiLambdaFunction.lambdaFunction.addPermission('PermitAPIGInvocation', {
         principal: new iam.ServicePrincipal('apigateway.amazonaws.com'),
         sourceArn: this.apiGateway.arnForExecuteApi('*')
       });
