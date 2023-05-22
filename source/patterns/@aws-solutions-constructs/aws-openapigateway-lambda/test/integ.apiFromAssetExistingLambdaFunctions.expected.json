@@ -808,7 +808,7 @@
         "Name": "SpecRestApi"
       }
     },
-    "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775792a4761737b16cc53bcba81306c6946": {
+    "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD077544bf0df4aa2c36614fed6e75068fcbe5": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -843,7 +843,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775792a4761737b16cc53bcba81306c6946"
+          "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD077544bf0df4aa2c36614fed6e75068fcbe5"
         },
         "MethodSettings": [
           {
