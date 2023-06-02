@@ -14,7 +14,7 @@
 // Imports
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { App, Stack, RemovalPolicy } from 'aws-cdk-lib';
-import { CreateScrapBucket } from '@aws-solutions-constructs/core';
+import { CreateScrapBucket, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import { KinesisStreamsToKinesisFirehoseToS3 } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
@@ -40,6 +40,7 @@ new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-existing-logging-bucket-str
     removalPolicy: RemovalPolicy.DESTROY
   }
 });
+suppressAutoDeleteHandlerWarnings(stack);
 
 // Synth
 app.synth();

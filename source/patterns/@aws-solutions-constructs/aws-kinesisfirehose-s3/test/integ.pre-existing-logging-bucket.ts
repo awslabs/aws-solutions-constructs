@@ -13,7 +13,7 @@
 
 // Imports
 import { App, Stack, RemovalPolicy } from 'aws-cdk-lib';
-import { CreateScrapBucket } from '@aws-solutions-constructs/core';
+import { CreateScrapBucket, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import { KinesisFirehoseToS3 } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
@@ -33,6 +33,7 @@ new KinesisFirehoseToS3(stack, 'test-firehose-s3-pre-existing-logging-bucket-sta
     serverAccessLogsBucket: existingBucket
   }
 });
+suppressAutoDeleteHandlerWarnings(stack);
 
 // Synth
 app.synth();

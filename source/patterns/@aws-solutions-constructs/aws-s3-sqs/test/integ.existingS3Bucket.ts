@@ -31,4 +31,6 @@ const props: S3ToSqsProps = {
 };
 
 new S3ToSqs(stack, 'test-s3-sqs', props);
+defaults.suppressAutoDeleteHandlerWarnings(stack);
+
 app.synth();

@@ -14,7 +14,7 @@
 // Imports
 import { App, Stack } from "aws-cdk-lib";
 import { KinesisFirehoseToS3 } from "../lib";
-import { CreateScrapBucket } from '@aws-solutions-constructs/core';
+import { CreateScrapBucket, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import * as s3 from "aws-cdk-lib/aws-s3";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
@@ -31,6 +31,7 @@ const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existin
 new KinesisFirehoseToS3(stack, 'test-firehose-s3-pre-existing-bucket-stack', {
   existingBucketObj: mybucket,
 });
+suppressAutoDeleteHandlerWarnings(stack);
 
 // Synth
 app.synth();

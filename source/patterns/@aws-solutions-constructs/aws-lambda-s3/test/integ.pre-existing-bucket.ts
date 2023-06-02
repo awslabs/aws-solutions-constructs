@@ -16,7 +16,7 @@ import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { LambdaToS3, LambdaToS3Props } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
-import { CreateScrapBucket } from '@aws-solutions-constructs/core';
+import { CreateScrapBucket, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
@@ -39,6 +39,7 @@ const props: LambdaToS3Props = {
 };
 
 new LambdaToS3(stack, 'test-lambda-s3-pre-existing-bucket', props);
+suppressAutoDeleteHandlerWarnings(stack);
 
 // Synth
 app.synth();

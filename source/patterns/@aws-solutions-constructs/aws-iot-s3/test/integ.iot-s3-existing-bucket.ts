@@ -42,5 +42,6 @@ const props: IotToS3Props = {
 };
 
 new IotToS3(stack, 'test-iot-s3-integration', props);
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 
 app.synth();

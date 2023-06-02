@@ -15,13 +15,13 @@
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { S3ToStepfunctions, S3ToStepfunctionsProps } from "../lib";
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
-import { CreateScrapBucket, generateIntegStackName, addCfnNagS3BucketNotificationRulesToSuppress } from '@aws-solutions-constructs/core';
+import * as defaults  from '@aws-solutions-constructs/core';
 
 const app = new App();
-const stack = new Stack(app, generateIntegStackName(__filename));
+const stack = new Stack(app, defaults.generateIntegStackName(__filename));
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-const existingBucket = CreateScrapBucket(stack, {
+const existingBucket = defaults.CreateScrapBucket(stack, {
   eventBridgeEnabled: true
 });
 
@@ -41,6 +41,7 @@ const props: S3ToStepfunctionsProps = {
 
 new S3ToStepfunctions(stack, 'test-s3-stepfunctions-pre-existing-bucket-construct', props);
 
-addCfnNagS3BucketNotificationRulesToSuppress(stack, 'BucketNotificationsHandler050a0587b7544547bf325f094a3db834');
+defaults.addCfnNagS3BucketNotificationRulesToSuppress(stack, 'BucketNotificationsHandler050a0587b7544547bf325f094a3db834');
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 
 app.synth();
