@@ -187,7 +187,25 @@
       },
       "DependsOn": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
-      ]
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W89",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W92",
+              "reason": "CDK generated custom resource"
+            }
+          ]
+        }
+      }
     },
     "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC": {
       "Type": "AWS::IAM::Role",
