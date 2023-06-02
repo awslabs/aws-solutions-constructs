@@ -460,3 +460,23 @@ test('s3 bucket with logging turned off', () => {
     }
   });
 });
+
+test('Confirm Log Bucket lifecycle rules persist',  () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {
+    loggingBucketProps: {
+      lifecycleRules: [
+        {
+          expiration: Duration.days(365),
+        }],
+    }
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResource("AWS::S3::Bucket", {
+    Properties: {
+      LifecycleConfiguration: {}
+    }
+  });
+});

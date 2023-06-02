@@ -66,9 +66,6 @@ export function createLoggingBucket(scope: Construct,
   // Extract the CfnBucket from the loggingBucket
   const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
 
-  // Remove the default LifecycleConfiguration for the Logging Bucket
-  loggingBucketResource.addPropertyDeletionOverride('LifecycleConfiguration.Rules');
-
   let _reason = "This S3 bucket is used as the access logging bucket for another bucket";
 
   if (bucketId === 'CloudfrontLoggingBucket') {
