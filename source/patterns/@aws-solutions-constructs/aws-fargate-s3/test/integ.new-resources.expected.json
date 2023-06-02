@@ -1378,7 +1378,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
           },
-          "S3Key": "40aa87cdf43c4095cec18bc443965f22ab2f8c1ace47e482a0ba4e35d83b0cc9.zip"
+          "S3Key": "350185a1069fa20a23a583e20c77f6844218bd73097902362dc94f1a108f5d89.zip"
         },
         "Timeout": 900,
         "MemorySize": 128,
@@ -1389,7 +1389,7 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs14.x",
+        "Runtime": "nodejs16.x",
         "Description": {
           "Fn::Join": [
             "",

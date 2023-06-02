@@ -11,29 +11,29 @@
  *  and limitations under the License.
  */
 
-// Imports
-import { App, Stack, RemovalPolicy } from 'aws-cdk-lib';
-import { CreateScrapBucket, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
-import { KinesisFirehoseToS3 } from '../lib';
+/// !cdk-integ *
+import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
+import { S3ToSqs, S3ToSqsProps } from "../lib";
+import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
-// Setup
 const app = new App();
+
 const stack = new Stack(app, generateIntegStackName(__filename));
-stack.templateOptions.description = 'Integration Test for aws-kinesisfirehose-s3';
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-const existingBucket = CreateScrapBucket(stack, {
-});
+const scrapLogBucket = defaults.CreateScrapBucket(stack);
 
-new KinesisFirehoseToS3(stack, 'test-firehose-s3-pre-existing-logging-bucket-stack', {
+// Currently there is no way to customize the logging bucket, so this
+// test will leave a bucket behind
+const props: S3ToSqsProps = {
   bucketProps: {
+    serverAccessLogsBucket: scrapLogBucket,
     removalPolicy: RemovalPolicy.DESTROY,
-    autoDeleteObjects: true,
-    serverAccessLogsBucket: existingBucket
+    autoDeleteObjects: true
   }
-});
-suppressAutoDeleteHandlerWarnings(stack);
+};
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 
-// Synth
+new S3ToSqs(stack, 'test-s3-sqs-temp', props);
 app.synth();

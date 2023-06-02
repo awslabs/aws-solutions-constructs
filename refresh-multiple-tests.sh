@@ -20,10 +20,13 @@
 # dynamodbstreams-lambda and lambda-elasticsearch)
 
 export constructs="
-  aws-lambda-elasticsearch-kibana
-  aws-lambda-opensearch
-  aws-fargate-opensearch
-  aws-dynamodbstreams-lambda-elasticsearch-kibana
+  aws-s3-lambda
+  aws-s3-sns
+  aws-s3-sqs
+  aws-s3-stepfunctions
+  aws-lambda-s3
+  aws-fargate-s3
+  aws-cloudfront-s3
 "
 
 # deployment_dir is top level aws-solutions-constructs
