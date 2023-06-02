@@ -15,7 +15,7 @@
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { S3ToStepfunctions, S3ToStepfunctionsProps } from "../lib";
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
-import * as defaults  from '@aws-solutions-constructs/core';
+import * as defaults from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename));
