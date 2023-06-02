@@ -18,6 +18,7 @@ import { CreateScrapBucket, generateIntegStackName } from '@aws-solutions-constr
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
 new S3ToSns(stack, 'test-s3-sns', {
   existingBucketObj: CreateScrapBucket(stack)

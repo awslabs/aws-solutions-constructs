@@ -88,6 +88,42 @@
                   ]
                 }
               ]
+            },
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "ArnLike": {
+                  "aws:SourceArn": {
+                    "Fn::GetAtt": [
+                      "tests3sqstempS3Bucket579C3000",
+                      "Arn"
+                    ]
+                  }
+                },
+                "StringEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "logging.s3.amazonaws.com"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "scrapBucketB11863B7",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
             }
           ],
           "Version": "2012-10-17"
@@ -112,37 +148,6 @@
       ],
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
-    },
-    "scrapBucketNotifications065035E3": {
-      "Type": "Custom::S3BucketNotifications",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::GetAtt": [
-            "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691",
-            "Arn"
-          ]
-        },
-        "BucketName": {
-          "Ref": "scrapBucketB11863B7"
-        },
-        "NotificationConfiguration": {
-          "TopicConfigurations": [
-            {
-              "Events": [
-                "s3:ObjectCreated:*"
-              ],
-              "TopicArn": {
-                "Ref": "tests3snsSnsTopicF02F6BD0"
-              }
-            }
-          ]
-        },
-        "Managed": true
-      },
-      "DependsOn": [
-        "tests3snsSnsTopicPolicyBB44DF16",
-        "tests3snsSnsTopicF02F6BD0"
-      ]
     },
     "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
       "Type": "AWS::IAM::Role",
@@ -202,7 +207,273 @@
         "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
       ]
     },
-    "tests3snsEncryptionKey6C553584": {
+    "tests3sqstempS3Bucket579C3000": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "NoncurrentVersionTransitions": [
+                {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 90
+                }
+              ],
+              "Status": "Enabled"
+            }
+          ]
+        },
+        "LoggingConfiguration": {
+          "DestinationBucketName": {
+            "Ref": "scrapBucketB11863B7"
+          }
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "Tags": [
+          {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true"
+          }
+        ],
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "tests3sqstempS3BucketPolicy1DE71896": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "tests3sqstempS3Bucket579C3000"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "tests3sqstempS3Bucket579C3000",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "tests3sqstempS3Bucket579C3000",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn"
+                  ]
+                }
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "tests3sqstempS3Bucket579C3000",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "tests3sqstempS3Bucket579C3000",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "tests3sqstempS3BucketAutoDeleteObjectsCustomResource23CDC6A9": {
+      "Type": "Custom::S3AutoDeleteObjects",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn"
+          ]
+        },
+        "BucketName": {
+          "Ref": "tests3sqstempS3Bucket579C3000"
+        }
+      },
+      "DependsOn": [
+        "tests3sqstempS3BucketPolicy1DE71896"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "tests3sqstempS3BucketNotificationsE2A27A09": {
+      "Type": "Custom::S3BucketNotifications",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691",
+            "Arn"
+          ]
+        },
+        "BucketName": {
+          "Ref": "tests3sqstempS3Bucket579C3000"
+        },
+        "NotificationConfiguration": {
+          "QueueConfigurations": [
+            {
+              "Events": [
+                "s3:ObjectCreated:*"
+              ],
+              "QueueArn": {
+                "Fn::GetAtt": [
+                  "tests3sqstempqueueE6526813",
+                  "Arn"
+                ]
+              }
+            }
+          ]
+        },
+        "Managed": true
+      },
+      "DependsOn": [
+        "tests3sqstempqueuePolicy6C62431A",
+        "tests3sqstempqueueE6526813"
+      ]
+    },
+    "tests3sqstempdeadLetterQueueDD55EEDB": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "KmsMasterKeyId": "alias/aws/sqs"
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "tests3sqstempdeadLetterQueuePolicy56962C75": {
+      "Type": "AWS::SQS::QueuePolicy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "tests3sqstempdeadLetterQueueDD55EEDB",
+                  "Arn"
+                ]
+              },
+              "Sid": "QueueOwnerOnlyAccess"
+            },
+            {
+              "Action": "SQS:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "tests3sqstempdeadLetterQueueDD55EEDB",
+                  "Arn"
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Queues": [
+          {
+            "Ref": "tests3sqstempdeadLetterQueueDD55EEDB"
+          }
+        ]
+      }
+    },
+    "tests3sqstempEncryptionKey57CC85E2": {
       "Type": "AWS::KMS::Key",
       "Properties": {
         "KeyPolicy": {
@@ -233,7 +504,30 @@
             {
               "Action": [
                 "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
                 "kms:GenerateDataKey*"
+              ],
+              "Condition": {
+                "ArnLike": {
+                  "aws:SourceArn": {
+                    "Fn::GetAtt": [
+                      "tests3sqstempS3Bucket579C3000",
+                      "Arn"
+                    ]
+                  }
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "s3.amazonaws.com"
+              },
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "kms:GenerateDataKey*",
+                "kms:Decrypt"
               ],
               "Effect": "Allow",
               "Principal": {
@@ -249,41 +543,43 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "tests3snsSnsTopicF02F6BD0": {
-      "Type": "AWS::SNS::Topic",
+    "tests3sqstempqueueE6526813": {
+      "Type": "AWS::SQS::Queue",
       "Properties": {
         "KmsMasterKeyId": {
           "Fn::GetAtt": [
-            "tests3snsEncryptionKey6C553584",
+            "tests3sqstempEncryptionKey57CC85E2",
             "Arn"
           ]
+        },
+        "RedrivePolicy": {
+          "deadLetterTargetArn": {
+            "Fn::GetAtt": [
+              "tests3sqstempdeadLetterQueueDD55EEDB",
+              "Arn"
+            ]
+          },
+          "maxReceiveCount": 15
         }
-      }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
-    "tests3snsSnsTopicPolicyBB44DF16": {
-      "Type": "AWS::SNS::TopicPolicy",
+    "tests3sqstempqueuePolicy6C62431A": {
+      "Type": "AWS::SQS::QueuePolicy",
       "Properties": {
         "PolicyDocument": {
           "Statement": [
             {
               "Action": [
-                "SNS:Publish",
-                "SNS:RemovePermission",
-                "SNS:SetTopicAttributes",
-                "SNS:DeleteTopic",
-                "SNS:ListSubscriptionsByTopic",
-                "SNS:GetTopicAttributes",
-                "SNS:Receive",
-                "SNS:AddPermission",
-                "SNS:Subscribe"
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes"
               ],
-              "Condition": {
-                "StringEquals": {
-                  "AWS:SourceOwner": {
-                    "Ref": "AWS::AccountId"
-                  }
-                }
-              },
               "Effect": "Allow",
               "Principal": {
                 "AWS": {
@@ -304,22 +600,15 @@
                 }
               },
               "Resource": {
-                "Ref": "tests3snsSnsTopicF02F6BD0"
+                "Fn::GetAtt": [
+                  "tests3sqstempqueueE6526813",
+                  "Arn"
+                ]
               },
-              "Sid": "TopicOwnerOnlyAccess"
+              "Sid": "QueueOwnerOnlyAccess"
             },
             {
-              "Action": [
-                "SNS:Publish",
-                "SNS:RemovePermission",
-                "SNS:SetTopicAttributes",
-                "SNS:DeleteTopic",
-                "SNS:ListSubscriptionsByTopic",
-                "SNS:GetTopicAttributes",
-                "SNS:Receive",
-                "SNS:AddPermission",
-                "SNS:Subscribe"
-              ],
+              "Action": "SQS:*",
               "Condition": {
                 "Bool": {
                   "aws:SecureTransport": "false"
@@ -330,17 +619,24 @@
                 "AWS": "*"
               },
               "Resource": {
-                "Ref": "tests3snsSnsTopicF02F6BD0"
+                "Fn::GetAtt": [
+                  "tests3sqstempqueueE6526813",
+                  "Arn"
+                ]
               },
               "Sid": "HttpsOnly"
             },
             {
-              "Action": "sns:Publish",
+              "Action": [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl"
+              ],
               "Condition": {
                 "ArnLike": {
                   "aws:SourceArn": {
                     "Fn::GetAtt": [
-                      "scrapBucketB11863B7",
+                      "tests3sqstempS3Bucket579C3000",
                       "Arn"
                     ]
                   }
@@ -351,16 +647,18 @@
                 "Service": "s3.amazonaws.com"
               },
               "Resource": {
-                "Ref": "tests3snsSnsTopicF02F6BD0"
-              },
-              "Sid": "2"
+                "Fn::GetAtt": [
+                  "tests3sqstempqueueE6526813",
+                  "Arn"
+                ]
+              }
             }
           ],
           "Version": "2012-10-17"
         },
-        "Topics": [
+        "Queues": [
           {
-            "Ref": "tests3snsSnsTopicF02F6BD0"
+            "Ref": "tests3sqstempqueueE6526813"
           }
         ]
       }

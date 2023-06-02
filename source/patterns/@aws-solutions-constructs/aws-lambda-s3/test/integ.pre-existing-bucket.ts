@@ -23,6 +23,8 @@ import { generateIntegStackName } from '@aws-solutions-constructs/core';
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-lambda-s3';
+stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+
 const existingBucket = CreateScrapBucket(stack, { removalPolicy: RemovalPolicy.DESTROY });
 
 const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);

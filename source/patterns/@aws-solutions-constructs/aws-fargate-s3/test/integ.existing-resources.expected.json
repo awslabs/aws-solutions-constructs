@@ -651,7 +651,6 @@
           "Ref": "Vpc8378EB38"
         },
         "ResourceType": "VPC",
-        "TrafficType": "ALL",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -667,7 +666,8 @@
             "Key": "Name",
             "Value": "existing-resources/Vpc"
           }
-        ]
+        ],
+        "TrafficType": "ALL"
       }
     },
     "VpcECRAPI9A3B6A2B": {
@@ -771,7 +771,7 @@
         "VpcEndpointType": "Gateway"
       }
     },
-    "existingScriptLocation845F3C51": {
+    "scrapBucketB11863B7": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -814,11 +814,11 @@
         }
       }
     },
-    "existingScriptLocationPolicy276EC326": {
+    "scrapBucketPolicy189B0607": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "existingScriptLocation845F3C51"
+          "Ref": "scrapBucketB11863B7"
         },
         "PolicyDocument": {
           "Statement": [
@@ -840,7 +840,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "existingScriptLocation845F3C51",
+                    "scrapBucketB11863B7",
                     "Arn"
                   ]
                 },
@@ -850,7 +850,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "existingScriptLocation845F3C51",
+                          "scrapBucketB11863B7",
                           "Arn"
                         ]
                       },
@@ -865,7 +865,7 @@
         }
       }
     },
-    "existingScriptLocationAutoDeleteObjectsCustomResource0F729F9B": {
+    "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275": {
       "Type": "Custom::S3AutoDeleteObjects",
       "Properties": {
         "ServiceToken": {
@@ -875,11 +875,11 @@
           ]
         },
         "BucketName": {
-          "Ref": "existingScriptLocation845F3C51"
+          "Ref": "scrapBucketB11863B7"
         }
       },
       "DependsOn": [
-        "existingScriptLocationPolicy276EC326"
+        "scrapBucketPolicy189B0607"
       ],
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
@@ -913,7 +913,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
           },
-          "S3Key": "e57c1acaa363d7d2b81736776007a7091bc73dff4aeb8135627c4511a51e7dca.zip"
+          "S3Key": "350185a1069fa20a23a583e20c77f6844218bd73097902362dc94f1a108f5d89.zip"
         },
         "Timeout": 900,
         "MemorySize": 128,
@@ -924,14 +924,14 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs14.x",
+        "Runtime": "nodejs16.x",
         "Description": {
           "Fn::Join": [
             "",
             [
               "Lambda function for auto-deleting objects in ",
               {
-                "Ref": "existingScriptLocation845F3C51"
+                "Ref": "scrapBucketB11863B7"
               },
               " S3 bucket."
             ]
@@ -1110,7 +1110,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "existingScriptLocation845F3C51",
+                        "scrapBucketB11863B7",
                         "Arn"
                       ]
                     },
@@ -1129,7 +1129,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "existingScriptLocation845F3C51",
+                    "scrapBucketB11863B7",
                     "Arn"
                   ]
                 },
@@ -1139,7 +1139,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "existingScriptLocation845F3C51",
+                          "scrapBucketB11863B7",
                           "Arn"
                         ]
                       },
@@ -1159,7 +1159,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "existingScriptLocation845F3C51",
+                    "scrapBucketB11863B7",
                     "Arn"
                   ]
                 },
@@ -1169,7 +1169,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "existingScriptLocation845F3C51",
+                          "scrapBucketB11863B7",
                           "Arn"
                         ]
                       },
@@ -1200,7 +1200,7 @@
                 "Name": "CUSTOM_ARN",
                 "Value": {
                   "Fn::GetAtt": [
-                    "existingScriptLocation845F3C51",
+                    "scrapBucketB11863B7",
                     "Arn"
                   ]
                 }
@@ -1208,7 +1208,7 @@
               {
                 "Name": "CUSTOM_NAME",
                 "Value": {
-                  "Ref": "existingScriptLocation845F3C51"
+                  "Ref": "scrapBucketB11863B7"
                 }
               }
             ],

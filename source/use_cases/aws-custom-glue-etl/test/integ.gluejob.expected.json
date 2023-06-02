@@ -210,7 +210,6 @@
     "CustomETLS3LoggingBucketBBDD45CB": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
-        "AccessControl": "LogDeliveryWrite",
         "BucketEncryption": {
           "ServerSideEncryptionConfiguration": [
             {

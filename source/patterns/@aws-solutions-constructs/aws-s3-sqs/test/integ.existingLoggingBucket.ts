@@ -13,34 +13,26 @@
 
 /// !cdk-integ *
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
-import { S3ToStepfunctions, S3ToStepfunctionsProps } from "../lib";
-import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
-import { CreateScrapBucket, generateIntegStackName, addCfnNagS3BucketNotificationRulesToSuppress } from '@aws-solutions-constructs/core';
+import { S3ToSqs, S3ToSqsProps } from "../lib";
+import * as defaults from '@aws-solutions-constructs/core';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
+
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-const existingBucket = CreateScrapBucket(stack, {
-  eventBridgeEnabled: true
-});
+const scrapLogBucket = defaults.CreateScrapBucket(stack);
 
-const startState = new stepfunctions.Pass(stack, 'StartState');
-
-const props: S3ToStepfunctionsProps = {
-  existingBucketObj: existingBucket,
-  stateMachineProps: {
-    definition: startState
-  },
-  logGroupProps: {
+// Currently there is no way to customize the logging bucket, so this
+// test will leave a bucket behind
+const props: S3ToSqsProps = {
+  bucketProps: {
+    serverAccessLogsBucket: scrapLogBucket,
     removalPolicy: RemovalPolicy.DESTROY,
-    logGroupName: "with-lambda"
-  },
-  logS3AccessLogs: false
+    autoDeleteObjects: true
+  }
 };
 
-new S3ToStepfunctions(stack, 'test-s3-stepfunctions-pre-existing-bucket-construct', props);
-
-addCfnNagS3BucketNotificationRulesToSuppress(stack, 'BucketNotificationsHandler050a0587b7544547bf325f094a3db834');
-
+new S3ToSqs(stack, 'test-s3-sqs-temp', props);
 app.synth();
