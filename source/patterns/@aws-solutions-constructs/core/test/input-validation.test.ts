@@ -157,8 +157,8 @@ test('Test fail Dead Letter Queue check with queueProps fifo set to true and und
   };
 
   // Assertion
-  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: true in the other props object. \
-    Fifo must match for the Queue and the Dead Letter Queue.\n');
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+    'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
 });
 
 test('Test fail Dead Letter Queue check with queueProps fifo set to true and deadLetterQueueProps fifo set to false', () => {
@@ -173,8 +173,8 @@ test('Test fail Dead Letter Queue check with queueProps fifo set to true and dea
   };
 
   // Assertion
-  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: true in the other props object. \
-    Fifo must match for the Queue and the Dead Letter Queue.\n');
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+    'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
 });
 
 test('Test fail Dead Letter Queue check with queueProps fifo set to false and deadLetterQueueProps fifo set to true', () => {
@@ -189,8 +189,8 @@ test('Test fail Dead Letter Queue check with queueProps fifo set to false and de
   };
 
   // Assertion
-  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: true in the other props object. \
-    Fifo must match for the Queue and the Dead Letter Queue.\n');
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+    'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
 });
 
 test('Test fail Dead Letter Queue check with deadLetterQueueProps fifo set to true', () => {
@@ -203,8 +203,8 @@ test('Test fail Dead Letter Queue check with deadLetterQueueProps fifo set to tr
     defaults.CheckProps(props);
   };
 
-  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: true in the other props object. \
-    Fifo must match for the Queue and the Dead Letter Queue.\n');
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+    'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
 });
 
 test('Test fail Dead Letter Queue check with queueProps fifo set to false', () => {
@@ -217,8 +217,8 @@ test('Test fail Dead Letter Queue check with queueProps fifo set to false', () =
     defaults.CheckProps(props);
   };
 
-  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: true in the other props object. \
-    Fifo must match for the Queue and the Dead Letter Queue.\n');
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+    'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
 });
 
 test("Test fail MediaStore container check", () => {

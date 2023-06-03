@@ -24,8 +24,7 @@ import * as cdk from 'aws-cdk-lib';
 import { overrideProps, addCfnSuppressRules } from './utils';
 import { buildSecurityGroup } from "./security-group-helper";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from 'constructs';
-import { IConstruct } from 'constructs';
+import { Construct, IConstruct } from 'constructs';
 
 export interface BuildLambdaFunctionProps {
   /**
@@ -65,7 +64,7 @@ export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunction
       if (props.lambdaFunctionProps?.securityGroups) {
         let ctr = 20;
         props.lambdaFunctionProps?.securityGroups.forEach(sg => {
-          // TODO: Discuss with someone why I can't get R/O access to VpcConfigSecurityGroupIds
+          // It appears we can't get R/O access to VpcConfigSecurityGroupIds, such access would make this cleaner
           levelOneFunction.addOverride(`Properties.VpcConfig.SecurityGroupIds.${ctr++}`, sg.securityGroupId);
         });
       }
@@ -152,9 +151,7 @@ export function deployLambdaFunction(scope: Construct,
 
   const lambdafunction = new lambda.Function(scope, _functionId, finalLambdaFunctionProps);
 
-  if (lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_16_X ||
-    lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_16_X ||
-    lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_16_X) {
+  if (lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_16_X) {
     lambdafunction.addEnvironment('AWS_NODEJS_CONNECTION_REUSE_ENABLED', '1', { removeInEdge: true });
   }
 

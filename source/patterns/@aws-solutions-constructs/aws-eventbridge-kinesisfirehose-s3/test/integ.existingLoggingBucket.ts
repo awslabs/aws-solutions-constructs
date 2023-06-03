@@ -11,29 +11,33 @@
  *  and limitations under the License.
  */
 
-// Imports
-import { App, Stack, RemovalPolicy } from 'aws-cdk-lib';
-import { CreateScrapBucket, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
-import { KinesisFirehoseToS3 } from '../lib';
+/// !cdk-integ *
+import { App, Stack, RemovalPolicy, Duration } from "aws-cdk-lib";
+import { EventbridgeToKinesisFirehoseToS3 } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import * as events from 'aws-cdk-lib/aws-events';
+import * as defaults from '@aws-solutions-constructs/core';
 
-// Setup
 const app = new App();
+
+// Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
-stack.templateOptions.description = 'Integration Test for aws-kinesisfirehose-s3';
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-const existingBucket = CreateScrapBucket(stack, {
-});
+const logBucket = defaults.CreateScrapBucket(stack);
 
-new KinesisFirehoseToS3(stack, 'test-firehose-s3-pre-existing-logging-bucket-stack', {
+new EventbridgeToKinesisFirehoseToS3(stack, 'test-kinesisfirehose-s3', {
+  eventRuleProps: {
+    schedule: events.Schedule.rate(Duration.minutes(5))
+  },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-    autoDeleteObjects: true,
-    serverAccessLogsBucket: existingBucket
+    serverAccessLogsBucket: logBucket,
+  },
+  logGroupProps: {
+    removalPolicy: RemovalPolicy.DESTROY
   }
 });
-suppressAutoDeleteHandlerWarnings(stack);
 
-// Synth
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 app.synth();

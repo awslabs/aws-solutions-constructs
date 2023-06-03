@@ -648,15 +648,20 @@ test('Construct uses existingFargateServiceObject when provided', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test-existing-fargate-service',
-    existingVpc,
-    { clusterName: 'my-cluster' },
-    defaults.fakeEcrRepoArn,
-    undefined,
-    { family: 'my-family' },
-    { containerName: 'my-container' },
-    { serviceName: 'my-service' }
-  );
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test-existing-fargate-service', {
+    constructVpc: existingVpc,
+    clientClusterProps: { clusterName: 'my-cluster' },
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateTaskDefinitionProps: {
+      family: 'my-family'
+    },
+    clientContainerDefinitionProps: {
+      containerName: 'my-container'
+    },
+    clientFargateServiceProps: {
+      serviceName: 'my-service'
+    }
+  });
 
   new FargateToKinesisFirehose(stack, 'test-fargate-kinesisfirehose', {
     publicApi: false,

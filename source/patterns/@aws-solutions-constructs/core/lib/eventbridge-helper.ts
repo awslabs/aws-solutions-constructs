@@ -47,5 +47,6 @@ export function buildEventBus(scope: Construct, props: BuildEventBusProps): even
     const _eventBusName = props.eventBusProps.eventBusName || 'CustomEventBus';
     return new events.EventBus(scope, _eventBusName, props.eventBusProps);
   }
-  return;
+  // ESLint requires this return statement, so disabling SonarQube warning
+  return; // NOSONAR
 }

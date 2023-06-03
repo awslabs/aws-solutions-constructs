@@ -146,17 +146,15 @@ export class FargateToKinesisFirehose extends Construct {
       // CheckFargateProps confirms that the container is provided
       this.container = props.existingContainerDefinitionObject!;
     } else {
-      const createFargateServiceResponse = defaults.CreateFargateService(
-        scope,
-        id,
-        this.vpc,
-        props.clusterProps,
-        props.ecrRepositoryArn,
-        props.ecrImageVersion,
-        props.fargateTaskDefinitionProps,
-        props.containerDefinitionProps,
-        props.fargateServiceProps
-      );
+      const createFargateServiceResponse = defaults.CreateFargateService(scope, id, {
+        constructVpc: this.vpc,
+        clientClusterProps: props.clusterProps,
+        ecrRepositoryArn: props.ecrRepositoryArn,
+        ecrImageVersion: props.ecrImageVersion,
+        clientFargateTaskDefinitionProps: props.fargateTaskDefinitionProps,
+        clientContainerDefinitionProps: props.containerDefinitionProps,
+        clientFargateServiceProps: props.fargateServiceProps
+      });
       this.service = createFargateServiceResponse.service;
       this.container = createFargateServiceResponse.containerDefinition;
     }
@@ -177,7 +175,7 @@ export class FargateToKinesisFirehose extends Construct {
     // Configure environment variables
     const deliveryStreamEnvironmentVariableName = props.firehoseEnvironmentVariableName || 'FIREHOSE_DELIVERYSTREAM_NAME';
     // We can use ! because we checked for a stream name on props.existingKinesisFirehose at the top of this function
-    this.container.addEnvironment(deliveryStreamEnvironmentVariableName, this.kinesisFirehose!.deliveryStreamName!);
+    this.container.addEnvironment(deliveryStreamEnvironmentVariableName, this.kinesisFirehose.deliveryStreamName!);
 
   }
 }

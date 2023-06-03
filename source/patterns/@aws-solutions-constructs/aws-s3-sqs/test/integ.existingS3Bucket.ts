@@ -12,7 +12,7 @@
  */
 
 /// !cdk-integ *
-import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
+import { App, Stack } from "aws-cdk-lib";
 import { S3ToSqs, S3ToSqsProps } from "../lib";
 import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
@@ -20,14 +20,17 @@ import { generateIntegStackName } from '@aws-solutions-constructs/core';
 const app = new App();
 
 const stack = new Stack(app, generateIntegStackName(__filename));
+stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-const buildS3BucketResponse = defaults.buildS3Bucket(stack, { bucketProps: { removalPolicy: RemovalPolicy.DESTROY }, });
+const newExternalBucket = defaults.CreateScrapBucket(stack);
 
 // Currently there is no way to customize the logging bucket, so this
 // test will leave a bucket behind
 const props: S3ToSqsProps = {
-  existingBucketObj: buildS3BucketResponse.bucket,
+  existingBucketObj: newExternalBucket,
 };
 
 new S3ToSqs(stack, 'test-s3-sqs', props);
+defaults.suppressAutoDeleteHandlerWarnings(stack);
+
 app.synth();

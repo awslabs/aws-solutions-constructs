@@ -549,6 +549,10 @@
             "Ref": "testlambdaelasticsearchkibanaCognitoUserPool9537802B"
           }
         },
+        "DomainEndpointOptions": {
+          "EnforceHTTPS": true,
+          "TLSSecurityPolicy": "Policy-Min-TLS-1-2-2019-07"
+        },
         "DomainName": "disabledzoneawareness",
         "EBSOptions": {
           "EBSEnabled": true,
@@ -877,7 +881,6 @@
           "Ref": "Vpc8378EB38"
         },
         "ResourceType": "VPC",
-        "TrafficType": "ALL",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -893,7 +896,8 @@
             "Key": "Name",
             "Value": "disabledZoneAwareness/Vpc"
           }
-        ]
+        ],
+        "TrafficType": "ALL"
       }
     }
   },

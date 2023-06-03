@@ -564,15 +564,13 @@ test('Existing service/new domain, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName: SERVICE_NAME });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName: SERVICE_NAME
+    }
+  });
 
   new FargateToOpenSearch(stack, 'test-construct', {
     publicApi,
@@ -647,15 +645,13 @@ test('Existing service/new domain, private API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName: SERVICE_NAME });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName: SERVICE_NAME
+    }
+  });
 
   new FargateToOpenSearch(stack, 'test-construct', {
     publicApi,

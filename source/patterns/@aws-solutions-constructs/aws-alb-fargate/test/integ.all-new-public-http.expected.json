@@ -682,7 +682,6 @@
           "Ref": "Vpc8378EB38"
         },
         "ResourceType": "VPC",
-        "TrafficType": "ALL",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -698,7 +697,8 @@
             "Key": "Name",
             "Value": "all-new-public-http/Vpc"
           }
-        ]
+        ],
+        "TrafficType": "ALL"
       }
     },
     "VpcECRAPI9A3B6A2B": {
@@ -1048,14 +1048,7 @@
               ]
             },
             {
-              "Action": [
-                "s3:PutObject",
-                "s3:PutObjectLegalHold",
-                "s3:PutObjectRetention",
-                "s3:PutObjectTagging",
-                "s3:PutObjectVersionTagging",
-                "s3:Abort*"
-              ],
+              "Action": "s3:PutObject",
               "Effect": "Allow",
               "Principal": {
                 "AWS": {
@@ -1186,7 +1179,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
           },
-          "S3Key": "e57c1acaa363d7d2b81736776007a7091bc73dff4aeb8135627c4511a51e7dca.zip"
+          "S3Key": "40aa87cdf43c4095cec18bc443965f22ab2f8c1ace47e482a0ba4e35d83b0cc9.zip"
         },
         "Timeout": 900,
         "MemorySize": 128,
@@ -1197,7 +1190,7 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs14.x",
+        "Runtime": "nodejs16.x",
         "Description": {
           "Fn::Join": [
             "",
@@ -1375,7 +1368,7 @@
         "ContainerDefinitions": [
           {
             "Essential": true,
-            "Image": "nginx",
+            "Image": "public.ecr.aws/m7z7i5e4/integration-test-image:latest",
             "MemoryReservation": 512,
             "Name": "test-construct-container",
             "PortMappings": [

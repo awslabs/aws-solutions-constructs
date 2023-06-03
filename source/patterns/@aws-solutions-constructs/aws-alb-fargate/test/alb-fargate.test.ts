@@ -132,11 +132,10 @@ test('Test existing load balancer, vpc, service', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn);
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn
+  });
 
   const existingAlb = new elb.ApplicationLoadBalancer(stack, 'test-alb', {
     vpc: existingVpc,

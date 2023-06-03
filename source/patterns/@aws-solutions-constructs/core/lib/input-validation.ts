@@ -146,8 +146,8 @@ export function CheckProps(propsObject: VerifiedProps | any) {
   const deployDeadLetterQueue: boolean = propsObject.deployDeadLetterQueue || propsObject.deployDeadLetterQueue === undefined;
 
   if (deployDeadLetterQueue && (isQueueFifo !== isDeadLetterQueueFifo)) {
-    errorMessages += 'Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: true in the other props object. \
-    Fifo must match for the Queue and the Dead Letter Queue.\n';
+    errorMessages += 'Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+      'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n';
     errorFound = true;
   }
 

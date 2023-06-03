@@ -1,7 +1,7 @@
 {
   "Description": "Integration Test for aws-kinesisstreams-kinesisfirehose-s3",
   "Resources": {
-    "existingScriptLocation845F3C51": {
+    "scrapBucketB11863B7": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -13,6 +13,12 @@
             }
           ]
         },
+        "Tags": [
+          {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true"
+          }
+        ],
         "VersioningConfiguration": {
           "Status": "Enabled"
         }
@@ -33,6 +39,152 @@
             {
               "id": "W41",
               "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct"
+            }
+          ]
+        }
+      }
+    },
+    "scrapBucketPolicy189B0607": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "scrapBucketB11863B7"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn"
+                  ]
+                }
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "scrapBucketB11863B7",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "scrapBucketB11863B7",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275": {
+      "Type": "Custom::S3AutoDeleteObjects",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn"
+          ]
+        },
+        "BucketName": {
+          "Ref": "scrapBucketB11863B7"
+        }
+      },
+      "DependsOn": [
+        "scrapBucketPolicy189B0607"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+          }
+        ]
+      }
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "350185a1069fa20a23a583e20c77f6844218bd73097902362dc94f1a108f5d89.zip"
+        },
+        "Timeout": 900,
+        "MemorySize": 128,
+        "Handler": "__entrypoint__.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs16.x",
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Lambda function for auto-deleting objects in ",
+              {
+                "Ref": "scrapBucketB11863B7"
+              },
+              " S3 bucket."
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W89",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W92",
+              "reason": "CDK generated custom resource"
             }
           ]
         }
@@ -121,7 +273,7 @@
                       },
                       ":s3:::",
                       {
-                        "Ref": "existingScriptLocation845F3C51"
+                        "Ref": "scrapBucketB11863B7"
                       }
                     ]
                   ]
@@ -136,7 +288,7 @@
                       },
                       ":s3:::",
                       {
-                        "Ref": "existingScriptLocation845F3C51"
+                        "Ref": "scrapBucketB11863B7"
                       },
                       "/*"
                     ]
@@ -202,7 +354,7 @@
                 },
                 ":s3:::",
                 {
-                  "Ref": "existingScriptLocation845F3C51"
+                  "Ref": "scrapBucketB11863B7"
                 }
               ]
             ]
@@ -334,6 +486,109 @@
             "PolicyName": "KinesisStreamsRoleRolePolicy"
           }
         ]
+      }
+    }
+  },
+  "Mappings": {
+    "DefaultCrNodeVersionMap": {
+      "af-south-1": {
+        "value": "nodejs16.x"
+      },
+      "ap-east-1": {
+        "value": "nodejs16.x"
+      },
+      "ap-northeast-1": {
+        "value": "nodejs16.x"
+      },
+      "ap-northeast-2": {
+        "value": "nodejs16.x"
+      },
+      "ap-northeast-3": {
+        "value": "nodejs16.x"
+      },
+      "ap-south-1": {
+        "value": "nodejs16.x"
+      },
+      "ap-south-2": {
+        "value": "nodejs16.x"
+      },
+      "ap-southeast-1": {
+        "value": "nodejs16.x"
+      },
+      "ap-southeast-2": {
+        "value": "nodejs16.x"
+      },
+      "ap-southeast-3": {
+        "value": "nodejs16.x"
+      },
+      "ca-central-1": {
+        "value": "nodejs16.x"
+      },
+      "cn-north-1": {
+        "value": "nodejs16.x"
+      },
+      "cn-northwest-1": {
+        "value": "nodejs16.x"
+      },
+      "eu-central-1": {
+        "value": "nodejs16.x"
+      },
+      "eu-central-2": {
+        "value": "nodejs16.x"
+      },
+      "eu-north-1": {
+        "value": "nodejs16.x"
+      },
+      "eu-south-1": {
+        "value": "nodejs16.x"
+      },
+      "eu-south-2": {
+        "value": "nodejs16.x"
+      },
+      "eu-west-1": {
+        "value": "nodejs16.x"
+      },
+      "eu-west-2": {
+        "value": "nodejs16.x"
+      },
+      "eu-west-3": {
+        "value": "nodejs16.x"
+      },
+      "me-central-1": {
+        "value": "nodejs16.x"
+      },
+      "me-south-1": {
+        "value": "nodejs16.x"
+      },
+      "sa-east-1": {
+        "value": "nodejs16.x"
+      },
+      "us-east-1": {
+        "value": "nodejs16.x"
+      },
+      "us-east-2": {
+        "value": "nodejs16.x"
+      },
+      "us-gov-east-1": {
+        "value": "nodejs16.x"
+      },
+      "us-gov-west-1": {
+        "value": "nodejs16.x"
+      },
+      "us-iso-east-1": {
+        "value": "nodejs14.x"
+      },
+      "us-iso-west-1": {
+        "value": "nodejs14.x"
+      },
+      "us-isob-east-1": {
+        "value": "nodejs14.x"
+      },
+      "us-west-1": {
+        "value": "nodejs16.x"
+      },
+      "us-west-2": {
+        "value": "nodejs16.x"
       }
     }
   },

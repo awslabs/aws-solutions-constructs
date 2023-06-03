@@ -64,11 +64,14 @@ export class WafwebaclToApiGateway extends Construct {
 
     const resourceArn = `arn:${Aws.PARTITION}:apigateway:${Aws.REGION}::/restapis/${props.existingApiGatewayInterface.restApiId}/stages/${props.existingApiGatewayInterface.deploymentStage.stageName}`;
 
-    // Setup the Web ACL Association
-    new waf.CfnWebACLAssociation(scope, `${id}-WebACLAssociation`, {
+    const aclAssociationId = `${id}-WebACLAssociation`;
+    const aclAssociationProps: waf.CfnWebACLAssociationProps = {
       webAclArn: this.webacl.attrArn,
       resourceArn
-    });
+    };
+
+    // Before turning off SonarQube for the line, reduce the line to it's minimum
+    new waf.CfnWebACLAssociation(scope, aclAssociationId, aclAssociationProps); // NOSONAR
 
     this.apiGateway = props.existingApiGatewayInterface;
   }

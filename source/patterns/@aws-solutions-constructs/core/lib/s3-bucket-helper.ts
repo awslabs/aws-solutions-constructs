@@ -21,7 +21,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cdk from 'aws-cdk-lib';
 import { DefaultS3Props } from './s3-bucket-defaults';
-import { overrideProps, addCfnSuppressRules } from './utils';
+import { overrideProps, addCfnSuppressRules, consolidateProps } from './utils';
 import { StorageClass } from 'aws-cdk-lib/aws-s3';
 import { Duration } from 'aws-cdk-lib';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
@@ -56,14 +56,15 @@ export function createLoggingBucket(scope: Construct,
   bucketId: string,
   loggingBucketProps: s3.BucketProps): s3.Bucket {
 
+  // Introduce the default props since we can't be certain the caller used them and
+  // they are important best practices
+  const combinedBucketProps = consolidateProps(DefaultS3Props(), loggingBucketProps);
+
   // Create the Logging Bucket
-  const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, loggingBucketProps);
+  const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, combinedBucketProps);
 
   // Extract the CfnBucket from the loggingBucket
   const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
-
-  // Remove the default LifecycleConfiguration for the Logging Bucket
-  loggingBucketResource.addPropertyDeletionOverride('LifecycleConfiguration.Rules');
 
   let _reason = "This S3 bucket is used as the access logging bucket for another bucket";
 
@@ -88,8 +89,12 @@ export function createAlbLoggingBucket(scope: Construct,
   bucketId: string,
   loggingBucketProps: s3.BucketProps): s3.Bucket {
 
+  // Introduce the default props since we can't be certain the caller used them and
+  // they are important best practices
+  const combinedBucketProps = consolidateProps(DefaultS3Props(), loggingBucketProps);
+
   // Create the Logging Bucket
-  const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, loggingBucketProps);
+  const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, combinedBucketProps);
 
   // Extract the CfnBucket from the loggingBucket
   const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
@@ -125,7 +130,7 @@ export function buildS3Bucket(scope: Construct,
   }];
 
   // Create the Application Bucket
-  let customBucketProps: s3.BucketProps;
+  let defaultBucketProps: s3.BucketProps;
   let loggingBucket;
   const resolvedBucketId = bucketId ? bucketId + 'S3Bucket' : 'S3Bucket';
   const loggingBucketId = bucketId ? bucketId + 'S3LoggingBucket' : 'S3LoggingBucket';
@@ -151,14 +156,14 @@ export function buildS3Bucket(scope: Construct,
 
   // Attach the Default Life Cycle policy ONLY IF the versioning is ENABLED
   if (props.bucketProps?.versioned === undefined || props.bucketProps.versioned) {
-    customBucketProps = DefaultS3Props(loggingBucket, lifecycleRules);
+    defaultBucketProps = DefaultS3Props(loggingBucket, lifecycleRules);
   } else {
-    customBucketProps = DefaultS3Props(loggingBucket);
+    defaultBucketProps = DefaultS3Props(loggingBucket);
   }
 
-  customBucketProps = props.bucketProps ? overrideProps(customBucketProps, props.bucketProps) : customBucketProps;
+  const combinedBucketProps = consolidateProps(defaultBucketProps, props.bucketProps);
 
-  const s3Bucket: s3.Bucket = new s3.Bucket(scope, resolvedBucketId, customBucketProps );
+  const s3Bucket: s3.Bucket = new s3.Bucket(scope, resolvedBucketId, combinedBucketProps );
 
   return { bucket: s3Bucket, loggingBucket };
 }

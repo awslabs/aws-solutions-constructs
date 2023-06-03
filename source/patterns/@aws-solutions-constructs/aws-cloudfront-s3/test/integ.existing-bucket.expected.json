@@ -1,6 +1,6 @@
 {
   "Resources": {
-    "existingScriptLocation845F3C51": {
+    "scrapBucketB11863B7": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -43,11 +43,11 @@
         }
       }
     },
-    "existingScriptLocationPolicy276EC326": {
+    "scrapBucketPolicy189B0607": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "existingScriptLocation845F3C51"
+          "Ref": "scrapBucketB11863B7"
         },
         "PolicyDocument": {
           "Statement": [
@@ -69,7 +69,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "existingScriptLocation845F3C51",
+                    "scrapBucketB11863B7",
                     "Arn"
                   ]
                 },
@@ -79,7 +79,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "existingScriptLocation845F3C51",
+                          "scrapBucketB11863B7",
                           "Arn"
                         ]
                       },
@@ -106,7 +106,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "existingScriptLocation845F3C51",
+                        "scrapBucketB11863B7",
                         "Arn"
                       ]
                     },
@@ -132,7 +132,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "existingScriptLocation845F3C51",
+                        "scrapBucketB11863B7",
                         "Arn"
                       ]
                     },
@@ -156,7 +156,7 @@
         }
       }
     },
-    "existingScriptLocationAutoDeleteObjectsCustomResource0F729F9B": {
+    "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275": {
       "Type": "Custom::S3AutoDeleteObjects",
       "Properties": {
         "ServiceToken": {
@@ -166,11 +166,11 @@
           ]
         },
         "BucketName": {
-          "Ref": "existingScriptLocation845F3C51"
+          "Ref": "scrapBucketB11863B7"
         }
       },
       "DependsOn": [
-        "existingScriptLocationPolicy276EC326"
+        "scrapBucketPolicy189B0607"
       ],
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
@@ -204,7 +204,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "40aa87cdf43c4095cec18bc443965f22ab2f8c1ace47e482a0ba4e35d83b0cc9.zip"
+          "S3Key": "350185a1069fa20a23a583e20c77f6844218bd73097902362dc94f1a108f5d89.zip"
         },
         "Timeout": 900,
         "MemorySize": 128,
@@ -215,14 +215,14 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs14.x",
+        "Runtime": "nodejs16.x",
         "Description": {
           "Fn::Join": [
             "",
             [
               "Lambda function for auto-deleting objects in ",
               {
-                "Ref": "existingScriptLocation845F3C51"
+                "Ref": "scrapBucketB11863B7"
               },
               " S3 bucket."
             ]
@@ -254,7 +254,7 @@
     "testcloudfronts3SetHttpSecurityHeaders6C5A1E69": {
       "Type": "AWS::CloudFront::Function",
       "Properties": {
-        "FunctionCode": "function handler(event) { var response = event.response;       var headers = response.headers;       headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};       headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"};       headers['x-content-type-options'] = { value: 'nosniff'};       headers['x-frame-options'] = {value: 'DENY'};       headers['x-xss-protection'] = {value: '1; mode=block'};       return response;     }",
+        "FunctionCode": "function handler(event) { var response = event.response; var headers = response.headers; headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'}; headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"}; headers['x-content-type-options'] = { value: 'nosniff'}; headers['x-frame-options'] = {value: 'DENY'}; headers['x-xss-protection'] = {value: '1; mode=block'}; return response; }",
         "FunctionConfig": {
           "Comment": "SetHttpSecurityHeadersc87bceb93c12dbe589df4f4994a0258334a9b78e4a",
           "Runtime": "cloudfront-js-1.0"
@@ -472,7 +472,7 @@
             {
               "DomainName": {
                 "Fn::GetAtt": [
-                  "existingScriptLocation845F3C51",
+                  "scrapBucketB11863B7",
                   "RegionalDomainName"
                 ]
               },
@@ -494,7 +494,7 @@
             {
               "DomainName": {
                 "Fn::GetAtt": [
-                  "existingScriptLocation845F3C51",
+                  "scrapBucketB11863B7",
                   "RegionalDomainName"
                 ]
               },
@@ -557,6 +557,109 @@
             }
           }
         }
+      }
+    }
+  },
+  "Mappings": {
+    "DefaultCrNodeVersionMap": {
+      "af-south-1": {
+        "value": "nodejs16.x"
+      },
+      "ap-east-1": {
+        "value": "nodejs16.x"
+      },
+      "ap-northeast-1": {
+        "value": "nodejs16.x"
+      },
+      "ap-northeast-2": {
+        "value": "nodejs16.x"
+      },
+      "ap-northeast-3": {
+        "value": "nodejs16.x"
+      },
+      "ap-south-1": {
+        "value": "nodejs16.x"
+      },
+      "ap-south-2": {
+        "value": "nodejs16.x"
+      },
+      "ap-southeast-1": {
+        "value": "nodejs16.x"
+      },
+      "ap-southeast-2": {
+        "value": "nodejs16.x"
+      },
+      "ap-southeast-3": {
+        "value": "nodejs16.x"
+      },
+      "ca-central-1": {
+        "value": "nodejs16.x"
+      },
+      "cn-north-1": {
+        "value": "nodejs16.x"
+      },
+      "cn-northwest-1": {
+        "value": "nodejs16.x"
+      },
+      "eu-central-1": {
+        "value": "nodejs16.x"
+      },
+      "eu-central-2": {
+        "value": "nodejs16.x"
+      },
+      "eu-north-1": {
+        "value": "nodejs16.x"
+      },
+      "eu-south-1": {
+        "value": "nodejs16.x"
+      },
+      "eu-south-2": {
+        "value": "nodejs16.x"
+      },
+      "eu-west-1": {
+        "value": "nodejs16.x"
+      },
+      "eu-west-2": {
+        "value": "nodejs16.x"
+      },
+      "eu-west-3": {
+        "value": "nodejs16.x"
+      },
+      "me-central-1": {
+        "value": "nodejs16.x"
+      },
+      "me-south-1": {
+        "value": "nodejs16.x"
+      },
+      "sa-east-1": {
+        "value": "nodejs16.x"
+      },
+      "us-east-1": {
+        "value": "nodejs16.x"
+      },
+      "us-east-2": {
+        "value": "nodejs16.x"
+      },
+      "us-gov-east-1": {
+        "value": "nodejs16.x"
+      },
+      "us-gov-west-1": {
+        "value": "nodejs16.x"
+      },
+      "us-iso-east-1": {
+        "value": "nodejs14.x"
+      },
+      "us-iso-west-1": {
+        "value": "nodejs14.x"
+      },
+      "us-isob-east-1": {
+        "value": "nodejs14.x"
+      },
+      "us-west-1": {
+        "value": "nodejs16.x"
+      },
+      "us-west-2": {
+        "value": "nodejs16.x"
       }
     }
   },

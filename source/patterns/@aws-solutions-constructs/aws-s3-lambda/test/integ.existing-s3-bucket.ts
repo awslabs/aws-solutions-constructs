@@ -15,13 +15,14 @@
 import { App, Stack } from "aws-cdk-lib";
 import { S3ToLambda, S3ToLambdaProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { CreateScrapBucket } from "@aws-solutions-constructs/core";
+import { CreateScrapBucket, suppressAutoDeleteHandlerWarnings } from "@aws-solutions-constructs/core";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
 
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
+stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
 const myBucket = CreateScrapBucket(stack, {});
 
@@ -35,4 +36,6 @@ const props: S3ToLambdaProps = {
 };
 
 new S3ToLambda(stack, 'test-s3-lambda', props);
+
+suppressAutoDeleteHandlerWarnings(stack);
 app.synth();

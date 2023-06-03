@@ -114,6 +114,10 @@ test('Test override SnapshotOptions for buildOpenSearch', () => {
         Ref: "CognitoUserPool53E37E69"
       }
     },
+    DomainEndpointOptions: {
+      EnforceHTTPS: true,
+      TLSSecurityPolicy: 'Policy-Min-TLS-1-2-2019-07',
+    },
     DomainName: "test-domain",
     EBSOptions: {
       EBSEnabled: true,
