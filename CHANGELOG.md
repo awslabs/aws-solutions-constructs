@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.40.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.39.0...v2.40.0) (2023-06-03)
+
+
+### Bug Fixes
+
+* **s3 buckets:** do not remove lifecycle rules from log buckets ([#969](https://github.com/awslabs/aws-solutions-constructs/issues/969))
+
+* **aws-alb-fargate:** change container used to launch integ tests ([#962](https://github.com/awslabs/aws-solutions-constructs/issues/962)) ([30ba7d9](https://github.com/awslabs/aws-solutions-constructs/commit/30ba7d94a3cdd3766c24af49dbf66e56053b7b41))
+
 ## [2.39.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.38.0...v2.39.0) (2023-04-23)
 
 Built on CDK v2.76.0
