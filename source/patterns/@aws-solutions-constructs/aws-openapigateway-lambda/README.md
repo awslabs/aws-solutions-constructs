@@ -119,9 +119,9 @@ new OpenApiGatewayToLambda(this, "OpenApiGatewayToLambda", OpenApiGatewayToLambd
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
 |apiGatewayProps?|[`apigateway.RestApiBaseProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.RestApiBaseProps.html)|Optional user-provided props to override the default props for the API.|
-|apiDefinitionBucket?|[`s3.IBucket`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html)|S3 Bucket where the open-api spec file is located. When specifying this property, `apiDefinitionKey` must also be specified.|
-|apiDefinitionKey?|`string`|S3 Object name of the open-api spec file. When specifying this property, `apiDefinitionBucket` must also be specified.|
-|apiDefinitionAsset?|[`aws_s3_assets.Asset`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html)|Local file asset of the open-api spec file.|
+|apiDefinitionBucket?|[`s3.IBucket`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html)|S3 Bucket where the OpenAPI spec file is located. When specifying this property, `apiDefinitionKey` must also be specified.|
+|apiDefinitionKey?|`string`|S3 Object name of the OpenAPI spec file. When specifying this property, `apiDefinitionBucket` must also be specified.|
+|apiDefinitionAsset?|[`aws_s3_assets.Asset`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html)|Local file asset of the OpenAPI spec file.|
 |apiIntegrations|`ApiIntegration[]`|One or more key-value pairs that contain an id for the api integration and either an existing lambda function or an instance of the LambdaProps. Please see the `Overview of how the OpenAPI file transformation works` section below for more usage details.|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.|
 
@@ -191,6 +191,11 @@ paths:
 ```
 
 When the construct is created or updated, it will overwrite the `MessagesHandler` string with the fully resolved lambda proxy uri of the `MessagesHandlerLambdaFunction`, e.g., `arn:${Aws.PARTITION}:apigateway:${Aws.REGION}:lambda:path/2015-03-31/functions/${messagesLambda.functionArn}/invocations`, and similarly for the `PhotosHandler` string and `PhotosHandlerLambdaFunction`, resulting in a valid OpenAPI spec file that is then passed to the `SpecRestApi` construct.
+
+For more information on specifying an API with OpenAPI, please see the [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+
+## ApiIntegration Details
+This construct defines a custom type, `ApiIntegration`, that is specified as a required prop. The type has a required property, `id`, and two optional properties `existingLambdaObj` and `lambdaFunctionProps`. The `id` property is used to map the corresponding lambda function being defined with the placeholder string in the OpenAPI template file, and is not a CDK construct ID. Exactly one of `existingLambdaObj` or `lambdaFunctionProps` must be specified or the construct will throw an error.
 
 ## Default settings
 

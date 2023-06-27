@@ -32,20 +32,26 @@ import { overrideProps } from '@aws-solutions-constructs/core';
 export interface ApiIntegration {
   /**
    * Id of the ApiIntegration, used to correlate this lambda function to the api integration in the open api definition.
+   *
+   * Note this is not a CDK Construct ID, and is instead a string used to map the resolved lambda resource with the OpenAPI definition.
    */
   readonly id: string;
   /**
-   * Existing instance of Lambda Function object. Providing both this and `lambdaFunctionProps` will cause an error.
+   * The Lambda function to associate with the API method in the OpenAPI file matched by id.
+   *
+   * One and only one of existingLambdaObj or lambdaFunctionProps must be specified, any other combination will cause an error.
    */
   readonly existingLambdaObj?: lambda.Function;
   /**
-   * User provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` will cause an error.
+   * The Lambda function to associate with the API method in the OpenAPI file matched by id.
+   *
+   * One and only one of existingLambdaObj or lambdaFunctionProps must be specified, any other combination will cause an error.
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
 }
 
 /**
- * Helper object to map an ApiIntegration id to its resolved lambda.Function.
+ * Helper object to map an ApiIntegration id to its resolved lambda.Function. This type is exposed as a property on the instantiated construct.
  */
 export interface ApiLambdaFunction {
   /**
@@ -60,15 +66,15 @@ export interface ApiLambdaFunction {
 
 export interface OpenApiGatewayToLambdaProps {
   /**
-   * S3 Bucket where the open-api spec file is located. When specifying this property, apiDefinitionKey must also be specified.
+   * S3 Bucket where the OpenAPI spec file is located. When specifying this property, apiDefinitionKey must also be specified.
    */
   readonly apiDefinitionBucket?: s3.IBucket;
   /**
-   * S3 Object name of the open-api spec file. When specifying this property, apiDefinitionBucket must also be specified.
+   * S3 Object name of the OpenAPI spec file. When specifying this property, apiDefinitionBucket must also be specified.
    */
   readonly apiDefinitionKey?: string;
   /**
-   * Local file asset of the open-api spec file.
+   * Local file asset of the OpenAPI spec file.
    */
   readonly apiDefinitionAsset?: Asset;
   /**

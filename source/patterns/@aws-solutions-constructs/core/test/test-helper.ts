@@ -184,9 +184,9 @@ class CfnNagLambdaAspect implements IAspect {
     const resource = node as CfnResource;
     if (resource.cfnResourceType === 'AWS::Lambda::Function') {
       addCfnSuppressRules(resource, [
-        { id: 'W58', reason: 'CDK generated custom resource' },
-        { id: 'W89', reason: 'CDK generated custom resource' },
-        { id: 'W92', reason: 'CDK generated custom resource' }
+        { id: 'W58', reason: 'This Lambda Function is created for integration testing purposes only and is not part of an actual construct' },
+        { id: 'W89', reason: 'This Lambda Function is created for integration testing purposes only and is not part of an actual construct' },
+        { id: 'W92', reason: 'This Lambda Function is created for integration testing purposes only and is not part of an actual construct' }
       ]);
     }
   }

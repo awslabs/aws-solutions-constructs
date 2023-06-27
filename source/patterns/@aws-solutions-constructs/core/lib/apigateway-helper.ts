@@ -272,7 +272,7 @@ export function RegionalRestApi(scope: Construct, apiGatewayProps?: apigateway.R
   return { api: configureRestApiResponse.api, role: configureRestApiResponse.role, logGroup };
 }
 
-export interface SpecRestApiResponse {
+export interface CreateSpecRestApiResponse {
   readonly api: apigateway.SpecRestApi,
   readonly role?: iam.Role,
   readonly logGroup: logs.LogGroup,
@@ -281,7 +281,7 @@ export interface SpecRestApiResponse {
 export function CreateSpecRestApi(
   scope: Construct,
   apiGatewayProps: apigateway.SpecRestApiProps,
-  logGroupProps?: logs.LogGroupProps): SpecRestApiResponse {
+  logGroupProps?: logs.LogGroupProps): CreateSpecRestApiResponse {
 
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
   const defaultProps = apiDefaults.DefaultSpecRestApiProps(logGroup);
