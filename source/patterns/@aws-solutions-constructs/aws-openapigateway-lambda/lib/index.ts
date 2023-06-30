@@ -12,6 +12,7 @@
  */
 
 import { Aws } from 'aws-cdk-lib';
+import * as cdk from "aws-cdk-lib";
 import { Construct } from 'constructs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -22,7 +23,6 @@ import * as defaults from '@aws-solutions-constructs/core';
 import * as resources from '@aws-solutions-constructs/resources';
 import { RestApiBaseProps } from 'aws-cdk-lib/aws-apigateway';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
-import { overrideProps } from '@aws-solutions-constructs/core';
 
 /**
  * The ApiIntegration interface is used to correlate a user-specified id with either a existing lambda function or set of lambda props.
@@ -114,6 +114,22 @@ export interface OpenApiGatewayToLambdaProps {
    * @default - Default props are used
    */
   readonly logGroupProps?: logs.LogGroupProps
+  /**
+   * Optional timeout for the backing lambda function that does the OpenAPI Definition transformation.
+   *
+   * Defaults to 3 seconds, but for larger files (tens/hundreds of megabytes or gigabytes in size) this value will need to be increased.
+   *
+   * @default Duration.seconds(3)
+   */
+  readonly transformTimeout?: cdk.Duration;
+  /**
+   * Optional memory size for the backing lambda function that does the OpenAPI Definition transformation.
+   *
+   * Defaults to 128 MiB, but for larger files (tens/hundreds of megabytes or gigabytes in size) this value will need to be increased.
+   *
+   * @default 128
+   */
+  readonly transformMemorySize?: number;
 }
 
 export class OpenApiGatewayToLambda extends Construct {
@@ -145,45 +161,48 @@ export class OpenApiGatewayToLambda extends Construct {
 
     this.apiLambdaFunctions = props.apiIntegrations.map(apiIntegration => {
       lambdaCounter++;
-      if (apiIntegration.existingLambdaObj) {
-        return {
-          id: apiIntegration.id,
-          lambdaFunction: defaults.buildLambdaFunction(this, {
-            existingLambdaObj: apiIntegration.existingLambdaObj,
-            lambdaFunctionProps: apiIntegration.lambdaFunctionProps
-          })
-        };
-      } else if (apiIntegration.lambdaFunctionProps) {
-        // we need to pass unique name to the underlying buildLambdaFunction call to avoid naming collisions
-        let lambdaFunctionProps: lambda.FunctionProps = apiIntegration.lambdaFunctionProps;
-        if (lambdaFunctionProps?.functionName === undefined) {
-          lambdaFunctionProps = overrideProps(lambdaFunctionProps, {
-            functionName: defaults.generateName(this, `Function${lambdaCounter}`)
-          }, true);
-        }
 
-        return {
-          id: apiIntegration.id,
-          lambdaFunction: defaults.buildLambdaFunction(this, {
-            existingLambdaObj: apiIntegration.existingLambdaObj,
-            lambdaFunctionProps
-          })
-        };
-      } else {
+      if (apiIntegration.existingLambdaObj === undefined && apiIntegration.lambdaFunctionProps === undefined) {
         throw new Error(`One of existingLambdaObj or lambdaFunctionProps must be specified for the api integration with id: ${apiIntegration.id}`);
       }
+
+      // If we are creating the function and they did not specify a name, then we need to set a name
+      // to prevent a name collision
+      const defaultName = apiIntegration.lambdaFunctionProps ? defaults.generateName(this, `Function${lambdaCounter}`) : undefined;
+      const consolidatedLambdaProps = defaults.consolidateProps({ functionName: defaultName },
+        apiIntegration.lambdaFunctionProps);
+
+      return {
+        id: apiIntegration.id,
+        lambdaFunction: defaults.buildLambdaFunction(this, {
+          existingLambdaObj: apiIntegration.existingLambdaObj,
+          lambdaFunctionProps: consolidatedLambdaProps
+        })
+      };
     });
 
     // Map each id and lambda function pair to the required format for the template writer custom resource
     const apiIntegrationUris = this.apiLambdaFunctions.map(apiLambdaFunction => {
+      // the placeholder string that will be replaced in the OpenAPI Definition
+      const uriPlaceholderString = apiLambdaFunction.id;
+      // the endpoint URI of the backing lambda function, as defined in the API Gateway extensions for OpenAPI here:
+      // https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration.html
+      const uriResolvedValue = `arn:${Aws.PARTITION}:apigateway:${Aws.REGION}:lambda:path/2015-03-31/functions/${apiLambdaFunction.lambdaFunction.functionArn}/invocations`;
+
       return {
-        id: apiLambdaFunction.id,
-        value: `arn:${Aws.PARTITION}:apigateway:${Aws.REGION}:lambda:path/2015-03-31/functions/${apiLambdaFunction.lambdaFunction.functionArn}/invocations`
+        id: uriPlaceholderString,
+        value: uriResolvedValue
       };
     });
 
     // This custom resource will overwrite the string placeholders in the openapi definition with the resolved values of the lambda URIs
-    const apiDefinitionWriter = resources.createTemplateWriterCustomResource(this, apiDefinitionBucket, apiDefinitionKey, apiIntegrationUris);
+    const apiDefinitionWriter = resources.createTemplateWriterCustomResource(this, 'Api', {
+      templateBucket: apiDefinitionBucket,
+      templateKey: apiDefinitionKey,
+      templateValues: apiIntegrationUris,
+      timeout: props.transformTimeout,
+      memorySize: props.transformMemorySize
+    });
 
     const specRestApiResponse = defaults.CreateSpecRestApi(this, {
       ...props.apiGatewayProps,

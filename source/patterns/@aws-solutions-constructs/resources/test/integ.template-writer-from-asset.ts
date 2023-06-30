@@ -15,7 +15,7 @@ import { App, Stack } from "aws-cdk-lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import * as path from 'path';
-import { createTemplateWriterCustomResource } from "../lib/template-writer";
+import { TemplateValue, createTemplateWriterCustomResource } from "../lib/template-writer";
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -25,13 +25,17 @@ const templateAsset = new Asset(stack, 'TemplateAsset', {
   path: path.join(__dirname, 'template/sample-template')
 });
 
-const templateValues = [
+const templateValues: TemplateValue[] = new Array(
   {
     id: 'placeholder',
     value: 'resolved_value'
   }
-];
+);
 
-createTemplateWriterCustomResource(stack, templateAsset.bucket, templateAsset.s3ObjectKey, templateValues);
+createTemplateWriterCustomResource(stack, 'Test', {
+  templateBucket: templateAsset.bucket,
+  templateKey: templateAsset.s3ObjectKey,
+  templateValues
+});
 
 app.synth();

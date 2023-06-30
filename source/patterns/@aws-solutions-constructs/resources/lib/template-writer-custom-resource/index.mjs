@@ -17,15 +17,14 @@ import * as crypto from 'crypto';
 const s3Client = new S3Client({ region: process.env.REGION });
 
 export const handler = async (event, context) => {
-  // tslint:disable-next-line:no-console
-  console.log(`Received: ${JSON.stringify(event, null, 2)}`);
-
   let status = 'SUCCESS';
   let responseData = {};
 
+  // These are the standard Create/Update/Delete custom resource request types defined here:
+  // https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/crpg-ref-requesttypes.html
   if (event.RequestType === 'Create' || event.RequestType === 'Update') {
     try {
-      const templateValues = event.ResourceProperties.TemplateValues;
+      const templateValues = JSON.parse(event.ResourceProperties.TemplateValues).templateValues;
       const templateInputBucket = event.ResourceProperties.TemplateInputBucket;
       const templateInputKey = event.ResourceProperties.TemplateInputKey;
       const templateOutputBucket = event.ResourceProperties.TemplateOutputBucket;
@@ -36,13 +35,14 @@ export const handler = async (event, context) => {
         Key: templateInputKey
       }));
 
-      const templateValuesObj = JSON.parse(templateValues);
       let template = await getObjectResponse.Body?.transformToString();
 
-      for (const templateValue of templateValuesObj.templateValues) {
-        const re = new RegExp(templateValue.id, 'g');
-        template = template?.replace(re, templateValue.value);
-      }
+      templateValues.forEach(templateValue => {
+        template = template?.replace(
+          new RegExp(templateValue.id, 'g'), 
+          templateValue.value
+        );
+      });
 
       await s3Client.send(new PutObjectCommand({
         Bucket: templateOutputBucket,
