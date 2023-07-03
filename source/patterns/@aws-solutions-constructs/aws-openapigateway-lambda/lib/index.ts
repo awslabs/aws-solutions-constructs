@@ -141,7 +141,7 @@ export class OpenApiGatewayToLambda extends Construct {
   constructor(scope: Construct, id: string, props: OpenApiGatewayToLambdaProps) {
     super(scope, id);
 
-    if (props.apiDefinitionBucket && props.apiDefinitionKey && props.apiDefinitionAsset) {
+    if (props.apiDefinitionAsset && (props.apiDefinitionBucket || props.apiDefinitionKey)) {
       throw new Error('Either apiDefinitionBucket/apiDefinitionKey or apiDefinitionAsset must be specified, but not both');
     }
 
