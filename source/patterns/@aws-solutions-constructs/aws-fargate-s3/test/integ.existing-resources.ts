@@ -24,6 +24,7 @@ const stack = new Stack(app, generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
 stack.templateOptions.description = 'Integration Test with existing VPC, Service and Bucket';
+stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
 const existingVpc = getTestVpc(stack);
 const existingBucket = defaults.CreateScrapBucket(stack, {

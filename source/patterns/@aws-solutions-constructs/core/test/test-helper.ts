@@ -31,9 +31,11 @@ export const fakeEcrRepoArn = 'arn:aws:ecr:us-east-1:123456789012:repository/fak
 
 // Creates a bucket used for testing - minimal properties, destroyed after test
 export function CreateScrapBucket(scope: Construct, props?: BucketProps | any) {
-  const defaultProps = {
+
+  const defaultProps: BucketProps = {
     versioned: true,
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
     encryption: BucketEncryption.S3_MANAGED,
   };
 
@@ -46,7 +48,7 @@ export function CreateScrapBucket(scope: Construct, props?: BucketProps | any) {
 
   const scriptBucket = new Bucket(
     scope,
-    "existingScriptLocation",
+    "scrapBucket",
     synthesizedProps
   );
 

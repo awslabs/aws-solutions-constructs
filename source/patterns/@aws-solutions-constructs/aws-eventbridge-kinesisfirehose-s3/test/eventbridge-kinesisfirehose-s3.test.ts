@@ -16,6 +16,7 @@ import * as s3 from "aws-cdk-lib/aws-s3";
 import * as events from "aws-cdk-lib/aws-events";
 import { Template } from 'aws-cdk-lib/assertions';
 import { EventbridgeToKinesisFirehoseToS3, EventbridgeToKinesisFirehoseToS3Props } from '../lib';
+import * as defaults from '@aws-solutions-constructs/core';
 
 // --------------------------------------------------------------
 // Test snapshot match with default parameters
@@ -266,4 +267,27 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
 
   const template = Template.fromStack(stack);
   template.resourceCountIs("AWS::S3::Bucket", 1);
+});
+
+test('Supply an existing logging bucket', () => {
+  const stack = new cdk.Stack();
+  const logBucketName = 'log-bucket-name';
+
+  const logBucket = defaults.CreateScrapBucket(stack, {
+    bucketName: logBucketName
+  });
+
+  new EventbridgeToKinesisFirehoseToS3(stack, 'with-existing-log-bucket', {
+    eventRuleProps: {
+      description: 'event rule props',
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    bucketProps: {
+      serverAccessLogsBucket: logBucket
+    }
+  });
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::S3::Bucket", 2);
+
 });

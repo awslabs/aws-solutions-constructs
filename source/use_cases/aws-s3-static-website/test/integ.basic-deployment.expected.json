@@ -3,7 +3,6 @@
     "CloudFrontToS3S3LoggingBucketEF5CD8B2": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
-        "AccessControl": "LogDeliveryWrite",
         "BucketEncryption": {
           "ServerSideEncryptionConfiguration": [
             {

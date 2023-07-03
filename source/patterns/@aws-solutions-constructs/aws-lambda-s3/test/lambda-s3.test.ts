@@ -309,7 +309,7 @@ test('Test lambda function custom environment variable', () => {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
         CUSTOM_BUCKET_NAME: {
-          Ref: 'existingScriptLocation845F3C51'
+          Ref: 'scrapBucketB11863B7'
         }
       }
     }
