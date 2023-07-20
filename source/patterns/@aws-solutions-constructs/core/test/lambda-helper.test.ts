@@ -485,3 +485,79 @@ test('test buildLambdaFunction with lambdaFunctionProps custom id', () => {
     },
   });
 });
+
+test('buildLambdaFunction uses constructId when specified', () => {
+  const stack = new Stack();
+
+  defaults.buildLambdaFunction(stack, {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    }
+  }, 'MyConstructId');
+
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
+    Role: {
+      'Fn::GetAtt': ['MyConstructIdServiceRole271C08FC', 'Arn'],
+    },
+  });
+});
+
+// specifying constructId takes precendence over functionName for setting the
+// underlying lambda function and iam role construct ids.
+test('buildLambdaFunction uses constructId when both constructId and functionName are specified', () => {
+  const stack = new Stack();
+
+  defaults.buildLambdaFunction(stack, {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      functionName: 'MyTestFunction',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    }
+  }, 'MyConstructId');
+
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
+    Role: {
+      'Fn::GetAtt': ['MyConstructIdServiceRole271C08FC', 'Arn'],
+    },
+  });
+});
+
+test('buildLambdaFunction uses functionName when constructId is not specified', () => {
+  const stack = new Stack();
+
+  defaults.buildLambdaFunction(stack, {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      functionName: 'MyTestFunction',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    }
+  });
+
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
+    Role: {
+      'Fn::GetAtt': ['MyTestFunctionServiceRole37517223', 'Arn'],
+    },
+  });
+});
+
+test('buildLambdaFunction uses default name when neither constructId or functionName is specified', () => {
+  const stack = new Stack();
+
+  defaults.buildLambdaFunction(stack, {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    }
+  });
+
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
+    Role: {
+      'Fn::GetAtt': ['LambdaFunctionServiceRole0C4CDE0B', 'Arn'],
+    },
+  });
+});

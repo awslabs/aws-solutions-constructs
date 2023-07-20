@@ -169,6 +169,7 @@ test('Existing lambda function can be specified', () => {
   const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
     runtime: lambda.Runtime.NODEJS_18_X,
     handler: 'index.handler',
+    functionName: 'ExistingLambdaFunction',
     code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
   });
 
@@ -183,6 +184,7 @@ test('Existing lambda function can be specified', () => {
         lambdaFunctionProps: {
           runtime: lambda.Runtime.NODEJS_18_X,
           handler: 'index.handler',
+          functionName: 'NewLambdaFunction',
           code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),
         }
       }
@@ -191,6 +193,14 @@ test('Existing lambda function can be specified', () => {
 
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::Lambda::Function', 4);
+
+  template.hasResourceProperties("AWS::Lambda::Function", {
+    FunctionName: 'ExistingLambdaFunction'
+  });
+
+  template.hasResourceProperties("AWS::Lambda::Function", {
+    FunctionName: 'NewLambdaFunction'
+  });
 });
 
 test('Throws error when neither existingLambdaObj or lambdaFunctionProps is specified', () => {

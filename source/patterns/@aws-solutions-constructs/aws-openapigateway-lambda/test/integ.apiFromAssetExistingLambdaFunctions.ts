@@ -28,7 +28,6 @@ const apiDefinitionAsset = new Asset(stack, 'ApiDefinitionAsset', {
 
 const messagesLambda = defaults.buildLambdaFunction(stack, {
   lambdaFunctionProps: {
-    functionName: 'MessagesLambdaTestFromAsset',
     runtime: lambda.Runtime.NODEJS_18_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),

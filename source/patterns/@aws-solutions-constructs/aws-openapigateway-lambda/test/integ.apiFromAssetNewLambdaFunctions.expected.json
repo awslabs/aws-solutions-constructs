@@ -1,7 +1,7 @@
 {
   "Description": "Integration Test for aws-openapigateway-lambda",
   "Resources": {
-    "OpenApiGatewayToLambdaFunction1apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608ServiceRole2E55FBE9": {
+    "OpenApiGatewayToLambdaApiFunction0ServiceRole5E78431B": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -56,7 +56,7 @@
         ]
       }
     },
-    "OpenApiGatewayToLambdaFunction1apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608ServiceRoleDefaultPolicy0B3F8D30": {
+    "OpenApiGatewayToLambdaApiFunction0ServiceRoleDefaultPolicyE0627027": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -72,10 +72,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "OpenApiGatewayToLambdaFunction1apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608ServiceRoleDefaultPolicy0B3F8D30",
+        "PolicyName": "OpenApiGatewayToLambdaApiFunction0ServiceRoleDefaultPolicyE0627027",
         "Roles": [
           {
-            "Ref": "OpenApiGatewayToLambdaFunction1apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608ServiceRole2E55FBE9"
+            "Ref": "OpenApiGatewayToLambdaApiFunction0ServiceRole5E78431B"
           }
         ]
       },
@@ -90,7 +90,7 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaFunction1apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E60856D160FA": {
+    "OpenApiGatewayToLambdaApiFunction0260B7595": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -101,11 +101,10 @@
         },
         "Role": {
           "Fn::GetAtt": [
-            "OpenApiGatewayToLambdaFunction1apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608ServiceRole2E55FBE9",
+            "OpenApiGatewayToLambdaApiFunction0ServiceRole5E78431B",
             "Arn"
           ]
         },
-        "FunctionName": "Function1apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608",
         "Handler": "index.handler",
         "Runtime": "nodejs18.x",
         "TracingConfig": {
@@ -113,8 +112,8 @@
         }
       },
       "DependsOn": [
-        "OpenApiGatewayToLambdaFunction1apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608ServiceRoleDefaultPolicy0B3F8D30",
-        "OpenApiGatewayToLambdaFunction1apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608ServiceRole2E55FBE9"
+        "OpenApiGatewayToLambdaApiFunction0ServiceRoleDefaultPolicyE0627027",
+        "OpenApiGatewayToLambdaApiFunction0ServiceRole5E78431B"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -135,13 +134,13 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaFunction1apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608PermitAPIGInvocation4B57482D": {
+    "OpenApiGatewayToLambdaApiFunction0PermitAPIGInvocation16ED06C4": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "OpenApiGatewayToLambdaFunction1apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E60856D160FA",
+            "OpenApiGatewayToLambdaApiFunction0260B7595",
             "Arn"
           ]
         },
@@ -172,7 +171,7 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaFunction2apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608ServiceRoleFFADDBC5": {
+    "OpenApiGatewayToLambdaApiFunction1ServiceRole71570A60": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -227,7 +226,7 @@
         ]
       }
     },
-    "OpenApiGatewayToLambdaFunction2apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608ServiceRoleDefaultPolicy07B02A08": {
+    "OpenApiGatewayToLambdaApiFunction1ServiceRoleDefaultPolicy23E5856D": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -243,10 +242,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "OpenApiGatewayToLambdaFunction2apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608ServiceRoleDefaultPolicy07B02A08",
+        "PolicyName": "OpenApiGatewayToLambdaApiFunction1ServiceRoleDefaultPolicy23E5856D",
         "Roles": [
           {
-            "Ref": "OpenApiGatewayToLambdaFunction2apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608ServiceRoleFFADDBC5"
+            "Ref": "OpenApiGatewayToLambdaApiFunction1ServiceRole71570A60"
           }
         ]
       },
@@ -261,7 +260,7 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaFunction2apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E6084598975A": {
+    "OpenApiGatewayToLambdaApiFunction1C23FE1AE": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -272,11 +271,10 @@
         },
         "Role": {
           "Fn::GetAtt": [
-            "OpenApiGatewayToLambdaFunction2apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608ServiceRoleFFADDBC5",
+            "OpenApiGatewayToLambdaApiFunction1ServiceRole71570A60",
             "Arn"
           ]
         },
-        "FunctionName": "Function2apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608",
         "Handler": "index.handler",
         "Runtime": "nodejs18.x",
         "TracingConfig": {
@@ -284,8 +282,8 @@
         }
       },
       "DependsOn": [
-        "OpenApiGatewayToLambdaFunction2apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608ServiceRoleDefaultPolicy07B02A08",
-        "OpenApiGatewayToLambdaFunction2apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608ServiceRoleFFADDBC5"
+        "OpenApiGatewayToLambdaApiFunction1ServiceRoleDefaultPolicy23E5856D",
+        "OpenApiGatewayToLambdaApiFunction1ServiceRole71570A60"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -306,13 +304,13 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaFunction2apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E608PermitAPIGInvocation0551E02B": {
+    "OpenApiGatewayToLambdaApiFunction1PermitAPIGInvocation61F651CA": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "OpenApiGatewayToLambdaFunction2apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E6084598975A",
+            "OpenApiGatewayToLambdaApiFunction1C23FE1AE",
             "Arn"
           ]
         },
@@ -560,7 +558,9 @@
           ]
         },
         "Handler": "index.handler",
+        "MemorySize": 1024,
         "Runtime": "nodejs18.x",
+        "Timeout": 60,
         "TracingConfig": {
           "Mode": "Active"
         }
@@ -738,7 +738,7 @@
               ":lambda:path/2015-03-31/functions/",
               {
                 "Fn::GetAtt": [
-                  "OpenApiGatewayToLambdaFunction1apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E60856D160FA",
+                  "OpenApiGatewayToLambdaApiFunction0260B7595",
                   "Arn"
                 ]
               },
@@ -753,7 +753,7 @@
               ":lambda:path/2015-03-31/functions/",
               {
                 "Fn::GetAtt": [
-                  "OpenApiGatewayToLambdaFunction2apiFromAssetNewLambdaFunsOpenApiGatewayToLambdaD1E8E6084598975A",
+                  "OpenApiGatewayToLambdaApiFunction1C23FE1AE",
                   "Arn"
                 ]
               },
@@ -808,7 +808,7 @@
         "Name": "SpecRestApi"
       }
     },
-    "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD077582470f77de8740e938861e91303e3c5b": {
+    "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD077553ca81e8e1b2799986bf3d0ef9cf2ff0": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -843,7 +843,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD077582470f77de8740e938861e91303e3c5b"
+          "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD077553ca81e8e1b2799986bf3d0ef9cf2ff0"
         },
         "MethodSettings": [
           {

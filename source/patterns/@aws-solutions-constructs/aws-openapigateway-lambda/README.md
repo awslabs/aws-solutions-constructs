@@ -124,8 +124,6 @@ new OpenApiGatewayToLambda(this, "OpenApiGatewayToLambda", OpenApiGatewayToLambd
 |apiDefinitionAsset?|[`aws_s3_assets.Asset`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html)|Local file asset of the OpenAPI spec file.|
 |apiIntegrations|`ApiIntegration[]`|One or more key-value pairs that contain an id for the api integration and either an existing lambda function or an instance of the LambdaProps. Please see the `Overview of how the OpenAPI file transformation works` section below for more usage details.|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.|
-|transformTimeout?|[`cdk.Duration`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.Duration.html)|Optional timeout for the backing lambda function that does the OpenAPI Definition transformation.|
-|transformMemorySize?|[`number`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html#memorysize)|Optional memory size for the backing lambda function that does the OpenAPI Definition transformation.|
 
 ## Pattern Properties
 

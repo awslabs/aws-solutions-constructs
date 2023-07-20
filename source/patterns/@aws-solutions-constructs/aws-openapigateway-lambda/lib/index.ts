@@ -33,7 +33,7 @@ export interface ApiIntegration {
   /**
    * Id of the ApiIntegration, used to correlate this lambda function to the api integration in the open api definition.
    *
-   * Note this is not a CDK Construct ID, and is instead a string used to map the resolved lambda resource with the OpenAPI definition.
+   * Note this is not a CDK Construct ID, and is instead a client defined string used to map the resolved lambda resource with the OpenAPI definition.
    */
   readonly id: string;
   /**
@@ -43,7 +43,7 @@ export interface ApiIntegration {
    */
   readonly existingLambdaObj?: lambda.Function;
   /**
-   * The Lambda function to associate with the API method in the OpenAPI file matched by id.
+   * Properties for the Lambda function to create and associate with the API method in the OpenAPI file matched by id.
    *
    * One and only one of existingLambdaObj or lambdaFunctionProps must be specified, any other combination will cause an error.
    */
@@ -115,21 +115,21 @@ export interface OpenApiGatewayToLambdaProps {
    */
   readonly logGroupProps?: logs.LogGroupProps
   /**
-   * Optional timeout for the backing lambda function that does the OpenAPI Definition transformation.
+   * Optional user-defined timeout for the backing lambda function that does the OpenAPI Definition transformation.
    *
-   * Defaults to 3 seconds, but for larger files (tens/hundreds of megabytes or gigabytes in size) this value will need to be increased.
+   * Defaults to 1 minute, but for larger files (hundreds of megabytes or gigabytes in size) this value may need to be increased.
    *
-   * @default Duration.seconds(3)
+   * @default Duration.minutes(1)
    */
-  readonly transformTimeout?: cdk.Duration;
+  readonly internalTransformTimeout?: cdk.Duration;
   /**
-   * Optional memory size for the backing lambda function that does the OpenAPI Definition transformation.
+   * Optional user-defined memory size for the backing lambda function that does the OpenAPI Definition transformation.
    *
-   * Defaults to 128 MiB, but for larger files (tens/hundreds of megabytes or gigabytes in size) this value will need to be increased.
+   * Defaults to 1024 MiB, but for larger files (hundreds of megabytes or gigabytes in size) this value may need to be increased.
    *
-   * @default 128
+   * @default 1024
    */
-  readonly transformMemorySize?: number;
+  readonly internalTransformMemorySize?: number;
 }
 
 export class OpenApiGatewayToLambda extends Construct {
@@ -160,25 +160,17 @@ export class OpenApiGatewayToLambda extends Construct {
     let lambdaCounter = 0;
 
     this.apiLambdaFunctions = props.apiIntegrations.map(apiIntegration => {
-      lambdaCounter++;
-
-      if (apiIntegration.existingLambdaObj === undefined && apiIntegration.lambdaFunctionProps === undefined) {
+      if (apiIntegration.existingLambdaObj || apiIntegration.lambdaFunctionProps) {
+        return {
+          id: apiIntegration.id,
+          lambdaFunction: defaults.buildLambdaFunction(this, {
+            existingLambdaObj: apiIntegration.existingLambdaObj,
+            lambdaFunctionProps: apiIntegration.lambdaFunctionProps
+          }, `ApiFunction${lambdaCounter++}`)
+        };
+      } else {
         throw new Error(`One of existingLambdaObj or lambdaFunctionProps must be specified for the api integration with id: ${apiIntegration.id}`);
       }
-
-      // If we are creating the function and they did not specify a name, then we need to set a name
-      // to prevent a name collision
-      const defaultName = apiIntegration.lambdaFunctionProps ? defaults.generateName(this, `Function${lambdaCounter}`) : undefined;
-      const consolidatedLambdaProps = defaults.consolidateProps({ functionName: defaultName },
-        apiIntegration.lambdaFunctionProps);
-
-      return {
-        id: apiIntegration.id,
-        lambdaFunction: defaults.buildLambdaFunction(this, {
-          existingLambdaObj: apiIntegration.existingLambdaObj,
-          lambdaFunctionProps: consolidatedLambdaProps
-        })
-      };
     });
 
     // Map each id and lambda function pair to the required format for the template writer custom resource
@@ -200,8 +192,8 @@ export class OpenApiGatewayToLambda extends Construct {
       templateBucket: apiDefinitionBucket,
       templateKey: apiDefinitionKey,
       templateValues: apiIntegrationUris,
-      timeout: props.transformTimeout,
-      memorySize: props.transformMemorySize
+      timeout: props.internalTransformTimeout ?? cdk.Duration.minutes(1),
+      memorySize: props.internalTransformMemorySize ?? 1024
     });
 
     const specRestApiResponse = defaults.CreateSpecRestApi(this, {
