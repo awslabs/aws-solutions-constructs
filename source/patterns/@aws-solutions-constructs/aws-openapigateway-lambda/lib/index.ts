@@ -115,7 +115,9 @@ export interface OpenApiGatewayToLambdaProps {
    */
   readonly logGroupProps?: logs.LogGroupProps
   /**
-   * Optional user-defined timeout for the backing lambda function that does the OpenAPI Definition transformation.
+   * Optional user-defined timeout for the Lambda function custom resource installed to do the OpenAPI definition transformation.
+   *
+   * This setting does not affect the deployed architecture - only the ability for the Construct to complete its work.
    *
    * Defaults to 1 minute, but for larger files (hundreds of megabytes or gigabytes in size) this value may need to be increased.
    *
@@ -123,7 +125,9 @@ export interface OpenApiGatewayToLambdaProps {
    */
   readonly internalTransformTimeout?: cdk.Duration;
   /**
-   * Optional user-defined memory size for the backing lambda function that does the OpenAPI Definition transformation.
+   * Optional user-defined memory size for the Lambda function custom resource installed to do the OpenAPI definition transformation.
+   *
+   * This setting does not affect the deployed architecture - only the ability for the Construct to complete its work.
    *
    * Defaults to 1024 MiB, but for larger files (hundreds of megabytes or gigabytes in size) this value may need to be increased.
    *
