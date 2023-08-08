@@ -72,3 +72,4 @@ export * from './lib/waf-defaults';
 export * from './lib/waf-helper';
 export * from './lib/opensearch-defaults';
 export * from './lib/opensearch-helper';
+export * from './lib/kendra-helper';

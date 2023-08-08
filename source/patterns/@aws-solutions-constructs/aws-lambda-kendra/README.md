@@ -40,8 +40,6 @@ const lambdaProps: lambda.FunctionProps = {
   handler: 'index.handler'
 };
 
-const existingBucketWithContent = s3.Bucket.static fromBucketName(this, 'source', 'content-bucket')
-
 new LambdaToKendra(this, 'sample', {
   lambdaFunctionProps: lambdaProps,
   kendraIndexProps: {},
@@ -49,7 +47,7 @@ new LambdaToKendra(this, 'sample', {
     type: 'S3',
     dataSourceConfiguration: {
       s3Configuration: {
-        bucketName: 'biffgaut-kendra-blog',
+        bucketName: 'your-bucket-name',
       }
     }
   ],
@@ -76,7 +74,7 @@ TBD
 | lambdaFunctionProps? | [`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html) | User provided props to override the default props for the Lambda function. |
 | kendraIndexProps? | [`kendra.CfnIndexProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnIndex.html) | Optional user provided props to override the default props for the Kendra index. **Is this required?** |
 | kendraDataSourcesProps | [`CfnDataSourceProps[]`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnDataSource.html) | A list of data sources that will provide data to the Kendra index. *?At least 1 must be specified*. We will do majority of processing for some data sources (S3 crawler, web crawler, web), but for others the props must be complete (e.g. proper roleArn, etc.) |
-| indexPermissions? | `string[]` | Optional - index permissions to grant to the Lambda function. One or more of the following may be specified: `Query`, and `Write`. Default is `["Query"]`. Query is all the operations IAM defines as Read, plus SubmitFeedback. Write is all the operations IAM defines as write |
+| indexPermissions? | `string[]` | Optional - index permissions to grant to the Lambda function. One or more of the following may be specified: `Read`, `SubmitFeedback` and `Write`. Default is `["Read", "SubmitFeedback"]`. Read is all the operations IAM defines as Read and List. SubmitFeedback is only the SubmitFeedback action. Write is all the operations IAM defines as Write and Tag. This functionality may be overridden by providing a specific role arn in lambdaFunctionProps |
 | existingKendraIndex | [`kendra.cfnIndex`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnIndex.html) | An existing Kendra index to which the Lambda function will be granted access. Supplying along with kendraIndexProps or kendraDataSourceProps will throw an error. |
 | existingVpc? | [`ec2.IVpc`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html) | An optional, existing VPC into which this pattern should be deployed. When deployed in a VPC, the Lambda function will use ENIs in the VPC to access network resources. If an existing VPC is provided, the `deployVpc` property cannot be `true`. This uses `ec2.IVpc` to allow clients to supply VPCs that exist outside the stack using the [`ec2.Vpc.fromLookup()`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.Vpc.html#static-fromwbrlookupscope-id-options) method. |
 | vpcProps? | [`ec2.VpcProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.VpcProps.html) | Optional user provided properties to override the default properties for the new VPC. `enableDnsHostnames`, `enableDnsSupport`, `natGateways` and `subnetConfiguration` are set by the pattern, so any values for those properties supplied here will be overridden. If `deployVpc` is not `true` then this property will be ignored. |
@@ -88,11 +86,15 @@ TBD
 | --- | --- | --- |
 | lambdaFunction | [`lambda.Function`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html) | Returns an instance of `lambda.Function` managed by the construct |
 | kendraIndex | [`kendra.cfnIndex`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnIndex.html) | Returns an instance of `kendra.cfnIndex` created by the construct |
-| kendraDataSources | [`CfnDataSource[]`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnDataSource.html) | A list of data sources created for this construct/index - ISSUE - two arrays, this and roles. This can be searched by name, but not role - should we introduce a new interface with name, datasource and role? |
-| lambdaRole | [`iam.Role`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html) | The role assumed for the Lambda function |
-| kendraDataSourceRoles | [`iam.Role[]`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html) | Returns a list of roles supporting the DataSources provided (these may be roles the construct created or that were provided) |
+| kendraDataSources | [`interface DataSourceProperties {
+[]`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnDataSource.html) | A list of data sources created for this construct/index, each in an object that includes the role for that data source. |
+| lambdaRole | [`iam.Role`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html) | The role assumed by the Lambda function |
 | vpc? | [`ec2.IVpc`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html) | Returns an interface on the VPC used by the pattern (if any). This may be a VPC created by the pattern or the VPC supplied to the pattern constructor. |
 
+interface DataSourceProperties {
+  role?: [`iam.Role`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html),
+  source: | [`CfnDataSource`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnDataSource.html)
+}
 ## Lambda Function
 
 This pattern requires a lambda function that can access a Kendra index.
@@ -107,7 +109,7 @@ Out of the box implementation of the Construct without any overrides will set th
 - Enable reusing connections with Keep-Alive for Node.js Lambda function
 - Enable X-Ray Tracing
 - Set Environment Variables
-    - (default) KENDRA_INDEXID
+    - (default) KENDRA_INDEX_ID
     - AWS\_NODEJS\_CONNECTION\_REUSE\_ENABLED
 
 ### Amazon Kendra Index
