@@ -1,0 +1,96 @@
+{
+  "name": "@aws-solutions-constructs/aws-lambda-kendra",
+  "version": "2.41.0",
+  "description": "CDK constructs for defining an interaction between an AWS Lambda function and an existing Amazon Kinesis Firehose Delivery Stream.",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/awslabs/aws-solutions-constructs.git",
+    "directory": "source/patterns/@aws-solutions-constructs/aws-lambda-kendra"
+  },
+  "author": "Amazon Web Services (https://aws.amazon.com)",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc -b .",
+    "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
+    "lint-fix": "eslint -c ../eslintrc.yml --ext=.js,.ts --fix .",
+    "test": "jest --coverage",
+    "clean": "tsc -b --clean",
+    "watch": "tsc -b -w",
+    "integ": "cdk-integ",
+    "integ-assert": "cdk-integ-assert-v2",
+    "jsii": "jsii",
+    "jsii-pacmak": "jsii-pacmak",
+    "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
+    "integ-no-clean": "cdk-integ --no-clean",
+    "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
+  },
+  "jsii": {
+    "outdir": "dist",
+    "targets": {
+      "java": {
+        "package": "software.amazon.awsconstructs.services.lambdakendra",
+        "maven": {
+          "groupId": "software.amazon.awsconstructs",
+          "artifactId": "lambdakendra"
+        }
+      },
+      "dotnet": {
+        "namespace": "Amazon.SolutionsConstructs.AWS.LambdaKendra",
+        "packageId": "Amazon.SolutionsConstructs.AWS.Lambdakendra",
+        "signAssembly": true,
+        "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
+      },
+      "python": {
+        "distName": "aws-solutions-constructs.aws-lambda-kendra",
+        "module": "aws_solutions_constructs.aws_lambda_kendra"
+      }
+    }
+  },
+  "dependencies": {
+    "@aws-solutions-constructs/core": "2.41.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "@types/node": "^10.3.0",
+    "aws-cdk-lib": "2.82.0",
+    "@aws-solutions-constructs/core": "2.41.0",
+    "constructs": "^10.0.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "coverageReporters": [
+      "text",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../../../"
+        }
+      ]
+    ]
+  },
+  "peerDependencies": {
+    "@aws-solutions-constructs/core": "2.41.0",
+    "aws-cdk-lib": "^2.82.0",
+    "constructs": "^10.0.0"
+  },
+  "keywords": [
+    "aws",
+    "cdk",
+    "awscdk",
+    "AWS Solutions Constructs",
+    "Amazon Kendra",
+    "AWS Lambda"
+  ],
+  "bugs": {
+    "url": "https://github.com/awslabs/aws-solutions-constructs/issues"
+  },
+  "homepage": "https://github.com/awslabs/aws-solutions-constructs#readme",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  }
+}
