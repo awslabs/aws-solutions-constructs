@@ -19,6 +19,7 @@
 import * as kendra from 'aws-cdk-lib/aws-kendra';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { consolidateProps } from "./utils";
+import { Aws } from 'aws-cdk-lib';
 
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
@@ -193,7 +194,7 @@ function CreateKendraIndexLoggingRole(scope: Construct, id: string): string {
         }
       }),
       new iam.PolicyStatement({
-        resources: ["arn:aws:logs:us-east-1:515290864834:log-group:/aws/kendra/*"],
+        resources: [`arn:aws:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/kendra/*`],
         actions: [
           "logs:CreateLogGroup"
         ],
@@ -207,7 +208,7 @@ function CreateKendraIndexLoggingRole(scope: Construct, id: string): string {
         effect: iam.Effect.ALLOW,
       }),
       new iam.PolicyStatement({
-        resources: ["arn:aws:logs:us-east-1:515290864834:log-group:/aws/kendra/*:log-stream:*"],
+        resources: [`arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/kendra/*:log-stream:*`],
         actions: [
           'logs:CreateLogGroup',
           'logs:CreateLogStream',

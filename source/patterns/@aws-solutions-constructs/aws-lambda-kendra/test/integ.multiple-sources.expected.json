@@ -392,7 +392,22 @@
                 {
                   "Action": "logs:CreateLogGroup",
                   "Effect": "Allow",
-                  "Resource": "arn:aws:logs:us-east-1:515290864834:log-group:/aws/kendra/*"
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":log-group:/aws/kendra/*"
+                      ]
+                    ]
+                  }
                 },
                 {
                   "Action": "logs:DescribeLogGroups",
@@ -407,7 +422,26 @@
                     "logs:DescribeLogStream"
                   ],
                   "Effect": "Allow",
-                  "Resource": "arn:aws:logs:us-east-1:515290864834:log-group:/aws/kendra/*:log-stream:*"
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":log-group:/aws/kendra/*:log-stream:*"
+                      ]
+                    ]
+                  }
                 }
               ],
               "Version": "2012-10-17"

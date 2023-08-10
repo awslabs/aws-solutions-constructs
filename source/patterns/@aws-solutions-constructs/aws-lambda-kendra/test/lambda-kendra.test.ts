@@ -95,7 +95,22 @@ test('Launch with minimal code and check  structure', () => {
             {
               Action: "logs:CreateLogGroup",
               Effect: "Allow",
-              Resource: "arn:aws:logs:us-east-1:515290864834:log-group:/aws/kendra/*"
+              Resource: {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:logs:",
+                    {
+                      Ref: "AWS::Region"
+                    },
+                    ":",
+                    {
+                      Ref: "AWS::AccountId"
+                    },
+                    ":log-group:/aws/kendra/*"
+                  ]
+                ]
+              }
             },
             {
               Action: "logs:DescribeLogGroups",
@@ -110,7 +125,26 @@ test('Launch with minimal code and check  structure', () => {
                 "logs:DescribeLogStream"
               ],
               Effect: "Allow",
-              Resource: "arn:aws:logs:us-east-1:515290864834:log-group:/aws/kendra/*:log-stream:*"
+              Resource: {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      Ref: "AWS::Partition"
+                    },
+                    ":logs:",
+                    {
+                      Ref: "AWS::Region"
+                    },
+                    ":",
+                    {
+                      Ref: "AWS::AccountId"
+                    },
+                    ":log-group:/aws/kendra/*:log-stream:*"
+                  ]
+                ]
+              }
             }
           ],
           Version: "2012-10-17"
@@ -141,12 +175,12 @@ test('Launch with minimal code and check  structure', () => {
             {
               Action: "s3:GetObject",
               Effect: "Allow",
-              Resource: "arn:aws:s3:::test-bucket-name12344/*"
+              Resource: `arn:aws:s3:::test-bucket-name12344/*`
             },
             {
               Action: "s3:ListBucket",
               Effect: "Allow",
-              Resource: "arn:aws:s3:::test-bucket-name12344"
+              Resource: `arn:aws:s3:::test-bucket-name12344`
             },
             {
               Action: [
