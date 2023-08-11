@@ -16,7 +16,7 @@ import { App, Stack } from "aws-cdk-lib";
 import { LambdaToKendra } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -40,3 +40,5 @@ new LambdaToKendra(stack, 'minimal-arguments', {
     }
   }],
 });
+
+suppressAutoDeleteHandlerWarnings(stack);
