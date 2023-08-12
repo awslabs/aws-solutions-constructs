@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.42.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.41.0...v2.42.0) (2023-08-12)
+
+Build on CDK v2.82.0
+
+### Features
+
+* **new construct:** aws-openapigateway-lambda ([#912](https://github.com/awslabs/aws-solutions-constructs/issues/912)) ([09465d6](https://github.com/awslabs/aws-solutions-constructs/commit/09465d65fc5969da5691cf5057c278ded8753b43)), closes [#910](https://github.com/awslabs/aws-solutions-constructs/issues/910) [#917](https://github.com/awslabs/aws-solutions-constructs/issues/917) [#922](https://github.com/awslabs/aws-solutions-constructs/issues/922) [#929](https://github.com/awslabs/aws-solutions-constructs/issues/929) [#930](https://github.com/awslabs/aws-solutions-constructs/issues/930)
+
 ## [2.41.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.40.0...v2.41.0) (2023-06-06)
 
 Build on CDK v2.82.0
