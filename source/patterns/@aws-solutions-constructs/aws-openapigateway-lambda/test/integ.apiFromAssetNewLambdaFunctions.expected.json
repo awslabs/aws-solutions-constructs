@@ -163,7 +163,7 @@
               },
               ":",
               {
-                "Ref": "OpenApiGatewayToLambdaMySpecRestApi2EBB03AA"
+                "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
               },
               "/*/*/*"
             ]
@@ -333,7 +333,7 @@
               },
               ":",
               {
-                "Ref": "OpenApiGatewayToLambdaMySpecRestApi2EBB03AA"
+                "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
               },
               "/*/*/*"
             ]
@@ -791,7 +791,7 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaMySpecRestApi2EBB03AA": {
+    "OpenApiGatewayToLambdaSpecRestApi27C18064": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
         "BodyS3Location": {
@@ -828,11 +828,11 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaMySpecRestApiDeployment78859365749df757bf3d29c2b4dd121f4fae9829": {
+    "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775c586d865ce613dde0b09710274a96485": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
-          "Ref": "OpenApiGatewayToLambdaMySpecRestApi2EBB03AA"
+          "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
         },
         "Description": "Automatically created by the RestApi construct"
       },
@@ -847,11 +847,11 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaMySpecRestApiDeploymentStageprodA70E8DB8": {
+    "OpenApiGatewayToLambdaSpecRestApiDeploymentStageprodB962CBBB": {
       "Type": "AWS::ApiGateway::Stage",
       "Properties": {
         "RestApiId": {
-          "Ref": "OpenApiGatewayToLambdaMySpecRestApi2EBB03AA"
+          "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
         },
         "AccessLogSetting": {
           "DestinationArn": {
@@ -863,7 +863,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "OpenApiGatewayToLambdaMySpecRestApiDeployment78859365749df757bf3d29c2b4dd121f4fae9829"
+          "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775c586d865ce613dde0b09710274a96485"
         },
         "MethodSettings": [
           {
@@ -877,16 +877,16 @@
         "TracingEnabled": true
       }
     },
-    "OpenApiGatewayToLambdaMySpecRestApiUsagePlan3EC24357": {
+    "OpenApiGatewayToLambdaSpecRestApiUsagePlan44F6F5C6": {
       "Type": "AWS::ApiGateway::UsagePlan",
       "Properties": {
         "ApiStages": [
           {
             "ApiId": {
-              "Ref": "OpenApiGatewayToLambdaMySpecRestApi2EBB03AA"
+              "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
             },
             "Stage": {
-              "Ref": "OpenApiGatewayToLambdaMySpecRestApiDeploymentStageprodA70E8DB8"
+              "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentStageprodB962CBBB"
             },
             "Throttle": {}
           }
@@ -963,19 +963,19 @@
         }
       },
       "DependsOn": [
-        "OpenApiGatewayToLambdaMySpecRestApi2EBB03AA"
+        "OpenApiGatewayToLambdaSpecRestApi27C18064"
       ]
     }
   },
   "Outputs": {
-    "OpenApiGatewayToLambdaMySpecRestApiEndpoint2EF70BB1": {
+    "OpenApiGatewayToLambdaSpecRestApiEndpointD1FA5E3A": {
       "Value": {
         "Fn::Join": [
           "",
           [
             "https://",
             {
-              "Ref": "OpenApiGatewayToLambdaMySpecRestApi2EBB03AA"
+              "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
             },
             ".execute-api.",
             {
@@ -987,7 +987,7 @@
             },
             "/",
             {
-              "Ref": "OpenApiGatewayToLambdaMySpecRestApiDeploymentStageprodA70E8DB8"
+              "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentStageprodB962CBBB"
             },
             "/"
           ]
