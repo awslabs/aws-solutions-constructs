@@ -170,7 +170,7 @@ export class OpenApiGatewayToLambda extends Construct {
           lambdaFunction: defaults.buildLambdaFunction(this, {
             existingLambdaObj: apiIntegration.existingLambdaObj,
             lambdaFunctionProps: apiIntegration.lambdaFunctionProps
-          }, `ApiFunction${lambdaCounter++}`)
+          }, `${apiIntegration.id}ApiFunction${lambdaCounter++}`)
         };
       } else {
         throw new Error(`One of existingLambdaObj or lambdaFunctionProps must be specified for the api integration with id: ${apiIntegration.id}`);

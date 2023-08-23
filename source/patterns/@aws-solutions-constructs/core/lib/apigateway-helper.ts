@@ -284,7 +284,7 @@ export function CreateSpecRestApi(
   logGroupProps?: logs.LogGroupProps): CreateSpecRestApiResponse {
 
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
-  const defaultProps = apiDefaults.DefaultSpecRestApiProps(logGroup);
+  const defaultProps = apiDefaults.DefaultSpecRestApiProps(scope, logGroup);
 
   // Define the API object
   let api: apigateway.SpecRestApi;
