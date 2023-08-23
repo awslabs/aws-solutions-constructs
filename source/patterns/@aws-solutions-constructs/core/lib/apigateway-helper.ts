@@ -290,7 +290,7 @@ export function CreateSpecRestApi(
   let api: apigateway.SpecRestApi;
   // If property overrides have been provided, incorporate them and deploy
   const consolidatedApiGatewayProps = consolidateProps(defaultProps, apiGatewayProps, { cloudWatchRole: false });
-  api = new apigateway.SpecRestApi(scope, 'MySpecRestApi', consolidatedApiGatewayProps);
+  api = new apigateway.SpecRestApi(scope, 'SpecRestApi', consolidatedApiGatewayProps);
   // Configure API access logging
   const cwRole = (apiGatewayProps?.cloudWatchRole !== false) ? configureCloudwatchRoleForApi(scope, api) : undefined;
 

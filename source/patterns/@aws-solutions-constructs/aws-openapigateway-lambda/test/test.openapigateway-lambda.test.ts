@@ -19,7 +19,7 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import * as path from 'path';
 import { Template } from "aws-cdk-lib/assertions";
-import { CreateScrapBucket, printWarning } from "@aws-solutions-constructs/core";
+import { CreateScrapBucket } from "@aws-solutions-constructs/core";
 
 test('Simple deployment works', () => {
   const stack = new Stack();
@@ -434,7 +434,6 @@ test('Confirm API definition uri is added to function name', () => {
   const resources = JSON.parse(JSON.stringify(template)).Resources;
 
   expect(Object.keys(resources).find((element) => {
-    printWarning(`keyName:${element}`);
     return element.includes("MessagesHandler");
   })).toBeTruthy();
 
