@@ -284,13 +284,13 @@ export function CreateSpecRestApi(
   logGroupProps?: logs.LogGroupProps): CreateSpecRestApiResponse {
 
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
-  const defaultProps = apiDefaults.DefaultSpecRestApiProps(logGroup);
+  const defaultProps = apiDefaults.DefaultSpecRestApiProps(scope, logGroup);
 
   // Define the API object
   let api: apigateway.SpecRestApi;
   // If property overrides have been provided, incorporate them and deploy
   const consolidatedApiGatewayProps = consolidateProps(defaultProps, apiGatewayProps, { cloudWatchRole: false });
-  api = new apigateway.SpecRestApi(scope, 'SpecRestApi', consolidatedApiGatewayProps);
+  api = new apigateway.SpecRestApi(scope, 'MySpecRestApi', consolidatedApiGatewayProps);
   // Configure API access logging
   const cwRole = (apiGatewayProps?.cloudWatchRole !== false) ? configureCloudwatchRoleForApi(scope, api) : undefined;
 

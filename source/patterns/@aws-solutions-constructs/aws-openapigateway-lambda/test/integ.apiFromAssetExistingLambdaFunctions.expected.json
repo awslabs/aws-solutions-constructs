@@ -163,7 +163,7 @@
               },
               ":",
               {
-                "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
+                "Ref": "OpenApiGatewayToLambdaMySpecRestApi2EBB03AA"
               },
               "/*/*/*"
             ]
@@ -334,7 +334,7 @@
               },
               ":",
               {
-                "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
+                "Ref": "OpenApiGatewayToLambdaMySpecRestApi2EBB03AA"
               },
               "/*/*/*"
             ]
@@ -792,7 +792,7 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaSpecRestApi27C18064": {
+    "OpenApiGatewayToLambdaMySpecRestApi2EBB03AA": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
         "BodyS3Location": {
@@ -806,14 +806,34 @@
             ]
           }
         },
-        "Name": "SpecRestApi"
+        "Name": {
+          "Fn::Join": [
+            "",
+            [
+              "OpenApiGatewayToLambda-",
+              {
+                "Fn::Select": [
+                  2,
+                  {
+                    "Fn::Split": [
+                      "/",
+                      {
+                        "Ref": "AWS::StackId"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        }
       }
     },
-    "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775a5995a76cd028623a8c53fad4d5dfe6e": {
+    "OpenApiGatewayToLambdaMySpecRestApiDeployment788593659d4746e11fb9f97809babf04e00f6def": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
-          "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
+          "Ref": "OpenApiGatewayToLambdaMySpecRestApi2EBB03AA"
         },
         "Description": "Automatically created by the RestApi construct"
       },
@@ -828,11 +848,11 @@
         }
       }
     },
-    "OpenApiGatewayToLambdaSpecRestApiDeploymentStageprodB962CBBB": {
+    "OpenApiGatewayToLambdaMySpecRestApiDeploymentStageprodA70E8DB8": {
       "Type": "AWS::ApiGateway::Stage",
       "Properties": {
         "RestApiId": {
-          "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
+          "Ref": "OpenApiGatewayToLambdaMySpecRestApi2EBB03AA"
         },
         "AccessLogSetting": {
           "DestinationArn": {
@@ -844,7 +864,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775a5995a76cd028623a8c53fad4d5dfe6e"
+          "Ref": "OpenApiGatewayToLambdaMySpecRestApiDeployment788593659d4746e11fb9f97809babf04e00f6def"
         },
         "MethodSettings": [
           {
@@ -858,16 +878,16 @@
         "TracingEnabled": true
       }
     },
-    "OpenApiGatewayToLambdaSpecRestApiUsagePlan44F6F5C6": {
+    "OpenApiGatewayToLambdaMySpecRestApiUsagePlan3EC24357": {
       "Type": "AWS::ApiGateway::UsagePlan",
       "Properties": {
         "ApiStages": [
           {
             "ApiId": {
-              "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
+              "Ref": "OpenApiGatewayToLambdaMySpecRestApi2EBB03AA"
             },
             "Stage": {
-              "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentStageprodB962CBBB"
+              "Ref": "OpenApiGatewayToLambdaMySpecRestApiDeploymentStageprodA70E8DB8"
             },
             "Throttle": {}
           }
@@ -944,19 +964,19 @@
         }
       },
       "DependsOn": [
-        "OpenApiGatewayToLambdaSpecRestApi27C18064"
+        "OpenApiGatewayToLambdaMySpecRestApi2EBB03AA"
       ]
     }
   },
   "Outputs": {
-    "OpenApiGatewayToLambdaSpecRestApiEndpointD1FA5E3A": {
+    "OpenApiGatewayToLambdaMySpecRestApiEndpoint2EF70BB1": {
       "Value": {
         "Fn::Join": [
           "",
           [
             "https://",
             {
-              "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
+              "Ref": "OpenApiGatewayToLambdaMySpecRestApi2EBB03AA"
             },
             ".execute-api.",
             {
@@ -968,7 +988,7 @@
             },
             "/",
             {
-              "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentStageprodB962CBBB"
+              "Ref": "OpenApiGatewayToLambdaMySpecRestApiDeploymentStageprodA70E8DB8"
             },
             "/"
           ]

@@ -19,7 +19,7 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import * as path from 'path';
 import { Template } from "aws-cdk-lib/assertions";
-import { CreateScrapBucket } from "@aws-solutions-constructs/core";
+import { CreateScrapBucket, printWarning } from "@aws-solutions-constructs/core";
 
 test('Simple deployment works', () => {
   const stack = new Stack();
@@ -318,4 +318,124 @@ test('Throws error when api is defined as asset and s3 key is specified', () => 
     });
   };
   expect(app).toThrowError('Either apiDefinitionBucket/apiDefinitionKey or apiDefinitionAsset must be specified');
+});
+
+test('Two Constructs create APIs with different names', () => {
+  const stack = new Stack();
+
+  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
+    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
+  });
+
+  new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
+    apiDefinitionAsset,
+    apiIntegrations: [
+      {
+        id: 'MessagesHandler',
+        lambdaFunctionProps: {
+          runtime: lambda.Runtime.NODEJS_18_X,
+          handler: 'index.handler',
+          code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+        }
+      }
+    ]
+  });
+
+  const secondApiDefinitionAsset = new Asset(stack, 'SecondOpenApiAsset', {
+    path: path.join(__dirname, 'openapi/apiDefinition-withCognitoAuth.yaml')
+  });
+
+  new OpenApiGatewayToLambda(stack, 'second-test', {
+    apiDefinitionAsset: secondApiDefinitionAsset,
+    apiIntegrations: [
+      {
+        id: 'MessagesHandler',
+        lambdaFunctionProps: {
+          runtime: lambda.Runtime.NODEJS_18_X,
+          handler: 'index.handler',
+          code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+        }
+      }
+    ]
+  });
+
+  const template = Template.fromStack(stack);
+
+  template.resourceCountIs("AWS::ApiGateway::RestApi", 2);
+  template.hasResourceProperties("AWS::ApiGateway::RestApi", {
+    Name: {
+      "Fn::Join": [
+        "",
+        [
+          "test-apigateway-lambda-",
+          {
+            "Fn::Select": [
+              2,
+              {
+                "Fn::Split": [
+                  "/",
+                  {
+                    Ref: "AWS::StackId"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  });
+  template.hasResourceProperties("AWS::ApiGateway::RestApi", {
+    Name: {
+      "Fn::Join": [
+        "",
+        [
+          "second-test-",
+          {
+            "Fn::Select": [
+              2,
+              {
+                "Fn::Split": [
+                  "/",
+                  {
+                    Ref: "AWS::StackId"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  });
+});
+
+test('Confirm API definition uri is added to function name', () => {
+  const stack = new Stack();
+
+  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
+    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
+  });
+
+  new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
+    apiDefinitionAsset,
+    apiIntegrations: [
+      {
+        id: 'MessagesHandler',
+        lambdaFunctionProps: {
+          runtime: lambda.Runtime.NODEJS_18_X,
+          handler: 'index.handler',
+          code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+        }
+      }
+    ]
+  });
+  const template = Template.fromStack(stack);
+  const resources = JSON.parse(JSON.stringify(template)).Resources;
+
+  expect(Object.keys(resources).find((element) => {
+    printWarning(`keyName:${element}`);
+    return element.includes("MessagesHandler");
+  })).toBeTruthy();
+
 });
