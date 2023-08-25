@@ -18,7 +18,7 @@
 
 import * as kendra from 'aws-cdk-lib/aws-kendra';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import { consolidateProps } from "./utils";
+import { addCfnSuppressRules, consolidateProps } from "./utils";
 import { Aws } from 'aws-cdk-lib';
 
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
@@ -56,6 +56,10 @@ export function buildKendraIndex(scope: Construct, id: string, props: BuildKendr
 
     const consolidatedIndexProperties = consolidateProps(defaultIndexProperties, props.kendraIndexProps);
     const newIndex = new kendra.CfnIndex(scope, `kendra-index-${id}`, consolidatedIndexProperties);
+    addCfnSuppressRules(newIndex, [{
+      id: "W80",
+      reason: "We consulted the Kendra TFC and they confirmed the default encryption is sufficient for general use cases"
+    }]);
 
     return newIndex;
   }
@@ -178,7 +182,6 @@ function CreateS3DataSource(scope: Construct,
 
 }
 
-// TODO: test this in core, only checked in construct right now
 function CreateKendraIndexLoggingRole(scope: Construct, id: string): string {
   const allowKendraToLogPolicy = new iam.PolicyDocument({
     statements: [
@@ -227,6 +230,12 @@ function CreateKendraIndexLoggingRole(scope: Construct, id: string): string {
       AllowLogging: allowKendraToLogPolicy,
     },
   });
+  addCfnSuppressRules(indexRole, [{
+    id: "W11",
+    reason: "PutMetricData does not allow resource specification, " +
+      "scope is narrowed by the namespace condition. " +
+      "https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazoncloudwatch.html"
+  }]);
   return indexRole.roleArn;
 }
 

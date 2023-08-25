@@ -533,6 +533,16 @@
             "PolicyName": "AllowLogging"
           }
         ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W11",
+              "reason": "PutMetricData does not allow resource specification, scope is narrowed by the namespace condition. https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazoncloudwatch.html"
+            }
+          ]
+        }
       }
     },
     "minimalargumentskendraindexminimalarguments5CBDD236": {
@@ -564,6 +574,16 @@
           "Fn::GetAtt": [
             "minimalargumentskendraindexroleminimalargumentsB1DBDF7D",
             "Arn"
+          ]
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W80",
+              "reason": "We consulted the Kendra TFC and they confirmed the default encryption is sufficient for general use cases"
+            }
           ]
         }
       }
