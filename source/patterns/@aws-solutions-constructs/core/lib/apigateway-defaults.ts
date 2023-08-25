@@ -20,6 +20,8 @@ import * as api from 'aws-cdk-lib/aws-apigateway';
 import { IntegrationResponse } from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { LogGroup } from 'aws-cdk-lib/aws-logs';
+import { Construct } from 'constructs';
+import { generatePhysicalName } from './utils';
 
 /**
  * Private function to configure an api.RestApiProps
@@ -102,6 +104,26 @@ export function DefaultGlobalRestApiProps(_logGroup: LogGroup) {
  */
 export function DefaultRegionalRestApiProps(_logGroup: LogGroup) {
   return DefaultRestApiProps([api.EndpointType.REGIONAL], _logGroup);
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
+ * Provides the default set of properties for SpecRestApi
+ * @param logGroup - CloudWatch Log Group for Api Gateway Access Logging
+ */
+export function DefaultSpecRestApiProps(scope: Construct, logGroup: LogGroup): api.RestApiBaseProps {
+  return {
+    cloudWatchRole: false,
+    deployOptions: {
+      accessLogDestination: new api.LogGroupLogDestination(logGroup),
+      accessLogFormat: api.AccessLogFormat.jsonWithStandardFields(),
+      loggingLevel: api.MethodLoggingLevel.INFO,
+      dataTraceEnabled: false,
+      tracingEnabled: true
+    },
+    restApiName: generatePhysicalName("", [ scope.node.id ], 255),
+  };
 }
 
 /**

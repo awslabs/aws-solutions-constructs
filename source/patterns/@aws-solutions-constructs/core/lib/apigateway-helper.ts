@@ -34,7 +34,7 @@ import { Construct } from 'constructs';
  * @param scope - the construct to which the access logging capabilities should be attached to.
  * @param api - an existing api.RestApi or api.LambdaRestApi.
  */
-function configureCloudwatchRoleForApi(scope: Construct, api: apigateway.RestApi): iam.Role {
+function configureCloudwatchRoleForApi(scope: Construct, api: apigateway.RestApiBase): iam.Role {
   // Setup the IAM Role for API Gateway CloudWatch access
   const restApiCloudwatchRole = new iam.Role(scope, 'LambdaRestApiCloudWatchRole', {
     assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
@@ -270,6 +270,41 @@ export function RegionalRestApi(scope: Construct, apiGatewayProps?: apigateway.R
   const defaultProps = apiDefaults.DefaultRegionalRestApiProps(logGroup);
   const configureRestApiResponse = configureRestApi(scope, defaultProps, apiGatewayProps);
   return { api: configureRestApiResponse.api, role: configureRestApiResponse.role, logGroup };
+}
+
+export interface CreateSpecRestApiResponse {
+  readonly api: apigateway.SpecRestApi,
+  readonly role?: iam.Role,
+  readonly logGroup: logs.LogGroup,
+}
+
+export function CreateSpecRestApi(
+  scope: Construct,
+  apiGatewayProps: apigateway.SpecRestApiProps,
+  logGroupProps?: logs.LogGroupProps): CreateSpecRestApiResponse {
+
+  const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
+  const defaultProps = apiDefaults.DefaultSpecRestApiProps(scope, logGroup);
+
+  // Define the API object
+  let api: apigateway.SpecRestApi;
+  // If property overrides have been provided, incorporate them and deploy
+  const consolidatedApiGatewayProps = consolidateProps(defaultProps, apiGatewayProps, { cloudWatchRole: false });
+  api = new apigateway.SpecRestApi(scope, 'SpecRestApi', consolidatedApiGatewayProps);
+  // Configure API access logging
+  const cwRole = (apiGatewayProps?.cloudWatchRole !== false) ? configureCloudwatchRoleForApi(scope, api) : undefined;
+
+  // Configure Usage Plan
+  const usagePlanProps: apigateway.UsagePlanProps = {
+    apiStages: [{
+      api,
+      stage: api.deploymentStage
+    }]
+  };
+
+  api.addUsagePlan('UsagePlan', usagePlanProps);
+
+  return { api, role: cwRole, logGroup};
 }
 
 export interface AddProxyMethodToApiResourceInputParams {

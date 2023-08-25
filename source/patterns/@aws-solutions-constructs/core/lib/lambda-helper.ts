@@ -50,11 +50,14 @@ export interface BuildLambdaFunctionProps {
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunctionProps): lambda.Function {
+export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunctionProps, constructId?: string): lambda.Function {
   // Conditional lambda function creation
   if (!props.existingLambdaObj) {
     if (props.lambdaFunctionProps) {
-      return deployLambdaFunction(scope, props.lambdaFunctionProps, props.lambdaFunctionProps.functionName, props.vpc);
+      // constructId may be specified by the calling code, but if not, fallback to the original behavior of using the
+      // function name as the construct id used when creating the underlying lambda function and iam role.
+      constructId = constructId ?? props.lambdaFunctionProps.functionName;
+      return deployLambdaFunction(scope, props.lambdaFunctionProps, constructId, props.vpc);
     } else {
       throw Error('Either existingLambdaObj or lambdaFunctionProps is required');
     }
@@ -81,11 +84,11 @@ export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunction
  */
 export function deployLambdaFunction(scope: Construct,
   lambdaFunctionProps: lambda.FunctionProps,
-  functionId?: string,
+  constructId?: string,
   vpc?: ec2.IVpc): lambda.Function {
 
-  const _functionId = functionId ? functionId : 'LambdaFunction';
-  const _functionRoleId = _functionId + 'ServiceRole';
+  const functionId = constructId ?? 'LambdaFunction';
+  const functionRoleId = functionId + 'ServiceRole';
 
   if (vpc && lambdaFunctionProps.vpc) {
     throw new Error(
@@ -94,7 +97,7 @@ export function deployLambdaFunction(scope: Construct,
   }
 
   // Setup the IAM Role for Lambda Service
-  const lambdaServiceRole = new iam.Role(scope, _functionRoleId, {
+  const lambdaServiceRole = new iam.Role(scope, functionRoleId, {
     assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
     inlinePolicies: {
       LambdaFunctionServiceRolePolicy: new iam.PolicyDocument({
@@ -149,7 +152,7 @@ export function deployLambdaFunction(scope: Construct,
     }, true);
   }
 
-  const lambdafunction = new lambda.Function(scope, _functionId, finalLambdaFunctionProps);
+  const lambdafunction = new lambda.Function(scope, functionId, finalLambdaFunctionProps);
 
   if (lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_16_X) {
     lambdafunction.addEnvironment('AWS_NODEJS_CONNECTION_REUSE_ENABLED', '1', { removeInEdge: true });
