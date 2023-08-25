@@ -20,7 +20,7 @@ import * as cdk from "aws-cdk-lib";
 import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 
-test('Launch with minimal code and check  structure', () => {
+test.only('Launch with minimal code and check  structure', () => {
   const stack = new cdk.Stack();
   const testFunctionName = 'test-function-name24334';
   const testBucketName = 'test-bucket-name12344';
@@ -115,11 +115,29 @@ test('Launch with minimal code and check  structure', () => {
             {
               Action: "logs:DescribeLogGroups",
               Effect: "Allow",
-              Resource: "*"
+              Resource: {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      Ref: "AWS::Partition"
+                    },
+                    ":logs:",
+                    {
+                      Ref: "AWS::Region"
+                    },
+                    ":",
+                    {
+                      Ref: "AWS::AccountId"
+                    },
+                    ":log-group:/aws/kendra/*"
+                  ]
+                ]
+              }
             },
             {
               Action: [
-                "logs:CreateLogGroup",
                 "logs:CreateLogStream",
                 "logs:PutLogEvents",
                 "logs:DescribeLogStream"

@@ -178,6 +178,7 @@ function CreateS3DataSource(scope: Construct,
 
 }
 
+// TODO: test this in core, only checked in construct right now
 function CreateKendraIndexLoggingRole(scope: Construct, id: string): string {
   const allowKendraToLogPolicy = new iam.PolicyDocument({
     statements: [
@@ -201,7 +202,7 @@ function CreateKendraIndexLoggingRole(scope: Construct, id: string): string {
         effect: iam.Effect.ALLOW,
       }),
       new iam.PolicyStatement({
-        resources: ['*'],
+        resources: [`arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/kendra/*`],
         actions: [
           "logs:DescribeLogGroups"
         ],
@@ -210,7 +211,6 @@ function CreateKendraIndexLoggingRole(scope: Construct, id: string): string {
       new iam.PolicyStatement({
         resources: [`arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/kendra/*:log-stream:*`],
         actions: [
-          'logs:CreateLogGroup',
           'logs:CreateLogStream',
           'logs:PutLogEvents',
           'logs:DescribeLogStream',

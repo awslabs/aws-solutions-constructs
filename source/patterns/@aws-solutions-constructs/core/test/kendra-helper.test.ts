@@ -30,6 +30,109 @@ test('Launch Kendra index with defaults', () => {
   template.resourceCountIs("AWS::IAM::Role", 1);
 });
 
+test('Confirm kendra has log wrting privileges', () => {
+  const stack = new Stack(undefined, undefined);
+
+  buildKendraIndex(stack, 'test', {});
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::IAM::Role", {
+    Description: "Allow Kendra index to write CloudWatch Logs",
+    Policies: [
+      {
+        PolicyDocument: {
+          Statement: [
+            {
+              Action: "cloudwatch:PutMetricData",
+              Condition: {
+                StringEquals: {
+                  "cloudwatch:namespace": "AWS/Kendra"
+                }
+              },
+              Effect: "Allow",
+              Resource: "*"
+            },
+            {
+              Action: "logs:CreateLogGroup",
+              Effect: "Allow",
+              Resource: {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:logs:",
+                    {
+                      Ref: "AWS::Region"
+                    },
+                    ":",
+                    {
+                      Ref: "AWS::AccountId"
+                    },
+                    ":log-group:/aws/kendra/*"
+                  ]
+                ]
+              }
+            },
+            {
+              Action: "logs:DescribeLogGroups",
+              Effect: "Allow",
+              Resource: {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      Ref: "AWS::Partition"
+                    },
+                    ":logs:",
+                    {
+                      Ref: "AWS::Region"
+                    },
+                    ":",
+                    {
+                      Ref: "AWS::AccountId"
+                    },
+                    ":log-group:/aws/kendra/*"
+                  ]
+                ]
+              }
+            },
+            {
+              Action: [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:DescribeLogStream"
+              ],
+              Effect: "Allow",
+              Resource: {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      Ref: "AWS::Partition"
+                    },
+                    ":logs:",
+                    {
+                      Ref: "AWS::Region"
+                    },
+                    ":",
+                    {
+                      Ref: "AWS::AccountId"
+                    },
+                    ":log-group:/aws/kendra/*:log-stream:*"
+                  ]
+                ]
+              }
+            }
+          ],
+          Version: "2012-10-17"
+        },
+        PolicyName: "AllowLogging"
+      }
+    ],
+  });
+});
+
 test('Launch Kendra index with custom properties', () => {
   const testName = 'test-index-name';
   const stack = new Stack(undefined, undefined);
@@ -432,7 +535,7 @@ test('Launch Kendra index with multiple data sources', () => {
 });
 
 test('Confirm Errof for bad kendra Permission in normalizeKendraPermissions()', () => {
-  const inputs = [ "read", "submitfeedback", "write"];
+  const inputs = ["read", "submitfeedback", "write"];
 
   const outputs = normalizeKendraPermissions(inputs);
 
@@ -442,7 +545,7 @@ test('Confirm Errof for bad kendra Permission in normalizeKendraPermissions()', 
 });
 
 test('Confirm successful operation of normalizeKendraPermissions()', () => {
-  const inputs = [ "badvalue", "write"];
+  const inputs = ["badvalue", "write"];
 
   const app = () => {
     normalizeKendraPermissions(inputs);
