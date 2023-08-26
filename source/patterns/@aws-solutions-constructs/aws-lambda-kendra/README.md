@@ -73,7 +73,7 @@ TBD
 | existingLambdaObj? | [`lambda.Function`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html) | Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error. |
 | lambdaFunctionProps? | [`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html) | User provided props to override the default props for the Lambda function. |
 | kendraIndexProps? | [`kendra.CfnIndexProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnIndex.html) | Optional user provided props to override the default props for the Kendra index. **Is this required?** |
-| kendraDataSourcesProps | [`CfnDataSourceProps[]`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnDataSource.html) | A list of data sources that will provide data to the Kendra index. *?At least 1 must be specified*. We will do majority of processing for some data sources (S3 crawler, web crawler, web), but for others the props must be complete (e.g. proper roleArn, etc.) |
+| kendraDataSourcesProps | [`CfnDataSourceProps[]`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnDataSource.html) | A list of data sources that will provide data to the Kendra index. *?At least 1 must be specified*. We will do majority of processing for some data sources (S3 crawler initially), but for others the props must be complete (e.g. proper roleArn, etc.) |
 | indexPermissions? | `string[]` | Optional - index permissions to grant to the Lambda function. One or more of the following may be specified: `Read`, `SubmitFeedback` and `Write`. Default is `["Read", "SubmitFeedback"]`. Read is all the operations IAM defines as Read and List. SubmitFeedback is only the SubmitFeedback action. Write is all the operations IAM defines as Write and Tag. This functionality may be overridden by providing a specific role arn in lambdaFunctionProps |
 | existingKendraIndex | [`kendra.cfnIndex`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnIndex.html) | An existing Kendra index to which the Lambda function will be granted access. Supplying along with kendraIndexProps or kendraDataSourceProps will throw an error. |
 | existingVpc? | [`ec2.IVpc`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html) | An optional, existing VPC into which this pattern should be deployed. When deployed in a VPC, the Lambda function will use ENIs in the VPC to access network resources. If an existing VPC is provided, the `deployVpc` property cannot be `true`. This uses `ec2.IVpc` to allow clients to supply VPCs that exist outside the stack using the [`ec2.Vpc.fromLookup()`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.Vpc.html#static-fromwbrlookupscope-id-options) method. |
@@ -85,7 +85,7 @@ TBD
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | lambdaFunction | [`lambda.Function`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html) | Returns an instance of `lambda.Function` managed by the construct |
-| kendraIndex | [`kendra.cfnIndex`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnIndex.html) | Returns an instance of `kendra.cfnIndex` created by the construct |
+| kendraIndex | [`kendra.cfnIndex`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnIndex.html) | Returns an instance of `kendra.cfnIndex` managed by the construct |
 | kendraDataSources | [`interface DataSourceProperties {
 []`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnDataSource.html) | A list of data sources created for this construct/index, each in an object that includes the role for that data source. |
 | lambdaRole | [`iam.Role`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html) | The role assumed by the Lambda function |
@@ -110,7 +110,7 @@ Out of the box implementation of the Construct without any overrides will set th
 - Enable X-Ray Tracing
 - Set Environment Variables
     - (default) KENDRA_INDEX_ID
-    - AWS\_NODEJS\_CONNECTION\_REUSE\_ENABLED
+    - AWS_NODEJS_CONNECTION_REUSE_ENABLED
 
 ### Amazon Kendra Index
 
@@ -123,7 +123,6 @@ Out of the box implementation of the Construct without any overrides will set th
     - S3 data sources
     - Which others should we support in MLP? https://docs.aws.amazon.com/kendra/latest/dg/iam-roles.html
 - Adds each data source to Kendra index
-- (Future?) - initiates first sync
 
 ## Architecture
 

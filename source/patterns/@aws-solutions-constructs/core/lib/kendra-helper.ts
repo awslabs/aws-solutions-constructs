@@ -239,6 +239,7 @@ function CreateKendraIndexLoggingRole(scope: Construct, id: string): string {
   return indexRole.roleArn;
 }
 
+// @summary Confirm each entry is a correct value, uppercase each entry
 export function normalizeKendraPermissions(rawPermissions: string[]): string[] {
   const validPermissions = ["READ", "SUBMITFEEDBACK", "WRITE"];
 

@@ -31,7 +31,7 @@ export interface LambdaToKendraProps {
   readonly kendraIndexProps?: kendra.CfnIndexProps;
   /**
    * A list of data sources that will provide data to the Kendra index. ?At least 1 must be specified. We will do majority of
-   * processing for some data sources (S3 crawler, web crawler, web), but for others the props must be complete (e.g. proper roleArn, etc.)
+   * processing for some data sources (S3 crawler initially), but for others the props must be complete (e.g. proper roleArn, etc.)
    *
    * @default - empty list (no data sources)
    */
@@ -135,6 +135,7 @@ export class LambdaToKendra extends Construct {
 
     this.kendraDataSources = defaults.AddMultipleKendraDataSources(this, id, this.kendraIndex, props.kendraDataSourcesProps);
 
+    // Update Lambda function IAM policy with correct privileges to Kendra index
     const normalizedPermissions = props.indexPermissions ? defaults.normalizeKendraPermissions(props.indexPermissions) : undefined;
     if (!normalizedPermissions || normalizedPermissions.includes("READ")) {
       // Add policy with query permissions
