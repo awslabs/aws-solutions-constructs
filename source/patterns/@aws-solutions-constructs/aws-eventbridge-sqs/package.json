@@ -13,7 +13,7 @@
     "watch": "tsc -b -w",
     "integ": "cdk-integ",
     "integ-no-clean": "cdk-integ --no-clean",
-    "integ-assert": "cdk-integ-assert",
+    "integ-assert": "cdk-integ-assert-v2",
     "jsii": "jsii",
     "jsii-pacmak": "jsii-pacmak",
     "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
