@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.43.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.42.0...v2.43.0) (2023-08-28)
 
+Build on CDK v2.82.0
+
+### Bug Fixes
+
+* **aws-kinesisfirehose-s3:** resource name collision when two instances deployed in same stack ([#991](https://github.com/awslabs/aws-solutions-constructs/pull/991))
 
 ### Features
 
