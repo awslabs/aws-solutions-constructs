@@ -169,7 +169,7 @@ export class KinesisFirehoseToS3 extends Construct {
 
     const awsManagedKey: kms.IKey = kms.Alias.fromAliasName(
       scope,
-      "aws-managed-key",
+      `${id}aws-managed-key`,
       "alias/aws/s3"
     );
 
