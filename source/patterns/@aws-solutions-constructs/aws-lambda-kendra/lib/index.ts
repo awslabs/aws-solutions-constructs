@@ -46,7 +46,7 @@ export interface LambdaToKendraProps {
    */
   readonly indexPermissions?: string[];
   /**
-   * Existing instance of a Kendra Index. Providing both this and kendraCfnIndexProps will cause an error.
+   * Existing instance of a Kendra Index. Providing both this and kendraIndexProps will cause an error.
    *
    * @default - None
    */
@@ -106,8 +106,15 @@ export class LambdaToKendra extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
 
-    if (props.deployVpc || props.existingVpc) {
+    if (props.kendraIndexProps && props.existingKendraIndexObj) {
+      throw new Error('You may not provide both kendraIndexProps and existingKendraIndexObj');
+    }
 
+    if (props.kendraIndexProps && props.kendraDataSourcesProps) {
+      throw new Error('You may not provide both kendraDataSourcesProps and existingKendraIndexObj');
+    }
+
+    if (props.deployVpc || props.existingVpc) {
       this.vpc = defaults.buildVpc(scope, {
         defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
         existingVpc: props.existingVpc,

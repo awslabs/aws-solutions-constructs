@@ -420,13 +420,16 @@ test('Launch with VPC', () => {
 
 test('Launch with existing lambda', () => {
   const stack = new cdk.Stack();
-  const testTimeout = 3;
+  const testTimeout = 17;
+
+  const functionName = 'test-name';
 
   const existingFunction = new lambda.Function(stack, 'existing-function', {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_18_X,
     handler: 'index.handler',
     timeout: cdk.Duration.seconds(testTimeout),
+    functionName: functionName
   });
 
   new LambdaToKendra(stack, 'sample', {
@@ -437,7 +440,8 @@ test('Launch with existing lambda', () => {
   const template = Template.fromStack(stack);
   template.resourceCountIs("AWS::Lambda::Function", 1);
   template.hasResourceProperties("AWS::Lambda::Function", {
-    Timeout: testTimeout
+    Timeout: testTimeout,
+    FunctionName: functionName,
   });
 });
 
