@@ -806,10 +806,30 @@
             ]
           }
         },
-        "Name": "SpecRestApi"
+        "Name": {
+          "Fn::Join": [
+            "",
+            [
+              "OpenApiGatewayToLambda-",
+              {
+                "Fn::Select": [
+                  2,
+                  {
+                    "Fn::Split": [
+                      "/",
+                      {
+                        "Ref": "AWS::StackId"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        }
       }
     },
-    "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775a5995a76cd028623a8c53fad4d5dfe6e": {
+    "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775114a8d1d0c9bf9b9d904a22f099d1d64": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -844,7 +864,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775a5995a76cd028623a8c53fad4d5dfe6e"
+          "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775114a8d1d0c9bf9b9d904a22f099d1d64"
         },
         "MethodSettings": [
           {

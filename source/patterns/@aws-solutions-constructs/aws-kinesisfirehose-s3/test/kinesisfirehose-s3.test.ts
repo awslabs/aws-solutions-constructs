@@ -337,3 +337,11 @@ test('check DeliveryStreamName is populated', () => {
     DeliveryStreamName: "KinesisFirehoseteststacktestfirehoses3F50DF0E1"
   });
 });
+
+test('check resource names allow multiple instances in 1 stack', () => {
+  const stack = new cdk.Stack();
+  new KinesisFirehoseToS3(stack, 'first-construct', {});
+  new KinesisFirehoseToS3(stack, 'second-construct', {});
+
+  // Nothing to check, the above lines shouldn't throw an error
+});
