@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.43.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.42.0...v2.43.0) (2023-08-28)
+
+
+### Features
+
+* **aws-openapi-lambda:** make names unique ([#987](https://github.com/awslabs/aws-solutions-constructs/issues/987)) ([be9997a](https://github.com/awslabs/aws-solutions-constructs/commit/be9997a4e7e376670ef7f3d8bf1335ea3cebc515))
+* **new construct:** aws-lambda-kendra ([#989](https://github.com/awslabs/aws-solutions-constructs/issues/989)) ([24fe018](https://github.com/awslabs/aws-solutions-constructs/commit/24fe018898dafd4be2d20d6636ad54333da4145d))
+
 ## [2.42.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.41.0...v2.42.0) (2023-08-12)
 
 Build on CDK v2.82.0
