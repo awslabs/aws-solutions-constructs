@@ -422,14 +422,14 @@ test('Launch with existing lambda', () => {
   const stack = new cdk.Stack();
   const testTimeout = 17;
 
-  const functionName = 'test-name';
+  const testFunctionName = 'test-name';
 
   const existingFunction = new lambda.Function(stack, 'existing-function', {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_18_X,
     handler: 'index.handler',
     timeout: cdk.Duration.seconds(testTimeout),
-    functionName: functionName
+    functionName: testFunctionName
   });
 
   new LambdaToKendra(stack, 'sample', {
@@ -441,7 +441,7 @@ test('Launch with existing lambda', () => {
   template.resourceCountIs("AWS::Lambda::Function", 1);
   template.hasResourceProperties("AWS::Lambda::Function", {
     Timeout: testTimeout,
-    FunctionName: functionName,
+    FunctionName: testFunctionName,
   });
 });
 
