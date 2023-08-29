@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [2.43.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.43.0...v2.43.1) (2023-08-28)
+## [2.43.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.43.0...v2.43.1) (2023-08-28)
+
+Build on CDK v2.82.0
+
+### Bug Fixes
+
+* **aws-lambda-kendra:** remove extra info from bottom of package.json
 
 ## [2.43.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.42.0...v2.43.0) (2023-08-28)
 
