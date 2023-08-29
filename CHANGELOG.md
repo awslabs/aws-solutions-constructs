@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.44.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.43.0...v2.44.0) (2023-08-29)
+
 ## [2.43.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.43.0...v2.43.1) (2023-08-28)
 
 BUG NOTICE - THIS RELEASE WAS ONLY PARTIALLY PUBLISHED in PYPI, USE 2.44.0
