@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.43.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.43.0...v2.43.1) (2023-08-28)
 
+BUG NOTICE - THIS RELEASE WAS ONLY PARTIALLY PUBLISHED in PYPI, USE 2.44.0
+
 Build on CDK v2.82.0
 
 ### Bug Fixes
@@ -11,6 +13,8 @@ Build on CDK v2.82.0
 * **aws-lambda-kendra:** remove extra info from bottom of package.json
 
 ## [2.43.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.42.0...v2.43.0) (2023-08-28)
+
+BUG NOTICE - THIS RELEASE WAS ONLY PARTIALLY PUBLISHED in PYPI, USE 2.44.0
 
 Build on CDK v2.82.0
 
