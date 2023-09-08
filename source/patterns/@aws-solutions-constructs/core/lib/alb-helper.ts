@@ -112,6 +112,9 @@ export function AddListener(
       protocol: "HTTPS",
     };
 
+    // NOSONAR: (typescript:S5332)
+    // This listener is explicitly created to redirect non TLS connections
+    // The lack of SSL/TLS is intentional
     const httpListener = new elb.ApplicationListener(
       scope,
       `${id}-redirect`,

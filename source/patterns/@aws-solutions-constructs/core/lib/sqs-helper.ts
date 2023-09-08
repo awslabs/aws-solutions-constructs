@@ -111,7 +111,11 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
       queueProps.encryptionMasterKey = buildEncryptionKey(scope, props.encryptionKeyProps);
     }
 
-    const queue = new sqs.Queue(scope, id, queueProps);
+    // NOSONAR (typescript:S6330)
+    // encryption is set to QueueEncryption.KMS_MANAGED by default in DefaultQueueProps, but
+    // Sonarqube can't parse the code well enough to see this. Encryption is confirmed by
+    // the 'Test deployment without imported encryption key' unit test
+    const queue = new sqs.Queue(scope, id, queueProps); // NOSONAR
 
     applySecureQueuePolicy(queue);
 

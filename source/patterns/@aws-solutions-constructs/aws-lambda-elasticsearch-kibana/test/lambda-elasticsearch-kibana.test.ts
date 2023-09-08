@@ -93,6 +93,25 @@ test('check properties with no CW Alarms ', () => {
   expect(construct.elasticsearchRole).toBeDefined();
 });
 
+test('Check that TLS 1.2 is the default', () => {
+  const stack = new cdk.Stack();
+
+  const props: LambdaToElasticSearchAndKibanaProps = {
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
+    domainName: 'test-domain',
+    createCloudWatchAlarms: false
+  };
+
+  new LambdaToElasticSearchAndKibana(stack, 'test-lambda-opensearch-stack', props);
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Elasticsearch::Domain", {
+    DomainEndpointOptions: {
+      EnforceHTTPS: true,
+      TLSSecurityPolicy: "Policy-Min-TLS-1-2-2019-07"
+    },
+  });
+});
+
 test('check lambda function custom environment variable', () => {
   const stack = new cdk.Stack();
   const props: LambdaToElasticSearchAndKibanaProps = {

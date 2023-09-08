@@ -69,6 +69,25 @@ test('Check properties with no CloudWatch alarms ', () => {
   expect(construct.openSearchRole).toBeDefined();
 });
 
+test('Check that TLS 1.2 is the default', () => {
+  const stack = new cdk.Stack();
+
+  const props: LambdaToOpenSearchProps = {
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
+    openSearchDomainName: 'test-domain',
+    createCloudWatchAlarms: false
+  };
+
+  new LambdaToOpenSearch(stack, 'test-lambda-opensearch-stack', props);
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
+    DomainEndpointOptions: {
+      EnforceHTTPS: true,
+      TLSSecurityPolicy: "Policy-Min-TLS-1-2-2019-07"
+    },
+  });
+});
+
 test('Check for an existing Lambda object', () => {
   const stack = new cdk.Stack();
 

@@ -160,7 +160,10 @@ export function buildTopic(scope: Construct, props: BuildTopicProps): BuildTopic
     }
 
     // Create the SNS Topic
-    const topic: sns.Topic = new sns.Topic(scope, 'SnsTopic', snsTopicProps);
+    // NOSONAR (typescript:S6327) - The masterKey is set in the if statement above, SONAR is
+    // not catching it. Behavior is confirmed in the
+    // 'Test deployment with no properties using AWS Managed KMS Key' unit test
+    const topic: sns.Topic = new sns.Topic(scope, 'SnsTopic', snsTopicProps); // NOSONAR
 
     applySecureTopicPolicy(topic);
 
