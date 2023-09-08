@@ -61,7 +61,19 @@ export function createLoggingBucket(scope: Construct,
   const combinedBucketProps = consolidateProps(DefaultS3Props(), loggingBucketProps);
 
   // Create the Logging Bucket
-  const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, combinedBucketProps);
+  // NOSONAR  (typescript:S6281)
+  // Block Public Access is set by DefaultS3Props, but Sonarqube can't detect it
+  // It is verified by 's3 bucket with default props' in the unit tests
+  // NOSONAR (typescript:S6245)
+  // Encryption is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  // NOSONAR (typescript:S6249)
+  // enforceSSL  is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  // NOSONAR (typescript:typescript:S6249)
+  // versioning is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, combinedBucketProps); // NOSONAR
 
   // Extract the CfnBucket from the loggingBucket
   const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
@@ -94,6 +106,18 @@ export function createAlbLoggingBucket(scope: Construct,
   const combinedBucketProps = consolidateProps(DefaultS3Props(), loggingBucketProps);
 
   // Create the Logging Bucket
+  // NOSONAR (typescript:S6281)
+  // Block Public Access is set by DefaultS3Props, but Sonarqube can't detect it
+  // It is verified by 's3 bucket with default props' in the unit tests
+  // NOSONAR (typescript:S6245)
+  // Encryption is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  // NOSONAR (typescript:S6249)
+  // enforceSSL  is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  // NOSONAR (typescript:typescript:S6249)
+  // versioning is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
   const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, combinedBucketProps);
 
   // Extract the CfnBucket from the loggingBucket
@@ -163,6 +187,18 @@ export function buildS3Bucket(scope: Construct,
 
   const combinedBucketProps = consolidateProps(defaultBucketProps, props.bucketProps);
 
+  // NOSONAR (typescript:S6281) - Block Public Access is set by DefaultS3Props,
+  // but Sonarqube can't detect it
+  // It is verified by 's3 bucket with default props' in the unit tests
+  // NOSONAR (typescript:S6245)
+  // Encryption is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  // NOSONAR (typescript:S6249)
+  // enforceSSL  is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  // NOSONAR (typescript:typescript:S6249)
+  // versioning is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
   const s3Bucket: s3.Bucket = new s3.Bucket(scope, resolvedBucketId, combinedBucketProps );
 
   return { bucket: s3Bucket, loggingBucket };

@@ -81,6 +81,27 @@ test('Test deployment w/ existing VPC', () => {
   });
 });
 
+test('Test default values encrypt notebook', () => {
+  // Stack
+  const stack = new Stack();
+  const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
+    assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
+  });
+
+  // Build Sagemaker Notebook Instance
+  defaults.buildSagemakerNotebook(stack, {
+    role: sagemakerRole,
+    deployInsideVpc: false,
+  });
+  // Assertion
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SageMaker::NotebookInstance', {
+    KmsKeyId: {
+      Ref: "EncryptionKey1B843E66"
+    },
+  });
+});
+
 test('Test deployment w/ override', () => {
   // Stack
   const stack = new Stack();

@@ -18,13 +18,13 @@
 
 import * as kendra from 'aws-cdk-lib/aws-kendra';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import { addCfnSuppressRules, consolidateProps } from "./utils";
+import { addCfnSuppressRules, consolidateProps, generatePhysicalName, overrideProps } from "./utils";
 import { Aws } from 'aws-cdk-lib';
 
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 import { DefaultKendraIndexProps } from './kendra-defaults';
-import { generatePhysicalName, overrideProps } from "./utils";
+import {  } from "./utils";
 
 export interface BuildKendraIndexProps {
   readonly kendraIndexProps?: kendra.CfnIndexProps | any;

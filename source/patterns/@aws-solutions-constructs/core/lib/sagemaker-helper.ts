@@ -295,11 +295,15 @@ export function buildSagemakerNotebook(
     sagemakerNotebookProps = consolidateProps(sagemakerNotebookProps, props.sagemakerNotebookProps);
 
     // Create the notebook
+    // NOSONAR: (typescript:S6319)
+    // keyID is created above in the if (props.sagemakerNotebookProps?.kmsKeyId === undefined)
+    // block. It is then passed to DefaultSagemakerNotebookProps()
+    // This behavior is validated in unit test
     const sagemakerInstance: sagemaker.CfnNotebookInstance = new sagemaker.CfnNotebookInstance(
       scope,
       'SagemakerNotebook',
       sagemakerNotebookProps
-    );
+    ); // NOSONAR
     if (vpcInstance) {
       return { notebook: sagemakerInstance, vpc: vpcInstance, securityGroup };
     } else {

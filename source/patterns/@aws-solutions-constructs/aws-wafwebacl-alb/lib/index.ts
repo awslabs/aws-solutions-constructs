@@ -67,7 +67,8 @@ export class WafwebaclToAlb extends Construct {
     };
 
     // Setup the Web ACL Association
-    new waf.CfnWebACLAssociation(scope, `${id}-WebACLAssociation`, aclProps);
+    // Before turning off SonarQube for the line, reduce the line to it's minimum
+    new waf.CfnWebACLAssociation(scope, `${id}-WebACLAssociation`, aclProps); // NOSONAR
 
     this.loadBalancer = props.existingLoadBalancerObj;
   }
