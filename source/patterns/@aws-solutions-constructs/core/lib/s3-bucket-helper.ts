@@ -118,7 +118,7 @@ export function createAlbLoggingBucket(scope: Construct,
   // NOSONAR (typescript:typescript:S6249)
   // versioning is turned on in the default properties that Sonarqube doesn't see
   // Verified by unit test 's3 bucket with default props'
-  const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, combinedBucketProps);
+  const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, combinedBucketProps); // NOSONAR
 
   // Extract the CfnBucket from the loggingBucket
   const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
@@ -199,7 +199,7 @@ export function buildS3Bucket(scope: Construct,
   // NOSONAR (typescript:typescript:S6249)
   // versioning is turned on in the default properties that Sonarqube doesn't see
   // Verified by unit test 's3 bucket with default props'
-  const s3Bucket: s3.Bucket = new s3.Bucket(scope, resolvedBucketId, combinedBucketProps );
+  const s3Bucket: s3.Bucket = new s3.Bucket(scope, resolvedBucketId, combinedBucketProps ); // NOSONAR
 
   return { bucket: s3Bucket, loggingBucket };
 }
