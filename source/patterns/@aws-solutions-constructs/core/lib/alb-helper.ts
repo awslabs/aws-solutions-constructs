@@ -120,7 +120,7 @@ export function AddListener(
       `${id}-redirect`,
       {
         loadBalancer,
-        protocol: ApplicationProtocol.HTTP,
+        protocol: ApplicationProtocol.HTTP, // NOSONAR
         defaultAction: ListenerAction.redirect(opt),
       }
     );

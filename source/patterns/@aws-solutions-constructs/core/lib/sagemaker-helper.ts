@@ -302,8 +302,8 @@ export function buildSagemakerNotebook(
     const sagemakerInstance: sagemaker.CfnNotebookInstance = new sagemaker.CfnNotebookInstance(
       scope,
       'SagemakerNotebook',
-      sagemakerNotebookProps
-    ); // NOSONAR
+      sagemakerNotebookProps // NOSONAR
+    );
     if (vpcInstance) {
       return { notebook: sagemakerInstance, vpc: vpcInstance, securityGroup };
     } else {
