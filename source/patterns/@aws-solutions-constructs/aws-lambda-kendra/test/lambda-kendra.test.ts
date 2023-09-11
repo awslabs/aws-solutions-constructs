@@ -20,7 +20,7 @@ import * as cdk from "aws-cdk-lib";
 import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 
-test.only('Launch with minimal code and check  structure', () => {
+test('Launch with minimal code and check  structure', () => {
   const stack = new cdk.Stack();
   const testFunctionName = 'test-function-name24334';
   const testBucketName = 'test-bucket-name12344';

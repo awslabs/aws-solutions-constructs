@@ -239,10 +239,14 @@ export class FargateToS3 extends Construct {
     }
 
     // Add environment variables
-    const bucketArnEnvironmentVariableName = props.bucketArnEnvironmentVariableName || 'S3_BUCKET_ARN';
+    const bucketArnEnvironmentVariableName = this.SetStringWithDefault(props.bucketArnEnvironmentVariableName, 'S3_BUCKET_ARN');
     this.container.addEnvironment(bucketArnEnvironmentVariableName, this.s3BucketInterface.bucketArn);
-    const bucketEnvironmentVariableName = props.bucketEnvironmentVariableName || 'S3_BUCKET_NAME';
+    const bucketEnvironmentVariableName = this.SetStringWithDefault(props.bucketEnvironmentVariableName, 'S3_BUCKET_NAME');
     this.container.addEnvironment(bucketEnvironmentVariableName, this.s3BucketInterface.bucketName);
 
+  }
+
+  private SetStringWithDefault(value: string | undefined, defaultValue: string) {
+    return value || defaultValue;
   }
 }

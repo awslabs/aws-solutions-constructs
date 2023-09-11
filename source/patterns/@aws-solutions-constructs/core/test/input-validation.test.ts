@@ -148,7 +148,7 @@ test('Test fail Dead Letter Queue check', () => {
 test('Test fail Dead Letter Queue check with queueProps fifo set to true and undefined deadLetterQueueProps', () => {
 
   const props: defaults.VerifiedProps = {
-    queueProps: {fifo: true},
+    queueProps: { fifo: true },
     deadLetterQueueProps: {},
   };
 
@@ -164,8 +164,8 @@ test('Test fail Dead Letter Queue check with queueProps fifo set to true and und
 test('Test fail Dead Letter Queue check with queueProps fifo set to true and deadLetterQueueProps fifo set to false', () => {
 
   const props: defaults.VerifiedProps = {
-    queueProps: {fifo: true},
-    deadLetterQueueProps: {fifo: false},
+    queueProps: { fifo: true },
+    deadLetterQueueProps: { fifo: false },
   };
 
   const app = () => {
@@ -180,8 +180,8 @@ test('Test fail Dead Letter Queue check with queueProps fifo set to true and dea
 test('Test fail Dead Letter Queue check with queueProps fifo set to false and deadLetterQueueProps fifo set to true', () => {
 
   const props: defaults.VerifiedProps = {
-    deadLetterQueueProps: {fifo: true},
-    queueProps: {fifo: false},
+    deadLetterQueueProps: { fifo: true },
+    queueProps: { fifo: false },
   };
 
   const app = () => {
@@ -196,7 +196,7 @@ test('Test fail Dead Letter Queue check with queueProps fifo set to false and de
 test('Test fail Dead Letter Queue check with deadLetterQueueProps fifo set to true', () => {
 
   const props: defaults.VerifiedProps = {
-    deadLetterQueueProps: {fifo: true},
+    deadLetterQueueProps: { fifo: true },
   };
 
   const app = () => {
@@ -210,7 +210,7 @@ test('Test fail Dead Letter Queue check with deadLetterQueueProps fifo set to tr
 test('Test fail Dead Letter Queue check with queueProps fifo set to false', () => {
 
   const props: defaults.VerifiedProps = {
-    queueProps: {fifo: false},
+    queueProps: { fifo: false },
   };
 
   const app = () => {
@@ -269,7 +269,7 @@ test('Test fail S3 check', () => {
   const stack = new Stack();
 
   const props: defaults.VerifiedProps = {
-    existingBucketObj: CreateScrapBucket(stack, { }),
+    existingBucketObj: CreateScrapBucket(stack, {}),
     bucketProps: {},
   };
 
@@ -382,21 +382,86 @@ test('Test fail Glue job check', () => {
     },
     role: new iam.Role(stack, 'JobRole', {
       assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
-    }).roleArn}, 'testETLJob', {});
+    }).roleArn
+  }, 'testETLJob', {});
 
   const job = new glue.CfnJob(stack, 'placeholder', jobProps);
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.GlueProps = {
     glueJobProps: jobProps,
     existingGlueJob: job
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckGlueProps(props);
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide glueJobProps or existingGlueJob, but not both.\n');
+  expect(app).toThrowError("Error - Either provide glueJobProps or existingGlueJob, but not both.\n");
+});
+
+test('Test bad Glue script location', () => {
+  const stack = new Stack();
+
+  const _jobRole = new iam.Role(stack, 'CustomETLJobRole', {
+    assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+  });
+
+  const jobProps: glue.CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, {
+    command: {
+      name: 'glueetl',
+      pythonVersion: '3',
+      scriptLocation: "s://bad/url",
+    },
+    role: new iam.Role(stack, 'JobRole', {
+      assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+    }).roleArn
+  }, 'testETLJob', {});
+
+  const props: defaults.GlueProps = {
+    glueJobProps: jobProps,
+  };
+
+  const app = () => {
+    defaults.CheckGlueProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Invalid S3 URL for Glue script provided\n');
+});
+
+test('Test missing Glue script lcoation', () => {
+  const stack = new Stack();
+
+  const _jobRole = new iam.Role(stack, 'CustomETLJobRole', {
+    assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+  });
+
+  const jobProps: glue.CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, {
+    command: {
+      name: 'glueetl',
+      pythonVersion: '3',
+    },
+    role: new iam.Role(stack, 'JobRole', {
+      assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+    }).roleArn
+  }, 'testETLJob', {});
+
+  const props: defaults.GlueProps = {
+    glueJobProps: jobProps,
+  };
+
+  const app = () => {
+    defaults.CheckGlueProps(props);
+  };
+
+  const expectedError: string = 'Either one of CfnJob.JobCommandProperty.scriptLocation or etlCodeAsset has ' +
+    'to be provided. If the ETL Job code file exists in a local filesystem, please set ' +
+    'KinesisstreamsToGluejobProps.etlCodeAsset. If the ETL Job is available in an S3 bucket, set the ' +
+    'CfnJob.JobCommandProperty.scriptLocation property\n';
+
+  // Assertion
+  expect(app).toThrowError(expectedError);
 });
 
 test('Test fail SageMaker endpoint check', () => {
@@ -446,7 +511,7 @@ test('Test fail Secret check', () => {
 test('Test fail encryption key check', () => {
   const stack = new Stack();
 
-  const key =  defaults.buildEncryptionKey(stack, {
+  const key = defaults.buildEncryptionKey(stack, {
     enableKeyRotation: false
   });
 
@@ -468,7 +533,7 @@ test('Test fail Vpc check with deployVpc', () => {
 
   const props: defaults.VerifiedProps = {
     deployVpc: true,
-    existingVpc:   defaults.buildVpc(stack, {
+    existingVpc: defaults.buildVpc(stack, {
       defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
     }),
   };
@@ -486,7 +551,7 @@ test('Test fail Vpc check with vpcProps', () => {
 
   const props: defaults.VerifiedProps = {
     vpcProps: defaults.DefaultPublicPrivateVpcProps(),
-    existingVpc:   defaults.buildVpc(stack, {
+    existingVpc: defaults.buildVpc(stack, {
       defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
     }),
   };
