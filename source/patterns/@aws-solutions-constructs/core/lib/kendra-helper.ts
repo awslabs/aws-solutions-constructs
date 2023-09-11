@@ -24,7 +24,6 @@ import { Aws } from 'aws-cdk-lib';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 import { DefaultKendraIndexProps } from './kendra-defaults';
-import {  } from "./utils";
 
 export interface BuildKendraIndexProps {
   readonly kendraIndexProps?: kendra.CfnIndexProps | any;

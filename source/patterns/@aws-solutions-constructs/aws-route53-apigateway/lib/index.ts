@@ -95,32 +95,12 @@ export class Route53ToApiGateway extends Construct {
     // Existing Public or Private Hosted Zone
     if (props.existingHostedZoneInterface) {
       this.hostedZone = props.existingHostedZoneInterface;
+      this.ExistingHostedZonePropCheck(props);
 
-      if (props.existingVpc) {
-        throw new Error('Cannot provide an existing VPC to an existing Private Hosted Zone.');
-      }
-      if (props.privateHostedZoneProps) {
-        throw new Error('Must provide either existingHostedZoneInterface or privateHostedZoneProps, but not both.');
-      }
     } else { // Creating a Private Hosted Zone
-      if (props.publicApi) {
-        throw new Error('Public APIs require an existingHostedZone be passed in the Props object.');
-      } else {
-        if (!props.privateHostedZoneProps) {
-          throw new Error('Must provide either existingHostedZoneInterface or privateHostedZoneProps.');
-        }
-        if (props.privateHostedZoneProps.vpc) {
-          throw new Error('All VPC specs must be provided at the Construct level in Route53ToApiGatewayProps.');
-        }
-        if (!props.privateHostedZoneProps.zoneName) {
-          throw new Error('Must supply zoneName for Private Hosted Zone Props.');
-        }
-        if ( !this.vpc ) {
-          throw new Error('Must specify an existingVPC for the Private Hosted Zone in the construct props.');
-        }
-        const manufacturedProps: route53.PrivateHostedZoneProps = defaults.overrideProps(props.privateHostedZoneProps, { vpc: this.vpc });
-        this.hostedZone = new route53.PrivateHostedZone(this, `${id}-zone`, manufacturedProps);
-      }
+      this.PrivateHostedZonePropsChecks(props);
+      const manufacturedProps: route53.PrivateHostedZoneProps = defaults.overrideProps(props.privateHostedZoneProps, { vpc: this.vpc });
+      this.hostedZone = new route53.PrivateHostedZone(this, `${id}-zone`, manufacturedProps);
     }
 
     // Convert IRestApi to RestApi
@@ -139,5 +119,32 @@ export class Route53ToApiGateway extends Construct {
 
     // Create A Record in custom domain to route traffic to API Gateway
     new route53.ARecord(this, 'CustomDomainAliasRecord', arecordProps); // NOSONAR
+  }
+
+  private ExistingHostedZonePropCheck(props: Route53ToApiGatewayProps) {
+    if (props.existingVpc) {
+      throw new Error('Cannot provide an existing VPC to an existing Private Hosted Zone.');
+    }
+    if (props.privateHostedZoneProps) {
+      throw new Error('Must provide either existingHostedZoneInterface or privateHostedZoneProps, but not both.');
+    }
+  }
+
+  private PrivateHostedZonePropsChecks(props: Route53ToApiGatewayProps) {
+    if (props.publicApi) {
+      throw new Error('Public APIs require an existingHostedZone be passed in the Props object.');
+    }
+    if (!props.privateHostedZoneProps) {
+      throw new Error('Must provide either existingHostedZoneInterface or privateHostedZoneProps.');
+    }
+    if (props.privateHostedZoneProps.vpc) {
+      throw new Error('All VPC specs must be provided at the Construct level in Route53ToApiGatewayProps.');
+    }
+    if (!props.privateHostedZoneProps.zoneName) {
+      throw new Error('Must supply zoneName for Private Hosted Zone Props.');
+    }
+    if (!this.vpc) {
+      throw new Error('Must specify an existingVPC for the Private Hosted Zone in the construct props.');
+    }
   }
 }
