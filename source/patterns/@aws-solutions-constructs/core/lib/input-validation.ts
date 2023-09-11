@@ -29,8 +29,9 @@ import * as glue from 'aws-cdk-lib/aws-glue';
 import * as sagemaker from 'aws-cdk-lib/aws-sagemaker';
 import * as secretsmanager from "aws-cdk-lib/aws-secretsmanager";
 import * as kms from "aws-cdk-lib/aws-kms";
-import {ResponseHeadersPolicyProps} from "aws-cdk-lib/aws-cloudfront";
+import { ResponseHeadersPolicyProps } from "aws-cdk-lib/aws-cloudfront";
 import * as opensearch from "aws-cdk-lib/aws-opensearchservice";
+import * as s3assets from "aws-cdk-lib/aws-s3-assets";
 
 export interface VerifiedProps {
   readonly dynamoTableProps?: dynamodb.TableProps,
@@ -58,9 +59,6 @@ export interface VerifiedProps {
   readonly topicProps?: sns.TopicProps,
   readonly existingTopicObj?: sns.Topic,
 
-  readonly glueJobProps?: glue.CfnJobProps,
-  readonly existingGlueJob?: glue.CfnJob,
-
   readonly existingSagemakerEndpointObj?: sagemaker.CfnEndpoint,
   readonly endpointProps?: sagemaker.CfnEndpointProps,
 
@@ -87,6 +85,7 @@ export interface VerifiedProps {
   readonly insertHttpSecurityHeaders?: boolean;
   readonly responseHeadersPolicyProps?: ResponseHeadersPolicyProps;
   readonly openSearchDomainProps?: opensearch.CfnDomainProps;
+
 }
 
 /**
@@ -111,7 +110,7 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
-  if (propsObject.existingStreamObj  && propsObject.kinesisStreamProps) {
+  if (propsObject.existingStreamObj && propsObject.kinesisStreamProps) {
     errorMessages += 'Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n';
     errorFound = true;
   }
@@ -181,11 +180,6 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
-  if (propsObject.glueJobProps && propsObject.existingGlueJob) {
-    errorMessages += 'Error - Either provide glueJobProps or existingGlueJob, but not both.\n';
-    errorFound = true;
-  }
-
   if (propsObject.existingSagemakerEndpointObj && propsObject.endpointProps) {
     errorMessages += 'Error - Either provide endpointProps or existingSagemakerEndpointObj, but not both.\n';
     errorFound = true;
@@ -242,7 +236,53 @@ export function CheckProps(propsObject: VerifiedProps | any) {
   }
 
   if (propsObject.openSearchDomainProps?.vpcOptions) {
-    throw new Error("Error - Define VPC using construct parameters not the OpenSearch Service props");
+    errorMessages += "Error - Define VPC using construct parameters not the OpenSearch Service props\n";
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}
+
+export interface GlueProps {
+  readonly existingGlueJob?: glue.CfnJob,
+  readonly etlCodeAsset?: s3assets.Asset;
+  readonly glueJobProps?: glue.CfnJobProps | any;
+  readonly fieldSchema?: glue.CfnTable.ColumnProperty[];
+  readonly existingTable?: glue.CfnTable;
+  readonly tablePropss?: glue.CfnTableProps;
+  }
+
+export function CheckGlueProps(propsObject: GlueProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.glueJobProps && propsObject.existingGlueJob) {
+    errorMessages += 'Error - Either provide glueJobProps or existingGlueJob, but not both.\n';
+    errorFound = true;
+  }
+
+  if ((!propsObject.existingGlueJob) && (!propsObject.glueJobProps.command.scriptLocation && !propsObject.etlCodeAsset)) {
+    errorMessages += ('Either one of CfnJob.JobCommandProperty.scriptLocation or etlCodeAsset has ' +
+      'to be provided. If the ETL Job code file exists in a local filesystem, please set ' +
+      'KinesisstreamsToGluejobProps.etlCodeAsset. If the ETL Job is available in an S3 bucket, set the ' +
+      'CfnJob.JobCommandProperty.scriptLocation property\n');
+    errorFound = true;
+  }
+
+  if (propsObject.glueJobProps?.command?.scriptLocation) {
+    const s3Url: string = propsObject.glueJobProps.command.scriptLocation;
+    const found = s3Url.match(/^s3:\/\/\S+\/\S+/g);
+    if (!(found && found.length > 0 && found[0].length === s3Url.length)) {
+      errorMessages += "Invalid S3 URL for Glue script provided\n";
+      errorFound = true;
+    }
+  }
+
+  if (propsObject.fieldSchema === undefined && propsObject.existingTable === undefined && propsObject.tableProps === undefined) {
+    errorMessages += "Either fieldSchema or table property has to be set, both cannot be omitted";
+    errorFound = true;
   }
 
   if (errorFound) {
@@ -256,7 +296,7 @@ export function CheckProps(propsObject: VerifiedProps | any) {
 export function CheckListValues(allowedPermissions: string[], submittedValues: string[], valueType: string) {
   submittedValues.forEach((submittedValue) => {
     if (!allowedPermissions.includes(submittedValue)) {
-      throw Error(`Invalid ${valueType} submitted - ${submittedValue}` );
+      throw Error(`Invalid ${valueType} submitted - ${submittedValue}`);
     }
   });
 }
