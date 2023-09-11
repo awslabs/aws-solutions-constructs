@@ -76,12 +76,7 @@ export interface BuildQueueResponse {
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function buildQueue(scope: Construct, id: string, props: BuildQueueProps): BuildQueueResponse {
-
-  if ((props.queueProps?.encryptionMasterKey || props.encryptionKey || props.encryptionKeyProps)
-  && props.enableEncryptionWithCustomerManagedKey === true) {
-    printWarning(`Ignoring enableEncryptionWithCustomerManagedKey because one of
-     queueProps.encryptionMasterKey, encryptionKey, or encryptionKeyProps was already specified`);
-  }
+  CheckEncryptionWarnings(props);
 
   // If an existingQueueObj is not specified
   if (!props.existingQueueObj) {
@@ -127,6 +122,16 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
   }
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+function CheckEncryptionWarnings(props: BuildQueueProps) {
+  if ((props.queueProps?.encryptionMasterKey || props.encryptionKey || props.encryptionKeyProps)
+  && props.enableEncryptionWithCustomerManagedKey === true) {
+    printWarning(`Ignoring enableEncryptionWithCustomerManagedKey because one of
+     queueProps.encryptionMasterKey, encryptionKey, or encryptionKeyProps was already specified`);
+  }
+}
 export interface BuildDeadLetterQueueProps {
   /**
    * Existing instance of SQS queue object, providing both this and queueProps will cause an error.
