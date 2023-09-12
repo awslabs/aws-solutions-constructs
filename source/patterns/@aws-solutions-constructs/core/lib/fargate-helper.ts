@@ -267,10 +267,10 @@ export function CheckFargateProps(props: any) {
       "If you provide a cluster in fargateServiceProps then you cannot provide clusterProps\n";
   }
 
-  if (props.clusterProps?.vpc) {
+  if (CheckForInvalidVpcs(props)) {
     errorFound = true;
     errorMessages +=
-      "All services in the construct use the construct VPC, you cannot specify a VPC in clusterProps\n";
+      "Provide all VPC info at Construct level, not within clusterProps nor targetGroupProps\n";
   }
 
   if (
@@ -288,6 +288,16 @@ export function CheckFargateProps(props: any) {
   if (errorFound) {
     throw new Error(errorMessages);
   }
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function CheckForInvalidVpcs(props: any): boolean {
+  if (props.clusterProps?.vpc || props.targetGroupProps?.vpc) {
+    return true;
+  }
+  return false;
 }
 
 /**

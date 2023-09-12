@@ -215,12 +215,10 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
   } else {
     // create CDK Bucket instance from S3 url and grant read access to Glue Job's service principal
     if (isJobCommandProperty(newGlueJobProps.command)) {
-      if (!newGlueJobProps.command.scriptLocation) {
-        throw Error('Script location has to be provided as an s3 Url location. Script location cannot be empty');
-      }
       const scriptLocation = newGlueJobProps.command.scriptLocation;
 
-      const scriptBucketLocation: IBucket = Bucket.fromBucketArn(scope, 'ScriptLocaiton', getS3ArnfromS3Url(scriptLocation));
+      // Incoming Props, including scriptLocation, are checked upstream in CheckGlueProps()
+      const scriptBucketLocation: IBucket = Bucket.fromBucketArn(scope, 'ScriptLocaiton', getS3ArnfromS3Url(scriptLocation!));
       scriptBucketLocation.grantRead(jobRole);
     }
   }
