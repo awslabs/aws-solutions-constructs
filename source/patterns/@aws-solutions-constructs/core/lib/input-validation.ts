@@ -34,10 +34,6 @@ import * as opensearch from "aws-cdk-lib/aws-opensearchservice";
 import * as s3assets from "aws-cdk-lib/aws-s3-assets";
 
 export interface VerifiedProps {
-  readonly dynamoTableProps?: dynamodb.TableProps,
-  readonly existingTableObj?: dynamodb.Table,
-  readonly existingTableInterface?: dynamodb.ITable,
-
   readonly existingStreamObj?: kinesis.Stream;
   readonly kinesisStreamProps?: kinesis.StreamProps,
 
@@ -56,14 +52,13 @@ export interface VerifiedProps {
   readonly existingBucketInterface?: s3.IBucket,
   readonly bucketProps?: s3.BucketProps,
 
-  readonly topicProps?: sns.TopicProps,
-  readonly existingTopicObj?: sns.Topic,
-
   readonly existingSagemakerEndpointObj?: sagemaker.CfnEndpoint,
   readonly endpointProps?: sagemaker.CfnEndpointProps,
 
   readonly existingSecretObj?: secretsmanager.Secret;
   readonly secretProps?: secretsmanager.SecretProps;
+
+  readonly topicProps?: sns.TopicProps,
 
   readonly existingVpc?: ec2.IVpc;
   readonly vpcProps?: ec2.VpcProps;
@@ -97,16 +92,6 @@ export function CheckProps(propsObject: VerifiedProps | any) {
 
   if (propsObject.loadBalancerProps && propsObject.existingLoadBalancerObj) {
     errorMessages += 'Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.dynamoTableProps && propsObject.existingTableObj) {
-    errorMessages += 'Error - Either provide existingTableObj or dynamoTableProps, but not both.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.dynamoTableProps && propsObject.existingTableInterface) {
-    errorMessages += 'Error - Either provide existingTableInterface or dynamoTableProps, but not both.\n';
     errorFound = true;
   }
 
@@ -157,26 +142,6 @@ export function CheckProps(propsObject: VerifiedProps | any) {
 
   if (propsObject.existingBucketObj && propsObject.bucketProps) {
     errorMessages += 'Error - Either provide bucketProps or existingBucketObj, but not both.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.existingBucketInterface && propsObject.bucketProps) {
-    errorMessages += 'Error - Either provide bucketProps or existingBucketInterface, but not both.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.topicProps && propsObject.existingTopicObj) {
-    errorMessages += 'Error - Either provide topicProps or existingTopicObj, but not both.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.topicProps?.masterKey && propsObject.encryptionKey) {
-    errorMessages += 'Error - Either provide topicProps.masterKey or encryptionKey, but not both.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.topicProps?.masterKey && propsObject.encryptionKeyProps) {
-    errorMessages += 'Error - Either provide topicProps.masterKey or encryptionKeyProps, but not both.\n';
     errorFound = true;
   }
 
@@ -252,7 +217,7 @@ export interface GlueProps {
   readonly fieldSchema?: glue.CfnTable.ColumnProperty[];
   readonly existingTable?: glue.CfnTable;
   readonly tablePropss?: glue.CfnTableProps;
-  }
+}
 
 export function CheckGlueProps(propsObject: GlueProps | any) {
   let errorMessages = '';
@@ -289,6 +254,77 @@ export function CheckGlueProps(propsObject: GlueProps | any) {
     throw new Error(errorMessages);
   }
 }
+
+export interface DynamoDBProps {
+  readonly dynamoTableProps?: dynamodb.TableProps,
+  readonly existingTableObj?: dynamodb.Table,
+  readonly existingTableInterface?: dynamodb.ITable,
+}
+
+export function CheckDynamoDBProps(propsObject: DynamoDBProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.dynamoTableProps && propsObject.existingTableObj) {
+    errorMessages += 'Error - Either provide existingTableObj or dynamoTableProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.dynamoTableProps && propsObject.existingTableInterface) {
+    errorMessages += 'Error - Either provide existingTableInterface or dynamoTableProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}
+
+export interface SnsProps {
+  readonly topicProps?: sns.TopicProps,
+  readonly existingTopicObj?: sns.Topic,
+  readonly existingTopicObject?: sns.Topic,
+  readonly encryptionKey?: kms.Key,
+  readonly encryptionKeyProps?: kms.KeyProps
+}
+
+export function CheckSnsProps(propsObject: SnsProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  // FargateToSns used TopicObject instead of TopicObj - to fix would be a breaking change, so we
+  // must look for both here.
+  if (propsObject.topicProps && (propsObject.existingTopicObj || propsObject.existingTopicObject)) {
+    errorMessages += 'Error - Either provide topicProps or existingTopicObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.topicProps?.masterKey && propsObject.encryptionKey) {
+    errorMessages += 'Error - Either provide topicProps.masterKey or encryptionKey, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.topicProps?.masterKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide topicProps.masterKey or encryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}
+
+export interface DynamoDBProps {
+}
+
+// export function CheckDynamoDBProps(propsObject: GlueProps | any) {
+//   let errorMessages = '';
+//   let errorFound = false;
+
+//   if (errorFound) {
+//     throw new Error(errorMessages);
+//   }
+// }
 
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.

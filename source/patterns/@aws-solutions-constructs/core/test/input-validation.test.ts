@@ -35,20 +35,39 @@ test('Test with valid props', () => {
   defaults.CheckProps(props);
 });
 
+// ---------------------------
+// DynamoDB Prop Tests
+// ---------------------------
 test('Test fail DynamoDB table check', () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.DynamoDBProps = {
     existingTableObj: new dynamodb.Table(stack, 'placeholder', defaults.DefaultTableProps),
     dynamoTableProps: defaults.DefaultTableProps,
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckDynamoDBProps(props);
   };
 
   // Assertion
   expect(app).toThrowError('Error - Either provide existingTableObj or dynamoTableProps, but not both.\n');
+});
+
+test('Test fail DynamoDB table check (for interface)', () => {
+  const stack = new Stack();
+
+  const props: defaults.DynamoDBProps = {
+    existingTableInterface: new dynamodb.Table(stack, 'placeholder', defaults.DefaultTableProps),
+    dynamoTableProps: defaults.DefaultTableProps,
+  };
+
+  const app = () => {
+    defaults.CheckDynamoDBProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingTableInterface or dynamoTableProps, but not both.\n');
 });
 
 test("Test fail Lambda function check", () => {
@@ -281,16 +300,19 @@ test('Test fail S3 check', () => {
   expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
+// ---------------------------
+// Sns Prop Tests
+// ---------------------------
 test('Test fail SNS topic check', () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.SnsProps = {
     topicProps: {},
     existingTopicObj: new sns.Topic(stack, 'placeholder', {})
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckSnsProps(props);
   };
 
   // Assertion
@@ -300,13 +322,13 @@ test('Test fail SNS topic check', () => {
 test('Test fail SNS topic check with bad topic attribute name', () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.SnsProps = {
     topicProps: {},
     existingTopicObj: new sns.Topic(stack, 'placeholder', {})
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckSnsProps(props);
   };
 
   // Assertion
@@ -333,7 +355,7 @@ test('Test fail SNS topic check when both encryptionKey and encryptionKeyProps a
 test('Test fail SNS topic check when both topicProps.masterKey and encryptionKeyProps are specified', () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.SnsProps = {
     topicProps: {
       masterKey: new kms.Key(stack, 'key')
     },
@@ -343,7 +365,7 @@ test('Test fail SNS topic check when both topicProps.masterKey and encryptionKey
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckSnsProps(props);
   };
 
   expect(app).toThrowError('Error - Either provide topicProps.masterKey or encryptionKeyProps, but not both.\n');
@@ -352,7 +374,7 @@ test('Test fail SNS topic check when both topicProps.masterKey and encryptionKey
 test('Test fail SNS topic check when both encryptionKey and topicProps.masterKey are specified', () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.SnsProps = {
     encryptionKey: new kms.Key(stack, 'key'),
     topicProps: {
       masterKey: new kms.Key(stack, 'otherkey')
@@ -360,13 +382,17 @@ test('Test fail SNS topic check when both encryptionKey and topicProps.masterKey
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckSnsProps(props);
   };
 
   // Assertion
   expect(app).toThrowError('Error - Either provide topicProps.masterKey or encryptionKey, but not both.\n');
 });
+// ---------------------------
 
+// ---------------------------
+// Glue Prop Tests
+// ---------------------------
 test('Test fail Glue job check', () => {
   const stack = new Stack();
 
@@ -463,6 +489,7 @@ test('Test missing Glue script lcoation', () => {
   // Assertion
   expect(app).toThrowError(expectedError);
 });
+// ---------------------------
 
 test('Test fail SageMaker endpoint check', () => {
   const stack = new Stack();
@@ -562,27 +589,6 @@ test('Test fail Vpc check with vpcProps', () => {
 
   // Assertion
   expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
-});
-
-test('Test fail multiple failures message', () => {
-  const stack = new Stack();
-
-  const props: defaults.VerifiedProps = {
-    secretProps: {},
-    existingSecretObj: defaults.buildSecretsManagerSecret(stack, 'secret', {}),
-    topicProps: {},
-    existingTopicObj: new sns.Topic(stack, 'placeholder', {})
-  };
-
-  const app = () => {
-    defaults.CheckProps(props);
-  };
-
-  // Assertion
-  expect(app).toThrowError(
-    'Error - Either provide topicProps or existingTopicObj, but not both.\n' +
-    'Error - Either provide secretProps or existingSecretObj, but not both.\n'
-  );
 });
 
 test('Test fail existing log bucket and log bucket prop check', () => {

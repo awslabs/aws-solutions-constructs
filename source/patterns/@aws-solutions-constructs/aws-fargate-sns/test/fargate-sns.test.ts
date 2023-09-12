@@ -497,3 +497,33 @@ test('Topic is encrypted with customer managed KMS Key when enable encryption fl
     },
   });
 });
+
+test('Confirm CheckSnsProps is being called', () => {
+  // An environment with region is required to enable logging on an ALB
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+  const publicApi = false;
+  const topicName = 'custom-topic-name';
+
+  const existingVpc = defaults.getTestVpc(stack, publicApi);
+
+  const existingTopic = new sns.Topic(stack, 'MyTopic', {
+    topicName
+  });
+
+  const app = () => {
+    new FargateToSns(stack, 'test-construct', {
+      publicApi,
+      existingVpc,
+      ecrRepositoryArn: defaults.fakeEcrRepoArn,
+      existingTopicObject: existingTopic,
+      topicProps: {
+        topicName: 'topic-name'
+      },
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
+});

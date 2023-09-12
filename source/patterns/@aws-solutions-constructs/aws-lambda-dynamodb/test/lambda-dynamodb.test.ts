@@ -803,3 +803,39 @@ test('Test bad table permission', () => {
   // Assertion
   expect(app).toThrowError(/Invalid table permission submitted - Reed/);
 });
+
+test('Test that CheckDynamoDBProps is getting called', () => {
+  const stack = new cdk.Stack();
+  const tableName = 'custom-table-name';
+
+  const existingTable = new dynamodb.Table(stack, 'MyTablet', {
+    tableName,
+    partitionKey: {
+      name: 'id',
+      type: dynamodb.AttributeType.STRING
+    }
+  });
+
+  const props: LambdaToDynamoDBProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler'
+    },
+    existingTableObj: existingTable,
+    dynamoTableProps: {
+      tableName,
+      partitionKey: {
+        name: 'id',
+        type: dynamodb.AttributeType.STRING
+      },
+    },
+  };
+
+  const app = () => {
+    new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Error - Either provide existingTableObj or dynamoTableProps, but not both.\n/);
+});
