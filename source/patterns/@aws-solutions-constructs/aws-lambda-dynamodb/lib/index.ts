@@ -91,6 +91,7 @@ export class LambdaToDynamoDB extends Construct {
   constructor(scope: Construct, id: string, props: LambdaToDynamoDBProps) {
     super(scope, id);
     defaults.CheckProps(props);
+    defaults.CheckDynamoDBProps(props);
 
     // Other permissions for constructs are accepted as arrays, turning tablePermissions into
     // an array to use the same validation function.

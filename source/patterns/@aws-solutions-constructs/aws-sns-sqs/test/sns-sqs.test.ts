@@ -132,9 +132,6 @@ test('Test getter methods', () => {
   expect(app.deadLetterQueue !== null);
 });
 
-// --------------------------------------------------------------
-// Test deployment with existing queue, and topic
-// --------------------------------------------------------------
 test('Test deployment w/ existing queue, and topic', () => {
   // Stack
   const stack = new Stack();
@@ -162,9 +159,6 @@ test('Test deployment w/ existing queue, and topic', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment with imported encryption key
-// --------------------------------------------------------------
 test('Test deployment with imported encryption key', () => {
   // Stack
   const stack = new Stack();
@@ -499,4 +493,29 @@ test('Construct does not override unencrypted topic when passed in existingTopic
 
   expect(testConstruct.snsTopic).toBeDefined();
   expect(testConstruct.encryptionKey).not.toBeDefined();
+});
+
+test('Confirm that CheckSnsProps is called', () => {
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  const topic = new sns.Topic(stack, "existing-topic-obj", {
+    topicName: 'existing-topic-obj'
+  });
+  const queue = new sqs.Queue(stack, 'existing-queue-obj', {
+    queueName: 'existing-queue-obj'
+  });
+
+  const app = () => {
+    new SnsToSqs(stack, 'sns-to-sqs-stack', {
+      existingTopicObj: topic,
+      topicProps: {
+        topicName: 'topic-name'
+      },
+      existingQueueObj: queue
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
 });

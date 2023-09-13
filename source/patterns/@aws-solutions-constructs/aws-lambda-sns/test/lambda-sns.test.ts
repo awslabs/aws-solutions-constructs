@@ -579,3 +579,30 @@ test('Error is thrown when conflicting VPC information is provided', () => {
 
   expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.');
 });
+
+test('Test that CheckSnsProps is getting called', () => {
+  const stack = new Stack();
+
+  const topic = new sns.Topic(stack, 'MyTopic', {
+    topicName: "custom-topic"
+  });
+
+  const props: LambdaToSnsProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler'
+    },
+    existingTopicObj: topic,
+    topicProps: {
+      topicName: 'topic-name'
+    },
+  };
+
+  const app = () => {
+    new LambdaToSns(stack, 'test-lambda-dynamodb-stack', props);
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
+});

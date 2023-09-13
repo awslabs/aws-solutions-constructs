@@ -616,3 +616,50 @@ test("Test bad call with existingVpc and deployVpc", () => {
   // Assertion
   expect(app).toThrowError();
 });
+
+// NOTE: existingTableObj was omitted from the interface for this construct,
+// so this test cannot be run. Leaving it here so it can be used if/when existingTableObj
+// is added to the interface
+//
+// test("Confirm CheckDynamoDBProps is getting called", () => {
+//   const stack = new cdk.Stack();
+//   const tableName = 'table-name';
+
+//   const existingTable = new dynamodb.Table(stack, 'MyTablet', {
+//     tableName,
+//     partitionKey: {
+//       name: 'id',
+//       type: dynamodb.AttributeType.STRING
+//     }
+//   });
+
+//   const props: IotToLambdaToDynamoDBProps = {
+//     lambdaFunctionProps: {
+//       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+//       runtime: lambda.Runtime.NODEJS_16_X,
+//       handler: 'index.handler'
+//     },
+//     iotTopicRuleProps: {
+//       topicRulePayload: {
+//         ruleDisabled: false,
+//         description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+//         sql: "SELECT * FROM 'connectedcar/dtc/#'",
+//         actions: []
+//       }
+//     },
+//     existingTableObj: existingTable,
+//     dynamoTableProps: {
+//       tableName,
+//       partitionKey: {
+//         name: 'id',
+//         type: dynamodb.AttributeType.STRING
+//       },
+//     },
+// };
+
+//   const app = () => {
+//     new IotToLambdaToDynamoDB(stack, 'test-iot-lambda-dynamodb-stack', props);
+//   };
+
+//   expect(app).toThrowError('Error - Either provide existingTableObj or dynamoTableProps, but not both.\n');
+// });

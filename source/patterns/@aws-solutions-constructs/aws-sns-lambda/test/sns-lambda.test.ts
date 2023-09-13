@@ -236,3 +236,30 @@ test('Topic is encrypted with customer managed KMS Key when enable encryption fl
     },
   });
 });
+
+test('Confirm CheckSnsProps is getting called', () => {
+  const stack = new cdk.Stack();
+
+  const topic = new sns.Topic(stack, 'MyTopic', {
+    topicName: "custom-topic"
+  });
+
+  const props: SnsToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler'
+    },
+    existingTopicObj: topic,
+    topicProps: {
+      topicName: 'topic-name'
+    }
+  };
+
+  const app = () => {
+    new SnsToLambda(stack, 'test-sns-lambda', props);
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
+});

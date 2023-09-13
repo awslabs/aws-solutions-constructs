@@ -670,3 +670,47 @@ test('test error invalid table permission', () => {
 
   expect(app).toThrowError('Invalid tablePermission submitted - REED');
 });
+
+test('test that DDB input args are getting checked', () => {
+  const stack = new cdk.Stack();
+  const publicApi = false;
+  const serviceName = 'custom-name';
+  const tableName = 'custom-table-name';
+
+  const existingVpc = defaults.getTestVpc(stack, publicApi);
+
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
+
+  const existingTable = new dynamodb.Table(stack, 'MyTablet', {
+    tableName,
+    partitionKey: {
+      name: 'id',
+      type: dynamodb.AttributeType.STRING
+    }
+  });
+
+  const app = () => {
+    new FargateToDynamoDB(stack, 'test-construct', {
+      publicApi,
+      existingFargateServiceObject: createFargateServiceResponse.service,
+      existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
+      existingVpc,
+      existingTableInterface: existingTable,
+      dynamoTableProps: {
+        tableName,
+        partitionKey: {
+          name: 'id',
+          type: dynamodb.AttributeType.STRING
+        },
+      },
+    });
+  };
+
+  expect(app).toThrowError('Error - Either provide existingTableInterface or dynamoTableProps, but not both.\n');
+});

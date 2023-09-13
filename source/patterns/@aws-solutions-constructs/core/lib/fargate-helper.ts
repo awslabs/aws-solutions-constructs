@@ -224,16 +224,7 @@ export function CheckFargateProps(props: any) {
   let errorMessages = "";
   let errorFound = false;
 
-  if (
-    props.existingFargateServiceObject &&
-    (props.existingImageObject ||
-      props.ecrImageVersion ||
-      props.containerDefinitionProps ||
-      props.fargateTaskDefinitionProps ||
-      props.ecrRepositoryArn ||
-      props.fargateServiceProps ||
-      props.clusterProps)
-  ) {
+  if (CheckForConflictingServiceProps(props)) {
     errorFound = true;
     errorMessages +=
       "If you provide an existingFargateServiceObject, you cannot provide any props defining a new service\n";
@@ -288,6 +279,24 @@ export function CheckFargateProps(props: any) {
   if (errorFound) {
     throw new Error(errorMessages);
   }
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function CheckForConflictingServiceProps(props: any): boolean {
+  if (props.existingFargateServiceObject &&
+    (props.existingImageObject ||
+      props.ecrImageVersion ||
+      props.containerDefinitionProps ||
+      props.fargateTaskDefinitionProps ||
+      props.ecrRepositoryArn ||
+      props.fargateServiceProps ||
+      props.clusterProps)
+  ) {
+    return true;
+  }
+  return false;
 }
 
 /**
