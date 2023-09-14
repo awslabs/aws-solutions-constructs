@@ -180,6 +180,7 @@ export class FargateToSqs extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
+    defaults.CheckSqsProps(props);
 
     if (props.queuePermissions) {
       defaults.CheckListValues(['Read', 'Write'], props.queuePermissions, 'queue permission');

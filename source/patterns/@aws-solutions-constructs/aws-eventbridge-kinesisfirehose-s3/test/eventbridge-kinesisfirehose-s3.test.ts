@@ -291,3 +291,23 @@ test('Supply an existing logging bucket', () => {
   template.resourceCountIs("AWS::S3::Bucket", 2);
 
 });
+
+test('Confirm CheckS3Props is being called', () => {
+  // For L4 constructs, the call is within the internal L3 constructs
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToKinesisFirehoseToS3Props = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    bucketProps: {},
+    existingBucketObj: new s3.Bucket(stack, 'test-bucket', {}),
+  };
+
+  const app = () => {
+    new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-firehose', props);
+  };
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+});

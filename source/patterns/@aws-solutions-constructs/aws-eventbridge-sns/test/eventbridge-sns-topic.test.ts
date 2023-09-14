@@ -391,3 +391,23 @@ test('Properties correctly set when unencrypted existing topic is provided', () 
   expect(testConstruct.snsTopic).toBeDefined();
   expect(testConstruct.encryptionKey).not.toBeDefined();
 });
+
+test('Confirm CheckSnsProps is being called', () => {
+  const stack = new cdk.Stack();
+  const existingTopicObj = new sns.Topic(stack, 'Topic', {
+    topicName: 'existing-topic-name'
+  });
+
+  const props: EventbridgeToSnsProps = {
+    existingTopicObj,
+    topicProps: {},
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    }
+  };
+  const app = () => {
+    new EventbridgeToSns(stack, 'test', props);
+  };
+
+  expect(app).toThrowError("Error - Either provide topicProps or existingTopicObj, but not both.\n");
+});

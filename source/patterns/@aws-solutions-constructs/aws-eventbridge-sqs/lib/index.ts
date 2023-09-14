@@ -117,6 +117,7 @@ export class EventbridgeToSqs extends Construct {
   constructor(scope: Construct, id: string, props: EventbridgeToSqsProps) {
     super(scope, id);
     defaults.CheckProps(props);
+    defaults.CheckSqsProps(props);
 
     // Setup the dead letter queue, if applicable
     this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {

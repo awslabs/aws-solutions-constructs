@@ -618,3 +618,26 @@ test('Queue is encrypted with customer managed KMS Key when enable encryption fl
     }
   });
 });
+
+test('Confirm CheckSqsProps is called', () => {
+
+  // An environment with region is required to enable logging on an ALB
+  const stack = new cdk.Stack();
+  const publicApi = false;
+
+  const props = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
+    deployDeadLetterQueue: false,
+    queueProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    existingQueueObj: new sqs.Queue(stack, 'test', {})
+  };
+
+  const app = () => {
+    new FargateToSqs(stack, 'test-fargate-sqs', props);
+  };
+  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
+});

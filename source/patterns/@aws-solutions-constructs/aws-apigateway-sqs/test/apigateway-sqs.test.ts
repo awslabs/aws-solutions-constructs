@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { Stack } from "aws-cdk-lib";
+import { RemovalPolicy, Stack } from "aws-cdk-lib";
 import { ApiGatewayToSqs } from '../lib';
 import * as api from "aws-cdk-lib/aws-apigateway";
 import * as kms from 'aws-cdk-lib/aws-kms';
@@ -634,4 +634,19 @@ test('Construct throws error when deleteIntegrationResponses is set and allowDel
   });
 
   expect(app).toThrowError(/The 'allowDeleteOperation' property must be set to true when setting any of the following: 'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'/);
+});
+
+test('Confirm the CheckSqsProps is being called', () => {
+  const stack = new Stack();
+
+  const app = () => {
+    new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+      queueProps: {
+        removalPolicy: RemovalPolicy.DESTROY,
+      },
+      existingQueueObj: new sqs.Queue(stack, 'test', {})
+    });
+  };
+
+  expect(app).toThrowError(/Error - Either provide queueProps or existingQueueObj, but not both.\n/);
 });

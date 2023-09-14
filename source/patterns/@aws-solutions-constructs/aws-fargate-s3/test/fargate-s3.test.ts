@@ -700,3 +700,33 @@ test('Existing service/existing bucket, private API, existing VPC', () => {
   template.resourceCountIs('AWS::ECS::Service', 1);
   template.resourceCountIs('AWS::S3::Bucket', 1);
 });
+
+test('New service/new bucket, public API, new VPC', () => {
+  // An environment with region is required to enable logging on an ALB
+  const stack = new cdk.Stack();
+  const publicApi = true;
+  const clusterName = "custom-cluster-name";
+  const containerName = "custom-container-name";
+  const serviceName = "custom-service-name";
+  const bucketName = "custom-bucket-name";
+  const familyName = "family-name";
+
+  const props = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    bucketProps: { bucketName },
+    existingBucketObj: new s3.Bucket(stack, 'test-bucket', {}),
+    logS3AccessLogs: false,
+    bucketPermissions: ['Delete', 'Read', 'Write']
+  };
+  const app = () => {
+    new FargateToS3(stack, 'test-one', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+});

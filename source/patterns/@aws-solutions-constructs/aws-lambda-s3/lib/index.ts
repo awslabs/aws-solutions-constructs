@@ -115,6 +115,7 @@ export class LambdaToS3 extends Construct {
     this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
     defaults.CheckProps(props);
+    defaults.CheckS3Props(props);
 
     if (props.bucketPermissions) {
       defaults.CheckListValues(['Delete', 'Put', 'Read', 'ReadWrite', 'Write'], props.bucketPermissions, 'bucket permission');

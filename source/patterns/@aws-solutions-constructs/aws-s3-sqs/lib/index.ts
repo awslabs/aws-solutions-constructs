@@ -140,6 +140,8 @@ export class S3ToSqs extends Construct {
       this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
       defaults.CheckProps(props);
+      defaults.CheckSqsProps(props);
+      defaults.CheckS3Props(props);
 
       let bucket: s3.Bucket;
       let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;

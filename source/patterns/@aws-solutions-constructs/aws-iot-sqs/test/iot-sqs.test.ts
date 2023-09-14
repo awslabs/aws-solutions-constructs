@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { Stack } from "aws-cdk-lib";
+import { Stack, RemovalPolicy } from "aws-cdk-lib";
 import { IotToSqs, IotToSqsProps } from "../lib";
 import { Template } from 'aws-cdk-lib/assertions';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
@@ -541,4 +541,28 @@ test('Pattern deployment with passing a FIFO queue (not supported by IoT)', () =
   } catch (err) {
     expect(err.message).toBe('The IoT SQS action doesn\'t support Amazon SQS FIFO (First-In-First-Out) queues');
   }
+});
+
+test('Confirm CheckSqsProps is being called', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const props: IotToSqsProps = {
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Processing messages from IoT devices or factory machines",
+        sql: "SELECT * FROM 'test/topic/#'",
+        actions: []
+      }
+    },
+    queueProps: {
+      removalPolicy: RemovalPolicy.DESTROY,
+    },
+    existingQueueObj: new sqs.Queue(stack, 'test', {})
+  };
+
+  const app = () => {
+    new IotToSqs(stack, 'test-iot-sqs', props);
+  };
+  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });

@@ -20,9 +20,6 @@ import { LambdaToS3 } from '../lib';
 import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Test the getter methods
-// --------------------------------------------------------------
 test('Test the properties', () => {
   // Stack
   const stack = new Stack();
@@ -44,9 +41,6 @@ test('Test the properties', () => {
   expect(pattern.s3LoggingBucket !== null);
 });
 
-// --------------------------------------------------------------
-// Test the bucketProps override
-// --------------------------------------------------------------
 test('Test the bucketProps override', () => {
   // Stack
   const stack = new Stack();
@@ -69,9 +63,6 @@ test('Test the bucketProps override', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC without vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Stack
   const stack = new Stack();
@@ -120,9 +111,6 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC w/vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Stack
   const stack = new Stack();
@@ -177,9 +165,6 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC", () => {
   // Stack
   const stack = new Stack();
@@ -223,12 +208,6 @@ test("Test minimal deployment with an existing VPC", () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC and existing Lambda function not in a VPC
-//
-// buildLambdaFunction should throw an error if the Lambda function is not
-// attached to a VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC and existing Lambda function not in a VPC", () => {
   // Stack
   const stack = new Stack();
@@ -243,7 +222,8 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
   // Helper declaration
   const app = () => {
-    // Helper declaration
+    // buildLambdaFunction should throw an error if the Lambda function is not
+    // attached to a VPC
     new LambdaToS3(stack, "lambda-to-s3-stack", {
       existingLambdaObj: testLambdaFunction,
       existingVpc: testVpc,
@@ -255,9 +235,6 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingVpc and deployVpc
-// --------------------------------------------------------------
 test("Test bad call with existingVpc and deployVpc", () => {
   // Stack
   const stack = new Stack();
@@ -280,9 +257,6 @@ test("Test bad call with existingVpc and deployVpc", () => {
   expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
-// --------------------------------------------------------------
-// Test lambda function custom environment variable
-// --------------------------------------------------------------
 test('Test lambda function custom environment variable', () => {
   // Stack
   const stack = new Stack();
@@ -319,7 +293,7 @@ test('Test lambda function custom environment variable', () => {
 // --------------------------------------------------------------
 // Test bad call with existingBucket and bucketProps
 // --------------------------------------------------------------
-test("Test bad call with existingBucket and bucketProps", () => {
+test("Confirm that CheckS3Props is being called", () => {
   // Stack
   const stack = new Stack();
 
@@ -340,7 +314,7 @@ test("Test bad call with existingBucket and bucketProps", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
 test('Test that CheckProps() is flagging errors correctly', () => {
@@ -371,9 +345,6 @@ test('Test that CheckProps() is flagging errors correctly', () => {
 
 });
 
-// --------------------------------------------------------------
-// s3 bucket with bucket, loggingBucket, and auto delete objects
-// --------------------------------------------------------------
 test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   const stack = new Stack();
 
@@ -408,9 +379,6 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   });
 });
 
-// --------------------------------------------------------------
-// s3 bucket with one content bucket and no logging bucket
-// --------------------------------------------------------------
 test('s3 bucket with one content bucket and no logging bucket', () => {
   const stack = new Stack();
 

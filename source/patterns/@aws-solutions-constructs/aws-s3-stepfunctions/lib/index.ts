@@ -107,6 +107,7 @@ export class S3ToStepfunctions extends Construct {
     this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
     defaults.CheckProps(props);
+    defaults.CheckS3Props(props);
 
     let bucket: s3.IBucket;
 

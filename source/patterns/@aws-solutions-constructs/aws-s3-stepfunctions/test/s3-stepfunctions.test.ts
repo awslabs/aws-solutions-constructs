@@ -108,7 +108,7 @@ test('check properties', () => {
 // --------------------------------------------------------------
 // Test bad call with existingBucket and bucketProps
 // --------------------------------------------------------------
-test("Test bad call with existingBucket and bucketProps", () => {
+test("Confirm that CheckS3Props is getting called", () => {
   // Stack
   const stack = new cdk.Stack();
 

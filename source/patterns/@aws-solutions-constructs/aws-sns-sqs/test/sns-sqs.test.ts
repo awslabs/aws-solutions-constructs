@@ -12,17 +12,13 @@
  */
 
 // Imports
-import { Stack } from "aws-cdk-lib";
+import { Stack, RemovalPolicy } from "aws-cdk-lib";
 import { SnsToSqs, SnsToSqsProps } from "../lib";
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Pattern deployment with new Topic, new Queue and
-// default properties
-// --------------------------------------------------------------
 test('Pattern deployment w/ new Topic, new Queue and default props', () => {
   // Initial Setup
   const stack = new Stack();
@@ -65,10 +61,6 @@ test('Pattern deployment w/ new Topic, new Queue and default props', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Pattern deployment with new Topic, new Queue, and
-// overridden properties
-// --------------------------------------------------------------
 test('Pattern deployment w/ new topic, new queue, and overridden props', () => {
   // Initial Setup
   const stack = new Stack();
@@ -110,9 +102,6 @@ test('Pattern deployment w/ new topic, new queue, and overridden props', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test the getter methods
-// --------------------------------------------------------------
 test('Test getter methods', () => {
   // Initial Setup
   const stack = new Stack();
@@ -187,9 +176,6 @@ test('Test deployment with imported encryption key', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment with SNS managed KMS key
-// --------------------------------------------------------------
 test('Test deployment with SNS managed KMS key', () => {
   // Stack
   const stack = new Stack();
@@ -238,9 +224,6 @@ test('Test deployment with SNS managed KMS key', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment with CMK encrypted SNS Topic
-// --------------------------------------------------------------
 test('Test deployment with CMK encrypted SNS Topic', () => {
   // Stack
   const stack = new Stack();
@@ -263,9 +246,6 @@ test('Test deployment with CMK encrypted SNS Topic', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Pattern deployment with existing Topic and FIFO queues
-// --------------------------------------------------------------
 test('Pattern deployment w/ existing topic and FIFO queue', () => {
   // Initial Setup
   const stack = new Stack();
@@ -308,9 +288,6 @@ test('Pattern deployment w/ existing topic and FIFO queue', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Pattern deployment with existing Topic and Standard queues
-// --------------------------------------------------------------
 test('Pattern deployment w/ existing topic and Standard queue', () => {
   // Initial Setup
   const stack = new Stack();
@@ -518,4 +495,21 @@ test('Confirm that CheckSnsProps is called', () => {
 
   // Assertion
   expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
+});
+
+test('Confirm that CheckSqsProps is called', () => {
+  // Stack
+  const stack = new Stack();
+
+  const app = () => {
+    new SnsToSqs(stack, 'sns-to-sqs-stack', {
+      queueProps: {
+        removalPolicy: RemovalPolicy.DESTROY,
+      },
+      existingQueueObj: new sqs.Queue(stack, 'test', {})
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });

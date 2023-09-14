@@ -14,14 +14,12 @@
 // Imports
 import { Stack } from "aws-cdk-lib";
 import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as sqs from "aws-cdk-lib/aws-sqs";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as defaults from '@aws-solutions-constructs/core';
 import { LambdaToSqsToLambda, LambdaToSqsToLambdaProps } from '../lib';
 import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Test minimal deployment
-// --------------------------------------------------------------
 test('Test minimal deployment', () => {
   // Stack
   const stack = new Stack();
@@ -117,9 +115,6 @@ test('Test minimal deployment', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing producer function
-// --------------------------------------------------------------
 test('Test deployment w/ existing producer function', () => {
   // Stack
   const stack = new Stack();
@@ -155,9 +150,6 @@ test('Test deployment w/ existing producer function', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing consumer function
-// --------------------------------------------------------------
 test('Test deployment w/ existing consumer function', () => {
   // Stack
   const stack = new Stack();
@@ -193,9 +185,6 @@ test('Test deployment w/ existing consumer function', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing queue
-// --------------------------------------------------------------
 test('Test deployment w/ existing queue', () => {
   // Stack
   const stack = new Stack();
@@ -230,9 +219,6 @@ test('Test deployment w/ existing queue', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ DLQ explicitly disabled
-// --------------------------------------------------------------
 test('Test deployment w/ DLQ explicitly disabled', () => {
   // Stack
   const stack = new Stack();
@@ -261,9 +247,6 @@ test('Test deployment w/ DLQ explicitly disabled', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ DLQ explicitly enabled and w/ MRC override
-// --------------------------------------------------------------
 test('Test deployment w/ DLQ explicitly enabled and w/ MRC override', () => {
   // Stack
   const stack = new Stack();
@@ -299,9 +282,6 @@ test('Test deployment w/ DLQ explicitly enabled and w/ MRC override', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test overrides for producer and consumer functions
-// --------------------------------------------------------------
 test('Test overrides for producer and consumer functions', () => {
   // Stack
   const stack = new Stack();
@@ -333,9 +313,6 @@ test('Test overrides for producer and consumer functions', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test the public pattern props
-// --------------------------------------------------------------
 test('Test the public pattern props', () => {
   // Stack
   const stack = new Stack();
@@ -365,9 +342,6 @@ test('Test the public pattern props', () => {
   expect(pattern.consumerLambdaFunction).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test lambda function custom environment variable
-// --------------------------------------------------------------
 test('Test lambda function custom environment variable', () => {
   // Stack
   const stack = new Stack();
@@ -405,9 +379,6 @@ test('Test lambda function custom environment variable', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Pattern deployment w/ batch size
-// --------------------------------------------------------------
 test('Pattern deployment w/ batch size', () => {
   const stack = new Stack();
   const props: LambdaToSqsToLambdaProps = {
@@ -435,9 +406,6 @@ test('Pattern deployment w/ batch size', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC without vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Stack
   const stack = new Stack();
@@ -493,9 +461,6 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC w/vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Stack
   const stack = new Stack();
@@ -557,9 +522,6 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC", () => {
   // Stack
   const stack = new Stack();
@@ -610,9 +572,6 @@ test("Test minimal deployment with an existing VPC", () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingVpc and deployVpc
-// --------------------------------------------------------------
 test("Test bad call with existingVpc and deployVpc", () => {
   // Stack
   const stack = new Stack();
@@ -640,4 +599,30 @@ test("Test bad call with existingVpc and deployVpc", () => {
   };
   // Assertion
   expect(app).toThrowError();
+});
+
+test('Confirm CheckSqsProps is being called', () => {
+  // NOTE: CheckSqsProps is called from both lambda-sqs and sqs-lambda internally
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  const props: LambdaToSqsToLambdaProps = {
+    producerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    consumerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    queueProps: {},
+    existingQueueObj: new sqs.Queue(stack, 'test', {})
+  };
+
+  const app = () => {
+    new LambdaToSqsToLambda(stack, 'test-eventbridge-sqs', props);
+  };
+  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });

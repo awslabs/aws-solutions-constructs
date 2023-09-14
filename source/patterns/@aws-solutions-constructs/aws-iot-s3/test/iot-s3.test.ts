@@ -326,3 +326,25 @@ test('check for chaining of resource', () => {
   template.resourceCountIs('AWS::IoT::TopicRule', 2);
   template.resourceCountIs('AWS::S3::Bucket', 2);
 });
+
+test('Confirm CHeckS3Props is being called', () => {
+  const stack = new cdk.Stack();
+
+  const props: IotToS3Props = {
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "process solutions constructs messages",
+        sql: "SELECT * FROM 'solutions/constructs'",
+        actions: []
+      }
+    },
+    bucketProps: {},
+    existingBucketInterface: new s3.Bucket(stack, 'test-bucket', {}),
+  };
+  const app = () => {
+    new IotToS3(stack, 'test-iot-s3-integration', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+});

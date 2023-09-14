@@ -40,25 +40,14 @@ export interface VerifiedProps {
   readonly existingLambdaObj?: lambda.Function,
   readonly lambdaFunctionProps?: lambda.FunctionProps,
 
-  readonly existingQueueObj?: sqs.Queue,
-  readonly queueProps?: sqs.QueueProps,
-  readonly deployDeadLetterQueue?: boolean,
-  readonly deadLetterQueueProps?: sqs.QueueProps,
-
   readonly existingMediaStoreContainerObj?: mediastore.CfnContainer;
   readonly mediaStoreContainerProps?: mediastore.CfnContainerProps;
-
-  readonly existingBucketObj?: s3.Bucket,
-  readonly existingBucketInterface?: s3.IBucket,
-  readonly bucketProps?: s3.BucketProps,
 
   readonly existingSagemakerEndpointObj?: sagemaker.CfnEndpoint,
   readonly endpointProps?: sagemaker.CfnEndpointProps,
 
   readonly existingSecretObj?: secretsmanager.Secret;
   readonly secretProps?: secretsmanager.SecretProps;
-
-  readonly topicProps?: sns.TopicProps,
 
   readonly existingVpc?: ec2.IVpc;
   readonly vpcProps?: ec2.VpcProps;
@@ -72,10 +61,6 @@ export interface VerifiedProps {
 
   readonly logAlbAccessLogs?: boolean;
   readonly albLoggingBucketProps?: s3.BucketProps;
-
-  readonly existingLoggingBucketObj?: s3.IBucket;
-  readonly loggingBucketProps?: s3.BucketProps;
-  readonly logS3AccessLogs?: boolean;
 
   readonly insertHttpSecurityHeaders?: boolean;
   readonly responseHeadersPolicyProps?: ResponseHeadersPolicyProps;
@@ -105,43 +90,8 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
-  if (propsObject.existingQueueObj && propsObject.queueProps) {
-    errorMessages += 'Error - Either provide queueProps or existingQueueObj, but not both.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.queueProps?.encryptionMasterKey && propsObject.encryptionKey) {
-    errorMessages += 'Error - Either provide queueProps.encryptionMasterKey or encryptionKey, but not both.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.queueProps?.encryptionMasterKey && propsObject.encryptionKeyProps) {
-    errorMessages += 'Error - Either provide queueProps.encryptionMasterKey or encryptionKeyProps, but not both.\n';
-    errorFound = true;
-  }
-
-  if ((propsObject?.deployDeadLetterQueue === false) && propsObject.deadLetterQueueProps) {
-    errorMessages += 'Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n';
-    errorFound = true;
-  }
-
-  const isQueueFifo: boolean = propsObject?.queueProps?.fifo;
-  const isDeadLetterQueueFifo: boolean = propsObject?.deadLetterQueueProps?.fifo;
-  const deployDeadLetterQueue: boolean = propsObject.deployDeadLetterQueue || propsObject.deployDeadLetterQueue === undefined;
-
-  if (deployDeadLetterQueue && (isQueueFifo !== isDeadLetterQueueFifo)) {
-    errorMessages += 'Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
-      'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n';
-    errorFound = true;
-  }
-
   if (propsObject.existingMediaStoreContainerObj && propsObject.mediaStoreContainerProps) {
     errorMessages += 'Error - Either provide mediaStoreContainerProps or existingMediaStoreContainerObj, but not both.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.existingBucketObj && propsObject.bucketProps) {
-    errorMessages += 'Error - Either provide bucketProps or existingBucketObj, but not both.\n';
     errorFound = true;
   }
 
@@ -172,26 +122,6 @@ export function CheckProps(propsObject: VerifiedProps | any) {
 
   if (propsObject.existingWebaclObj && propsObject.webaclProps) {
     errorMessages += 'Error - Either provide existingWebaclObj or webaclProps, but not both.\n';
-    errorFound = true;
-  }
-
-  if ((propsObject?.logAlbAccessLogs === false) && (propsObject.albLoggingBucketProps)) {
-    errorMessages += 'Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.existingLoggingBucketObj && propsObject.loggingBucketProps) {
-    errorMessages += 'Error - Either provide existingLoggingBucketObj or loggingBucketProps, but not both.\n';
-    errorFound = true;
-  }
-
-  if ((propsObject?.logS3AccessLogs === false) && (propsObject.loggingBucketProps || propsObject.existingLoggingBucketObj)) {
-    errorMessages += 'Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.existingBucketObj && (propsObject.loggingBucketProps || propsObject.logS3AccessLogs)) {
-    errorMessages += 'Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is an error.\n';
     errorFound = true;
   }
 
@@ -314,8 +244,99 @@ export function CheckSnsProps(propsObject: SnsProps | any) {
   }
 }
 
-export interface DynamoDBProps {
+export interface SqsProps {
+  readonly existingQueueObj?: sqs.Queue,
+  readonly queueProps?: sqs.QueueProps,
+  readonly deployDeadLetterQueue?: boolean,
+  readonly deadLetterQueueProps?: sqs.QueueProps,
+  readonly encryptionKey?: kms.Key,
+  readonly encryptionKeyProps?: kms.KeyProps
 }
+
+export function CheckSqsProps(propsObject: SqsProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingQueueObj && propsObject.queueProps) {
+    errorMessages += 'Error - Either provide queueProps or existingQueueObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.queueProps?.encryptionMasterKey && propsObject.encryptionKey) {
+    errorMessages += 'Error - Either provide queueProps.encryptionMasterKey or encryptionKey, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.queueProps?.encryptionMasterKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide queueProps.encryptionMasterKey or encryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if ((propsObject?.deployDeadLetterQueue === false) && propsObject.deadLetterQueueProps) {
+    errorMessages += 'Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n';
+    errorFound = true;
+  }
+
+  const isQueueFifo: boolean = propsObject?.queueProps?.fifo;
+  const isDeadLetterQueueFifo: boolean = propsObject?.deadLetterQueueProps?.fifo;
+  const deployDeadLetterQueue: boolean = propsObject.deployDeadLetterQueue || propsObject.deployDeadLetterQueue === undefined;
+
+  if (deployDeadLetterQueue && (isQueueFifo !== isDeadLetterQueueFifo)) {
+    errorMessages += 'Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+      'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}
+
+export interface S3Props {
+  readonly existingBucketObj?: s3.Bucket,
+  readonly existingBucketInterface?: s3.IBucket,
+  readonly bucketProps?: s3.BucketProps,
+  readonly existingLoggingBucketObj?: s3.IBucket;
+  readonly loggingBucketProps?: s3.BucketProps;
+  readonly logS3AccessLogs?: boolean;
+}
+
+export function CheckS3Props(propsObject: S3Props | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if ((propsObject.existingBucketObj || propsObject.existingBucketInterface) && propsObject.bucketProps) {
+    errorMessages += 'Error - Either provide bucketProps or existingBucketObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if ((propsObject?.logAlbAccessLogs === false) && (propsObject.albLoggingBucketProps)) {
+    errorMessages += 'Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.existingLoggingBucketObj && propsObject.loggingBucketProps) {
+    errorMessages += 'Error - Either provide existingLoggingBucketObj or loggingBucketProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if ((propsObject?.logS3AccessLogs === false) && (propsObject.loggingBucketProps || propsObject.existingLoggingBucketObj)) {
+    errorMessages += 'Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.existingBucketObj && (propsObject.loggingBucketProps || propsObject.logS3AccessLogs)) {
+    errorMessages += 'Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is an error.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}
+
+// export interface DynamoDBProps {
+// }
 
 // export function CheckDynamoDBProps(propsObject: GlueProps | any) {
 //   let errorMessages = '';

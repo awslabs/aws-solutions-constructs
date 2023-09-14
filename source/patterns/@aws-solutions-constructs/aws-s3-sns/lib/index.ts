@@ -130,6 +130,8 @@ export class S3ToSns extends Construct {
       this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
       defaults.CheckProps(props);
+      defaults.CheckSnsProps(props);
+      defaults.CheckS3Props(props);
 
       // If the enableEncryptionWithCustomerManagedKey is undefined, default it to true
       const enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey === false ? false : true;
