@@ -80,6 +80,11 @@ export function CheckProps(propsObject: VerifiedProps | any) {
     errorFound = true;
   }
 
+  if ((propsObject?.logAlbAccessLogs === false) && (propsObject.albLoggingBucketProps)) {
+    errorMessages += 'Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n';
+    errorFound = true;
+  }
+
   if (propsObject.existingStreamObj && propsObject.kinesisStreamProps) {
     errorMessages += 'Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n';
     errorFound = true;
@@ -307,11 +312,6 @@ export function CheckS3Props(propsObject: S3Props | any) {
 
   if ((propsObject.existingBucketObj || propsObject.existingBucketInterface) && propsObject.bucketProps) {
     errorMessages += 'Error - Either provide bucketProps or existingBucketObj, but not both.\n';
-    errorFound = true;
-  }
-
-  if ((propsObject?.logAlbAccessLogs === false) && (propsObject.albLoggingBucketProps)) {
-    errorMessages += 'Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n';
     errorFound = true;
   }
 
