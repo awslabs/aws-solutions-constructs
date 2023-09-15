@@ -218,7 +218,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
       const scriptLocation = newGlueJobProps.command.scriptLocation;
 
       // Incoming Props, including scriptLocation, are checked upstream in CheckGlueProps()
-      const scriptBucketLocation: IBucket = Bucket.fromBucketArn(scope, 'ScriptLocaiton', getS3ArnfromS3Url(scriptLocation!));
+      const scriptBucketLocation: IBucket = Bucket.fromBucketArn(scope, 'ScriptLocation', getS3ArnfromS3Url(scriptLocation!));
       scriptBucketLocation.grantRead(jobRole);
     }
   }
@@ -238,7 +238,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
 export function createGlueJobRole(scope: Construct): Role {
   return new Role(scope, 'JobRole', {
     assumedBy: new ServicePrincipal('glue.amazonaws.com'),
-    description: 'Service role that Glue custom ETL jobs will assume for exeuction',
+    description: 'Service role that Glue custom ETL jobs will assume for execution',
   });
 }
 
@@ -257,7 +257,7 @@ export function createGlueTable(scope: Construct, database: glue.CfnDatabase, ta
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  *
  * This method creates an AWS Glue database. The method is only called with an existing Glue database type is not provided.
- * The method uses the user provided props to override the defaul props for the Glue database
+ * The method uses the user provided props to override the default props for the Glue database
  *
  * @param scope
  * @param databaseProps

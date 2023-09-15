@@ -27,7 +27,7 @@ stack.templateOptions.description = 'Integration Test with existing VPC, Service
 
 const existingVpc = getTestVpc(stack);
 const existingTopic = new sns.Topic(stack, 'test-topic', {});
-addCfnSuppressRules(existingTopic, [ { id: "W47", reason: "Stub topic for placehoder in Integration test" } ]);
+addCfnSuppressRules(existingTopic, [ { id: "W47", reason: "Stub topic for placeholder in Integration test" } ]);
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 

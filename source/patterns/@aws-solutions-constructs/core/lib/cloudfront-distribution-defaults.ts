@@ -94,7 +94,7 @@ export function DefaultCloudFrontWebDistributionForS3Props(
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function DefaultCloudFrontDisributionForMediaStoreProps(mediastoreContainer: mediastore.CfnContainer,
+export function DefaultCloudFrontDistributionForMediaStoreProps(mediastoreContainer: mediastore.CfnContainer,
   loggingBucket: s3.Bucket | undefined,
   originRequestPolicy: cloudfront.OriginRequestPolicy,
   setHttpSecurityHeaders: boolean,

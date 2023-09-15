@@ -385,7 +385,7 @@ test('Override apiGatewayProps with proxy = false and add POST method', () => {
   const r = c.apiGateway.root.addResource('foo');
   r.addMethod('POST');
 
-  // Super imporant to call this method to Apply the Cognito Authorizers
+  // Super important to call this method to Apply the Cognito Authorizers
   c.addAuthorizers();
 
   const template = Template.fromStack(stack);

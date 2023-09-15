@@ -23,7 +23,7 @@ import { Aws } from 'aws-cdk-lib';
  */
 export interface CloudFrontToMediaStoreProps {
   /**
-   * Existing instance of mediastore.CfnContainer obejct.
+   * Existing instance of mediastore.CfnContainer object.
    *
    * @default - None
    */

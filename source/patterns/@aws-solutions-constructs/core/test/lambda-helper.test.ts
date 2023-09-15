@@ -504,7 +504,7 @@ test('buildLambdaFunction uses constructId when specified', () => {
   });
 });
 
-// specifying constructId takes precendence over functionName for setting the
+// specifying constructId takes precedence over functionName for setting the
 // underlying lambda function and iam role construct ids.
 test('buildLambdaFunction uses constructId when both constructId and functionName are specified', () => {
   const stack = new Stack();

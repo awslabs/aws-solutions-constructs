@@ -17,17 +17,17 @@ import * as api from "aws-cdk-lib/aws-apigateway";
 import { addCfnSuppressRules } from "@aws-solutions-constructs/core";
 
 export function CreateTestApi(stack: Stack, id: string): api.LambdaRestApi {
-  const lamdaFunction = new lambda.Function(stack, `${id}Function`, {
+  const lambdaFunction = new lambda.Function(stack, `${id}Function`, {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_16_X,
     handler: ".handler",
   });
-  addCfnSuppressRules(lamdaFunction, [{ id: "W58", reason: "Test Resource" }]);
-  addCfnSuppressRules(lamdaFunction, [{ id: "W89", reason: "Test Resource" }]);
-  addCfnSuppressRules(lamdaFunction, [{ id: "W92", reason: "Test Resource" }]);
+  addCfnSuppressRules(lambdaFunction, [{ id: "W58", reason: "Test Resource" }]);
+  addCfnSuppressRules(lambdaFunction, [{ id: "W89", reason: "Test Resource" }]);
+  addCfnSuppressRules(lambdaFunction, [{ id: "W92", reason: "Test Resource" }]);
 
   const restApi = new api.LambdaRestApi(stack, `${id}Api`, {
-    handler: lamdaFunction,
+    handler: lambdaFunction,
   });
 
   const newDeployment = restApi.latestDeployment;

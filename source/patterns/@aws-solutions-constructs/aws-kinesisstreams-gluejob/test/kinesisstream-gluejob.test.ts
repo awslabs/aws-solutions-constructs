@@ -74,7 +74,7 @@ test('Pattern minimal deployment', () => {
         }],
         Version: "2012-10-17",
       },
-      Description: "Service role that Glue custom ETL jobs will assume for exeuction",
+      Description: "Service role that Glue custom ETL jobs will assume for execution",
     },
     Type: "AWS::IAM::Role"
   });

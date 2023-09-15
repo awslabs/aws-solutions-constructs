@@ -62,7 +62,7 @@ export function CreateFargateService(
     defaults.ServiceEndpointTypes.S3
   );
 
-  const constructContainerDefintionProps: any = {};
+  const constructContainerDefinitionProps: any = {};
   const constructFargateServiceDefinitionProps: any = {};
 
   if (!props.clientFargateServiceProps?.cluster) {
@@ -77,7 +77,7 @@ export function CreateFargateService(
 
   // Set up the Fargate service
   if (!props.clientContainerDefinitionProps?.image) {
-    constructContainerDefintionProps.image = CreateImage(
+    constructContainerDefinitionProps.image = CreateImage(
       scope,
       id,
       props.ecrRepositoryArn,
@@ -92,7 +92,7 @@ export function CreateFargateService(
     id,
     props.clientFargateTaskDefinitionProps,
     props.clientContainerDefinitionProps,
-    constructContainerDefintionProps
+    constructContainerDefinitionProps
   );
   constructFargateServiceDefinitionProps.taskDefinition = createTaskDefinitionResponse.taskDefinition;
   newContainerDefinition = createTaskDefinitionResponse.containerDefinition;

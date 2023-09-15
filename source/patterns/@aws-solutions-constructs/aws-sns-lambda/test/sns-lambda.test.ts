@@ -137,7 +137,7 @@ test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop
   });
 });
 
-test('Topic is encrypted with provided encrytionKeyProps', () => {
+test('Topic is encrypted with provided encryptionKeyProps', () => {
   const stack = new cdk.Stack();
 
   const props: SnsToLambdaProps = {

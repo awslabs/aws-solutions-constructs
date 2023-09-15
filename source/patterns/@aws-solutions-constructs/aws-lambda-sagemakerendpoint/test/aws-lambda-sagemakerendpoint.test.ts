@@ -240,7 +240,7 @@ test('Pattern deployment with new Lambda function, new Sagemaker endpoint, deplo
 // ---------------------------------------------------------------------------------
 // Test for error when existing Lambda function does not have vpc and deployVpc = true
 // ---------------------------------------------------------------------------------
-test('Test for errot when existing Lambda function does not have vpc and deployVpc = true ', () => {
+test('Test for error when existing Lambda function does not have vpc and deployVpc = true ', () => {
   // Initial Setup
   const stack = new Stack();
 
@@ -286,9 +286,9 @@ test('Pattern deployment with existing Lambda function (with VPC), new Sagemaker
     },
   });
 
-  // Add S3 VPC Gateway Endpint, required by Sagemaker to access Models artifacts via AWS private network
+  // Add S3 VPC Gateway Endpoint, required by Sagemaker to access Models artifacts via AWS private network
   defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.S3);
-  // Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the SageMaker endpoint
+  // Add SAGEMAKER_RUNTIME VPC Interface Endpoint, required by the lambda function to invoke the SageMaker endpoint
   defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
 
   // deploy lambda function
@@ -372,9 +372,9 @@ test('confirm CheckVpcProps is called', () => {
     },
   });
 
-  // Add S3 VPC Gateway Endpint, required by Sagemaker to access Models artifacts via AWS private network
+  // Add S3 VPC Gateway Endpoint, required by Sagemaker to access Models artifacts via AWS private network
   defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.S3);
-  // Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the SageMaker endpoint
+  // Add SAGEMAKER_RUNTIME VPC Interface Endpoint, required by the lambda function to invoke the SageMaker endpoint
   defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
 
   const constructProps: LambdaToSagemakerEndpointProps = {
@@ -444,9 +444,9 @@ test('Test getter methods: existing Lambda function (with VPC), new Sagemaker en
     },
   });
 
-  // Add S3 VPC Gateway Endpint, required by Sagemaker to access Models artifacts via AWS private network
+  // Add S3 VPC Gateway Endpoint, required by Sagemaker to access Models artifacts via AWS private network
   defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.S3);
-  // Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the SageMaker endpoint
+  // Add SAGEMAKER_RUNTIME VPC Interface Endpoint, required by the lambda function to invoke the SageMaker endpoint
   defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
 
   // deploy lambda function

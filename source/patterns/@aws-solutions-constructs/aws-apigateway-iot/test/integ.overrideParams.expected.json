@@ -1,5 +1,5 @@
 {
-  "Description": "Integration Test for aws-apigateway-iot with overriden params",
+  "Description": "Integration Test for aws-apigateway-iot with overridden params",
   "Resources": {
     "apigatewayiotrole39B3B182": {
       "Type": "AWS::IAM::Role",
@@ -140,7 +140,7 @@
           "rules_to_suppress": [
             {
               "id": "W45",
-              "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource"
+              "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checks for it in AWS::ApiGateway::Deployment resource"
             }
           ]
         }
@@ -294,7 +294,7 @@
           "rules_to_suppress": [
             {
               "id": "W59",
-              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
             }
           ]
         }
@@ -405,7 +405,7 @@
           "rules_to_suppress": [
             {
               "id": "W59",
-              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
             }
           ]
         }
@@ -518,7 +518,7 @@
           "rules_to_suppress": [
             {
               "id": "W59",
-              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
             }
           ]
         }
@@ -633,7 +633,7 @@
           "rules_to_suppress": [
             {
               "id": "W59",
-              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
             }
           ]
         }
@@ -750,7 +750,7 @@
           "rules_to_suppress": [
             {
               "id": "W59",
-              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
             }
           ]
         }
@@ -869,7 +869,7 @@
           "rules_to_suppress": [
             {
               "id": "W59",
-              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
             }
           ]
         }
@@ -990,7 +990,7 @@
           "rules_to_suppress": [
             {
               "id": "W59",
-              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
             }
           ]
         }
@@ -1114,7 +1114,7 @@
           "rules_to_suppress": [
             {
               "id": "W59",
-              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
             }
           ]
         }
@@ -1225,7 +1225,7 @@
           "rules_to_suppress": [
             {
               "id": "W59",
-              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+              "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
             }
           ]
         }
