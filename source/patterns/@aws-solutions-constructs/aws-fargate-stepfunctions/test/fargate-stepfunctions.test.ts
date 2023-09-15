@@ -13,7 +13,7 @@
 
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
-import { FargateToStepfunctions } from "../lib";
+import { FargateToStepfunctions, FargateToStepfunctionsProps } from "../lib";
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
@@ -307,6 +307,30 @@ test('Check for custom log group props', () => {
   template.hasResourceProperties("AWS::Logs::LogGroup", {
     LogGroupName: logGroupName
   });
+});
+
+test('Confirm that CheckVpcProps was called', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+
+  const props: FargateToStepfunctionsProps = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    stateMachineProps: testStateMachineProps(stack),
+    existingVpc: defaults.getTestVpc(stack),
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
+  };
+
+  const app = () => {
+    new FargateToStepfunctions(stack, 'test-construct', props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 function createFargateConstructWithNewResources(stack: cdk.Stack, publicApi: boolean) {

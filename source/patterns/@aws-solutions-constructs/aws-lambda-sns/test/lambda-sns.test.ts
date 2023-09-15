@@ -20,9 +20,6 @@ import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToSns, LambdaToSnsProps } from '../lib';
 import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Test deployment with new Lambda function
-// --------------------------------------------------------------
 test('Test deployment with new Lambda function', () => {
   // Stack
   const stack = new Stack();
@@ -80,9 +77,6 @@ test('Test deployment with new Lambda function', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment with existing existingTopicObj
-// --------------------------------------------------------------
 test('Test deployment with existing existingTopicObj', () => {
   // Stack
   const stack = new Stack();
@@ -110,9 +104,6 @@ test('Test deployment with existing existingTopicObj', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment with imported encryption key
-// --------------------------------------------------------------
 test('override topicProps', () => {
   const stack = new Stack();
 
@@ -135,9 +126,6 @@ test('override topicProps', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test the getter methods
-// --------------------------------------------------------------
 test('Test the properties', () => {
   // Stack
   const stack = new Stack();
@@ -157,9 +145,6 @@ test('Test the properties', () => {
   expect(topic).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC without vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Stack
   const stack = new Stack();
@@ -208,9 +193,6 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC w/vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Stack
   const stack = new Stack();
@@ -265,9 +247,6 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC", () => {
   // Stack
   const stack = new Stack();
@@ -311,12 +290,6 @@ test("Test minimal deployment with an existing VPC", () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC and existing Lambda function not in a VPC
-//
-// buildLambdaFunction should throw an error if the Lambda function is not
-// attached to a VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC and existing Lambda function not in a VPC", () => {
   // Stack
   const stack = new Stack();
@@ -331,7 +304,8 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
   // Helper declaration
   const app = () => {
-    // Helper declaration
+    // buildLambdaFunction should throw an error if the Lambda function is not
+    // attached to a VPC
     new LambdaToSns(stack, "lambda-to-sns-stack", {
       existingLambdaObj: testLambdaFunction,
       existingVpc: testVpc,
@@ -343,34 +317,6 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingVpc and deployVpc
-// --------------------------------------------------------------
-test("Test bad call with existingVpc and deployVpc", () => {
-  // Stack
-  const stack = new Stack();
-
-  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
-
-  const app = () => {
-    // Helper declaration
-    new LambdaToSns(stack, "lambda-to-sns-stack", {
-      lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_16_X,
-        handler: "index.handler",
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      },
-      existingVpc: testVpc,
-      deployVpc: true,
-    });
-  };
-  // Assertion
-  expect(app).toThrowError();
-});
-
-// --------------------------------------------------------------
-// Test lambda function custom environment variable
-// --------------------------------------------------------------
 test('Test lambda function custom environment variable', () => {
   // Stack
   const stack = new Stack();
@@ -567,7 +513,7 @@ test('Topic is encrypted with customer managed KMS Key when enable encryption fl
   });
 });
 
-test('Error is thrown when conflicting VPC information is provided', () => {
+test('Confirm CheckVpcProps is called', () => {
   const stack = new Stack();
 
   const app = () => {
@@ -577,7 +523,7 @@ test('Error is thrown when conflicting VPC information is provided', () => {
     });
   };
 
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.');
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Test that CheckSnsProps is getting called', () => {

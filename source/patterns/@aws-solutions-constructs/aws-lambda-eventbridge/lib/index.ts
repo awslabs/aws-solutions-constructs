@@ -87,12 +87,9 @@ export class LambdaToEventbridge extends Construct {
   constructor(scope: Construct, id: string, props: LambdaToEventbridgeProps) {
     super(scope, id);
     defaults.CheckProps(props);
+    defaults.CheckVpcProps(props);
 
     if (props.deployVpc || props.existingVpc) {
-      if (props.deployVpc && props.existingVpc) {
-        throw new Error("More than 1 VPC specified in the properties");
-      }
-
       this.vpc = defaults.buildVpc(scope, {
         defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
         existingVpc: props.existingVpc,

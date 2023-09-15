@@ -147,10 +147,7 @@ test('check properties', () => {
   expect(construct.s3Bucket !== null);
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingBucket and bucketProps
-// --------------------------------------------------------------
-test("Test bad call with existingBucket and bucketProps", () => {
+test("Confirm CheckS3Props is called", () => {
   // Stack
   const stack = new cdk.Stack();
 
@@ -166,7 +163,7 @@ test("Test bad call with existingBucket and bucketProps", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
 test("Test existingBucketObj", () => {

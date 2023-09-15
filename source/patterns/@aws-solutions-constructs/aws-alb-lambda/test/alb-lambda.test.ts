@@ -247,7 +247,7 @@ test("Test existing load balancer and existing lambda function", () => {
     existingLambdaObj: lambdaFunction,
     existingLoadBalancerObj: existingAlb,
     listenerProps: {
-      certificates: [ defaults.getFakeCertificate(stack, "fake-cert") ],
+      certificates: [defaults.getFakeCertificate(stack, "fake-cert")],
     },
     publicApi: true,
     existingVpc: testExistingVpc,
@@ -289,7 +289,7 @@ test('Test new load balancer and new lambda function', () => {
   });
 
   const props: AlbToLambdaProps = {
-    lambdaFunctionProps:  {
+    lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
@@ -951,4 +951,29 @@ test('Test existingLoadBalancerObj and no existingVpc is an error', () => {
   // Assertion
   expect(app).toThrowError(
     /An existing ALB is already in a VPC, that VPC must be provided in props.existingVpc for the rest of the construct to use./);
+});
+
+test('Confirm that CheckVpcProps is called', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  const props: AlbToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler'
+    },
+    listenerProps: {
+      certificates: [defaults.getFakeCertificate(stack, "fake-cert")]
+    },
+    publicApi: false,
+    vpcProps: {},
+    existingVpc: defaults.getTestVpc(stack),
+  };
+  const app = () => {
+    new AlbToLambda(stack, 'new-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });

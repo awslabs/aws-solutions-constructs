@@ -194,10 +194,7 @@ test('check for no SSE encryption for KinesisFirehoseToS3', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingBucket and bucketProps
-// --------------------------------------------------------------
-test("Test bad call with existingBucket and bucketProps", () => {
+test("Confirm that CheckS3Props is being called", () => {
   // Stack
   const stack = new cdk.Stack();
 
@@ -213,7 +210,7 @@ test("Test bad call with existingBucket and bucketProps", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError("Error - Either provide bucketProps or existingBucketObj, but not both.\n");
 });
 
 // --------------------------------------------------------------

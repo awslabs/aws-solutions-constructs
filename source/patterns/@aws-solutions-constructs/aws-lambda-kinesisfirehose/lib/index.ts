@@ -83,6 +83,7 @@ export class LambdaToKinesisFirehose extends Construct {
   constructor(scope: Construct, id: string, props: LambdaToKinesisFirehoseProps) {
     super(scope, id);
     defaults.CheckProps(props);
+    defaults.CheckVpcProps(props);
 
     if (!props.deployVpc && props.vpcProps) {
       throw new Error('Error - If deployVpc is not true, then vpcProps is ignored');

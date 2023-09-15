@@ -135,6 +135,7 @@ export class FargateToSsmstringparameter extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
+    defaults.CheckVpcProps(props);
 
     // Other permissions for constructs are accepted as arrays, turning stringParameterPermissions into
     // an array to use the same validation function.

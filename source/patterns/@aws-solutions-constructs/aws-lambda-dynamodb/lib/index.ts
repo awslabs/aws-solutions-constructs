@@ -92,6 +92,7 @@ export class LambdaToDynamoDB extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
     defaults.CheckDynamoDBProps(props);
+    defaults.CheckVpcProps(props);
 
     // Other permissions for constructs are accepted as arrays, turning tablePermissions into
     // an array to use the same validation function.
@@ -100,10 +101,6 @@ export class LambdaToDynamoDB extends Construct {
     }
 
     if (props.deployVpc || props.existingVpc) {
-      if (props.deployVpc && props.existingVpc) {
-        throw new Error("More than 1 VPC specified in the properties");
-      }
-
       this.vpc = defaults.buildVpc(scope, {
         defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
         existingVpc: props.existingVpc,

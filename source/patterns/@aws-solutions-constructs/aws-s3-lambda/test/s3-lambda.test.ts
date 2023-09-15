@@ -43,10 +43,7 @@ test('check properties', () => {
   expect(construct.s3LoggingBucket !== null);
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingBucket and bucketProps
-// --------------------------------------------------------------
-test("Test bad call with existingBucket and bucketProps", () => {
+test("Confirm CheckS3Props is being called", () => {
   // Stack
   const stack = new cdk.Stack();
 
@@ -55,6 +52,11 @@ test("Test bad call with existingBucket and bucketProps", () => {
   const app = () => {
     // Helper declaration
     new S3ToLambda(stack, "bad-s3-args", {
+      lambdaFunctionProps: {
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+        runtime: lambda.Runtime.NODEJS_16_X,
+        handler: 'index.handler'
+      },
       existingBucketObj: testBucket,
       bucketProps: {
         removalPolicy: cdk.RemovalPolicy.DESTROY
@@ -62,12 +64,9 @@ test("Test bad call with existingBucket and bucketProps", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
-// --------------------------------------------------------------
-// s3 bucket with bucket, loggingBucket, and auto delete objects
-// --------------------------------------------------------------
 test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   const stack = new cdk.Stack();
 
@@ -102,9 +101,6 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   });
 });
 
-// --------------------------------------------------------------
-// s3 bucket with one content bucket and no logging bucket
-// --------------------------------------------------------------
 test('s3 bucket with one content bucket and no logging bucket', () => {
   const stack = new cdk.Stack();
 

@@ -255,3 +255,40 @@ test('Construct does not override unencrypted topic when passed in existingTopic
     TopicName: 'existing-topic-name'
   });
 });
+
+test('Confirm CheckSnsProps is being called', () => {
+  const stack = new Stack();
+
+  const topic = new sns.Topic(stack, "existing-topic-obj", {
+    topicName: 'existing-topic-obj'
+  });
+
+  const app = () => {
+    new S3ToSns(stack, 'test-s3-sns', {
+      existingTopicObj: topic,
+      topicProps: {
+        topicName: 'topic-name'
+      },
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
+});
+
+test('Confirm CheckS3Props is being called', () => {
+  const stack = new Stack();
+
+  const app = () => {
+    new S3ToSns(stack, 'test-s3-sns', {
+      topicProps: {
+        topicName: 'topic-name'
+      },
+      bucketProps: {},
+      existingBucketObj: new s3.Bucket(stack, 'test-bucket', {}),
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Error - Either provide bucketProps or existingBucketObj, but not both.\n/);
+});

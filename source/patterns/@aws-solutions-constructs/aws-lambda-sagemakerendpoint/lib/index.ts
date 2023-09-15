@@ -106,11 +106,9 @@ export class LambdaToSagemakerEndpoint extends Construct {
   constructor(scope: Construct, id: string, props: LambdaToSagemakerEndpointProps) {
     super(scope, id);
     defaults.CheckProps(props);
+    defaults.CheckVpcProps(props);
 
     if (props.deployVpc || props.existingVpc) {
-      if (props.deployVpc && props.existingVpc) {
-        throw new Error('More than 1 VPC specified in the properties');
-      }
 
       // create the VPC
       this.vpc = defaults.buildVpc(scope, {

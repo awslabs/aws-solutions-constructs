@@ -14,6 +14,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { EventbridgeToSqs, EventbridgeToSqsProps } from '../lib';
 import * as events from "aws-cdk-lib/aws-events";
+import * as sqs from "aws-cdk-lib/aws-sqs";
 import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -535,4 +536,26 @@ test('Queue purging flag grants correct permissions', () => {
       }
     ]
   });
+});
+
+test('check that CheckSqsProps is being called', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: { eventBusName: 'test' },
+    queueProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    existingQueueObj: new sqs.Queue(stack, 'test', {})
+  };
+
+  const app = () => {
+    new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+  };
+  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });

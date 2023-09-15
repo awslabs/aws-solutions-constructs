@@ -108,6 +108,7 @@ export class LambdaToOpenSearch extends Construct {
   constructor(scope: Construct, id: string, props: LambdaToOpenSearchProps) {
     super(scope, id);
     defaults.CheckProps(props);
+    defaults.CheckVpcProps(props);
 
     if (props.vpcProps && !props.deployVpc) {
       throw new Error("Error - deployVpc must be true when defining vpcProps");

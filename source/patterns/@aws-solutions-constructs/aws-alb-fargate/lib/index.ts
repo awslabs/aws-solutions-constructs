@@ -167,6 +167,7 @@ export class AlbToFargate extends Construct {
     defaults.CheckProps(props);
     defaults.CheckAlbProps(props);
     defaults.CheckFargateProps(props);
+    defaults.CheckVpcProps(props);
 
     // Obtain VPC for construct (existing or created)
     this.vpc = defaults.buildVpc(scope, {

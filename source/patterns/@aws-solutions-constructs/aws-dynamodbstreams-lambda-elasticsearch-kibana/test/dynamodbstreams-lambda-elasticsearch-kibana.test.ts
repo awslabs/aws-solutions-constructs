@@ -227,3 +227,21 @@ test('Test minimal deployment with an existing isolated VPC', () => {
   template.resourceCountIs("AWS::EC2::VPC", 1);
   expect(construct.vpc).toBeDefined();
 });
+
+test('Confirm CheckVpcProps is being called', () => {
+  const stack = new cdk.Stack();
+
+  const app = () => {
+    new DynamoDBStreamsToLambdaToElasticSearchAndKibana(stack, 'test-construct', {
+      lambdaFunctionProps: getDefaultTestLambdaProps(),
+      domainName: "test",
+      deployVpc: true,
+      vpcProps: {
+        vpcName: "existing-vpc-test"
+      },
+      existingVpc: defaults.getTestVpc(stack),
+    });
+  };
+
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});

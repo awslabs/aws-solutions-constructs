@@ -568,3 +568,21 @@ function getDefaultTestLambdaProps(): lambda.FunctionProps {
     handler: 'index.handler',
   };
 }
+
+test('Confirm CheckVpcProps is being called', () => {
+  const stack = new cdk.Stack();
+
+  const app = () => {
+    new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
+      lambdaFunctionProps: getDefaultTestLambdaProps(),
+      domainName: "test",
+      deployVpc: true,
+      vpcProps: {
+        vpcName: "existing-vpc-test"
+      },
+      existingVpc: defaults.getTestVpc(stack),
+    });
+  };
+
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});

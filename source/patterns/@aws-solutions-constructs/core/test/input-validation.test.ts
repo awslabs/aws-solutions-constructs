@@ -96,16 +96,19 @@ test("Test fail Lambda function check", () => {
   );
 });
 
+// ---------------------------
+// DynamoDB Prop Tests
+// ---------------------------
 test("Test fail SQS Queue check", () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.SqsProps = {
     queueProps: {},
     existingQueueObj: new sqs.Queue(stack, 'placeholder', {}),
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckSqsProps(props);
   };
 
   // Assertion
@@ -115,7 +118,7 @@ test("Test fail SQS Queue check", () => {
 test('Test fail SQS queue check when queueProps.encryptionMasterKey and encryptionKey are both specified', () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.SqsProps = {
     queueProps: {
       encryptionMasterKey: new kms.Key(stack, 'key')
     },
@@ -123,7 +126,7 @@ test('Test fail SQS queue check when queueProps.encryptionMasterKey and encrypti
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckSqsProps(props);
   };
 
   expect(app).toThrowError('Error - Either provide queueProps.encryptionMasterKey or encryptionKey, but not both.\n');
@@ -132,7 +135,7 @@ test('Test fail SQS queue check when queueProps.encryptionMasterKey and encrypti
 test('Test fail SQS queue check when queueProps.encryptionMasterKey and encryptionKeyProps are both specified', () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.SqsProps = {
     encryptionKeyProps: {
       description: 'key description'
     },
@@ -142,7 +145,7 @@ test('Test fail SQS queue check when queueProps.encryptionMasterKey and encrypti
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckSqsProps(props);
   };
 
   // Assertion
@@ -151,13 +154,13 @@ test('Test fail SQS queue check when queueProps.encryptionMasterKey and encrypti
 
 test('Test fail Dead Letter Queue check', () => {
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.SqsProps = {
     deployDeadLetterQueue: false,
     deadLetterQueueProps: {},
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckSqsProps(props);
   };
 
   // Assertion
@@ -166,13 +169,13 @@ test('Test fail Dead Letter Queue check', () => {
 
 test('Test fail Dead Letter Queue check with queueProps fifo set to true and undefined deadLetterQueueProps', () => {
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.SqsProps = {
     queueProps: { fifo: true },
     deadLetterQueueProps: {},
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckSqsProps(props);
   };
 
   // Assertion
@@ -182,13 +185,13 @@ test('Test fail Dead Letter Queue check with queueProps fifo set to true and und
 
 test('Test fail Dead Letter Queue check with queueProps fifo set to true and deadLetterQueueProps fifo set to false', () => {
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.SqsProps = {
     queueProps: { fifo: true },
     deadLetterQueueProps: { fifo: false },
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckSqsProps(props);
   };
 
   // Assertion
@@ -198,13 +201,13 @@ test('Test fail Dead Letter Queue check with queueProps fifo set to true and dea
 
 test('Test fail Dead Letter Queue check with queueProps fifo set to false and deadLetterQueueProps fifo set to true', () => {
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.SqsProps = {
     deadLetterQueueProps: { fifo: true },
     queueProps: { fifo: false },
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckSqsProps(props);
   };
 
   // Assertion
@@ -214,12 +217,12 @@ test('Test fail Dead Letter Queue check with queueProps fifo set to false and de
 
 test('Test fail Dead Letter Queue check with deadLetterQueueProps fifo set to true', () => {
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.SqsProps = {
     deadLetterQueueProps: { fifo: true },
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckSqsProps(props);
   };
 
   expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
@@ -228,12 +231,12 @@ test('Test fail Dead Letter Queue check with deadLetterQueueProps fifo set to tr
 
 test('Test fail Dead Letter Queue check with queueProps fifo set to false', () => {
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.SqsProps = {
     queueProps: { fifo: false },
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckSqsProps(props);
   };
 
   expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
@@ -282,22 +285,6 @@ test('Test fail Kinesis stream check', () => {
 
   // Assertion
   expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
-});
-
-test('Test fail S3 check', () => {
-  const stack = new Stack();
-
-  const props: defaults.VerifiedProps = {
-    existingBucketObj: CreateScrapBucket(stack, {}),
-    bucketProps: {},
-  };
-
-  const app = () => {
-    defaults.CheckProps(props);
-  };
-
-  // Assertion
-  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
 // ---------------------------
@@ -555,10 +542,13 @@ test('Test fail encryption key check', () => {
   expect(app).toThrowError('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
 });
 
+// ---------------------------
+// S3 Prop Tests
+// ---------------------------
 test('Test fail Vpc check with deployVpc', () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.VpcProps = {
     deployVpc: true,
     existingVpc: defaults.buildVpc(stack, {
       defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
@@ -566,7 +556,7 @@ test('Test fail Vpc check with deployVpc', () => {
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckVpcProps(props);
   };
 
   // Assertion
@@ -576,7 +566,7 @@ test('Test fail Vpc check with deployVpc', () => {
 test('Test fail Vpc check with vpcProps', () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.VpcProps = {
     vpcProps: defaults.DefaultPublicPrivateVpcProps(),
     existingVpc: defaults.buildVpc(stack, {
       defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
@@ -584,17 +574,37 @@ test('Test fail Vpc check with vpcProps', () => {
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckVpcProps(props);
   };
 
   // Assertion
   expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
+// ---------------------------
+
+// ---------------------------
+// S3 Prop Tests
+// ---------------------------
+test('Test fail S3 check', () => {
+  const stack = new Stack();
+
+  const props: defaults.S3Props = {
+    existingBucketObj: CreateScrapBucket(stack, {}),
+    bucketProps: {},
+  };
+
+  const app = () => {
+    defaults.CheckS3Props(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+});
 
 test('Test fail existing log bucket and log bucket prop check', () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.S3Props = {
     existingLoggingBucketObj: new s3.Bucket(stack, 'logging-bucket'),
     loggingBucketProps: {
       autoDeleteObjects: true
@@ -602,7 +612,7 @@ test('Test fail existing log bucket and log bucket prop check', () => {
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckS3Props(props);
   };
 
   // Assertion
@@ -612,13 +622,13 @@ test('Test fail existing log bucket and log bucket prop check', () => {
 test('Test fail false logS3Accesslogs and loggingBucketProps check', () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.S3Props = {
     existingLoggingBucketObj: new s3.Bucket(stack, 'logging-bucket'),
     logS3AccessLogs: false
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckS3Props(props);
   };
 
   // Assertion
@@ -628,7 +638,7 @@ test('Test fail false logS3Accesslogs and loggingBucketProps check', () => {
 test('Test fail existingBucketObj and loggingBucketProps check', () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.S3Props = {
     existingBucketObj: new s3.Bucket(stack, 'temp-bucket'),
     loggingBucketProps: {
       autoDeleteObjects: true
@@ -636,12 +646,13 @@ test('Test fail existingBucketObj and loggingBucketProps check', () => {
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckS3Props(props);
   };
 
   // Assertion
   expect(app).toThrowError('Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is an error.\n');
 });
+// ---------------------------
 
 test('Test successful CheckListValues', () => {
 
