@@ -164,6 +164,7 @@ export class FargateToS3 extends Construct {
     defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
     defaults.CheckS3Props(props);
+    defaults.CheckVpcProps(props);
 
     if (props.bucketPermissions) {
       defaults.CheckListValues(['Delete', 'Read', 'Write'], props.bucketPermissions, 'bucket permission');

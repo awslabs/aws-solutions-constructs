@@ -282,7 +282,7 @@ test('Test for the proper self referencing security group', () => {
     },
   });
 });
-// test('', () => {});
+
 test("Test error from existingCache and no VPC", () => {
   const stack = new cdk.Stack();
 
@@ -369,4 +369,26 @@ test("Test error from trying to launch Redis", () => {
   };
 
   expect(app).toThrowError("This construct can only launch memcached clusters");
+});
+
+test("Test error from existingCache and no VPC", () => {
+  const stack = new cdk.Stack();
+
+  const vpc = defaults.getTestVpc(stack);
+
+  const app = () => {
+    new LambdaToElasticachememcached(stack, "testStack", {
+      lambdaFunctionProps: {
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+        runtime: lambda.Runtime.NODEJS_16_X,
+        handler: ".handler",
+      },
+      vpcProps: {},
+      existingVpc: vpc
+    });
+  };
+
+  expect(app).toThrowError(
+    'Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n'
+  );
 });

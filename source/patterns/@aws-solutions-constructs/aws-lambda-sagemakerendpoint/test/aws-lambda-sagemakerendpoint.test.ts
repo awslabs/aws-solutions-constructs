@@ -360,7 +360,7 @@ test('Test for error with existingLambdaObj/lambdaFunctionProps=undefined (not s
 // --------------------------------------------------------------------
 // Test for error with (props.deployVpc && props.existingVpc) is true
 // --------------------------------------------------------------------
-test('Test for error with (props.deployVpc && props.existingVpc) is true', () => {
+test('confirm CheckVpcProps is called', () => {
   // Initial Setup
   const stack = new Stack();
 
@@ -384,6 +384,13 @@ test('Test for error with (props.deployVpc && props.existingVpc) is true', () =>
         modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
       },
     },
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.PYTHON_3_8,
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      handler: 'index.handler',
+      timeout: Duration.minutes(5),
+      memorySize: 128,
+    },
     deployVpc: true,
     existingVpc: vpc,
   };
@@ -391,7 +398,7 @@ test('Test for error with (props.deployVpc && props.existingVpc) is true', () =>
     new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
   };
   // Assertion 1
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 // ----------------------------------------------------------------------------------------------------------

@@ -213,7 +213,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
 });
 
-test("Test bad call with existingVpc and deployVpc", () => {
+test("Confirm CheckVpcProps is called", () => {
   // Stack
   const stack = new Stack();
 
@@ -232,7 +232,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Test lambda function custom environment variable', () => {
@@ -403,19 +403,6 @@ test('Queue is encrypted with customer managed KMS Key when enable encryption fl
       ]
     },
   });
-});
-
-test('Error is thrown when conflicting VPC information is provided', () => {
-  const stack = new Stack();
-
-  const app = () => {
-    new LambdaToSqs(stack, 'test-construct', {
-      existingVpc: new ec2.Vpc(stack, "test-vpc", {}),
-      deployVpc: true
-    });
-  };
-
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.');
 });
 
 test('Queue purging flag grants correct permissions', () => {

@@ -242,3 +242,32 @@ test('Test fail Vpc check with vpcProps yet deployVpc is undefined', () => {
   // Assertion
   expect(app).toThrowError('Error - If deployVpc is not true, then vpcProps is ignored');
 });
+
+test('Confirm CheckVpcProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
+
+  const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+    constructVpcProps: {
+      enableDnsHostnames: true,
+      enableDnsSupport: true,
+    },
+  });
+
+  const app = () => {
+    // Helper declaration
+    new LambdaToKinesisFirehose(stack, 'test-lambda-kinesisfirehose', {
+      existingKinesisFirehose: destination.kinesisFirehose,
+      lambdaFunctionProps: {
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+        runtime: lambda.Runtime.NODEJS_18_X,
+        handler: 'index.handler'
+      },
+      deployVpc: true,
+      existingVpc: vpc
+    });
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});

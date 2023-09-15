@@ -11,9 +11,8 @@
  *  and limitations under the License.
  */
 
-import { LambdaToKendra } from "../lib";
+import { LambdaToKendra, LambdaToKendraProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as kendra from 'aws-cdk-lib/aws-kendra';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cdk from "aws-cdk-lib";
@@ -443,39 +442,6 @@ test('Launch with existing lambda', () => {
     Timeout: testTimeout,
     FunctionName: testFunctionName,
   });
-});
-
-test('Confirm error with existing vpc and vpc props', () => {
-  const stack = new cdk.Stack();
-  const testBucketName = 'test-bucket-name22';
-
-  const lambdaProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
-    handler: 'index.handler'
-  };
-
-  const app = () => {
-    new LambdaToKendra(stack, 'sample', {
-      existingVpc: defaults.getTestVpc(stack),
-      deployVpc: true,
-      vpcProps: {
-        ipAddresses: ec2.IpAddresses.cidr('10.0.0.0/16')
-      },
-      lambdaFunctionProps: lambdaProps,
-      kendraDataSourcesProps: [{
-        type: 'S3',
-        dataSourceConfiguration: {
-          s3Configuration: {
-            bucketName: testBucketName,
-          }
-        }
-      }
-      ],
-    });
-  };
-
-  expect(app).toThrowError(/Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n/);
 });
 
 test('Confirm error with data source with no bucket name', () => {
@@ -1037,4 +1003,46 @@ test('Test with custom environment variable name', () => {
     }
   });
 
+});
+
+test('Confirm CheckVpcProps is being called', () => {
+  const stack = new cdk.Stack();
+  const testFunctionName = 'test-function-name24334';
+  const testBucketName = 'test-bucket-name12344';
+
+  const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+    constructVpcProps: {
+      enableDnsHostnames: true,
+      enableDnsSupport: true,
+    },
+  });
+
+  const lambdaProps: lambda.FunctionProps = {
+    functionName: testFunctionName,
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_18_X,
+    handler: 'index.handler'
+  };
+
+  const props: LambdaToKendraProps = {
+    lambdaFunctionProps: lambdaProps,
+    kendraDataSourcesProps: [{
+      type: 'S3',
+      dataSourceConfiguration: {
+        s3Configuration: {
+          bucketName: testBucketName,
+        }
+      }
+    }
+    ],
+    deployVpc: true,
+    existingVpc: vpc
+  };
+
+  const app = () => {
+    new LambdaToKendra(stack, 'sample', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });

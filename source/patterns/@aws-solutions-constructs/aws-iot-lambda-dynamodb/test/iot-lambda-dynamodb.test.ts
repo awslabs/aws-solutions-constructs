@@ -587,7 +587,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 // --------------------------------------------------------------
 // Test bad call with existingVpc and deployVpc
 // --------------------------------------------------------------
-test("Test bad call with existingVpc and deployVpc", () => {
+test("Confirm CheckVpcProps is called", () => {
   // Stack
   const stack = new cdk.Stack();
 
@@ -614,7 +614,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 // NOTE: existingTableObj was omitted from the interface for this construct,

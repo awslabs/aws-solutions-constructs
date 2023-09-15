@@ -550,3 +550,30 @@ function verifyLambdaFunctionVpcProps(template: Template, vpcId: string, subnetT
     EnableDnsSupport: true,
   });
 }
+
+test('Confirm CheckVpcProps() is being called', () => {
+  const stack = new cdk.Stack();
+
+  const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+    constructVpcProps: {
+      enableDnsHostnames: true,
+      enableDnsSupport: true,
+    },
+  });
+
+  const app = () => {
+    // Helper declaration
+    new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
+      lambdaFunctionProps: {
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+        runtime: lambda.Runtime.NODEJS_18_X,
+        handler: 'index.handler'
+      },
+      deployVpc: true,
+      existingVpc: vpc
+    });
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});

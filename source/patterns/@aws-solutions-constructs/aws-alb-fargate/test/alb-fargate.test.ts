@@ -463,3 +463,24 @@ test('Test HTTPS API with new vpc, load balancer, service and private API', () =
     ]
   });
 });
+
+test('Confirm that CheckVpcProps is called', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  const props: AlbToFargateProps = {
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    listenerProps: {
+      certificates: [defaults.getFakeCertificate(stack, "fake-cert")]
+    },
+    publicApi: false,
+    vpcProps: {},
+    existingVpc: defaults.getTestVpc(stack),
+  };
+  const app = () => {
+    new AlbToFargate(stack, 'new-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});

@@ -95,6 +95,7 @@ export class LambdaToSsmstringparameter extends Construct {
   constructor(scope: Construct, id: string, props: LambdaToSsmstringparameterProps) {
     super(scope, id);
     defaults.CheckProps(props);
+    defaults.CheckVpcProps(props);
 
     // This should have been an array, we will make it an array for validation
     if (props.stringParameterPermissions) {

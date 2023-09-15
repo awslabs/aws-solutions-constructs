@@ -49,10 +49,6 @@ export interface VerifiedProps {
   readonly existingSecretObj?: secretsmanager.Secret;
   readonly secretProps?: secretsmanager.SecretProps;
 
-  readonly existingVpc?: ec2.IVpc;
-  readonly vpcProps?: ec2.VpcProps;
-  readonly deployVpc?: boolean;
-
   readonly encryptionKey?: kms.Key,
   readonly encryptionKeyProps?: kms.KeyProps
 
@@ -107,11 +103,6 @@ export function CheckProps(propsObject: VerifiedProps | any) {
 
   if (propsObject.existingSecretObj && propsObject.secretProps) {
     errorMessages += 'Error - Either provide secretProps or existingSecretObj, but not both.\n';
-    errorFound = true;
-  }
-
-  if ((propsObject.deployVpc || propsObject.vpcProps) && propsObject.existingVpc) {
-    errorMessages += 'Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n';
     errorFound = true;
   }
 
@@ -327,6 +318,27 @@ export function CheckS3Props(propsObject: S3Props | any) {
 
   if (propsObject.existingBucketObj && (propsObject.loggingBucketProps || propsObject.logS3AccessLogs)) {
     errorMessages += 'Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is an error.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}
+
+export interface VpcProps {
+  readonly existingVpc?: ec2.IVpc;
+  readonly vpcProps?: ec2.VpcProps;
+  readonly deployVpc?: boolean;
+
+}
+
+export function CheckVpcProps(propsObject: VpcProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if ((propsObject.deployVpc || propsObject.vpcProps) && propsObject.existingVpc) {
+    errorMessages += 'Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n';
     errorFound = true;
   }
 

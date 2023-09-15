@@ -600,3 +600,28 @@ test('Test error for missing existingLambdaObj or lambdaFunctionProps', () => {
     expect(e).toBeInstanceOf(Error);
   }
 });
+
+test('Confirm CheckVpcProps is being called', () => {
+  const stack = new cdk.Stack();
+  const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+    constructVpcProps: {
+      enableDnsHostnames: true,
+      enableDnsSupport: true,
+    },
+  });
+
+  const app = () => {
+    new LambdaToOpenSearch(stack, 'test-lambda-opensearch', {
+      lambdaFunctionProps: getDefaultTestLambdaProps(),
+      openSearchDomainName: "test",
+      vpcProps: {
+        vpcName: "existing-vpc-test"
+      },
+      deployVpc: true,
+      existingVpc: vpc
+    });
+  };
+
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});

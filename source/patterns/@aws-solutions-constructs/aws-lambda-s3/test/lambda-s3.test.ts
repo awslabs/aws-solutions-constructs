@@ -17,7 +17,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import { LambdaToS3 } from '../lib';
-import { CreateScrapBucket } from '@aws-solutions-constructs/core';
+import * as defaults from '@aws-solutions-constructs/core';
 import { Template } from 'aws-cdk-lib/assertions';
 
 test('Test the properties', () => {
@@ -235,34 +235,12 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
 });
 
-test("Test bad call with existingVpc and deployVpc", () => {
-  // Stack
-  const stack = new Stack();
-
-  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
-
-  const app = () => {
-    // Helper declaration
-    new LambdaToS3(stack, "lambda-to-s3-stack", {
-      lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_16_X,
-        handler: "index.handler",
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      },
-      existingVpc: testVpc,
-      deployVpc: true,
-    });
-  };
-  // Assertion
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
-});
-
 test('Test lambda function custom environment variable', () => {
   // Stack
   const stack = new Stack();
 
   // Helper declaration
-  const existingBucket = CreateScrapBucket(stack, {});
+  const existingBucket = defaults.CreateScrapBucket(stack, {});
   const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
   new LambdaToS3(stack, 'lambda-to-s3-stack', {
     existingBucketObj: mybucket,
@@ -419,4 +397,34 @@ test('Test bad bucket permission', () => {
   };
 
   expect(alb).toThrowError('Invalid bucket permission submitted - Reed');
+});
+
+test("Confirm that CheckVpcProps is being called", () => {
+  // Stack
+  const stack = new Stack();
+  const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+    constructVpcProps: {
+      enableDnsHostnames: true,
+      enableDnsSupport: true,
+    },
+  });
+
+  const app = () => {
+    // Helper declaration
+    new LambdaToS3(stack, "bad-s3-args", {
+      lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_16_X,
+        handler: 'index.handler',
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      },
+      bucketProps: {
+        removalPolicy: RemovalPolicy.DESTROY
+      },
+      deployVpc: true,
+      existingVpc: vpc,
+    });
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });

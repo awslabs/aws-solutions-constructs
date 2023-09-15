@@ -14,7 +14,7 @@
 import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
-import { FargateToS3 } from "../lib";
+import { FargateToS3, FargateToS3Props } from "../lib";
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
@@ -729,4 +729,30 @@ test('New service/new bucket, public API, new VPC', () => {
   };
   // Assertion
   expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+});
+
+test('Confirm that CheckVpcProps was called', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+  const clusterName = "custom-cluster-name";
+  const containerName = "custom-container-name";
+  const serviceName = "custom-service-name";
+  const familyName = "custom-family-name";
+
+  const props: FargateToS3Props = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    existingVpc: defaults.getTestVpc(stack),
+    vpcProps: {  },
+  };
+
+  const app = () => {
+    new FargateToS3(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });

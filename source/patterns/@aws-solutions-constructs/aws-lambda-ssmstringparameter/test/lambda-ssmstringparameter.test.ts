@@ -20,9 +20,6 @@ import { Template } from 'aws-cdk-lib/assertions';
 import { StringParameter } from "aws-cdk-lib/aws-ssm";
 import * as defaults from "@aws-solutions-constructs/core";
 
-// --------------------------------------------------------------
-// Test lambda function custom environment variable
-// --------------------------------------------------------------
 test('Test lambda function custom environment variable', () => {
   // Stack
   const stack = new Stack();
@@ -57,9 +54,6 @@ test('Test lambda function custom environment variable', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test the getter methods
-// --------------------------------------------------------------
 test('Test the properties', () => {
   // Stack
   const stack = new Stack();
@@ -80,9 +74,6 @@ test('Test the properties', () => {
   expect(stringParam).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing String Parameter
-// --------------------------------------------------------------
 test('Test deployment w/ existing String Parameter', () => {
   // Stack
   const stack = new Stack();
@@ -107,9 +98,6 @@ test('Test deployment w/ existing String Parameter', () => {
   expect(pattern.stringParameter).toBe(existingStringParam);
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing function
-// --------------------------------------------------------------
 test('Test deployment w/ existing function', () => {
   // Stack
   const stack = new Stack();
@@ -135,9 +123,6 @@ test('Test deployment w/ existing function', () => {
   expect(pattern.lambdaFunction).toBe(existingFunction);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with write access to String Parameter.
-// --------------------------------------------------------------
 test('Test minimal deployment write access to String Parameter ', () => {
   // Stack
   const stack = new Stack();
@@ -160,9 +145,6 @@ test('Test minimal deployment write access to String Parameter ', () => {
 
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC without vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Stack
   const stack = new Stack();
@@ -212,9 +194,6 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC w/vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Stack
   const stack = new Stack();
@@ -270,9 +249,6 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC", () => {
   // Stack
   const stack = new Stack();
@@ -317,12 +293,6 @@ test("Test minimal deployment with an existing VPC", () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC and existing Lambda function not in a VPC
-//
-// buildLambdaFunction should throw an error if the Lambda function is not
-// attached to a VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC and existing Lambda function not in a VPC", () => {
   // Stack
   const stack = new Stack();
@@ -337,7 +307,8 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
   // Helper declaration
   const app = () => {
-    // Helper declaration
+    // buildLambdaFunction should throw an error if the Lambda function is not
+    // attached to a VPC
     new LambdaToSsmstringparameter(stack, "lambda-to-ssm-stack", {
       existingLambdaObj: testLambdaFunction,
       existingVpc: testVpc,
@@ -350,10 +321,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingVpc and deployVpc
-// --------------------------------------------------------------
-test("Test bad call with existingVpc and deployVpc", () => {
+test("Confirm that CheckVpcProps is called", () => {
   // Stack
   const stack = new Stack();
 
@@ -373,7 +341,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test("Test bad call with invalid string parameter permission", () => {

@@ -105,6 +105,7 @@ export class LambdaToKendra extends Construct {
   constructor(scope: Construct, id: string, props: LambdaToKendraProps) {
     super(scope, id);
     defaults.CheckProps(props);
+    defaults.CheckVpcProps(props);
 
     if (props.kendraIndexProps && props.existingKendraIndexObj) {
       throw new Error('You may not provide both kendraIndexProps and existingKendraIndexObj');

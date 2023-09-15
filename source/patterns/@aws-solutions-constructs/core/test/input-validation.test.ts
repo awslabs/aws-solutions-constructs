@@ -542,10 +542,13 @@ test('Test fail encryption key check', () => {
   expect(app).toThrowError('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
 });
 
+// ---------------------------
+// S3 Prop Tests
+// ---------------------------
 test('Test fail Vpc check with deployVpc', () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.VpcProps = {
     deployVpc: true,
     existingVpc: defaults.buildVpc(stack, {
       defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
@@ -553,7 +556,7 @@ test('Test fail Vpc check with deployVpc', () => {
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckVpcProps(props);
   };
 
   // Assertion
@@ -563,7 +566,7 @@ test('Test fail Vpc check with deployVpc', () => {
 test('Test fail Vpc check with vpcProps', () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.VpcProps = {
     vpcProps: defaults.DefaultPublicPrivateVpcProps(),
     existingVpc: defaults.buildVpc(stack, {
       defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
@@ -571,12 +574,13 @@ test('Test fail Vpc check with vpcProps', () => {
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckVpcProps(props);
   };
 
   // Assertion
   expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
+// ---------------------------
 
 // ---------------------------
 // S3 Prop Tests
