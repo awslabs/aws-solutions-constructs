@@ -163,7 +163,13 @@ export class AlbToLambda extends Construct {
       this.listener = GetActiveListener(this.loadBalancer.listeners);
     }
 
-    const newTargetGroup = defaults.AddLambdaTarget(this, `tg${this.loadBalancer.listeners.length + 1}`, this.listener, this.lambdaFunction, props.ruleProps, props.targetProps);
+    const newTargetGroup = defaults.AddLambdaTarget(
+      this,
+      `tg${this.loadBalancer.listeners.length + 1}`,
+      this.listener,
+      this.lambdaFunction,
+      props.ruleProps,
+      props.targetProps);
 
     // this.listener needs to be set on the construct.
     // could be above: else { defaults.GetActiveListener }
