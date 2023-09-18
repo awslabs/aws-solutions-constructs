@@ -24,7 +24,7 @@ import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import {
   DefaultCloudFrontWebDistributionForS3Props,
   DefaultCloudFrontWebDistributionForApiGatewayProps,
-  DefaultCloudFrontDisributionForMediaStoreProps
+  DefaultCloudFrontDistributionForMediaStoreProps
 } from './cloudfront-distribution-defaults';
 import { addCfnSuppressRules, consolidateProps } from './utils';
 import { createLoggingBucket } from './s3-bucket-helper';
@@ -203,7 +203,7 @@ export function CloudFrontDistributionForMediaStore(scope: Construct,
 
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
-  const defaultprops = DefaultCloudFrontDisributionForMediaStoreProps(
+  const defaultprops = DefaultCloudFrontDistributionForMediaStoreProps(
     mediaStoreContainer,
     loggingBucket,
     originRequestPolicy,

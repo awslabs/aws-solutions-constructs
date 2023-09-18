@@ -113,7 +113,7 @@ export function deployLambdaFunction(scope: Construct,
     }
   });
 
-  // If this Lambda function is going to access resoures in a
+  // If this Lambda function is going to access resources in a
   // VPC, then it needs privileges to access an ENI in that VPC
   if (lambdaFunctionProps.vpc || vpc) {
     lambdaServiceRole.addToPolicy(new iam.PolicyStatement({
@@ -194,7 +194,7 @@ export function deployLambdaFunction(scope: Construct,
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  *
- * A wrapper above Function.addPermision that
+ * A wrapper above Function.addPermission that
  * prevents two different calls to addPermission using
  * the same construct id.
  */

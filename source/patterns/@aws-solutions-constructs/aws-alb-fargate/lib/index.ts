@@ -140,7 +140,7 @@ export interface AlbToFargateProps {
   /**
    * A Fargate Service already instantiated (probably by another Solutions Construct). If
    * this is specified, then no props defining a new service can be provided, including:
-   * ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps,
+   * ecrImageVersion, containerDefinitionProps, fargateTaskDefinitionProps,
    * ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface
    *
    * @default - none

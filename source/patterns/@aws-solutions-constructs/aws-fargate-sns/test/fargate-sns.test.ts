@@ -415,7 +415,7 @@ test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop
   });
 });
 
-test('Topic is encrypted with provided encrytionKeyProps', () => {
+test('Topic is encrypted with provided encryptionKeyProps', () => {
   const stack = new cdk.Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });

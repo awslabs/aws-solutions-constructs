@@ -36,7 +36,7 @@ for subdir in $source_dir/patterns/\@aws-solutions-constructs/* ; do
     then
       if [ "$cnt" -eq "0" ]
       then
-        echo "************** [ERROR] ************* Did not find any integ CFN templates in $subdir; please add atleast one by writing an integ test case and running cdk-integ command to generate the CFN template for it"
+        echo "************** [ERROR] ************* Did not find any integ CFN templates in $subdir; please add at least one by writing an integ test case and running cdk-integ command to generate the CFN template for it"
         exit 1
       fi
     fi

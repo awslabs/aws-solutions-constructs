@@ -182,7 +182,7 @@ test('Queue is encrypted with imported CMK when set on queueProps.encryptionMast
   });
 });
 
-test('Queue is encrypted with provided encrytionKeyProps', () => {
+test('Queue is encrypted with provided encryptionKeyProps', () => {
   const stack = new Stack();
 
   new SqsToLambda(stack, 'test-construct', {

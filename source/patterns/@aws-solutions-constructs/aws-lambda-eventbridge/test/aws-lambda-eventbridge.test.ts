@@ -467,7 +467,7 @@ test('check multiple lambda functions publishing to single event bus', () => {
   // Make sure 2 lambda functions exist
   template.resourceCountIs('AWS::Lambda::Function', 2);
 
-  // Check whether lambdas have permisison to publish to the event bus
+  // Check whether lambdas have permission to publish to the event bus
   template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [

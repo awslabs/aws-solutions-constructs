@@ -142,7 +142,7 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
       }
     });
 
-    // This Construct requires that the deliveryStreamType be overriden regardless of what is specified in the user props
+    // This Construct requires that the deliveryStreamType be overridden regardless of what is specified in the user props
     if (props.kinesisFirehoseProps) {
       if (props.kinesisFirehoseProps.deliveryStreamType !== undefined) {
         defaults.printWarning('Overriding deliveryStreamType type to be KinesisStreamAsSource');

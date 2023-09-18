@@ -443,7 +443,7 @@ test('Test bad Glue script location', () => {
   expect(app).toThrowError('Invalid S3 URL for Glue script provided\n');
 });
 
-test('Test missing Glue script lcoation', () => {
+test('Test missing Glue script location', () => {
   const stack = new Stack();
 
   const _jobRole = new iam.Role(stack, 'CustomETLJobRole', {

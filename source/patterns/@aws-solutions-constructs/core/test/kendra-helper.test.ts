@@ -30,7 +30,7 @@ test('Launch Kendra index with defaults', () => {
   template.resourceCountIs("AWS::IAM::Role", 1);
 });
 
-test('Confirm kendra has log wrting privileges', () => {
+test('Confirm kendra has log writing privileges', () => {
   const stack = new Stack(undefined, undefined);
 
   buildKendraIndex(stack, 'test', {});
@@ -372,7 +372,7 @@ test('Confirm error if does not provide DataSource configuration', () => {
     AddKendraDataSource(stack, 'test-bad-source', testIndex, dataSourceProps);
   };
 
-  expect(app).toThrowError(/Error - an S3 Kendra DataSource requires an DataSourceCofiguration prop/);
+  expect(app).toThrowError(/Error - an S3 Kendra DataSource requires an DataSourceConfiguration prop/);
 });
 
 test('Confirm error if does not provide S3 DataSource configuration', () => {
@@ -392,7 +392,7 @@ test('Confirm error if does not provide S3 DataSource configuration', () => {
     AddKendraDataSource(stack, 'test-bad-source', testIndex, dataSourceProps);
   };
 
-  expect(app).toThrowError(/Error - an S3 Kendra DataSource requires an DataSourceCofiguration.S3Configuration prop/);
+  expect(app).toThrowError(/Error - an S3 Kendra DataSource requires an DataSourceConfiguration.S3Configuration prop/);
 });
 
 test('Confirm error if does not provide S3 Bucketname', () => {
@@ -415,7 +415,7 @@ test('Confirm error if does not provide S3 Bucketname', () => {
     AddKendraDataSource(stack, 'test-bad-source', testIndex, dataSourceProps);
   };
 
-  expect(app).toThrowError(/Error - an S3 Kendra DataSource requires the DataSourceCofiguration.S3Configuration.bucketName prop/);
+  expect(app).toThrowError(/Error - an S3 Kendra DataSource requires the DataSourceConfiguration.S3Configuration.bucketName prop/);
 });
 
 test('Launch Kendra index with multiple data sources', () => {

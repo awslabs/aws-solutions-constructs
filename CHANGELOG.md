@@ -319,7 +319,7 @@ This is one of a number of identical releases we have created as we overhaul our
 
 ### Features
 
-* Includes all funcionality of V1.137.0
+* Includes all functionality of V1.137.0
 * Build upon underlying CDK version V2.4.0
 
 * **aws-alb-fargate:** New Construct ([#560](https://github.com/awslabs/aws-solutions-constructs/issues/560)) ([5a21b76](https://github.com/awslabs/aws-solutions-constructs/commit/5a21b7652be0be2c77957155a504a9582830eeba))
@@ -333,7 +333,7 @@ This is one of a number of identical releases we have created as we overhaul our
 
 ## [2.0.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.0.0-rc.2...v2.0.0) (2021-12-02)
 
-* Includes all funcionality of V1.129.0
+* Includes all functionality of V1.129.0
 
 ### Features
 
@@ -369,7 +369,7 @@ This is one of a number of identical releases we have created as we overhaul our
 * **apigateway-helper:** fixed condition for cloudWatchRole creation ([#468](https://github.com/awslabs/aws-solutions-constructs/issues/468)) ([e454349](https://github.com/awslabs/aws-solutions-constructs/commit/e45434928a17cde580698a82ee53f6ee7463c6cf))
 * **scripts:** Fix postinstall script ([#477](https://github.com/awslabs/aws-solutions-constructs/issues/477)) ([3902a91](https://github.com/awslabs/aws-solutions-constructs/commit/3902a912547b2e7645ad352feec9811d88678543))
 * **service-staff:** Fix create-order lambda ([#479](https://github.com/awslabs/aws-solutions-constructs/issues/479)) ([982c026](https://github.com/awslabs/aws-solutions-constructs/commit/982c02619d0bb4a5f9fd1433f60b74ef89a1603c))
-* **Set outputBucket property on aws-kinesisstreams-gluejob:** Issue [#448](https://github.com/awslabs/aws-solutions-constructs/issues/448) to include S3 bucket for Glue Job that the consturct creates ([#452](https://github.com/awslabs/aws-solutions-constructs/issues/452)) ([c40e1f7](https://github.com/awslabs/aws-solutions-constructs/commit/c40e1f7c3524652ac8e3277b1c482975e6df9e36))
+* **Set outputBucket property on aws-kinesisstreams-gluejob:** Issue [#448](https://github.com/awslabs/aws-solutions-constructs/issues/448) to include S3 bucket for Glue Job that the construct creates ([#452](https://github.com/awslabs/aws-solutions-constructs/issues/452)) ([c40e1f7](https://github.com/awslabs/aws-solutions-constructs/commit/c40e1f7c3524652ac8e3277b1c482975e6df9e36))
 
 ## 2.0.0-rc.1 (2021-10-12)
 

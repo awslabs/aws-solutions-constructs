@@ -110,13 +110,13 @@ test('Test deployment w/ existing stream', () => {
 
   expect(construct.cloudwatchAlarms == null);
 
-  // Since createCloudWatchAlars is set to false, no Alarm should exist
+  // Since createCloudWatchAlarm is set to false, no Alarm should exist
   template.resourceCountIs('AWS::CloudWatch::Alarm', 0);
 });
 
 test('Construct accepts additional PutRecord request templates', () => {
   const stack = new Stack();
-  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis-streams ', {
+  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis-streams', {
     additionalPutRecordRequestTemplates: {
       'text/plain': 'custom-template'
     }

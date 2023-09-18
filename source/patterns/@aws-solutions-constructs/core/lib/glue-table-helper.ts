@@ -29,7 +29,7 @@ import { Construct } from "constructs";
  * @param fieldSchema
  * @param sourceType
  * @param parameters - Key value pairs of parameters. If source type is 'Kinesis', pass Kinesis Data Stream name with key
- *  as 'STREAM_NAME'. Example: {STREAM_NAME: 'KinesisStreamConstrct.streamName'}
+ *  as 'STREAM_NAME'. Example: {STREAM_NAME: 'KinesisStreamConstruct.streamName'}
  */
 export function DefaultGlueTable(scope: Construct, tableProps: CfnTableProps): CfnTable {
   return new CfnTable(scope, 'GlueTable', tableProps);

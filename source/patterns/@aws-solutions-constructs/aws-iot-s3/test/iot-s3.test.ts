@@ -76,7 +76,7 @@ test('check for default props', () => {
   expect(construct.iotTopicRule).toBeDefined();
 });
 
-test('check for overriden props', () => {
+test('check for overridden props', () => {
   const stack = new cdk.Stack();
   const props: IotToS3Props = {
     iotTopicRuleProps: {

@@ -20,7 +20,7 @@
 
 ## Overview
 
-This AWS Solutions Construct implements an Amazon API Gateway REST API defined by an OpenAPI specificiation file connected to an AWS Lambda function.
+This AWS Solutions Construct implements an Amazon API Gateway REST API defined by an OpenAPI specification file connected to an AWS Lambda function.
 
 Here is a minimal deployable pattern definition:
 
@@ -97,7 +97,7 @@ import java.util.Collections;
 
 import static software.amazon.awscdk.services.lambda.Runtime.NODEJS_18_X;
 
-final Asset apiDefintionAsset = new Asset(this, "ApiDefinition", AssetProps.builder().path("openapispec.yaml").build());
+final Asset apiDefinitionAsset = new Asset(this, "ApiDefinition", AssetProps.builder().path("openapispec.yaml").build());
 
 final ApiIntegration apiIntegration = ApiIntegration.builder()
     .id("MessagesHandler")
@@ -109,7 +109,7 @@ final ApiIntegration apiIntegration = ApiIntegration.builder()
     .build();
 
 new OpenApiGatewayToLambda(this, "OpenApiGatewayToLambda", OpenApiGatewayToLambdaProps.builder()
-    .apiDefinitionAsset(apiDefintionAsset)
+    .apiDefinitionAsset(apiDefinitionAsset)
     .apiIntegrations(Collections.singletonList(apiIntegration))
     .build());
 ```

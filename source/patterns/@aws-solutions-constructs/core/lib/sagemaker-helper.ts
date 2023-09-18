@@ -121,7 +121,7 @@ function addPermissions(role: iam.Role, props?: BuildSagemakerEndpointProps) {
     );
   }
 
-  // To create a Sagemaker model using Bring-Your-Own-Model (BYOM) algorith image
+  // To create a Sagemaker model using Bring-Your-Own-Model (BYOM) algorithm image
   // The image URL is specified in the modelProps
   role.addToPolicy(
     new iam.PolicyStatement({
@@ -325,7 +325,7 @@ function CheckNotebookVpcProps(props: BuildSagemakerNotebookProps): boolean {
 
 export interface BuildSagemakerEndpointProps {
   /**
-   * Existing Sagemaker Enpoint object, if this is set then the modelProps, endpointConfigProps, and endpointProps are ignored
+   * Existing Sagemaker Endpoint object, if this is set then the modelProps, endpointConfigProps, and endpointProps are ignored
    *
    * @default - None
    */

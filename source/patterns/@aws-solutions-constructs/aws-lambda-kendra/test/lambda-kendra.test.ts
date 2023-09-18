@@ -467,7 +467,7 @@ test('Confirm error with data source with no bucket name', () => {
     });
   };
 
-  expect(app).toThrowError(/Error - an S3 Kendra DataSource requires the DataSourceCofiguration.S3Configuration.bucketName prop/);
+  expect(app).toThrowError(/Error - an S3 Kendra DataSource requires the DataSourceConfiguration.S3Configuration.bucketName prop/);
 });
 
 test('Launch with existing vpc', () => {
