@@ -107,7 +107,7 @@ export interface KinesisstreamsToGluejobProps {
   /**
    * The props for the Glue database that the construct should use to create. If @database is set
    * then this property is ignored. If none of @database and @databaseprops is provided, the
-   * construct will define a GlueDatabase resoruce.
+   * construct will define a GlueDatabase resource.
    */
   readonly databaseProps?: glue.CfnDatabaseProps;
   /**
@@ -152,8 +152,8 @@ export class KinesisstreamsToGluejob extends Construct {
   public readonly database: glue.CfnDatabase;
   public readonly table: glue.CfnTable;
   /**
-   * This property is only set if the Glue Job is created by the construct. If an exisiting Glue Job
-   * configuraton is supplied, the construct does not create an S3 bucket and hence the @outputBucket
+   * This property is only set if the Glue Job is created by the construct. If an existing Glue Job
+   * configuration is supplied, the construct does not create an S3 bucket and hence the @outputBucket
    * property is undefined
    */
   public readonly outputBucket?: [Bucket, (Bucket | undefined)?];

@@ -67,7 +67,7 @@ function configureCloudwatchRoleForApi(scope: Construct, api: apigateway.RestApi
   addCfnSuppressRules(deployment, [
     {
       id: 'W45',
-      reason: `ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource`
+      reason: `ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checks for it in AWS::ApiGateway::Deployment resource`
     }
   ]);
 
@@ -397,6 +397,6 @@ export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceI
   };
 
   // Setup the API Gateway method
-  const overridenProps = consolidateProps(defaultMethodOptions, params.methodOptions);
-  return params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, overridenProps);
+  const overriddenProps = consolidateProps(defaultMethodOptions, params.methodOptions);
+  return params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, overriddenProps);
 }

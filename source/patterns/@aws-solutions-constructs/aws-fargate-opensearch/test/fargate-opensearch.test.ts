@@ -50,7 +50,7 @@ test('Test domain and cognito domain name', () => {
     clusterProps: { clusterName: CLUSTER_NAME },
     containerDefinitionProps: { CONTAINER_NAME },
     fargateTaskDefinitionProps: { family: FAMILY_NAME },
-    fargateServiceProps: { servieName: SERVICE_NAME },
+    fargateServiceProps: { serviceName: SERVICE_NAME },
     openSearchDomainName: DOMAIN_NAME,
     cognitoDomainName: COGNITO_DOMAIN_NAME
   });

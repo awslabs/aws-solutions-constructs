@@ -70,7 +70,7 @@ export interface LambdaToSecretsmanagerProps {
    * Optional secret permissions to grant to the Lambda function.
    * One of the following may be specified: "Read" or "ReadWrite".
    *
-   * @default - Read only acess is given to the Lambda function if no value is specified.
+   * @default - Read only access is given to the Lambda function if no value is specified.
    */
   readonly grantWriteAccess?: string;
 }

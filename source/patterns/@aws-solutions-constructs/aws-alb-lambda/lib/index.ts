@@ -147,7 +147,7 @@ export class AlbToLambda extends Construct {
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps,
-      vpc: this.vpc,
+      vpc: this.vpc
     });
 
     let newListener: boolean;
@@ -159,12 +159,7 @@ export class AlbToLambda extends Construct {
 
     // If there's no listener, then we add one here
     if (newListener) {
-      this.listener = defaults.AddListener(
-        this,
-        id,
-        this.loadBalancer,
-        props.listenerProps
-      );
+      this.listener = defaults.AddListener(this, id, this.loadBalancer, props.listenerProps);
     } else {
       this.listener = GetActiveListener(this.loadBalancer.listeners);
     }
@@ -179,13 +174,12 @@ export class AlbToLambda extends Construct {
 
     // this.listener needs to be set on the construct.
     // could be above: else { defaults.GetActiveListener }
-    // do we then move that funcionality back into the construct (not the function). If so do
+    // do we then move that functionality back into the construct (not the function). If so do
     // we leave it in AddNewTarget or just do it here and pass the listener?
     if (newListener && this.listener) {
       const levelOneListener = this.listener.node.defaultChild as CfnListener;
       const cfnTargetGroup = newTargetGroup.node.defaultChild as CfnTargetGroup;
       levelOneListener.addDependency(cfnTargetGroup);
     }
-
   }
 }

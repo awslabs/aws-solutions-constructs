@@ -64,7 +64,7 @@ export interface CloudFrontToS3Props {
    * Optional user provided props to provide an originPath that CloudFront appends to the
    * origin domain name when CloudFront requests content from the origin.
    * The string should start with a `/`, for example `/production`.
-   * @dafault = '/'
+   * @default = '/'
    */
   readonly originPath?: string,
   /**

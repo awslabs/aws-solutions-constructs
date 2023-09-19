@@ -61,7 +61,7 @@ export interface Route53ToApiGatewayProps {
   /**
    * An existing AWS Certificate Manager certificate for your custom domain name.
    *
-   * @defualt - None
+   * @default - None
    */
   readonly existingCertificateInterface: certificatemanager.ICertificate;
 }

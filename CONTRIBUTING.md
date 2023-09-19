@@ -81,7 +81,7 @@ Now it's time to work your magic. Here are some guidelines:
   it might be easier to get started that way.
 * To ensure CDKv2 compatibility of all the Solutions Constructs, please ensure the code meets the following guidelines:
   * Import statement for `Construct` is standalone, for example, `import { Construct } from '@aws-cdk/core';` instead of `import { Construct, App, Aws } from '@aws-cdk/core';`
-  * Check to make sure the usage of `Construct` in the code is also standalone, for example, `export class IotToSqs extends Construct` insted of `export class IotToSqs extends cdk.Construct`
+  * Check to make sure the usage of `Construct` in the code is also standalone, for example, `export class IotToSqs extends Construct` instead of `export class IotToSqs extends cdk.Construct`
   * Core classes are imported from `@aws-cdk/core` only, for example, `import { Duration } from "@aws-cdk/core;` instead of `import { Duration } from "@aws-cdk/core/lib/duration";`
   * DO NOT USE deprecated APIs, it will not build in CDKv2, for example, using `statistic?` attribute of [@aws-cdk/aws-cloudwatch.Alarm](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Alarm.html) Construct Props will fail to build in CDKv2 
   * DO NOT USE experimental modules, it will not build in CDKv2, for example, avoid using L2 constructs for [HTTP or Websocket API](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-apigatewayv2-readme.html) will fail to build in CDKv2 
@@ -135,7 +135,7 @@ Each integration test generates a .expected.json file by actually deploying the 
 
 The standard `npm run build+lint+test` command will compare the cdk synth output against the .expected.json file. The Solutions Constructs team will run `npm run integ` in each construct periodically to guard against drift and ensure each construct still deploys.
 
-NOTE: Running `npm run integ` will launch a stack including the construct for each integration test. It will also delete the stack after collecting the CloudFormation template. While the stack will only be around for a few seconds, during this time you account will be billed for the resoruces. Some tests may leave behind an S3 bucket - you should check after running this step. Ideally, 
+NOTE: Running `npm run integ` will launch a stack including the construct for each integration test. It will also delete the stack after collecting the CloudFormation template. While the stack will only be around for a few seconds, during this time you account will be billed for the resources. Some tests may leave behind an S3 bucket - you should check after running this step. Ideally, 
 
 ### Step 4: Commit
 

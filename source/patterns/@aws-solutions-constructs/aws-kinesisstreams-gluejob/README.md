@@ -86,9 +86,9 @@ const customEtlJob = new KinesisstreamsToGluejob(this, "CustomETL", {
 | tableProps?         | [`CfnTableProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_glue.TableProps.html)                          | User provided AWS Glue Table props to override default props used to create a Glue Table.                        |
 | existingDatabase?   | [`CfnDatabase`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_glue.CfnDatabase.html)                           | Existing instance of AWS Glue Database. If this is set, then databaseProps is ignored.                           |
 | databaseProps?      | [`CfnDatabaseProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_glue.CfnDatabaseProps.html)                 | User provided Glue Database Props to override the default props used to create the Glue Database.                |
-| outputDataStore?    | [`SinkDataStoreProps`](#sinkdatastoreprops)                                                                                   | User provided properties for S3 bucket that stores Glue Job output. Current datastore types suported is only S3. |
+| outputDataStore?    | [`SinkDataStoreProps`](#sinkdatastoreprops)                                                                                   | User provided properties for S3 bucket that stores Glue Job output. Current datastore types supported is only S3. |
 |createCloudWatchAlarms?|`boolean`|Whether to create recommended CloudWatch alarms for Kinesis Data Stream. Default value is set to `true`.|
-| etlCodeAsset?       | [s3assets.Asset](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html)                               | User provided instance of the Asset class that represents the ETL code on the local filesytem                    |
+| etlCodeAsset?       | [s3assets.Asset](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html)                               | User provided instance of the Asset class that represents the ETL code on the local filesystem                    |
 
 ### SinkDataStoreProps
 

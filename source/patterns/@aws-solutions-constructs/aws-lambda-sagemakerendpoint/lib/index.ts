@@ -36,7 +36,7 @@ export interface LambdaToSagemakerEndpointProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * Existing SageMaker Enpoint object, providing both this and endpointProps will cause an error.
+   * Existing SageMaker Endpoint object, providing both this and endpointProps will cause an error.
    *
    * @default - None
    */

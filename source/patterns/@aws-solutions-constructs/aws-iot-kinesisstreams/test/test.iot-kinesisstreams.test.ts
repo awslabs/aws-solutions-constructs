@@ -210,7 +210,7 @@ test('check existing action in topic rule props', () => {
   template.resourceCountIs('AWS::Kinesis::Stream', 2);
 });
 
-test('check name confict', () => {
+test('check name confect', () => {
   const stack = new cdk.Stack();
 
   const props: IotToKinesisStreamsProps = {

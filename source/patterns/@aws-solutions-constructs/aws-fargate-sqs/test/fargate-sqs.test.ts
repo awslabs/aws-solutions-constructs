@@ -552,7 +552,7 @@ test('Queue is encrypted with imported CMK when set on queueProps.encryptionMast
   });
 });
 
-test('Queue is encrypted with provided encrytionKeyProps', () => {
+test('Queue is encrypted with provided encryptionKeyProps', () => {
   const stack = new cdk.Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
@@ -581,7 +581,7 @@ test('Queue is encrypted with provided encrytionKeyProps', () => {
   });
 });
 
-test('Queue is encrypted with SQS-managed KMS key when no other encryption propreties are set', () => {
+test('Queue is encrypted with SQS-managed KMS key when no other encryption properties are set', () => {
   const stack = new cdk.Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });

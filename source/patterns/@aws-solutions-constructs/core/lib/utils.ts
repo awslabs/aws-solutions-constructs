@@ -100,7 +100,7 @@ export function printWarning(message: string) {
  * different stack instances
  * @param {string[]} parts - the various string components of the name (eg - stackName, solutions construct ID, L2 construct ID)
  * @param {number} maxLength - the longest string that can be returned
- * @returns {string} - a string with concatenated parts (truncated if neccessary) + a hash of the full concatenated parts
+ * @returns {string} - a string with concatenated parts (truncated if necessary) + a hash of the full concatenated parts
  *
  * This is based upon this discussion - https://github.com/aws/aws-cdk/issues/1424
  */
@@ -135,7 +135,7 @@ export function generateResourceName(
  * so it will remain static in multiple updates of a single stack, but will be different in a separate stack instance
  * @param {string[]} parts - the various string components of the name (eg - stackName, solutions construct ID, L2 construct ID)
  * @param {number} maxLength - the longest string that can be returned
- * @returns {string} - a string with concatenated parts (truncated if neccessary) + a hash of the full concatenated parts
+ * @returns {string} - a string with concatenated parts (truncated if necessary) + a hash of the full concatenated parts
  *
  */
 export function generatePhysicalName(

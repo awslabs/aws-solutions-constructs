@@ -220,7 +220,7 @@ test('Queue is encrypted with imported CMK when set on queueProps.encryptionKeyP
   });
 });
 
-test('Queue is encrypted with provided encrytionKeyProps', () => {
+test('Queue is encrypted with provided encryptionKeyProps', () => {
   const stack = new Stack();
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
     encryptionKeyProps: {
