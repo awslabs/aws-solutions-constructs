@@ -136,3 +136,27 @@ test('check properties with existing S3 bucket', () => {
   expect(construct.s3BucketInterface).not.toEqual(undefined);
   expect(construct.s3LoggingBucket).toEqual(undefined);
 });
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: S3ToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new S3ToLambda(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});

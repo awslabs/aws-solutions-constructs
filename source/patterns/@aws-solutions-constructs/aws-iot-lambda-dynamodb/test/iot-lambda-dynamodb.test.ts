@@ -617,6 +617,37 @@ test("Confirm CheckVpcProps is called", () => {
   expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
+test('Confirm CheckLambdaProps is being called', () => {
+  const stack = new cdk.Stack();
+  const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
+    runtime: lambda.Runtime.NODEJS_18_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: IotToLambdaToDynamoDBProps = {
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+        sql: "SELECT * FROM 'connectedcar/dtc/#'",
+        actions: []
+      }
+    },
+    existingLambdaObj,
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    }
+  };
+
+  const app = () => {
+    new IotToLambdaToDynamoDB(stack, 'test-iot-lambda-ddb', props);
+  };
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});
+
 // NOTE: existingTableObj was omitted from the interface for this construct,
 // so this test cannot be run. Leaving it here so it can be used if/when existingTableObj
 // is added to the interface

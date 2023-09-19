@@ -263,3 +263,27 @@ test('Confirm CheckSnsProps is getting called', () => {
   // Assertion
   expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
 });
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: SnsToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new SnsToLambda(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});

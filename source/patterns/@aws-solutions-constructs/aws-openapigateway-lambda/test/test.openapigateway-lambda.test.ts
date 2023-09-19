@@ -438,3 +438,37 @@ test('Confirm API definition uri is added to function name', () => {
   })).toBeTruthy();
 
 });
+
+test('Confirm  that providing both lambdaFunction and functionProps is an error', () => {
+  const stack = new Stack();
+  const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
+    runtime: lambda.Runtime.NODEJS_18_X,
+    handler: 'index.handler',
+    functionName: 'ExistingLambdaFunction',
+    code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+  });
+
+  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
+    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
+  });
+
+  const props = {
+    apiDefinitionAsset,
+    apiIntegrations: [
+      {
+        id: 'MessagesHandler',
+        lambdaFunctionProps: {
+          runtime: lambda.Runtime.NODEJS_18_X,
+          handler: 'index.handler',
+          code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+        },
+        existingLambdaObj
+      }
+    ]
+  };
+
+  const app = () => {
+    new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
+  };
+  expect(app).toThrowError(`Error - Cannot provide both lambdaFunctionProps and existingLambdaObj in an ApiIntegrationfor the api integration with id: MessagesHandler`);
+});

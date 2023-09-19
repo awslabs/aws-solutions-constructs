@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { LambdaToKinesisStreams } from "../lib";
+import { LambdaToKinesisStreams, LambdaToKinesisStreamsProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as cdk from "aws-cdk-lib";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
@@ -576,4 +576,28 @@ test('Confirm CheckVpcProps() is being called', () => {
   };
   // Assertion
   expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: LambdaToKinesisStreamsProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new LambdaToKinesisStreams(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

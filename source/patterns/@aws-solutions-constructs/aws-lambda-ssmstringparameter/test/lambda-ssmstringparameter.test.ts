@@ -15,7 +15,7 @@
 import { Stack } from "aws-cdk-lib";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
-import { LambdaToSsmstringparameter } from '../lib';
+import { LambdaToSsmstringparameter, LambdaToSsmstringparameterProps } from '../lib';
 import { Template } from 'aws-cdk-lib/assertions';
 import { StringParameter } from "aws-cdk-lib/aws-ssm";
 import * as defaults from "@aws-solutions-constructs/core";
@@ -363,4 +363,29 @@ test("Test bad call with invalid string parameter permission", () => {
   };
   // Assertion
   expect(app).toThrowError('Invalid String Parameter permission submitted - Reed');
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: LambdaToSsmstringparameterProps = {
+    stringParameterProps: { stringValue: "test-string-value" },
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new LambdaToSsmstringparameter(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

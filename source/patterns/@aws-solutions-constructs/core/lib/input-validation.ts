@@ -37,9 +37,6 @@ export interface VerifiedProps {
   readonly existingStreamObj?: kinesis.Stream;
   readonly kinesisStreamProps?: kinesis.StreamProps,
 
-  readonly existingLambdaObj?: lambda.Function,
-  readonly lambdaFunctionProps?: lambda.FunctionProps,
-
   readonly existingMediaStoreContainerObj?: mediastore.CfnContainer;
   readonly mediaStoreContainerProps?: mediastore.CfnContainerProps;
 
@@ -83,11 +80,6 @@ export function CheckProps(propsObject: VerifiedProps | any) {
 
   if (propsObject.existingStreamObj && propsObject.kinesisStreamProps) {
     errorMessages += 'Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.existingLambdaObj && propsObject.lambdaFunctionProps) {
-    errorMessages += 'Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n';
     errorFound = true;
   }
 
@@ -347,13 +339,32 @@ export function CheckVpcProps(propsObject: VpcProps | any) {
   }
 }
 
+export interface LambdaProps {
+  readonly existingLambdaObj?: lambda.Function,
+  readonly lambdaFunctionProps?: lambda.FunctionProps,
+}
+
+export function CheckLambdaProps(propsObject: LambdaProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingLambdaObj && propsObject.lambdaFunctionProps) {
+    errorMessages += 'Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}
+
 // export interface DynamoDBProps {
 // }
-
+//
 // export function CheckDynamoDBProps(propsObject: GlueProps | any) {
 //   let errorMessages = '';
 //   let errorFound = false;
-
+//
 //   if (errorFound) {
 //     throw new Error(errorMessages);
 //   }

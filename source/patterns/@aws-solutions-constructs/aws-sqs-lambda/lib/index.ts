@@ -113,6 +113,7 @@ export class SqsToLambda extends Construct {
       super(scope, id);
       defaults.CheckProps(props);
       defaults.CheckSqsProps(props);
+      defaults.CheckLambdaProps(props);
 
       // Setup the Lambda function
       this.lambdaFunction = defaults.buildLambdaFunction(this, {

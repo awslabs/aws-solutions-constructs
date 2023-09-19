@@ -134,6 +134,7 @@ export class LambdaToSqs extends Construct {
       defaults.CheckProps(props);
       defaults.CheckSqsProps(props);
       defaults.CheckVpcProps(props);
+      defaults.CheckLambdaProps(props);
 
       if (props.deployVpc || props.existingVpc) {
         this.vpc = defaults.buildVpc(scope, {

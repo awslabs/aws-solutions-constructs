@@ -16,7 +16,7 @@ import { RemovalPolicy, Stack } from "aws-cdk-lib";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import * as ec2 from "aws-cdk-lib/aws-ec2";
-import { LambdaToSecretsmanager } from '../lib';
+import { LambdaToSecretsmanager, LambdaToSecretsmanagerProps } from '../lib';
 import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from "@aws-solutions-constructs/core";
 
@@ -394,4 +394,28 @@ test('Test overriding secretProps to pass a customer provided CMK', () => {
     Description: "secret-key",
     EnableKeyRotation: true
   });
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: LambdaToSecretsmanagerProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new LambdaToSecretsmanager(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

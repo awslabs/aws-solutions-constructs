@@ -93,6 +93,7 @@ export class LambdaToDynamoDB extends Construct {
     defaults.CheckProps(props);
     defaults.CheckDynamoDBProps(props);
     defaults.CheckVpcProps(props);
+    defaults.CheckLambdaProps(props);
 
     // Other permissions for constructs are accepted as arrays, turning tablePermissions into
     // an array to use the same validation function.

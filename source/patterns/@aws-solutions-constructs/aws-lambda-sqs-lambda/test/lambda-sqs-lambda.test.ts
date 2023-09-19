@@ -626,3 +626,31 @@ test('Confirm CheckSqsProps is being called', () => {
   };
   expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });
+
+test('Confirm CheckLambdaProps is being called', () => {
+  const stack = new Stack();
+  const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
+    runtime: lambda.Runtime.NODEJS_18_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: LambdaToSqsToLambdaProps = {
+    existingProducerLambdaObj: existingLambdaObj,
+    producerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    consumerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+  };
+
+  const app = () => {
+    new LambdaToSqsToLambda(stack, 'test-lambda-sqs-lambda', props);
+  };
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});

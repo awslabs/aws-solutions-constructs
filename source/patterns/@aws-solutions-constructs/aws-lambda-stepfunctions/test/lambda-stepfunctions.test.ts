@@ -17,7 +17,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as defaults from '@aws-solutions-constructs/core';
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import * as ec2 from "aws-cdk-lib/aws-ec2";
-import { LambdaToStepfunctions } from '../lib';
+import { LambdaToStepfunctions, LambdaToStepfunctionsProps } from '../lib';
 import { Template } from "aws-cdk-lib/assertions";
 
 test('Test deployment with new Lambda function', () => {
@@ -439,4 +439,32 @@ test("Confirm CheckVpcProps is called", () => {
   };
   // Assertion
   expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const startState = new stepfunctions.Pass(stack, 'StartState');
+  const props: LambdaToStepfunctionsProps = {
+    stateMachineProps: {
+      definition: startState
+    },
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new LambdaToStepfunctions(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

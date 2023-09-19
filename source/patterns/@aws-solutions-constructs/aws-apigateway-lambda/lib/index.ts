@@ -70,6 +70,7 @@ export class ApiGatewayToLambda extends Construct {
   constructor(scope: Construct, id: string, props: ApiGatewayToLambdaProps) {
     super(scope, id);
     defaults.CheckProps(props);
+    defaults.CheckLambdaProps(props);
 
     // Setup the Lambda function
     this.lambdaFunction = defaults.buildLambdaFunction(this, {

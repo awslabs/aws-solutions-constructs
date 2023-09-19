@@ -953,6 +953,40 @@ test('Test existingLoadBalancerObj and no existingVpc is an error', () => {
     /An existing ALB is already in a VPC, that VPC must be provided in props.existingVpc for the rest of the construct to use./);
 });
 
+test('Confirm that CheckLambdaProps is called', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+  const testExistingVpc = defaults.getTestVpc(stack);
+
+  const lambdaFunction = new lambda.Function(stack, 'existing-function', {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    functionName: 'name',
+    vpc: testExistingVpc
+  });
+
+  const props: AlbToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler'
+    },
+    existingLambdaObj: lambdaFunction,
+    listenerProps: {
+      certificates: [defaults.getFakeCertificate(stack, "fake-cert")]
+    },
+    publicApi: false,
+    existingVpc: testExistingVpc,
+  };
+  const app = () => {
+    new AlbToLambda(stack, 'new-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});
+
 test('Confirm that CheckVpcProps is called', () => {
   const stack = new cdk.Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
