@@ -219,6 +219,16 @@ export function CheckAlbProps(props: any) {
   let errorMessages = '';
   let errorFound = false;
 
+  if (props.loadBalancerProps && props.existingLoadBalancerObj) {
+    errorMessages += 'Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if ((props?.logAlbAccessLogs === false) && (props.albLoggingBucketProps)) {
+    errorMessages += 'Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n';
+    errorFound = true;
+  }
+
   if (props.listenerProps?.certificateArns) {
     errorMessages += "certificateArns is deprecated. Please supply certificates using props.listenerProps.certificates\n";
     errorFound = true;

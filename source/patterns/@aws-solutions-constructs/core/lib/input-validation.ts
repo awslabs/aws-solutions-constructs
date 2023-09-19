@@ -23,7 +23,6 @@ import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
-import * as elb from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as glue from 'aws-cdk-lib/aws-glue';
 import * as sagemaker from 'aws-cdk-lib/aws-sagemaker';
@@ -49,12 +48,6 @@ export interface VerifiedProps {
   readonly encryptionKey?: kms.Key,
   readonly encryptionKeyProps?: kms.KeyProps
 
-  readonly loadBalancerProps?: elb.ApplicationLoadBalancerProps;
-  readonly existingLoadBalancerObj?: elb.ApplicationLoadBalancer;
-
-  readonly logAlbAccessLogs?: boolean;
-  readonly albLoggingBucketProps?: s3.BucketProps;
-
   readonly insertHttpSecurityHeaders?: boolean;
   readonly responseHeadersPolicyProps?: ResponseHeadersPolicyProps;
   readonly openSearchDomainProps?: opensearch.CfnDomainProps;
@@ -67,16 +60,6 @@ export interface VerifiedProps {
 export function CheckProps(propsObject: VerifiedProps | any) {
   let errorMessages = '';
   let errorFound = false;
-
-  if (propsObject.loadBalancerProps && propsObject.existingLoadBalancerObj) {
-    errorMessages += 'Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n';
-    errorFound = true;
-  }
-
-  if ((propsObject?.logAlbAccessLogs === false) && (propsObject.albLoggingBucketProps)) {
-    errorMessages += 'Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n';
-    errorFound = true;
-  }
 
   if (propsObject.existingStreamObj && propsObject.kinesisStreamProps) {
     errorMessages += 'Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n';
@@ -357,18 +340,6 @@ export function CheckLambdaProps(propsObject: LambdaProps | any) {
     throw new Error(errorMessages);
   }
 }
-
-// export interface DynamoDBProps {
-// }
-//
-// export function CheckDynamoDBProps(propsObject: GlueProps | any) {
-//   let errorMessages = '';
-//   let errorFound = false;
-//
-//   if (errorFound) {
-//     throw new Error(errorMessages);
-//   }
-// }
 
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.

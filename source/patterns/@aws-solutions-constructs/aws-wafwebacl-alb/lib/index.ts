@@ -54,6 +54,7 @@ export class WafwebaclToAlb extends Construct {
   constructor(scope: Construct, id: string, props: WafwebaclToAlbProps) {
     super(scope, id);
     defaults.CheckProps(props);
+    // CheckAlbProps() not called because this only accepts and existing Load Balancer
 
     // Build the Web ACL
     this.webacl = defaults.buildWebacl(this, 'REGIONAL', {

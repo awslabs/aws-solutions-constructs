@@ -1011,3 +1011,42 @@ test('Confirm that CheckVpcProps is called', () => {
   // Assertion
   expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
+
+test('Confirm that CheckAlbProps is called', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+  const testName = 'test-value';
+
+  const existingVpc = defaults.getTestVpc(stack);
+
+  const existingAlb = new elb.ApplicationLoadBalancer(stack, 'test-alb', {
+    vpc: existingVpc,
+    internetFacing: true,
+    loadBalancerName: testName,
+  });
+
+  const props: AlbToLambdaProps = {
+    existingVpc,
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler'
+    },
+    listenerProps: {
+      certificates: [defaults.getFakeCertificate(stack, "fake-cert")]
+    },
+    publicApi: false,
+    vpcProps: {},
+    loadBalancerProps: {
+      loadBalancerName: 'new-loadbalancer',
+      internetFacing: true,
+    },
+    existingLoadBalancerObj: existingAlb,
+  };
+  const app = () => {
+    new AlbToLambda(stack, 'new-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n');
+});
