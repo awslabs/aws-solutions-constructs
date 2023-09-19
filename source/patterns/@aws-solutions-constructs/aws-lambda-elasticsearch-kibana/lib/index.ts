@@ -109,6 +109,7 @@ export class LambdaToElasticSearchAndKibana extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
     defaults.CheckVpcProps(props);
+    defaults.CheckLambdaProps(props);
 
     if (props.vpcProps && !props.deployVpc) {
       throw new Error("Error - deployVpc must be true when defining vpcProps");

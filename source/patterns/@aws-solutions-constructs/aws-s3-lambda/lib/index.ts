@@ -91,6 +91,7 @@ export class S3ToLambda extends Construct {
 
     defaults.CheckProps(props);
     defaults.CheckS3Props(props);
+    defaults.CheckLambdaProps(props);
 
     let bucket: s3.Bucket;
 

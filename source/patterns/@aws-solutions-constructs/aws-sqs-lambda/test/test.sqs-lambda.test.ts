@@ -65,7 +65,7 @@ test('Test getter methods', () => {
     maxReceiveCount: 0,
     queueProps: {}
   };
-  const app = new SqsToLambda(stack, 'test-apigateway-lambda', props);
+  const app = new SqsToLambda(stack, 'sqs-lambda', props);
   // Assertion 1
   expect(app.lambdaFunction !== null);
   // Assertion 2
@@ -285,4 +285,28 @@ test('Confirm CheckSqsProps is called', () => {
     new SqsToLambda(stack, 'test-apigateway-lambda', props);
   };
   expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: SqsToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new SqsToLambda(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

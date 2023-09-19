@@ -58,6 +58,7 @@ export class IotToLambda extends Construct {
   constructor(scope: Construct, id: string, props: IotToLambdaProps) {
     super(scope, id);
     defaults.CheckProps(props);
+    defaults.CheckLambdaProps(props);
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,

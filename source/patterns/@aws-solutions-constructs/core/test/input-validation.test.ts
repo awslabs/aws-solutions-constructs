@@ -70,10 +70,13 @@ test('Test fail DynamoDB table check (for interface)', () => {
   expect(app).toThrowError('Error - Either provide existingTableInterface or dynamoTableProps, but not both.\n');
 });
 
+// ---------------------------
+// Lambda Prop Tests
+// ---------------------------
 test("Test fail Lambda function check", () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.LambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       runtime: lambda.Runtime.NODEJS_16_X,
@@ -87,7 +90,7 @@ test("Test fail Lambda function check", () => {
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckLambdaProps(props);
   };
 
   // Assertion
@@ -95,6 +98,7 @@ test("Test fail Lambda function check", () => {
     "Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n"
   );
 });
+// ---------------------------
 
 // ---------------------------
 // DynamoDB Prop Tests

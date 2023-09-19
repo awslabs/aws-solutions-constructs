@@ -99,6 +99,7 @@ export class LambdaToStepfunctions extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
     defaults.CheckVpcProps(props);
+    defaults.CheckLambdaProps(props);
 
     // Setup vpc
     if (props.deployVpc || props.existingVpc) {

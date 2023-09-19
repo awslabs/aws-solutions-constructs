@@ -164,6 +164,9 @@ export class OpenApiGatewayToLambda extends Construct {
     let lambdaCounter = 0;
 
     this.apiLambdaFunctions = props.apiIntegrations.map(apiIntegration => {
+      if (apiIntegration.existingLambdaObj && apiIntegration.lambdaFunctionProps) {
+        throw new Error(`Error - Cannot provide both lambdaFunctionProps and existingLambdaObj in an ApiIntegrationfor the api integration with id: ${apiIntegration.id}`);
+      }
       if (apiIntegration.existingLambdaObj || apiIntegration.lambdaFunctionProps) {
         return {
           id: apiIntegration.id,

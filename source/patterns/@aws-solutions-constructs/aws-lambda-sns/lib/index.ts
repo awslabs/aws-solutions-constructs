@@ -116,6 +116,7 @@ export class LambdaToSns extends Construct {
       defaults.CheckProps(props);
       defaults.CheckSnsProps(props);
       defaults.CheckVpcProps(props);
+      defaults.CheckLambdaProps(props);
 
       if (props.deployVpc || props.existingVpc) {
         this.vpc = defaults.buildVpc(scope, {

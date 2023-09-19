@@ -124,6 +124,7 @@ export class AlbToLambda extends Construct {
     defaults.CheckProps(props);
     defaults.CheckAlbProps(props);
     defaults.CheckVpcProps(props);
+    defaults.CheckLambdaProps(props);
 
     // Obtain VPC for construct (existing or created)
     this.vpc = defaults.buildVpc(scope, {
