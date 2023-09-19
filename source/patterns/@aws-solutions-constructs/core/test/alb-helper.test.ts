@@ -549,6 +549,54 @@ test('Test sending listenerProps to existingListener error', () => {
   expect(app).toThrowError("This load balancer already has a listener, listenerProps may not be specified\n");
 });
 
+test('Test sending loadBalancerProps and existingLoadBalancerObj is an error', () => {
+  const stack = new Stack();
+
+  const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
+  });
+
+  const existingLoadBalancer = new elb.ApplicationLoadBalancer(stack, 'load-balancer', {
+    vpc,
+    internetFacing: true,
+    loadBalancerName: 'unique-name'
+  });
+
+  const props = {
+    vpc,
+    existingLoadBalancerObj: existingLoadBalancer,
+    loadBalancerProps: {
+      loadBalancerName: 'new-loadbalancer',
+      vpc,
+      internetFacing: true
+    }
+  };
+
+  const app = () => {
+    defaults.CheckAlbProps(props);
+  };
+
+  expect(app).toThrowError("Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n");
+});
+
+test('Test sending albLoggingBucketProps when logAlbAccessLogs is false is an error', () => {
+
+  const props = {
+    logAlbAccessLogs: false,
+    albLoggingBucketProps: {},
+    loadBalancerProps: {
+      loadBalancerName: 'new-loadbalancer',
+      internetFacing: true
+    }
+  };
+
+  const app = () => {
+    defaults.CheckAlbProps(props);
+  };
+
+  expect(app).toThrowError("Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n");
+});
+
 test('Test sending VPC in loadBalancerProps error', () => {
   const props = {
     loadBalancerProps: {

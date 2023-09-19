@@ -101,7 +101,7 @@ test("Test fail Lambda function check", () => {
 // ---------------------------
 
 // ---------------------------
-// DynamoDB Prop Tests
+// SQS Prop Tests
 // ---------------------------
 test("Test fail SQS Queue check", () => {
   const stack = new Stack();
@@ -547,7 +547,7 @@ test('Test fail encryption key check', () => {
 });
 
 // ---------------------------
-// S3 Prop Tests
+// VPC Prop Tests
 // ---------------------------
 test('Test fail Vpc check with deployVpc', () => {
   const stack = new Stack();
