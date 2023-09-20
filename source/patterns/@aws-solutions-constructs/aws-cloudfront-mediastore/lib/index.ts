@@ -88,6 +88,7 @@ export class CloudFrontToMediaStore extends Construct {
   constructor(scope: Construct, id: string, props: CloudFrontToMediaStoreProps) {
     super(scope, id);
     defaults.CheckProps(props);
+    defaults.CheckMediaStoreProps(props);
 
     let cloudFrontDistributionProps = props.cloudFrontDistributionProps;
 

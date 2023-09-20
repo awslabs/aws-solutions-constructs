@@ -701,3 +701,21 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
 
   expect(app).toThrowError();
 });
+
+test('Confirm CheckMediaStoreProps is called', () => {
+  const stack = new Stack();
+
+  const mediaStoreContainer = new mediastore.CfnContainer(stack, 'MyMediaStoreContainer', {
+    containerName: 'MyMediaStoreContainer'
+  });
+  const props =  {
+    existingMediaStoreContainerObj: mediaStoreContainer,
+    mediaStoreContainerProps: { containerName: 'test' }
+  };
+
+  const app = () => {
+    new CloudFrontToMediaStore(stack, 'cloudfront-s3', props);
+  };
+
+  expect(app).toThrowError('Error - Either provide mediaStoreContainerProps or existingMediaStoreContainerObj, but not both.\n');
+});

@@ -144,21 +144,10 @@ export class OpenApiGatewayToLambda extends Construct {
 
   constructor(scope: Construct, id: string, props: OpenApiGatewayToLambdaProps) {
     super(scope, id);
-
-    if (props.apiDefinitionAsset && (props.apiDefinitionBucket || props.apiDefinitionKey)) {
-      throw new Error('Either apiDefinitionBucket/apiDefinitionKey or apiDefinitionAsset must be specified, but not both');
-    }
+    CheckOpenapiProps(props);
 
     const apiDefinitionBucket = props.apiDefinitionBucket ?? props.apiDefinitionAsset?.bucket;
     const apiDefinitionKey = props.apiDefinitionKey ?? props.apiDefinitionAsset?.s3ObjectKey;
-
-    if (apiDefinitionBucket === undefined || apiDefinitionKey === undefined) {
-      throw new Error('Either apiDefinitionBucket/apiDefinitionKey or apiDefinitionAsset must be specified');
-    }
-
-    if (props.apiIntegrations === undefined || props.apiIntegrations.length < 1) {
-      throw new Error('At least one ApiIntegration must be specified in the apiIntegrations property');
-    }
 
     // store a counter to be able to uniquely name lambda functions to avoid naming collisions
     let lambdaCounter = 0;
@@ -196,8 +185,9 @@ export class OpenApiGatewayToLambda extends Construct {
 
     // This custom resource will overwrite the string placeholders in the openapi definition with the resolved values of the lambda URIs
     const apiDefinitionWriter = resources.createTemplateWriterCustomResource(this, 'Api', {
-      templateBucket: apiDefinitionBucket,
-      templateKey: apiDefinitionKey,
+      // CheckAlbProps() has confirmed the existence of these values
+      templateBucket: apiDefinitionBucket!,
+      templateKey: apiDefinitionKey!,
       templateValues: apiIntegrationUris,
       timeout: props.internalTransformTimeout ?? cdk.Duration.minutes(1),
       memorySize: props.internalTransformMemorySize ?? 1024
@@ -228,4 +218,33 @@ export class OpenApiGatewayToLambda extends Construct {
       });
     });
   }
+}
+
+function CheckOpenapiProps(props: OpenApiGatewayToLambdaProps) {
+
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (props.apiDefinitionAsset && (props.apiDefinitionBucket || props.apiDefinitionKey)) {
+    errorMessages += 'Either apiDefinitionBucket/apiDefinitionKey or apiDefinitionAsset must be specified, but not both\n';
+    errorFound = true;
+  }
+
+  const apiDefinitionBucket = props.apiDefinitionBucket ?? props.apiDefinitionAsset?.bucket;
+  const apiDefinitionKey = props.apiDefinitionKey ?? props.apiDefinitionAsset?.s3ObjectKey;
+
+  if (apiDefinitionBucket === undefined || apiDefinitionKey === undefined) {
+    errorMessages += 'Either apiDefinitionBucket/apiDefinitionKey or apiDefinitionAsset must be specified\n';
+    errorFound = true;
+  }
+
+  if (props.apiIntegrations === undefined || props.apiIntegrations.length < 1) {
+    errorMessages += 'At least one ApiIntegration must be specified in the apiIntegrations property\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+
 }

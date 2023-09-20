@@ -256,13 +256,13 @@ test("Test fail MediaStore container check", () => {
     MediaStoreContainerProps()
   );
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.MediaStoreProps = {
     mediaStoreContainerProps: MediaStoreContainerProps(),
     existingMediaStoreContainerObj: mediaStoreContainer,
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckMediaStoreProps(props);
   };
 
   // Assertion
@@ -495,7 +495,7 @@ test('Test fail SageMaker endpoint check', () => {
 
   const buildSagemakerEndpointResponse = BuildSagemakerEndpoint(stack, { modelProps });
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.SagemakerProps = {
     existingSagemakerEndpointObj: buildSagemakerEndpointResponse.endpoint,
     endpointProps: {
       endpointConfigName: 'placeholder'
@@ -503,7 +503,7 @@ test('Test fail SageMaker endpoint check', () => {
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckSagemakerProps(props);
   };
 
   // Assertion
@@ -552,7 +552,7 @@ test('Test fail encryption key check', () => {
 test('Test fail Vpc check with deployVpc', () => {
   const stack = new Stack();
 
-  const props: defaults.VpcProps = {
+  const props: defaults.VpcPropsSet = {
     deployVpc: true,
     existingVpc: defaults.buildVpc(stack, {
       defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
@@ -570,7 +570,7 @@ test('Test fail Vpc check with deployVpc', () => {
 test('Test fail Vpc check with vpcProps', () => {
   const stack = new Stack();
 
-  const props: defaults.VpcProps = {
+  const props: defaults.VpcPropsSet = {
     vpcProps: defaults.DefaultPublicPrivateVpcProps(),
     existingVpc: defaults.buildVpc(stack, {
       defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
