@@ -622,3 +622,31 @@ test('Confirm call to CheckLambdaProps', () => {
   // Assertion
   expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });
+
+test('Confirm call to CheckSagemakerProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const deploySagemakerEndpointResponse = defaults.deploySagemakerEndpoint(stack, {
+    modelProps: {
+      primaryContainer: {
+        image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
+        modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
+      },
+    },
+  });
+
+  const props: LambdaToSagemakerEndpointProps = {
+    existingSagemakerEndpointObj: deploySagemakerEndpointResponse.endpoint,
+    endpointProps: { endpointConfigName: 'test' },
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+  };
+  const app = () => {
+    new LambdaToSagemakerEndpoint(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide endpointProps or existingSagemakerEndpointObj, but not both.\n');
+});

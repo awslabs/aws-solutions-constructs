@@ -36,12 +36,6 @@ export interface VerifiedProps {
   readonly existingStreamObj?: kinesis.Stream;
   readonly kinesisStreamProps?: kinesis.StreamProps,
 
-  readonly existingMediaStoreContainerObj?: mediastore.CfnContainer;
-  readonly mediaStoreContainerProps?: mediastore.CfnContainerProps;
-
-  readonly existingSagemakerEndpointObj?: sagemaker.CfnEndpoint,
-  readonly endpointProps?: sagemaker.CfnEndpointProps,
-
   readonly existingSecretObj?: secretsmanager.Secret;
   readonly secretProps?: secretsmanager.SecretProps;
 
@@ -63,16 +57,6 @@ export function CheckProps(propsObject: VerifiedProps | any) {
 
   if (propsObject.existingStreamObj && propsObject.kinesisStreamProps) {
     errorMessages += 'Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.existingMediaStoreContainerObj && propsObject.mediaStoreContainerProps) {
-    errorMessages += 'Error - Either provide mediaStoreContainerProps or existingMediaStoreContainerObj, but not both.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.existingSagemakerEndpointObj && propsObject.endpointProps) {
-    errorMessages += 'Error - Either provide endpointProps or existingSagemakerEndpointObj, but not both.\n';
     errorFound = true;
   }
 
@@ -301,14 +285,14 @@ export function CheckS3Props(propsObject: S3Props | any) {
   }
 }
 
-export interface VpcProps {
+export interface VpcPropsSet {
   readonly existingVpc?: ec2.IVpc;
   readonly vpcProps?: ec2.VpcProps;
   readonly deployVpc?: boolean;
 
 }
 
-export function CheckVpcProps(propsObject: VpcProps | any) {
+export function CheckVpcProps(propsObject: VpcPropsSet | any) {
   let errorMessages = '';
   let errorFound = false;
 
@@ -333,6 +317,44 @@ export function CheckLambdaProps(propsObject: LambdaProps | any) {
 
   if (propsObject.existingLambdaObj && propsObject.lambdaFunctionProps) {
     errorMessages += 'Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}
+
+export interface MediaStoreProps {
+  readonly existingMediaStoreContainerObj?: mediastore.CfnContainer;
+  readonly mediaStoreContainerProps?: mediastore.CfnContainerProps;
+}
+
+export function CheckMediaStoreProps(propsObject: MediaStoreProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingMediaStoreContainerObj && propsObject.mediaStoreContainerProps) {
+    errorMessages += 'Error - Either provide mediaStoreContainerProps or existingMediaStoreContainerObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}
+
+export interface SagemakerProps {
+  readonly existingSagemakerEndpointObj?: sagemaker.CfnEndpoint,
+  readonly endpointProps?: sagemaker.CfnEndpointProps,
+}
+
+export function CheckSagemakerProps(propsObject: SagemakerProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingSagemakerEndpointObj && propsObject.endpointProps) {
+    errorMessages += 'Error - Either provide endpointProps or existingSagemakerEndpointObj, but not both.\n';
     errorFound = true;
   }
 

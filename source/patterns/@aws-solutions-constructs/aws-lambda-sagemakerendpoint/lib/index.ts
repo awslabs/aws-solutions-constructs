@@ -108,6 +108,7 @@ export class LambdaToSagemakerEndpoint extends Construct {
     defaults.CheckProps(props);
     defaults.CheckVpcProps(props);
     defaults.CheckLambdaProps(props);
+    defaults.CheckSagemakerProps(props);
 
     if (props.deployVpc || props.existingVpc) {
 

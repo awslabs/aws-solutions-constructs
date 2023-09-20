@@ -234,12 +234,7 @@ export function CheckAlbProps(props: any) {
     errorFound = true;
   }
 
-  if (
-    ((props.existingLoadBalancerObj &&
-      props.existingLoadBalancerObj.listeners.length === 0) ||
-      !props.existingLoadBalancerObj) &&
-    !props.listenerProps
-  ) {
+  if (ValidateAddListenerProps(props)) {
     errorMessages += "When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP\n";
     errorFound = true;
   }
@@ -282,4 +277,15 @@ export function CheckAlbProps(props: any) {
   if (errorFound) {
     throw new Error(errorMessages);
   }
+
+}
+
+function ValidateAddListenerProps(props: any) {
+  if (((props.existingLoadBalancerObj &&
+    props.existingLoadBalancerObj.listeners.length === 0) ||
+    !props.existingLoadBalancerObj) &&
+  !props.listenerProps) {
+    return true;
+  }
+  return false;
 }
