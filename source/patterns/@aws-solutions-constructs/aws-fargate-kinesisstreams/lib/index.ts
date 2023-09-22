@@ -153,6 +153,7 @@ export class FargateToKinesisStreams extends Construct {
       defaults.CheckProps(props);
       defaults.CheckFargateProps(props);
       defaults.CheckVpcProps(props);
+      defaults.CheckKinesisStreamProps(props);
 
       // Setup the VPC
       this.vpc = defaults.buildVpc(scope, {

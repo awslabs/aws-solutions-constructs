@@ -96,6 +96,7 @@ export class KinesisStreamsToLambda extends Construct {
       super(scope, id);
       defaults.CheckProps(props);
       defaults.CheckLambdaProps(props);
+      defaults.CheckKinesisStreamProps(props);
 
       // Setup the Kinesis Stream
       this.kinesisStream = defaults.buildKinesisStream(this, {

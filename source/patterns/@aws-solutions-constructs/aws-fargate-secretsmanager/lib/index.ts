@@ -137,6 +137,7 @@ export class FargateToSecretsmanager extends Construct {
     defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
     defaults.CheckVpcProps(props);
+    defaults.CheckSecretsManagerProps(props);
 
     // Other permissions for constructs are accepted as arrays, turning grantWriteAccess into
     // an array to use the same validation function.

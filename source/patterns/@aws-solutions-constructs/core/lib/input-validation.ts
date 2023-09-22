@@ -18,6 +18,7 @@
 
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
+import * as events from 'aws-cdk-lib/aws-events';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as mediastore from 'aws-cdk-lib/aws-mediastore';
@@ -28,23 +29,15 @@ import * as glue from 'aws-cdk-lib/aws-glue';
 import * as sagemaker from 'aws-cdk-lib/aws-sagemaker';
 import * as secretsmanager from "aws-cdk-lib/aws-secretsmanager";
 import * as kms from "aws-cdk-lib/aws-kms";
+import * as waf from "aws-cdk-lib/aws-waf";
 import { ResponseHeadersPolicyProps } from "aws-cdk-lib/aws-cloudfront";
 import * as opensearch from "aws-cdk-lib/aws-opensearchservice";
 import * as s3assets from "aws-cdk-lib/aws-s3-assets";
 
 export interface VerifiedProps {
-  readonly existingStreamObj?: kinesis.Stream;
-  readonly kinesisStreamProps?: kinesis.StreamProps,
-
-  readonly existingSecretObj?: secretsmanager.Secret;
-  readonly secretProps?: secretsmanager.SecretProps;
 
   readonly encryptionKey?: kms.Key,
   readonly encryptionKeyProps?: kms.KeyProps
-
-  readonly insertHttpSecurityHeaders?: boolean;
-  readonly responseHeadersPolicyProps?: ResponseHeadersPolicyProps;
-  readonly openSearchDomainProps?: opensearch.CfnDomainProps;
 
 }
 
@@ -55,39 +48,8 @@ export function CheckProps(propsObject: VerifiedProps | any) {
   let errorMessages = '';
   let errorFound = false;
 
-  if (propsObject.existingStreamObj && propsObject.kinesisStreamProps) {
-    errorMessages += 'Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.existingSecretObj && propsObject.secretProps) {
-    errorMessages += 'Error - Either provide secretProps or existingSecretObj, but not both.\n';
-    errorFound = true;
-  }
-
   if (propsObject.encryptionKey && propsObject.encryptionKeyProps) {
     errorMessages += 'Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.existingEventBusInterface && propsObject.eventBusProps) {
-    errorMessages += 'Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.existingWebaclObj && propsObject.webaclProps) {
-    errorMessages += 'Error - Either provide existingWebaclObj or webaclProps, but not both.\n';
-    errorFound = true;
-  }
-
-  if (propsObject.insertHttpSecurityHeaders !== false && propsObject.responseHeadersPolicyProps?.securityHeadersBehavior) {
-    errorMessages += 'responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.';
-    errorFound = true;
-  }
-
-  if (propsObject.openSearchDomainProps?.vpcOptions) {
-    errorMessages += "Error - Define VPC using construct parameters not the OpenSearch Service props\n";
-    errorFound = true;
   }
 
   if (errorFound) {
@@ -194,6 +156,11 @@ export function CheckSnsProps(propsObject: SnsProps | any) {
     errorFound = true;
   }
 
+  if (propsObject.encryptionKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
   if (errorFound) {
     throw new Error(errorMessages);
   }
@@ -224,6 +191,11 @@ export function CheckSqsProps(propsObject: SqsProps | any) {
 
   if (propsObject.queueProps?.encryptionMasterKey && propsObject.encryptionKeyProps) {
     errorMessages += 'Error - Either provide queueProps.encryptionMasterKey or encryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.encryptionKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n';
     errorFound = true;
   }
 
@@ -289,7 +261,6 @@ export interface VpcPropsSet {
   readonly existingVpc?: ec2.IVpc;
   readonly vpcProps?: ec2.VpcProps;
   readonly deployVpc?: boolean;
-
 }
 
 export function CheckVpcProps(propsObject: VpcPropsSet | any) {
@@ -355,6 +326,119 @@ export function CheckSagemakerProps(propsObject: SagemakerProps | any) {
 
   if (propsObject.existingSagemakerEndpointObj && propsObject.endpointProps) {
     errorMessages += 'Error - Either provide endpointProps or existingSagemakerEndpointObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}
+
+export interface SecretsManagerProps {
+  readonly existingSecretObj?: secretsmanager.Secret;
+  readonly secretProps?: secretsmanager.SecretProps;
+}
+
+export function CheckSecretsManagerProps(propsObject: SecretsManagerProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingSecretObj && propsObject.secretProps) {
+    errorMessages += 'Error - Either provide secretProps or existingSecretObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}
+
+export interface KinesisStreamProps {
+  readonly existingStreamObj?: kinesis.Stream;
+  readonly kinesisStreamProps?: kinesis.StreamProps,
+}
+
+export function CheckKinesisStreamProps(propsObject: KinesisStreamProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingStreamObj && propsObject.kinesisStreamProps) {
+    errorMessages += 'Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}
+
+export interface OpenSearchProps {
+  readonly openSearchDomainProps?: opensearch.CfnDomainProps;
+}
+
+export function CheckOpenSearchProps(propsObject: OpenSearchProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.openSearchDomainProps?.vpcOptions) {
+    errorMessages += "Error - Define VPC using construct parameters not the OpenSearch Service props\n";
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}
+
+export interface CloudFrontProps {
+  readonly insertHttpSecurityHeaders?: boolean;
+  readonly responseHeadersPolicyProps?: ResponseHeadersPolicyProps;
+}
+
+export function CheckCloudFrontProps(propsObject: CloudFrontProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.insertHttpSecurityHeaders !== false && propsObject.responseHeadersPolicyProps?.securityHeadersBehavior) {
+    errorMessages += 'responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}
+
+export interface EventBridgeProps {
+  readonly existingEventBusInterface: events.IEventBus,
+  readonly eventBusProps: events.EventBusProps
+}
+
+export function CheckEventBridgeProps(propsObject: EventBridgeProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingEventBusInterface && propsObject.eventBusProps) {
+    errorMessages += 'Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}
+
+export interface WafWebAclProps {
+  readonly existingWebaclObj: waf.CfnWebACL,
+  readonly webaclProps:	waf.CfnWebACLProps,
+}
+
+export function CheckWafWebAclProps(propsObject: WafWebAclProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingWebaclObj && propsObject.webaclProps) {
+    errorMessages += 'Error - Either provide existingWebaclObj or webaclProps, but not both.\n';
     errorFound = true;
   }
 

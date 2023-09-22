@@ -106,6 +106,7 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
     defaults.CheckLambdaProps(props);
+    // CheckCloudFrontProps() is called by internal aws-cloudfront-apigateway construct
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,

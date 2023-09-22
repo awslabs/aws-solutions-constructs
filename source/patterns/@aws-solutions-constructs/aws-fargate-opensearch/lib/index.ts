@@ -148,6 +148,7 @@ export class FargateToOpenSearch extends Construct {
     defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
     defaults.CheckVpcProps(props);
+    defaults.CheckOpenSearchProps(props);
 
     this.vpc = defaults.buildVpc(scope, {
       existingVpc: props.existingVpc,

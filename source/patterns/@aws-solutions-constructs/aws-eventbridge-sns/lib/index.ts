@@ -89,6 +89,7 @@ export class EventbridgeToSns extends Construct {
       super(scope, id);
       defaults.CheckProps(props);
       defaults.CheckSnsProps(props);
+      defaults.CheckEventBridgeProps(props);
 
       let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
       if (props.enableEncryptionWithCustomerManagedKey === undefined ||

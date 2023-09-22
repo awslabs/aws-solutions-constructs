@@ -80,6 +80,7 @@ export class CloudFrontToApiGateway extends Construct {
   constructor(scope: Construct, id: string, props: CloudFrontToApiGatewayProps) {
     super(scope, id);
     defaults.CheckProps(props);
+    defaults.CheckCloudFrontProps(props);
 
     this.apiGateway = props.existingApiGatewayObj;
 

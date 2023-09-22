@@ -118,6 +118,8 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
     this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
     defaults.CheckProps(props);
+    defaults.CheckKinesisStreamProps(props);
+    // CheckS3Props() is called by the internal aws-kinesisfirehose-s3 construct
 
     // Setup the Kinesis Stream
     this.kinesisStream = defaults.buildKinesisStream(this, {

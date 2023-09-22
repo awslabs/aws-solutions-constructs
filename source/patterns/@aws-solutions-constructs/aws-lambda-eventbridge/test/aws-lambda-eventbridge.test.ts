@@ -140,7 +140,7 @@ test("Confirm CheckVpcProps is being called", () => {
   expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
-test("Test bad call with existingVpc and deployVpc", () => {
+test("Confirm CheckEventBridgeProps is called", () => {
   // Stack
   const stack = new Stack();
 
@@ -157,12 +157,9 @@ test("Test bad call with existingVpc and deployVpc", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing eventbus
-// --------------------------------------------------------------
 test('Test deployment w/ existing eventbus', () => {
   // Stack
   const stack = new Stack();
@@ -268,9 +265,6 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC", () => {
   // Stack
   const stack = new Stack();
@@ -335,10 +329,6 @@ test("Test minimal deployment with an existing VPC", () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC and existing Lambda function not in a VPC
-//
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC and existing Lambda function not in a VPC", () => {
   // Stack
   const stack = new Stack();
@@ -362,7 +352,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   };
 
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('A Lambda function must be bound to a VPC upon creation, it cannot be added to a VPC in a subsequent construct');
 
 });
 

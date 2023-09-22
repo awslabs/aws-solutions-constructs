@@ -98,6 +98,7 @@ export class LambdaToKinesisStreams extends Construct {
       defaults.CheckProps(props);
       defaults.CheckVpcProps(props);
       defaults.CheckLambdaProps(props);
+      defaults.CheckKinesisStreamProps(props);
 
       // Setup the VPC
       if (props.deployVpc || props.existingVpc) {

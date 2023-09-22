@@ -18,8 +18,10 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as events from 'aws-cdk-lib/aws-events';
 import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as waf from 'aws-cdk-lib/aws-waf';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import { Stack } from 'aws-cdk-lib';
@@ -278,13 +280,13 @@ test('Test fail Kinesis stream check', () => {
 
   });
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.KinesisStreamProps = {
     existingStreamObj: stream,
     kinesisStreamProps: {}
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckKinesisStreamProps(props);
   };
 
   // Assertion
@@ -513,13 +515,13 @@ test('Test fail SageMaker endpoint check', () => {
 test('Test fail Secret check', () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.SecretsManagerProps = {
     secretProps: {},
     existingSecretObj: defaults.buildSecretsManagerSecret(stack, 'secret', {}),
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckSecretsManagerProps(props);
   };
 
   // Assertion
@@ -666,6 +668,79 @@ test('Test successful CheckListValues', () => {
 
   // Assertion
   expect(app).not.toThrowError();
+});
+
+test('Test fail OpenSearch improper vpc specification', () => {
+
+  const props: defaults.OpenSearchProps = {
+    openSearchDomainProps: {
+      vpcOptions: {}
+    },
+  };
+
+  const app = () => {
+    defaults.CheckOpenSearchProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Define VPC using construct parameters not the OpenSearch Service props\n');
+});
+
+test('Test fail EventBridge bad bus props', () => {
+  const stack = new Stack();
+
+  const props: defaults.EventBridgeProps = {
+    existingEventBusInterface: new events.EventBus(stack, 'test', {}),
+    eventBusProps: {}
+  };
+
+  const app = () => {
+    defaults.CheckEventBridgeProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
+});
+
+test('Test CloudFront insertHttpHeaders bad props', () => {
+
+  const props: defaults.CloudFrontProps = {
+    insertHttpSecurityHeaders: true,
+    responseHeadersPolicyProps: {
+      securityHeadersBehavior: {}
+    }
+  };
+
+  const app = () => {
+    defaults.CheckCloudFrontProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
+});
+
+test('Test WebACL bad props', () => {
+  const stack = new Stack();
+
+  const props: defaults.WafWebAclProps = {
+    existingWebaclObj: new waf.CfnWebACL(stack, 'test',  {
+      name: 'testTwo',
+      metricName: 'metricTwo',
+      defaultAction: { type: 'ALLOW' }
+    }),
+    webaclProps: {
+      name: 'test',
+      metricName: 'metric',
+      defaultAction: { type: 'ALLOW' }
+    },
+  };
+
+  const app = () => {
+    defaults.CheckWafWebAclProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingWebaclObj or webaclProps, but not both.\n');
 });
 
 test('Test unsuccessful CheckListValues', () => {

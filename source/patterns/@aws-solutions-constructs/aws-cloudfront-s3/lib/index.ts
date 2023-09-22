@@ -113,6 +113,7 @@ export class CloudFrontToS3 extends Construct {
 
     defaults.CheckProps(props);
     defaults.CheckS3Props(props);
+    defaults.CheckCloudFrontProps(props);
 
     let bucket: s3.IBucket;
 

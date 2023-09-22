@@ -89,6 +89,7 @@ export class LambdaToEventbridge extends Construct {
     defaults.CheckProps(props);
     defaults.CheckVpcProps(props);
     defaults.CheckLambdaProps(props);
+    defaults.CheckEventBridgeProps(props);
 
     if (props.deployVpc || props.existingVpc) {
       this.vpc = defaults.buildVpc(scope, {

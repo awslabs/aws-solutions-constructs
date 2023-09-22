@@ -71,6 +71,7 @@ export class EventbridgeToLambda extends Construct {
     super(scope, id);
     defaults.CheckProps(props);
     defaults.CheckLambdaProps(props);
+    defaults.CheckEventBridgeProps(props);
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,

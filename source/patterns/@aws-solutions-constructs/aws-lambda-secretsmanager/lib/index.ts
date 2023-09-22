@@ -95,6 +95,7 @@ export class LambdaToSecretsmanager extends Construct {
       defaults.CheckProps(props);
       defaults.CheckVpcProps(props);
       defaults.CheckLambdaProps(props);
+      defaults.CheckSecretsManagerProps(props);
 
       if (props.deployVpc || props.existingVpc) {
 

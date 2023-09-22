@@ -275,7 +275,7 @@ test('Test the deployment with securityHeadersBehavior instead of HTTP security 
   expect(cloudFrontToS3.cloudFrontFunction).toEqual(undefined);
 });
 
-test("throw exception if insertHttpSecurityHeaders and responseHeadersPolicyProps are provided", () => {
+test("Confirm CheckCloudFrontProps is being called", () => {
   const {stack, api} = createApi();
 
   expect(() => {
@@ -293,5 +293,5 @@ test("throw exception if insertHttpSecurityHeaders and responseHeadersPolicyProp
         }
       }
     });
-  }).toThrowError();
+  }).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
 });
