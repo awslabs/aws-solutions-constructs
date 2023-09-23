@@ -24,7 +24,6 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
-import * as defaults from '@aws-solutions-constructs/core';
 
 /**
  * @summary The properties for the DynamoDBStreamsToLambdaToElastciSearchAndKibana Construct
