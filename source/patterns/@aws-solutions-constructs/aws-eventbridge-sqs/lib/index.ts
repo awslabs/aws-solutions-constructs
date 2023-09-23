@@ -116,7 +116,6 @@ export class EventbridgeToSqs extends Construct {
    */
   constructor(scope: Construct, id: string, props: EventbridgeToSqsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckSqsProps(props);
     defaults.CheckEventBridgeProps(props);
 

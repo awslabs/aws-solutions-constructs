@@ -550,3 +550,22 @@ export function createSagemakerEndpoint(
 
   return endpoint;
 }
+
+export interface SagemakerProps {
+  readonly existingSagemakerEndpointObj?: sagemaker.CfnEndpoint,
+  readonly endpointProps?: sagemaker.CfnEndpointProps,
+}
+
+export function CheckSagemakerProps(propsObject: SagemakerProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingSagemakerEndpointObj && propsObject.endpointProps) {
+    errorMessages += 'Error - Either provide endpointProps or existingSagemakerEndpointObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}

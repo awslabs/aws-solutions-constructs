@@ -271,3 +271,23 @@ export function retrievePrivateSubnetIds(vpc: ec2.IVpc) {
 
   return vpc.selectSubnets(subnetSelector).subnetIds;
 }
+
+export interface VpcPropsSet {
+  readonly existingVpc?: ec2.IVpc;
+  readonly vpcProps?: ec2.VpcProps;
+  readonly deployVpc?: boolean;
+}
+
+export function CheckVpcProps(propsObject: VpcPropsSet | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if ((propsObject.deployVpc || propsObject.vpcProps) && propsObject.existingVpc) {
+    errorMessages += 'Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}

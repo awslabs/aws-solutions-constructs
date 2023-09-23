@@ -92,7 +92,6 @@ export class LambdaToSecretsmanager extends Construct {
      */
     constructor(scope: Construct, id: string, props: LambdaToSecretsmanagerProps) {
       super(scope, id);
-      defaults.CheckProps(props);
       defaults.CheckVpcProps(props);
       defaults.CheckLambdaProps(props);
       defaults.CheckSecretsManagerProps(props);

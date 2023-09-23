@@ -103,8 +103,6 @@ export class Route53ToAlb extends Construct {
    */
   constructor(scope: Construct, id: string, props: Route53ToAlbProps) {
     super(scope, id);
-    defaults.CheckProps(props);
-
     // NOTE: We don't call CheckAlbProps() here, because this construct creates an ALB
     // with no listener or target, so some of those checks don't apply
     this.PropsCustomCheck(props);

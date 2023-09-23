@@ -125,7 +125,6 @@ export class FargateToKinesisFirehose extends Construct {
 
   constructor(scope: Construct, id: string, props: FargateToKinesisFirehoseProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
     defaults.CheckVpcProps(props);
 

@@ -121,7 +121,6 @@ export class AlbToLambda extends Construct {
 
   constructor(scope: Construct, id: string, props: AlbToLambdaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckAlbProps(props);
     defaults.CheckVpcProps(props);
     defaults.CheckLambdaProps(props);

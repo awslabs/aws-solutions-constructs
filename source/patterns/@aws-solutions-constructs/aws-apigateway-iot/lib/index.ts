@@ -82,7 +82,6 @@ export class ApiGatewayToIot extends Construct {
    */
   constructor(scope: Construct, id: string, props: ApiGatewayToIotProps) {
     super(scope, id);
-    defaults.CheckProps(props);
 
     // Assignment to local member variables to make these available to all member methods of the class.
     // (Split the string just in case user supplies fully qualified endpoint eg. ab123cdefghij4l-ats.iot.ap-south-1.amazonaws.com)

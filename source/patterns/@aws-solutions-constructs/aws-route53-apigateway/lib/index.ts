@@ -84,7 +84,6 @@ export class Route53ToApiGateway extends Construct {
    */
   constructor(scope: Construct, id: string, props: Route53ToApiGatewayProps) {
     super(scope, id);
-    defaults.CheckProps(props);
 
     this.certificate = props.existingCertificateInterface;
 

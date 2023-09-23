@@ -140,7 +140,6 @@ export class FargateToDynamoDB extends Construct {
 
   constructor(scope: Construct, id: string, props: FargateToDynamoDBProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
     defaults.CheckDynamoDBProps(props);
     defaults.CheckVpcProps(props);

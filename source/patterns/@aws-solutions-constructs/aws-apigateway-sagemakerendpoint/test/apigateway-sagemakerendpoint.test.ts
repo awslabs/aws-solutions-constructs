@@ -13,7 +13,8 @@
 
 // Imports
 import { Stack, Aws } from 'aws-cdk-lib';
-import { ApiGatewayToSageMakerEndpoint } from '../lib';
+import { ApiGatewayToSageMakerEndpoint, ApiGatewayToSageMakerEndpointProps } from '../lib';
+import * as defaults from '@aws-solutions-constructs/core';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Template } from 'aws-cdk-lib/assertions';
 

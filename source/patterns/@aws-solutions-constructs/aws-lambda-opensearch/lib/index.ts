@@ -107,7 +107,6 @@ export class LambdaToOpenSearch extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToOpenSearchProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckVpcProps(props);
     defaults.CheckLambdaProps(props);
     defaults.CheckOpenSearchProps(props);

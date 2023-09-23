@@ -131,7 +131,6 @@ export class LambdaToSqs extends Construct {
      */
     constructor(scope: Construct, id: string, props: LambdaToSqsProps) {
       super(scope, id);
-      defaults.CheckProps(props);
       defaults.CheckSqsProps(props);
       defaults.CheckVpcProps(props);
       defaults.CheckLambdaProps(props);

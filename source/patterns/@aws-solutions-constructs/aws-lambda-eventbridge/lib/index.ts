@@ -86,7 +86,6 @@ export class LambdaToEventbridge extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToEventbridgeProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckVpcProps(props);
     defaults.CheckLambdaProps(props);
     defaults.CheckEventBridgeProps(props);

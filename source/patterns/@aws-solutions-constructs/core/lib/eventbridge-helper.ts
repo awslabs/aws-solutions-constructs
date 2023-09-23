@@ -50,3 +50,22 @@ export function buildEventBus(scope: Construct, props: BuildEventBusProps): even
   // ESLint requires this return statement, so disabling SonarQube warning
   return; // NOSONAR
 }
+
+export interface EventBridgeProps {
+  readonly existingEventBusInterface: events.IEventBus,
+  readonly eventBusProps: events.EventBusProps
+}
+
+export function CheckEventBridgeProps(propsObject: EventBridgeProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingEventBusInterface && propsObject.eventBusProps) {
+    errorMessages += 'Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}

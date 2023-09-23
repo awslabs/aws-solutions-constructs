@@ -97,7 +97,6 @@ export class LambdaToStepfunctions extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToStepfunctionsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckVpcProps(props);
     defaults.CheckLambdaProps(props);
 

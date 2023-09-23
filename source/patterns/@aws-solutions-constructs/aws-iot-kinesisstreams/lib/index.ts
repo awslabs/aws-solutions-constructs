@@ -65,7 +65,6 @@ export class IotToKinesisStreams extends Construct {
    */
   constructor(scope: Construct, id: string, props: IotToKinesisStreamsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckKinesisStreamProps(props);
 
     // Set up the Kinesis Stream

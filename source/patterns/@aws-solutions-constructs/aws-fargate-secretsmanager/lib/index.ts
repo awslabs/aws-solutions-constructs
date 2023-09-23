@@ -134,7 +134,6 @@ export class FargateToSecretsmanager extends Construct {
 
   constructor(scope: Construct, id: string, props: FargateToSecretsmanagerProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
     defaults.CheckVpcProps(props);
     defaults.CheckSecretsManagerProps(props);

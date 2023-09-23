@@ -153,7 +153,6 @@ export class FargateToSns extends Construct {
 
   constructor(scope: Construct, id: string, props: FargateToSnsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
     defaults.CheckSnsProps(props);
     defaults.CheckVpcProps(props);

@@ -95,7 +95,6 @@ export class LambdaToKinesisStreams extends Construct {
      */
     constructor(scope: Construct, id: string, props: LambdaToKinesisStreamsProps) {
       super(scope, id);
-      defaults.CheckProps(props);
       defaults.CheckVpcProps(props);
       defaults.CheckLambdaProps(props);
       defaults.CheckKinesisStreamProps(props);

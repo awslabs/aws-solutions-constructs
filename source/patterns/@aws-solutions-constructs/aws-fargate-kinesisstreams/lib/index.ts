@@ -150,7 +150,6 @@ export class FargateToKinesisStreams extends Construct {
      */
     constructor(scope: Construct, id: string, props: FargateToKinesisStreamsProps) {
       super(scope, id);
-      defaults.CheckProps(props);
       defaults.CheckFargateProps(props);
       defaults.CheckVpcProps(props);
       defaults.CheckKinesisStreamProps(props);

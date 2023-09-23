@@ -104,7 +104,6 @@ export class LambdaToKendra extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToKendraProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckVpcProps(props);
     defaults.CheckLambdaProps(props);
 

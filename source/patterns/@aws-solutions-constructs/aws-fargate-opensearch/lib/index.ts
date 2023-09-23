@@ -145,7 +145,6 @@ export class FargateToOpenSearch extends Construct {
 
   constructor(scope: Construct, id: string, props: FargateToOpenSearchProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
     defaults.CheckVpcProps(props);
     defaults.CheckOpenSearchProps(props);

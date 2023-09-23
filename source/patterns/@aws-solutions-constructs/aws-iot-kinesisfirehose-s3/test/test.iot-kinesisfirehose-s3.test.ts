@@ -111,8 +111,10 @@ test('check firehose and s3 overrides', () => {
         IntervalInSeconds: 600,
         SizeInMBs: 55
       }
-    }});
+    }
+  });
 });
+
 test('check properties', () => {
   const stack = new cdk.Stack();
 
@@ -127,9 +129,6 @@ test('check properties', () => {
   expect(construct.s3LoggingBucket !== null);
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingBucket and bucketProps
-// --------------------------------------------------------------
 test("Confirm CheckS3Props is being called", () => {
   // Stack
   const stack = new cdk.Stack();
@@ -157,9 +156,6 @@ test("Confirm CheckS3Props is being called", () => {
   expect(app).toThrowError("Error - Either provide bucketProps or existingBucketObj, but not both.\n");
 });
 
-// --------------------------------------------------------------
-// s3 bucket with bucket, loggingBucket, and auto delete objects
-// --------------------------------------------------------------
 test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   const stack = new cdk.Stack();
 

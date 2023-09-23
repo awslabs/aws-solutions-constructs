@@ -140,7 +140,7 @@ export class DynamoDBStreamsToLambdaToElasticSearchAndKibana extends Construct {
    */
   constructor(scope: Construct, id: string, props: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    // CheckLambdaProps() is called by aws-lambda-elasticsearch
 
     const lambdaToElasticSearchProps: LambdaToElasticSearchAndKibanaProps = {
       existingLambdaObj: props.existingLambdaObj,

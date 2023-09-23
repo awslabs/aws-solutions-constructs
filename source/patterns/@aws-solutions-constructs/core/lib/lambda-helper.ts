@@ -237,3 +237,22 @@ export function getLambdaVpcSecurityGroupIds(lambdaFunction: lambda.Function): s
 
   return securityGroupIds;
 }
+
+export interface LambdaProps {
+  readonly existingLambdaObj?: lambda.Function,
+  readonly lambdaFunctionProps?: lambda.FunctionProps,
+}
+
+export function CheckLambdaProps(propsObject: LambdaProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingLambdaObj && propsObject.lambdaFunctionProps) {
+    errorMessages += 'Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}

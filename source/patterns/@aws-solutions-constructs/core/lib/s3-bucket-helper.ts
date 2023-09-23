@@ -238,3 +238,41 @@ export function addCfnNagS3BucketNotificationRulesToSuppress(stackRoot: cdk.Stac
     }
   ]);
 }
+
+export interface S3Props {
+  readonly existingBucketObj?: s3.Bucket,
+  readonly existingBucketInterface?: s3.IBucket,
+  readonly bucketProps?: s3.BucketProps,
+  readonly existingLoggingBucketObj?: s3.IBucket;
+  readonly loggingBucketProps?: s3.BucketProps;
+  readonly logS3AccessLogs?: boolean;
+}
+
+export function CheckS3Props(propsObject: S3Props | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if ((propsObject.existingBucketObj || propsObject.existingBucketInterface) && propsObject.bucketProps) {
+    errorMessages += 'Error - Either provide bucketProps or existingBucketObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.existingLoggingBucketObj && propsObject.loggingBucketProps) {
+    errorMessages += 'Error - Either provide existingLoggingBucketObj or loggingBucketProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if ((propsObject?.logS3AccessLogs === false) && (propsObject.loggingBucketProps || propsObject.existingLoggingBucketObj)) {
+    errorMessages += 'Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.existingBucketObj && (propsObject.loggingBucketProps || propsObject.logS3AccessLogs)) {
+    errorMessages += 'Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is an error.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}

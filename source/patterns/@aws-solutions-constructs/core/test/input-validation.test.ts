@@ -21,7 +21,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as events from 'aws-cdk-lib/aws-events';
 import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import * as s3 from 'aws-cdk-lib/aws-s3';
-import * as waf from 'aws-cdk-lib/aws-waf';
+import * as waf from 'aws-cdk-lib/aws-wafv2';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import { Stack } from 'aws-cdk-lib';
@@ -29,13 +29,6 @@ import * as defaults from '../';
 import { MediaStoreContainerProps } from '../lib/mediastore-defaults';
 import { BuildSagemakerEndpoint } from '../lib/sagemaker-helper';
 import { CreateScrapBucket } from './test-helper';
-
-test('Test with valid props', () => {
-  const props: defaults.VerifiedProps = {
-  };
-
-  defaults.CheckProps(props);
-});
 
 // ---------------------------
 // DynamoDB Prop Tests
@@ -56,12 +49,12 @@ test('Test fail DynamoDB table check', () => {
   expect(app).toThrowError('Error - Either provide existingTableObj or dynamoTableProps, but not both.\n');
 });
 
-test('Test fail DynamoDB table check (for interface)', () => {
+test('Test fail DynamoDB table check (for interface AND obj)', () => {
   const stack = new Stack();
 
   const props: defaults.DynamoDBProps = {
     existingTableInterface: new dynamodb.Table(stack, 'placeholder', defaults.DefaultTableProps),
-    dynamoTableProps: defaults.DefaultTableProps,
+    existingTableObj: new dynamodb.Table(stack, 'placeholderobj', defaults.DefaultTableProps),
   };
 
   const app = () => {
@@ -69,7 +62,7 @@ test('Test fail DynamoDB table check (for interface)', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide existingTableInterface or dynamoTableProps, but not both.\n');
+  expect(app).toThrowError('Error - Either provide existingTableInterface or existingTableObj, but not both.\n');
 });
 
 // ---------------------------
@@ -156,6 +149,23 @@ test('Test fail SQS queue check when queueProps.encryptionMasterKey and encrypti
 
   // Assertion
   expect(app).toThrowError('Error - Either provide queueProps.encryptionMasterKey or encryptionKeyProps, but not both.\n');
+});
+
+test('Test fail SQS check when both encryptionKey and encryptionKeyProps are specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.SqsProps = {
+    encryptionKey: new kms.Key(stack, 'key'),
+    encryptionKeyProps: {
+      description: 'a description'
+    }
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  expect(app).toThrowError('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
 });
 
 test('Test fail Dead Letter Queue check', () => {
@@ -331,7 +341,7 @@ test('Test fail SNS topic check with bad topic attribute name', () => {
 test('Test fail SNS topic check when both encryptionKey and encryptionKeyProps are specified', () => {
   const stack = new Stack();
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.SnsProps = {
     encryptionKey: new kms.Key(stack, 'key'),
     encryptionKeyProps: {
       description: 'a description'
@@ -339,7 +349,7 @@ test('Test fail SNS topic check when both encryptionKey and encryptionKeyProps a
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckSnsProps(props);
   };
 
   expect(app).toThrowError('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
@@ -535,13 +545,13 @@ test('Test fail encryption key check', () => {
     enableKeyRotation: false
   });
 
-  const props: defaults.VerifiedProps = {
+  const props: defaults.SnsProps = {
     encryptionKey: key,
     encryptionKeyProps: {},
   };
 
   const app = () => {
-    defaults.CheckProps(props);
+    defaults.CheckSnsProps(props);
   };
 
   // Assertion
@@ -721,18 +731,43 @@ test('Test CloudFront insertHttpHeaders bad props', () => {
 
 test('Test WebACL bad props', () => {
   const stack = new Stack();
+  const wafProps: waf.CfnWebACLProps = {
+    scope: 'CLOUDFRONT',
+    defaultAction: {
+      allow: {}
+    },
+    visibilityConfig: {
+      cloudWatchMetricsEnabled: false,
+      metricName: 'webACL',
+      sampledRequestsEnabled: true
+    },
+    rules: [
+      defaults.wrapManagedRuleSet("AWSManagedRulesCommonRuleSet", "AWS", 0),
+      defaults.wrapManagedRuleSet("AWSManagedRulesWordPressRuleSet", "AWS", 1),
+    ]
+  };
+
+  const wafPropsTwo: waf.CfnWebACLProps = {
+    scope: 'CLOUDFRONT',
+    defaultAction: {
+      allow: {}
+    },
+    visibilityConfig: {
+      cloudWatchMetricsEnabled: false,
+      metricName: 'webACL',
+      sampledRequestsEnabled: true
+    },
+    rules: [
+      defaults.wrapManagedRuleSet("AWSManagedRulesCommonRuleSet", "AWS", 0),
+      defaults.wrapManagedRuleSet("AWSManagedRulesWordPressRuleSet", "AWS", 1),
+    ]
+  };
+
+  const acl: waf.CfnWebACL = new waf.CfnWebACL(stack, 'test',  wafProps);
 
   const props: defaults.WafWebAclProps = {
-    existingWebaclObj: new waf.CfnWebACL(stack, 'test',  {
-      name: 'testTwo',
-      metricName: 'metricTwo',
-      defaultAction: { type: 'ALLOW' }
-    }),
-    webaclProps: {
-      name: 'test',
-      metricName: 'metric',
-      defaultAction: { type: 'ALLOW' }
-    },
+    existingWebaclObj: acl,
+    webaclProps: wafPropsTwo,
   };
 
   const app = () => {

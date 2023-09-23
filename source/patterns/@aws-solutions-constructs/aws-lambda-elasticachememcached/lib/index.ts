@@ -92,7 +92,6 @@ export class LambdaToElasticachememcached extends Construct {
     props: LambdaToElasticachememcachedProps
   ) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckVpcProps(props);
     defaults.CheckLambdaProps(props);
 

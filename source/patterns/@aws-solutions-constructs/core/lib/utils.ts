@@ -256,3 +256,14 @@ export function generateName(scope: Construct, resourceId: string = ""): string 
   }
   return name;
 }
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function CheckListValues(allowedPermissions: string[], submittedValues: string[], valueType: string) {
+  submittedValues.forEach((submittedValue) => {
+    if (!allowedPermissions.includes(submittedValue)) {
+      throw Error(`Invalid ${valueType} submitted - ${submittedValue}`);
+    }
+  });
+}

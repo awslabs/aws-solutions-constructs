@@ -173,7 +173,6 @@ export class KinesisstreamsToGluejob extends Construct {
     // context here rather than assuming the client will set it
     this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-    defaults.CheckProps(props);
     defaults.CheckGlueProps(props);
     defaults.CheckKinesisStreamProps(props);
 

@@ -228,3 +228,56 @@ function applySecureQueuePolicy(queue: sqs.Queue): void {
     })
   );
 }
+
+export interface SqsProps {
+  readonly existingQueueObj?: sqs.Queue,
+  readonly queueProps?: sqs.QueueProps,
+  readonly deployDeadLetterQueue?: boolean,
+  readonly deadLetterQueueProps?: sqs.QueueProps,
+  readonly encryptionKey?: kms.Key,
+  readonly encryptionKeyProps?: kms.KeyProps
+}
+
+export function CheckSqsProps(propsObject: SqsProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingQueueObj && propsObject.queueProps) {
+    errorMessages += 'Error - Either provide queueProps or existingQueueObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.queueProps?.encryptionMasterKey && propsObject.encryptionKey) {
+    errorMessages += 'Error - Either provide queueProps.encryptionMasterKey or encryptionKey, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.queueProps?.encryptionMasterKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide queueProps.encryptionMasterKey or encryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.encryptionKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if ((propsObject?.deployDeadLetterQueue === false) && propsObject.deadLetterQueueProps) {
+    errorMessages += 'Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n';
+    errorFound = true;
+  }
+
+  const isQueueFifo: boolean = propsObject?.queueProps?.fifo;
+  const isDeadLetterQueueFifo: boolean = propsObject?.deadLetterQueueProps?.fifo;
+  const deployDeadLetterQueue: boolean = propsObject.deployDeadLetterQueue || propsObject.deployDeadLetterQueue === undefined;
+
+  if (deployDeadLetterQueue && (isQueueFifo !== isDeadLetterQueueFifo)) {
+    errorMessages += 'Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+      'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}

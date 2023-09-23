@@ -96,3 +96,22 @@ export function buildKinesisStreamCWAlarms(scope: Construct): cloudwatch.Alarm[]
 
   return alarms;
 }
+
+export interface KinesisStreamProps {
+  readonly existingStreamObj?: kinesis.Stream;
+  readonly kinesisStreamProps?: kinesis.StreamProps,
+}
+
+export function CheckKinesisStreamProps(propsObject: KinesisStreamProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingStreamObj && propsObject.kinesisStreamProps) {
+    errorMessages += 'Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}

@@ -53,7 +53,6 @@ export class WafwebaclToAlb extends Construct {
    */
   constructor(scope: Construct, id: string, props: WafwebaclToAlbProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckWafWebAclProps(props);
     // CheckAlbProps() not called because this only accepts and existing Load Balancer
 

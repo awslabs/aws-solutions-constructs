@@ -78,7 +78,6 @@ export class EventbridgeToKinesisStreams extends Construct {
      */
     constructor(scope: Construct, id: string, props: EventbridgeToKinesisStreamsProps) {
       super(scope, id);
-      defaults.CheckProps(props);
       defaults.CheckEventBridgeProps(props);
       defaults.CheckKinesisStreamProps(props);
 
