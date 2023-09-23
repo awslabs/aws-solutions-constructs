@@ -212,3 +212,39 @@ test('Test generateName uniqueness', () => {
   const nameTwo = defaults.generateName(stackTwo, "");
   expect(nameOne === nameTwo).toBe(false);
 });
+
+test('Test successful CheckListValues', () => {
+
+  const app = () => {
+    defaults.CheckListValues(['one', 'two', 'four'], ['four', 'one'], 'test value');
+  };
+
+  // Assertion
+  expect(app).not.toThrowError();
+});
+
+test('Test fail OpenSearch improper vpc specification', () => {
+
+  const props: defaults.OpenSearchProps = {
+    openSearchDomainProps: {
+      vpcOptions: {}
+    },
+  };
+
+  const app = () => {
+    defaults.CheckOpenSearchProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Define VPC using construct parameters not the OpenSearch Service props\n');
+});
+
+test('Test unsuccessful CheckListValues', () => {
+
+  const app = () => {
+    defaults.CheckListValues(['one', 'two', 'four'], ['four', 'three'], 'test value');
+  };
+
+  // Assertion
+  expect(app).toThrowError('Invalid test value submitted - three');
+});

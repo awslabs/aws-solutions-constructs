@@ -420,3 +420,38 @@ test('test getPartitionKeyNameFromTable()', () => {
 
   expect(testKeyName).toEqual(partitionKeyName);
 });
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test fail DynamoDB table check', () => {
+  const stack = new Stack();
+
+  const props: defaults.DynamoDBProps = {
+    existingTableObj: new dynamodb.Table(stack, 'placeholder', defaults.DefaultTableProps),
+    dynamoTableProps: defaults.DefaultTableProps,
+  };
+
+  const app = () => {
+    defaults.CheckDynamoDBProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingTableObj or dynamoTableProps, but not both.\n');
+});
+
+test('Test fail DynamoDB table check (for interface AND obj)', () => {
+  const stack = new Stack();
+
+  const props: defaults.DynamoDBProps = {
+    existingTableInterface: new dynamodb.Table(stack, 'placeholder', defaults.DefaultTableProps),
+    existingTableObj: new dynamodb.Table(stack, 'placeholderobj', defaults.DefaultTableProps),
+  };
+
+  const app = () => {
+    defaults.CheckDynamoDBProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingTableInterface or existingTableObj, but not both.\n');
+});

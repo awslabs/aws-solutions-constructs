@@ -18,6 +18,7 @@ import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { RemovalPolicy, Stack } from "aws-cdk-lib";
 import * as defaults from '..';
+import * as iam from 'aws-cdk-lib/aws-iam';
 
 test('Test deployment with role creation', () => {
   // Stack
@@ -514,4 +515,104 @@ test('Cannot use maxCapacity and WorkerType, so error out', () => {
   } catch (error) {
     expect(error).toBeInstanceOf(Error);
   }
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test fail Glue job check', () => {
+  const stack = new Stack();
+
+  const _jobRole = new iam.Role(stack, 'CustomETLJobRole', {
+    assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+  });
+
+  const jobProps: CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, {
+    command: {
+      name: 'glueetl',
+      pythonVersion: '3',
+      scriptLocation: new Bucket(stack, 'ScriptBucket').bucketArn,
+    },
+    role: new iam.Role(stack, 'JobRole', {
+      assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+    }).roleArn
+  }, 'testETLJob', {});
+
+  const job = new CfnJob(stack, 'placeholder', jobProps);
+
+  const props: defaults.GlueProps = {
+    glueJobProps: jobProps,
+    existingGlueJob: job
+  };
+
+  const app = () => {
+    defaults.CheckGlueProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError("Error - Either provide glueJobProps or existingGlueJob, but not both.\n");
+});
+
+test('Test bad Glue script location', () => {
+  const stack = new Stack();
+
+  const _jobRole = new iam.Role(stack, 'CustomETLJobRole', {
+    assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+  });
+
+  const jobProps: CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, {
+    command: {
+      name: 'glueetl',
+      pythonVersion: '3',
+      scriptLocation: "s://bad/url",
+    },
+    role: new iam.Role(stack, 'JobRole', {
+      assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+    }).roleArn
+  }, 'testETLJob', {});
+
+  const props: defaults.GlueProps = {
+    glueJobProps: jobProps,
+  };
+
+  const app = () => {
+    defaults.CheckGlueProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Invalid S3 URL for Glue script provided\n');
+});
+
+test('Test missing Glue script location', () => {
+  const stack = new Stack();
+
+  const _jobRole = new iam.Role(stack, 'CustomETLJobRole', {
+    assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+  });
+
+  const jobProps: CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, {
+    command: {
+      name: 'glueetl',
+      pythonVersion: '3',
+    },
+    role: new iam.Role(stack, 'JobRole', {
+      assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+    }).roleArn
+  }, 'testETLJob', {});
+
+  const props: defaults.GlueProps = {
+    glueJobProps: jobProps,
+  };
+
+  const app = () => {
+    defaults.CheckGlueProps(props);
+  };
+
+  const expectedError: string = 'Either one of CfnJob.JobCommandProperty.scriptLocation or etlCodeAsset has ' +
+    'to be provided. If the ETL Job code file exists in a local filesystem, please set ' +
+    'KinesisstreamsToGluejobProps.etlCodeAsset. If the ETL Job is available in an S3 bucket, set the ' +
+    'CfnJob.JobCommandProperty.scriptLocation property\n';
+
+  // Assertion
+  expect(app).toThrowError(expectedError);
 });

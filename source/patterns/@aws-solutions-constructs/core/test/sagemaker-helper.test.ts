@@ -17,6 +17,7 @@ import * as kms from 'aws-cdk-lib/aws-kms';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as defaults from '../';
 import { Template } from 'aws-cdk-lib/assertions';
+import { BuildSagemakerEndpoint } from '../lib/sagemaker-helper';
 
 test('Test deployment with VPC', () => {
   // Stack
@@ -236,4 +237,35 @@ test('Test exception for not providing private or isolated subnets in an existin
   };
   // Assertion 1
   expect(app).toThrowError();
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test fail SageMaker endpoint check', () => {
+  const stack = new Stack();
+
+  // Build Sagemaker Inference Endpoint
+  const modelProps = {
+    primaryContainer: {
+      image: "<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest",
+      modelDataUrl: "s3://<bucket-name>/<prefix>/model.tar.gz",
+    },
+  };
+
+  const buildSagemakerEndpointResponse = BuildSagemakerEndpoint(stack, { modelProps });
+
+  const props: defaults.SagemakerProps = {
+    existingSagemakerEndpointObj: buildSagemakerEndpointResponse.endpoint,
+    endpointProps: {
+      endpointConfigName: 'placeholder'
+    }
+  };
+
+  const app = () => {
+    defaults.CheckSagemakerProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide endpointProps or existingSagemakerEndpointObj, but not both.\n');
 });

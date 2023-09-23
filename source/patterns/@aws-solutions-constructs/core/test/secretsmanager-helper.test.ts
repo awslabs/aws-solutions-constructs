@@ -18,9 +18,6 @@ import { Template } from 'aws-cdk-lib/assertions';
 const DESCRIPTION = 'test secret description';
 const SECRET_NAME = 'test secret name';
 
-// --------------------------------------------------------------
-// Test minimal deployment with no properties
-// --------------------------------------------------------------
 test('Test minimal deployment with no properties', () => {
   // Stack
   const stack = new Stack();
@@ -34,9 +31,6 @@ test('Test minimal deployment with no properties', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ custom properties
-// --------------------------------------------------------------
 test('Test deployment with custom properties', () => {
   // Stack
   const stack = new Stack();
@@ -56,4 +50,24 @@ test('Test deployment with custom properties', () => {
       Description: DESCRIPTION
     }
   });
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+
+test('Test fail Secret check', () => {
+  const stack = new Stack();
+
+  const props: defaults.SecretsManagerProps = {
+    secretProps: {},
+    existingSecretObj: defaults.buildSecretsManagerSecret(stack, 'secret', {}),
+  };
+
+  const app = () => {
+    defaults.CheckSecretsManagerProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide secretProps or existingSecretObj, but not both.\n');
 });

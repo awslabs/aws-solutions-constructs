@@ -17,9 +17,6 @@ import * as defaults from '../';
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Test minimal deployment with no properties
-// --------------------------------------------------------------
 test('Test minimal deployment with no properties', () => {
   // Stack
   const stack = new Stack();
@@ -36,9 +33,6 @@ test('Test minimal deployment with no properties', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ custom properties
-// --------------------------------------------------------------
 test('Test deployment w/ custom properties', () => {
   // Stack
   const stack = new Stack();
@@ -63,9 +57,6 @@ test('Test deployment w/ custom properties', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing stream
-// --------------------------------------------------------------
 test('Test deployment w/ existing stream', () => {
   // Stack
   const stack = new Stack();
@@ -97,4 +88,27 @@ test('Count Kinesis CW Alarms', () => {
   const cwList = defaults.buildKinesisStreamCWAlarms(stack);
 
   expect(cwList.length).toEqual(2);
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test fail Kinesis stream check', () => {
+  const stack = new Stack();
+
+  const stream = new kinesis.Stream(stack, 'placeholder', {
+
+  });
+
+  const props: defaults.KinesisStreamProps = {
+    existingStreamObj: stream,
+    kinesisStreamProps: {}
+  };
+
+  const app = () => {
+    defaults.CheckKinesisStreamProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });
