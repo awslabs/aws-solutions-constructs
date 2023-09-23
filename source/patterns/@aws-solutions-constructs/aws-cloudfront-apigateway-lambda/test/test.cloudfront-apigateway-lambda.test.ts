@@ -202,9 +202,6 @@ test('override api gateway properties without existingLambdaObj', () => {
     });
 });
 
-// --------------------------------------------------------------
-// Cloudfront logging bucket with destroy removal policy and auto delete objects
-// --------------------------------------------------------------
 test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
   const stack = new cdk.Stack();
 
@@ -243,9 +240,6 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
   });
 });
 
-// --------------------------------------------------------------
-// Cloudfront logging bucket error providing existing log bucket and logBucketProps
-// --------------------------------------------------------------
 test('Cloudfront logging bucket error when providing existing log bucket and logBucketProps', () => {
   const stack = new cdk.Stack();
   const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});

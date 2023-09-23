@@ -193,9 +193,6 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test bad call with logS3AccessLogs as false and bucketProps
-// --------------------------------------------------------------
 test("Test bad call with logS3AccessLogs as false and bucketProps", () => {
   // Stack
   const stack = new cdk.Stack();
@@ -221,9 +218,6 @@ test("Test bad call with logS3AccessLogs as false and bucketProps", () => {
   expect(app).toThrowError('Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n');
 });
 
-// --------------------------------------------------------------
-// s3 bucket with one content bucket and no logging bucket
-// --------------------------------------------------------------
 test('s3 bucket with one content bucket and no logging bucket', () => {
   const stack = new cdk.Stack();
 

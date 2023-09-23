@@ -17,9 +17,6 @@ import { ApiGatewayToKinesisStreams, ApiGatewayToKinesisStreamsProps } from '../
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Test construct properties
-// --------------------------------------------------------------
 test('Test construct properties', () => {
   const stack = new Stack();
   const pattern = new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis', {});
@@ -32,9 +29,6 @@ test('Test construct properties', () => {
   expect(pattern.cloudwatchAlarms !== null);
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ overwritten properties
-// --------------------------------------------------------------
 test('Test deployment w/ overwritten properties', () => {
   const stack = new Stack();
 
@@ -87,9 +81,6 @@ test('Test deployment w/ overwritten properties', () => {
   template.resourceCountIs('AWS::CloudWatch::Alarm', 2);
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing stream without default cloudwatch alarms
-// --------------------------------------------------------------
 test('Test deployment w/ existing stream', () => {
   const stack = new Stack();
 
