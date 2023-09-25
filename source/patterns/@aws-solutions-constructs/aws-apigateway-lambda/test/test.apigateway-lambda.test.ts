@@ -19,9 +19,6 @@ import * as api from 'aws-cdk-lib/aws-apigateway';
 import { Template } from "aws-cdk-lib/assertions";
 import * as defaults from '@aws-solutions-constructs/core';
 
-// --------------------------------------------------------------
-// Test for error with existingLambdaObj=undefined (not supplied by user).
-// --------------------------------------------------------------
 test('Error on existingLambdaObj=undefined', () => {
   // Initial Setup
   const stack = new Stack();
@@ -63,9 +60,6 @@ test('Test with lambdaFunctionProps', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test getter methods
-// --------------------------------------------------------------
 test('Test properties', () => {
   // Initial Setup
   const stack = new Stack();
@@ -85,9 +79,6 @@ test('Test properties', () => {
   expect(app.apiGatewayLogGroup !== null);
 });
 
-// --------------------------------------------------------------
-// Test for error with lambdaFunctionProps=undefined (not supplied by user).
-// --------------------------------------------------------------
 test('Error on lambdaFunctionProps=undefined', () => {
   // Initial Setup
   const stack = new Stack();
@@ -100,9 +91,6 @@ test('Error on lambdaFunctionProps=undefined', () => {
   expect(app).toThrowError();
 });
 
-// -----------------------------------------------------------------
-// Test deployment for override ApiGateway AuthorizationType to NONE
-// -----------------------------------------------------------------
 test('Test deployment ApiGateway AuthorizationType override', () => {
   // Stack
   const stack = new Stack();
@@ -127,9 +115,6 @@ test('Test deployment ApiGateway AuthorizationType override', () => {
   });
 });
 
-// -----------------------------------------------------------------
-// Test deployment for override ApiGateway cloudWatchRole = false
-// -----------------------------------------------------------------
 test('Test deployment ApiGateway override cloudWatchRole = false', () => {
   // Stack
   const stack = new Stack();

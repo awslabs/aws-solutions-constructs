@@ -18,6 +18,7 @@ import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
 import { Template } from 'aws-cdk-lib/assertions';
 import { expectNonexistence } from "./test-helper";
+import { CreateScrapBucket } from './test-helper';
 
 test('test s3Bucket override versioningConfiguration', () => {
   const stack = new Stack();
@@ -359,4 +360,75 @@ test('Test enforcing SSL when bucketProps is provided and enforceSSL is not set'
       Version: "2012-10-17"
     }
   });
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test fail S3 check', () => {
+  const stack = new Stack();
+
+  const props: defaults.S3Props = {
+    existingBucketObj: CreateScrapBucket(stack, {}),
+    bucketProps: {},
+  };
+
+  const app = () => {
+    defaults.CheckS3Props(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+});
+
+test('Test fail existing log bucket and log bucket prop check', () => {
+  const stack = new Stack();
+
+  const props: defaults.S3Props = {
+    existingLoggingBucketObj: new s3.Bucket(stack, 'logging-bucket'),
+    loggingBucketProps: {
+      autoDeleteObjects: true
+    }
+  };
+
+  const app = () => {
+    defaults.CheckS3Props(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingLoggingBucketObj or loggingBucketProps, but not both.\n');
+});
+
+test('Test fail false logS3Accesslogs and loggingBucketProps check', () => {
+  const stack = new Stack();
+
+  const props: defaults.S3Props = {
+    existingLoggingBucketObj: new s3.Bucket(stack, 'logging-bucket'),
+    logS3AccessLogs: false
+  };
+
+  const app = () => {
+    defaults.CheckS3Props(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n');
+});
+
+test('Test fail existingBucketObj and loggingBucketProps check', () => {
+  const stack = new Stack();
+
+  const props: defaults.S3Props = {
+    existingBucketObj: new s3.Bucket(stack, 'temp-bucket'),
+    loggingBucketProps: {
+      autoDeleteObjects: true
+    }
+  };
+
+  const app = () => {
+    defaults.CheckS3Props(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is an error.\n');
 });

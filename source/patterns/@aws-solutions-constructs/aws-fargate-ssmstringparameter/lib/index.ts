@@ -133,7 +133,6 @@ export class FargateToSsmstringparameter extends Construct {
 
   constructor(scope: Construct, id: string, props: FargateToSsmstringparameterProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
     defaults.CheckVpcProps(props);
 

@@ -132,9 +132,9 @@ export class FargateToEventbridge extends Construct {
 
   constructor(scope: Construct, id: string, props: FargateToEventbridgeProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
     defaults.CheckVpcProps(props);
+    defaults.CheckEventBridgeProps(props);
 
     this.vpc = defaults.buildVpc(scope, {
       existingVpc: props.existingVpc,

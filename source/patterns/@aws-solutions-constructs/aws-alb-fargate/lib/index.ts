@@ -164,7 +164,6 @@ export class AlbToFargate extends Construct {
 
   constructor(scope: Construct, id: string, props: AlbToFargateProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckAlbProps(props);
     defaults.CheckFargateProps(props);
     defaults.CheckVpcProps(props);

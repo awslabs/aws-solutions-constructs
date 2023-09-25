@@ -138,7 +138,6 @@ export class FargateToStepfunctions extends Construct {
 
   constructor(scope: Construct, id: string, props: FargateToStepfunctionsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
     defaults.CheckVpcProps(props);
 

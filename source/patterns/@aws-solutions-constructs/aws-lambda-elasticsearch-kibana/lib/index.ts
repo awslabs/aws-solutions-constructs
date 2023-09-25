@@ -107,7 +107,6 @@ export class LambdaToElasticSearchAndKibana extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToElasticSearchAndKibanaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckVpcProps(props);
     defaults.CheckLambdaProps(props);
 

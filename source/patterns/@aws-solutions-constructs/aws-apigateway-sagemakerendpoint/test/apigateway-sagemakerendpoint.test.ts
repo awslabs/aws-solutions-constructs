@@ -17,9 +17,6 @@ import { ApiGatewayToSageMakerEndpoint } from '../lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Test construct properties
-// --------------------------------------------------------------
 test('Test construct properties', () => {
   const stack = new Stack();
   const pattern = new ApiGatewayToSageMakerEndpoint(stack, 'api-gateway-sagemakerendpoint', {
@@ -34,9 +31,6 @@ test('Test construct properties', () => {
   expect(pattern.apiGatewayLogGroup !== null);
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ overwritten properties
-// --------------------------------------------------------------
 test('Test deployment w/ overwritten properties', () => {
   const stack = new Stack();
 

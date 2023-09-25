@@ -264,3 +264,22 @@ function getLoggingBucket(
 function getCloudfrontFunction(httpSecurityHeaders: boolean, scope: Construct) {
   return httpSecurityHeaders ? defaultCloudfrontFunction(scope) : undefined;
 }
+
+export interface CloudFrontProps {
+  readonly insertHttpSecurityHeaders?: boolean;
+  readonly responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps;
+}
+
+export function CheckCloudFrontProps(propsObject: CloudFrontProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.insertHttpSecurityHeaders !== false && propsObject.responseHeadersPolicyProps?.securityHeadersBehavior) {
+    errorMessages += 'responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}

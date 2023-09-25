@@ -40,3 +40,22 @@ export function MediaStoreContainer(scope: Construct, mediaStoreContainerProps?:
 
   return mediaStoreContainer;
 }
+
+export interface MediaStoreProps {
+  readonly existingMediaStoreContainerObj?: mediastore.CfnContainer;
+  readonly mediaStoreContainerProps?: mediastore.CfnContainerProps;
+}
+
+export function CheckMediaStoreProps(propsObject: MediaStoreProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingMediaStoreContainerObj && propsObject.mediaStoreContainerProps) {
+    errorMessages += 'Error - Either provide mediaStoreContainerProps or existingMediaStoreContainerObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}

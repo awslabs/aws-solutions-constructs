@@ -178,7 +178,6 @@ export class FargateToSqs extends Construct {
 
   constructor(scope: Construct, id: string, props: FargateToSqsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
     defaults.CheckSqsProps(props);
     defaults.CheckVpcProps(props);

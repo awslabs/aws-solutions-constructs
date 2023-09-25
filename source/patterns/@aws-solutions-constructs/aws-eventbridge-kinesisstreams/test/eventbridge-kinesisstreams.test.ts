@@ -17,9 +17,6 @@ import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import { Template } from "aws-cdk-lib/assertions";
 import {EventbridgeToKinesisStreams, EventbridgeToKinesisStreamsProps} from '../lib';
 
-// --------------------------------------------------------------
-// Test snapshot match with default parameters
-// --------------------------------------------------------------
 function deployNewStack(stack: cdk.Stack) {
   const props: EventbridgeToKinesisStreamsProps = {
     eventRuleProps: {
@@ -30,9 +27,6 @@ function deployNewStack(stack: cdk.Stack) {
   return new EventbridgeToKinesisStreams(stack, 'test-eventbridge-kinesis-streams-default-parameters', props);
 }
 
-// --------------------------------------------------------------
-// Test properties
-// --------------------------------------------------------------
 test('Test properties', () => {
   const stack = new cdk.Stack();
   const construct: EventbridgeToKinesisStreams = deployNewStack(stack);
@@ -43,9 +37,6 @@ test('Test properties', () => {
   expect(construct.eventsRole !== null);
 });
 
-// --------------------------------------------------------------
-// Test default AWS managed encryption key property
-// --------------------------------------------------------------
 test('Test default AWS managed encryption key property', () => {
   const stack = new cdk.Stack();
   deployNewStack(stack);
@@ -60,9 +51,6 @@ test('Test default AWS managed encryption key property', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test existing resources
-// --------------------------------------------------------------
 test('Test existing resources', () => {
   const stack = new cdk.Stack();
 
@@ -128,7 +116,7 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
   const app = () => {
     new EventbridgeToKinesisStreams(stack, 'test-eventbridge-kinesisstreams', props);
   };
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });
 
 test('check custom event bus resource with props when deploy:true', () => {
@@ -150,4 +138,23 @@ test('check custom event bus resource with props when deploy:true', () => {
   template.hasResourceProperties('AWS::Events::EventBus', {
     Name: `testeventbus`
   });
+});
+
+test('Confirm that CheckKinesisStreamProps is called', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToKinesisStreamsProps = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    existingStreamObj: new kinesis.Stream(stack, 'test', {}),
+    kinesisStreamProps: {}
+  };
+
+  const app = () => {
+    new EventbridgeToKinesisStreams(stack, 'test-eventbridge-kinesisstreams', props);
+  };
+  expect(app).toThrowError();
 });

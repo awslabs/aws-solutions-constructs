@@ -70,7 +70,6 @@ export interface BuildDynamoDBTableResponse {
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTableProps): BuildDynamoDBTableResponse {
-  checkTableProps(props);
 
   // Conditional DynamoDB Table creation
   if (props.existingTableObj) {
@@ -81,33 +80,6 @@ export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTablePr
     const consolidatedTableProps = consolidateProps(DefaultTableProps, props.dynamoTableProps);
     const newTable = new dynamodb.Table(scope, 'DynamoTable', consolidatedTableProps);
     return { tableInterface: newTable, tableObject: newTable };
-  }
-}
-
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
-export function checkTableProps(props: BuildDynamoDBTableProps) {
-  let errorMessages = '';
-  let errorFound = false;
-
-  if (props.dynamoTableProps && props.existingTableObj) {
-    errorMessages += 'Error - Either provide existingTableObj or dynamoTableProps, but not both.\n';
-    errorFound = true;
-  }
-
-  if (props.dynamoTableProps && props.existingTableInterface) {
-    errorMessages += 'Error - Either provide existingTableInterface or dynamoTableProps, but not both.\n';
-    errorFound = true;
-  }
-
-  if (props.existingTableObj && props.existingTableInterface) {
-    errorMessages += 'Error - Either provide existingTableInterface or existingTableObj, but not both.\n';
-    errorFound = true;
-  }
-
-  if (errorFound) {
-    throw new Error(errorMessages);
   }
 }
 
@@ -142,4 +114,34 @@ export function getPartitionKeyNameFromTable(table: dynamodb.Table): string {
     throw new Error('Partition key for table not defined');
   }
   return partitionKey.attributeName;
+}
+
+export interface DynamoDBProps {
+  readonly dynamoTableProps?: dynamodb.TableProps,
+  readonly existingTableObj?: dynamodb.Table,
+  readonly existingTableInterface?: dynamodb.ITable,
+}
+
+export function CheckDynamoDBProps(propsObject: DynamoDBProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.dynamoTableProps && propsObject.existingTableObj) {
+    errorMessages += 'Error - Either provide existingTableObj or dynamoTableProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.dynamoTableProps && propsObject.existingTableInterface) {
+    errorMessages += 'Error - Either provide existingTableInterface or dynamoTableProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.existingTableObj && propsObject.existingTableInterface) {
+    errorMessages += 'Error - Either provide existingTableInterface or existingTableObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }

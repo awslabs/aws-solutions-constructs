@@ -14,7 +14,7 @@
 // Imports
 import { RemovalPolicy, Stack } from "aws-cdk-lib";
 import * as lambda from "aws-cdk-lib/aws-lambda";
-import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
+import * as secrets from 'aws-cdk-lib/aws-secretsmanager';
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToSecretsmanager, LambdaToSecretsmanagerProps } from '../lib';
 import { Template } from 'aws-cdk-lib/assertions';
@@ -44,7 +44,7 @@ test('Test deployment w/ existing secret', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  const existingSecret = new Secret(stack, 'secret', {});
+  const existingSecret = new secrets.Secret(stack, 'secret', {});
   const pattern = new LambdaToSecretsmanager(stack, 'lambda-to-secretsmanager-stack', {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_16_X,
@@ -418,4 +418,26 @@ test('Confirm call to CheckLambdaProps', () => {
   };
   // Assertion
   expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});
+
+test('Confirm call to CheckSecretsManagerProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const props: LambdaToSecretsmanagerProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    secretProps: {
+      secretName: 'test'
+    },
+    existingSecretObj: new secrets.Secret(stack, 'test', {}),
+  };
+  const app = () => {
+    new LambdaToSecretsmanager(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide secretProps or existingSecretObj, but not both.\n');
 });

@@ -82,7 +82,6 @@ export class LambdaToKinesisFirehose extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToKinesisFirehoseProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckVpcProps(props);
     defaults.CheckLambdaProps(props);
 

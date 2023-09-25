@@ -150,7 +150,7 @@ test('check eventbus property, snapshot & eventbus exists', () => {
   template.resourceCountIs('AWS::Events::EventBus', 1);
 });
 
-test('check exception while passing existingEventBus & eventBusProps', () => {
+test('Confirm CheckEventBridgeProps is being called', () => {
   const stack = new cdk.Stack();
   const startState = new sfn.Pass(stack, 'StartState');
 
@@ -170,7 +170,7 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
   const app = () => {
     new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions', props);
   };
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });
 
 test('check custom event bus resource with props when deploy:true', () => {

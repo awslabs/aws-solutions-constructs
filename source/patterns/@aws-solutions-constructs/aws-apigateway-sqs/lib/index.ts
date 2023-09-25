@@ -196,7 +196,6 @@ export class ApiGatewayToSqs extends Construct {
    */
   constructor(scope: Construct, id: string, props: ApiGatewayToSqsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckSqsProps(props);
 
     if (this.CheckCreateRequestProps(props)) {

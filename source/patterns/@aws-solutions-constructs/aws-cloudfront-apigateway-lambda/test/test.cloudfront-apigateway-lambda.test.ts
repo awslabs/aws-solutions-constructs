@@ -202,9 +202,6 @@ test('override api gateway properties without existingLambdaObj', () => {
     });
 });
 
-// --------------------------------------------------------------
-// Cloudfront logging bucket with destroy removal policy and auto delete objects
-// --------------------------------------------------------------
 test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
   const stack = new cdk.Stack();
 
@@ -243,9 +240,6 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
   });
 });
 
-// --------------------------------------------------------------
-// Cloudfront logging bucket error providing existing log bucket and logBucketProps
-// --------------------------------------------------------------
 test('Cloudfront logging bucket error when providing existing log bucket and logBucketProps', () => {
   const stack = new cdk.Stack();
   const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
@@ -295,4 +289,29 @@ test('Confirm CheckLambdaProps is being called', () => {
     new CloudFrontToApiGatewayToLambda(stack, 'cf-test-apigateway-lambda', props);
   };
   expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});
+
+test("Confirm CheckCloudFrontProps is being called", () => {
+  const stack = new cdk.Stack();
+
+  expect(() => {
+    new CloudFrontToApiGatewayToLambda(stack, "test-cloudfront-apigateway-lambda", {
+      lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_18_X,
+        handler: 'index.handler',
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      },
+      insertHttpSecurityHeaders: true,
+      responseHeadersPolicyProps: {
+        securityHeadersBehavior: {
+          strictTransportSecurity: {
+            accessControlMaxAge: cdk.Duration.seconds(63072),
+            includeSubdomains: true,
+            override: false,
+            preload: true
+          }
+        }
+      }
+    });
+  }).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
 });

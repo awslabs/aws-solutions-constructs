@@ -85,7 +85,6 @@ export class SnsToLambda extends Construct {
    */
   constructor(scope: Construct, id: string, props: SnsToLambdaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckSnsProps(props);
     defaults.CheckLambdaProps(props);
 

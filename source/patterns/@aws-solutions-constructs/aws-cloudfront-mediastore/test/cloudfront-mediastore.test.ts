@@ -20,9 +20,6 @@ import { CloudFrontToMediaStore } from '../lib';
 import * as cdk from "aws-cdk-lib";
 import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Test the default deployment pattern variables
-// --------------------------------------------------------------
 test('Test the default deployment pattern variables', () => {
   // Initial setup
   const stack = new Stack();
@@ -37,9 +34,6 @@ test('Test the default deployment pattern variables', () => {
   expect(cloudFrontToMediaStore.cloudFrontFunction).not.toEqual(undefined);
 });
 
-// --------------------------------------------------------------
-// Test the deployment without HTTP security headers
-// --------------------------------------------------------------
 test('Test the deployment without HTTP security headers', () => {
   // Initial setup
   const stack = new Stack();
@@ -170,7 +164,7 @@ test('Test the deployment with securityHeadersBehavior instead of HTTP security 
   expect(cloudFrontToMediaStore.cloudFrontFunction).toEqual(undefined);
 });
 
-test("throw exception if insertHttpSecurityHeaders and responseHeadersPolicyProps are provided", () => {
+test("Confirm CheckCloudFrontProps is being called", () => {
   const stack = new cdk.Stack();
 
   expect(() => {
@@ -187,12 +181,9 @@ test("throw exception if insertHttpSecurityHeaders and responseHeadersPolicyProp
         }
       }
     });
-  }).toThrowError();
+  }).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
 });
 
-// --------------------------------------------------------------
-// Test the deployment with existing MediaStore container
-// --------------------------------------------------------------
 test('Test the deployment with existing MediaStore container', () => {
   // Initial setup
   const stack = new Stack();
@@ -325,9 +316,6 @@ test('Test the deployment with existing MediaStore container', () => {
   expect(cloudFrontToMediaStore.cloudFrontOriginAccessIdentity).toEqual(undefined);
 });
 
-// --------------------------------------------------------------
-// Test the deployment with the user provided MediaStore properties
-// --------------------------------------------------------------
 test('Test the deployment with the user provided MediaStore properties', () => {
   // Initial setup
   const stack = new Stack();
@@ -471,9 +459,6 @@ test('Test the deployment with the user provided MediaStore properties', () => {
   expect(cloudFrontToMediaStore.cloudFrontOriginAccessIdentity).toEqual(undefined);
 });
 
-// --------------------------------------------------------------
-// Test the deployment with the user provided CloudFront properties
-// --------------------------------------------------------------
 test('Test the deployment with the user provided CloudFront properties', () => {
   // Initial setup
   const stack = new Stack();
@@ -650,9 +635,6 @@ test('Test the deployment with the user provided CloudFront properties', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Cloudfront logging bucket with destroy removal policy and auto delete objects
-// --------------------------------------------------------------
 test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
   const stack = new Stack();
 
@@ -681,9 +663,6 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
   });
 });
 
-// --------------------------------------------------------------
-// Cloudfront logging bucket error providing existing log bucket and logBucketProps
-// --------------------------------------------------------------
 test('Cloudfront logging bucket error when providing existing log bucket and logBucketProps', () => {
   const stack = new Stack();
   const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});

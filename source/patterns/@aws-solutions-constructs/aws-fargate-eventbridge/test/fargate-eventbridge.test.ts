@@ -398,3 +398,23 @@ test('Confirm that CheckVpcProps was called', () => {
   // Assertion
   expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
+
+test('Confirm CheckEventBridgeProps is being called', () => {
+  const stack = new cdk.Stack();
+
+  const props: FargateToEventbridgeProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    eventBusProps: { eventBusName: 'test' },
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, { eventBusName: 'test' })
+  };
+
+  const app = () => {
+    new FargateToEventbridge(stack, 'test-fargate-eventbridge', props);
+  };
+  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
+});

@@ -37,7 +37,7 @@ function deployConstruct(stack: cdk.Stack, constructProps?: waf.CfnWebACLProps |
   return new WafwebaclToCloudFront(stack, 'test-wafwebacl-cloudfront', props);
 }
 
-test('Test error handling for existing WAF web ACL and user provider web ACL props', () => {
+test('Confirm CheckWafWebAclProps is called', () => {
   const stack = new cdk.Stack();
   const props: waf.CfnWebACLProps = {
     defaultAction: {
@@ -63,7 +63,7 @@ test('Test error handling for existing WAF web ACL and user provider web ACL pro
       existingWebaclObj: wafAcl,
       webaclProps: props
     });
-  }).toThrowError();
+  }).toThrowError('Error - Either provide existingWebaclObj or webaclProps, but not both.\n');
 });
 
 test('Test default deployment', () => {

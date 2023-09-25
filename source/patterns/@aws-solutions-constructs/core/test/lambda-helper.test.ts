@@ -561,3 +561,32 @@ test('buildLambdaFunction uses default name when neither constructId or function
     },
   });
 });
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test("Test fail Lambda function check", () => {
+  const stack = new Stack();
+
+  const props: defaults.LambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: "index.handler",
+    },
+    existingLambdaObj: new lambda.Function(stack, "placeholder", {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: "index.handler",
+    }),
+  };
+
+  const app = () => {
+    defaults.CheckLambdaProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError(
+    "Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n"
+  );
+});

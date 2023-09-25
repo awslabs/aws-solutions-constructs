@@ -19,9 +19,6 @@ import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as defaults from '@aws-solutions-constructs/core';
 
-// --------------------------------------------------------------
-// Pattern deployment with default props
-// --------------------------------------------------------------
 test('Pattern deployment with default props', () => {
   // Initial Setup
   const stack = new Stack();
@@ -81,9 +78,6 @@ test('Pattern deployment with default props', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Testing with existing SQS Queue
-// --------------------------------------------------------------
 test('Pattern deployment with existing queue', () => {
   // Initial Setup
   const stack = new Stack();
@@ -112,9 +106,6 @@ test('Pattern deployment with existing queue', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Testing with passing queue and dead letter queue props
-// --------------------------------------------------------------
 test('Pattern deployment with queue and dead letter queue props', () => {
   // Initial Setup
   const stack = new Stack();
@@ -158,9 +149,6 @@ test('Pattern deployment with queue and dead letter queue props', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Testing with dead letter queue turned off
-// --------------------------------------------------------------
 test('Pattern deployment with dead letter queue turned off', () => {
   // Initial Setup
   const stack = new Stack();
@@ -193,9 +181,6 @@ test('Pattern deployment with dead letter queue turned off', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Testing with custom maxReceiveCount
-// --------------------------------------------------------------
 test('Pattern deployment with custom maxReceiveCount', () => {
   // Initial Setup
   const stack = new Stack();
@@ -236,9 +221,6 @@ test('Pattern deployment with custom maxReceiveCount', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Testing without creating a KMS key
-// --------------------------------------------------------------
 test('Pattern deployment without creating a KMS key', () => {
   // Initial Setup
   const stack = new Stack();
@@ -293,9 +275,6 @@ test('Pattern deployment without creating a KMS key', () => {
   template.resourceCountIs("AWS::KMS::Key", 0);
 });
 
-// --------------------------------------------------------------
-// Testing with existing KMS key
-// --------------------------------------------------------------
 test('Pattern deployment with existing KMS key', () => {
   // Initial Setup
   const stack = new Stack();
@@ -362,9 +341,6 @@ test('Pattern deployment with existing KMS key', () => {
   });
 });
 
-// ---------------------------------------------------------------
-// Testing with existing KMS key on queueProps.encryptionMasterKey
-// ---------------------------------------------------------------
 test('Pattern deployment with existing KMS key', () => {
   // Initial Setup
   const stack = new Stack();
@@ -433,9 +409,6 @@ test('Pattern deployment with existing KMS key', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Testing with passing KMS key props
-// --------------------------------------------------------------
 test('Pattern deployment passing KMS key props', () => {
   // Initial Setup
   const stack = new Stack();
@@ -510,9 +483,6 @@ test('Pattern deployment passing KMS key props', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Testing with passing a FIFO queue (not supported by IoT)
-// --------------------------------------------------------------
 test('Pattern deployment with passing a FIFO queue (not supported by IoT)', () => {
   // Initial Setup
   const stack = new Stack();

@@ -54,7 +54,7 @@ export class WafwebaclToApiGateway extends Construct {
    */
   constructor(scope: Construct, id: string, props: WafwebaclToApiGatewayProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckWafWebAclProps(props);
 
     // Build the Web ACL
     this.webacl = defaults.buildWebacl(this, 'REGIONAL', {

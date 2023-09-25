@@ -305,3 +305,21 @@ function createDashboardCognitoRole(
   cognitoDashboardConfigureRolePolicy.attachToRole(cognitoDashboardConfigureRole);
   return cognitoDashboardConfigureRole;
 }
+
+export interface OpenSearchProps {
+  readonly openSearchDomainProps?: opensearch.CfnDomainProps;
+}
+
+export function CheckOpenSearchProps(propsObject: OpenSearchProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.openSearchDomainProps?.vpcOptions) {
+    errorMessages += "Error - Define VPC using construct parameters not the OpenSearch Service props\n";
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}

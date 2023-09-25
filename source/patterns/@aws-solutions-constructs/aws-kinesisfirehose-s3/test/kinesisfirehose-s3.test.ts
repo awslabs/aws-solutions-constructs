@@ -213,9 +213,6 @@ test("Confirm that CheckS3Props is being called", () => {
   expect(app).toThrowError("Error - Either provide bucketProps or existingBucketObj, but not both.\n");
 });
 
-// --------------------------------------------------------------
-// s3 bucket with bucket, loggingBucket, and auto delete objects
-// --------------------------------------------------------------
 test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   const stack = new cdk.Stack();
 
@@ -248,9 +245,6 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingLoggingBucketObj and loggingBucketProps
-// --------------------------------------------------------------
 test("Test bad call with existingLoggingBucketObj and loggingBucketProps", () => {
   // Stack
   const stack = new cdk.Stack();
@@ -270,9 +264,6 @@ test("Test bad call with existingLoggingBucketObj and loggingBucketProps", () =>
   expect(app).toThrowError('Error - Either provide existingLoggingBucketObj or loggingBucketProps, but not both.\n');
 });
 
-// --------------------------------------------------------------
-// Test bad call with logS3AccessLogs as false and bucketProps
-// --------------------------------------------------------------
 test("Test bad call with logS3AccessLogs as false and bucketProps", () => {
   // Stack
   const stack = new cdk.Stack();
@@ -290,9 +281,6 @@ test("Test bad call with logS3AccessLogs as false and bucketProps", () => {
   expect(app).toThrowError('Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n');
 });
 
-// --------------------------------------------------------------
-// s3 bucket with one content bucket and no logging bucket
-// --------------------------------------------------------------
 test('s3 bucket with one content bucket and no logging bucket', () => {
   const stack = new cdk.Stack();
 

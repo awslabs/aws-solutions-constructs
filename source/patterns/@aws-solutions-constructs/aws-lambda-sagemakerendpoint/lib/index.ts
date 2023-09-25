@@ -105,7 +105,6 @@ export class LambdaToSagemakerEndpoint extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToSagemakerEndpointProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckVpcProps(props);
     defaults.CheckLambdaProps(props);
     defaults.CheckSagemakerProps(props);

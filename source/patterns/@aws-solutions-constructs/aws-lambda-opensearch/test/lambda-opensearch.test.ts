@@ -567,7 +567,7 @@ test('Test error for Lambda function VPC props', () => {
   expect(app).toThrowError("Error - Define VPC using construct parameters not Lambda function props");
 });
 
-test('Test error for the OpenSearch domain VPC props', () => {
+test('Confirm CheckOpenSearchProps is called', () => {
   const stack = new cdk.Stack();
 
   const app = () => {

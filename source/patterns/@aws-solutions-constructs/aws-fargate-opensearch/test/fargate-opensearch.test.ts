@@ -720,7 +720,7 @@ test('Existing service/new domain, private API, existing VPC', () => {
   template.resourceCountIs('AWS::OpenSearchService::Domain', 1);
 });
 
-test('Check error for using OpenSearch VPC prop parameter', () => {
+test('Confirm CheckOpenSearchProps is called', () => {
   const stack = new cdk.Stack();
   const publicApi = false;
 

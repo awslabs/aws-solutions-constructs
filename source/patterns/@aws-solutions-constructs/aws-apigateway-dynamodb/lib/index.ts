@@ -203,7 +203,7 @@ export class ApiGatewayToDynamoDB extends Construct {
    */
   constructor(scope: Construct, id: string, props: ApiGatewayToDynamoDBProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckDynamoDBProps(props);
 
     if (this.CheckCreateRequestProps(props)) {
       throw new Error(`The 'allowCreateOperation' property must be set to true when setting any of the following: ` +

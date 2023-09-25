@@ -18,9 +18,6 @@ import { Template } from 'aws-cdk-lib/assertions';
 import { AddAwsServiceEndpoint, ServiceEndpointTypes } from '../lib/vpc-helper';
 import { DefaultPublicPrivateVpcProps, DefaultIsolatedVpcProps } from '../lib/vpc-defaults';
 
-// --------------------------------------------------------------
-// Test minimal Isolated deployment with no properties
-// --------------------------------------------------------------
 test("Test minimal deployment with no properties", () => {
   // Stack
   const stack = new Stack();
@@ -39,9 +36,6 @@ test("Test minimal deployment with no properties", () => {
   template.resourceCountIs('AWS::EC2::InternetGateway', 0);
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ user provided custom properties
-// --------------------------------------------------------------
 test('Test deployment w/ user provided custom properties', () => {
   // Stack
   const stack = new Stack();
@@ -61,9 +55,6 @@ test('Test deployment w/ user provided custom properties', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ construct provided custom properties
-// --------------------------------------------------------------
 test('Test deployment w/ construct provided custom properties', () => {
   // Stack
   const stack = new Stack();
@@ -83,9 +74,6 @@ test('Test deployment w/ construct provided custom properties', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ construct and user provided custom properties
-// --------------------------------------------------------------
 test('Test deployment w/ construct and user provided custom properties', () => {
   // Stack
   const stack = new Stack();
@@ -110,9 +98,6 @@ test('Test deployment w/ construct and user provided custom properties', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test priority of default, user and construct properties
-// --------------------------------------------------------------
 test('Test deployment w/ construct and user provided custom properties', () => {
   // Stack
   const stack = new Stack();
@@ -145,9 +130,6 @@ test('Test deployment w/ construct and user provided custom properties', () => {
   template.resourceCountIs('AWS::EC2::InternetGateway', 0);
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing VPC provided
-// --------------------------------------------------------------
 test('Test deployment w/ existing VPC provided', () => {
   // Stack
   const stack = new Stack();
@@ -162,9 +144,6 @@ test('Test deployment w/ existing VPC provided', () => {
   expect(newVpc).toBe(testExistingVpc);
 });
 
-// --------------------------------------------------------------
-// Test adding Gateway Endpoint
-// --------------------------------------------------------------
 test('Test adding Gateway Endpoint', () => {
   // Stack
   const stack = new Stack();
@@ -188,9 +167,6 @@ test('Test adding Gateway Endpoint', () => {
   template.resourceCountIs('AWS::EC2::VPCEndpoint', 3);
 });
 
-// --------------------------------------------------------------
-// Test adding Interface Endpoint
-// --------------------------------------------------------------
 test('Test adding Interface Endpoint', () => {
   // Stack
   const stack = new Stack();
@@ -207,9 +183,6 @@ test('Test adding Interface Endpoint', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test adding SAGEMAKER_RUNTIME Interface Endpoint
-// --------------------------------------------------------------
 test('Test adding SAGEMAKER_RUNTIME Interface Endpoint', () => {
   // Stack
   const stack = new Stack();
@@ -226,9 +199,6 @@ test('Test adding SAGEMAKER_RUNTIME Interface Endpoint', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test adding a second Endpoint of same service
-// --------------------------------------------------------------
 test('Test adding a second Endpoint of same service', () => {
   // Stack
   const stack = new Stack();
@@ -244,9 +214,6 @@ test('Test adding a second Endpoint of same service', () => {
   Template.fromStack(stack).resourceCountIs('AWS::EC2::VPCEndpoint', 1);
 });
 
-// --------------------------------------------------------------
-// Test adding bad Endpoint
-// --------------------------------------------------------------
 test('Test adding bad Endpoint', () => {
   // Stack
   const stack = new Stack();
@@ -262,9 +229,6 @@ test('Test adding bad Endpoint', () => {
   expect(app).toThrowError();
 });
 
-// --------------------------------------------------------------
-// Test adding Events Interface Endpoint
-// --------------------------------------------------------------
 test('Test adding Events Interface Endpoint', () => {
   // Stack
   const stack = new Stack();
@@ -279,4 +243,43 @@ test('Test adding Events Interface Endpoint', () => {
   Template.fromStack(stack).hasResourceProperties('AWS::EC2::VPCEndpoint', {
     VpcEndpointType: 'Interface',
   });
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test fail Vpc check with deployVpc', () => {
+  const stack = new Stack();
+
+  const props: defaults.VpcPropsSet = {
+    deployVpc: true,
+    existingVpc: defaults.buildVpc(stack, {
+      defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
+    }),
+  };
+
+  const app = () => {
+    defaults.CheckVpcProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});
+
+test('Test fail Vpc check with vpcProps', () => {
+  const stack = new Stack();
+
+  const props: defaults.VpcPropsSet = {
+    vpcProps: defaults.DefaultPublicPrivateVpcProps(),
+    existingVpc: defaults.buildVpc(stack, {
+      defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
+    }),
+  };
+
+  const app = () => {
+    defaults.CheckVpcProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });

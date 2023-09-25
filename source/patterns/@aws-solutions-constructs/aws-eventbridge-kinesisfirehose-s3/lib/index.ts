@@ -108,7 +108,8 @@ export class EventbridgeToKinesisFirehoseToS3 extends Construct {
     // context here rather than assuming the client will set it
     this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-    defaults.CheckProps(props);
+    defaults.CheckEventBridgeProps(props);
+    // CheckS3Props is called by internal aws-kinesisfirehose-s3 construct
 
     // Set up the Kinesis Firehose using KinesisFirehoseToS3 construct
     const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
