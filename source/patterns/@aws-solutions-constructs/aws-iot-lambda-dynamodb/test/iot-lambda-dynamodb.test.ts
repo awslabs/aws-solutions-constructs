@@ -539,9 +539,9 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   // Stack
   const stack = new cdk.Stack();
 
-// buildLambdaFunction should throw an error if the Lambda function is not
-// attached to a VPC
-const testLambdaFunction = new lambda.Function(stack, 'test-lambda', {
+  // buildLambdaFunction should throw an error if the Lambda function is not
+  // attached to a VPC
+  const testLambdaFunction = new lambda.Function(stack, 'test-lambda', {
     runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
