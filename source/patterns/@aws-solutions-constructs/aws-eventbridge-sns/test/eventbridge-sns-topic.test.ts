@@ -169,9 +169,9 @@ test('check properties', () => {
   const stack = new cdk.Stack();
   const construct: EventbridgeToSns = deployNewStack(stack);
 
-  expect(construct.eventsRule !== null);
-  expect(construct.snsTopic !== null);
-  expect(construct.encryptionKey !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.snsTopic).toBeDefined();
+  expect(construct.encryptionKey).toBeDefined();
 });
 
 test('check the sns topic properties', () => {
@@ -224,10 +224,10 @@ test('check eventbus property, snapshot & eventbus exists', () => {
 
   const construct: EventbridgeToSns = deployStackWithNewEventBus(stack);
 
-  expect(construct.eventsRule !== null);
-  expect(construct.snsTopic !== null);
-  expect(construct.encryptionKey !== null);
-  expect(construct.eventBus !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.snsTopic).toBeDefined();
+  expect(construct.encryptionKey).toBeDefined();
+  expect(construct.eventBus).toBeDefined();
 
   // Check whether eventbus exists
   const template = Template.fromStack(stack);

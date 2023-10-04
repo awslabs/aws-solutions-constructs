@@ -120,13 +120,13 @@ test('check properties', () => {
 
   const construct: IotToKinesisFirehoseToS3 = deploy(stack);
 
-  expect(construct.iotTopicRule !== null);
-  expect(construct.kinesisFirehose !== null);
-  expect(construct.s3Bucket !== null);
-  expect(construct.iotActionsRole !== null);
-  expect(construct.kinesisFirehoseRole !== null);
-  expect(construct.kinesisFirehoseLogGroup !== null);
-  expect(construct.s3LoggingBucket !== null);
+  expect(construct.iotTopicRule).toBeDefined();
+  expect(construct.kinesisFirehose).toBeDefined();
+  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.iotActionsRole).toBeDefined();
+  expect(construct.kinesisFirehoseRole).toBeDefined();
+  expect(construct.kinesisFirehoseLogGroup).toBeDefined();
+  expect(construct.s3LoggingBucket).toBeDefined();
 });
 
 test("Confirm CheckS3Props is being called", () => {

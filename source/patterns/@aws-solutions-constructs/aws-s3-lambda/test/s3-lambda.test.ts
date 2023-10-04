@@ -38,9 +38,9 @@ test('check properties', () => {
 
   const construct: S3ToLambda = deployNewFunc(stack);
 
-  expect(construct.lambdaFunction !== null);
-  expect(construct.s3Bucket !== null);
-  expect(construct.s3LoggingBucket !== null);
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.s3LoggingBucket).toBeDefined();
 });
 
 test("Confirm CheckS3Props is being called", () => {

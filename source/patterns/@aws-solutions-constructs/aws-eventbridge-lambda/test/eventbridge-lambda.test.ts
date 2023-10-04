@@ -184,8 +184,8 @@ test('check properties', () => {
 
   const construct: EventbridgeToLambda = deployNewFunc(stack);
 
-  expect(construct.eventsRule !== null);
-  expect(construct.lambdaFunction !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.lambdaFunction).toBeDefined();
 });
 
 test('check exception for Missing existingObj from props', () => {
@@ -209,9 +209,9 @@ test('check eventbus property, snapshot & eventbus exists', () => {
 
   const construct: EventbridgeToLambda = deployNewEventBus(stack);
 
-  expect(construct.eventsRule !== null);
-  expect(construct.lambdaFunction !== null);
-  expect(construct.eventBus !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.eventBus).toBeDefined();
   // Check whether eventbus exists
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::Events::EventBus', 1);

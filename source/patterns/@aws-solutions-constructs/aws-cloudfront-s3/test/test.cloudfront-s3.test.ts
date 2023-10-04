@@ -143,8 +143,8 @@ test('check properties', () => {
 
   const construct: CloudFrontToS3 = deploy(stack);
 
-  expect(construct.cloudFrontWebDistribution !== null);
-  expect(construct.s3Bucket !== null);
+  expect(construct.cloudFrontWebDistribution).toBeDefined();
+  expect(construct.s3Bucket).toBeDefined();
 });
 
 test("Confirm CheckS3Props is called", () => {
@@ -173,7 +173,7 @@ test("Test existingBucketObj", () => {
     existingBucketObj: s3.Bucket.fromBucketName(stack, 'mybucket', 'mybucket')
   });
   // Assertion
-  expect(construct.cloudFrontWebDistribution !== null);
+  expect(construct.cloudFrontWebDistribution).toBeDefined();
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {

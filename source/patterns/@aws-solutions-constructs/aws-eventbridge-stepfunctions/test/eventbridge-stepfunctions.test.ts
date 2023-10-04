@@ -106,10 +106,10 @@ test('check properties', () => {
 
   const construct: EventbridgeToStepfunctions = deployNewStateMachine(stack);
 
-  expect(construct.cloudwatchAlarms !== null);
-  expect(construct.stateMachine !== null);
-  expect(construct.eventsRule !== null);
-  expect(construct.stateMachineLogGroup !== null);
+  expect(construct.cloudwatchAlarms).toBeDefined();
+  expect(construct.stateMachine).toBeDefined();
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.stateMachineLogGroup).toBeDefined();
 });
 
 test('check properties with no CW Alarms', () => {
@@ -128,10 +128,10 @@ test('check properties with no CW Alarms', () => {
 
   const construct: EventbridgeToStepfunctions =  new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions', props);
 
-  expect(construct.cloudwatchAlarms === null);
-  expect(construct.stateMachine !== null);
-  expect(construct.eventsRule !== null);
-  expect(construct.stateMachineLogGroup !== null);
+  expect(construct.cloudwatchAlarms).not.toBeDefined();
+  expect(construct.stateMachine).toBeDefined();
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.stateMachineLogGroup).toBeDefined();
 });
 
 test('check eventbus property, snapshot & eventbus exists', () => {
@@ -139,11 +139,11 @@ test('check eventbus property, snapshot & eventbus exists', () => {
 
   const construct: EventbridgeToStepfunctions = deployNewStateMachineAndEventBus(stack);
 
-  expect(construct.cloudwatchAlarms !== null);
-  expect(construct.stateMachine !== null);
-  expect(construct.eventsRule !== null);
-  expect(construct.stateMachineLogGroup !== null);
-  expect(construct.eventBus !== null);
+  expect(construct.cloudwatchAlarms).toBeDefined();
+  expect(construct.stateMachine).toBeDefined();
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.stateMachineLogGroup).toBeDefined();
+  expect(construct.eventBus).toBeDefined();
 
   // Check whether eventbus exists
   const template = Template.fromStack(stack);

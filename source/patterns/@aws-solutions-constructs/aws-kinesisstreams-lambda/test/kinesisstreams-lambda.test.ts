@@ -30,11 +30,11 @@ test('Test properties', () => {
   };
   const app = new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
   // Assertion 1
-  expect(app.lambdaFunction !== null);
+  expect(app.lambdaFunction).toBeDefined();
   // Assertion 2
-  expect(app.kinesisStream !== null);
+  expect(app.kinesisStream).toBeDefined();
   // Assertion 3
-  expect(app.cloudwatchAlarms !== null);
+  expect(app.cloudwatchAlarms).toBeDefined();
 });
 
 test('Test existing resources', () => {
@@ -108,11 +108,11 @@ test('Test properties with no CW Alarms', () => {
   };
   const app = new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
   // Assertion 1
-  expect(app.lambdaFunction !== null);
+  expect(app.lambdaFunction).toBeDefined();
   // Assertion 2
-  expect(app.kinesisStream !== null);
+  expect(app.kinesisStream).toBeDefined();
   // Assertion 3
-  expect(app.cloudwatchAlarms === null);
+  expect(app.cloudwatchAlarms).not.toBeDefined();
 });
 
 test('Confirm call to CheckLambdaProps', () => {

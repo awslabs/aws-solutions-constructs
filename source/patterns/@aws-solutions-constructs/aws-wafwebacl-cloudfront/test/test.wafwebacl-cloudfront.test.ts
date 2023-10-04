@@ -70,8 +70,8 @@ test('Test default deployment', () => {
   const stack = new cdk.Stack();
   const construct = deployConstruct(stack);
 
-  expect(construct.webacl !== null);
-  expect(construct.cloudFrontWebDistribution !== null);
+  expect(construct.webacl).toBeDefined();
+  expect(construct.cloudFrontWebDistribution).toBeDefined();
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::WAFv2::WebACL", {

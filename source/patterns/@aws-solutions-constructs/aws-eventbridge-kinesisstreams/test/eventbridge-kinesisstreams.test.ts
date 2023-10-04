@@ -32,9 +32,9 @@ test('Test properties', () => {
   const construct: EventbridgeToKinesisStreams = deployNewStack(stack);
 
   // Assertions
-  expect(construct.eventsRule !== null);
-  expect(construct.kinesisStream !== null);
-  expect(construct.eventsRole !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.kinesisStream).toBeDefined();
+  expect(construct.eventsRole).toBeDefined();
 });
 
 test('Test default AWS managed encryption key property', () => {
@@ -91,10 +91,10 @@ test('check eventbus property, snapshot & eventbus exists', () => {
   };
   const construct = new EventbridgeToKinesisStreams(stack, 'test-eventbridge-kinesis-streams-default-parameters', props);
 
-  expect(construct.eventsRule !== null);
-  expect(construct.kinesisStream !== null);
-  expect(construct.eventsRole !== null);
-  expect(construct.eventBus !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.kinesisStream).toBeDefined();
+  expect(construct.eventsRole).toBeDefined();
+  expect(construct.eventBus).toBeDefined();
   // Check whether eventbus exists
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::Events::EventBus', 1);

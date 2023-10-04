@@ -47,12 +47,12 @@ test('Test properties', () => {
   };
   const app = new KinesisFirehoseToAnalyticsAndS3(stack, 'test-kinesis-firehose-kinesis-analytics', props);
   // Assertions
-  expect(app.kinesisAnalytics !== null);
-  expect(app.kinesisFirehose !== null);
-  expect(app.kinesisFirehoseRole !== null);
-  expect(app.kinesisFirehoseLogGroup !== null);
-  expect(app.s3Bucket !== null);
-  expect(app.s3LoggingBucket !== null);
+  expect(app.kinesisAnalytics).toBeDefined();
+  expect(app.kinesisFirehose).toBeDefined();
+  expect(app.kinesisFirehoseRole).toBeDefined();
+  expect(app.kinesisFirehoseLogGroup).toBeDefined();
+  expect(app.s3Bucket).toBeDefined();
+  expect(app.s3LoggingBucket).toBeDefined();
 });
 
 // --------------------------------------------------------------

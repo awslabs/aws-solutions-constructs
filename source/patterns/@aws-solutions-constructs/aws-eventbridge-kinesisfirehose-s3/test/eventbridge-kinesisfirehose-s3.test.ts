@@ -33,13 +33,13 @@ test('Test properties', () => {
   const construct: EventbridgeToKinesisFirehoseToS3 = deployNewStack(stack);
 
   // Assertions
-  expect(construct.eventsRule !== null);
-  expect(construct.eventsRole !== null);
-  expect(construct.kinesisFirehose !== null);
-  expect(construct.kinesisFirehoseRole !== null);
-  expect(construct.kinesisFirehoseLogGroup !== null);
-  expect(construct.s3Bucket !== null);
-  expect(construct.s3LoggingBucket !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.eventsRole).toBeDefined();
+  expect(construct.kinesisFirehose).toBeDefined();
+  expect(construct.kinesisFirehoseRole).toBeDefined();
+  expect(construct.kinesisFirehoseLogGroup).toBeDefined();
+  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.s3LoggingBucket).toBeDefined();
 });
 
 test('Test default server side s3 bucket encryption', () => {
@@ -144,14 +144,14 @@ test('check eventbus property, snapshot & eventbus exists', () => {
   };
   const construct = new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-kinesis-firehose-default-parameters', props);
 
-  expect(construct.eventsRule !== null);
-  expect(construct.eventsRole !== null);
-  expect(construct.kinesisFirehose !== null);
-  expect(construct.kinesisFirehoseRole !== null);
-  expect(construct.kinesisFirehoseLogGroup !== null);
-  expect(construct.s3Bucket !== null);
-  expect(construct.s3LoggingBucket !== null);
-  expect(construct.eventBus !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.eventsRole).toBeDefined();
+  expect(construct.kinesisFirehose).toBeDefined();
+  expect(construct.kinesisFirehoseRole).toBeDefined();
+  expect(construct.kinesisFirehoseLogGroup).toBeDefined();
+  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.s3LoggingBucket).toBeDefined();
+  expect(construct.eventBus).toBeDefined();
   // Check whether eventbus exists
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::Events::EventBus', 1);

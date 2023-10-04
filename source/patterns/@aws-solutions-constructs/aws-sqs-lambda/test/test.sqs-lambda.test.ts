@@ -67,11 +67,11 @@ test('Test getter methods', () => {
   };
   const app = new SqsToLambda(stack, 'sqs-lambda', props);
   // Assertion 1
-  expect(app.lambdaFunction !== null);
+  expect(app.lambdaFunction).toBeDefined();
   // Assertion 2
-  expect(app.sqsQueue !== null);
+  expect(app.sqsQueue).toBeDefined();
   // Assertion 3
-  expect(app.deadLetterQueue !== null);
+  expect(app.deadLetterQueue).toBeDefined();
 });
 
 // --------------------------------------------------------------

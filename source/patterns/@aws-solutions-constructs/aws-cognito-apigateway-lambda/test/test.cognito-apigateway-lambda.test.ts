@@ -89,13 +89,13 @@ test('check properties', () => {
 
   const construct: CognitoToApiGatewayToLambda = deployNewFunc(stack);
 
-  expect(construct.userPool !== null);
-  expect(construct.userPoolClient !== null);
-  expect(construct.apiGateway !== null);
-  expect(construct.lambdaFunction !== null);
-  expect(construct.apiGatewayCloudWatchRole !== null);
-  expect(construct.apiGatewayLogGroup !== null);
-  expect(construct.apiGatewayAuthorizer !== null);
+  expect(construct.userPool).toBeDefined();
+  expect(construct.userPoolClient).toBeDefined();
+  expect(construct.apiGateway).toBeDefined();
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.apiGatewayCloudWatchRole).toBeDefined();
+  expect(construct.apiGatewayLogGroup).toBeDefined();
+  expect(construct.apiGatewayAuthorizer).toBeDefined();
 });
 
 test('override cognito cognitoUserPoolClientProps', () => {

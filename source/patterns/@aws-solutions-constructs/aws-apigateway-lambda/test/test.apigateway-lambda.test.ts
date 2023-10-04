@@ -72,11 +72,11 @@ test('Test properties', () => {
   };
   const app = new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
   // Assertion 1
-  expect(app.lambdaFunction !== null);
+  expect(app.lambdaFunction).toBeDefined();
   // Assertion 2
-  expect(app.apiGateway !== null);
-  expect(app.apiGatewayCloudWatchRole !== null);
-  expect(app.apiGatewayLogGroup !== null);
+  expect(app.apiGateway).toBeDefined();
+  expect(app.apiGatewayCloudWatchRole).toBeDefined();
+  expect(app.apiGatewayLogGroup).toBeDefined();
 });
 
 test('Error on lambdaFunctionProps=undefined', () => {
