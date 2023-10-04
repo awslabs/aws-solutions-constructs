@@ -98,11 +98,11 @@ test('check properties', () => {
 
   const construct: S3ToStepfunctions = deployNewStateMachine(stack);
 
-  expect(construct.stateMachine !== null);
-  expect(construct.s3Bucket !== null);
-  expect(construct.cloudwatchAlarms !== null);
-  expect(construct.stateMachineLogGroup !== null);
-  expect(construct.s3LoggingBucket !== null);
+  expect(construct.stateMachine).toBeDefined();
+  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.cloudwatchAlarms).toBeDefined();
+  expect(construct.stateMachineLogGroup).toBeDefined();
+  expect(construct.s3LoggingBucket).toBeDefined();
 });
 
 // --------------------------------------------------------------

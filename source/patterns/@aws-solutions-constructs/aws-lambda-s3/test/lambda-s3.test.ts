@@ -34,11 +34,11 @@ test('Test the properties', () => {
   });
     // Assertion 1
   const func = pattern.lambdaFunction;
-  expect(func !== null);
+  expect(func).toBeDefined();
   // Assertion 2
   const bucket = pattern.s3Bucket;
-  expect(bucket !== null);
-  expect(pattern.s3LoggingBucket !== null);
+  expect(bucket).toBeDefined();
+  expect(pattern.s3LoggingBucket).toBeDefined();
 });
 
 test('Test the bucketProps override', () => {

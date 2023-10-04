@@ -35,8 +35,8 @@ test('check properties', () => {
 
   const construct: SnsToLambda = deployNewFunc(stack);
 
-  expect(construct.lambdaFunction !== null);
-  expect(construct.snsTopic !== null);
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.snsTopic).toBeDefined();
 });
 
 test('override topicProps', () => {

@@ -21,12 +21,12 @@ test('Test construct properties', () => {
   const stack = new Stack();
   const pattern = new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis', {});
 
-  expect(pattern.apiGateway !== null);
-  expect(pattern.apiGatewayRole !== null);
-  expect(pattern.apiGatewayCloudWatchRole !== null);
-  expect(pattern.apiGatewayLogGroup !== null);
-  expect(pattern.kinesisStream !== null);
-  expect(pattern.cloudwatchAlarms !== null);
+  expect(pattern.apiGateway).toBeDefined();
+  expect(pattern.apiGatewayRole).toBeDefined();
+  expect(pattern.apiGatewayCloudWatchRole).toBeDefined();
+  expect(pattern.apiGatewayLogGroup).toBeDefined();
+  expect(pattern.kinesisStream).toBeDefined();
+  expect(pattern.cloudwatchAlarms).toBeDefined();
 });
 
 test('Test deployment w/ overwritten properties', () => {

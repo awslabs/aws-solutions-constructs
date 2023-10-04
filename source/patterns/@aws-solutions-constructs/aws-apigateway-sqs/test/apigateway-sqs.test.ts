@@ -70,14 +70,14 @@ test('Test properties', () => {
     maxReceiveCount: 3
   });
     // Assertion 1
-  expect(pattern.apiGateway !== null);
+  expect(pattern.apiGateway).toBeDefined();
   // Assertion 2
-  expect(pattern.sqsQueue !== null);
+  expect(pattern.sqsQueue).toBeDefined();
   // Assertion 3
-  expect(pattern.apiGatewayRole !== null);
-  expect(pattern.apiGatewayCloudWatchRole !== null);
-  expect(pattern.apiGatewayLogGroup !== null);
-  expect(pattern.deadLetterQueue !== null);
+  expect(pattern.apiGatewayRole).toBeDefined();
+  expect(pattern.apiGatewayCloudWatchRole).toBeDefined();
+  expect(pattern.apiGatewayLogGroup).toBeDefined();
+  expect(pattern.deadLetterQueue).toBeDefined();
 });
 
 test('Test deployment ApiGateway AuthorizationType override', () => {

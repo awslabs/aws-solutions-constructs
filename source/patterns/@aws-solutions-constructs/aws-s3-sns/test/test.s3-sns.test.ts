@@ -24,11 +24,11 @@ test('All get methods return non-null objects', () => {
   const app = new S3ToSns(stack, 'test-s3-sns', {
 
   });
-  expect(app.snsTopic !== null);
-  expect(app.s3Bucket !== null);
-  expect(app.s3LoggingBucket !== null);
-  expect(app.encryptionKey !== null);
-  expect(app.s3BucketInterface !== null);
+  expect(app.snsTopic).toBeDefined();
+  expect(app.s3Bucket).toBeDefined();
+  expect(app.s3LoggingBucket).toBeDefined();
+  expect(app.encryptionKey).toBeDefined();
+  expect(app.s3BucketInterface).toBeDefined();
 });
 
 test('construct creates default event notification', () => {

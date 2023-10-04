@@ -112,13 +112,13 @@ test('Test getter methods', () => {
   };
   const app = new SnsToSqs(stack, 'test-sns-sqs', props);
   // Assertion 1
-  expect(app.snsTopic !== null);
+  expect(app.snsTopic).toBeDefined();
   // Assertion 2
-  expect(app.encryptionKey !== null);
+  expect(app.encryptionKey).toBeDefined();
   // Assertion 3
-  expect(app.sqsQueue !== null);
+  expect(app.sqsQueue).toBeDefined();
   // Assertion 4
-  expect(app.deadLetterQueue !== null);
+  expect(app.deadLetterQueue).toBeDefined();
 });
 
 test('Test deployment w/ existing queue, and topic', () => {
@@ -136,7 +136,7 @@ test('Test deployment w/ existing queue, and topic', () => {
     existingQueueObj: queue
   });
   // Assertion 2
-  expect(app.snsTopic !== null);
+  expect(app.snsTopic).toBeDefined();
   // Assertion 3
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::SNS::Topic", {

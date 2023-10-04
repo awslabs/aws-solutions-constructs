@@ -275,8 +275,8 @@ test('check properties', () => {
 
   const construct: LambdaToDynamoDB = deployNewFunc(stack);
 
-  expect(construct.lambdaFunction !== null);
-  expect(construct.dynamoTable !== null);
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.dynamoTable).toBeDefined();
 });
 
 test('check exception for Missing existingObj from props', () => {

@@ -39,10 +39,10 @@ test('New service/new bucket, public API, new VPC', () => {
     existingKinesisFirehose: destination.kinesisFirehose
   });
 
-  expect(construct.vpc !== null);
-  expect(construct.service !== null);
-  expect(construct.container !== null);
-  expect(construct.kinesisFirehose !== null);
+  expect(construct.vpc).toBeDefined();
+  expect(construct.service).toBeDefined();
+  expect(construct.container).toBeDefined();
+  expect(construct.kinesisFirehose).toBeDefined();
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::ECS::Service", {

@@ -108,7 +108,7 @@ test('Test that new VPC is created', () => {
     }
   });
 
-  expect(construct.vpc !== null);
+  expect(construct.vpc).toBeDefined();
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::EC2::VPC", {
@@ -148,7 +148,7 @@ test('Test that existing VPC is used', () => {
     existingVpc: myVpc
   });
 
-  expect(construct.vpc !== null);
+  expect(construct.vpc).toBeDefined();
 
   // Make sure we didn't deploy a new one anyway
   const template = Template.fromStack(stack);

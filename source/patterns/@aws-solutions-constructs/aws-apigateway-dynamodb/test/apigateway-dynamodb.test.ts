@@ -23,11 +23,11 @@ test("check properties", () => {
   const apiGatewayToDynamoDBProps: ApiGatewayToDynamoDBProps = {};
   const construct = new ApiGatewayToDynamoDB( stack, "test-api-gateway-dynamodb-default", apiGatewayToDynamoDBProps);
 
-  expect(construct.dynamoTable !== null);
-  expect(construct.apiGateway !== null);
-  expect(construct.apiGatewayRole !== null);
-  expect(construct.apiGatewayCloudWatchRole !== null);
-  expect(construct.apiGatewayLogGroup !== null);
+  expect(construct.dynamoTable).toBeDefined();
+  expect(construct.apiGateway).toBeDefined();
+  expect(construct.apiGatewayRole).toBeDefined();
+  expect(construct.apiGatewayCloudWatchRole).toBeDefined();
+  expect(construct.apiGatewayLogGroup).toBeDefined();
 });
 
 test("check allow CRUD operations", () => {

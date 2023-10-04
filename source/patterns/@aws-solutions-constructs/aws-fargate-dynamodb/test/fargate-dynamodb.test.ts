@@ -46,11 +46,11 @@ test('New service/new table, public API, new VPC', () => {
     tablePermissions: 'ReadWrite'
   });
 
-  expect(construct.vpc !== null);
-  expect(construct.service !== null);
-  expect(construct.container !== null);
-  expect(construct.dynamoTable !== null);
-  expect(construct.dynamoTableInterface !== null);
+  expect(construct.vpc).toBeDefined();
+  expect(construct.service).toBeDefined();
+  expect(construct.container).toBeDefined();
+  expect(construct.dynamoTable).toBeDefined();
+  expect(construct.dynamoTableInterface).toBeDefined();
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::ECS::Service", {

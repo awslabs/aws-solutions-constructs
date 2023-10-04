@@ -271,8 +271,8 @@ test('check properties', () => {
 
   const construct: IotToLambda = deployNewFunc(stack);
 
-  expect(construct.iotTopicRule !== null);
-  expect(construct.lambdaFunction !== null);
+  expect(construct.iotTopicRule).toBeDefined();
+  expect(construct.lambdaFunction).toBeDefined();
 });
 
 test('check exception for Missing existingObj from props for deploy = false', () => {

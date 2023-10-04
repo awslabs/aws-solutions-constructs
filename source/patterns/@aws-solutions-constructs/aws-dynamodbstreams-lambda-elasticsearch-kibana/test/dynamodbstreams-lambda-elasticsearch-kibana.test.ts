@@ -58,14 +58,14 @@ test('check properties', () => {
 
   const construct: DynamoDBStreamsToLambdaToElasticSearchAndKibana = deployNewFunc(stack);
 
-  expect(construct.lambdaFunction !== null);
-  expect(construct.dynamoTable !== null);
-  expect(construct.elasticsearchDomain !== null);
-  expect(construct.elasticsearchRole !== null);
-  expect(construct.identityPool !== null);
-  expect(construct.userPool !== null);
-  expect(construct.userPoolClient !== null);
-  expect(construct.cloudwatchAlarms !== null);
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.dynamoTable).toBeDefined();
+  expect(construct.elasticsearchDomain).toBeDefined();
+  expect(construct.elasticsearchRole).toBeDefined();
+  expect(construct.identityPool).toBeDefined();
+  expect(construct.userPool).toBeDefined();
+  expect(construct.userPoolClient).toBeDefined();
+  expect(construct.cloudwatchAlarms).toBeDefined();
 });
 
 test('check exception for Missing existingObj from props for deploy = false', () => {

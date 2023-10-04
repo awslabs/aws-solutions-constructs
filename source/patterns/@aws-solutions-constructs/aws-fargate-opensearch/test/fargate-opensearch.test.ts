@@ -71,15 +71,15 @@ test('Check construct properties', () => {
 
   const construct = deployStackWithNewResources(stack, publicApi);
 
-  expect(construct.vpc !== null);
-  expect(construct.service !== null);
-  expect(construct.container !== null);
-  expect(construct.userPool !== null);
-  expect(construct.userPoolClient !== null);
-  expect(construct.identityPool !== null);
-  expect(construct.openSearchDomain !== null);
-  expect(construct.openSearchRole !== null);
-  expect(construct.cloudWatchAlarms !== null);
+  expect(construct.vpc).toBeDefined();
+  expect(construct.service).toBeDefined();
+  expect(construct.container).toBeDefined();
+  expect(construct.userPool).toBeDefined();
+  expect(construct.userPoolClient).toBeDefined();
+  expect(construct.identityPool).toBeDefined();
+  expect(construct.openSearchDomain).toBeDefined();
+  expect(construct.openSearchRole).toBeDefined();
+  expect(construct.cloudWatchAlarms).toBeDefined();
 });
 
 test('Test cognito dashboard role IAM policy', () => {

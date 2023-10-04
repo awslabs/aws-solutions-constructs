@@ -42,11 +42,11 @@ test('New service/new bucket, public API, new VPC', () => {
     bucketPermissions: ['Delete', 'Read', 'Write']
   });
 
-  expect(construct.vpc !== null);
-  expect(construct.service !== null);
-  expect(construct.container !== null);
-  expect(construct.s3Bucket !== null);
-  expect(construct.s3BucketInterface !== null);
+  expect(construct.vpc).toBeDefined();
+  expect(construct.service).toBeDefined();
+  expect(construct.container).toBeDefined();
+  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.s3BucketInterface).toBeDefined();
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::ECS::Service", {

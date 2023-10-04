@@ -33,11 +33,11 @@ test('Test getter methods', () => {
   };
   const app = new S3ToSqs(stack, 'test-s3-sqs', props);
   // Assertion 1
-  expect(app.sqsQueue !== null);
+  expect(app.sqsQueue).toBeDefined();
   // Assertion 2
-  expect(app.deadLetterQueue !== null);
+  expect(app.deadLetterQueue).toBeDefined();
   // Assertion 3
-  expect(app.s3Bucket !== null);
+  expect(app.s3Bucket).toBeDefined();
 });
 
 test('Test deployment w/ existing queue', () => {

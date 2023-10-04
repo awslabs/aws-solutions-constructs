@@ -278,21 +278,21 @@ test('check properties', () => {
   const stack = new cdk.Stack();
   const construct: EventbridgeToSqs = deployNewStack(stack);
 
-  expect(construct.eventsRule !== null);
-  expect(construct.sqsQueue !== null);
-  expect(construct.encryptionKey !== null);
-  expect(construct.deadLetterQueue !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.sqsQueue).toBeDefined();
+  expect(construct.encryptionKey).toBeDefined();
+  expect(construct.deadLetterQueue).toBeDefined();
 });
 
 test('check eventbus property, snapshot & eventbus exists', () => {
   const stack = new cdk.Stack();
   const construct: EventbridgeToSqs = deployStackWithNewEventBus(stack);
 
-  expect(construct.eventsRule !== null);
-  expect(construct.sqsQueue !== null);
-  expect(construct.encryptionKey !== null);
-  expect(construct.deadLetterQueue !== null);
-  expect(construct.eventBus !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.sqsQueue).toBeDefined();
+  expect(construct.encryptionKey).toBeDefined();
+  expect(construct.deadLetterQueue).toBeDefined();
+  expect(construct.eventBus).toBeDefined();
 
   // Check whether eventbus exists
   const template = Template.fromStack(stack);

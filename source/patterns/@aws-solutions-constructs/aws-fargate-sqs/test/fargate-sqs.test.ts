@@ -58,11 +58,11 @@ test('New service/new queue, dlq, public API, new VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(construct.vpc !== null);
-  expect(construct.service !== null);
-  expect(construct.container !== null);
-  expect(construct.sqsQueue !== null);
-  expect(construct.deadLetterQueue !== null);
+  expect(construct.vpc).toBeDefined();
+  expect(construct.service).toBeDefined();
+  expect(construct.container).toBeDefined();
+  expect(construct.sqsQueue).toBeDefined();
+  expect(construct.deadLetterQueue).toBeDefined();
 
   template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName

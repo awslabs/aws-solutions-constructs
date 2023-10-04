@@ -25,10 +25,10 @@ test('Test construct properties', () => {
     requestMappingTemplate: 'my-request-vtl-template'
   });
 
-  expect(pattern.apiGateway !== null);
-  expect(pattern.apiGatewayRole !== null);
-  expect(pattern.apiGatewayCloudWatchRole !== null);
-  expect(pattern.apiGatewayLogGroup !== null);
+  expect(pattern.apiGateway).toBeDefined();
+  expect(pattern.apiGatewayRole).toBeDefined();
+  expect(pattern.apiGatewayCloudWatchRole).toBeDefined();
+  expect(pattern.apiGatewayLogGroup).toBeDefined();
 });
 
 test('Test deployment w/ overwritten properties', () => {
