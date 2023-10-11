@@ -124,13 +124,13 @@
           },
           "S3Key": "26cf7db64552331215006953bf73e5adfb49b5bf0eb2298bfe04547b76c08b88.zip"
         },
+        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "testroleB50A37BE",
             "Arn"
           ]
         },
-        "Handler": "index.handler",
         "Runtime": "nodejs16.x"
       },
       "DependsOn": [
@@ -155,9 +155,6 @@
     "testfnKinesisEventSourceexistingteststream96164F11F0EBC1A4": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
-        "FunctionName": {
-          "Ref": "testfn76BCC25C"
-        },
         "BatchSize": 1,
         "BisectBatchOnFunctionError": true,
         "DestinationConfig": {
@@ -175,6 +172,9 @@
             "teststream04374A09",
             "Arn"
           ]
+        },
+        "FunctionName": {
+          "Ref": "testfn76BCC25C"
         },
         "MaximumRecordAgeInSeconds": 86400,
         "MaximumRetryAttempts": 500,
@@ -274,9 +274,9 @@
     "testkslambdaKinesisStreamGetRecordsIteratorAgeAlarmD5DC1A73": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
         "MetricName": "GetRecords.IteratorAgeMilliseconds",
         "Namespace": "AWS/Kinesis",
         "Period": 300,
@@ -287,9 +287,9 @@
     "testkslambdaKinesisStreamReadProvisionedThroughputExceededAlarmFAEF1236": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
         "ComparisonOperator": "GreaterThanThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
         "MetricName": "ReadProvisionedThroughputExceeded",
         "Namespace": "AWS/Kinesis",
         "Period": 300,

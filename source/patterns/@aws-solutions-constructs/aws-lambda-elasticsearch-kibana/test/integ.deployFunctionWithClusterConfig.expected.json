@@ -139,12 +139,6 @@
           },
           "S3Key": "35bbbc7b04b21f225891f139adf234188f348ebad5f4bbc2c06edf8aa3784c97.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -157,6 +151,12 @@
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -242,9 +242,6 @@
     "testlambdaelasticsearchkibana5CognitoUserPoolClientB41FB91B": {
       "Type": "AWS::Cognito::UserPoolClient",
       "Properties": {
-        "UserPoolId": {
-          "Ref": "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0"
-        },
         "AllowedOAuthFlows": [
           "implicit",
           "code"
@@ -262,7 +259,10 @@
         ],
         "SupportedIdentityProviders": [
           "COGNITO"
-        ]
+        ],
+        "UserPoolId": {
+          "Ref": "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0"
+        }
       }
     },
     "testlambdaelasticsearchkibana5CognitoIdentityPool1B0A6046": {
@@ -618,9 +618,9 @@
     "testlambdaelasticsearchkibana5StatusRedAlarm916EC672": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "At least one primary shard and its replicas are not allocated to a node. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "At least one primary shard and its replicas are not allocated to a node. ",
         "MetricName": "ClusterStatus.red",
         "Namespace": "AWS/ES",
         "Period": 60,
@@ -631,9 +631,9 @@
     "testlambdaelasticsearchkibana5StatusYellowAlarm7DCAF60A": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "At least one replica shard is not allocated to a node.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "At least one replica shard is not allocated to a node.",
         "MetricName": "ClusterStatus.yellow",
         "Namespace": "AWS/ES",
         "Period": 60,
@@ -644,9 +644,9 @@
     "testlambdaelasticsearchkibana5FreeStorageSpaceTooLowAlarmEC2C0D7B": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "A node in your cluster is down to 20 GiB of free storage space.",
         "ComparisonOperator": "LessThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "A node in your cluster is down to 20 GiB of free storage space.",
         "MetricName": "FreeStorageSpace",
         "Namespace": "AWS/ES",
         "Period": 60,
@@ -657,9 +657,9 @@
     "testlambdaelasticsearchkibana5IndexWritesBlockedTooHighAlarmD496CE3E": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Your cluster is blocking write requests.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Your cluster is blocking write requests.",
         "MetricName": "ClusterIndexWritesBlocked",
         "Namespace": "AWS/ES",
         "Period": 300,
@@ -670,9 +670,9 @@
     "testlambdaelasticsearchkibana5AutomatedSnapshotFailureTooHighAlarm97129BC4": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "An automated snapshot failed. This failure is often the result of a red cluster health status.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "An automated snapshot failed. This failure is often the result of a red cluster health status.",
         "MetricName": "AutomatedSnapshotFailure",
         "Namespace": "AWS/ES",
         "Period": 60,
@@ -683,9 +683,9 @@
     "testlambdaelasticsearchkibana5CPUUtilizationTooHighAlarm3BAAA397": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "100% CPU utilization is not uncommon, but sustained high usage is problematic. Consider using larger instance types or adding instances.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 3,
-        "AlarmDescription": "100% CPU utilization is not uncommon, but sustained high usage is problematic. Consider using larger instance types or adding instances.",
         "MetricName": "CPUUtilization",
         "Namespace": "AWS/ES",
         "Period": 900,
@@ -696,9 +696,9 @@
     "testlambdaelasticsearchkibana5JVMMemoryPressureTooHighAlarm251AD583": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "MetricName": "JVMMemoryPressure",
         "Namespace": "AWS/ES",
         "Period": 900,
@@ -709,9 +709,9 @@
     "testlambdaelasticsearchkibana5MasterCPUUtilizationTooHighAlarm97A330CC": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Average CPU utilization over last 45 minutes too high. Consider using larger instance types for your dedicated master nodes.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 3,
-        "AlarmDescription": "Average CPU utilization over last 45 minutes too high. Consider using larger instance types for your dedicated master nodes.",
         "MetricName": "MasterCPUUtilization",
         "Namespace": "AWS/ES",
         "Period": 900,
@@ -722,9 +722,9 @@
     "testlambdaelasticsearchkibana5MasterJVMMemoryPressureTooHighAlarm7DABB351": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "MetricName": "MasterJVMMemoryPressure",
         "Namespace": "AWS/ES",
         "Period": 900,
@@ -750,9 +750,6 @@
     "VpcisolatedSubnet1SubnetE62B1B9B": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1a",
         "CidrBlock": "10.0.0.0/18",
         "MapPublicIpOnLaunch": false,
@@ -769,21 +766,24 @@
             "Key": "Name",
             "Value": "deployFunctionWithClusterConfig/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableE442650B": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployFunctionWithClusterConfig/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableAssociationD259E31A": {
@@ -800,9 +800,6 @@
     "VpcisolatedSubnet2Subnet39217055": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1b",
         "CidrBlock": "10.0.64.0/18",
         "MapPublicIpOnLaunch": false,
@@ -819,21 +816,24 @@
             "Key": "Name",
             "Value": "deployFunctionWithClusterConfig/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTable334F9764": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployFunctionWithClusterConfig/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTableAssociation25A4716F": {
@@ -865,7 +865,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployFunctionWithClusterConfig/Vpc"
+            "Value": "deployFunctionWithClusterConfig/Vpc/FlowLog"
           }
         ]
       }
@@ -917,7 +917,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployFunctionWithClusterConfig/Vpc"
+            "Value": "deployFunctionWithClusterConfig/Vpc/FlowLog"
           }
         ]
       },
@@ -937,10 +937,6 @@
     "VpcFlowLog8FF33A73": {
       "Type": "AWS::EC2::FlowLog",
       "Properties": {
-        "ResourceId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "ResourceType": "VPC",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -951,10 +947,14 @@
         "LogGroupName": {
           "Ref": "VpcFlowLogLogGroup7B5C56B9"
         },
+        "ResourceId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "ResourceType": "VPC",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployFunctionWithClusterConfig/Vpc"
+            "Value": "deployFunctionWithClusterConfig/Vpc/FlowLog"
           }
         ],
         "TrafficType": "ALL"

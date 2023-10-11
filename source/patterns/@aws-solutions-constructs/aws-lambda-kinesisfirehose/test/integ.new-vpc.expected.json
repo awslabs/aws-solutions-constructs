@@ -550,18 +550,18 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "350185a1069fa20a23a583e20c77f6844218bd73097902362dc94f1a108f5d89.zip"
+          "S3Key": "5194f926380567b6fdffc61629afdad2afc818614cb227df45e499c69db163a7.zip"
         },
         "Timeout": 900,
         "MemorySize": 128,
-        "Handler": "__entrypoint__.handler",
+        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
             "Arn"
           ]
         },
-        "Runtime": "nodejs16.x",
+        "Runtime": "nodejs18.x",
         "Description": {
           "Fn::Join": [
             "",
@@ -751,18 +751,18 @@
           },
           "S3Key": "e223396f670e1c26b56c83fd2179ab8672928b9795821c6a437874a06625eb53.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testconstructLambdaFunctionServiceRole435FDF6F",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "FIREHOSE_DELIVERYSTREAM_NAME": "KinesisFirehosenewvpcdestinationfirehoseEC1F5A2C"
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testconstructLambdaFunctionServiceRole435FDF6F",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs18.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -833,9 +833,6 @@
     "VpcisolatedSubnet1SubnetE62B1B9B": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1a",
         "CidrBlock": "10.100.0.0/18",
         "MapPublicIpOnLaunch": false,
@@ -852,21 +849,24 @@
             "Key": "Name",
             "Value": "new-vpc/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableE442650B": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "new-vpc/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableAssociationD259E31A": {
@@ -883,9 +883,6 @@
     "VpcisolatedSubnet2Subnet39217055": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1b",
         "CidrBlock": "10.100.64.0/18",
         "MapPublicIpOnLaunch": false,
@@ -902,21 +899,24 @@
             "Key": "Name",
             "Value": "new-vpc/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTable334F9764": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "new-vpc/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTableAssociation25A4716F": {
@@ -933,9 +933,6 @@
     "VpcisolatedSubnet3Subnet44F2537D": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1c",
         "CidrBlock": "10.100.128.0/18",
         "MapPublicIpOnLaunch": false,
@@ -952,21 +949,24 @@
             "Key": "Name",
             "Value": "new-vpc/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet3RouteTableA2F6BBC0": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "new-vpc/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet3RouteTableAssociationDC010BEB": {
@@ -998,7 +998,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "new-vpc/Vpc"
+            "Value": "new-vpc/Vpc/FlowLog"
           }
         ]
       }
@@ -1050,7 +1050,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "new-vpc/Vpc"
+            "Value": "new-vpc/Vpc/FlowLog"
           }
         ]
       },
@@ -1070,10 +1070,6 @@
     "VpcFlowLog8FF33A73": {
       "Type": "AWS::EC2::FlowLog",
       "Properties": {
-        "ResourceId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "ResourceType": "VPC",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -1084,10 +1080,14 @@
         "LogGroupName": {
           "Ref": "VpcFlowLogLogGroup7B5C56B9"
         },
+        "ResourceId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "ResourceType": "VPC",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "new-vpc/Vpc"
+            "Value": "new-vpc/Vpc/FlowLog"
           }
         ],
         "TrafficType": "ALL"
@@ -1096,6 +1096,15 @@
     "VpcKINESISFIREHOSE4115B5D1": {
       "Type": "AWS::EC2::VPCEndpoint",
       "Properties": {
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "newvpcKINESISFIREHOSEsecuritygroup3F345517",
+              "GroupId"
+            ]
+          }
+        ],
         "ServiceName": {
           "Fn::Join": [
             "",
@@ -1108,18 +1117,6 @@
             ]
           ]
         },
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "PrivateDnsEnabled": true,
-        "SecurityGroupIds": [
-          {
-            "Fn::GetAtt": [
-              "newvpcKINESISFIREHOSEsecuritygroup3F345517",
-              "GroupId"
-            ]
-          }
-        ],
         "SubnetIds": [
           {
             "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
@@ -1131,7 +1128,10 @@
             "Ref": "VpcisolatedSubnet3Subnet44F2537D"
           }
         ],
-        "VpcEndpointType": "Interface"
+        "VpcEndpointType": "Interface",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "newvpcKINESISFIREHOSEsecuritygroup3F345517": {
@@ -1190,109 +1190,6 @@
             }
           ]
         }
-      }
-    }
-  },
-  "Mappings": {
-    "DefaultCrNodeVersionMap": {
-      "af-south-1": {
-        "value": "nodejs16.x"
-      },
-      "ap-east-1": {
-        "value": "nodejs16.x"
-      },
-      "ap-northeast-1": {
-        "value": "nodejs16.x"
-      },
-      "ap-northeast-2": {
-        "value": "nodejs16.x"
-      },
-      "ap-northeast-3": {
-        "value": "nodejs16.x"
-      },
-      "ap-south-1": {
-        "value": "nodejs16.x"
-      },
-      "ap-south-2": {
-        "value": "nodejs16.x"
-      },
-      "ap-southeast-1": {
-        "value": "nodejs16.x"
-      },
-      "ap-southeast-2": {
-        "value": "nodejs16.x"
-      },
-      "ap-southeast-3": {
-        "value": "nodejs16.x"
-      },
-      "ca-central-1": {
-        "value": "nodejs16.x"
-      },
-      "cn-north-1": {
-        "value": "nodejs16.x"
-      },
-      "cn-northwest-1": {
-        "value": "nodejs16.x"
-      },
-      "eu-central-1": {
-        "value": "nodejs16.x"
-      },
-      "eu-central-2": {
-        "value": "nodejs16.x"
-      },
-      "eu-north-1": {
-        "value": "nodejs16.x"
-      },
-      "eu-south-1": {
-        "value": "nodejs16.x"
-      },
-      "eu-south-2": {
-        "value": "nodejs16.x"
-      },
-      "eu-west-1": {
-        "value": "nodejs16.x"
-      },
-      "eu-west-2": {
-        "value": "nodejs16.x"
-      },
-      "eu-west-3": {
-        "value": "nodejs16.x"
-      },
-      "me-central-1": {
-        "value": "nodejs16.x"
-      },
-      "me-south-1": {
-        "value": "nodejs16.x"
-      },
-      "sa-east-1": {
-        "value": "nodejs16.x"
-      },
-      "us-east-1": {
-        "value": "nodejs16.x"
-      },
-      "us-east-2": {
-        "value": "nodejs16.x"
-      },
-      "us-gov-east-1": {
-        "value": "nodejs16.x"
-      },
-      "us-gov-west-1": {
-        "value": "nodejs16.x"
-      },
-      "us-iso-east-1": {
-        "value": "nodejs14.x"
-      },
-      "us-iso-west-1": {
-        "value": "nodejs14.x"
-      },
-      "us-isob-east-1": {
-        "value": "nodejs14.x"
-      },
-      "us-west-1": {
-        "value": "nodejs16.x"
-      },
-      "us-west-2": {
-        "value": "nodejs16.x"
       }
     }
   },

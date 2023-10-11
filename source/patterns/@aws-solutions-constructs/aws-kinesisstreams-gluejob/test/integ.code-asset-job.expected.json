@@ -422,12 +422,6 @@
             "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fbf0b12f00bc09401fb04a361c549193f18f6fa7df4d304c5bfab7ace478b340.py"
           }
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testkinesisstreamslambdaJobRole42199B9C",
-            "Arn"
-          ]
-        },
         "DefaultArguments": {
           "--enable-metrics": true,
           "--enable-continuous-cloudwatch-log": true,
@@ -452,6 +446,12 @@
         },
         "GlueVersion": "2.0",
         "NumberOfWorkers": 2,
+        "Role": {
+          "Fn::GetAtt": [
+            "testkinesisstreamslambdaJobRole42199B9C",
+            "Arn"
+          ]
+        },
         "SecurityConfiguration": "ETLJobSecurityConfig",
         "WorkerType": "G.1X"
       }
@@ -459,9 +459,9 @@
     "testkinesisstreamslambdaKinesisStreamGetRecordsIteratorAgeAlarmFB74C363": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
         "MetricName": "GetRecords.IteratorAgeMilliseconds",
         "Namespace": "AWS/Kinesis",
         "Period": 300,
@@ -472,9 +472,9 @@
     "testkinesisstreamslambdaKinesisStreamReadProvisionedThroughputExceededAlarm5ABF4346": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
         "ComparisonOperator": "GreaterThanThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
         "MetricName": "ReadProvisionedThroughputExceeded",
         "Namespace": "AWS/Kinesis",
         "Period": 300,

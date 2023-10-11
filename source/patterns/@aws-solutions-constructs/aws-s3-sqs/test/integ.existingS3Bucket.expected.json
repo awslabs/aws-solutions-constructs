@@ -180,7 +180,7 @@
         },
         "Timeout": 900,
         "MemorySize": 128,
-        "Handler": "__entrypoint__.handler",
+        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",

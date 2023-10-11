@@ -98,18 +98,18 @@
           },
           "S3Key": "42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "LambdaFunctionServiceRole0C4CDE0B",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaFunctionServiceRole0C4CDE0B",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -279,17 +279,11 @@
     "testeventbridgestepfunctionsandlambdaconstructStateMachineACD2232F": {
       "Type": "AWS::StepFunctions::StateMachine",
       "Properties": {
-        "RoleArn": {
-          "Fn::GetAtt": [
-            "testeventbridgestepfunctionsandlambdaconstructStateMachineRoleD7589F39",
-            "Arn"
-          ]
-        },
         "DefinitionString": {
           "Fn::Join": [
             "",
             [
-              "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"Next\":\"LambdaTask\"},\"LambdaTask\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+              "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"Next\":\"LambdaTask\"},\"LambdaTask\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ClientExecutionTimeoutException\",\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
               {
                 "Ref": "AWS::Partition"
               },
@@ -318,6 +312,12 @@
             }
           ],
           "Level": "ERROR"
+        },
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "testeventbridgestepfunctionsandlambdaconstructStateMachineRoleD7589F39",
+            "Arn"
+          ]
         }
       },
       "DependsOn": [
@@ -391,9 +391,8 @@
     "testeventbridgestepfunctionsandlambdaconstructExecutionFailedAlarm61E476BC": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
-        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
-        "EvaluationPeriods": 1,
         "AlarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "Dimensions": [
           {
             "Name": "StateMachineArn",
@@ -402,6 +401,7 @@
             }
           }
         ],
+        "EvaluationPeriods": 1,
         "MetricName": "ExecutionsFailed",
         "Namespace": "AWS/States",
         "Period": 300,
@@ -412,9 +412,8 @@
     "testeventbridgestepfunctionsandlambdaconstructExecutionThrottledAlarm70141701": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
-        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
-        "EvaluationPeriods": 1,
         "AlarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "Dimensions": [
           {
             "Name": "StateMachineArn",
@@ -423,6 +422,7 @@
             }
           }
         ],
+        "EvaluationPeriods": 1,
         "MetricName": "ExecutionThrottled",
         "Namespace": "AWS/States",
         "Period": 300,
@@ -433,9 +433,8 @@
     "testeventbridgestepfunctionsandlambdaconstructExecutionAbortedAlarm8E79E87E": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
-        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
-        "EvaluationPeriods": 1,
         "AlarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "Dimensions": [
           {
             "Name": "StateMachineArn",
@@ -444,6 +443,7 @@
             }
           }
         ],
+        "EvaluationPeriods": 1,
         "MetricName": "ExecutionsAborted",
         "Namespace": "AWS/States",
         "Period": 300,
@@ -484,6 +484,9 @@
       "ap-southeast-3": {
         "states": "states.ap-southeast-3.amazonaws.com"
       },
+      "ap-southeast-4": {
+        "states": "states.ap-southeast-4.amazonaws.com"
+      },
       "ca-central-1": {
         "states": "states.ca-central-1.amazonaws.com"
       },
@@ -516,6 +519,9 @@
       },
       "eu-west-3": {
         "states": "states.eu-west-3.amazonaws.com"
+      },
+      "il-central-1": {
+        "states": "states.il-central-1.amazonaws.com"
       },
       "me-central-1": {
         "states": "states.me-central-1.amazonaws.com"

@@ -19,9 +19,6 @@
     "VpcisolatedSubnet1SubnetE62B1B9B": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1a",
         "CidrBlock": "172.168.0.0/18",
         "MapPublicIpOnLaunch": false,
@@ -38,21 +35,24 @@
             "Key": "Name",
             "Value": "existingResources/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableE442650B": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "existingResources/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableAssociationD259E31A": {
@@ -69,9 +69,6 @@
     "VpcisolatedSubnet2Subnet39217055": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1b",
         "CidrBlock": "172.168.64.0/18",
         "MapPublicIpOnLaunch": false,
@@ -88,21 +85,24 @@
             "Key": "Name",
             "Value": "existingResources/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTable334F9764": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "existingResources/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTableAssociation25A4716F": {
@@ -119,9 +119,6 @@
     "VpcisolatedSubnet3Subnet44F2537D": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1c",
         "CidrBlock": "172.168.128.0/18",
         "MapPublicIpOnLaunch": false,
@@ -138,21 +135,24 @@
             "Key": "Name",
             "Value": "existingResources/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet3RouteTableA2F6BBC0": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "existingResources/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet3RouteTableAssociationDC010BEB": {
@@ -184,7 +184,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "existingResources/Vpc"
+            "Value": "existingResources/Vpc/FlowLog"
           }
         ]
       }
@@ -236,7 +236,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "existingResources/Vpc"
+            "Value": "existingResources/Vpc/FlowLog"
           }
         ]
       },
@@ -256,11 +256,6 @@
     "VpcFlowLog8FF33A73": {
       "Type": "AWS::EC2::FlowLog",
       "Properties": {
-        "ResourceId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "ResourceType": "VPC",
-        "TrafficType": "ALL",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -271,12 +266,17 @@
         "LogGroupName": {
           "Ref": "VpcFlowLogLogGroup7B5C56B9"
         },
+        "ResourceId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "ResourceType": "VPC",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "existingResources/Vpc"
+            "Value": "existingResources/Vpc/FlowLog"
           }
-        ]
+        ],
+        "TrafficType": "ALL"
       }
     },
     "testsgsecuritygroup89DCF621": {
@@ -366,12 +366,6 @@
           },
           "S3Key": "c1b23d6af38c04acb744bda25a3dc7f4394daea942c67eaff40911a707a3c37a.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testfunctionServiceRoleFB85AD63",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "CACHE_ENDPOINT": {
@@ -397,6 +391,12 @@
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testfunctionServiceRoleFB85AD63",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "VpcConfig": {
           "SecurityGroupIds": [
@@ -450,6 +450,7 @@
     "ecsubnetgrouptestcache": {
       "Type": "AWS::ElastiCache::SubnetGroup",
       "Properties": {
+        "CacheSubnetGroupName": "test-cache-subnet-group",
         "Description": "Solutions Constructs generated Cache Subnet Group",
         "SubnetIds": [
           {
@@ -461,8 +462,7 @@
           {
             "Ref": "VpcisolatedSubnet3Subnet44F2537D"
           }
-        ],
-        "CacheSubnetGroupName": "test-cache-subnet-group"
+        ]
       }
     },
     "testcachecachesg7265880E": {
@@ -502,12 +502,12 @@
     "testcachecluster": {
       "Type": "AWS::ElastiCache::CacheCluster",
       "Properties": {
-        "CacheNodeType": "cache.t3.medium",
-        "Engine": "memcached",
-        "NumCacheNodes": 2,
         "AZMode": "cross-az",
+        "CacheNodeType": "cache.t3.medium",
         "CacheSubnetGroupName": "test-cache-subnet-group",
         "ClusterName": "test-cache-cdk-cluster",
+        "Engine": "memcached",
+        "NumCacheNodes": 2,
         "Port": 11222,
         "VpcSecurityGroupIds": [
           {
@@ -561,7 +561,6 @@
     "testtestingress291C0179": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
-        "IpProtocol": "TCP",
         "Description": "Self referencing rule to control access to Elasticache memcached cluster",
         "FromPort": {
           "Fn::GetAtt": [
@@ -575,6 +574,7 @@
             "GroupId"
           ]
         },
+        "IpProtocol": "TCP",
         "SourceSecurityGroupId": {
           "Fn::GetAtt": [
             "testtestcachesg9F6CF9E2",

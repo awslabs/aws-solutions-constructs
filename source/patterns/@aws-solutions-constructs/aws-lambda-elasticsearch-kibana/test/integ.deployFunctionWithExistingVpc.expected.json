@@ -18,9 +18,6 @@
     "VpcPublicSubnet1Subnet5C2D37C4": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1a",
         "CidrBlock": "172.168.0.0/19",
         "MapPublicIpOnLaunch": true,
@@ -37,7 +34,10 @@
             "Key": "Name",
             "Value": "deployFunctionWithExistingVpc/Vpc/PublicSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       },
       "Metadata": {
         "cfn_nag": {
@@ -53,15 +53,15 @@
     "VpcPublicSubnet1RouteTable6C95E38E": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployFunctionWithExistingVpc/Vpc/PublicSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPublicSubnet1RouteTableAssociation97140677": {
@@ -78,12 +78,12 @@
     "VpcPublicSubnet1DefaultRoute3DA9E72A": {
       "Type": "AWS::EC2::Route",
       "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPublicSubnet1RouteTable6C95E38E"
-        },
         "DestinationCidrBlock": "0.0.0.0/0",
         "GatewayId": {
           "Ref": "VpcIGWD7BA715C"
+        },
+        "RouteTableId": {
+          "Ref": "VpcPublicSubnet1RouteTable6C95E38E"
         }
       },
       "DependsOn": [
@@ -105,14 +105,14 @@
     "VpcPublicSubnet1NATGateway4D7517AA": {
       "Type": "AWS::EC2::NatGateway",
       "Properties": {
-        "SubnetId": {
-          "Ref": "VpcPublicSubnet1Subnet5C2D37C4"
-        },
         "AllocationId": {
           "Fn::GetAtt": [
             "VpcPublicSubnet1EIPD7E02669",
             "AllocationId"
           ]
+        },
+        "SubnetId": {
+          "Ref": "VpcPublicSubnet1Subnet5C2D37C4"
         },
         "Tags": [
           {
@@ -129,9 +129,6 @@
     "VpcPublicSubnet2Subnet691E08A3": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1b",
         "CidrBlock": "172.168.32.0/19",
         "MapPublicIpOnLaunch": true,
@@ -148,7 +145,10 @@
             "Key": "Name",
             "Value": "deployFunctionWithExistingVpc/Vpc/PublicSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       },
       "Metadata": {
         "cfn_nag": {
@@ -164,15 +164,15 @@
     "VpcPublicSubnet2RouteTable94F7E489": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployFunctionWithExistingVpc/Vpc/PublicSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPublicSubnet2RouteTableAssociationDD5762D8": {
@@ -189,12 +189,12 @@
     "VpcPublicSubnet2DefaultRoute97F91067": {
       "Type": "AWS::EC2::Route",
       "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPublicSubnet2RouteTable94F7E489"
-        },
         "DestinationCidrBlock": "0.0.0.0/0",
         "GatewayId": {
           "Ref": "VpcIGWD7BA715C"
+        },
+        "RouteTableId": {
+          "Ref": "VpcPublicSubnet2RouteTable94F7E489"
         }
       },
       "DependsOn": [
@@ -216,14 +216,14 @@
     "VpcPublicSubnet2NATGateway9182C01D": {
       "Type": "AWS::EC2::NatGateway",
       "Properties": {
-        "SubnetId": {
-          "Ref": "VpcPublicSubnet2Subnet691E08A3"
-        },
         "AllocationId": {
           "Fn::GetAtt": [
             "VpcPublicSubnet2EIP3C605A87",
             "AllocationId"
           ]
+        },
+        "SubnetId": {
+          "Ref": "VpcPublicSubnet2Subnet691E08A3"
         },
         "Tags": [
           {
@@ -240,9 +240,6 @@
     "VpcPublicSubnet3SubnetBE12F0B6": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1c",
         "CidrBlock": "172.168.64.0/19",
         "MapPublicIpOnLaunch": true,
@@ -259,7 +256,10 @@
             "Key": "Name",
             "Value": "deployFunctionWithExistingVpc/Vpc/PublicSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       },
       "Metadata": {
         "cfn_nag": {
@@ -275,15 +275,15 @@
     "VpcPublicSubnet3RouteTable93458DBB": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployFunctionWithExistingVpc/Vpc/PublicSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPublicSubnet3RouteTableAssociation1F1EDF02": {
@@ -300,12 +300,12 @@
     "VpcPublicSubnet3DefaultRoute4697774F": {
       "Type": "AWS::EC2::Route",
       "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPublicSubnet3RouteTable93458DBB"
-        },
         "DestinationCidrBlock": "0.0.0.0/0",
         "GatewayId": {
           "Ref": "VpcIGWD7BA715C"
+        },
+        "RouteTableId": {
+          "Ref": "VpcPublicSubnet3RouteTable93458DBB"
         }
       },
       "DependsOn": [
@@ -327,14 +327,14 @@
     "VpcPublicSubnet3NATGateway7640CD1D": {
       "Type": "AWS::EC2::NatGateway",
       "Properties": {
-        "SubnetId": {
-          "Ref": "VpcPublicSubnet3SubnetBE12F0B6"
-        },
         "AllocationId": {
           "Fn::GetAtt": [
             "VpcPublicSubnet3EIP3A666A23",
             "AllocationId"
           ]
+        },
+        "SubnetId": {
+          "Ref": "VpcPublicSubnet3SubnetBE12F0B6"
         },
         "Tags": [
           {
@@ -351,9 +351,6 @@
     "VpcPrivateSubnet1Subnet536B997A": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1a",
         "CidrBlock": "172.168.96.0/19",
         "MapPublicIpOnLaunch": false,
@@ -370,21 +367,24 @@
             "Key": "Name",
             "Value": "deployFunctionWithExistingVpc/Vpc/PrivateSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPrivateSubnet1RouteTableB2C5B500": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployFunctionWithExistingVpc/Vpc/PrivateSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPrivateSubnet1RouteTableAssociation70C59FA6": {
@@ -401,21 +401,18 @@
     "VpcPrivateSubnet1DefaultRouteBE02A9ED": {
       "Type": "AWS::EC2::Route",
       "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPrivateSubnet1RouteTableB2C5B500"
-        },
         "DestinationCidrBlock": "0.0.0.0/0",
         "NatGatewayId": {
           "Ref": "VpcPublicSubnet1NATGateway4D7517AA"
+        },
+        "RouteTableId": {
+          "Ref": "VpcPrivateSubnet1RouteTableB2C5B500"
         }
       }
     },
     "VpcPrivateSubnet2Subnet3788AAA1": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1b",
         "CidrBlock": "172.168.128.0/19",
         "MapPublicIpOnLaunch": false,
@@ -432,21 +429,24 @@
             "Key": "Name",
             "Value": "deployFunctionWithExistingVpc/Vpc/PrivateSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPrivateSubnet2RouteTableA678073B": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployFunctionWithExistingVpc/Vpc/PrivateSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPrivateSubnet2RouteTableAssociationA89CAD56": {
@@ -463,21 +463,18 @@
     "VpcPrivateSubnet2DefaultRoute060D2087": {
       "Type": "AWS::EC2::Route",
       "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPrivateSubnet2RouteTableA678073B"
-        },
         "DestinationCidrBlock": "0.0.0.0/0",
         "NatGatewayId": {
           "Ref": "VpcPublicSubnet2NATGateway9182C01D"
+        },
+        "RouteTableId": {
+          "Ref": "VpcPrivateSubnet2RouteTableA678073B"
         }
       }
     },
     "VpcPrivateSubnet3SubnetF258B56E": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1c",
         "CidrBlock": "172.168.160.0/19",
         "MapPublicIpOnLaunch": false,
@@ -494,21 +491,24 @@
             "Key": "Name",
             "Value": "deployFunctionWithExistingVpc/Vpc/PrivateSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPrivateSubnet3RouteTableD98824C7": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployFunctionWithExistingVpc/Vpc/PrivateSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPrivateSubnet3RouteTableAssociation16BDDC43": {
@@ -525,12 +525,12 @@
     "VpcPrivateSubnet3DefaultRoute94B74F0D": {
       "Type": "AWS::EC2::Route",
       "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPrivateSubnet3RouteTableD98824C7"
-        },
         "DestinationCidrBlock": "0.0.0.0/0",
         "NatGatewayId": {
           "Ref": "VpcPublicSubnet3NATGateway7640CD1D"
+        },
+        "RouteTableId": {
+          "Ref": "VpcPrivateSubnet3RouteTableD98824C7"
         }
       }
     },
@@ -548,11 +548,11 @@
     "VpcVPCGWBF912B6E": {
       "Type": "AWS::EC2::VPCGatewayAttachment",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "InternetGatewayId": {
           "Ref": "VpcIGWD7BA715C"
+        },
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
         }
       }
     },
@@ -574,7 +574,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployFunctionWithExistingVpc/Vpc"
+            "Value": "deployFunctionWithExistingVpc/Vpc/FlowLog"
           }
         ]
       }
@@ -626,7 +626,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployFunctionWithExistingVpc/Vpc"
+            "Value": "deployFunctionWithExistingVpc/Vpc/FlowLog"
           }
         ]
       },
@@ -646,10 +646,6 @@
     "VpcFlowLog8FF33A73": {
       "Type": "AWS::EC2::FlowLog",
       "Properties": {
-        "ResourceId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "ResourceType": "VPC",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -660,10 +656,14 @@
         "LogGroupName": {
           "Ref": "VpcFlowLogLogGroup7B5C56B9"
         },
+        "ResourceId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "ResourceType": "VPC",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployFunctionWithExistingVpc/Vpc"
+            "Value": "deployFunctionWithExistingVpc/Vpc/FlowLog"
           }
         ],
         "TrafficType": "ALL"
@@ -806,12 +806,6 @@
           "S3Bucket": "cdk-hnb659fds-assets-12345678-test-region",
           "S3Key": "35bbbc7b04b21f225891f139adf234188f348ebad5f4bbc2c06edf8aa3784c97.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testlambdaelasticsearchkibana4LambdaFunctionServiceRoleA52BB7F9",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -824,6 +818,12 @@
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testlambdaelasticsearchkibana4LambdaFunctionServiceRoleA52BB7F9",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -916,9 +916,6 @@
     "testlambdaelasticsearchkibana4CognitoUserPoolClientABBF34C4": {
       "Type": "AWS::Cognito::UserPoolClient",
       "Properties": {
-        "UserPoolId": {
-          "Ref": "testlambdaelasticsearchkibana4CognitoUserPool37A5CDE1"
-        },
         "AllowedOAuthFlows": [
           "implicit",
           "code"
@@ -936,7 +933,10 @@
         ],
         "SupportedIdentityProviders": [
           "COGNITO"
-        ]
+        ],
+        "UserPoolId": {
+          "Ref": "testlambdaelasticsearchkibana4CognitoUserPool37A5CDE1"
+        }
       }
     },
     "testlambdaelasticsearchkibana4CognitoIdentityPool76EE9793": {
@@ -1295,9 +1295,9 @@
     "testlambdaelasticsearchkibana4StatusRedAlarm56DEE5C7": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "At least one primary shard and its replicas are not allocated to a node. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "At least one primary shard and its replicas are not allocated to a node. ",
         "MetricName": "ClusterStatus.red",
         "Namespace": "AWS/ES",
         "Period": 60,
@@ -1308,9 +1308,9 @@
     "testlambdaelasticsearchkibana4StatusYellowAlarm810B4F9E": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "At least one replica shard is not allocated to a node.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "At least one replica shard is not allocated to a node.",
         "MetricName": "ClusterStatus.yellow",
         "Namespace": "AWS/ES",
         "Period": 60,
@@ -1321,9 +1321,9 @@
     "testlambdaelasticsearchkibana4FreeStorageSpaceTooLowAlarmF3FB31EA": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "A node in your cluster is down to 20 GiB of free storage space.",
         "ComparisonOperator": "LessThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "A node in your cluster is down to 20 GiB of free storage space.",
         "MetricName": "FreeStorageSpace",
         "Namespace": "AWS/ES",
         "Period": 60,
@@ -1334,9 +1334,9 @@
     "testlambdaelasticsearchkibana4IndexWritesBlockedTooHighAlarmF2968C92": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Your cluster is blocking write requests.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Your cluster is blocking write requests.",
         "MetricName": "ClusterIndexWritesBlocked",
         "Namespace": "AWS/ES",
         "Period": 300,
@@ -1347,9 +1347,9 @@
     "testlambdaelasticsearchkibana4AutomatedSnapshotFailureTooHighAlarm53EB1ABB": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "An automated snapshot failed. This failure is often the result of a red cluster health status.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "An automated snapshot failed. This failure is often the result of a red cluster health status.",
         "MetricName": "AutomatedSnapshotFailure",
         "Namespace": "AWS/ES",
         "Period": 60,
@@ -1360,9 +1360,9 @@
     "testlambdaelasticsearchkibana4CPUUtilizationTooHighAlarm29B67D10": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "100% CPU utilization is not uncommon, but sustained high usage is problematic. Consider using larger instance types or adding instances.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 3,
-        "AlarmDescription": "100% CPU utilization is not uncommon, but sustained high usage is problematic. Consider using larger instance types or adding instances.",
         "MetricName": "CPUUtilization",
         "Namespace": "AWS/ES",
         "Period": 900,
@@ -1373,9 +1373,9 @@
     "testlambdaelasticsearchkibana4JVMMemoryPressureTooHighAlarm9DDED711": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "MetricName": "JVMMemoryPressure",
         "Namespace": "AWS/ES",
         "Period": 900,
@@ -1386,9 +1386,9 @@
     "testlambdaelasticsearchkibana4MasterCPUUtilizationTooHighAlarmE66867F2": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Average CPU utilization over last 45 minutes too high. Consider using larger instance types for your dedicated master nodes.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 3,
-        "AlarmDescription": "Average CPU utilization over last 45 minutes too high. Consider using larger instance types for your dedicated master nodes.",
         "MetricName": "MasterCPUUtilization",
         "Namespace": "AWS/ES",
         "Period": 900,
@@ -1399,9 +1399,9 @@
     "testlambdaelasticsearchkibana4MasterJVMMemoryPressureTooHighAlarm83E1822E": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "MetricName": "MasterJVMMemoryPressure",
         "Namespace": "AWS/ES",
         "Period": 900,

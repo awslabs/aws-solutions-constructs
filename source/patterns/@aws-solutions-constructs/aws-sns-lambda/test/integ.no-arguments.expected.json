@@ -99,18 +99,18 @@
           },
           "S3Key": "0c3255e93ffe7a906c7422e9f0e9cc4c7fd86ee996ee3bb302e2f134b38463c8.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testsnslambdaLambdaFunctionServiceRole23794781",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testsnslambdaLambdaFunctionServiceRole23794781",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -158,15 +158,15 @@
     "testsnslambdaLambdaFunctionSnsTopic9C14F333": {
       "Type": "AWS::SNS::Subscription",
       "Properties": {
-        "Protocol": "lambda",
-        "TopicArn": {
-          "Ref": "testsnslambdaSnsTopic52CA159E"
-        },
         "Endpoint": {
           "Fn::GetAtt": [
             "testsnslambdaLambdaFunctionEE9A249B",
             "Arn"
           ]
+        },
+        "Protocol": "lambda",
+        "TopicArn": {
+          "Ref": "testsnslambdaSnsTopic52CA159E"
         }
       }
     },

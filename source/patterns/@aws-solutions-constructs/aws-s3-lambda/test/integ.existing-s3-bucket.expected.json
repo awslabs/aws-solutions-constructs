@@ -197,18 +197,18 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "350185a1069fa20a23a583e20c77f6844218bd73097902362dc94f1a108f5d89.zip"
+          "S3Key": "5194f926380567b6fdffc61629afdad2afc818614cb227df45e499c69db163a7.zip"
         },
         "Timeout": 900,
         "MemorySize": 128,
-        "Handler": "__entrypoint__.handler",
+        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
             "Arn"
           ]
         },
-        "Runtime": "nodejs16.x",
+        "Runtime": "nodejs18.x",
         "Description": {
           "Fn::Join": [
             "",
@@ -342,18 +342,18 @@
           },
           "S3Key": "0c3255e93ffe7a906c7422e9f0e9cc4c7fd86ee996ee3bb302e2f134b38463c8.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "tests3lambdaLambdaFunctionServiceRoleA74F4427",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "tests3lambdaLambdaFunctionServiceRoleA74F4427",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -482,109 +482,6 @@
             }
           ]
         }
-      }
-    }
-  },
-  "Mappings": {
-    "DefaultCrNodeVersionMap": {
-      "af-south-1": {
-        "value": "nodejs16.x"
-      },
-      "ap-east-1": {
-        "value": "nodejs16.x"
-      },
-      "ap-northeast-1": {
-        "value": "nodejs16.x"
-      },
-      "ap-northeast-2": {
-        "value": "nodejs16.x"
-      },
-      "ap-northeast-3": {
-        "value": "nodejs16.x"
-      },
-      "ap-south-1": {
-        "value": "nodejs16.x"
-      },
-      "ap-south-2": {
-        "value": "nodejs16.x"
-      },
-      "ap-southeast-1": {
-        "value": "nodejs16.x"
-      },
-      "ap-southeast-2": {
-        "value": "nodejs16.x"
-      },
-      "ap-southeast-3": {
-        "value": "nodejs16.x"
-      },
-      "ca-central-1": {
-        "value": "nodejs16.x"
-      },
-      "cn-north-1": {
-        "value": "nodejs16.x"
-      },
-      "cn-northwest-1": {
-        "value": "nodejs16.x"
-      },
-      "eu-central-1": {
-        "value": "nodejs16.x"
-      },
-      "eu-central-2": {
-        "value": "nodejs16.x"
-      },
-      "eu-north-1": {
-        "value": "nodejs16.x"
-      },
-      "eu-south-1": {
-        "value": "nodejs16.x"
-      },
-      "eu-south-2": {
-        "value": "nodejs16.x"
-      },
-      "eu-west-1": {
-        "value": "nodejs16.x"
-      },
-      "eu-west-2": {
-        "value": "nodejs16.x"
-      },
-      "eu-west-3": {
-        "value": "nodejs16.x"
-      },
-      "me-central-1": {
-        "value": "nodejs16.x"
-      },
-      "me-south-1": {
-        "value": "nodejs16.x"
-      },
-      "sa-east-1": {
-        "value": "nodejs16.x"
-      },
-      "us-east-1": {
-        "value": "nodejs16.x"
-      },
-      "us-east-2": {
-        "value": "nodejs16.x"
-      },
-      "us-gov-east-1": {
-        "value": "nodejs16.x"
-      },
-      "us-gov-west-1": {
-        "value": "nodejs16.x"
-      },
-      "us-iso-east-1": {
-        "value": "nodejs14.x"
-      },
-      "us-iso-west-1": {
-        "value": "nodejs14.x"
-      },
-      "us-isob-east-1": {
-        "value": "nodejs14.x"
-      },
-      "us-west-1": {
-        "value": "nodejs16.x"
-      },
-      "us-west-2": {
-        "value": "nodejs16.x"
       }
     }
   },

@@ -34,7 +34,6 @@
     "testtestingress291C0179": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
-        "IpProtocol": "TCP",
         "Description": "Self referencing rule to control access to Elasticache memcached cluster",
         "FromPort": 11222,
         "GroupId": {
@@ -43,6 +42,7 @@
             "GroupId"
           ]
         },
+        "IpProtocol": "TCP",
         "SourceSecurityGroupId": {
           "Fn::GetAtt": [
             "testtestcachesg9F6CF9E2",
@@ -58,6 +58,7 @@
     "testecsubnetgrouptest868C53AE": {
       "Type": "AWS::ElastiCache::SubnetGroup",
       "Properties": {
+        "CacheSubnetGroupName": "test-subnet-group",
         "Description": "Solutions Constructs generated Cache Subnet Group",
         "SubnetIds": [
           {
@@ -69,19 +70,18 @@
           {
             "Ref": "VpcisolatedSubnet3Subnet44F2537D"
           }
-        ],
-        "CacheSubnetGroupName": "test-subnet-group"
+        ]
       }
     },
     "testtestcluster57FB8D14": {
       "Type": "AWS::ElastiCache::CacheCluster",
       "Properties": {
-        "CacheNodeType": "cache.t3.medium",
-        "Engine": "memcached",
-        "NumCacheNodes": 2,
         "AZMode": "single-az",
+        "CacheNodeType": "cache.t3.medium",
         "CacheSubnetGroupName": "test-subnet-group",
         "ClusterName": "test-cdk-cluster",
+        "Engine": "memcached",
+        "NumCacheNodes": 2,
         "Port": 11222,
         "VpcSecurityGroupIds": [
           {
@@ -235,12 +235,6 @@
           },
           "S3Key": "c1b23d6af38c04acb744bda25a3dc7f4394daea942c67eaff40911a707a3c37a.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testLambdaFunctionServiceRoleA03EDA2B",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -267,6 +261,12 @@
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testLambdaFunctionServiceRoleA03EDA2B",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -343,9 +343,6 @@
     "VpcisolatedSubnet1SubnetE62B1B9B": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1a",
         "CidrBlock": "192.68.0.0/18",
         "MapPublicIpOnLaunch": false,
@@ -362,21 +359,24 @@
             "Key": "Name",
             "Value": "withClientProps/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableE442650B": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "withClientProps/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableAssociationD259E31A": {
@@ -393,9 +393,6 @@
     "VpcisolatedSubnet2Subnet39217055": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1b",
         "CidrBlock": "192.68.64.0/18",
         "MapPublicIpOnLaunch": false,
@@ -412,21 +409,24 @@
             "Key": "Name",
             "Value": "withClientProps/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTable334F9764": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "withClientProps/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTableAssociation25A4716F": {
@@ -443,9 +443,6 @@
     "VpcisolatedSubnet3Subnet44F2537D": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1c",
         "CidrBlock": "192.68.128.0/18",
         "MapPublicIpOnLaunch": false,
@@ -462,21 +459,24 @@
             "Key": "Name",
             "Value": "withClientProps/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet3RouteTableA2F6BBC0": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "withClientProps/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet3RouteTableAssociationDC010BEB": {
@@ -508,7 +508,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "withClientProps/Vpc"
+            "Value": "withClientProps/Vpc/FlowLog"
           }
         ]
       }
@@ -560,7 +560,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "withClientProps/Vpc"
+            "Value": "withClientProps/Vpc/FlowLog"
           }
         ]
       },
@@ -580,11 +580,6 @@
     "VpcFlowLog8FF33A73": {
       "Type": "AWS::EC2::FlowLog",
       "Properties": {
-        "ResourceId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "ResourceType": "VPC",
-        "TrafficType": "ALL",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -595,12 +590,17 @@
         "LogGroupName": {
           "Ref": "VpcFlowLogLogGroup7B5C56B9"
         },
+        "ResourceId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "ResourceType": "VPC",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "withClientProps/Vpc"
+            "Value": "withClientProps/Vpc/FlowLog"
           }
-        ]
+        ],
+        "TrafficType": "ALL"
       }
     }
   },

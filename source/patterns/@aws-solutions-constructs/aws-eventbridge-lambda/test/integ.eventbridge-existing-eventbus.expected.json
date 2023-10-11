@@ -3,7 +3,7 @@
     "existingeventbusA5B80487": {
       "Type": "AWS::Events::EventBus",
       "Properties": {
-        "Name": "test"
+        "Name": "test-existing-lambda"
       }
     },
     "testeventbridgelambdaLambdaFunctionServiceRole6D02CEEE": {
@@ -104,18 +104,18 @@
           },
           "S3Key": "42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testeventbridgelambdaLambdaFunctionServiceRole6D02CEEE",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testeventbridgelambdaLambdaFunctionServiceRole6D02CEEE",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"

@@ -116,12 +116,6 @@
     "testlambdastepfunctionsStateMachine807F0A77": {
       "Type": "AWS::StepFunctions::StateMachine",
       "Properties": {
-        "RoleArn": {
-          "Fn::GetAtt": [
-            "testlambdastepfunctionsStateMachineRoleAC728CE7",
-            "Arn"
-          ]
-        },
         "DefinitionString": "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"End\":true}}}",
         "LoggingConfiguration": {
           "Destinations": [
@@ -137,6 +131,12 @@
             }
           ],
           "Level": "ERROR"
+        },
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "testlambdastepfunctionsStateMachineRoleAC728CE7",
+            "Arn"
+          ]
         }
       },
       "DependsOn": [
@@ -292,12 +292,6 @@
           },
           "S3Key": "fd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testlambdastepfunctionsLambdaFunctionServiceRoleA33E2E9C",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -307,6 +301,12 @@
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testlambdastepfunctionsLambdaFunctionServiceRoleA33E2E9C",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -362,9 +362,8 @@
     "testlambdastepfunctionsExecutionFailedAlarm41073C3F": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
-        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
-        "EvaluationPeriods": 1,
         "AlarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "Dimensions": [
           {
             "Name": "StateMachineArn",
@@ -373,6 +372,7 @@
             }
           }
         ],
+        "EvaluationPeriods": 1,
         "MetricName": "ExecutionsFailed",
         "Namespace": "AWS/States",
         "Period": 300,
@@ -383,9 +383,8 @@
     "testlambdastepfunctionsExecutionThrottledAlarm62EABDFD": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
-        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
-        "EvaluationPeriods": 1,
         "AlarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "Dimensions": [
           {
             "Name": "StateMachineArn",
@@ -394,6 +393,7 @@
             }
           }
         ],
+        "EvaluationPeriods": 1,
         "MetricName": "ExecutionThrottled",
         "Namespace": "AWS/States",
         "Period": 300,
@@ -404,9 +404,8 @@
     "testlambdastepfunctionsExecutionAbortedAlarmC9CB5C2D": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
-        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
-        "EvaluationPeriods": 1,
         "AlarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "Dimensions": [
           {
             "Name": "StateMachineArn",
@@ -415,6 +414,7 @@
             }
           }
         ],
+        "EvaluationPeriods": 1,
         "MetricName": "ExecutionsAborted",
         "Namespace": "AWS/States",
         "Period": 300,
@@ -440,9 +440,6 @@
     "VpcisolatedSubnet1SubnetE62B1B9B": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1a",
         "CidrBlock": "10.0.0.0/18",
         "MapPublicIpOnLaunch": false,
@@ -459,21 +456,24 @@
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableE442650B": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableAssociationD259E31A": {
@@ -490,9 +490,6 @@
     "VpcisolatedSubnet2Subnet39217055": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1b",
         "CidrBlock": "10.0.64.0/18",
         "MapPublicIpOnLaunch": false,
@@ -509,21 +506,24 @@
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTable334F9764": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTableAssociation25A4716F": {
@@ -540,9 +540,6 @@
     "VpcisolatedSubnet3Subnet44F2537D": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1c",
         "CidrBlock": "10.0.128.0/18",
         "MapPublicIpOnLaunch": false,
@@ -559,21 +556,24 @@
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet3RouteTableA2F6BBC0": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet3RouteTableAssociationDC010BEB": {
@@ -605,7 +605,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployFunctionWithVpc/Vpc"
+            "Value": "deployFunctionWithVpc/Vpc/FlowLog"
           }
         ]
       }
@@ -657,7 +657,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployFunctionWithVpc/Vpc"
+            "Value": "deployFunctionWithVpc/Vpc/FlowLog"
           }
         ]
       },
@@ -677,10 +677,6 @@
     "VpcFlowLog8FF33A73": {
       "Type": "AWS::EC2::FlowLog",
       "Properties": {
-        "ResourceId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "ResourceType": "VPC",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -691,10 +687,14 @@
         "LogGroupName": {
           "Ref": "VpcFlowLogLogGroup7B5C56B9"
         },
+        "ResourceId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "ResourceType": "VPC",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployFunctionWithVpc/Vpc"
+            "Value": "deployFunctionWithVpc/Vpc/FlowLog"
           }
         ],
         "TrafficType": "ALL"
@@ -703,6 +703,15 @@
     "VpcSTEPFUNCTIONS550F8CB6": {
       "Type": "AWS::EC2::VPCEndpoint",
       "Properties": {
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "deployFunctionWithVpcSTEPFUNCTIONSsecuritygroupA9CFA360",
+              "GroupId"
+            ]
+          }
+        ],
         "ServiceName": {
           "Fn::Join": [
             "",
@@ -715,18 +724,6 @@
             ]
           ]
         },
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "PrivateDnsEnabled": true,
-        "SecurityGroupIds": [
-          {
-            "Fn::GetAtt": [
-              "deployFunctionWithVpcSTEPFUNCTIONSsecuritygroupA9CFA360",
-              "GroupId"
-            ]
-          }
-        ],
         "SubnetIds": [
           {
             "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
@@ -738,7 +735,10 @@
             "Ref": "VpcisolatedSubnet3Subnet44F2537D"
           }
         ],
-        "VpcEndpointType": "Interface"
+        "VpcEndpointType": "Interface",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "deployFunctionWithVpcSTEPFUNCTIONSsecuritygroupA9CFA360": {
@@ -832,6 +832,9 @@
       "ap-southeast-3": {
         "states": "states.ap-southeast-3.amazonaws.com"
       },
+      "ap-southeast-4": {
+        "states": "states.ap-southeast-4.amazonaws.com"
+      },
       "ca-central-1": {
         "states": "states.ca-central-1.amazonaws.com"
       },
@@ -864,6 +867,9 @@
       },
       "eu-west-3": {
         "states": "states.eu-west-3.amazonaws.com"
+      },
+      "il-central-1": {
+        "states": "states.il-central-1.amazonaws.com"
       },
       "me-central-1": {
         "states": "states.me-central-1.amazonaws.com"

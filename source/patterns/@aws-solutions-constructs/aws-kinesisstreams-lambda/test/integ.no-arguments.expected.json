@@ -153,18 +153,18 @@
           },
           "S3Key": "26cf7db64552331215006953bf73e5adfb49b5bf0eb2298bfe04547b76c08b88.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testkinesisstreamslambdaLambdaFunctionServiceRoleAD98836E",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testkinesisstreamslambdaLambdaFunctionServiceRoleAD98836E",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -196,9 +196,6 @@
     "testkinesisstreamslambdaLambdaFunctionKinesisEventSourcenoargumentstestkinesisstreamslambdaKinesisStream697B4A2015E59078": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
-        "FunctionName": {
-          "Ref": "testkinesisstreamslambdaLambdaFunctionB9A91CA7"
-        },
         "BatchSize": 100,
         "BisectBatchOnFunctionError": true,
         "DestinationConfig": {
@@ -216,6 +213,9 @@
             "testkinesisstreamslambdaKinesisStream374D6D56",
             "Arn"
           ]
+        },
+        "FunctionName": {
+          "Ref": "testkinesisstreamslambdaLambdaFunctionB9A91CA7"
         },
         "MaximumRecordAgeInSeconds": 86400,
         "MaximumRetryAttempts": 5,
@@ -304,9 +304,9 @@
     "testkinesisstreamslambdaKinesisStreamGetRecordsIteratorAgeAlarmFB74C363": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
         "MetricName": "GetRecords.IteratorAgeMilliseconds",
         "Namespace": "AWS/Kinesis",
         "Period": 300,
@@ -317,9 +317,9 @@
     "testkinesisstreamslambdaKinesisStreamReadProvisionedThroughputExceededAlarm5ABF4346": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
         "ComparisonOperator": "GreaterThanThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
         "MetricName": "ReadProvisionedThroughputExceeded",
         "Namespace": "AWS/Kinesis",
         "Period": 300,

@@ -115,18 +115,18 @@
           },
           "S3Key": "0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testsqslambdafifoLambdaFunctionServiceRole74463822",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testsqslambdafifoLambdaFunctionServiceRole74463822",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -158,14 +158,14 @@
     "testsqslambdafifoLambdaFunctionSqsEventSourcedeployFifoQueuetestsqslambdafifoqueue90CAB7D6AF891A0A": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
-        "FunctionName": {
-          "Ref": "testsqslambdafifoLambdaFunction0F3AE705"
-        },
         "EventSourceArn": {
           "Fn::GetAtt": [
             "testsqslambdafifoqueue45DD24D7",
             "Arn"
           ]
+        },
+        "FunctionName": {
+          "Ref": "testsqslambdafifoLambdaFunction0F3AE705"
         }
       }
     },
