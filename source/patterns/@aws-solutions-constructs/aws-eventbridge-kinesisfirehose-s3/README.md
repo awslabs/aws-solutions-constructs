@@ -87,7 +87,8 @@ new EventbridgeToKinesisFirehoseToS3(this, "test-eventbridge-firehose-s3",
 |loggingBucketProps?|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html)|Optional user provided props to override the default props for the S3 Logging Bucket.|
 |logS3AccessLogs?| boolean|Whether to turn on Access Logging for the S3 bucket. Creates an S3 bucket with associated storage costs for the logs. Enabling Access Logging is a best practice. default - true|
 
-NOTE: `existingLoggingBucketObj` has been deprecated - to specify an existing Log Bucket, use  bucketProps.serverAccessLogsBucket
+NOTE: `existingLoggingBucketObj` has been deprecated - to specify an existing Log Bucket, use `bucketProps.serverAccessLogsBucket`.
+
 ## Pattern Properties
 
 | **Name**     | **Type**        | **Description** |
@@ -125,4 +126,3 @@ Out of the box implementation of the Construct without any override will set the
 ![Architecture Diagram](architecture.png)
 
 ***
-&copy; Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
