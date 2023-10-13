@@ -50,9 +50,6 @@
     "VpcPublicSubnet1Subnet5C2D37C4": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1a",
         "CidrBlock": "10.0.0.0/19",
         "MapPublicIpOnLaunch": true,
@@ -69,7 +66,10 @@
             "Key": "Name",
             "Value": "all-new-public-http/Vpc/PublicSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       },
       "Metadata": {
         "cfn_nag": {
@@ -85,15 +85,15 @@
     "VpcPublicSubnet1RouteTable6C95E38E": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "all-new-public-http/Vpc/PublicSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPublicSubnet1RouteTableAssociation97140677": {
@@ -110,12 +110,12 @@
     "VpcPublicSubnet1DefaultRoute3DA9E72A": {
       "Type": "AWS::EC2::Route",
       "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPublicSubnet1RouteTable6C95E38E"
-        },
         "DestinationCidrBlock": "0.0.0.0/0",
         "GatewayId": {
           "Ref": "VpcIGWD7BA715C"
+        },
+        "RouteTableId": {
+          "Ref": "VpcPublicSubnet1RouteTable6C95E38E"
         }
       },
       "DependsOn": [
@@ -137,14 +137,14 @@
     "VpcPublicSubnet1NATGateway4D7517AA": {
       "Type": "AWS::EC2::NatGateway",
       "Properties": {
-        "SubnetId": {
-          "Ref": "VpcPublicSubnet1Subnet5C2D37C4"
-        },
         "AllocationId": {
           "Fn::GetAtt": [
             "VpcPublicSubnet1EIPD7E02669",
             "AllocationId"
           ]
+        },
+        "SubnetId": {
+          "Ref": "VpcPublicSubnet1Subnet5C2D37C4"
         },
         "Tags": [
           {
@@ -161,9 +161,6 @@
     "VpcPublicSubnet2Subnet691E08A3": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1b",
         "CidrBlock": "10.0.32.0/19",
         "MapPublicIpOnLaunch": true,
@@ -180,7 +177,10 @@
             "Key": "Name",
             "Value": "all-new-public-http/Vpc/PublicSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       },
       "Metadata": {
         "cfn_nag": {
@@ -196,15 +196,15 @@
     "VpcPublicSubnet2RouteTable94F7E489": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "all-new-public-http/Vpc/PublicSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPublicSubnet2RouteTableAssociationDD5762D8": {
@@ -221,12 +221,12 @@
     "VpcPublicSubnet2DefaultRoute97F91067": {
       "Type": "AWS::EC2::Route",
       "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPublicSubnet2RouteTable94F7E489"
-        },
         "DestinationCidrBlock": "0.0.0.0/0",
         "GatewayId": {
           "Ref": "VpcIGWD7BA715C"
+        },
+        "RouteTableId": {
+          "Ref": "VpcPublicSubnet2RouteTable94F7E489"
         }
       },
       "DependsOn": [
@@ -248,14 +248,14 @@
     "VpcPublicSubnet2NATGateway9182C01D": {
       "Type": "AWS::EC2::NatGateway",
       "Properties": {
-        "SubnetId": {
-          "Ref": "VpcPublicSubnet2Subnet691E08A3"
-        },
         "AllocationId": {
           "Fn::GetAtt": [
             "VpcPublicSubnet2EIP3C605A87",
             "AllocationId"
           ]
+        },
+        "SubnetId": {
+          "Ref": "VpcPublicSubnet2Subnet691E08A3"
         },
         "Tags": [
           {
@@ -272,9 +272,6 @@
     "VpcPublicSubnet3SubnetBE12F0B6": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1c",
         "CidrBlock": "10.0.64.0/19",
         "MapPublicIpOnLaunch": true,
@@ -291,7 +288,10 @@
             "Key": "Name",
             "Value": "all-new-public-http/Vpc/PublicSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       },
       "Metadata": {
         "cfn_nag": {
@@ -307,15 +307,15 @@
     "VpcPublicSubnet3RouteTable93458DBB": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "all-new-public-http/Vpc/PublicSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPublicSubnet3RouteTableAssociation1F1EDF02": {
@@ -332,12 +332,12 @@
     "VpcPublicSubnet3DefaultRoute4697774F": {
       "Type": "AWS::EC2::Route",
       "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPublicSubnet3RouteTable93458DBB"
-        },
         "DestinationCidrBlock": "0.0.0.0/0",
         "GatewayId": {
           "Ref": "VpcIGWD7BA715C"
+        },
+        "RouteTableId": {
+          "Ref": "VpcPublicSubnet3RouteTable93458DBB"
         }
       },
       "DependsOn": [
@@ -359,14 +359,14 @@
     "VpcPublicSubnet3NATGateway7640CD1D": {
       "Type": "AWS::EC2::NatGateway",
       "Properties": {
-        "SubnetId": {
-          "Ref": "VpcPublicSubnet3SubnetBE12F0B6"
-        },
         "AllocationId": {
           "Fn::GetAtt": [
             "VpcPublicSubnet3EIP3A666A23",
             "AllocationId"
           ]
+        },
+        "SubnetId": {
+          "Ref": "VpcPublicSubnet3SubnetBE12F0B6"
         },
         "Tags": [
           {
@@ -383,9 +383,6 @@
     "VpcPrivateSubnet1Subnet536B997A": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1a",
         "CidrBlock": "10.0.96.0/19",
         "MapPublicIpOnLaunch": false,
@@ -402,21 +399,24 @@
             "Key": "Name",
             "Value": "all-new-public-http/Vpc/PrivateSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPrivateSubnet1RouteTableB2C5B500": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "all-new-public-http/Vpc/PrivateSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPrivateSubnet1RouteTableAssociation70C59FA6": {
@@ -433,21 +433,18 @@
     "VpcPrivateSubnet1DefaultRouteBE02A9ED": {
       "Type": "AWS::EC2::Route",
       "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPrivateSubnet1RouteTableB2C5B500"
-        },
         "DestinationCidrBlock": "0.0.0.0/0",
         "NatGatewayId": {
           "Ref": "VpcPublicSubnet1NATGateway4D7517AA"
+        },
+        "RouteTableId": {
+          "Ref": "VpcPrivateSubnet1RouteTableB2C5B500"
         }
       }
     },
     "VpcPrivateSubnet2Subnet3788AAA1": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1b",
         "CidrBlock": "10.0.128.0/19",
         "MapPublicIpOnLaunch": false,
@@ -464,21 +461,24 @@
             "Key": "Name",
             "Value": "all-new-public-http/Vpc/PrivateSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPrivateSubnet2RouteTableA678073B": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "all-new-public-http/Vpc/PrivateSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPrivateSubnet2RouteTableAssociationA89CAD56": {
@@ -495,21 +495,18 @@
     "VpcPrivateSubnet2DefaultRoute060D2087": {
       "Type": "AWS::EC2::Route",
       "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPrivateSubnet2RouteTableA678073B"
-        },
         "DestinationCidrBlock": "0.0.0.0/0",
         "NatGatewayId": {
           "Ref": "VpcPublicSubnet2NATGateway9182C01D"
+        },
+        "RouteTableId": {
+          "Ref": "VpcPrivateSubnet2RouteTableA678073B"
         }
       }
     },
     "VpcPrivateSubnet3SubnetF258B56E": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1c",
         "CidrBlock": "10.0.160.0/19",
         "MapPublicIpOnLaunch": false,
@@ -526,21 +523,24 @@
             "Key": "Name",
             "Value": "all-new-public-http/Vpc/PrivateSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPrivateSubnet3RouteTableD98824C7": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "all-new-public-http/Vpc/PrivateSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcPrivateSubnet3RouteTableAssociation16BDDC43": {
@@ -557,12 +557,12 @@
     "VpcPrivateSubnet3DefaultRoute94B74F0D": {
       "Type": "AWS::EC2::Route",
       "Properties": {
-        "RouteTableId": {
-          "Ref": "VpcPrivateSubnet3RouteTableD98824C7"
-        },
         "DestinationCidrBlock": "0.0.0.0/0",
         "NatGatewayId": {
           "Ref": "VpcPublicSubnet3NATGateway7640CD1D"
+        },
+        "RouteTableId": {
+          "Ref": "VpcPrivateSubnet3RouteTableD98824C7"
         }
       }
     },
@@ -580,11 +580,11 @@
     "VpcVPCGWBF912B6E": {
       "Type": "AWS::EC2::VPCGatewayAttachment",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "InternetGatewayId": {
           "Ref": "VpcIGWD7BA715C"
+        },
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
         }
       }
     },
@@ -606,7 +606,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "all-new-public-http/Vpc"
+            "Value": "all-new-public-http/Vpc/FlowLog"
           }
         ]
       }
@@ -658,7 +658,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "all-new-public-http/Vpc"
+            "Value": "all-new-public-http/Vpc/FlowLog"
           }
         ]
       },
@@ -678,10 +678,6 @@
     "VpcFlowLog8FF33A73": {
       "Type": "AWS::EC2::FlowLog",
       "Properties": {
-        "ResourceId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "ResourceType": "VPC",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -692,10 +688,14 @@
         "LogGroupName": {
           "Ref": "VpcFlowLogLogGroup7B5C56B9"
         },
+        "ResourceId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "ResourceType": "VPC",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "all-new-public-http/Vpc"
+            "Value": "all-new-public-http/Vpc/FlowLog"
           }
         ],
         "TrafficType": "ALL"
@@ -704,10 +704,6 @@
     "VpcECRAPI9A3B6A2B": {
       "Type": "AWS::EC2::VPCEndpoint",
       "Properties": {
-        "ServiceName": "com.amazonaws.us-east-1.ecr.api",
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "PrivateDnsEnabled": true,
         "SecurityGroupIds": [
           {
@@ -717,6 +713,7 @@
             ]
           }
         ],
+        "ServiceName": "com.amazonaws.us-east-1.ecr.api",
         "SubnetIds": [
           {
             "Ref": "VpcPrivateSubnet1Subnet536B997A"
@@ -728,16 +725,15 @@
             "Ref": "VpcPrivateSubnet3SubnetF258B56E"
           }
         ],
-        "VpcEndpointType": "Interface"
+        "VpcEndpointType": "Interface",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcECRDKR604E039F": {
       "Type": "AWS::EC2::VPCEndpoint",
       "Properties": {
-        "ServiceName": "com.amazonaws.us-east-1.ecr.dkr",
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "PrivateDnsEnabled": true,
         "SecurityGroupIds": [
           {
@@ -747,6 +743,7 @@
             ]
           }
         ],
+        "ServiceName": "com.amazonaws.us-east-1.ecr.dkr",
         "SubnetIds": [
           {
             "Ref": "VpcPrivateSubnet1Subnet536B997A"
@@ -758,27 +755,15 @@
             "Ref": "VpcPrivateSubnet3SubnetF258B56E"
           }
         ],
-        "VpcEndpointType": "Interface"
+        "VpcEndpointType": "Interface",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcS3A5408339": {
       "Type": "AWS::EC2::VPCEndpoint",
       "Properties": {
-        "ServiceName": {
-          "Fn::Join": [
-            "",
-            [
-              "com.amazonaws.",
-              {
-                "Ref": "AWS::Region"
-              },
-              ".s3"
-            ]
-          ]
-        },
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "RouteTableIds": [
           {
             "Ref": "VpcPrivateSubnet1RouteTableB2C5B500"
@@ -799,7 +784,22 @@
             "Ref": "VpcPublicSubnet3RouteTable93458DBB"
           }
         ],
-        "VpcEndpointType": "Gateway"
+        "ServiceName": {
+          "Fn::Join": [
+            "",
+            [
+              "com.amazonaws.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".s3"
+            ]
+          ]
+        },
+        "VpcEndpointType": "Gateway",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "testconstructlbalb33E0EB59": {
@@ -903,13 +903,6 @@
     "testconstructlbalbSecurityGrouptoallnewpublichttptestconstructsgEFBACDED8080226DB910": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
-        "GroupId": {
-          "Fn::GetAtt": [
-            "testconstructlbalbSecurityGroup5F187AF4",
-            "GroupId"
-          ]
-        },
-        "IpProtocol": "tcp",
         "Description": "Load balancer to target",
         "DestinationSecurityGroupId": {
           "Fn::GetAtt": [
@@ -918,6 +911,13 @@
           ]
         },
         "FromPort": 8080,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "testconstructlbalbSecurityGroup5F187AF4",
+            "GroupId"
+          ]
+        },
+        "IpProtocol": "tcp",
         "ToPort": 8080
       },
       "DependsOn": [
@@ -1179,18 +1179,18 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
           },
-          "S3Key": "40aa87cdf43c4095cec18bc443965f22ab2f8c1ace47e482a0ba4e35d83b0cc9.zip"
+          "S3Key": "5194f926380567b6fdffc61629afdad2afc818614cb227df45e499c69db163a7.zip"
         },
         "Timeout": 900,
         "MemorySize": 128,
-        "Handler": "__entrypoint__.handler",
+        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
             "Arn"
           ]
         },
-        "Runtime": "nodejs16.x",
+        "Runtime": "nodejs18.x",
         "Description": {
           "Fn::Join": [
             "",
@@ -1427,7 +1427,6 @@
     "testconstructsgfromallnewpublichttptestconstructlbalbSecurityGroupA1A7ABDB8080D3FFEE20": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
-        "IpProtocol": "tcp",
         "Description": "Load balancer to target",
         "FromPort": 8080,
         "GroupId": {
@@ -1436,6 +1435,7 @@
             "GroupId"
           ]
         },
+        "IpProtocol": "tcp",
         "SourceSecurityGroupId": {
           "Fn::GetAtt": [
             "testconstructlbalbSecurityGroup5F187AF4",
@@ -1452,6 +1452,11 @@
           "Ref": "testconstructcluster7B6231C5"
         },
         "DeploymentConfiguration": {
+          "Alarms": {
+            "AlarmNames": [],
+            "Enable": false,
+            "Rollback": false
+          },
           "MaximumPercent": 150,
           "MinimumHealthyPercent": 75
         },
@@ -1498,6 +1503,7 @@
         }
       },
       "DependsOn": [
+        "testconstructtaskdefTaskRoleC60414C4",
         "testconstructtestconstructlistener484444F1"
       ]
     },

@@ -98,12 +98,6 @@
           },
           "S3Key": "35bbbc7b04b21f225891f139adf234188f348ebad5f4bbc2c06edf8aa3784c97.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleA59E9EBF",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -116,6 +110,12 @@
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleA59E9EBF",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -181,9 +181,6 @@
     "testlambdaelasticsearchkibana2CognitoUserPoolClientB0F3872A": {
       "Type": "AWS::Cognito::UserPoolClient",
       "Properties": {
-        "UserPoolId": {
-          "Ref": "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA"
-        },
         "AllowedOAuthFlows": [
           "implicit",
           "code"
@@ -201,7 +198,10 @@
         ],
         "SupportedIdentityProviders": [
           "COGNITO"
-        ]
+        ],
+        "UserPoolId": {
+          "Ref": "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA"
+        }
       }
     },
     "testlambdaelasticsearchkibana2CognitoIdentityPool0681F400": {
@@ -539,9 +539,9 @@
     "testlambdaelasticsearchkibana2StatusRedAlarm508A4D17": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "At least one primary shard and its replicas are not allocated to a node. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "At least one primary shard and its replicas are not allocated to a node. ",
         "MetricName": "ClusterStatus.red",
         "Namespace": "AWS/ES",
         "Period": 60,
@@ -552,9 +552,9 @@
     "testlambdaelasticsearchkibana2StatusYellowAlarmEF13F129": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "At least one replica shard is not allocated to a node.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "At least one replica shard is not allocated to a node.",
         "MetricName": "ClusterStatus.yellow",
         "Namespace": "AWS/ES",
         "Period": 60,
@@ -565,9 +565,9 @@
     "testlambdaelasticsearchkibana2FreeStorageSpaceTooLowAlarm1ED7AA90": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "A node in your cluster is down to 20 GiB of free storage space.",
         "ComparisonOperator": "LessThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "A node in your cluster is down to 20 GiB of free storage space.",
         "MetricName": "FreeStorageSpace",
         "Namespace": "AWS/ES",
         "Period": 60,
@@ -578,9 +578,9 @@
     "testlambdaelasticsearchkibana2IndexWritesBlockedTooHighAlarmCE02A217": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Your cluster is blocking write requests.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Your cluster is blocking write requests.",
         "MetricName": "ClusterIndexWritesBlocked",
         "Namespace": "AWS/ES",
         "Period": 300,
@@ -591,9 +591,9 @@
     "testlambdaelasticsearchkibana2AutomatedSnapshotFailureTooHighAlarm75E8F988": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "An automated snapshot failed. This failure is often the result of a red cluster health status.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "An automated snapshot failed. This failure is often the result of a red cluster health status.",
         "MetricName": "AutomatedSnapshotFailure",
         "Namespace": "AWS/ES",
         "Period": 60,
@@ -604,9 +604,9 @@
     "testlambdaelasticsearchkibana2CPUUtilizationTooHighAlarm7E4A7ADE": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "100% CPU utilization is not uncommon, but sustained high usage is problematic. Consider using larger instance types or adding instances.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 3,
-        "AlarmDescription": "100% CPU utilization is not uncommon, but sustained high usage is problematic. Consider using larger instance types or adding instances.",
         "MetricName": "CPUUtilization",
         "Namespace": "AWS/ES",
         "Period": 900,
@@ -617,9 +617,9 @@
     "testlambdaelasticsearchkibana2JVMMemoryPressureTooHighAlarm7CB5E1C7": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "MetricName": "JVMMemoryPressure",
         "Namespace": "AWS/ES",
         "Period": 900,
@@ -630,9 +630,9 @@
     "testlambdaelasticsearchkibana2MasterCPUUtilizationTooHighAlarmE22B714C": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Average CPU utilization over last 45 minutes too high. Consider using larger instance types for your dedicated master nodes.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 3,
-        "AlarmDescription": "Average CPU utilization over last 45 minutes too high. Consider using larger instance types for your dedicated master nodes.",
         "MetricName": "MasterCPUUtilization",
         "Namespace": "AWS/ES",
         "Period": 900,
@@ -643,9 +643,9 @@
     "testlambdaelasticsearchkibana2MasterJVMMemoryPressureTooHighAlarm37A392A6": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "MetricName": "MasterJVMMemoryPressure",
         "Namespace": "AWS/ES",
         "Period": 900,

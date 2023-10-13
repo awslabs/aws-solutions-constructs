@@ -167,12 +167,6 @@
           },
           "S3Key": "42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionServiceRole31915E05",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -182,6 +176,12 @@
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionServiceRole31915E05",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -261,12 +261,6 @@
     "testiotlambdadynamodbstackLambdaToDynamoDBDynamoTableE17E5733": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
-        "KeySchema": [
-          {
-            "AttributeName": "id",
-            "KeyType": "HASH"
-          }
-        ],
         "AttributeDefinitions": [
           {
             "AttributeName": "id",
@@ -274,6 +268,12 @@
           }
         ],
         "BillingMode": "PAY_PER_REQUEST",
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
         "PointInTimeRecoverySpecification": {
           "PointInTimeRecoveryEnabled": true
         },
@@ -302,9 +302,6 @@
     "testiotlambdadynamodbstackVpcisolatedSubnet1Subnet3AB7ADA5": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "testiotlambdadynamodbstackVpc1986A4BB"
-        },
         "AvailabilityZone": "test-region-1a",
         "CidrBlock": "10.0.0.0/18",
         "MapPublicIpOnLaunch": false,
@@ -321,21 +318,24 @@
             "Key": "Name",
             "Value": "with-vpc/test-iot-lambda-dynamodb-stack/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testiotlambdadynamodbstackVpc1986A4BB"
+        }
       }
     },
     "testiotlambdadynamodbstackVpcisolatedSubnet1RouteTableE28AAAB5": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "testiotlambdadynamodbstackVpc1986A4BB"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "with-vpc/test-iot-lambda-dynamodb-stack/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testiotlambdadynamodbstackVpc1986A4BB"
+        }
       }
     },
     "testiotlambdadynamodbstackVpcisolatedSubnet1RouteTableAssociationFAA18521": {
@@ -352,9 +352,6 @@
     "testiotlambdadynamodbstackVpcisolatedSubnet2SubnetBDEE1FAE": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "testiotlambdadynamodbstackVpc1986A4BB"
-        },
         "AvailabilityZone": "test-region-1b",
         "CidrBlock": "10.0.64.0/18",
         "MapPublicIpOnLaunch": false,
@@ -371,21 +368,24 @@
             "Key": "Name",
             "Value": "with-vpc/test-iot-lambda-dynamodb-stack/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testiotlambdadynamodbstackVpc1986A4BB"
+        }
       }
     },
     "testiotlambdadynamodbstackVpcisolatedSubnet2RouteTableAF607A65": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "testiotlambdadynamodbstackVpc1986A4BB"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "with-vpc/test-iot-lambda-dynamodb-stack/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testiotlambdadynamodbstackVpc1986A4BB"
+        }
       }
     },
     "testiotlambdadynamodbstackVpcisolatedSubnet2RouteTableAssociation80ECEB84": {
@@ -402,9 +402,6 @@
     "testiotlambdadynamodbstackVpcisolatedSubnet3Subnet5D41F483": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "testiotlambdadynamodbstackVpc1986A4BB"
-        },
         "AvailabilityZone": "test-region-1c",
         "CidrBlock": "10.0.128.0/18",
         "MapPublicIpOnLaunch": false,
@@ -421,21 +418,24 @@
             "Key": "Name",
             "Value": "with-vpc/test-iot-lambda-dynamodb-stack/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testiotlambdadynamodbstackVpc1986A4BB"
+        }
       }
     },
     "testiotlambdadynamodbstackVpcisolatedSubnet3RouteTableE56B664A": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "testiotlambdadynamodbstackVpc1986A4BB"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "with-vpc/test-iot-lambda-dynamodb-stack/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testiotlambdadynamodbstackVpc1986A4BB"
+        }
       }
     },
     "testiotlambdadynamodbstackVpcisolatedSubnet3RouteTableAssociationF06E774F": {
@@ -467,7 +467,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "with-vpc/test-iot-lambda-dynamodb-stack/Vpc"
+            "Value": "with-vpc/test-iot-lambda-dynamodb-stack/Vpc/FlowLog"
           }
         ]
       }
@@ -519,7 +519,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "with-vpc/test-iot-lambda-dynamodb-stack/Vpc"
+            "Value": "with-vpc/test-iot-lambda-dynamodb-stack/Vpc/FlowLog"
           }
         ]
       },
@@ -539,10 +539,6 @@
     "testiotlambdadynamodbstackVpcFlowLogC88B17DB": {
       "Type": "AWS::EC2::FlowLog",
       "Properties": {
-        "ResourceId": {
-          "Ref": "testiotlambdadynamodbstackVpc1986A4BB"
-        },
-        "ResourceType": "VPC",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "testiotlambdadynamodbstackVpcFlowLogIAMRole84CD262B",
@@ -553,10 +549,14 @@
         "LogGroupName": {
           "Ref": "testiotlambdadynamodbstackVpcFlowLogLogGroup0BA54CDB"
         },
+        "ResourceId": {
+          "Ref": "testiotlambdadynamodbstackVpc1986A4BB"
+        },
+        "ResourceType": "VPC",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "with-vpc/test-iot-lambda-dynamodb-stack/Vpc"
+            "Value": "with-vpc/test-iot-lambda-dynamodb-stack/Vpc/FlowLog"
           }
         ],
         "TrafficType": "ALL"
@@ -565,6 +565,17 @@
     "testiotlambdadynamodbstackVpcDDBD215AB1B": {
       "Type": "AWS::EC2::VPCEndpoint",
       "Properties": {
+        "RouteTableIds": [
+          {
+            "Ref": "testiotlambdadynamodbstackVpcisolatedSubnet1RouteTableE28AAAB5"
+          },
+          {
+            "Ref": "testiotlambdadynamodbstackVpcisolatedSubnet2RouteTableAF607A65"
+          },
+          {
+            "Ref": "testiotlambdadynamodbstackVpcisolatedSubnet3RouteTableE56B664A"
+          }
+        ],
         "ServiceName": {
           "Fn::Join": [
             "",
@@ -577,21 +588,10 @@
             ]
           ]
         },
+        "VpcEndpointType": "Gateway",
         "VpcId": {
           "Ref": "testiotlambdadynamodbstackVpc1986A4BB"
-        },
-        "RouteTableIds": [
-          {
-            "Ref": "testiotlambdadynamodbstackVpcisolatedSubnet1RouteTableE28AAAB5"
-          },
-          {
-            "Ref": "testiotlambdadynamodbstackVpcisolatedSubnet2RouteTableAF607A65"
-          },
-          {
-            "Ref": "testiotlambdadynamodbstackVpcisolatedSubnet3RouteTableE56B664A"
-          }
-        ],
-        "VpcEndpointType": "Gateway"
+        }
       }
     },
     "testiotlambdadynamodbstackIotToLambdaIotTopic74F5E3BB": {

@@ -91,12 +91,6 @@
         "DefaultAction": {
           "Allow": {}
         },
-        "Scope": "CLOUDFRONT",
-        "VisibilityConfig": {
-          "CloudWatchMetricsEnabled": true,
-          "MetricName": "webACL",
-          "SampledRequestsEnabled": true
-        },
         "Rules": [
           {
             "Name": "AWS-AWSManagedRulesBotControlRuleSet",
@@ -224,7 +218,13 @@
               "SampledRequestsEnabled": true
             }
           }
-        ]
+        ],
+        "Scope": "CLOUDFRONT",
+        "VisibilityConfig": {
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "webACL",
+          "SampledRequestsEnabled": true
+        }
       }
     }
   },

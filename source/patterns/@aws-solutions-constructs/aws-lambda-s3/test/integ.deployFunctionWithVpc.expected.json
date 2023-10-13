@@ -177,12 +177,6 @@
           },
           "S3Key": "0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testlambdas3LambdaFunctionServiceRole72E20379",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -192,6 +186,12 @@
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testlambdas3LambdaFunctionServiceRole72E20379",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -357,9 +357,6 @@
     "VpcisolatedSubnet1SubnetE62B1B9B": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1a",
         "CidrBlock": "10.0.0.0/18",
         "MapPublicIpOnLaunch": false,
@@ -376,21 +373,24 @@
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableE442650B": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableAssociationD259E31A": {
@@ -407,9 +407,6 @@
     "VpcisolatedSubnet2Subnet39217055": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1b",
         "CidrBlock": "10.0.64.0/18",
         "MapPublicIpOnLaunch": false,
@@ -426,21 +423,24 @@
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTable334F9764": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTableAssociation25A4716F": {
@@ -457,9 +457,6 @@
     "VpcisolatedSubnet3Subnet44F2537D": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1c",
         "CidrBlock": "10.0.128.0/18",
         "MapPublicIpOnLaunch": false,
@@ -476,21 +473,24 @@
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet3RouteTableA2F6BBC0": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet3RouteTableAssociationDC010BEB": {
@@ -522,7 +522,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployFunctionWithVpc/Vpc"
+            "Value": "deployFunctionWithVpc/Vpc/FlowLog"
           }
         ]
       }
@@ -574,7 +574,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployFunctionWithVpc/Vpc"
+            "Value": "deployFunctionWithVpc/Vpc/FlowLog"
           }
         ]
       },
@@ -594,10 +594,6 @@
     "VpcFlowLog8FF33A73": {
       "Type": "AWS::EC2::FlowLog",
       "Properties": {
-        "ResourceId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "ResourceType": "VPC",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -608,10 +604,14 @@
         "LogGroupName": {
           "Ref": "VpcFlowLogLogGroup7B5C56B9"
         },
+        "ResourceId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "ResourceType": "VPC",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployFunctionWithVpc/Vpc"
+            "Value": "deployFunctionWithVpc/Vpc/FlowLog"
           }
         ],
         "TrafficType": "ALL"
@@ -620,6 +620,17 @@
     "VpcS3A5408339": {
       "Type": "AWS::EC2::VPCEndpoint",
       "Properties": {
+        "RouteTableIds": [
+          {
+            "Ref": "VpcisolatedSubnet1RouteTableE442650B"
+          },
+          {
+            "Ref": "VpcisolatedSubnet2RouteTable334F9764"
+          },
+          {
+            "Ref": "VpcisolatedSubnet3RouteTableA2F6BBC0"
+          }
+        ],
         "ServiceName": {
           "Fn::Join": [
             "",
@@ -632,21 +643,10 @@
             ]
           ]
         },
+        "VpcEndpointType": "Gateway",
         "VpcId": {
           "Ref": "Vpc8378EB38"
-        },
-        "RouteTableIds": [
-          {
-            "Ref": "VpcisolatedSubnet1RouteTableE442650B"
-          },
-          {
-            "Ref": "VpcisolatedSubnet2RouteTable334F9764"
-          },
-          {
-            "Ref": "VpcisolatedSubnet3RouteTableA2F6BBC0"
-          }
-        ],
-        "VpcEndpointType": "Gateway"
+        }
       }
     }
   },

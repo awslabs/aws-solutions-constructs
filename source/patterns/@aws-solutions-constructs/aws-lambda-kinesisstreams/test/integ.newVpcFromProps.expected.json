@@ -153,12 +153,6 @@
           },
           "S3Key": "c7dc0cc1b24bda1d2a5345f61897eee32184906649fdb1de93853c512e129dbf.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testlambdakinesisstreamsLambdaFunctionServiceRole95206CF3",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "KINESIS_DATASTREAM_NAME": {
@@ -167,6 +161,12 @@
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testlambdakinesisstreamsLambdaFunctionServiceRole95206CF3",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs18.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -225,9 +225,9 @@
     "testlambdakinesisstreamsKinesisStreamGetRecordsIteratorAgeAlarmC4A0FF00": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
         "MetricName": "GetRecords.IteratorAgeMilliseconds",
         "Namespace": "AWS/Kinesis",
         "Period": 300,
@@ -238,9 +238,9 @@
     "testlambdakinesisstreamsKinesisStreamReadProvisionedThroughputExceededAlarm9732E188": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
         "ComparisonOperator": "GreaterThanThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
         "MetricName": "ReadProvisionedThroughputExceeded",
         "Namespace": "AWS/Kinesis",
         "Period": 300,
@@ -266,9 +266,6 @@
     "VpcisolatedSubnet1SubnetE62B1B9B": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1a",
         "CidrBlock": "10.0.0.0/18",
         "MapPublicIpOnLaunch": false,
@@ -285,21 +282,24 @@
             "Key": "Name",
             "Value": "newVpcFromProps/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableE442650B": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "newVpcFromProps/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableAssociationD259E31A": {
@@ -331,7 +331,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "newVpcFromProps/Vpc"
+            "Value": "newVpcFromProps/Vpc/FlowLog"
           }
         ]
       }
@@ -383,7 +383,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "newVpcFromProps/Vpc"
+            "Value": "newVpcFromProps/Vpc/FlowLog"
           }
         ]
       },
@@ -403,10 +403,6 @@
     "VpcFlowLog8FF33A73": {
       "Type": "AWS::EC2::FlowLog",
       "Properties": {
-        "ResourceId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "ResourceType": "VPC",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -417,10 +413,14 @@
         "LogGroupName": {
           "Ref": "VpcFlowLogLogGroup7B5C56B9"
         },
+        "ResourceId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "ResourceType": "VPC",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "newVpcFromProps/Vpc"
+            "Value": "newVpcFromProps/Vpc/FlowLog"
           }
         ],
         "TrafficType": "ALL"
@@ -429,6 +429,15 @@
     "VpcKINESISSTREAMSC07D91B5": {
       "Type": "AWS::EC2::VPCEndpoint",
       "Properties": {
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "newVpcFromPropsKINESISSTREAMSsecuritygroup9B3EE931",
+              "GroupId"
+            ]
+          }
+        ],
         "ServiceName": {
           "Fn::Join": [
             "",
@@ -441,24 +450,15 @@
             ]
           ]
         },
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "PrivateDnsEnabled": true,
-        "SecurityGroupIds": [
-          {
-            "Fn::GetAtt": [
-              "newVpcFromPropsKINESISSTREAMSsecuritygroup9B3EE931",
-              "GroupId"
-            ]
-          }
-        ],
         "SubnetIds": [
           {
             "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
           }
         ],
-        "VpcEndpointType": "Interface"
+        "VpcEndpointType": "Interface",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "newVpcFromPropsKINESISSTREAMSsecuritygroup9B3EE931": {

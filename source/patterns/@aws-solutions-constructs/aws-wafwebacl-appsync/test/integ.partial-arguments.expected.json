@@ -13,12 +13,6 @@
         "DefaultAction": {
           "Allow": {}
         },
-        "Scope": "REGIONAL",
-        "VisibilityConfig": {
-          "CloudWatchMetricsEnabled": true,
-          "MetricName": "webACL",
-          "SampledRequestsEnabled": true
-        },
         "Name": "test-name-appsync",
         "Rules": [
           {
@@ -147,7 +141,13 @@
               "SampledRequestsEnabled": true
             }
           }
-        ]
+        ],
+        "Scope": "REGIONAL",
+        "VisibilityConfig": {
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "webACL",
+          "SampledRequestsEnabled": true
+        }
       }
     },
     "testwafwebaclappsyncWebACLAssociation": {

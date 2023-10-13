@@ -106,12 +106,6 @@
           },
           "S3Key": "0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testlambdasnsLambdaFunctionServiceRole9C412F74",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -127,6 +121,12 @@
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testlambdasnsLambdaFunctionServiceRole9C412F74",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"

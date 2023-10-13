@@ -154,12 +154,6 @@
           },
           "S3Key": "075b2d402078d97c329028d1af17df69ef86062dc7ace374b10a10022db6fb8d.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testlambdasqslambdatosqsLambdaFunctionServiceRole9A15D8F5",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -169,6 +163,12 @@
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testlambdasqslambdatosqsLambdaFunctionServiceRole9A15D8F5",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -406,9 +406,6 @@
     "testlambdasqsVpcisolatedSubnet1Subnet75F315F8": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "testlambdasqsVpc85322AF3"
-        },
         "AvailabilityZone": "test-region-1a",
         "CidrBlock": "10.0.0.0/18",
         "MapPublicIpOnLaunch": false,
@@ -425,21 +422,24 @@
             "Key": "Name",
             "Value": "deployProducerFunctionWithVpc/test-lambda-sqs/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testlambdasqsVpc85322AF3"
+        }
       }
     },
     "testlambdasqsVpcisolatedSubnet1RouteTable9070A207": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "testlambdasqsVpc85322AF3"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployProducerFunctionWithVpc/test-lambda-sqs/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testlambdasqsVpc85322AF3"
+        }
       }
     },
     "testlambdasqsVpcisolatedSubnet1RouteTableAssociation270A37E8": {
@@ -456,9 +456,6 @@
     "testlambdasqsVpcisolatedSubnet2Subnet320D7431": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "testlambdasqsVpc85322AF3"
-        },
         "AvailabilityZone": "test-region-1b",
         "CidrBlock": "10.0.64.0/18",
         "MapPublicIpOnLaunch": false,
@@ -475,21 +472,24 @@
             "Key": "Name",
             "Value": "deployProducerFunctionWithVpc/test-lambda-sqs/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testlambdasqsVpc85322AF3"
+        }
       }
     },
     "testlambdasqsVpcisolatedSubnet2RouteTable1C5B9E86": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "testlambdasqsVpc85322AF3"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployProducerFunctionWithVpc/test-lambda-sqs/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testlambdasqsVpc85322AF3"
+        }
       }
     },
     "testlambdasqsVpcisolatedSubnet2RouteTableAssociation723A8A06": {
@@ -506,9 +506,6 @@
     "testlambdasqsVpcisolatedSubnet3Subnet34633573": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "testlambdasqsVpc85322AF3"
-        },
         "AvailabilityZone": "test-region-1c",
         "CidrBlock": "10.0.128.0/18",
         "MapPublicIpOnLaunch": false,
@@ -525,21 +522,24 @@
             "Key": "Name",
             "Value": "deployProducerFunctionWithVpc/test-lambda-sqs/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testlambdasqsVpc85322AF3"
+        }
       }
     },
     "testlambdasqsVpcisolatedSubnet3RouteTable7AB1A8FF": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "testlambdasqsVpc85322AF3"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployProducerFunctionWithVpc/test-lambda-sqs/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testlambdasqsVpc85322AF3"
+        }
       }
     },
     "testlambdasqsVpcisolatedSubnet3RouteTableAssociation41766676": {
@@ -571,7 +571,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployProducerFunctionWithVpc/test-lambda-sqs/Vpc"
+            "Value": "deployProducerFunctionWithVpc/test-lambda-sqs/Vpc/FlowLog"
           }
         ]
       }
@@ -623,7 +623,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployProducerFunctionWithVpc/test-lambda-sqs/Vpc"
+            "Value": "deployProducerFunctionWithVpc/test-lambda-sqs/Vpc/FlowLog"
           }
         ]
       },
@@ -643,11 +643,6 @@
     "testlambdasqsVpcFlowLogEECF2763": {
       "Type": "AWS::EC2::FlowLog",
       "Properties": {
-        "ResourceId": {
-          "Ref": "testlambdasqsVpc85322AF3"
-        },
-        "ResourceType": "VPC",
-        "TrafficType": "ALL",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "testlambdasqsVpcFlowLogIAMRole79FE4957",
@@ -658,17 +653,31 @@
         "LogGroupName": {
           "Ref": "testlambdasqsVpcFlowLogLogGroup5E27ADE6"
         },
+        "ResourceId": {
+          "Ref": "testlambdasqsVpc85322AF3"
+        },
+        "ResourceType": "VPC",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployProducerFunctionWithVpc/test-lambda-sqs/Vpc"
+            "Value": "deployProducerFunctionWithVpc/test-lambda-sqs/Vpc/FlowLog"
           }
-        ]
+        ],
+        "TrafficType": "ALL"
       }
     },
     "testlambdasqsVpcSQS13B88BE1": {
       "Type": "AWS::EC2::VPCEndpoint",
       "Properties": {
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "testlambdasqstestlambdasqsSQSsecuritygroupBDBA458D",
+              "GroupId"
+            ]
+          }
+        ],
         "ServiceName": {
           "Fn::Join": [
             "",
@@ -681,18 +690,6 @@
             ]
           ]
         },
-        "VpcId": {
-          "Ref": "testlambdasqsVpc85322AF3"
-        },
-        "PrivateDnsEnabled": true,
-        "SecurityGroupIds": [
-          {
-            "Fn::GetAtt": [
-              "testlambdasqstestlambdasqsSQSsecuritygroupBDBA458D",
-              "GroupId"
-            ]
-          }
-        ],
         "SubnetIds": [
           {
             "Ref": "testlambdasqsVpcisolatedSubnet1Subnet75F315F8"
@@ -704,7 +701,10 @@
             "Ref": "testlambdasqsVpcisolatedSubnet3Subnet34633573"
           }
         ],
-        "VpcEndpointType": "Interface"
+        "VpcEndpointType": "Interface",
+        "VpcId": {
+          "Ref": "testlambdasqsVpc85322AF3"
+        }
       }
     },
     "testlambdasqstestlambdasqsSQSsecuritygroupBDBA458D": {
@@ -879,18 +879,18 @@
           },
           "S3Key": "d685d4fad1e8a913557eb007ae16e135281d3f192a6b557c471e160e3cc557a6.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testlambdasqssqstolambdaLambdaFunctionServiceRoleB914400A",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testlambdasqssqstolambdaLambdaFunctionServiceRoleB914400A",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -922,14 +922,14 @@
     "testlambdasqssqstolambdaLambdaFunctionSqsEventSourcedeployProducerFunctionWithVpctestlambdasqslambdatosqsqueueA1382C56CEF2BFAB": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
-        "FunctionName": {
-          "Ref": "testlambdasqssqstolambdaLambdaFunctionDE6481E6"
-        },
         "EventSourceArn": {
           "Fn::GetAtt": [
             "testlambdasqslambdatosqsqueue5A401298",
             "Arn"
           ]
+        },
+        "FunctionName": {
+          "Ref": "testlambdasqssqstolambdaLambdaFunctionDE6481E6"
         }
       }
     }

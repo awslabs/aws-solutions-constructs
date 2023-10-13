@@ -3,6 +3,7 @@
     "EncryptionKey1B843E66": {
       "Type": "AWS::KMS::Key",
       "Properties": {
+        "EnableKeyRotation": true,
         "KeyPolicy": {
           "Statement": [
             {
@@ -41,8 +42,7 @@
             }
           ],
           "Version": "2012-10-17"
-        },
-        "EnableKeyRotation": true
+        }
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
