@@ -88,8 +88,6 @@
     "nologgingstacknologgingstackalias0D6EE5FC": {
       "Type": "AWS::Route53::RecordSet",
       "Properties": {
-        "Name": "www.example.com.",
-        "Type": "A",
         "AliasTarget": {
           "DNSName": {
             "Fn::Join": [
@@ -114,7 +112,9 @@
         },
         "HostedZoneId": {
           "Ref": "nologgingstacknologgingstackzoneE11B9175"
-        }
+        },
+        "Name": "www.example.com.",
+        "Type": "A"
       }
     },
     "Vpc8378EB38": {
@@ -135,9 +135,6 @@
     "VpcisolatedSubnet1SubnetE62B1B9B": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1a",
         "CidrBlock": "10.0.0.0/18",
         "MapPublicIpOnLaunch": false,
@@ -154,21 +151,24 @@
             "Key": "Name",
             "Value": "deployWithoutLogging/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableE442650B": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployWithoutLogging/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableAssociationD259E31A": {
@@ -185,9 +185,6 @@
     "VpcisolatedSubnet2Subnet39217055": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1b",
         "CidrBlock": "10.0.64.0/18",
         "MapPublicIpOnLaunch": false,
@@ -204,21 +201,24 @@
             "Key": "Name",
             "Value": "deployWithoutLogging/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTable334F9764": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployWithoutLogging/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTableAssociation25A4716F": {
@@ -235,9 +235,6 @@
     "VpcisolatedSubnet3Subnet44F2537D": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1c",
         "CidrBlock": "10.0.128.0/18",
         "MapPublicIpOnLaunch": false,
@@ -254,21 +251,24 @@
             "Key": "Name",
             "Value": "deployWithoutLogging/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet3RouteTableA2F6BBC0": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployWithoutLogging/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet3RouteTableAssociationDC010BEB": {
@@ -300,7 +300,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployWithoutLogging/Vpc"
+            "Value": "deployWithoutLogging/Vpc/FlowLog"
           }
         ]
       }
@@ -352,7 +352,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployWithoutLogging/Vpc"
+            "Value": "deployWithoutLogging/Vpc/FlowLog"
           }
         ]
       },
@@ -372,11 +372,6 @@
     "VpcFlowLog8FF33A73": {
       "Type": "AWS::EC2::FlowLog",
       "Properties": {
-        "ResourceId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "ResourceType": "VPC",
-        "TrafficType": "ALL",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -387,12 +382,17 @@
         "LogGroupName": {
           "Ref": "VpcFlowLogLogGroup7B5C56B9"
         },
+        "ResourceId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "ResourceType": "VPC",
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployWithoutLogging/Vpc/FlowLog"
           }
-        ]
+        ],
+        "TrafficType": "ALL"
       }
     }
   },

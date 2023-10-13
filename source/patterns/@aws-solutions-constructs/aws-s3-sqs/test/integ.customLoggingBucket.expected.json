@@ -325,6 +325,7 @@
     "tests3sqsEncryptionKeyFD4D5946": {
       "Type": "AWS::KMS::Key",
       "Properties": {
+        "EnableKeyRotation": true,
         "KeyPolicy": {
           "Statement": [
             {
@@ -386,8 +387,7 @@
             }
           ],
           "Version": "2012-10-17"
-        },
-        "EnableKeyRotation": true
+        }
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"

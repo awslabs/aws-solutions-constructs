@@ -256,6 +256,7 @@
     "tests3snsEncryptionKey6C553584": {
       "Type": "AWS::KMS::Key",
       "Properties": {
+        "EnableKeyRotation": true,
         "KeyPolicy": {
           "Statement": [
             {
@@ -294,8 +295,7 @@
             }
           ],
           "Version": "2012-10-17"
-        },
-        "EnableKeyRotation": true
+        }
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"

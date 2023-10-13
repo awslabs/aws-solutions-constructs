@@ -326,8 +326,6 @@
     "privateapistackprivateapistackalias54E3713F": {
       "Type": "AWS::Route53::RecordSet",
       "Properties": {
-        "Name": "www.example.com.",
-        "Type": "A",
         "AliasTarget": {
           "DNSName": {
             "Fn::Join": [
@@ -352,7 +350,9 @@
         },
         "HostedZoneId": {
           "Ref": "privateapistackprivateapistackzone3E5194E7"
-        }
+        },
+        "Name": "www.example.com.",
+        "Type": "A"
       }
     },
     "Vpc8378EB38": {
@@ -373,9 +373,6 @@
     "VpcisolatedSubnet1SubnetE62B1B9B": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1a",
         "CidrBlock": "10.0.0.0/18",
         "MapPublicIpOnLaunch": false,
@@ -392,21 +389,24 @@
             "Key": "Name",
             "Value": "deployPrivateApi/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableE442650B": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployPrivateApi/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableAssociationD259E31A": {
@@ -423,9 +423,6 @@
     "VpcisolatedSubnet2Subnet39217055": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1b",
         "CidrBlock": "10.0.64.0/18",
         "MapPublicIpOnLaunch": false,
@@ -442,21 +439,24 @@
             "Key": "Name",
             "Value": "deployPrivateApi/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTable334F9764": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployPrivateApi/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTableAssociation25A4716F": {
@@ -473,9 +473,6 @@
     "VpcisolatedSubnet3Subnet44F2537D": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1c",
         "CidrBlock": "10.0.128.0/18",
         "MapPublicIpOnLaunch": false,
@@ -492,21 +489,24 @@
             "Key": "Name",
             "Value": "deployPrivateApi/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet3RouteTableA2F6BBC0": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployPrivateApi/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet3RouteTableAssociationDC010BEB": {
@@ -538,7 +538,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployPrivateApi/Vpc"
+            "Value": "deployPrivateApi/Vpc/FlowLog"
           }
         ]
       }
@@ -590,7 +590,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployPrivateApi/Vpc"
+            "Value": "deployPrivateApi/Vpc/FlowLog"
           }
         ]
       },
@@ -610,11 +610,6 @@
     "VpcFlowLog8FF33A73": {
       "Type": "AWS::EC2::FlowLog",
       "Properties": {
-        "ResourceId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "ResourceType": "VPC",
-        "TrafficType": "ALL",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -625,12 +620,17 @@
         "LogGroupName": {
           "Ref": "VpcFlowLogLogGroup7B5C56B9"
         },
+        "ResourceId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "ResourceType": "VPC",
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployPrivateApi/Vpc/FlowLog"
           }
-        ]
+        ],
+        "TrafficType": "ALL"
       }
     },
     "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
@@ -662,7 +662,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
           },
-          "S3Key": "e57c1acaa363d7d2b81736776007a7091bc73dff4aeb8135627c4511a51e7dca.zip"
+          "S3Key": "5194f926380567b6fdffc61629afdad2afc818614cb227df45e499c69db163a7.zip"
         },
         "Timeout": 900,
         "MemorySize": 128,

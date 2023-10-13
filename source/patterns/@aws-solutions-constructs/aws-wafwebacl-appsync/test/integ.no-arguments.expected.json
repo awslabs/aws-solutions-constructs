@@ -13,12 +13,6 @@
         "DefaultAction": {
           "Allow": {}
         },
-        "Scope": "REGIONAL",
-        "VisibilityConfig": {
-          "CloudWatchMetricsEnabled": true,
-          "MetricName": "webACL",
-          "SampledRequestsEnabled": true
-        },
         "Rules": [
           {
             "Name": "AWS-AWSManagedRulesBotControlRuleSet",
@@ -146,7 +140,13 @@
               "SampledRequestsEnabled": true
             }
           }
-        ]
+        ],
+        "Scope": "REGIONAL",
+        "VisibilityConfig": {
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "webACL",
+          "SampledRequestsEnabled": true
+        }
       }
     },
     "testwafwebaclappsyncWebACLAssociation": {

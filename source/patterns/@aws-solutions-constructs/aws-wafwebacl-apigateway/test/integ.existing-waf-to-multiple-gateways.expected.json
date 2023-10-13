@@ -40,13 +40,13 @@
           },
           "S3Key": "0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f.zip"
         },
+        "Handler": ".handler",
         "Role": {
           "Fn::GetAtt": [
             "testOneFunctionServiceRole3F9CD9E7",
             "Arn"
           ]
         },
-        "Handler": ".handler",
         "Runtime": "nodejs16.x"
       },
       "DependsOn": [
@@ -129,10 +129,10 @@
     "testOneApiDeploymentEF63BD86e15daf42da17689cb6d56b07d074b512": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
+        "Description": "Automatically created by the RestApi construct",
         "RestApiId": {
           "Ref": "testOneApi71064556"
-        },
-        "Description": "Automatically created by the RestApi construct"
+        }
       },
       "DependsOn": [
         "testOneApiproxyANY7F46A6A5",
@@ -153,11 +153,11 @@
     "testOneApiDeploymentStageprod5B67F2DF": {
       "Type": "AWS::ApiGateway::Stage",
       "Properties": {
-        "RestApiId": {
-          "Ref": "testOneApi71064556"
-        },
         "DeploymentId": {
           "Ref": "testOneApiDeploymentEF63BD86e15daf42da17689cb6d56b07d074b512"
+        },
+        "RestApiId": {
+          "Ref": "testOneApi71064556"
         },
         "StageName": "prod"
       },
@@ -275,14 +275,8 @@
     "testOneApiproxyANY7F46A6A5": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
-        "HttpMethod": "ANY",
-        "ResourceId": {
-          "Ref": "testOneApiproxyC9BD4274"
-        },
-        "RestApiId": {
-          "Ref": "testOneApi71064556"
-        },
         "AuthorizationType": "NONE",
+        "HttpMethod": "ANY",
         "Integration": {
           "IntegrationHttpMethod": "POST",
           "Type": "AWS_PROXY",
@@ -309,6 +303,12 @@
               ]
             ]
           }
+        },
+        "ResourceId": {
+          "Ref": "testOneApiproxyC9BD4274"
+        },
+        "RestApiId": {
+          "Ref": "testOneApi71064556"
         }
       },
       "Metadata": {
@@ -403,17 +403,8 @@
     "testOneApiANY899DD2DA": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
-        "HttpMethod": "ANY",
-        "ResourceId": {
-          "Fn::GetAtt": [
-            "testOneApi71064556",
-            "RootResourceId"
-          ]
-        },
-        "RestApiId": {
-          "Ref": "testOneApi71064556"
-        },
         "AuthorizationType": "NONE",
+        "HttpMethod": "ANY",
         "Integration": {
           "IntegrationHttpMethod": "POST",
           "Type": "AWS_PROXY",
@@ -440,6 +431,15 @@
               ]
             ]
           }
+        },
+        "ResourceId": {
+          "Fn::GetAtt": [
+            "testOneApi71064556",
+            "RootResourceId"
+          ]
+        },
+        "RestApiId": {
+          "Ref": "testOneApi71064556"
         }
       },
       "Metadata": {
@@ -493,13 +493,13 @@
           },
           "S3Key": "0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f.zip"
         },
+        "Handler": ".handler",
         "Role": {
           "Fn::GetAtt": [
             "testTwoFunctionServiceRoleF678C905",
             "Arn"
           ]
         },
-        "Handler": ".handler",
         "Runtime": "nodejs16.x"
       },
       "DependsOn": [
@@ -582,10 +582,10 @@
     "testTwoApiDeployment4EDBF4DF26b103f50979cda2b3c8314c6d694485": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
+        "Description": "Automatically created by the RestApi construct",
         "RestApiId": {
           "Ref": "testTwoApi17A08EF5"
-        },
-        "Description": "Automatically created by the RestApi construct"
+        }
       },
       "DependsOn": [
         "testTwoApiproxyANY63FFF74A",
@@ -606,11 +606,11 @@
     "testTwoApiDeploymentStageprod8DB1EDB4": {
       "Type": "AWS::ApiGateway::Stage",
       "Properties": {
-        "RestApiId": {
-          "Ref": "testTwoApi17A08EF5"
-        },
         "DeploymentId": {
           "Ref": "testTwoApiDeployment4EDBF4DF26b103f50979cda2b3c8314c6d694485"
+        },
+        "RestApiId": {
+          "Ref": "testTwoApi17A08EF5"
         },
         "StageName": "prod"
       },
@@ -728,14 +728,8 @@
     "testTwoApiproxyANY63FFF74A": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
-        "HttpMethod": "ANY",
-        "ResourceId": {
-          "Ref": "testTwoApiproxy2575DCE3"
-        },
-        "RestApiId": {
-          "Ref": "testTwoApi17A08EF5"
-        },
         "AuthorizationType": "NONE",
+        "HttpMethod": "ANY",
         "Integration": {
           "IntegrationHttpMethod": "POST",
           "Type": "AWS_PROXY",
@@ -762,6 +756,12 @@
               ]
             ]
           }
+        },
+        "ResourceId": {
+          "Ref": "testTwoApiproxy2575DCE3"
+        },
+        "RestApiId": {
+          "Ref": "testTwoApi17A08EF5"
         }
       },
       "Metadata": {
@@ -856,17 +856,8 @@
     "testTwoApiANY91121C6F": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
-        "HttpMethod": "ANY",
-        "ResourceId": {
-          "Fn::GetAtt": [
-            "testTwoApi17A08EF5",
-            "RootResourceId"
-          ]
-        },
-        "RestApiId": {
-          "Ref": "testTwoApi17A08EF5"
-        },
         "AuthorizationType": "NONE",
+        "HttpMethod": "ANY",
         "Integration": {
           "IntegrationHttpMethod": "POST",
           "Type": "AWS_PROXY",
@@ -893,6 +884,15 @@
               ]
             ]
           }
+        },
+        "ResourceId": {
+          "Fn::GetAtt": [
+            "testTwoApi17A08EF5",
+            "RootResourceId"
+          ]
+        },
+        "RestApiId": {
+          "Ref": "testTwoApi17A08EF5"
         }
       },
       "Metadata": {
@@ -911,12 +911,6 @@
       "Properties": {
         "DefaultAction": {
           "Allow": {}
-        },
-        "Scope": "REGIONAL",
-        "VisibilityConfig": {
-          "CloudWatchMetricsEnabled": true,
-          "MetricName": "webACL",
-          "SampledRequestsEnabled": true
         },
         "Rules": [
           {
@@ -1045,7 +1039,13 @@
               "SampledRequestsEnabled": true
             }
           }
-        ]
+        ],
+        "Scope": "REGIONAL",
+        "VisibilityConfig": {
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "webACL",
+          "SampledRequestsEnabled": true
+        }
       }
     },
     "firstconstructWebACLAssociation": {

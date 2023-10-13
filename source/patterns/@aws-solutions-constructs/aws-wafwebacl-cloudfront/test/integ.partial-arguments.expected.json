@@ -91,12 +91,6 @@
         "DefaultAction": {
           "Allow": {}
         },
-        "Scope": "CLOUDFRONT",
-        "VisibilityConfig": {
-          "CloudWatchMetricsEnabled": true,
-          "MetricName": "webACL",
-          "SampledRequestsEnabled": true
-        },
         "Name": "test-name-cloudfront",
         "Rules": [
           {
@@ -225,7 +219,13 @@
               "SampledRequestsEnabled": true
             }
           }
-        ]
+        ],
+        "Scope": "CLOUDFRONT",
+        "VisibilityConfig": {
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "webACL",
+          "SampledRequestsEnabled": true
+        }
       }
     }
   },
