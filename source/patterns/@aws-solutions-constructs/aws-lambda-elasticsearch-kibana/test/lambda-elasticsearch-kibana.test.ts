@@ -93,6 +93,25 @@ test('check properties with no CW Alarms ', () => {
   expect(construct.elasticsearchRole).toBeDefined();
 });
 
+test('Check that TLS 1.2 is the default', () => {
+  const stack = new cdk.Stack();
+
+  const props: LambdaToElasticSearchAndKibanaProps = {
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
+    domainName: 'test-domain',
+    createCloudWatchAlarms: false
+  };
+
+  new LambdaToElasticSearchAndKibana(stack, 'test-lambda-opensearch-stack', props);
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Elasticsearch::Domain", {
+    DomainEndpointOptions: {
+      EnforceHTTPS: true,
+      TLSSecurityPolicy: "Policy-Min-TLS-1-2-2019-07"
+    },
+  });
+});
+
 test('check lambda function custom environment variable', () => {
   const stack = new cdk.Stack();
   const props: LambdaToElasticSearchAndKibanaProps = {
@@ -549,3 +568,46 @@ function getDefaultTestLambdaProps(): lambda.FunctionProps {
     handler: 'index.handler',
   };
 }
+
+test('Confirm CheckVpcProps is being called', () => {
+  const stack = new cdk.Stack();
+
+  const app = () => {
+    new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
+      lambdaFunctionProps: getDefaultTestLambdaProps(),
+      domainName: "test",
+      deployVpc: true,
+      vpcProps: {
+        vpcName: "existing-vpc-test"
+      },
+      existingVpc: defaults.getTestVpc(stack),
+    });
+  };
+
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: LambdaToElasticSearchAndKibanaProps = {
+    domainName: 'name',
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new LambdaToElasticSearchAndKibana(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});

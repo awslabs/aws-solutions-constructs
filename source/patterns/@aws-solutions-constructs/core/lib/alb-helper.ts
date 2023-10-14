@@ -112,12 +112,15 @@ export function AddListener(
       protocol: "HTTPS",
     };
 
+    // NOSONAR: (typescript:S5332)
+    // This listener is explicitly created to redirect non TLS connections
+    // The lack of SSL/TLS is intentional
     const httpListener = new elb.ApplicationListener(
       scope,
       `${id}-redirect`,
       {
         loadBalancer,
-        protocol: ApplicationProtocol.HTTP,
+        protocol: ApplicationProtocol.HTTP, // NOSONAR
         defaultAction: ListenerAction.redirect(opt),
       }
     );
@@ -216,17 +219,22 @@ export function CheckAlbProps(props: any) {
   let errorMessages = '';
   let errorFound = false;
 
+  if (props.loadBalancerProps && props.existingLoadBalancerObj) {
+    errorMessages += 'Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if ((props?.logAlbAccessLogs === false) && (props.albLoggingBucketProps)) {
+    errorMessages += 'Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n';
+    errorFound = true;
+  }
+
   if (props.listenerProps?.certificateArns) {
     errorMessages += "certificateArns is deprecated. Please supply certificates using props.listenerProps.certificates\n";
     errorFound = true;
   }
 
-  if (
-    ((props.existingLoadBalancerObj &&
-      props.existingLoadBalancerObj.listeners.length === 0) ||
-      !props.existingLoadBalancerObj) &&
-    !props.listenerProps
-  ) {
+  if (ValidateAddListenerProps(props)) {
     errorMessages += "When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP\n";
     errorFound = true;
   }
@@ -269,4 +277,15 @@ export function CheckAlbProps(props: any) {
   if (errorFound) {
     throw new Error(errorMessages);
   }
+
+}
+
+function ValidateAddListenerProps(props: any) {
+  if (((props.existingLoadBalancerObj &&
+    props.existingLoadBalancerObj.listeners.length === 0) ||
+    !props.existingLoadBalancerObj) &&
+  !props.listenerProps) {
+    return true;
+  }
+  return false;
 }

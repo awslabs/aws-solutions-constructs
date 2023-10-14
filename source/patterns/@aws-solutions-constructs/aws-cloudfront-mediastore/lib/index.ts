@@ -23,7 +23,7 @@ import { Aws } from 'aws-cdk-lib';
  */
 export interface CloudFrontToMediaStoreProps {
   /**
-   * Existing instance of mediastore.CfnContainer obejct.
+   * Existing instance of mediastore.CfnContainer object.
    *
    * @default - None
    */
@@ -87,7 +87,8 @@ export class CloudFrontToMediaStore extends Construct {
    */
   constructor(scope: Construct, id: string, props: CloudFrontToMediaStoreProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckMediaStoreProps(props);
+    defaults.CheckCloudFrontProps(props);
 
     let cloudFrontDistributionProps = props.cloudFrontDistributionProps;
 

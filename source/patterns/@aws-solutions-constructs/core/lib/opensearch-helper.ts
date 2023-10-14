@@ -82,7 +82,10 @@ export function buildOpenSearch(scope: Construct, props: BuildOpenSearchProps): 
   const defaultCfnDomainProps = DefaultOpenSearchCfnDomainProps(props.openSearchDomainName, cognitoDashboardConfigureRole, props);
   const finalCfnDomainProps = consolidateProps(defaultCfnDomainProps, props.clientDomainProps, constructDrivenProps);
 
-  const opensearchDomain = new opensearch.CfnDomain(scope, `OpenSearchDomain`, finalCfnDomainProps);
+  // tlsSecurityPolicy is set in DefaultOpenSearchCfnDomainProps() - it is the
+  // default behavior, but Sonarqube cannot follow the program flow to confirm this.
+  // This is confirmed by the 'Check that TLS 1.2 is the default' test in aws-lambda-opensearch
+  const opensearchDomain = new opensearch.CfnDomain(scope, `OpenSearchDomain`, finalCfnDomainProps); // NOSONAR
 
   addCfnSuppressRules(opensearchDomain, [
     {
@@ -301,4 +304,22 @@ function createDashboardCognitoRole(
 
   cognitoDashboardConfigureRolePolicy.attachToRole(cognitoDashboardConfigureRole);
   return cognitoDashboardConfigureRole;
+}
+
+export interface OpenSearchProps {
+  readonly openSearchDomainProps?: opensearch.CfnDomainProps;
+}
+
+export function CheckOpenSearchProps(propsObject: OpenSearchProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.openSearchDomainProps?.vpcOptions) {
+    errorMessages += "Error - Define VPC using construct parameters not the OpenSearch Service props\n";
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }

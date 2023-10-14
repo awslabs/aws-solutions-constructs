@@ -184,8 +184,8 @@ test('check properties', () => {
 
   const construct: EventbridgeToLambda = deployNewFunc(stack);
 
-  expect(construct.eventsRule !== null);
-  expect(construct.lambdaFunction !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.lambdaFunction).toBeDefined();
 });
 
 test('check exception for Missing existingObj from props', () => {
@@ -209,36 +209,12 @@ test('check eventbus property, snapshot & eventbus exists', () => {
 
   const construct: EventbridgeToLambda = deployNewEventBus(stack);
 
-  expect(construct.eventsRule !== null);
-  expect(construct.lambdaFunction !== null);
-  expect(construct.eventBus !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.eventBus).toBeDefined();
   // Check whether eventbus exists
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::Events::EventBus', 1);
-});
-
-test('check exception while passing existingEventBus & eventBusProps', () => {
-  const stack = new cdk.Stack();
-
-  const props: EventbridgeToLambdaProps = {
-    lambdaFunctionProps: {
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
-      handler: 'index.handler'
-    },
-    eventRuleProps: {
-      eventPattern: {
-        source: ['solutionsconstructs']
-      }
-    },
-    eventBusProps: { eventBusName: 'test' },
-    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, { eventBusName: 'test' })
-  };
-
-  const app = () => {
-    new EventbridgeToLambda(stack, 'test-eventbridge-lambda', props);
-  };
-  expect(app).toThrowError();
 });
 
 test('check custom event bus resource with props when deploy:true', () => {
@@ -265,4 +241,57 @@ test('check custom event bus resource with props when deploy:true', () => {
   template.hasResourceProperties('AWS::Events::EventBus', {
     Name: `testeventbus`
   });
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: EventbridgeToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new EventbridgeToLambda(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});
+
+test('Confirm CheckEventBridgeProps is being called', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler'
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: { eventBusName: 'test' },
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, { eventBusName: 'test' })
+  };
+
+  const app = () => {
+    new EventbridgeToLambda(stack, 'test-eventbridge-lambda', props);
+  };
+  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });

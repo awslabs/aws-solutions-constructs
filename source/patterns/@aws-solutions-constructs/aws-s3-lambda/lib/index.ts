@@ -89,7 +89,8 @@ export class S3ToLambda extends Construct {
     // context here rather than assuming the client will set it
     this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-    defaults.CheckProps(props);
+    defaults.CheckS3Props(props);
+    defaults.CheckLambdaProps(props);
 
     let bucket: s3.Bucket;
 

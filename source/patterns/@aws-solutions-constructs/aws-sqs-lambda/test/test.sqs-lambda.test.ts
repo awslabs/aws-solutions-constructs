@@ -15,13 +15,10 @@
 import { Stack } from "aws-cdk-lib";
 import { SqsToLambda, SqsToLambdaProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 import { Template } from 'aws-cdk-lib/assertions';
 import * as kms from 'aws-cdk-lib/aws-kms';
 
-// --------------------------------------------------------------
-// Pattern deployment w/ new Lambda function and
-// overridden properties
-// --------------------------------------------------------------
 test('Pattern deployment w/ new Lambda function and overridden props', () => {
   // Initial Setup
   const stack = new Stack();
@@ -55,9 +52,6 @@ test('Pattern deployment w/ new Lambda function and overridden props', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test the getter methods
-// --------------------------------------------------------------
 test('Test getter methods', () => {
   // Initial Setup
   const stack = new Stack();
@@ -71,13 +65,13 @@ test('Test getter methods', () => {
     maxReceiveCount: 0,
     queueProps: {}
   };
-  const app = new SqsToLambda(stack, 'test-apigateway-lambda', props);
+  const app = new SqsToLambda(stack, 'sqs-lambda', props);
   // Assertion 1
-  expect(app.lambdaFunction !== null);
+  expect(app.lambdaFunction).toBeDefined();
   // Assertion 2
-  expect(app.sqsQueue !== null);
+  expect(app.sqsQueue).toBeDefined();
   // Assertion 3
-  expect(app.deadLetterQueue !== null);
+  expect(app.deadLetterQueue).toBeDefined();
 });
 
 // --------------------------------------------------------------
@@ -98,10 +92,6 @@ test('Test error handling for existing Lambda function', () => {
   }).toThrowError();
 });
 
-// --------------------------------------------------------------
-// Test error handling for new Lambda function
-// w/o required properties
-// --------------------------------------------------------------
 test('Test error handling for new Lambda function w/o required properties', () => {
   // Initial Setup
   const stack = new Stack();
@@ -116,9 +106,6 @@ test('Test error handling for new Lambda function w/o required properties', () =
   }).toThrowError();
 });
 
-// --------------------------------------------------------------
-// Pattern deployment w/ batch size
-// --------------------------------------------------------------
 test('Pattern deployment w/ batch size', () => {
   const stack = new Stack();
   const props: SqsToLambdaProps = {
@@ -195,7 +182,7 @@ test('Queue is encrypted with imported CMK when set on queueProps.encryptionMast
   });
 });
 
-test('Queue is encrypted with provided encrytionKeyProps', () => {
+test('Queue is encrypted with provided encryptionKeyProps', () => {
   const stack = new Stack();
 
   new SqsToLambda(stack, 'test-construct', {
@@ -277,4 +264,49 @@ test('Queue is encrypted with customer managed KMS Key when enable encryption fl
       ]
     },
   });
+});
+
+test('Confirm CheckSqsProps is called', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const props: SqsToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    deployDeadLetterQueue: true,
+    maxReceiveCount: 0,
+    queueProps: {},
+    existingQueueObj: new sqs.Queue(stack, 'test', {})
+  };
+
+  const app = () => {
+    new SqsToLambda(stack, 'test-apigateway-lambda', props);
+  };
+  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: SqsToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new SqsToLambda(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

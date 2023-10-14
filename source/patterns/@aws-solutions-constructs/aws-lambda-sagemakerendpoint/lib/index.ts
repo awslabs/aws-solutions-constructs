@@ -36,7 +36,7 @@ export interface LambdaToSagemakerEndpointProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * Existing SageMaker Enpoint object, providing both this and endpointProps will cause an error.
+   * Existing SageMaker Endpoint object, providing both this and endpointProps will cause an error.
    *
    * @default - None
    */
@@ -105,12 +105,11 @@ export class LambdaToSagemakerEndpoint extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToSagemakerEndpointProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckVpcProps(props);
+    defaults.CheckLambdaProps(props);
+    defaults.CheckSagemakerProps(props);
 
     if (props.deployVpc || props.existingVpc) {
-      if (props.deployVpc && props.existingVpc) {
-        throw new Error('More than 1 VPC specified in the properties');
-      }
 
       // create the VPC
       this.vpc = defaults.buildVpc(scope, {

@@ -73,9 +73,6 @@ const vpcConfig = {
   },
 };
 
-// --------------------------------------------------------------
-// Tests minimal deployment with new Lambda function
-// --------------------------------------------------------------
 test('Test minimal deployment with new Lambda function', () => {
   // Stack
   const stack = new Stack();
@@ -121,10 +118,7 @@ test('Test minimal deployment with new Lambda function', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingVpc and deployVpc
-// --------------------------------------------------------------
-test("Test bad call with existingVpc and deployVpc", () => {
+test("Confirm CheckVpcProps is being called", () => {
   // Stack
   const stack = new Stack();
 
@@ -134,7 +128,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
     // Helper declaration
     new LambdaToEventbridge(stack, "lambda-to-eventbridge-stack", {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: lambda.Runtime.NODEJS_18_X,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
@@ -143,13 +137,10 @@ test("Test bad call with existingVpc and deployVpc", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
-// --------------------------------------------------------------
-// Test exception while passing existingEventBus & eventBusProps
-// --------------------------------------------------------------
-test("Test bad call with existingVpc and deployVpc", () => {
+test("Confirm CheckEventBridgeProps is called", () => {
   // Stack
   const stack = new Stack();
 
@@ -166,12 +157,9 @@ test("Test bad call with existingVpc and deployVpc", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing eventbus
-// --------------------------------------------------------------
 test('Test deployment w/ existing eventbus', () => {
   // Stack
   const stack = new Stack();
@@ -213,9 +201,6 @@ test('Test deployment w/ existing eventbus', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC without vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Stack
   const stack = new Stack();
@@ -245,9 +230,6 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC w/vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Stack
   const stack = new Stack();
@@ -283,9 +265,6 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC", () => {
   // Stack
   const stack = new Stack();
@@ -350,12 +329,6 @@ test("Test minimal deployment with an existing VPC", () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC and existing Lambda function not in a VPC
-//
-// buildLambdaFunction should throw an error if the Lambda function is not
-// attached to a VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC and existing Lambda function not in a VPC", () => {
   // Stack
   const stack = new Stack();
@@ -370,7 +343,8 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
   // Helper declaration
   const app = () => {
-    // Helper declaration
+    // buildLambdaFunction should throw an error if the Lambda function is not
+    // attached to a VPC
     new LambdaToEventbridge(stack, "lambda-to-eventbridge-stack", {
       existingLambdaObj: testLambdaFunction,
       existingVpc: testVpc,
@@ -378,13 +352,10 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   };
 
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('A Lambda function must be bound to a VPC upon creation, it cannot be added to a VPC in a subsequent construct');
 
 });
 
-// ----------------------------------------------------------------------------------
-// Test lambda function custom environment variable and custom event bus permissions
-// ----------------------------------------------------------------------------------
 test('Test lambda function custom environment variable', () => {
   // Stack
   const stack = new Stack();
@@ -486,7 +457,7 @@ test('check multiple lambda functions publishing to single event bus', () => {
   // Make sure 2 lambda functions exist
   template.resourceCountIs('AWS::Lambda::Function', 2);
 
-  // Check whether lambdas have permisison to publish to the event bus
+  // Check whether lambdas have permission to publish to the event bus
   template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
@@ -518,4 +489,28 @@ test('check multiple lambda functions publishing to single event bus', () => {
       }
     }
   });
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: LambdaToEventbridgeProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new LambdaToEventbridge(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

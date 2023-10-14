@@ -21,7 +21,7 @@ import { generateIntegStackName } from '@aws-solutions-constructs/core';
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const existingEventBus = new events.EventBus(stack, `existing-event-bus`, {  eventBusName: 'test'  });
+const existingEventBus = new events.EventBus(stack, `existing-event-bus`, {  eventBusName: 'test-existing-lambda'  });
 
 const props: EventbridgeToLambdaProps = {
   lambdaFunctionProps: {

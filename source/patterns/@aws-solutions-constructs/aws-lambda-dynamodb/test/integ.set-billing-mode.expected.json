@@ -126,12 +126,6 @@
           },
           "S3Key": "0c3255e93ffe7a906c7422e9f0e9cc4c7fd86ee996ee3bb302e2f134b38463c8.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testlambdadynamodbstackLambdaFunctionServiceRole758347A1",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -141,6 +135,12 @@
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testlambdadynamodbstackLambdaFunctionServiceRole758347A1",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -172,16 +172,16 @@
     "testlambdadynamodbstackDynamoTable8138E93B": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
-        "KeySchema": [
-          {
-            "AttributeName": "id",
-            "KeyType": "HASH"
-          }
-        ],
         "AttributeDefinitions": [
           {
             "AttributeName": "id",
             "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
           }
         ],
         "PointInTimeRecoverySpecification": {

@@ -76,12 +76,7 @@ export interface BuildQueueResponse {
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function buildQueue(scope: Construct, id: string, props: BuildQueueProps): BuildQueueResponse {
-
-  if ((props.queueProps?.encryptionMasterKey || props.encryptionKey || props.encryptionKeyProps)
-  && props.enableEncryptionWithCustomerManagedKey === true) {
-    printWarning(`Ignoring enableEncryptionWithCustomerManagedKey because one of
-     queueProps.encryptionMasterKey, encryptionKey, or encryptionKeyProps was already specified`);
-  }
+  CheckEncryptionWarnings(props);
 
   // If an existingQueueObj is not specified
   if (!props.existingQueueObj) {
@@ -111,7 +106,11 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
       queueProps.encryptionMasterKey = buildEncryptionKey(scope, props.encryptionKeyProps);
     }
 
-    const queue = new sqs.Queue(scope, id, queueProps);
+    // NOSONAR (typescript:S6330)
+    // encryption is set to QueueEncryption.KMS_MANAGED by default in DefaultQueueProps, but
+    // Sonarqube can't parse the code well enough to see this. Encryption is confirmed by
+    // the 'Test deployment without imported encryption key' unit test
+    const queue = new sqs.Queue(scope, id, queueProps); // NOSONAR
 
     applySecureQueuePolicy(queue);
 
@@ -123,6 +122,16 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
   }
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+function CheckEncryptionWarnings(props: BuildQueueProps) {
+  if ((props.queueProps?.encryptionMasterKey || props.encryptionKey || props.encryptionKeyProps)
+  && props.enableEncryptionWithCustomerManagedKey === true) {
+    printWarning(`Ignoring enableEncryptionWithCustomerManagedKey because one of
+     queueProps.encryptionMasterKey, encryptionKey, or encryptionKeyProps was already specified`);
+  }
+}
 export interface BuildDeadLetterQueueProps {
   /**
    * Existing instance of SQS queue object, providing both this and queueProps will cause an error.
@@ -218,4 +227,57 @@ function applySecureQueuePolicy(queue: sqs.Queue): void {
           }
     })
   );
+}
+
+export interface SqsProps {
+  readonly existingQueueObj?: sqs.Queue,
+  readonly queueProps?: sqs.QueueProps,
+  readonly deployDeadLetterQueue?: boolean,
+  readonly deadLetterQueueProps?: sqs.QueueProps,
+  readonly encryptionKey?: kms.Key,
+  readonly encryptionKeyProps?: kms.KeyProps
+}
+
+export function CheckSqsProps(propsObject: SqsProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingQueueObj && propsObject.queueProps) {
+    errorMessages += 'Error - Either provide queueProps or existingQueueObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.queueProps?.encryptionMasterKey && propsObject.encryptionKey) {
+    errorMessages += 'Error - Either provide queueProps.encryptionMasterKey or encryptionKey, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.queueProps?.encryptionMasterKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide queueProps.encryptionMasterKey or encryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.encryptionKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if ((propsObject?.deployDeadLetterQueue === false) && propsObject.deadLetterQueueProps) {
+    errorMessages += 'Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n';
+    errorFound = true;
+  }
+
+  const isQueueFifo: boolean = propsObject?.queueProps?.fifo;
+  const isDeadLetterQueueFifo: boolean = propsObject?.deadLetterQueueProps?.fifo;
+  const deployDeadLetterQueue: boolean = propsObject.deployDeadLetterQueue || propsObject.deployDeadLetterQueue === undefined;
+
+  if (deployDeadLetterQueue && (isQueueFifo !== isDeadLetterQueueFifo)) {
+    errorMessages += 'Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+      'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }

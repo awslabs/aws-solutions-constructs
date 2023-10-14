@@ -99,13 +99,13 @@
           },
           "S3Key": "8ce85d10dcd7b8e6d43ffd909827afc76802ad40fcd7908886ff825cbe8e15df.zip"
         },
+        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "LambdaFunctionServiceRole0C4CDE0B",
             "Arn"
           ]
         },
-        "Handler": "index.handler",
         "Runtime": "nodejs18.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -269,14 +269,14 @@
           },
           "S3Key": "654d49d4ea47a6be417d57b94dc0310933d0e971a3e48a3080c3e48487af3e50.zip"
         },
+        "FunctionName": "PhotosLambdaTestFromAsset",
+        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "PhotosLambdaTestFromAssetServiceRoleE0B4776B",
             "Arn"
           ]
         },
-        "FunctionName": "PhotosLambdaTestFromAsset",
-        "Handler": "index.handler",
         "Runtime": "nodejs18.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -552,14 +552,14 @@
           },
           "S3Key": "96f7d2d4f45b57a586d030966d31e06bc622b5f20258ca38d605fef38e6b9a17.zip"
         },
+        "Handler": "index.handler",
+        "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
             "OpenApiGatewayToLambdaApiTemplateWriterLambdaRoleCBDA4014",
             "Arn"
           ]
         },
-        "Handler": "index.handler",
-        "MemorySize": 1024,
         "Runtime": "nodejs18.x",
         "Timeout": 60,
         "TracingConfig": {
@@ -669,13 +669,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "8e3d635893ea17fa3158623489cd42c680fad925b38de1ef51cb10d84f6e245e.zip"
-        },
-        "Role": {
-          "Fn::GetAtt": [
-            "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventServiceRoleFEE201A1",
-            "Arn"
-          ]
+          "S3Key": "7382a0addb9f34974a1ea6c6c9b063882af874828f366f5c93b2b7b64db15c94.zip"
         },
         "Description": "AWS CDK resource provider framework - onEvent (apiFromAssetExistingLambdaFunctions/OpenApiGatewayToLambda/ApiTemplateWriterProvider)",
         "Environment": {
@@ -689,7 +683,13 @@
           }
         },
         "Handler": "framework.onEvent",
-        "Runtime": "nodejs14.x",
+        "Role": {
+          "Fn::GetAtt": [
+            "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventServiceRoleFEE201A1",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs18.x",
         "Timeout": 900
       },
       "DependsOn": [
@@ -832,17 +832,17 @@
     "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775114a8d1d0c9bf9b9d904a22f099d1d64": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
+        "Description": "Automatically created by the RestApi construct",
         "RestApiId": {
           "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
-        },
-        "Description": "Automatically created by the RestApi construct"
+        }
       },
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
             {
               "id": "W45",
-              "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource"
+              "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checks for it in AWS::ApiGateway::Deployment resource"
             }
           ]
         }
@@ -851,9 +851,6 @@
     "OpenApiGatewayToLambdaSpecRestApiDeploymentStageprodB962CBBB": {
       "Type": "AWS::ApiGateway::Stage",
       "Properties": {
-        "RestApiId": {
-          "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
-        },
         "AccessLogSetting": {
           "DestinationArn": {
             "Fn::GetAtt": [
@@ -874,6 +871,9 @@
             "ResourcePath": "/*"
           }
         ],
+        "RestApiId": {
+          "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
+        },
         "StageName": "prod",
         "TracingEnabled": true
       }

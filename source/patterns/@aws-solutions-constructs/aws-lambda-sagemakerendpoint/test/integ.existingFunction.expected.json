@@ -106,12 +106,6 @@
           },
           "S3Key": "d894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "LambdaFunctionServiceRole0C4CDE0B",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "SAGEMAKER_ENDPOINT_NAME": {
@@ -124,6 +118,12 @@
         },
         "Handler": "index.handler",
         "MemorySize": 128,
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaFunctionServiceRole0C4CDE0B",
+            "Arn"
+          ]
+        },
         "Runtime": "python3.8",
         "Timeout": 300,
         "TracingConfig": {
@@ -421,6 +421,7 @@
     "testlambdasagemakerEncryptionKey2AACF9E0": {
       "Type": "AWS::KMS::Key",
       "Properties": {
+        "EnableKeyRotation": true,
         "KeyPolicy": {
           "Statement": [
             {
@@ -448,8 +449,7 @@
             }
           ],
           "Version": "2012-10-17"
-        },
-        "EnableKeyRotation": true
+        }
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
@@ -457,6 +457,9 @@
     "testlambdasagemakerSagemakerEndpointConfig6BABA334": {
       "Type": "AWS::SageMaker::EndpointConfig",
       "Properties": {
+        "KmsKeyId": {
+          "Ref": "testlambdasagemakerEncryptionKey2AACF9E0"
+        },
         "ProductionVariants": [
           {
             "InitialInstanceCount": 1,
@@ -470,10 +473,7 @@
             },
             "VariantName": "AllTraffic"
           }
-        ],
-        "KmsKeyId": {
-          "Ref": "testlambdasagemakerEncryptionKey2AACF9E0"
-        }
+        ]
       },
       "DependsOn": [
         "testlambdasagemakerSagemakerModelEC3E4E39"

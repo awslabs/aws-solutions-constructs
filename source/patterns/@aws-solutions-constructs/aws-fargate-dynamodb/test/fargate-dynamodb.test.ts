@@ -14,7 +14,7 @@
 import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
-import { FargateToDynamoDB } from "../lib";
+import { FargateToDynamoDB, FargateToDynamoDBProps } from "../lib";
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
@@ -46,11 +46,11 @@ test('New service/new table, public API, new VPC', () => {
     tablePermissions: 'ReadWrite'
   });
 
-  expect(construct.vpc !== null);
-  expect(construct.service !== null);
-  expect(construct.container !== null);
-  expect(construct.dynamoTable !== null);
-  expect(construct.dynamoTableInterface !== null);
+  expect(construct.vpc).toBeDefined();
+  expect(construct.service).toBeDefined();
+  expect(construct.container).toBeDefined();
+  expect(construct.dynamoTable).toBeDefined();
+  expect(construct.dynamoTableInterface).toBeDefined();
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::ECS::Service", {
@@ -669,4 +669,81 @@ test('test error invalid table permission', () => {
   };
 
   expect(app).toThrowError('Invalid tablePermission submitted - REED');
+});
+
+test('test that DDB input args are getting checked', () => {
+  const stack = new cdk.Stack();
+  const publicApi = false;
+  const serviceName = 'custom-name';
+  const tableName = 'custom-table-name';
+
+  const existingVpc = defaults.getTestVpc(stack, publicApi);
+
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
+
+  const existingTable = new dynamodb.Table(stack, 'MyTablet', {
+    tableName,
+    partitionKey: {
+      name: 'id',
+      type: dynamodb.AttributeType.STRING
+    }
+  });
+
+  const app = () => {
+    new FargateToDynamoDB(stack, 'test-construct', {
+      publicApi,
+      existingFargateServiceObject: createFargateServiceResponse.service,
+      existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
+      existingVpc,
+      existingTableInterface: existingTable,
+      dynamoTableProps: {
+        tableName,
+        partitionKey: {
+          name: 'id',
+          type: dynamodb.AttributeType.STRING
+        },
+      },
+    });
+  };
+
+  expect(app).toThrowError('Error - Either provide existingTableInterface or dynamoTableProps, but not both.\n');
+});
+
+test('Confirm that CheckVpcProps was called', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+  const clusterName = "custom-cluster-name";
+  const containerName = "custom-container-name";
+  const serviceName = "custom-service-name";
+  const familyName = "custom-family-name";
+
+  const props: FargateToDynamoDBProps = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    dynamoTableProps: {
+      tableName: 'fake-name',
+      partitionKey: {
+        name: 'id',
+        type: dynamodb.AttributeType.STRING
+      },
+    },
+    existingVpc: defaults.getTestVpc(stack),
+    vpcProps: {  },
+  };
+
+  const app = () => {
+    new FargateToDynamoDB(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });

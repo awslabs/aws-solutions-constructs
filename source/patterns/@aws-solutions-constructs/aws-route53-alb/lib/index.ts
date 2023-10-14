@@ -103,17 +103,9 @@ export class Route53ToAlb extends Construct {
    */
   constructor(scope: Construct, id: string, props: Route53ToAlbProps) {
     super(scope, id);
-    defaults.CheckProps(props);
-
     // NOTE: We don't call CheckAlbProps() here, because this construct creates an ALB
     // with no listener or target, so some of those checks don't apply
-    if (props?.loadBalancerProps?.vpc) {
-      throw new Error('Specify any existing VPC at the construct level, not within loadBalancerProps.');
-    }
-
-    if (props.existingLoadBalancerObj && !props.existingVpc) {
-      throw new Error('An existing ALB already exists in a VPC, so that VPC must be passed to the construct in props.existingVpc');
-    }
+    this.PropsCustomCheck(props);
 
     if (props.existingHostedZoneInterface && !props.publicApi && !props.existingVpc) {
       throw new Error('An existing Private Hosted Zone already exists in a VPC, so that VPC must be passed to the construct in props.existingVpc');
@@ -166,5 +158,15 @@ export class Route53ToAlb extends Construct {
 
     // Before turning off SonarQube for the line, reduce the line to it's minimum
     new r53.ARecord(this, arecordId, arecordProps); // NOSONAR
+  }
+
+  private PropsCustomCheck(props: Route53ToAlbProps) {
+    if (props?.loadBalancerProps?.vpc) {
+      throw new Error('Specify any existing VPC at the construct level, not within loadBalancerProps.');
+    }
+
+    if (props.existingLoadBalancerObj && !props.existingVpc) {
+      throw new Error('An existing ALB already exists in a VPC, so that VPC must be passed to the construct in props.existingVpc');
+    }
   }
 }

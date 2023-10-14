@@ -89,13 +89,13 @@ test('check properties', () => {
 
   const construct: CognitoToApiGatewayToLambda = deployNewFunc(stack);
 
-  expect(construct.userPool !== null);
-  expect(construct.userPoolClient !== null);
-  expect(construct.apiGateway !== null);
-  expect(construct.lambdaFunction !== null);
-  expect(construct.apiGatewayCloudWatchRole !== null);
-  expect(construct.apiGatewayLogGroup !== null);
-  expect(construct.apiGatewayAuthorizer !== null);
+  expect(construct.userPool).toBeDefined();
+  expect(construct.userPoolClient).toBeDefined();
+  expect(construct.apiGateway).toBeDefined();
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.apiGatewayCloudWatchRole).toBeDefined();
+  expect(construct.apiGatewayLogGroup).toBeDefined();
+  expect(construct.apiGatewayAuthorizer).toBeDefined();
 });
 
 test('override cognito cognitoUserPoolClientProps', () => {
@@ -385,7 +385,7 @@ test('Override apiGatewayProps with proxy = false and add POST method', () => {
   const r = c.apiGateway.root.addResource('foo');
   r.addMethod('POST');
 
-  // Super imporant to call this method to Apply the Cognito Authorizers
+  // Super important to call this method to Apply the Cognito Authorizers
   c.addAuthorizers();
 
   const template = Template.fromStack(stack);
@@ -439,4 +439,27 @@ test('Override apiGatewayProps with proxy = false and add OPTIONS method', () =>
   template.hasResourceProperties('AWS::ApiGateway::Resource', {
     PathPart: "foo",
   });
+});
+
+test('Confirm CheckLambdaProps is being called', () => {
+  const stack = new cdk.Stack();
+  const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
+    runtime: lambda.Runtime.NODEJS_18_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: CognitoToApiGatewayToLambdaProps = {
+    existingLambdaObj,
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    }
+  };
+
+  const app = () => {
+    new CognitoToApiGatewayToLambda(stack, 'test-cognito-apigateway-lambda', props);
+  };
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

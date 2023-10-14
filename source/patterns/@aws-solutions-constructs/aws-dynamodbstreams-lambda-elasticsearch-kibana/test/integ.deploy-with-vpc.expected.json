@@ -172,12 +172,6 @@
           },
           "S3Key": "92927de5fcc3aea277bddecb845bee318fb502f7375daedbdafb72c0400bc197.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleEC11512B",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -190,6 +184,12 @@
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleEC11512B",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -245,9 +245,6 @@
     "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionDynamoDBEventSourcedeploywithvpctestddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableB7F9F75CD09B2055": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
-        "FunctionName": {
-          "Ref": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionB70B7296"
-        },
         "BatchSize": 100,
         "BisectBatchOnFunctionError": true,
         "DestinationConfig": {
@@ -265,6 +262,9 @@
             "testddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableDD18004A",
             "StreamArn"
           ]
+        },
+        "FunctionName": {
+          "Ref": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionB70B7296"
         },
         "MaximumRecordAgeInSeconds": 86400,
         "MaximumRetryAttempts": 500,
@@ -313,9 +313,6 @@
     "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPoolClient25D50E3D": {
       "Type": "AWS::Cognito::UserPoolClient",
       "Properties": {
-        "UserPoolId": {
-          "Ref": "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPool97EA2952"
-        },
         "AllowedOAuthFlows": [
           "implicit",
           "code"
@@ -333,7 +330,10 @@
         ],
         "SupportedIdentityProviders": [
           "COGNITO"
-        ]
+        ],
+        "UserPoolId": {
+          "Ref": "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPool97EA2952"
+        }
       }
     },
     "testddbstreamslambdaeskLambdaToElasticSearchCognitoIdentityPoolFAA4D969": {
@@ -692,9 +692,9 @@
     "testddbstreamslambdaeskLambdaToElasticSearchStatusRedAlarmAFFE3439": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "At least one primary shard and its replicas are not allocated to a node. ",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "At least one primary shard and its replicas are not allocated to a node. ",
         "MetricName": "ClusterStatus.red",
         "Namespace": "AWS/ES",
         "Period": 60,
@@ -705,9 +705,9 @@
     "testddbstreamslambdaeskLambdaToElasticSearchStatusYellowAlarm44E1DC4E": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "At least one replica shard is not allocated to a node.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "At least one replica shard is not allocated to a node.",
         "MetricName": "ClusterStatus.yellow",
         "Namespace": "AWS/ES",
         "Period": 60,
@@ -718,9 +718,9 @@
     "testddbstreamslambdaeskLambdaToElasticSearchFreeStorageSpaceTooLowAlarm65BF7F2F": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "A node in your cluster is down to 20 GiB of free storage space.",
         "ComparisonOperator": "LessThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "A node in your cluster is down to 20 GiB of free storage space.",
         "MetricName": "FreeStorageSpace",
         "Namespace": "AWS/ES",
         "Period": 60,
@@ -731,9 +731,9 @@
     "testddbstreamslambdaeskLambdaToElasticSearchIndexWritesBlockedTooHighAlarmCE3D0C51": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Your cluster is blocking write requests.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Your cluster is blocking write requests.",
         "MetricName": "ClusterIndexWritesBlocked",
         "Namespace": "AWS/ES",
         "Period": 300,
@@ -744,9 +744,9 @@
     "testddbstreamslambdaeskLambdaToElasticSearchAutomatedSnapshotFailureTooHighAlarmFD8E066E": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "An automated snapshot failed. This failure is often the result of a red cluster health status.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "An automated snapshot failed. This failure is often the result of a red cluster health status.",
         "MetricName": "AutomatedSnapshotFailure",
         "Namespace": "AWS/ES",
         "Period": 60,
@@ -757,9 +757,9 @@
     "testddbstreamslambdaeskLambdaToElasticSearchCPUUtilizationTooHighAlarm274094A6": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "100% CPU utilization is not uncommon, but sustained high usage is problematic. Consider using larger instance types or adding instances.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 3,
-        "AlarmDescription": "100% CPU utilization is not uncommon, but sustained high usage is problematic. Consider using larger instance types or adding instances.",
         "MetricName": "CPUUtilization",
         "Namespace": "AWS/ES",
         "Period": 900,
@@ -770,9 +770,9 @@
     "testddbstreamslambdaeskLambdaToElasticSearchJVMMemoryPressureTooHighAlarm2E49D5CC": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "MetricName": "JVMMemoryPressure",
         "Namespace": "AWS/ES",
         "Period": 900,
@@ -783,9 +783,9 @@
     "testddbstreamslambdaeskLambdaToElasticSearchMasterCPUUtilizationTooHighAlarm05E1EBEF": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Average CPU utilization over last 45 minutes too high. Consider using larger instance types for your dedicated master nodes.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 3,
-        "AlarmDescription": "Average CPU utilization over last 45 minutes too high. Consider using larger instance types for your dedicated master nodes.",
         "MetricName": "MasterCPUUtilization",
         "Namespace": "AWS/ES",
         "Period": 900,
@@ -796,9 +796,9 @@
     "testddbstreamslambdaeskLambdaToElasticSearchMasterJVMMemoryPressureTooHighAlarm1090161B": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
         "MetricName": "MasterJVMMemoryPressure",
         "Namespace": "AWS/ES",
         "Period": 900,
@@ -824,9 +824,6 @@
     "testddbstreamslambdaeskVpcisolatedSubnet1Subnet3A238B01": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "testddbstreamslambdaeskVpcB583E197"
-        },
         "AvailabilityZone": "test-region-1a",
         "CidrBlock": "10.0.0.0/18",
         "MapPublicIpOnLaunch": false,
@@ -843,21 +840,24 @@
             "Key": "Name",
             "Value": "deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testddbstreamslambdaeskVpcB583E197"
+        }
       }
     },
     "testddbstreamslambdaeskVpcisolatedSubnet1RouteTable27ABBE41": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "testddbstreamslambdaeskVpcB583E197"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testddbstreamslambdaeskVpcB583E197"
+        }
       }
     },
     "testddbstreamslambdaeskVpcisolatedSubnet1RouteTableAssociation2E533936": {
@@ -874,9 +874,6 @@
     "testddbstreamslambdaeskVpcisolatedSubnet2SubnetDE9E844E": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "testddbstreamslambdaeskVpcB583E197"
-        },
         "AvailabilityZone": "test-region-1b",
         "CidrBlock": "10.0.64.0/18",
         "MapPublicIpOnLaunch": false,
@@ -893,21 +890,24 @@
             "Key": "Name",
             "Value": "deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testddbstreamslambdaeskVpcB583E197"
+        }
       }
     },
     "testddbstreamslambdaeskVpcisolatedSubnet2RouteTable358580C2": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "testddbstreamslambdaeskVpcB583E197"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testddbstreamslambdaeskVpcB583E197"
+        }
       }
     },
     "testddbstreamslambdaeskVpcisolatedSubnet2RouteTableAssociation77A663A5": {
@@ -924,9 +924,6 @@
     "testddbstreamslambdaeskVpcisolatedSubnet3Subnet3B5285ED": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "testddbstreamslambdaeskVpcB583E197"
-        },
         "AvailabilityZone": "test-region-1c",
         "CidrBlock": "10.0.128.0/18",
         "MapPublicIpOnLaunch": false,
@@ -943,21 +940,24 @@
             "Key": "Name",
             "Value": "deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testddbstreamslambdaeskVpcB583E197"
+        }
       }
     },
     "testddbstreamslambdaeskVpcisolatedSubnet3RouteTable7F8548D9": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "testddbstreamslambdaeskVpcB583E197"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "testddbstreamslambdaeskVpcB583E197"
+        }
       }
     },
     "testddbstreamslambdaeskVpcisolatedSubnet3RouteTableAssociation77FF5F32": {
@@ -989,7 +989,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc"
+            "Value": "deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/FlowLog"
           }
         ]
       }
@@ -1041,7 +1041,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc"
+            "Value": "deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/FlowLog"
           }
         ]
       },
@@ -1061,10 +1061,6 @@
     "testddbstreamslambdaeskVpcFlowLogD9278B4C": {
       "Type": "AWS::EC2::FlowLog",
       "Properties": {
-        "ResourceId": {
-          "Ref": "testddbstreamslambdaeskVpcB583E197"
-        },
-        "ResourceType": "VPC",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "testddbstreamslambdaeskVpcFlowLogIAMRole8B3A466E",
@@ -1075,10 +1071,14 @@
         "LogGroupName": {
           "Ref": "testddbstreamslambdaeskVpcFlowLogLogGroup4DB5270C"
         },
+        "ResourceId": {
+          "Ref": "testddbstreamslambdaeskVpcB583E197"
+        },
+        "ResourceType": "VPC",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc"
+            "Value": "deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/FlowLog"
           }
         ],
         "TrafficType": "ALL"
@@ -1087,12 +1087,6 @@
     "testddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableDD18004A": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
-        "KeySchema": [
-          {
-            "AttributeName": "id",
-            "KeyType": "HASH"
-          }
-        ],
         "AttributeDefinitions": [
           {
             "AttributeName": "id",
@@ -1100,6 +1094,12 @@
           }
         ],
         "BillingMode": "PAY_PER_REQUEST",
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
         "PointInTimeRecoverySpecification": {
           "PointInTimeRecoveryEnabled": true
         },

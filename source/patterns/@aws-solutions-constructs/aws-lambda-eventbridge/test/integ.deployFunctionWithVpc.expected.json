@@ -164,12 +164,6 @@
           },
           "S3Key": "b5faf4ff1ebde477120133d1e645d20d7c3d4952b76c3b586100069b94b2f146.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testlambdaeventbridgeLambdaFunctionServiceRole0FD85077",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -177,6 +171,12 @@
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testlambdaeventbridgeLambdaFunctionServiceRole0FD85077",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -247,9 +247,6 @@
     "VpcisolatedSubnet1SubnetE62B1B9B": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1a",
         "CidrBlock": "10.0.0.0/18",
         "MapPublicIpOnLaunch": false,
@@ -266,21 +263,24 @@
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableE442650B": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet1"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet1RouteTableAssociationD259E31A": {
@@ -297,9 +297,6 @@
     "VpcisolatedSubnet2Subnet39217055": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1b",
         "CidrBlock": "10.0.64.0/18",
         "MapPublicIpOnLaunch": false,
@@ -316,21 +313,24 @@
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTable334F9764": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet2"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet2RouteTableAssociation25A4716F": {
@@ -347,9 +347,6 @@
     "VpcisolatedSubnet3Subnet44F2537D": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "AvailabilityZone": "test-region-1c",
         "CidrBlock": "10.0.128.0/18",
         "MapPublicIpOnLaunch": false,
@@ -366,21 +363,24 @@
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet3RouteTableA2F6BBC0": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
         "Tags": [
           {
             "Key": "Name",
             "Value": "deployFunctionWithVpc/Vpc/isolatedSubnet3"
           }
-        ]
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "VpcisolatedSubnet3RouteTableAssociationDC010BEB": {
@@ -412,7 +412,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployFunctionWithVpc/Vpc"
+            "Value": "deployFunctionWithVpc/Vpc/FlowLog"
           }
         ]
       }
@@ -464,7 +464,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployFunctionWithVpc/Vpc"
+            "Value": "deployFunctionWithVpc/Vpc/FlowLog"
           }
         ]
       },
@@ -484,11 +484,6 @@
     "VpcFlowLog8FF33A73": {
       "Type": "AWS::EC2::FlowLog",
       "Properties": {
-        "ResourceId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "ResourceType": "VPC",
-        "TrafficType": "ALL",
         "DeliverLogsPermissionArn": {
           "Fn::GetAtt": [
             "VpcFlowLogIAMRole6A475D41",
@@ -499,17 +494,31 @@
         "LogGroupName": {
           "Ref": "VpcFlowLogLogGroup7B5C56B9"
         },
+        "ResourceId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "ResourceType": "VPC",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "deployFunctionWithVpc/Vpc"
+            "Value": "deployFunctionWithVpc/Vpc/FlowLog"
           }
-        ]
+        ],
+        "TrafficType": "ALL"
       }
     },
     "VpcCLOUDWATCHEVENTS1A0DAFBF": {
       "Type": "AWS::EC2::VPCEndpoint",
       "Properties": {
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "deployFunctionWithVpcCLOUDWATCHEVENTSsecuritygroupB8797C76",
+              "GroupId"
+            ]
+          }
+        ],
         "ServiceName": {
           "Fn::Join": [
             "",
@@ -522,18 +531,6 @@
             ]
           ]
         },
-        "VpcId": {
-          "Ref": "Vpc8378EB38"
-        },
-        "PrivateDnsEnabled": true,
-        "SecurityGroupIds": [
-          {
-            "Fn::GetAtt": [
-              "deployFunctionWithVpcCLOUDWATCHEVENTSsecuritygroupB8797C76",
-              "GroupId"
-            ]
-          }
-        ],
         "SubnetIds": [
           {
             "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
@@ -545,7 +542,10 @@
             "Ref": "VpcisolatedSubnet3Subnet44F2537D"
           }
         ],
-        "VpcEndpointType": "Interface"
+        "VpcEndpointType": "Interface",
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
       }
     },
     "deployFunctionWithVpcCLOUDWATCHEVENTSsecuritygroupB8797C76": {

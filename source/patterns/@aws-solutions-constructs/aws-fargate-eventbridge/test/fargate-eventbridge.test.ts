@@ -14,7 +14,7 @@
 import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
-import { FargateToEventbridge } from "../lib";
+import { FargateToEventbridge, FargateToEventbridgeProps } from "../lib";
 import * as events from 'aws-cdk-lib/aws-events';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
@@ -373,3 +373,48 @@ function createFargateConstructWithNewResources(stack: cdk.Stack, publicApi: boo
     }
   });
 }
+
+test('Confirm that CheckVpcProps was called', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+
+  const props: FargateToEventbridgeProps = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    eventBusProps: {
+      eventBusName: 'custom-name'
+    },
+    existingVpc: defaults.getTestVpc(stack),
+    vpcProps: {  },
+  };
+
+  const app = () => {
+    new FargateToEventbridge(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});
+
+test('Confirm CheckEventBridgeProps is being called', () => {
+  const stack = new cdk.Stack();
+
+  const props: FargateToEventbridgeProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    eventBusProps: { eventBusName: 'test' },
+    existingEventBusInterface: new events.EventBus(stack, `test-existing-eventbus`, { eventBusName: 'test' })
+  };
+
+  const app = () => {
+    new FargateToEventbridge(stack, 'test-fargate-eventbridge', props);
+  };
+  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
+});

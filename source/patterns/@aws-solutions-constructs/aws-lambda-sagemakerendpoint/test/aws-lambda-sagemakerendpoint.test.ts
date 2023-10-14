@@ -240,7 +240,7 @@ test('Pattern deployment with new Lambda function, new Sagemaker endpoint, deplo
 // ---------------------------------------------------------------------------------
 // Test for error when existing Lambda function does not have vpc and deployVpc = true
 // ---------------------------------------------------------------------------------
-test('Test for errot when existing Lambda function does not have vpc and deployVpc = true ', () => {
+test('Test for error when existing Lambda function does not have vpc and deployVpc = true ', () => {
   // Initial Setup
   const stack = new Stack();
 
@@ -286,9 +286,9 @@ test('Pattern deployment with existing Lambda function (with VPC), new Sagemaker
     },
   });
 
-  // Add S3 VPC Gateway Endpint, required by Sagemaker to access Models artifacts via AWS private network
+  // Add S3 VPC Gateway Endpoint, required by Sagemaker to access Models artifacts via AWS private network
   defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.S3);
-  // Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the SageMaker endpoint
+  // Add SAGEMAKER_RUNTIME VPC Interface Endpoint, required by the lambda function to invoke the SageMaker endpoint
   defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
 
   // deploy lambda function
@@ -360,7 +360,7 @@ test('Test for error with existingLambdaObj/lambdaFunctionProps=undefined (not s
 // --------------------------------------------------------------------
 // Test for error with (props.deployVpc && props.existingVpc) is true
 // --------------------------------------------------------------------
-test('Test for error with (props.deployVpc && props.existingVpc) is true', () => {
+test('confirm CheckVpcProps is called', () => {
   // Initial Setup
   const stack = new Stack();
 
@@ -372,9 +372,9 @@ test('Test for error with (props.deployVpc && props.existingVpc) is true', () =>
     },
   });
 
-  // Add S3 VPC Gateway Endpint, required by Sagemaker to access Models artifacts via AWS private network
+  // Add S3 VPC Gateway Endpoint, required by Sagemaker to access Models artifacts via AWS private network
   defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.S3);
-  // Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the SageMaker endpoint
+  // Add SAGEMAKER_RUNTIME VPC Interface Endpoint, required by the lambda function to invoke the SageMaker endpoint
   defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
 
   const constructProps: LambdaToSagemakerEndpointProps = {
@@ -384,6 +384,13 @@ test('Test for error with (props.deployVpc && props.existingVpc) is true', () =>
         modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
       },
     },
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.PYTHON_3_8,
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      handler: 'index.handler',
+      timeout: Duration.minutes(5),
+      memorySize: 128,
+    },
     deployVpc: true,
     existingVpc: vpc,
   };
@@ -391,7 +398,7 @@ test('Test for error with (props.deployVpc && props.existingVpc) is true', () =>
     new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
   };
   // Assertion 1
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 // ----------------------------------------------------------------------------------------------------------
@@ -437,9 +444,9 @@ test('Test getter methods: existing Lambda function (with VPC), new Sagemaker en
     },
   });
 
-  // Add S3 VPC Gateway Endpint, required by Sagemaker to access Models artifacts via AWS private network
+  // Add S3 VPC Gateway Endpoint, required by Sagemaker to access Models artifacts via AWS private network
   defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.S3);
-  // Add SAGEMAKER_RUNTIME VPC Interface Endpint, required by the lambda function to invoke the SageMaker endpoint
+  // Add SAGEMAKER_RUNTIME VPC Interface Endpoint, required by the lambda function to invoke the SageMaker endpoint
   defaults.AddAwsServiceEndpoint(stack, vpc, defaults.ServiceEndpointTypes.SAGEMAKER_RUNTIME);
 
   // deploy lambda function
@@ -584,4 +591,62 @@ test('Test lambda function custom environment variable', () => {
       }
     }
   });
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: LambdaToSagemakerEndpointProps = {
+    modelProps: {
+      primaryContainer: {
+        image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
+        modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
+      },
+    },
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new LambdaToSagemakerEndpoint(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});
+
+test('Confirm call to CheckSagemakerProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const deploySagemakerEndpointResponse = defaults.deploySagemakerEndpoint(stack, {
+    modelProps: {
+      primaryContainer: {
+        image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
+        modelDataUrl: 's3://<bucket-name>/<prefix>/model.tar.gz',
+      },
+    },
+  });
+
+  const props: LambdaToSagemakerEndpointProps = {
+    existingSagemakerEndpointObj: deploySagemakerEndpointResponse.endpoint,
+    endpointProps: { endpointConfigName: 'test' },
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+  };
+  const app = () => {
+    new LambdaToSagemakerEndpoint(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide endpointProps or existingSagemakerEndpointObj, but not both.\n');
 });

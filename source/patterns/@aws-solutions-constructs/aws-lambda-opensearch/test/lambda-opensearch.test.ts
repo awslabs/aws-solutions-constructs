@@ -69,6 +69,25 @@ test('Check properties with no CloudWatch alarms ', () => {
   expect(construct.openSearchRole).toBeDefined();
 });
 
+test('Check that TLS 1.2 is the default', () => {
+  const stack = new cdk.Stack();
+
+  const props: LambdaToOpenSearchProps = {
+    lambdaFunctionProps: getDefaultTestLambdaProps(),
+    openSearchDomainName: 'test-domain',
+    createCloudWatchAlarms: false
+  };
+
+  new LambdaToOpenSearch(stack, 'test-lambda-opensearch-stack', props);
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::OpenSearchService::Domain", {
+    DomainEndpointOptions: {
+      EnforceHTTPS: true,
+      TLSSecurityPolicy: "Policy-Min-TLS-1-2-2019-07"
+    },
+  });
+});
+
 test('Check for an existing Lambda object', () => {
   const stack = new cdk.Stack();
 
@@ -548,7 +567,7 @@ test('Test error for Lambda function VPC props', () => {
   expect(app).toThrowError("Error - Define VPC using construct parameters not Lambda function props");
 });
 
-test('Test error for the OpenSearch domain VPC props', () => {
+test('Confirm CheckOpenSearchProps is called', () => {
   const stack = new cdk.Stack();
 
   const app = () => {
@@ -580,4 +599,54 @@ test('Test error for missing existingLambdaObj or lambdaFunctionProps', () => {
   } catch (e) {
     expect(e).toBeInstanceOf(Error);
   }
+});
+
+test('Confirm CheckVpcProps is being called', () => {
+  const stack = new cdk.Stack();
+  const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+    constructVpcProps: {
+      enableDnsHostnames: true,
+      enableDnsSupport: true,
+    },
+  });
+
+  const app = () => {
+    new LambdaToOpenSearch(stack, 'test-lambda-opensearch', {
+      lambdaFunctionProps: getDefaultTestLambdaProps(),
+      openSearchDomainName: "test",
+      vpcProps: {
+        vpcName: "existing-vpc-test"
+      },
+      deployVpc: true,
+      existingVpc: vpc
+    });
+  };
+
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: LambdaToOpenSearchProps = {
+    openSearchDomainName: 'name',
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new LambdaToOpenSearch(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

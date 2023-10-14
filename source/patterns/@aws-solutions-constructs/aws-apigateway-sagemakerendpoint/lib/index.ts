@@ -100,7 +100,7 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
    */
   constructor(scope: Construct, id: string, props: ApiGatewayToSageMakerEndpointProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    // CheckSagemakerProps is not called because this construct can't create a Sagemaker resource
 
     // Setup the API Gateway
     const globalRestApiResponse = defaults.GlobalRestApi(this, props.apiGatewayProps, props.logGroupProps);

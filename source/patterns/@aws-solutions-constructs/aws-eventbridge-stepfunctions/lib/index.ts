@@ -79,7 +79,7 @@ export class EventbridgeToStepfunctions extends Construct {
    */
   constructor(scope: Construct, id: string, props: EventbridgeToStepfunctionsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckEventBridgeProps(props);
 
     const buildStateMachineResponse = defaults.buildStateMachine(this, props.stateMachineProps,
       props.logGroupProps);

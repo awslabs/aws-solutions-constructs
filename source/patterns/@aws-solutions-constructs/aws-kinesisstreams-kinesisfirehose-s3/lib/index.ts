@@ -117,7 +117,8 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
     // context here rather than assuming the client will set it
     this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-    defaults.CheckProps(props);
+    defaults.CheckKinesisStreamProps(props);
+    // CheckS3Props() is called by the internal aws-kinesisfirehose-s3 construct
 
     // Setup the Kinesis Stream
     this.kinesisStream = defaults.buildKinesisStream(this, {
@@ -142,7 +143,7 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
       }
     });
 
-    // This Construct requires that the deliveryStreamType be overriden regardless of what is specified in the user props
+    // This Construct requires that the deliveryStreamType be overridden regardless of what is specified in the user props
     if (props.kinesisFirehoseProps) {
       if (props.kinesisFirehoseProps.deliveryStreamType !== undefined) {
         defaults.printWarning('Overriding deliveryStreamType type to be KinesisStreamAsSource');

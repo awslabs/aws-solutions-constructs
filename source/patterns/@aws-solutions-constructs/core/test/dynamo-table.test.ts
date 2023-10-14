@@ -421,74 +421,37 @@ test('test getPartitionKeyNameFromTable()', () => {
   expect(testKeyName).toEqual(partitionKeyName);
 });
 
-test('Test providing both existingTableInterface and existingTableObj', () => {
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test fail DynamoDB table check', () => {
   const stack = new Stack();
 
-  const tableProps: dynamodb.TableProps = {
-    partitionKey: {
-      name: 'table_id',
-      type: dynamodb.AttributeType.STRING
-    },
-    stream: dynamodb.StreamViewType.NEW_IMAGE
+  const props: defaults.DynamoDBProps = {
+    existingTableObj: new dynamodb.Table(stack, 'placeholder', defaults.DefaultTableProps),
+    dynamoTableProps: defaults.DefaultTableProps,
   };
 
-  const existingTableInterface = new dynamodb.Table(stack, 'DynamoTable', tableProps)
-  ;
-  const newProps = {
-    existingTableInterface,
-    existingTableObj: existingTableInterface
-  };
   const app = () => {
-    defaults.buildDynamoDBTable(stack, newProps);
+    defaults.CheckDynamoDBProps(props);
   };
 
-  expect(app).toThrowError('Error - Either provide existingTableInterface or existingTableObj, but not both.\n');
-});
-
-test('Test providing both existingTableInterface and dynamoTableProps', () => {
-  const stack = new Stack();
-
-  const dynamoTableProps: dynamodb.TableProps = {
-    partitionKey: {
-      name: 'table_id',
-      type: dynamodb.AttributeType.STRING
-    },
-    stream: dynamodb.StreamViewType.NEW_IMAGE
-  };
-
-  const existingTableInterface = new dynamodb.Table(stack, 'DynamoTable', dynamoTableProps)
-  ;
-  const newProps = {
-    existingTableInterface,
-    dynamoTableProps
-  };
-  const app = () => {
-    defaults.buildDynamoDBTable(stack, newProps);
-  };
-
-  expect(app).toThrowError('Error - Either provide existingTableInterface or dynamoTableProps, but not both.\n');
-});
-
-test('Test providing both existingTableObj and dynamoTableProps', () => {
-  const stack = new Stack();
-
-  const dynamoTableProps: dynamodb.TableProps = {
-    partitionKey: {
-      name: 'table_id',
-      type: dynamodb.AttributeType.STRING
-    },
-    stream: dynamodb.StreamViewType.NEW_IMAGE
-  };
-
-  const existingTableObj = new dynamodb.Table(stack, 'DynamoTable', dynamoTableProps)
-  ;
-  const newProps = {
-    existingTableObj,
-    dynamoTableProps
-  };
-  const app = () => {
-    defaults.buildDynamoDBTable(stack, newProps);
-  };
-
+  // Assertion
   expect(app).toThrowError('Error - Either provide existingTableObj or dynamoTableProps, but not both.\n');
+});
+
+test('Test fail DynamoDB table check (for interface AND obj)', () => {
+  const stack = new Stack();
+
+  const props: defaults.DynamoDBProps = {
+    existingTableInterface: new dynamodb.Table(stack, 'placeholder', defaults.DefaultTableProps),
+    existingTableObj: new dynamodb.Table(stack, 'placeholderobj', defaults.DefaultTableProps),
+  };
+
+  const app = () => {
+    defaults.CheckDynamoDBProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingTableInterface or existingTableObj, but not both.\n');
 });

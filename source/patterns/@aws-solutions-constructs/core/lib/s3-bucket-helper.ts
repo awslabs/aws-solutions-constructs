@@ -61,7 +61,19 @@ export function createLoggingBucket(scope: Construct,
   const combinedBucketProps = consolidateProps(DefaultS3Props(), loggingBucketProps);
 
   // Create the Logging Bucket
-  const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, combinedBucketProps);
+  // NOSONAR  (typescript:S6281)
+  // Block Public Access is set by DefaultS3Props, but Sonarqube can't detect it
+  // It is verified by 's3 bucket with default props' in the unit tests
+  // NOSONAR (typescript:S6245)
+  // Encryption is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  // NOSONAR (typescript:S6249)
+  // enforceSSL  is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  // NOSONAR (typescript:typescript:S6249)
+  // versioning is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, combinedBucketProps); // NOSONAR
 
   // Extract the CfnBucket from the loggingBucket
   const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
@@ -94,7 +106,19 @@ export function createAlbLoggingBucket(scope: Construct,
   const combinedBucketProps = consolidateProps(DefaultS3Props(), loggingBucketProps);
 
   // Create the Logging Bucket
-  const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, combinedBucketProps);
+  // NOSONAR (typescript:S6281)
+  // Block Public Access is set by DefaultS3Props, but Sonarqube can't detect it
+  // It is verified by 's3 bucket with default props' in the unit tests
+  // NOSONAR (typescript:S6245)
+  // Encryption is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  // NOSONAR (typescript:S6249)
+  // enforceSSL  is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  // NOSONAR (typescript:typescript:S6249)
+  // versioning is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, combinedBucketProps); // NOSONAR
 
   // Extract the CfnBucket from the loggingBucket
   const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
@@ -163,7 +187,19 @@ export function buildS3Bucket(scope: Construct,
 
   const combinedBucketProps = consolidateProps(defaultBucketProps, props.bucketProps);
 
-  const s3Bucket: s3.Bucket = new s3.Bucket(scope, resolvedBucketId, combinedBucketProps );
+  // NOSONAR (typescript:S6281) - Block Public Access is set by DefaultS3Props,
+  // but Sonarqube can't detect it
+  // It is verified by 's3 bucket with default props' in the unit tests
+  // NOSONAR (typescript:S6245)
+  // Encryption is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  // NOSONAR (typescript:S6249)
+  // enforceSSL  is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  // NOSONAR (typescript:typescript:S6249)
+  // versioning is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  const s3Bucket: s3.Bucket = new s3.Bucket(scope, resolvedBucketId, combinedBucketProps ); // NOSONAR
 
   return { bucket: s3Bucket, loggingBucket };
 }
@@ -201,4 +237,42 @@ export function addCfnNagS3BucketNotificationRulesToSuppress(stackRoot: cdk.Stac
       reason: `Bucket resource is '*' due to circular dependency with bucket and role creation at the same time`
     }
   ]);
+}
+
+export interface S3Props {
+  readonly existingBucketObj?: s3.Bucket,
+  readonly existingBucketInterface?: s3.IBucket,
+  readonly bucketProps?: s3.BucketProps,
+  readonly existingLoggingBucketObj?: s3.IBucket;
+  readonly loggingBucketProps?: s3.BucketProps;
+  readonly logS3AccessLogs?: boolean;
+}
+
+export function CheckS3Props(propsObject: S3Props | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if ((propsObject.existingBucketObj || propsObject.existingBucketInterface) && propsObject.bucketProps) {
+    errorMessages += 'Error - Either provide bucketProps or existingBucketObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.existingLoggingBucketObj && propsObject.loggingBucketProps) {
+    errorMessages += 'Error - Either provide existingLoggingBucketObj or loggingBucketProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if ((propsObject?.logS3AccessLogs === false) && (propsObject.loggingBucketProps || propsObject.existingLoggingBucketObj)) {
+    errorMessages += 'Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.existingBucketObj && (propsObject.loggingBucketProps || propsObject.logS3AccessLogs)) {
+    errorMessages += 'Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is an error.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }

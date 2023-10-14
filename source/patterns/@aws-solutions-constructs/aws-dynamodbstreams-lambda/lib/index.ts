@@ -82,7 +82,7 @@ export class DynamoDBStreamsToLambda extends Construct {
    */
   constructor(scope: Construct, id: string, props: DynamoDBStreamsToLambdaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckLambdaProps(props);
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,

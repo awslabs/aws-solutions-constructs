@@ -102,7 +102,7 @@ export class IotToSqs extends Construct {
    */
   constructor(scope: Construct, id: string, props: IotToSqsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckSqsProps(props);
 
     // Setup the dead letter queue, if applicable
     this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {

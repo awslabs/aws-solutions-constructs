@@ -14,6 +14,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { EventbridgeToSqs, EventbridgeToSqsProps } from '../lib';
 import * as events from "aws-cdk-lib/aws-events";
+import * as sqs from "aws-cdk-lib/aws-sqs";
 import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -277,28 +278,28 @@ test('check properties', () => {
   const stack = new cdk.Stack();
   const construct: EventbridgeToSqs = deployNewStack(stack);
 
-  expect(construct.eventsRule !== null);
-  expect(construct.sqsQueue !== null);
-  expect(construct.encryptionKey !== null);
-  expect(construct.deadLetterQueue !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.sqsQueue).toBeDefined();
+  expect(construct.encryptionKey).toBeDefined();
+  expect(construct.deadLetterQueue).toBeDefined();
 });
 
 test('check eventbus property, snapshot & eventbus exists', () => {
   const stack = new cdk.Stack();
   const construct: EventbridgeToSqs = deployStackWithNewEventBus(stack);
 
-  expect(construct.eventsRule !== null);
-  expect(construct.sqsQueue !== null);
-  expect(construct.encryptionKey !== null);
-  expect(construct.deadLetterQueue !== null);
-  expect(construct.eventBus !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.sqsQueue).toBeDefined();
+  expect(construct.encryptionKey).toBeDefined();
+  expect(construct.deadLetterQueue).toBeDefined();
+  expect(construct.eventBus).toBeDefined();
 
   // Check whether eventbus exists
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::Events::EventBus', 1);
 });
 
-test('check exception while passing existingEventBus & eventBusProps', () => {
+test('Confirm CheckEventBridgeProps is being called', () => {
   const stack = new cdk.Stack();
 
   const props: EventbridgeToSqsProps = {
@@ -314,7 +315,7 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
   const app = () => {
     new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
   };
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });
 
 test('check custom event bus resource with props when deploy:true', () => {
@@ -535,4 +536,26 @@ test('Queue purging flag grants correct permissions', () => {
       }
     ]
   });
+});
+
+test('check that CheckSqsProps is being called', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    eventBusProps: { eventBusName: 'test' },
+    queueProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    existingQueueObj: new sqs.Queue(stack, 'test', {})
+  };
+
+  const app = () => {
+    new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+  };
+  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });

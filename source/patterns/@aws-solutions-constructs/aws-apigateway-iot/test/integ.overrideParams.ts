@@ -21,7 +21,7 @@ import { generateIntegStackName } from '@aws-solutions-constructs/core';
 // App setup
 const app = new cdk.App();
 const stack = new cdk.Stack(app, generateIntegStackName(__filename));
-stack.templateOptions.description = 'Integration Test for aws-apigateway-iot with overriden params';
+stack.templateOptions.description = 'Integration Test for aws-apigateway-iot with overridden params';
 
 const apiGatewayProps = {
   restApiName: 'RestApi-Regional',

@@ -143,18 +143,18 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "350185a1069fa20a23a583e20c77f6844218bd73097902362dc94f1a108f5d89.zip"
+          "S3Key": "5194f926380567b6fdffc61629afdad2afc818614cb227df45e499c69db163a7.zip"
         },
         "Timeout": 900,
         "MemorySize": 128,
-        "Handler": "__entrypoint__.handler",
+        "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
             "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
             "Arn"
           ]
         },
-        "Runtime": "nodejs16.x",
+        "Runtime": "nodejs18.x",
         "Description": {
           "Fn::Join": [
             "",
@@ -315,12 +315,6 @@
           },
           "S3Key": "e0128dd6e376c58a74b37bd6178ded8a5909d414a6891c26547b9778ac25679b.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "minimalargumentsLambdaFunctionServiceRole73B77FF7",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "KENDRA_INDEX_ID": {
@@ -332,6 +326,12 @@
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "minimalargumentsLambdaFunctionServiceRole73B77FF7",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs18.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -598,6 +598,13 @@
     "minimalargumentsdatasourceminimalarguments05A02FF3B": {
       "Type": "AWS::Kendra::DataSource",
       "Properties": {
+        "DataSourceConfiguration": {
+          "S3Configuration": {
+            "BucketName": {
+              "Ref": "scrapBucketB11863B7"
+            }
+          }
+        },
         "IndexId": {
           "Ref": "minimalargumentskendraindexminimalarguments5CBDD236"
         },
@@ -622,123 +629,13 @@
             ]
           ]
         },
-        "Type": "S3",
-        "DataSourceConfiguration": {
-          "S3Configuration": {
-            "BucketName": {
-              "Ref": "scrapBucketB11863B7"
-            }
-          }
-        },
         "RoleArn": {
           "Fn::GetAtt": [
             "minimalargumentsdatasourceroleminimalarguments00EAC5006",
             "Arn"
           ]
-        }
-      }
-    }
-  },
-  "Mappings": {
-    "DefaultCrNodeVersionMap": {
-      "af-south-1": {
-        "value": "nodejs16.x"
-      },
-      "ap-east-1": {
-        "value": "nodejs16.x"
-      },
-      "ap-northeast-1": {
-        "value": "nodejs16.x"
-      },
-      "ap-northeast-2": {
-        "value": "nodejs16.x"
-      },
-      "ap-northeast-3": {
-        "value": "nodejs16.x"
-      },
-      "ap-south-1": {
-        "value": "nodejs16.x"
-      },
-      "ap-south-2": {
-        "value": "nodejs16.x"
-      },
-      "ap-southeast-1": {
-        "value": "nodejs16.x"
-      },
-      "ap-southeast-2": {
-        "value": "nodejs16.x"
-      },
-      "ap-southeast-3": {
-        "value": "nodejs16.x"
-      },
-      "ca-central-1": {
-        "value": "nodejs16.x"
-      },
-      "cn-north-1": {
-        "value": "nodejs16.x"
-      },
-      "cn-northwest-1": {
-        "value": "nodejs16.x"
-      },
-      "eu-central-1": {
-        "value": "nodejs16.x"
-      },
-      "eu-central-2": {
-        "value": "nodejs16.x"
-      },
-      "eu-north-1": {
-        "value": "nodejs16.x"
-      },
-      "eu-south-1": {
-        "value": "nodejs16.x"
-      },
-      "eu-south-2": {
-        "value": "nodejs16.x"
-      },
-      "eu-west-1": {
-        "value": "nodejs16.x"
-      },
-      "eu-west-2": {
-        "value": "nodejs16.x"
-      },
-      "eu-west-3": {
-        "value": "nodejs16.x"
-      },
-      "me-central-1": {
-        "value": "nodejs16.x"
-      },
-      "me-south-1": {
-        "value": "nodejs16.x"
-      },
-      "sa-east-1": {
-        "value": "nodejs16.x"
-      },
-      "us-east-1": {
-        "value": "nodejs16.x"
-      },
-      "us-east-2": {
-        "value": "nodejs16.x"
-      },
-      "us-gov-east-1": {
-        "value": "nodejs16.x"
-      },
-      "us-gov-west-1": {
-        "value": "nodejs16.x"
-      },
-      "us-iso-east-1": {
-        "value": "nodejs14.x"
-      },
-      "us-iso-west-1": {
-        "value": "nodejs14.x"
-      },
-      "us-isob-east-1": {
-        "value": "nodejs14.x"
-      },
-      "us-west-1": {
-        "value": "nodejs16.x"
-      },
-      "us-west-2": {
-        "value": "nodejs16.x"
+        },
+        "Type": "S3"
       }
     }
   },

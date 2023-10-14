@@ -275,8 +275,8 @@ test('check properties', () => {
 
   const construct: LambdaToDynamoDB = deployNewFunc(stack);
 
-  expect(construct.lambdaFunction !== null);
-  expect(construct.dynamoTable !== null);
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.dynamoTable).toBeDefined();
 });
 
 test('check exception for Missing existingObj from props', () => {
@@ -759,10 +759,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingVpc and deployVpc
-// --------------------------------------------------------------
-test("Test bad call with existingVpc and deployVpc", () => {
+test("Confirm CheckVpcProps is called", () => {
   // Stack
   const stack = new cdk.Stack();
 
@@ -781,7 +778,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Test bad table permission', () => {
@@ -802,4 +799,64 @@ test('Test bad table permission', () => {
 
   // Assertion
   expect(app).toThrowError(/Invalid table permission submitted - Reed/);
+});
+
+test('Test that CheckDynamoDBProps is getting called', () => {
+  const stack = new cdk.Stack();
+  const tableName = 'custom-table-name';
+
+  const existingTable = new dynamodb.Table(stack, 'MyTablet', {
+    tableName,
+    partitionKey: {
+      name: 'id',
+      type: dynamodb.AttributeType.STRING
+    }
+  });
+
+  const props: LambdaToDynamoDBProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler'
+    },
+    existingTableObj: existingTable,
+    dynamoTableProps: {
+      tableName,
+      partitionKey: {
+        name: 'id',
+        type: dynamodb.AttributeType.STRING
+      },
+    },
+  };
+
+  const app = () => {
+    new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Error - Either provide existingTableObj or dynamoTableProps, but not both.\n/);
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: LambdaToDynamoDBProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new LambdaToDynamoDB(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

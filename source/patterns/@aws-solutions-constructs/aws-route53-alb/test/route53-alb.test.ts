@@ -247,6 +247,7 @@ test('Check that passing an existing hosted Zone without passing an existingVPC 
 });
 
 test('Check that passing an existing Load Balancer without passing an existingVPC is an error', () => {
+  // This also confirms CheckAlbProps is properly working
   const stack = new Stack();
 
   const testExistingVpc = defaults.getTestVpc(stack);
@@ -267,7 +268,7 @@ test('Check that passing an existing Load Balancer without passing an existingVP
     new Route53ToAlb(stack, 'test-error', props);
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError("An existing ALB already exists in a VPC, so that VPC must be passed to the construct in props.existingVpc");
 
 });
 

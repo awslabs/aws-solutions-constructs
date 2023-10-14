@@ -86,7 +86,7 @@ export interface FargateToSqsProps {
   /**
    * A Fargate Service already instantiated (probably by another Solutions Construct). If
    * this is specified, then no props defining a new service can be provided, including:
-   * existingImageObject, ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps,
+   * existingImageObject, ecrImageVersion, containerDefinitionProps, fargateTaskDefinitionProps,
    * ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface. If this value
    * is provided, then existingContainerDefinitionObject must be provided as well.
    *
@@ -178,8 +178,9 @@ export class FargateToSqs extends Construct {
 
   constructor(scope: Construct, id: string, props: FargateToSqsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
+    defaults.CheckSqsProps(props);
+    defaults.CheckVpcProps(props);
 
     if (props.queuePermissions) {
       defaults.CheckListValues(['Read', 'Write'], props.queuePermissions, 'queue permission');

@@ -15,6 +15,8 @@ import { Template } from 'aws-cdk-lib/assertions';
 import { Stack } from 'aws-cdk-lib';
 import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import { MediaStoreContainer } from '../lib/mediastore-helper';
+import { MediaStoreContainerProps } from '../lib/mediastore-defaults';
+import * as defaults from '../';
 
 test('MediaStore container override params', () => {
   const stack = new Stack();
@@ -46,4 +48,31 @@ test('MediaStore container override params', () => {
     LifecyclePolicy: '{}',
     ContainerName: 'TestContainer'
   });
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test("Test fail MediaStore container check", () => {
+  const stack = new Stack();
+
+  const mediaStoreContainer = new mediastore.CfnContainer(
+    stack,
+    "placeholder",
+    MediaStoreContainerProps()
+  );
+
+  const props: defaults.MediaStoreProps = {
+    mediaStoreContainerProps: MediaStoreContainerProps(),
+    existingMediaStoreContainerObj: mediaStoreContainer,
+  };
+
+  const app = () => {
+    defaults.CheckMediaStoreProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError(
+    "Error - Either provide mediaStoreContainerProps or existingMediaStoreContainerObj, but not both.\n"
+  );
 });

@@ -62,7 +62,7 @@ export function CreateFargateService(
     defaults.ServiceEndpointTypes.S3
   );
 
-  const constructContainerDefintionProps: any = {};
+  const constructContainerDefinitionProps: any = {};
   const constructFargateServiceDefinitionProps: any = {};
 
   if (!props.clientFargateServiceProps?.cluster) {
@@ -77,7 +77,7 @@ export function CreateFargateService(
 
   // Set up the Fargate service
   if (!props.clientContainerDefinitionProps?.image) {
-    constructContainerDefintionProps.image = CreateImage(
+    constructContainerDefinitionProps.image = CreateImage(
       scope,
       id,
       props.ecrRepositoryArn,
@@ -92,7 +92,7 @@ export function CreateFargateService(
     id,
     props.clientFargateTaskDefinitionProps,
     props.clientContainerDefinitionProps,
-    constructContainerDefintionProps
+    constructContainerDefinitionProps
   );
   constructFargateServiceDefinitionProps.taskDefinition = createTaskDefinitionResponse.taskDefinition;
   newContainerDefinition = createTaskDefinitionResponse.containerDefinition;
@@ -224,16 +224,7 @@ export function CheckFargateProps(props: any) {
   let errorMessages = "";
   let errorFound = false;
 
-  if (
-    props.existingFargateServiceObject &&
-    (props.existingImageObject ||
-      props.ecrImageVersion ||
-      props.containerDefinitionProps ||
-      props.fargateTaskDefinitionProps ||
-      props.ecrRepositoryArn ||
-      props.fargateServiceProps ||
-      props.clusterProps)
-  ) {
+  if (CheckForConflictingServiceProps(props)) {
     errorFound = true;
     errorMessages +=
       "If you provide an existingFargateServiceObject, you cannot provide any props defining a new service\n";
@@ -267,10 +258,10 @@ export function CheckFargateProps(props: any) {
       "If you provide a cluster in fargateServiceProps then you cannot provide clusterProps\n";
   }
 
-  if (props.clusterProps?.vpc) {
+  if (CheckForInvalidVpcs(props)) {
     errorFound = true;
     errorMessages +=
-      "All services in the construct use the construct VPC, you cannot specify a VPC in clusterProps\n";
+      "Provide all VPC info at Construct level, not within clusterProps nor targetGroupProps\n";
   }
 
   if (
@@ -288,6 +279,34 @@ export function CheckFargateProps(props: any) {
   if (errorFound) {
     throw new Error(errorMessages);
   }
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function CheckForConflictingServiceProps(props: any): boolean {
+  if (props.existingFargateServiceObject &&
+    (props.existingImageObject ||
+      props.ecrImageVersion ||
+      props.containerDefinitionProps ||
+      props.fargateTaskDefinitionProps ||
+      props.ecrRepositoryArn ||
+      props.fargateServiceProps ||
+      props.clusterProps)
+  ) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function CheckForInvalidVpcs(props: any): boolean {
+  if (props.clusterProps?.vpc || props.targetGroupProps?.vpc) {
+    return true;
+  }
+  return false;
 }
 
 /**

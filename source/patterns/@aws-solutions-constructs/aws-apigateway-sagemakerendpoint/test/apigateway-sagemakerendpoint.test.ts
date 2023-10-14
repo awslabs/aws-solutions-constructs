@@ -17,9 +17,6 @@ import { ApiGatewayToSageMakerEndpoint } from '../lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Test construct properties
-// --------------------------------------------------------------
 test('Test construct properties', () => {
   const stack = new Stack();
   const pattern = new ApiGatewayToSageMakerEndpoint(stack, 'api-gateway-sagemakerendpoint', {
@@ -28,15 +25,12 @@ test('Test construct properties', () => {
     requestMappingTemplate: 'my-request-vtl-template'
   });
 
-  expect(pattern.apiGateway !== null);
-  expect(pattern.apiGatewayRole !== null);
-  expect(pattern.apiGatewayCloudWatchRole !== null);
-  expect(pattern.apiGatewayLogGroup !== null);
+  expect(pattern.apiGateway).toBeDefined();
+  expect(pattern.apiGatewayRole).toBeDefined();
+  expect(pattern.apiGatewayCloudWatchRole).toBeDefined();
+  expect(pattern.apiGatewayLogGroup).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ overwritten properties
-// --------------------------------------------------------------
 test('Test deployment w/ overwritten properties', () => {
   const stack = new Stack();
 

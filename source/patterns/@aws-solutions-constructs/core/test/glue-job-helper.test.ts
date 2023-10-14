@@ -18,10 +18,8 @@ import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { RemovalPolicy, Stack } from "aws-cdk-lib";
 import * as defaults from '..';
+import * as iam from 'aws-cdk-lib/aws-iam';
 
-// --------------------------------------------------------------
-// Test deployment with role creation
-// --------------------------------------------------------------
 test('Test deployment with role creation', () => {
   // Stack
   const stack = new Stack();
@@ -75,9 +73,6 @@ test('Test deployment with role creation', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Pass an existing Glue Job
-// --------------------------------------------------------------
 test('Create a Glue Job outside the construct', () => {
   // Stack
   const stack = new Stack();
@@ -138,9 +133,6 @@ test('Create a Glue Job outside the construct', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Provide additional parameters other than default ones
-// --------------------------------------------------------------
 test('Test custom deployment properties', () => {
   // Stack
   const stack = new Stack();
@@ -252,9 +244,6 @@ test('Test custom deployment properties', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Do not supply parameters and error out
-// --------------------------------------------------------------
 test('Do no supply glueJobProps or existingCfnJob and error out', () => {
   const stack = new Stack();
   try {
@@ -275,10 +264,7 @@ test('Do no supply glueJobProps or existingCfnJob and error out', () => {
   }
 });
 
-// --------------------------------------------------------------
-// Allow the construct to create the job role required
-// --------------------------------------------------------------
-test('Test deployment with role creation', () => {
+test('llow the construct to create the job role required', () => {
   // Stack
   const stack = new Stack();
   const jobID = 'glueetl';
@@ -318,15 +304,12 @@ test('Test deployment with role creation', () => {
         }],
         Version: "2012-10-17"
       },
-      Description: "Service role that Glue custom ETL jobs will assume for exeuction"
+      Description: "Service role that Glue custom ETL jobs will assume for execution"
     }
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment when output location is provided
-// --------------------------------------------------------------
-test('Test deployment with role creation', () => {
+test('Test deployment when output location is provided', () => {
   // Stack
   const stack = new Stack();
   const jobID = 'glueetl';
@@ -376,49 +359,6 @@ test('Test deployment with role creation', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment when script location not provided - throw error
-// --------------------------------------------------------------
-test('Test deployment with role creation', () => {
-  // Stack
-  const stack = new Stack();
-  const jobID = 'glueetl';
-
-  const cfnJobProps = {
-    command: {
-      name: jobID,
-      pythonVersion: '3'
-    }
-  };
-
-  const database = defaults.createGlueDatabase(stack);
-  try {
-    defaults.buildGlueJob(stack, {
-      glueJobProps: cfnJobProps,
-      outputDataStore: {
-        datastoreType: defaults.SinkStoreType.S3,
-        existingS3OutputBucket: new Bucket(stack, 'OutputBucket', {
-          versioned: false
-        })
-      },
-      database,
-      table: defaults.createGlueTable(stack, database, undefined, [{
-        name: "id",
-        type: "int",
-        comment: ""
-      }], 'kinesis', {STREAM_NAME: 'testStream'})
-    });
-  } catch (error) {
-    expect(error).toBeInstanceOf(Error);
-    expect(error.message).toEqual('Either one of CfnJob.JobCommandProperty.scriptLocation or KinesisstreamsToGluejobProps.etlCodeAsset ' +
-    'has to be provided. If the ETL Job code file exists in a local filesystem, please set KinesisstreamsToGluejobProps.etlCodeAsset. ' +
-    'If the ETL Job is available in an S3 bucket, set the CfnJob.JobCommandProperty.scriptLocation property');
-  }
-});
-
-// --------------------------------------------------------------
-// Dont pass Job Command attributes and it should throw an error
-// --------------------------------------------------------------
 test('Test for incorrect Job Command property', () => {
   const stack = new Stack();
   try {
@@ -489,9 +429,6 @@ test('GlueJob configuration with glueVersion 2.0 should not support maxCapacity 
   }
 });
 
-// --------------------------------------------------------------
-// Fail if setting maxCapacity and WorkerType/ NumberOfWorkers
-// --------------------------------------------------------------
 test('Cannot use maxCapacity and WorkerType, so error out', () => {
   const stack = new Stack();
   try {
@@ -578,4 +515,104 @@ test('Cannot use maxCapacity and WorkerType, so error out', () => {
   } catch (error) {
     expect(error).toBeInstanceOf(Error);
   }
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test fail Glue job check', () => {
+  const stack = new Stack();
+
+  const _jobRole = new iam.Role(stack, 'CustomETLJobRole', {
+    assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+  });
+
+  const jobProps: CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, {
+    command: {
+      name: 'glueetl',
+      pythonVersion: '3',
+      scriptLocation: new Bucket(stack, 'ScriptBucket').bucketArn,
+    },
+    role: new iam.Role(stack, 'JobRole', {
+      assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+    }).roleArn
+  }, 'testETLJob', {});
+
+  const job = new CfnJob(stack, 'placeholder', jobProps);
+
+  const props: defaults.GlueProps = {
+    glueJobProps: jobProps,
+    existingGlueJob: job
+  };
+
+  const app = () => {
+    defaults.CheckGlueProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError("Error - Either provide glueJobProps or existingGlueJob, but not both.\n");
+});
+
+test('Test bad Glue script location', () => {
+  const stack = new Stack();
+
+  const _jobRole = new iam.Role(stack, 'CustomETLJobRole', {
+    assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+  });
+
+  const jobProps: CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, {
+    command: {
+      name: 'glueetl',
+      pythonVersion: '3',
+      scriptLocation: "s://bad/url",
+    },
+    role: new iam.Role(stack, 'JobRole', {
+      assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+    }).roleArn
+  }, 'testETLJob', {});
+
+  const props: defaults.GlueProps = {
+    glueJobProps: jobProps,
+  };
+
+  const app = () => {
+    defaults.CheckGlueProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Invalid S3 URL for Glue script provided\n');
+});
+
+test('Test missing Glue script location', () => {
+  const stack = new Stack();
+
+  const _jobRole = new iam.Role(stack, 'CustomETLJobRole', {
+    assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+  });
+
+  const jobProps: CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, {
+    command: {
+      name: 'glueetl',
+      pythonVersion: '3',
+    },
+    role: new iam.Role(stack, 'JobRole', {
+      assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
+    }).roleArn
+  }, 'testETLJob', {});
+
+  const props: defaults.GlueProps = {
+    glueJobProps: jobProps,
+  };
+
+  const app = () => {
+    defaults.CheckGlueProps(props);
+  };
+
+  const expectedError: string = 'Either one of CfnJob.JobCommandProperty.scriptLocation or etlCodeAsset has ' +
+    'to be provided. If the ETL Job code file exists in a local filesystem, please set ' +
+    'KinesisstreamsToGluejobProps.etlCodeAsset. If the ETL Job is available in an S3 bucket, set the ' +
+    'CfnJob.JobCommandProperty.scriptLocation property\n';
+
+  // Assertion
+  expect(app).toThrowError(expectedError);
 });

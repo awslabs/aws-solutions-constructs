@@ -366,9 +366,6 @@ test('check lambda function custom environment variable', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC without vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Stack
   const stack = new cdk.Stack();
@@ -425,9 +422,6 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC w/vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Stack
   const stack = new cdk.Stack();
@@ -490,9 +484,6 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC", () => {
   // Stack
   const stack = new cdk.Stack();
@@ -544,16 +535,12 @@ test("Test minimal deployment with an existing VPC", () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC and existing Lambda function not in a VPC
-//
-// buildLambdaFunction should throw an error if the Lambda function is not
-// attached to a VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC and existing Lambda function not in a VPC", () => {
   // Stack
   const stack = new cdk.Stack();
 
+  // buildLambdaFunction should throw an error if the Lambda function is not
+  // attached to a VPC
   const testLambdaFunction = new lambda.Function(stack, 'test-lambda', {
     runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
@@ -584,10 +571,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingVpc and deployVpc
-// --------------------------------------------------------------
-test("Test bad call with existingVpc and deployVpc", () => {
+test("Confirm CheckVpcProps is called", () => {
   // Stack
   const stack = new cdk.Stack();
 
@@ -614,5 +598,83 @@ test("Test bad call with existingVpc and deployVpc", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
+
+test('Confirm CheckLambdaProps is being called', () => {
+  const stack = new cdk.Stack();
+  const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
+    runtime: lambda.Runtime.NODEJS_18_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: IotToLambdaToDynamoDBProps = {
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+        sql: "SELECT * FROM 'connectedcar/dtc/#'",
+        actions: []
+      }
+    },
+    existingLambdaObj,
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    }
+  };
+
+  const app = () => {
+    new IotToLambdaToDynamoDB(stack, 'test-iot-lambda-ddb', props);
+  };
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});
+
+// NOTE: existingTableObj was omitted from the interface for this construct,
+// so this test cannot be run. Leaving it here so it can be used if/when existingTableObj
+// is added to the interface
+//
+// test("Confirm CheckDynamoDBProps is getting called", () => {
+//   const stack = new cdk.Stack();
+//   const tableName = 'table-name';
+
+//   const existingTable = new dynamodb.Table(stack, 'MyTablet', {
+//     tableName,
+//     partitionKey: {
+//       name: 'id',
+//       type: dynamodb.AttributeType.STRING
+//     }
+//   });
+
+//   const props: IotToLambdaToDynamoDBProps = {
+//     lambdaFunctionProps: {
+//       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+//       runtime: lambda.Runtime.NODEJS_16_X,
+//       handler: 'index.handler'
+//     },
+//     iotTopicRuleProps: {
+//       topicRulePayload: {
+//         ruleDisabled: false,
+//         description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+//         sql: "SELECT * FROM 'connectedcar/dtc/#'",
+//         actions: []
+//       }
+//     },
+//     existingTableObj: existingTable,
+//     dynamoTableProps: {
+//       tableName,
+//       partitionKey: {
+//         name: 'id',
+//         type: dynamodb.AttributeType.STRING
+//       },
+//     },
+// };
+
+//   const app = () => {
+//     new IotToLambdaToDynamoDB(stack, 'test-iot-lambda-dynamodb-stack', props);
+//   };
+
+//   expect(app).toThrowError('Error - Either provide existingTableObj or dynamoTableProps, but not both.\n');
+// });

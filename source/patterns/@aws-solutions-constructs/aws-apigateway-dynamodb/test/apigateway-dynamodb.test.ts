@@ -23,11 +23,11 @@ test("check properties", () => {
   const apiGatewayToDynamoDBProps: ApiGatewayToDynamoDBProps = {};
   const construct = new ApiGatewayToDynamoDB( stack, "test-api-gateway-dynamodb-default", apiGatewayToDynamoDBProps);
 
-  expect(construct.dynamoTable !== null);
-  expect(construct.apiGateway !== null);
-  expect(construct.apiGatewayRole !== null);
-  expect(construct.apiGatewayCloudWatchRole !== null);
-  expect(construct.apiGatewayLogGroup !== null);
+  expect(construct.dynamoTable).toBeDefined();
+  expect(construct.apiGateway).toBeDefined();
+  expect(construct.apiGatewayRole).toBeDefined();
+  expect(construct.apiGatewayCloudWatchRole).toBeDefined();
+  expect(construct.apiGatewayLogGroup).toBeDefined();
 });
 
 test("check allow CRUD operations", () => {
@@ -742,4 +742,35 @@ test('Construct throws error when deleteIntegrationResponses is set and allowDel
   });
 
   expect(app).toThrowError(/The 'allowDeleteOperation' property must be set to true when setting any of the following: 'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'/);
+});
+
+test('Test that CheckDynamoDBProps is getting called', () => {
+  const stack = new Stack();
+  const tableName = 'custom-table-name';
+
+  const existingTable = new ddb.Table(stack, 'MyTablet', {
+    tableName,
+    partitionKey: {
+      name: 'id',
+      type: ddb.AttributeType.STRING
+    }
+  });
+
+  const props: ApiGatewayToDynamoDBProps = {
+    existingTableObj: existingTable,
+    dynamoTableProps: {
+      tableName,
+      partitionKey: {
+        name: 'id',
+        type: ddb.AttributeType.STRING
+      },
+    },
+  };
+
+  const app = () => {
+    new ApiGatewayToDynamoDB(stack, 'test-apigateway-dynamodb-stack', props);
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Error - Either provide existingTableObj or dynamoTableProps, but not both.\n/);
 });

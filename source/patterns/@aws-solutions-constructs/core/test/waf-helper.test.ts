@@ -256,9 +256,6 @@ test('Test deployment w/ user provided partial custom properties', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing WAF web ACL provided
-// --------------------------------------------------------------
 test('Test deployment w/ existing WAF web ACL provided', () => {
   // Stack
   const stack = new Stack();
@@ -269,4 +266,56 @@ test('Test deployment w/ existing WAF web ACL provided', () => {
   });
 
   expect(newWaf).toBe(testWaf);
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test WebACL bad props', () => {
+  const stack = new Stack();
+  const wafProps: waf.CfnWebACLProps = {
+    scope: 'CLOUDFRONT',
+    defaultAction: {
+      allow: {}
+    },
+    visibilityConfig: {
+      cloudWatchMetricsEnabled: false,
+      metricName: 'webACL',
+      sampledRequestsEnabled: true
+    },
+    rules: [
+      defaults.wrapManagedRuleSet("AWSManagedRulesCommonRuleSet", "AWS", 0),
+      defaults.wrapManagedRuleSet("AWSManagedRulesWordPressRuleSet", "AWS", 1),
+    ]
+  };
+
+  const wafPropsTwo: waf.CfnWebACLProps = {
+    scope: 'CLOUDFRONT',
+    defaultAction: {
+      allow: {}
+    },
+    visibilityConfig: {
+      cloudWatchMetricsEnabled: false,
+      metricName: 'webACL',
+      sampledRequestsEnabled: true
+    },
+    rules: [
+      defaults.wrapManagedRuleSet("AWSManagedRulesCommonRuleSet", "AWS", 0),
+      defaults.wrapManagedRuleSet("AWSManagedRulesWordPressRuleSet", "AWS", 1),
+    ]
+  };
+
+  const acl: waf.CfnWebACL = new waf.CfnWebACL(stack, 'test',  wafProps);
+
+  const props: defaults.WafWebAclProps = {
+    existingWebaclObj: acl,
+    webaclProps: wafPropsTwo,
+  };
+
+  const app = () => {
+    defaults.CheckWafWebAclProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingWebaclObj or webaclProps, but not both.\n');
 });

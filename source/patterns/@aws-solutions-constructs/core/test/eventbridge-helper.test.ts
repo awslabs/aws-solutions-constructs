@@ -64,3 +64,23 @@ test('Test deployment with new EventBus with props', () => {
     Name: 'testneweventbus'
   });
 });
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+
+test('Test fail EventBridge bad bus props', () => {
+  const stack = new Stack();
+
+  const props: defaults.EventBridgeProps = {
+    existingEventBusInterface: new events.EventBus(stack, 'test', {}),
+    eventBusProps: {}
+  };
+
+  const app = () => {
+    defaults.CheckEventBridgeProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
+});

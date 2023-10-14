@@ -14,15 +14,12 @@
 // Imports
 import { RemovalPolicy, Stack } from "aws-cdk-lib";
 import * as lambda from "aws-cdk-lib/aws-lambda";
-import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
+import * as secrets from 'aws-cdk-lib/aws-secretsmanager';
 import * as ec2 from "aws-cdk-lib/aws-ec2";
-import { LambdaToSecretsmanager } from '../lib';
+import { LambdaToSecretsmanager, LambdaToSecretsmanagerProps } from '../lib';
 import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from "@aws-solutions-constructs/core";
 
-// --------------------------------------------------------------
-// Test the getter methods
-// --------------------------------------------------------------
 test('Test the properties', () => {
   // Stack
   const stack = new Stack();
@@ -43,14 +40,11 @@ test('Test the properties', () => {
   expect(secret).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing secret
-// --------------------------------------------------------------
 test('Test deployment w/ existing secret', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  const existingSecret = new Secret(stack, 'secret', {});
+  const existingSecret = new secrets.Secret(stack, 'secret', {});
   const pattern = new LambdaToSecretsmanager(stack, 'lambda-to-secretsmanager-stack', {
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_16_X,
@@ -68,9 +62,6 @@ test('Test deployment w/ existing secret', () => {
   expect(pattern.secret).toBe(existingSecret);
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing function
-// --------------------------------------------------------------
 test('Test deployment w/ existing function', () => {
   // Stack
   const stack = new Stack();
@@ -95,9 +86,6 @@ test('Test deployment w/ existing function', () => {
   expect(pattern.lambdaFunction).toBe(existingFunction);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with write access to Secret
-// --------------------------------------------------------------
 test('Test minimal deployment write access to Secret', () => {
   // Stack
   const stack = new Stack();
@@ -119,9 +107,6 @@ test('Test minimal deployment write access to Secret', () => {
 
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC without vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Stack
   const stack = new Stack();
@@ -171,9 +156,6 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC w/vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Stack
   const stack = new Stack();
@@ -229,9 +211,6 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC", () => {
   // Stack
   const stack = new Stack();
@@ -276,13 +255,7 @@ test("Test minimal deployment with an existing VPC", () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC and existing Lambda function not in a VPC
-//
-// buildLambdaFunction should throw an error if the Lambda function is not
-// attached to a VPC
-// --------------------------------------------------------------
-test("Test minimal deployment with an existing VPC and existing Lambda function not in a VPC", () => {
+test("Check error when existing lambda function is not in VPC and construct is in VPC", () => {
   // Stack
   const stack = new Stack();
 
@@ -296,7 +269,8 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
   // Helper declaration
   const app = () => {
-    // Helper declaration
+    // buildLambdaFunction should throw an error if the Lambda function is not
+    // attached to a VPC
     new LambdaToSecretsmanager(stack, "lambda-to-secretsmanager-stack", {
       existingLambdaObj: testLambdaFunction,
       existingVpc: testVpc,
@@ -309,10 +283,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingVpc and deployVpc
-// --------------------------------------------------------------
-test("Test bad call with existingVpc and deployVpc", () => {
+test("Confirm CheckVpcProps is called", () => {
   // Stack
   const stack = new Stack();
 
@@ -332,12 +303,9 @@ test("Test bad call with existingVpc and deployVpc", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
-// --------------------------------------------------------------
-// Test lambda function custom environment variable
-// --------------------------------------------------------------
 test('Test lambda function custom environment variable', () => {
   // Stack
   const stack = new Stack();
@@ -372,9 +340,6 @@ test('Test lambda function custom environment variable', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test overriding secretProps to pass a customer provided CMK
-// --------------------------------------------------------------
 test('Test overriding secretProps to pass a customer provided CMK', () => {
   // Stack
   const stack = new Stack();
@@ -429,4 +394,50 @@ test('Test overriding secretProps to pass a customer provided CMK', () => {
     Description: "secret-key",
     EnableKeyRotation: true
   });
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: LambdaToSecretsmanagerProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new LambdaToSecretsmanager(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});
+
+test('Confirm call to CheckSecretsManagerProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const props: LambdaToSecretsmanagerProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    secretProps: {
+      secretName: 'test'
+    },
+    existingSecretObj: new secrets.Secret(stack, 'test', {}),
+  };
+  const app = () => {
+    new LambdaToSecretsmanager(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide secretProps or existingSecretObj, but not both.\n');
 });

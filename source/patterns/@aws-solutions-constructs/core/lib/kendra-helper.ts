@@ -18,13 +18,12 @@
 
 import * as kendra from 'aws-cdk-lib/aws-kendra';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import { addCfnSuppressRules, consolidateProps } from "./utils";
+import { addCfnSuppressRules, consolidateProps, generatePhysicalName, overrideProps } from "./utils";
 import { Aws } from 'aws-cdk-lib';
 
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 import { DefaultKendraIndexProps } from './kendra-defaults';
-import { generatePhysicalName, overrideProps } from "./utils";
 
 export interface BuildKendraIndexProps {
   readonly kendraIndexProps?: kendra.CfnIndexProps | any;
@@ -109,18 +108,18 @@ function CreateS3DataSource(scope: Construct,
   // the type to remove the union with IResolvable
   const dataSourceConfig = clientProps.dataSourceConfiguration as kendra.CfnDataSource.DataSourceConfigurationProperty;
   if (!dataSourceConfig) {
-    throw new Error('Error - an S3 Kendra DataSource requires an DataSourceCofiguration prop');
+    throw new Error('Error - an S3 Kendra DataSource requires an DataSourceConfiguration prop');
   }
 
   const s3DataSourceConfig = dataSourceConfig.s3Configuration as kendra.CfnDataSource.S3DataSourceConfigurationProperty;
 
   if (!s3DataSourceConfig) {
-    throw new Error('Error - an S3 Kendra DataSource requires an DataSourceCofiguration.S3Configuration prop');
+    throw new Error('Error - an S3 Kendra DataSource requires an DataSourceConfiguration.S3Configuration prop');
   }
 
   // No Bucket name is an error
   if (!s3DataSourceConfig.bucketName) {
-    throw new Error('Error - an S3 Kendra DataSource requires the DataSourceCofiguration.S3Configuration.bucketName prop');
+    throw new Error('Error - an S3 Kendra DataSource requires the DataSourceConfiguration.S3Configuration.bucketName prop');
   }
 
   // If there's no role, make a role and put it into defaultProps

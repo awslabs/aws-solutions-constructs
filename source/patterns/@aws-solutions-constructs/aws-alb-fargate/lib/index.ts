@@ -140,7 +140,7 @@ export interface AlbToFargateProps {
   /**
    * A Fargate Service already instantiated (probably by another Solutions Construct). If
    * this is specified, then no props defining a new service can be provided, including:
-   * ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps,
+   * ecrImageVersion, containerDefinitionProps, fargateTaskDefinitionProps,
    * ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface
    *
    * @default - none
@@ -164,9 +164,9 @@ export class AlbToFargate extends Construct {
 
   constructor(scope: Construct, id: string, props: AlbToFargateProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckAlbProps(props);
     defaults.CheckFargateProps(props);
+    defaults.CheckVpcProps(props);
 
     // Obtain VPC for construct (existing or created)
     this.vpc = defaults.buildVpc(scope, {

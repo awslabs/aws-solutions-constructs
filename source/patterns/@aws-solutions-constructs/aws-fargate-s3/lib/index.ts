@@ -86,7 +86,7 @@ export interface FargateToS3Props {
   /**
    * A Fargate Service already instantiated (probably by another Solutions Construct). If
    * this is specified, then no props defining a new service can be provided, including:
-   * existingImageObject, ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps,
+   * existingImageObject, ecrImageVersion, containerDefinitionProps, fargateTaskDefinitionProps,
    * ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface. If this value
    * is provided, then existingContainerDefinitionObject must be provided as well.
    *
@@ -161,8 +161,9 @@ export class FargateToS3 extends Construct {
     // context here rather than assuming the client will set it
     this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-    defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
+    defaults.CheckS3Props(props);
+    defaults.CheckVpcProps(props);
 
     if (props.bucketPermissions) {
       defaults.CheckListValues(['Delete', 'Read', 'Write'], props.bucketPermissions, 'bucket permission');
@@ -239,10 +240,14 @@ export class FargateToS3 extends Construct {
     }
 
     // Add environment variables
-    const bucketArnEnvironmentVariableName = props.bucketArnEnvironmentVariableName || 'S3_BUCKET_ARN';
+    const bucketArnEnvironmentVariableName = this.SetStringWithDefault(props.bucketArnEnvironmentVariableName, 'S3_BUCKET_ARN');
     this.container.addEnvironment(bucketArnEnvironmentVariableName, this.s3BucketInterface.bucketArn);
-    const bucketEnvironmentVariableName = props.bucketEnvironmentVariableName || 'S3_BUCKET_NAME';
+    const bucketEnvironmentVariableName = this.SetStringWithDefault(props.bucketEnvironmentVariableName, 'S3_BUCKET_NAME');
     this.container.addEnvironment(bucketEnvironmentVariableName, this.s3BucketInterface.bucketName);
 
+  }
+
+  private SetStringWithDefault(value: string | undefined, defaultValue: string) {
+    return value || defaultValue;
   }
 }

@@ -343,7 +343,7 @@ test('Check providing vpc in the targetGroupsProps is an error', () => {
     defaults.CheckFargateProps(props);
   };
 
-  expect(app).toThrowError("Provide all VPC info at Construct level, not within targetGroupProps\n");
+  expect(app).toThrowError("Provide all VPC info at Construct level, not within clusterProps nor targetGroupProps\n");
 });
 
 test('Check providing taskDefinition in the fargateServiceProps is an error', () => {
@@ -380,7 +380,7 @@ test('Check providing vpc in clusterProps is an error', () => {
     defaults.CheckFargateProps(props);
   };
 
-  expect(app).toThrowError("All services in the construct use the construct VPC, you cannot specify a VPC in clusterProps\n");
+  expect(app).toThrowError("Provide all VPC info at Construct level, not within clusterProps nor targetGroupProps\n");
 });
 
 test('Check providing existing service without existing container and existing VPC is an error', () => {

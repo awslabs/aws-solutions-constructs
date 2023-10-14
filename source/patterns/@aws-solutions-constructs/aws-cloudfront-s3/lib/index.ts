@@ -64,7 +64,7 @@ export interface CloudFrontToS3Props {
    * Optional user provided props to provide an originPath that CloudFront appends to the
    * origin domain name when CloudFront requests content from the origin.
    * The string should start with a `/`, for example `/production`.
-   * @dafault = '/'
+   * @default = '/'
    */
   readonly originPath?: string,
   /**
@@ -111,7 +111,8 @@ export class CloudFrontToS3 extends Construct {
     // context here rather than assuming the client will set it
     this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-    defaults.CheckProps(props);
+    defaults.CheckS3Props(props);
+    defaults.CheckCloudFrontProps(props);
 
     let bucket: s3.IBucket;
 

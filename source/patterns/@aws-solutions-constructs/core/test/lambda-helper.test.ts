@@ -504,7 +504,7 @@ test('buildLambdaFunction uses constructId when specified', () => {
   });
 });
 
-// specifying constructId takes precendence over functionName for setting the
+// specifying constructId takes precedence over functionName for setting the
 // underlying lambda function and iam role construct ids.
 test('buildLambdaFunction uses constructId when both constructId and functionName are specified', () => {
   const stack = new Stack();
@@ -560,4 +560,33 @@ test('buildLambdaFunction uses default name when neither constructId or function
       'Fn::GetAtt': ['LambdaFunctionServiceRole0C4CDE0B', 'Arn'],
     },
   });
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test("Test fail Lambda function check", () => {
+  const stack = new Stack();
+
+  const props: defaults.LambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: "index.handler",
+    },
+    existingLambdaObj: new lambda.Function(stack, "placeholder", {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: "index.handler",
+    }),
+  };
+
+  const app = () => {
+    defaults.CheckLambdaProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError(
+    "Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n"
+  );
 });

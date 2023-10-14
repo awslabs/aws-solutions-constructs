@@ -112,12 +112,6 @@
           },
           "S3Key": "c7dc0cc1b24bda1d2a5345f61897eee32184906649fdb1de93853c512e129dbf.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "LambdaFunctionServiceRole0C4CDE0B",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "KINESIS_DATASTREAM_NAME": {
@@ -126,6 +120,12 @@
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaFunctionServiceRole0C4CDE0B",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs18.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -168,9 +168,9 @@
     "testlambdakinesisstreamsKinesisStreamGetRecordsIteratorAgeAlarmC4A0FF00": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
         "MetricName": "GetRecords.IteratorAgeMilliseconds",
         "Namespace": "AWS/Kinesis",
         "Period": 300,
@@ -181,9 +181,9 @@
     "testlambdakinesisstreamsKinesisStreamReadProvisionedThroughputExceededAlarm9732E188": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
         "ComparisonOperator": "GreaterThanThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
         "MetricName": "ReadProvisionedThroughputExceeded",
         "Namespace": "AWS/Kinesis",
         "Period": 300,

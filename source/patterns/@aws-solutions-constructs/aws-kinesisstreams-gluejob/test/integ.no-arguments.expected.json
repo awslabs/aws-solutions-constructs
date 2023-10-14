@@ -107,7 +107,7 @@
           ],
           "Version": "2012-10-17"
         },
-        "Description": "Service role that Glue custom ETL jobs will assume for exeuction"
+        "Description": "Service role that Glue custom ETL jobs will assume for execution"
       }
     },
     "testkinesisstreamslambdaJobRoleDefaultPolicy943FFA49": {
@@ -413,12 +413,6 @@
           "PythonVersion": "3",
           "ScriptLocation": "s3://fakelocation/fakefile.py"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testkinesisstreamslambdaJobRole42199B9C",
-            "Arn"
-          ]
-        },
         "DefaultArguments": {
           "--enable-metrics": true,
           "--enable-continuous-cloudwatch-log": true,
@@ -443,6 +437,12 @@
         },
         "GlueVersion": "2.0",
         "NumberOfWorkers": 2,
+        "Role": {
+          "Fn::GetAtt": [
+            "testkinesisstreamslambdaJobRole42199B9C",
+            "Arn"
+          ]
+        },
         "SecurityConfiguration": "ETLJobSecurityConfig",
         "WorkerType": "G.1X"
       }
@@ -450,9 +450,9 @@
     "testkinesisstreamslambdaKinesisStreamGetRecordsIteratorAgeAlarmFB74C363": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
         "MetricName": "GetRecords.IteratorAgeMilliseconds",
         "Namespace": "AWS/Kinesis",
         "Period": 300,
@@ -463,9 +463,9 @@
     "testkinesisstreamslambdaKinesisStreamReadProvisionedThroughputExceededAlarm5ABF4346": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
+        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
         "ComparisonOperator": "GreaterThanThreshold",
         "EvaluationPeriods": 1,
-        "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
         "MetricName": "ReadProvisionedThroughputExceeded",
         "Namespace": "AWS/Kinesis",
         "Period": 300,

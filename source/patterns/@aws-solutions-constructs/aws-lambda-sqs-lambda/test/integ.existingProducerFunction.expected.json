@@ -113,12 +113,6 @@
           },
           "S3Key": "075b2d402078d97c329028d1af17df69ef86062dc7ace374b10a10022db6fb8d.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "LambdaFunctionServiceRole0C4CDE0B",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
@@ -128,6 +122,12 @@
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaFunctionServiceRole0C4CDE0B",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -437,18 +437,18 @@
           },
           "S3Key": "d685d4fad1e8a913557eb007ae16e135281d3f192a6b557c471e160e3cc557a6.zip"
         },
-        "Role": {
-          "Fn::GetAtt": [
-            "testlambdasqslambdasqstolambdaLambdaFunctionServiceRole785979D2",
-            "Arn"
-          ]
-        },
         "Environment": {
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
           }
         },
         "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testlambdasqslambdasqstolambdaLambdaFunctionServiceRole785979D2",
+            "Arn"
+          ]
+        },
         "Runtime": "nodejs16.x",
         "TracingConfig": {
           "Mode": "Active"
@@ -480,14 +480,14 @@
     "testlambdasqslambdasqstolambdaLambdaFunctionSqsEventSourceexistingProducerFunctiontestlambdasqslambdalambdatosqsqueue9043AC9D03EA33DA": {
       "Type": "AWS::Lambda::EventSourceMapping",
       "Properties": {
-        "FunctionName": {
-          "Ref": "testlambdasqslambdasqstolambdaLambdaFunction81308327"
-        },
         "EventSourceArn": {
           "Fn::GetAtt": [
             "testlambdasqslambdalambdatosqsqueueF2ED40D2",
             "Arn"
           ]
+        },
+        "FunctionName": {
+          "Ref": "testlambdasqslambdasqstolambdaLambdaFunction81308327"
         }
       }
     }

@@ -81,7 +81,7 @@ export class CognitoToApiGatewayToLambda extends Construct {
    */
   constructor(scope: Construct, id: string, props: CognitoToApiGatewayToLambdaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckLambdaProps(props);
 
     // This Construct requires that the auth type be COGNITO regardless of what is specified in the props
     if (props.apiGatewayProps) {
@@ -98,7 +98,7 @@ export class CognitoToApiGatewayToLambda extends Construct {
     }
 
     if (props.apiGatewayProps && (typeof props.apiGatewayProps.proxy !== 'undefined') && (props.apiGatewayProps.proxy === false)) {
-      defaults.printWarning('For non-proxy API, addAuthorizers() method must be called after all the resources and methods for API are fuly defined. Not calling addAuthorizers() will result in API methods NOT protected by Cognito.');
+      defaults.printWarning('For non-proxy API, addAuthorizers() method must be called after all the resources and methods for API are fully defined. Not calling addAuthorizers() will result in API methods NOT protected by Cognito.');
     }
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {

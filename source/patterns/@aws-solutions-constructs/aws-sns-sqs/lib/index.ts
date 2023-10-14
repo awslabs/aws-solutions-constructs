@@ -115,7 +115,8 @@ export class SnsToSqs extends Construct {
      */
     constructor(scope: Construct, id: string, props: SnsToSqsProps) {
       super(scope, id);
-      defaults.CheckProps(props);
+      defaults.CheckSnsProps(props);
+      defaults.CheckSqsProps(props);
 
       // Setup the dead letter queue, if applicable
       this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {

@@ -17,6 +17,7 @@ import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 
 function deploy(stack: cdk.Stack, props: KinesisStreamsToKinesisFirehoseToS3Props = {}) {
   return new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-stream-firehose-s3', props);
@@ -237,4 +238,38 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
 
   const template = Template.fromStack(stack);
   template.resourceCountIs("AWS::S3::Bucket", 1);
+});
+
+test("Confirm that CheckS3Props is being called", () => {
+  // Stack
+  const stack = new cdk.Stack();
+
+  const testBucket = new s3.Bucket(stack, 'test-bucket', {});
+
+  const app = () => {
+    // Helper declaration
+    new KinesisStreamsToKinesisFirehoseToS3(stack, "bad-s3-args", {
+      existingBucketObj: testBucket,
+      bucketProps: {
+        removalPolicy: cdk.RemovalPolicy.DESTROY
+      },
+    });
+  };
+  // Assertion
+  expect(app).toThrowError("Error - Either provide bucketProps or existingBucketObj, but not both.\n");
+});
+
+test('Confirm call to CheckKinesisStreamProps', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+
+  const props: KinesisStreamsToKinesisFirehoseToS3Props = {
+    existingStreamObj: new kinesis.Stream(stack, 'test', {}),
+    kinesisStreamProps: {}
+  };
+  const app = () => {
+    new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });

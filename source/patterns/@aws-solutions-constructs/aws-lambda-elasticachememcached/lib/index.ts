@@ -92,7 +92,8 @@ export class LambdaToElasticachememcached extends Construct {
     props: LambdaToElasticachememcachedProps
   ) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckVpcProps(props);
+    defaults.CheckLambdaProps(props);
 
     if ((props.existingCache || props.existingLambdaObj) && (!props.existingVpc)) {
       throw Error('If providing an existing Cache or Lambda Function, you must also supply the associated existingVpc');

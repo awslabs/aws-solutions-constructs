@@ -24,11 +24,11 @@ test('All get methods return non-null objects', () => {
   const app = new S3ToSns(stack, 'test-s3-sns', {
 
   });
-  expect(app.snsTopic !== null);
-  expect(app.s3Bucket !== null);
-  expect(app.s3LoggingBucket !== null);
-  expect(app.encryptionKey !== null);
-  expect(app.s3BucketInterface !== null);
+  expect(app.snsTopic).toBeDefined();
+  expect(app.s3Bucket).toBeDefined();
+  expect(app.s3LoggingBucket).toBeDefined();
+  expect(app.encryptionKey).toBeDefined();
+  expect(app.s3BucketInterface).toBeDefined();
 });
 
 test('construct creates default event notification', () => {
@@ -254,4 +254,41 @@ test('Construct does not override unencrypted topic when passed in existingTopic
   template.hasResourceProperties("AWS::SNS::Topic", {
     TopicName: 'existing-topic-name'
   });
+});
+
+test('Confirm CheckSnsProps is being called', () => {
+  const stack = new Stack();
+
+  const topic = new sns.Topic(stack, "existing-topic-obj", {
+    topicName: 'existing-topic-obj'
+  });
+
+  const app = () => {
+    new S3ToSns(stack, 'test-s3-sns', {
+      existingTopicObj: topic,
+      topicProps: {
+        topicName: 'topic-name'
+      },
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
+});
+
+test('Confirm CheckS3Props is being called', () => {
+  const stack = new Stack();
+
+  const app = () => {
+    new S3ToSns(stack, 'test-s3-sns', {
+      topicProps: {
+        topicName: 'topic-name'
+      },
+      bucketProps: {},
+      existingBucketObj: new s3.Bucket(stack, 'test-bucket', {}),
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Error - Either provide bucketProps or existingBucketObj, but not both.\n/);
 });

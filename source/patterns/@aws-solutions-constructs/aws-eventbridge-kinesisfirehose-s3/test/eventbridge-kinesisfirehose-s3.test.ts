@@ -18,9 +18,6 @@ import { Template } from 'aws-cdk-lib/assertions';
 import { EventbridgeToKinesisFirehoseToS3, EventbridgeToKinesisFirehoseToS3Props } from '../lib';
 import * as defaults from '@aws-solutions-constructs/core';
 
-// --------------------------------------------------------------
-// Test snapshot match with default parameters
-// --------------------------------------------------------------
 function deployNewStack(stack: cdk.Stack) {
   const props: EventbridgeToKinesisFirehoseToS3Props = {
     eventRuleProps: {
@@ -31,26 +28,20 @@ function deployNewStack(stack: cdk.Stack) {
   return new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-kinesis-firehose-s3-default-parameters', props);
 }
 
-// --------------------------------------------------------------
-// Test properties
-// --------------------------------------------------------------
 test('Test properties', () => {
   const stack = new cdk.Stack();
   const construct: EventbridgeToKinesisFirehoseToS3 = deployNewStack(stack);
 
   // Assertions
-  expect(construct.eventsRule !== null);
-  expect(construct.eventsRole !== null);
-  expect(construct.kinesisFirehose !== null);
-  expect(construct.kinesisFirehoseRole !== null);
-  expect(construct.kinesisFirehoseLogGroup !== null);
-  expect(construct.s3Bucket !== null);
-  expect(construct.s3LoggingBucket !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.eventsRole).toBeDefined();
+  expect(construct.kinesisFirehose).toBeDefined();
+  expect(construct.kinesisFirehoseRole).toBeDefined();
+  expect(construct.kinesisFirehoseLogGroup).toBeDefined();
+  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.s3LoggingBucket).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test default server side s3 bucket encryption
-// --------------------------------------------------------------
 test('Test default server side s3 bucket encryption', () => {
   const stack = new cdk.Stack();
   deployNewStack(stack);
@@ -70,9 +61,6 @@ test('Test default server side s3 bucket encryption', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test property override
-// --------------------------------------------------------------
 test('Test property override', () => {
   const stack = new cdk.Stack();
 
@@ -120,9 +108,6 @@ test('Test property override', () => {
     }});
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingBucket and bucketProps
-// --------------------------------------------------------------
 test("Test bad call with existingBucket and bucketProps", () => {
   // Stack
   const stack = new cdk.Stack();
@@ -143,7 +128,7 @@ test("Test bad call with existingBucket and bucketProps", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
 test('check eventbus property, snapshot & eventbus exists', () => {
@@ -159,20 +144,20 @@ test('check eventbus property, snapshot & eventbus exists', () => {
   };
   const construct = new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-kinesis-firehose-default-parameters', props);
 
-  expect(construct.eventsRule !== null);
-  expect(construct.eventsRole !== null);
-  expect(construct.kinesisFirehose !== null);
-  expect(construct.kinesisFirehoseRole !== null);
-  expect(construct.kinesisFirehoseLogGroup !== null);
-  expect(construct.s3Bucket !== null);
-  expect(construct.s3LoggingBucket !== null);
-  expect(construct.eventBus !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.eventsRole).toBeDefined();
+  expect(construct.kinesisFirehose).toBeDefined();
+  expect(construct.kinesisFirehoseRole).toBeDefined();
+  expect(construct.kinesisFirehoseLogGroup).toBeDefined();
+  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.s3LoggingBucket).toBeDefined();
+  expect(construct.eventBus).toBeDefined();
   // Check whether eventbus exists
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::Events::EventBus', 1);
 });
 
-test('check exception while passing existingEventBus & eventBusProps', () => {
+test('Confirm CheckEventBridgeProps is being called', () => {
   const stack = new cdk.Stack();
 
   const props: EventbridgeToKinesisFirehoseToS3Props = {
@@ -186,9 +171,9 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
   };
 
   const app = () => {
-    new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-firehose', props);
+    new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-firehose-s3', props);
   };
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });
 
 test('check custom event bus resource with props when deploy:true', () => {
@@ -212,9 +197,6 @@ test('check custom event bus resource with props when deploy:true', () => {
   });
 });
 
-// --------------------------------------------------------------
-// s3 bucket with bucket, loggingBucket, and auto delete objects
-// --------------------------------------------------------------
 test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   const stack = new cdk.Stack();
 
@@ -248,9 +230,6 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   });
 });
 
-// --------------------------------------------------------------
-// s3 bucket with one content bucket and no logging bucket
-// --------------------------------------------------------------
 test('s3 bucket with one content bucket and no logging bucket', () => {
   const stack = new cdk.Stack();
 
@@ -290,4 +269,24 @@ test('Supply an existing logging bucket', () => {
   const template = Template.fromStack(stack);
   template.resourceCountIs("AWS::S3::Bucket", 2);
 
+});
+
+test('Confirm CheckS3Props is being called', () => {
+  // For L4 constructs, the call is within the internal L3 constructs
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToKinesisFirehoseToS3Props = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    bucketProps: {},
+    existingBucketObj: new s3.Bucket(stack, 'test-bucket', {}),
+  };
+
+  const app = () => {
+    new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-firehose-s3', props);
+  };
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });

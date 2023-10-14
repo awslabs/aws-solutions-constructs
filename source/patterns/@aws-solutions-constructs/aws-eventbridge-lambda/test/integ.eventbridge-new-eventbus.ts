@@ -26,7 +26,7 @@ const props: EventbridgeToLambdaProps = {
     runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   },
-  eventBusProps: { eventBusName: 'test' },
+  eventBusProps: { eventBusName: 'test-new-lambda' },
   eventRuleProps: {
     eventPattern: {
       source: ['solutionsconstructs']

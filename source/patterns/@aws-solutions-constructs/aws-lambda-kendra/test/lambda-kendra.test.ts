@@ -11,16 +11,15 @@
  *  and limitations under the License.
  */
 
-import { LambdaToKendra } from "../lib";
+import { LambdaToKendra, LambdaToKendraProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as kendra from 'aws-cdk-lib/aws-kendra';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cdk from "aws-cdk-lib";
 import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 
-test.only('Launch with minimal code and check  structure', () => {
+test('Launch with minimal code and check  structure', () => {
   const stack = new cdk.Stack();
   const testFunctionName = 'test-function-name24334';
   const testBucketName = 'test-bucket-name12344';
@@ -445,39 +444,6 @@ test('Launch with existing lambda', () => {
   });
 });
 
-test('Confirm error with existing vpc and vpc props', () => {
-  const stack = new cdk.Stack();
-  const testBucketName = 'test-bucket-name22';
-
-  const lambdaProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
-    handler: 'index.handler'
-  };
-
-  const app = () => {
-    new LambdaToKendra(stack, 'sample', {
-      existingVpc: defaults.getTestVpc(stack),
-      deployVpc: true,
-      vpcProps: {
-        ipAddresses: ec2.IpAddresses.cidr('10.0.0.0/16')
-      },
-      lambdaFunctionProps: lambdaProps,
-      kendraDataSourcesProps: [{
-        type: 'S3',
-        dataSourceConfiguration: {
-          s3Configuration: {
-            bucketName: testBucketName,
-          }
-        }
-      }
-      ],
-    });
-  };
-
-  expect(app).toThrowError(/Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n/);
-});
-
 test('Confirm error with data source with no bucket name', () => {
   const stack = new cdk.Stack();
 
@@ -501,7 +467,7 @@ test('Confirm error with data source with no bucket name', () => {
     });
   };
 
-  expect(app).toThrowError(/Error - an S3 Kendra DataSource requires the DataSourceCofiguration.S3Configuration.bucketName prop/);
+  expect(app).toThrowError(/Error - an S3 Kendra DataSource requires the DataSourceConfiguration.S3Configuration.bucketName prop/);
 });
 
 test('Launch with existing vpc', () => {
@@ -1037,4 +1003,79 @@ test('Test with custom environment variable name', () => {
     }
   });
 
+});
+
+test('Confirm CheckVpcProps is being called', () => {
+  const stack = new cdk.Stack();
+  const testFunctionName = 'test-function-name24334';
+  const testBucketName = 'test-bucket-name12344';
+
+  const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+    constructVpcProps: {
+      enableDnsHostnames: true,
+      enableDnsSupport: true,
+    },
+  });
+
+  const lambdaProps: lambda.FunctionProps = {
+    functionName: testFunctionName,
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_18_X,
+    handler: 'index.handler'
+  };
+
+  const props: LambdaToKendraProps = {
+    lambdaFunctionProps: lambdaProps,
+    kendraDataSourcesProps: [{
+      type: 'S3',
+      dataSourceConfiguration: {
+        s3Configuration: {
+          bucketName: testBucketName,
+        }
+      }
+    }
+    ],
+    deployVpc: true,
+    existingVpc: vpc
+  };
+
+  const app = () => {
+    new LambdaToKendra(stack, 'sample', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: LambdaToKendraProps = {
+    kendraDataSourcesProps: [{
+      type: 'S3',
+      dataSourceConfiguration: {
+        s3Configuration: {
+          bucketName: 'testBucketName',
+        }
+      }
+    }
+    ],
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new LambdaToKendra(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

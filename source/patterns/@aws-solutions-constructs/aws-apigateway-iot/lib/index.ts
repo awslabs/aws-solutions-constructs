@@ -82,7 +82,6 @@ export class ApiGatewayToIot extends Construct {
    */
   constructor(scope: Construct, id: string, props: ApiGatewayToIotProps) {
     super(scope, id);
-    defaults.CheckProps(props);
 
     // Assignment to local member variables to make these available to all member methods of the class.
     // (Split the string just in case user supplies fully qualified endpoint eg. ab123cdefghij4l-ats.iot.ap-south-1.amazonaws.com)
@@ -204,7 +203,7 @@ export class ApiGatewayToIot extends Construct {
    * Adds a method to specified resource
    * @param resource API Gateway resource to which this method is added
    * @param resourcePath path of resource from root
-   * @param integReqParams request paramters for the Integration method
+   * @param integReqParams request parameters for the Integration method
    * @param methodReqParams request parameters at Method level
    */
   private addResourceMethod(resource: api.IResource, props: ApiGatewayToIotProps, resourcePath: string,
@@ -279,12 +278,12 @@ export class ApiGatewayToIot extends Construct {
     );
 
     if (props.apiGatewayCreateApiKey === true) {
-      // cfn Nag doesn't like having a HTTP Method with Authorization Set to None, supress the warning
+      // cfn Nag doesn't like having a HTTP Method with Authorization Set to None, suppress the warning
       defaults.addCfnSuppressRules(apiMethod, [
         {
           id: "W59",
           reason:
-            "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE",
+            "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE",
         },
       ]);
     }
