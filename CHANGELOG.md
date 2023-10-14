@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.45.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.44.0...v2.45.0) (2023-10-14)
+
+
+### Bug Fixes
+
+* **all:** typos ([#1010](https://github.com/awslabs/aws-solutions-constructs/issues/1010)) ([0787baf](https://github.com/awslabs/aws-solutions-constructs/commit/0787baf7c68f84599139e5b886d5942b076174f2))
+
 ## [2.44.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.43.0...v2.44.0) (2023-08-29)
 
 Built on CDK v2.82.0 (no new features, just internal housekeeping)
