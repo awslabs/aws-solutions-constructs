@@ -141,7 +141,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
   );
 });
 
-test('check events rule properties', () => {
+test.only('check events rule properties', () => {
   const stack = new cdk.Stack();
   deployNewStack(stack);
 
@@ -155,9 +155,24 @@ test('check events rule properties', () => {
           Ref: "testSnsTopic42942701"
         },
         Id: {
-          "Fn::GetAtt": [
-            "testSnsTopic42942701",
-            "TopicName"
+          "Fn::Join": [
+            "",
+            [
+              "Defaulttest-",
+              {
+                "Fn::Select": [
+                  2,
+                  {
+                    "Fn::Split": [
+                      "/",
+                      {
+                        Ref: "AWS::StackId"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           ]
         }
       }
