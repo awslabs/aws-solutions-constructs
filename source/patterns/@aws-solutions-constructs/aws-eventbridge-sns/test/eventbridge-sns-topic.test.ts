@@ -141,7 +141,7 @@ test('check if the event rule has permission/policy in place in sns for it to be
   );
 });
 
-test.only('check events rule properties', () => {
+test('check events rule properties', () => {
   const stack = new cdk.Stack();
   deployNewStack(stack);
 
