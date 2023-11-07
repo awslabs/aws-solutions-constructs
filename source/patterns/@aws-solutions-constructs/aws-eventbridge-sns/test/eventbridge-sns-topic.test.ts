@@ -155,9 +155,24 @@ test('check events rule properties', () => {
           Ref: "testSnsTopic42942701"
         },
         Id: {
-          "Fn::GetAtt": [
-            "testSnsTopic42942701",
-            "TopicName"
+          "Fn::Join": [
+            "",
+            [
+              "Defaulttest-",
+              {
+                "Fn::Select": [
+                  2,
+                  {
+                    "Fn::Split": [
+                      "/",
+                      {
+                        Ref: "AWS::StackId"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           ]
         }
       }

@@ -9,6 +9,7 @@
     "testconstructEncryptionKey6153B053": {
       "Type": "AWS::KMS::Key",
       "Properties": {
+        "EnableKeyRotation": true,
         "KeyPolicy": {
           "Statement": [
             {
@@ -49,8 +50,7 @@
             }
           ],
           "Version": "2012-10-17"
-        },
-        "EnableKeyRotation": true
+        }
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
@@ -179,9 +179,24 @@
               "Ref": "testconstructSnsTopic44188529"
             },
             "Id": {
-              "Fn::GetAtt": [
-                "testconstructSnsTopic44188529",
-                "TopicName"
+              "Fn::Join": [
+                "",
+                [
+                  "exist-bustest-construct-",
+                  {
+                    "Fn::Select": [
+                      2,
+                      {
+                        "Fn::Split": [
+                          "/",
+                          {
+                            "Ref": "AWS::StackId"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
               ]
             }
           }

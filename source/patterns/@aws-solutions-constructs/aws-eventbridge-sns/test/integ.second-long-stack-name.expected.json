@@ -158,7 +158,7 @@
     "testconstructEventsRule145DBA20": {
       "Type": "AWS::Events::Rule",
       "Properties": {
-        "ScheduleExpression": "rate(5 minutes)",
+        "ScheduleExpression": "rate(1 minute)",
         "State": "ENABLED",
         "Targets": [
           {
@@ -169,7 +169,197 @@
               "Fn::Join": [
                 "",
                 [
-                  "no-argtest-construct-",
+                  "secondlongstatest-construct-",
+                  {
+                    "Fn::Select": [
+                      2,
+                      {
+                        "Fn::Split": [
+                          "/",
+                          {
+                            "Ref": "AWS::StackId"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "secondconstructEncryptionKey6A63A25A": {
+      "Type": "AWS::KMS::Key",
+      "Properties": {
+        "EnableKeyRotation": true,
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "kms:Decrypt",
+                "kms:Encrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              },
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "secondconstructSnsTopicCE75056B": {
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "KmsMasterKeyId": {
+          "Fn::GetAtt": [
+            "secondconstructEncryptionKey6A63A25A",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "secondconstructSnsTopicPolicyD6D4DA55": {
+      "Type": "AWS::SNS::TopicPolicy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe"
+              ],
+              "Condition": {
+                "StringEquals": {
+                  "AWS:SourceOwner": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": {
+                "Ref": "secondconstructSnsTopicCE75056B"
+              },
+              "Sid": "TopicOwnerOnlyAccess"
+            },
+            {
+              "Action": [
+                "SNS:Publish",
+                "SNS:RemovePermission",
+                "SNS:SetTopicAttributes",
+                "SNS:DeleteTopic",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:GetTopicAttributes",
+                "SNS:Receive",
+                "SNS:AddPermission",
+                "SNS:Subscribe"
+              ],
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": {
+                "Ref": "secondconstructSnsTopicCE75056B"
+              },
+              "Sid": "HttpsOnly"
+            },
+            {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com"
+              },
+              "Resource": {
+                "Ref": "secondconstructSnsTopicCE75056B"
+              },
+              "Sid": "2"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Topics": [
+          {
+            "Ref": "secondconstructSnsTopicCE75056B"
+          }
+        ]
+      }
+    },
+    "secondconstructEventsRuleFA5C1CE6": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "ScheduleExpression": "rate(1 minute)",
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Ref": "secondconstructSnsTopicCE75056B"
+            },
+            "Id": {
+              "Fn::Join": [
+                "",
+                [
+                  "secondlongstacond-construct-",
                   {
                     "Fn::Select": [
                       2,
