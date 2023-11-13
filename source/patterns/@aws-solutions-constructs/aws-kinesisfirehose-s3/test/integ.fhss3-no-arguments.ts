@@ -14,7 +14,7 @@
 // Imports
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { KinesisFirehoseToS3 } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -32,5 +32,6 @@ new KinesisFirehoseToS3(stack, 'test-firehose-s3', {
   }
 });
 
+suppressAutoDeleteHandlerWarnings(stack);
 // Synth
 app.synth();

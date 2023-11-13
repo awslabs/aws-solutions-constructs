@@ -15,7 +15,7 @@
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { IotToKinesisFirehoseToS3 } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 const app = new App();
 
@@ -42,4 +42,6 @@ new IotToKinesisFirehoseToS3(stack, 'test-iot-kinesisfirehose-s3', {
     versioned: true
   }
 });
+
+suppressAutoDeleteHandlerWarnings(stack);
 app.synth();

@@ -15,7 +15,7 @@
 import {App, Stack, RemovalPolicy} from "aws-cdk-lib";
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 import {S3ToSqs} from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 const app = new App();
 
@@ -34,4 +34,5 @@ new S3ToSqs(stack, 'test-s3-sqs', {
     versioned: true
   }
 });
+suppressAutoDeleteHandlerWarnings(stack);
 app.synth();

@@ -15,7 +15,7 @@
 import { App, RemovalPolicy, Stack } from "aws-cdk-lib";
 import * as kms from 'aws-cdk-lib/aws-kms';
 import { IotToS3, IotToS3Props } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 
 const app = new App();
@@ -48,4 +48,5 @@ const props: IotToS3Props = {
 
 new IotToS3(stack, 'test-iot-s3-integration', props);
 
+suppressAutoDeleteHandlerWarnings(stack);
 app.synth();

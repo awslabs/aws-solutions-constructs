@@ -16,7 +16,7 @@ import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { S3ToStepfunctions } from "../lib";
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 const app = new App();
 
@@ -45,4 +45,5 @@ new S3ToStepfunctions(stack, 'test-s3-stepfunctions', {
   }
 });
 
+suppressAutoDeleteHandlerWarnings(stack);
 app.synth();

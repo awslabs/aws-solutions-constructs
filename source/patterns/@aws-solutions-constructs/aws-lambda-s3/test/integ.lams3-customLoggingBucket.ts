@@ -16,7 +16,7 @@ import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { LambdaToS3 } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 const app = new App();
 
@@ -40,4 +40,5 @@ new LambdaToS3(stack, 'test-lambda-s3', {
     versioned: true
   }
 });
+suppressAutoDeleteHandlerWarnings(stack);
 app.synth();

@@ -14,7 +14,7 @@
 /// !cdk-integ *
 import { App, Stack, RemovalPolicy, Duration } from "aws-cdk-lib";
 import { EventbridgeToKinesisFirehoseToS3 } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as events from 'aws-cdk-lib/aws-events';
 
@@ -42,4 +42,5 @@ new EventbridgeToKinesisFirehoseToS3(stack, 'test-kinesisfirehose-s3', {
   }
 });
 
+suppressAutoDeleteHandlerWarnings(stack);
 app.synth();

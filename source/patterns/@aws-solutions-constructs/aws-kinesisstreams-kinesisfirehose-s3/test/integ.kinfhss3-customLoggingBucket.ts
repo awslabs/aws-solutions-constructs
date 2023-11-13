@@ -15,7 +15,7 @@
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { KinesisStreamsToKinesisFirehoseToS3 } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 const app = new App();
 
@@ -37,4 +37,5 @@ new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-kinesisfirehose-s3', {
     removalPolicy: RemovalPolicy.DESTROY
   }
 });
+suppressAutoDeleteHandlerWarnings(stack);
 app.synth();
