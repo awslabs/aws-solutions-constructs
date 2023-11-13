@@ -1,0 +1,1230 @@
+{
+  "Resources": {
+    "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleEC11512B": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":log-group:/aws/lambda/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy"
+          }
+        ]
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleDefaultPolicyA7EEDEDA": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "ec2:CreateNetworkInterface",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DeleteNetworkInterface",
+                "ec2:AssignPrivateIpAddresses",
+                "ec2:UnassignPrivateIpAddresses"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": "dynamodb:ListStreams",
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "dynamodb:DescribeStream",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableDD18004A",
+                  "StreamArn"
+                ]
+              }
+            },
+            {
+              "Action": [
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testddbstreamslambdaeskDynamoDBStreamsToLambdaSqsDlqQueue82B4D17B",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleDefaultPolicyA7EEDEDA",
+        "Roles": [
+          {
+            "Ref": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleEC11512B"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+            }
+          ]
+        }
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchReplaceDefaultSecurityGroupsecuritygroupB649DF04": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "dbslamels-deploy-with-vpc/test-ddbstreams-lambda-esk/LambdaToElasticSearch/ReplaceDefaultSecurityGroup-security-group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "testddbstreamslambdaeskVpcB583E197"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W5",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK"
+            },
+            {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK"
+            }
+          ]
+        }
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionB70B7296": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "92927de5fcc3aea277bddecb845bee318fb502f7375daedbdafb72c0400bc197.zip"
+        },
+        "Environment": {
+          "Variables": {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "DOMAIN_ENDPOINT": {
+              "Fn::GetAtt": [
+                "testddbstreamslambdaeskLambdaToElasticSearchElasticsearchDomain96DEE173",
+                "DomainEndpoint"
+              ]
+            }
+          }
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleEC11512B",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs16.x",
+        "TracingConfig": {
+          "Mode": "Active"
+        },
+        "VpcConfig": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "testddbstreamslambdaeskLambdaToElasticSearchReplaceDefaultSecurityGroupsecuritygroupB649DF04",
+                "GroupId"
+              ]
+            }
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "testddbstreamslambdaeskVpcisolatedSubnet1Subnet3A238B01"
+            },
+            {
+              "Ref": "testddbstreamslambdaeskVpcisolatedSubnet2SubnetDE9E844E"
+            },
+            {
+              "Ref": "testddbstreamslambdaeskVpcisolatedSubnet3Subnet3B5285ED"
+            }
+          ]
+        }
+      },
+      "DependsOn": [
+        "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleDefaultPolicyA7EEDEDA",
+        "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleEC11512B",
+        "testddbstreamslambdaeskVpcisolatedSubnet1RouteTableAssociation2E533936",
+        "testddbstreamslambdaeskVpcisolatedSubnet2RouteTableAssociation77A663A5",
+        "testddbstreamslambdaeskVpcisolatedSubnet3RouteTableAssociation77FF5F32"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+            },
+            {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
+            }
+          ]
+        }
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionDynamoDBEventSourcedbslamelsdeploywithvpctestddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTable3450D24364E2F0CA": {
+      "Type": "AWS::Lambda::EventSourceMapping",
+      "Properties": {
+        "BatchSize": 100,
+        "BisectBatchOnFunctionError": true,
+        "DestinationConfig": {
+          "OnFailure": {
+            "Destination": {
+              "Fn::GetAtt": [
+                "testddbstreamslambdaeskDynamoDBStreamsToLambdaSqsDlqQueue82B4D17B",
+                "Arn"
+              ]
+            }
+          }
+        },
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "testddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableDD18004A",
+            "StreamArn"
+          ]
+        },
+        "FunctionName": {
+          "Ref": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionB70B7296"
+        },
+        "MaximumRecordAgeInSeconds": 86400,
+        "MaximumRetryAttempts": 500,
+        "StartingPosition": "TRIM_HORIZON"
+      },
+      "DependsOn": [
+        "testddbstreamslambdaeskVpcisolatedSubnet1RouteTableAssociation2E533936",
+        "testddbstreamslambdaeskVpcisolatedSubnet2RouteTableAssociation77A663A5",
+        "testddbstreamslambdaeskVpcisolatedSubnet3RouteTableAssociation77FF5F32"
+      ]
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPool97EA2952": {
+      "Type": "AWS::Cognito::UserPool",
+      "Properties": {
+        "AccountRecoverySetting": {
+          "RecoveryMechanisms": [
+            {
+              "Name": "verified_phone_number",
+              "Priority": 1
+            },
+            {
+              "Name": "verified_email",
+              "Priority": 2
+            }
+          ]
+        },
+        "AdminCreateUserConfig": {
+          "AllowAdminCreateUserOnly": true
+        },
+        "EmailVerificationMessage": "The verification code to your new account is {####}",
+        "EmailVerificationSubject": "Verify your new account",
+        "SmsVerificationMessage": "The verification code to your new account is {####}",
+        "UserPoolAddOns": {
+          "AdvancedSecurityMode": "ENFORCED"
+        },
+        "VerificationMessageTemplate": {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "The verification code to your new account is {####}",
+          "EmailSubject": "Verify your new account",
+          "SmsMessage": "The verification code to your new account is {####}"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPoolClient25D50E3D": {
+      "Type": "AWS::Cognito::UserPoolClient",
+      "Properties": {
+        "AllowedOAuthFlows": [
+          "implicit",
+          "code"
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          "profile",
+          "phone",
+          "email",
+          "openid",
+          "aws.cognito.signin.user.admin"
+        ],
+        "CallbackURLs": [
+          "https://example.com"
+        ],
+        "SupportedIdentityProviders": [
+          "COGNITO"
+        ],
+        "UserPoolId": {
+          "Ref": "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPool97EA2952"
+        }
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchCognitoIdentityPoolFAA4D969": {
+      "Type": "AWS::Cognito::IdentityPool",
+      "Properties": {
+        "AllowUnauthenticatedIdentities": false,
+        "CognitoIdentityProviders": [
+          {
+            "ClientId": {
+              "Ref": "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPoolClient25D50E3D"
+            },
+            "ProviderName": {
+              "Fn::GetAtt": [
+                "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPool97EA2952",
+                "ProviderName"
+              ]
+            },
+            "ServerSideTokenCheck": true
+          }
+        ]
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchUserPoolDomainA6C84014": {
+      "Type": "AWS::Cognito::UserPoolDomain",
+      "Properties": {
+        "Domain": "pooldomaintest-2342",
+        "UserPoolId": {
+          "Ref": "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPool97EA2952"
+        }
+      },
+      "DependsOn": [
+        "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPool97EA2952"
+      ]
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchCognitoAuthorizedRoleB096BF2F": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": {
+                "StringEquals": {
+                  "cognito-identity.amazonaws.com:aud": {
+                    "Ref": "testddbstreamslambdaeskLambdaToElasticSearchCognitoIdentityPoolFAA4D969"
+                  }
+                },
+                "ForAnyValue:StringLike": {
+                  "cognito-identity.amazonaws.com:amr": "authenticated"
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "cognito-identity.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "es:ESHttp*",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":es:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":domain/pooldomaintest-2342/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "CognitoAccessPolicy"
+          }
+        ]
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchIdentityPoolRoleMapping508D4D41": {
+      "Type": "AWS::Cognito::IdentityPoolRoleAttachment",
+      "Properties": {
+        "IdentityPoolId": {
+          "Ref": "testddbstreamslambdaeskLambdaToElasticSearchCognitoIdentityPoolFAA4D969"
+        },
+        "Roles": {
+          "authenticated": {
+            "Fn::GetAtt": [
+              "testddbstreamslambdaeskLambdaToElasticSearchCognitoAuthorizedRoleB096BF2F",
+              "Arn"
+            ]
+          }
+        }
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchCognitoKibanaConfigureRole9DE845CD": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "es.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchCognitoKibanaConfigureRolePolicy62E429A3": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "cognito-idp:DescribeUserPool",
+                "cognito-idp:CreateUserPoolClient",
+                "cognito-idp:DeleteUserPoolClient",
+                "cognito-idp:DescribeUserPoolClient",
+                "cognito-idp:AdminInitiateAuth",
+                "cognito-idp:AdminUserGlobalSignOut",
+                "cognito-idp:ListUserPoolClients",
+                "cognito-identity:DescribeIdentityPool",
+                "cognito-identity:UpdateIdentityPool",
+                "cognito-identity:SetIdentityPoolRoles",
+                "cognito-identity:GetIdentityPoolRoles",
+                "es:UpdateElasticsearchDomainConfig"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPool97EA2952",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":cognito-identity:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":identitypool/",
+                      {
+                        "Ref": "testddbstreamslambdaeskLambdaToElasticSearchCognitoIdentityPoolFAA4D969"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":es:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":domain/domaintest-1234"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "iam:PassRole",
+              "Condition": {
+                "StringLike": {
+                  "iam:PassedToService": "cognito-identity.amazonaws.com"
+                }
+              },
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testddbstreamslambdaeskLambdaToElasticSearchCognitoKibanaConfigureRole9DE845CD",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testddbstreamslambdaeskLambdaToElasticSearchCognitoKibanaConfigureRolePolicy62E429A3",
+        "Roles": [
+          {
+            "Ref": "testddbstreamslambdaeskLambdaToElasticSearchCognitoKibanaConfigureRole9DE845CD"
+          }
+        ]
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchElasticsearchDomain96DEE173": {
+      "Type": "AWS::Elasticsearch::Domain",
+      "Properties": {
+        "AccessPolicies": {
+          "Statement": [
+            {
+              "Action": "es:ESHttp*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": [
+                  {
+                    "Fn::GetAtt": [
+                      "testddbstreamslambdaeskLambdaToElasticSearchCognitoAuthorizedRoleB096BF2F",
+                      "Arn"
+                    ]
+                  },
+                  {
+                    "Fn::GetAtt": [
+                      "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleEC11512B",
+                      "Arn"
+                    ]
+                  }
+                ]
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":es:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":domain/domaintest-1234/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "CognitoOptions": {
+          "Enabled": true,
+          "IdentityPoolId": {
+            "Ref": "testddbstreamslambdaeskLambdaToElasticSearchCognitoIdentityPoolFAA4D969"
+          },
+          "RoleArn": {
+            "Fn::GetAtt": [
+              "testddbstreamslambdaeskLambdaToElasticSearchCognitoKibanaConfigureRole9DE845CD",
+              "Arn"
+            ]
+          },
+          "UserPoolId": {
+            "Ref": "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPool97EA2952"
+          }
+        },
+        "DomainEndpointOptions": {
+          "EnforceHTTPS": true,
+          "TLSSecurityPolicy": "Policy-Min-TLS-1-2-2019-07"
+        },
+        "DomainName": "domaintest-1234",
+        "EBSOptions": {
+          "EBSEnabled": true,
+          "VolumeSize": 10
+        },
+        "ElasticsearchClusterConfig": {
+          "DedicatedMasterCount": 3,
+          "DedicatedMasterEnabled": true,
+          "InstanceCount": 3,
+          "ZoneAwarenessConfig": {
+            "AvailabilityZoneCount": 3
+          },
+          "ZoneAwarenessEnabled": true
+        },
+        "ElasticsearchVersion": "6.3",
+        "EncryptionAtRestOptions": {
+          "Enabled": true
+        },
+        "NodeToNodeEncryptionOptions": {
+          "Enabled": true
+        },
+        "SnapshotOptions": {
+          "AutomatedSnapshotStartHour": 1
+        },
+        "VPCOptions": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "testddbstreamslambdaeskLambdaToElasticSearchReplaceDefaultSecurityGroupsecuritygroupB649DF04",
+                "GroupId"
+              ]
+            }
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "testddbstreamslambdaeskVpcisolatedSubnet1Subnet3A238B01"
+            },
+            {
+              "Ref": "testddbstreamslambdaeskVpcisolatedSubnet2SubnetDE9E844E"
+            },
+            {
+              "Ref": "testddbstreamslambdaeskVpcisolatedSubnet3Subnet3B5285ED"
+            }
+          ]
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W28",
+              "reason": "The ES Domain is passed dynamically as as parameter and explicitly specified to ensure that IAM policies are configured to lockdown access to this specific ES instance only"
+            },
+            {
+              "id": "W90",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            }
+          ]
+        }
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchStatusRedAlarmAFFE3439": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "At least one primary shard and its replicas are not allocated to a node. ",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "ClusterStatus.red",
+        "Namespace": "AWS/ES",
+        "Period": 60,
+        "Statistic": "Maximum",
+        "Threshold": 1
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchStatusYellowAlarm44E1DC4E": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "At least one replica shard is not allocated to a node.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "ClusterStatus.yellow",
+        "Namespace": "AWS/ES",
+        "Period": 60,
+        "Statistic": "Maximum",
+        "Threshold": 1
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchFreeStorageSpaceTooLowAlarm65BF7F2F": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "A node in your cluster is down to 20 GiB of free storage space.",
+        "ComparisonOperator": "LessThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "FreeStorageSpace",
+        "Namespace": "AWS/ES",
+        "Period": 60,
+        "Statistic": "Minimum",
+        "Threshold": 20000
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchIndexWritesBlockedTooHighAlarmCE3D0C51": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "Your cluster is blocking write requests.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "ClusterIndexWritesBlocked",
+        "Namespace": "AWS/ES",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 1
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchAutomatedSnapshotFailureTooHighAlarmFD8E066E": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "An automated snapshot failed. This failure is often the result of a red cluster health status.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "AutomatedSnapshotFailure",
+        "Namespace": "AWS/ES",
+        "Period": 60,
+        "Statistic": "Maximum",
+        "Threshold": 1
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchCPUUtilizationTooHighAlarm274094A6": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "100% CPU utilization is not uncommon, but sustained high usage is problematic. Consider using larger instance types or adding instances.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 3,
+        "MetricName": "CPUUtilization",
+        "Namespace": "AWS/ES",
+        "Period": 900,
+        "Statistic": "Average",
+        "Threshold": 80
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchJVMMemoryPressureTooHighAlarm2E49D5CC": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "JVMMemoryPressure",
+        "Namespace": "AWS/ES",
+        "Period": 900,
+        "Statistic": "Average",
+        "Threshold": 80
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchMasterCPUUtilizationTooHighAlarm05E1EBEF": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "Average CPU utilization over last 45 minutes too high. Consider using larger instance types for your dedicated master nodes.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 3,
+        "MetricName": "MasterCPUUtilization",
+        "Namespace": "AWS/ES",
+        "Period": 900,
+        "Statistic": "Average",
+        "Threshold": 50
+      }
+    },
+    "testddbstreamslambdaeskLambdaToElasticSearchMasterJVMMemoryPressureTooHighAlarm1090161B": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "MasterJVMMemoryPressure",
+        "Namespace": "AWS/ES",
+        "Period": 900,
+        "Statistic": "Average",
+        "Threshold": 50
+      }
+    },
+    "testddbstreamslambdaeskVpcB583E197": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dbslamels-deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc"
+          }
+        ]
+      }
+    },
+    "testddbstreamslambdaeskVpcisolatedSubnet1Subnet3A238B01": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": "test-region-1a",
+        "CidrBlock": "10.0.0.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "dbslamels-deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/isolatedSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "testddbstreamslambdaeskVpcB583E197"
+        }
+      }
+    },
+    "testddbstreamslambdaeskVpcisolatedSubnet1RouteTable27ABBE41": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dbslamels-deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/isolatedSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "testddbstreamslambdaeskVpcB583E197"
+        }
+      }
+    },
+    "testddbstreamslambdaeskVpcisolatedSubnet1RouteTableAssociation2E533936": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testddbstreamslambdaeskVpcisolatedSubnet1RouteTable27ABBE41"
+        },
+        "SubnetId": {
+          "Ref": "testddbstreamslambdaeskVpcisolatedSubnet1Subnet3A238B01"
+        }
+      }
+    },
+    "testddbstreamslambdaeskVpcisolatedSubnet2SubnetDE9E844E": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": "test-region-1b",
+        "CidrBlock": "10.0.64.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "dbslamels-deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/isolatedSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "testddbstreamslambdaeskVpcB583E197"
+        }
+      }
+    },
+    "testddbstreamslambdaeskVpcisolatedSubnet2RouteTable358580C2": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dbslamels-deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/isolatedSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "testddbstreamslambdaeskVpcB583E197"
+        }
+      }
+    },
+    "testddbstreamslambdaeskVpcisolatedSubnet2RouteTableAssociation77A663A5": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testddbstreamslambdaeskVpcisolatedSubnet2RouteTable358580C2"
+        },
+        "SubnetId": {
+          "Ref": "testddbstreamslambdaeskVpcisolatedSubnet2SubnetDE9E844E"
+        }
+      }
+    },
+    "testddbstreamslambdaeskVpcisolatedSubnet3Subnet3B5285ED": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": "test-region-1c",
+        "CidrBlock": "10.0.128.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "dbslamels-deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/isolatedSubnet3"
+          }
+        ],
+        "VpcId": {
+          "Ref": "testddbstreamslambdaeskVpcB583E197"
+        }
+      }
+    },
+    "testddbstreamslambdaeskVpcisolatedSubnet3RouteTable7F8548D9": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dbslamels-deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/isolatedSubnet3"
+          }
+        ],
+        "VpcId": {
+          "Ref": "testddbstreamslambdaeskVpcB583E197"
+        }
+      }
+    },
+    "testddbstreamslambdaeskVpcisolatedSubnet3RouteTableAssociation77FF5F32": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "testddbstreamslambdaeskVpcisolatedSubnet3RouteTable7F8548D9"
+        },
+        "SubnetId": {
+          "Ref": "testddbstreamslambdaeskVpcisolatedSubnet3Subnet3B5285ED"
+        }
+      }
+    },
+    "testddbstreamslambdaeskVpcFlowLogIAMRole8B3A466E": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "vpc-flow-logs.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dbslamels-deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/FlowLog"
+          }
+        ]
+      }
+    },
+    "testddbstreamslambdaeskVpcFlowLogIAMRoleDefaultPolicyCB53568A": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:DescribeLogStreams"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testddbstreamslambdaeskVpcFlowLogLogGroup4DB5270C",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "iam:PassRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testddbstreamslambdaeskVpcFlowLogIAMRole8B3A466E",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testddbstreamslambdaeskVpcFlowLogIAMRoleDefaultPolicyCB53568A",
+        "Roles": [
+          {
+            "Ref": "testddbstreamslambdaeskVpcFlowLogIAMRole8B3A466E"
+          }
+        ]
+      }
+    },
+    "testddbstreamslambdaeskVpcFlowLogLogGroup4DB5270C": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "RetentionInDays": 731,
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dbslamels-deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/FlowLog"
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
+    },
+    "testddbstreamslambdaeskVpcFlowLogD9278B4C": {
+      "Type": "AWS::EC2::FlowLog",
+      "Properties": {
+        "DeliverLogsPermissionArn": {
+          "Fn::GetAtt": [
+            "testddbstreamslambdaeskVpcFlowLogIAMRole8B3A466E",
+            "Arn"
+          ]
+        },
+        "LogDestinationType": "cloud-watch-logs",
+        "LogGroupName": {
+          "Ref": "testddbstreamslambdaeskVpcFlowLogLogGroup4DB5270C"
+        },
+        "ResourceId": {
+          "Ref": "testddbstreamslambdaeskVpcB583E197"
+        },
+        "ResourceType": "VPC",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "dbslamels-deploy-with-vpc/test-ddbstreams-lambda-esk/Vpc/FlowLog"
+          }
+        ],
+        "TrafficType": "ALL"
+      }
+    },
+    "testddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableDD18004A": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": true
+        },
+        "SSESpecification": {
+          "SSEEnabled": true
+        },
+        "StreamSpecification": {
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "testddbstreamslambdaeskDynamoDBStreamsToLambdaSqsDlqQueue82B4D17B": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "KmsMasterKeyId": "alias/aws/sqs"
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "testddbstreamslambdaeskDynamoDBStreamsToLambdaSqsDlqQueuePolicyD4864CD5": {
+      "Type": "AWS::SQS::QueuePolicy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage",
+                "sqs:SendMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:RemovePermission",
+                "sqs:AddPermission",
+                "sqs:SetQueueAttributes"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testddbstreamslambdaeskDynamoDBStreamsToLambdaSqsDlqQueue82B4D17B",
+                  "Arn"
+                ]
+              },
+              "Sid": "QueueOwnerOnlyAccess"
+            },
+            {
+              "Action": "SQS:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testddbstreamslambdaeskDynamoDBStreamsToLambdaSqsDlqQueue82B4D17B",
+                  "Arn"
+                ]
+              },
+              "Sid": "HttpsOnly"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Queues": [
+          {
+            "Ref": "testddbstreamslambdaeskDynamoDBStreamsToLambdaSqsDlqQueue82B4D17B"
+          }
+        ]
+      }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
+    }
+  }
+}
