@@ -24,6 +24,10 @@ new S3ToSns(stack, 'test-s3-sns', {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
   },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
+  },
   enableEncryptionWithCustomerManagedKey: false
 });
 

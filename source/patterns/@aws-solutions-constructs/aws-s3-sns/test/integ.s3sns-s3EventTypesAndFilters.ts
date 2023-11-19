@@ -25,6 +25,10 @@ new S3ToSns(stack, 'test-s3-sns', {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
   },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
+  },
   s3EventTypes: [
     s3.EventType.OBJECT_REMOVED
   ],

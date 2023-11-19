@@ -28,7 +28,11 @@ new S3ToSns(stack, 'test-s3-sns', {
   bucketProps: {
     autoDeleteObjects: true,
     removalPolicy: RemovalPolicy.DESTROY
-  }
+  },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
+  },
 });
 
 SuppressCfnNagLambdaWarnings(stack);
