@@ -34,4 +34,5 @@ new S3ToSns(stack, 'test-s3-sns', {
   }
 });
 
+defaults.SuppressCfnNagLambdaWarnings(stack);
 app.synth();

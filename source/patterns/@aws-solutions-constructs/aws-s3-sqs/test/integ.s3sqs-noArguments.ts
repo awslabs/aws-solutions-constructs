@@ -14,7 +14,7 @@
 /// !cdk-integ *
 import {App, Stack, RemovalPolicy} from "aws-cdk-lib";
 import {S3ToSqs} from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { SuppressCfnNagLambdaWarnings, generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
 
@@ -31,4 +31,5 @@ new S3ToSqs(stack, 'test-s3-sqs', {
     autoDeleteObjects: true
   },
 });
+SuppressCfnNagLambdaWarnings(stack);
 app.synth();

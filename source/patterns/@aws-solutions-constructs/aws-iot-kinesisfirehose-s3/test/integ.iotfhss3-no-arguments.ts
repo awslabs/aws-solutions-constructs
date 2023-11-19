@@ -14,7 +14,7 @@
 // Imports
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { IotToKinesisFirehoseToS3, IotToKinesisFirehoseToS3Props } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { SuppressCfnNagLambdaWarnings, generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -43,5 +43,6 @@ const props: IotToKinesisFirehoseToS3Props = {
 
 new IotToKinesisFirehoseToS3(stack, 'test-iot-firehose-s3', props);
 
+SuppressCfnNagLambdaWarnings(stack);
 // Synth
 app.synth();

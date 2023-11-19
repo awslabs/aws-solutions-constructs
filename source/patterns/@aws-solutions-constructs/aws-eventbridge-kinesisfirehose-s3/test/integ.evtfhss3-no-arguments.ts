@@ -14,7 +14,7 @@
 import * as events from 'aws-cdk-lib/aws-events';
 import { App, Stack, Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { EventbridgeToKinesisFirehoseToS3, EventbridgeToKinesisFirehoseToS3Props } from '../lib';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { SuppressCfnNagLambdaWarnings, generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -39,4 +39,5 @@ const props: EventbridgeToKinesisFirehoseToS3Props = {
 
 new EventbridgeToKinesisFirehoseToS3(stack, 'evtfhss3-no-args', props);
 
+SuppressCfnNagLambdaWarnings(stack);
 app.synth();

@@ -14,7 +14,7 @@
 /// !cdk-integ *
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { S3ToSns } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { SuppressCfnNagLambdaWarnings, generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -29,4 +29,5 @@ new S3ToSns(stack, 'test-s3-sns', {
   }
 });
 
+SuppressCfnNagLambdaWarnings(stack);
 app.synth();

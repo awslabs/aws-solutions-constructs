@@ -48,4 +48,5 @@ defaults.addCfnSuppressRules(s3Bucket, [
   },
 ]);
 
+defaults.SuppressCfnNagLambdaWarnings(stack);
 app.synth();
