@@ -470,7 +470,25 @@
       },
       "DependsOn": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
-      ]
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+            },
+            {
+              "id": "W89",
+              "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+            },
+            {
+              "id": "W92",
+              "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+            }
+          ]
+        }
+      }
     }
   },
   "Parameters": {
