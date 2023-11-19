@@ -32,7 +32,12 @@ const props: IotToKinesisFirehoseToS3Props = {
     }
   },
   bucketProps: {
-    removalPolicy: RemovalPolicy.DESTROY
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
+  },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
   }
 };
 

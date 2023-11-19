@@ -29,6 +29,7 @@ new S3ToSns(stack, 'test-s3-sns', {
   existingTopicObj: buildTopicResponse.topic,
   existingTopicEncryptionKey,
   bucketProps: {
+    autoDeleteObjects: true,
     removalPolicy: RemovalPolicy.DESTROY
   }
 });

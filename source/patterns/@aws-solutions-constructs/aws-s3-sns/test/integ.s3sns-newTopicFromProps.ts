@@ -22,6 +22,7 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 new S3ToSns(stack, 'test-s3-sns', {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
   },
   topicProps: {
     topicName: 'new-topic-from-props'

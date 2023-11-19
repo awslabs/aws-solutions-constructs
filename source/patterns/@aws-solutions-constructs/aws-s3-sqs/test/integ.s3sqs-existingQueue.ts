@@ -30,6 +30,7 @@ const props: S3ToSqsProps = {
   existingQueueObj: buildQueueResponse.queue,
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
   },
   logS3AccessLogs: false
 };

@@ -26,6 +26,7 @@ addCfnSuppressRules(existingTopicObj, [ { id: "W47", reason: "This test intentio
 new S3ToSns(stack, 'test-s3-sns', {
   existingTopicObj,
   bucketProps: {
+    autoDeleteObjects: true,
     removalPolicy: RemovalPolicy.DESTROY
   }
 });

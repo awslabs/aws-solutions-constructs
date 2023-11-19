@@ -24,6 +24,11 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 new S3ToSqs(stack, 'test-s3-sqs', {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-  }
+    autoDeleteObjects: true
+  },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
 });
 app.synth();

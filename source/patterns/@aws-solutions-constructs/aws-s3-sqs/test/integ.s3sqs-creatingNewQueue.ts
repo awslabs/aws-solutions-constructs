@@ -49,6 +49,7 @@ const props: S3ToSqsProps = {
   s3EventFilters: [filter],
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
   },
   logS3AccessLogs: false
 };

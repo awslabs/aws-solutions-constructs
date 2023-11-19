@@ -1,6 +1,6 @@
 {
   "Resources": {
-    "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketCF5B8A5C": {
+    "evtfhss3customlogbucketKinesisFirehoseToS3S3LoggingBucketAA70EACF": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -12,7 +12,7 @@
             }
           ]
         },
-        "BucketName": "custom-logging-bucket",
+        "BucketName": "evtfhss3-customloggingbucket-custom-logging-bucket",
         "PublicAccessBlockConfiguration": {
           "BlockPublicAcls": true,
           "BlockPublicPolicy": true,
@@ -42,11 +42,11 @@
         }
       }
     },
-    "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketPolicyCF0D71BD": {
+    "evtfhss3customlogbucketKinesisFirehoseToS3S3LoggingBucketPolicy4452CB71": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketCF5B8A5C"
+          "Ref": "evtfhss3customlogbucketKinesisFirehoseToS3S3LoggingBucketAA70EACF"
         },
         "PolicyDocument": {
           "Statement": [
@@ -64,7 +64,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketCF5B8A5C",
+                    "evtfhss3customlogbucketKinesisFirehoseToS3S3LoggingBucketAA70EACF",
                     "Arn"
                   ]
                 },
@@ -74,7 +74,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketCF5B8A5C",
+                          "evtfhss3customlogbucketKinesisFirehoseToS3S3LoggingBucketAA70EACF",
                           "Arn"
                         ]
                       },
@@ -103,7 +103,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketCF5B8A5C",
+                    "evtfhss3customlogbucketKinesisFirehoseToS3S3LoggingBucketAA70EACF",
                     "Arn"
                   ]
                 },
@@ -113,7 +113,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketCF5B8A5C",
+                          "evtfhss3customlogbucketKinesisFirehoseToS3S3LoggingBucketAA70EACF",
                           "Arn"
                         ]
                       },
@@ -129,7 +129,7 @@
                 "ArnLike": {
                   "aws:SourceArn": {
                     "Fn::GetAtt": [
-                      "testkinesisfirehoses3KinesisFirehoseToS3S3Bucket303877FF",
+                      "evtfhss3customlogbucketKinesisFirehoseToS3S3Bucket4B282A91",
                       "Arn"
                     ]
                   }
@@ -150,7 +150,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketCF5B8A5C",
+                        "evtfhss3customlogbucketKinesisFirehoseToS3S3LoggingBucketAA70EACF",
                         "Arn"
                       ]
                     },
@@ -164,7 +164,7 @@
         }
       }
     },
-    "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketAutoDeleteObjectsCustomResourceB808B0FC": {
+    "evtfhss3customlogbucketKinesisFirehoseToS3S3LoggingBucketAutoDeleteObjectsCustomResource555FE86B": {
       "Type": "Custom::S3AutoDeleteObjects",
       "Properties": {
         "ServiceToken": {
@@ -174,16 +174,16 @@
           ]
         },
         "BucketName": {
-          "Ref": "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketCF5B8A5C"
+          "Ref": "evtfhss3customlogbucketKinesisFirehoseToS3S3LoggingBucketAA70EACF"
         }
       },
       "DependsOn": [
-        "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketPolicyCF0D71BD"
+        "evtfhss3customlogbucketKinesisFirehoseToS3S3LoggingBucketPolicy4452CB71"
       ],
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
     },
-    "testkinesisfirehoses3KinesisFirehoseToS3S3Bucket303877FF": {
+    "evtfhss3customlogbucketKinesisFirehoseToS3S3Bucket4B282A91": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -210,7 +210,7 @@
         },
         "LoggingConfiguration": {
           "DestinationBucketName": {
-            "Ref": "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketCF5B8A5C"
+            "Ref": "evtfhss3customlogbucketKinesisFirehoseToS3S3LoggingBucketAA70EACF"
           }
         },
         "PublicAccessBlockConfiguration": {
@@ -219,6 +219,12 @@
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
         },
+        "Tags": [
+          {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true"
+          }
+        ],
         "VersioningConfiguration": {
           "Status": "Enabled"
         }
@@ -226,11 +232,11 @@
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
     },
-    "testkinesisfirehoses3KinesisFirehoseToS3S3BucketPolicy46BDB29D": {
+    "evtfhss3customlogbucketKinesisFirehoseToS3S3BucketPolicyAD917756": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "testkinesisfirehoses3KinesisFirehoseToS3S3Bucket303877FF"
+          "Ref": "evtfhss3customlogbucketKinesisFirehoseToS3S3Bucket4B282A91"
         },
         "PolicyDocument": {
           "Statement": [
@@ -248,7 +254,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testkinesisfirehoses3KinesisFirehoseToS3S3Bucket303877FF",
+                    "evtfhss3customlogbucketKinesisFirehoseToS3S3Bucket4B282A91",
                     "Arn"
                   ]
                 },
@@ -258,7 +264,46 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testkinesisfirehoses3KinesisFirehoseToS3S3Bucket303877FF",
+                          "evtfhss3customlogbucketKinesisFirehoseToS3S3Bucket4B282A91",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:PutBucketPolicy",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn"
+                  ]
+                }
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "evtfhss3customlogbucketKinesisFirehoseToS3S3Bucket4B282A91",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "evtfhss3customlogbucketKinesisFirehoseToS3S3Bucket4B282A91",
                           "Arn"
                         ]
                       },
@@ -273,7 +318,26 @@
         }
       }
     },
-    "testkinesisfirehoses3KinesisFirehoseToS3firehoseloggroupDDB24FE5": {
+    "evtfhss3customlogbucketKinesisFirehoseToS3S3BucketAutoDeleteObjectsCustomResource53718158": {
+      "Type": "Custom::S3AutoDeleteObjects",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn"
+          ]
+        },
+        "BucketName": {
+          "Ref": "evtfhss3customlogbucketKinesisFirehoseToS3S3Bucket4B282A91"
+        }
+      },
+      "DependsOn": [
+        "evtfhss3customlogbucketKinesisFirehoseToS3S3BucketPolicyAD917756"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "evtfhss3customlogbucketKinesisFirehoseToS3firehoseloggroupE047892B": {
       "Type": "AWS::Logs::LogGroup",
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -292,17 +356,17 @@
         }
       }
     },
-    "testkinesisfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstreamEC0EA660": {
+    "evtfhss3customlogbucketKinesisFirehoseToS3firehoseloggroupfirehoselogstream1353170F": {
       "Type": "AWS::Logs::LogStream",
       "Properties": {
         "LogGroupName": {
-          "Ref": "testkinesisfirehoses3KinesisFirehoseToS3firehoseloggroupDDB24FE5"
+          "Ref": "evtfhss3customlogbucketKinesisFirehoseToS3firehoseloggroupE047892B"
         }
       },
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testkinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseRole18870C08": {
+    "evtfhss3customlogbucketKinesisFirehoseToS3KinesisFirehoseRoleAC109402": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -319,7 +383,7 @@
         }
       }
     },
-    "testkinesisfirehoses3KinesisFirehoseToS3KinesisFirehosePolicyD6A1BC51": {
+    "evtfhss3customlogbucketKinesisFirehoseToS3KinesisFirehosePolicy56683A68": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -337,7 +401,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testkinesisfirehoses3KinesisFirehoseToS3S3Bucket303877FF",
+                    "evtfhss3customlogbucketKinesisFirehoseToS3S3Bucket4B282A91",
                     "Arn"
                   ]
                 },
@@ -347,7 +411,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testkinesisfirehoses3KinesisFirehoseToS3S3Bucket303877FF",
+                          "evtfhss3customlogbucketKinesisFirehoseToS3S3Bucket4B282A91",
                           "Arn"
                         ]
                       },
@@ -378,11 +442,11 @@
                     },
                     ":log-group:",
                     {
-                      "Ref": "testkinesisfirehoses3KinesisFirehoseToS3firehoseloggroupDDB24FE5"
+                      "Ref": "evtfhss3customlogbucketKinesisFirehoseToS3firehoseloggroupE047892B"
                     },
                     ":log-stream:",
                     {
-                      "Ref": "testkinesisfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstreamEC0EA660"
+                      "Ref": "evtfhss3customlogbucketKinesisFirehoseToS3firehoseloggroupfirehoselogstream1353170F"
                     }
                   ]
                 ]
@@ -391,25 +455,25 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testkinesisfirehoses3KinesisFirehoseToS3KinesisFirehosePolicyD6A1BC51",
+        "PolicyName": "evtfhss3customlogbucketKinesisFirehoseToS3KinesisFirehosePolicy56683A68",
         "Roles": [
           {
-            "Ref": "testkinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseRole18870C08"
+            "Ref": "evtfhss3customlogbucketKinesisFirehoseToS3KinesisFirehoseRoleAC109402"
           }
         ]
       }
     },
-    "testkinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseEB65C83D": {
+    "evtfhss3customlogbucketKinesisFirehoseToS3KinesisFirehoseE058C963": {
       "Type": "AWS::KinesisFirehose::DeliveryStream",
       "Properties": {
         "DeliveryStreamEncryptionConfigurationInput": {
           "KeyType": "AWS_OWNED_CMK"
         },
-        "DeliveryStreamName": "KinesisFirehoseevtfhss3customLogoses3KinesisFirehoseToS3E4F82781",
+        "DeliveryStreamName": "KinesisFirehoseevtfhss3customLogucketKinesisFirehoseToS340915E28",
         "ExtendedS3DestinationConfiguration": {
           "BucketARN": {
             "Fn::GetAtt": [
-              "testkinesisfirehoses3KinesisFirehoseToS3S3Bucket303877FF",
+              "evtfhss3customlogbucketKinesisFirehoseToS3S3Bucket4B282A91",
               "Arn"
             ]
           },
@@ -420,10 +484,10 @@
           "CloudWatchLoggingOptions": {
             "Enabled": true,
             "LogGroupName": {
-              "Ref": "testkinesisfirehoses3KinesisFirehoseToS3firehoseloggroupDDB24FE5"
+              "Ref": "evtfhss3customlogbucketKinesisFirehoseToS3firehoseloggroupE047892B"
             },
             "LogStreamName": {
-              "Ref": "testkinesisfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstreamEC0EA660"
+              "Ref": "evtfhss3customlogbucketKinesisFirehoseToS3firehoseloggroupfirehoselogstream1353170F"
             }
           },
           "CompressionFormat": "GZIP",
@@ -453,14 +517,14 @@
           },
           "RoleARN": {
             "Fn::GetAtt": [
-              "testkinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseRole18870C08",
+              "evtfhss3customlogbucketKinesisFirehoseToS3KinesisFirehoseRoleAC109402",
               "Arn"
             ]
           }
         }
       }
     },
-    "testkinesisfirehoses3EventsRuleInvokeKinesisFirehoseRole0D8588E2": {
+    "evtfhss3customlogbucketEventsRuleInvokeKinesisFirehoseRole8084E579": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -478,7 +542,7 @@
         "Description": "Events Rule To Kinesis Firehose Role"
       }
     },
-    "testkinesisfirehoses3EventsRuleInvokeKinesisFirehosePolicy88CA86C4": {
+    "evtfhss3customlogbucketEventsRuleInvokeKinesisFirehosePolicy0A1C994F": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -491,7 +555,7 @@
               "Effect": "Allow",
               "Resource": {
                 "Fn::GetAtt": [
-                  "testkinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseEB65C83D",
+                  "evtfhss3customlogbucketKinesisFirehoseToS3KinesisFirehoseE058C963",
                   "Arn"
                 ]
               }
@@ -499,15 +563,15 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testkinesisfirehoses3EventsRuleInvokeKinesisFirehosePolicy88CA86C4",
+        "PolicyName": "evtfhss3customlogbucketEventsRuleInvokeKinesisFirehosePolicy0A1C994F",
         "Roles": [
           {
-            "Ref": "testkinesisfirehoses3EventsRuleInvokeKinesisFirehoseRole0D8588E2"
+            "Ref": "evtfhss3customlogbucketEventsRuleInvokeKinesisFirehoseRole8084E579"
           }
         ]
       }
     },
-    "testkinesisfirehoses3EventsRule05D717D1": {
+    "evtfhss3customlogbucketEventsRuleA7736706": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "ScheduleExpression": "rate(5 minutes)",
@@ -516,14 +580,14 @@
           {
             "Arn": {
               "Fn::GetAtt": [
-                "testkinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseEB65C83D",
+                "evtfhss3customlogbucketKinesisFirehoseToS3KinesisFirehoseE058C963",
                 "Arn"
               ]
             },
             "Id": "Target0",
             "RoleArn": {
               "Fn::GetAtt": [
-                "testkinesisfirehoses3EventsRuleInvokeKinesisFirehoseRole0D8588E2",
+                "evtfhss3customlogbucketEventsRuleInvokeKinesisFirehoseRole8084E579",
                 "Arn"
               ]
             }
@@ -578,7 +642,7 @@
             [
               "Lambda function for auto-deleting objects in ",
               {
-                "Ref": "testkinesisfirehoses3KinesisFirehoseToS3S3LoggingBucketCF5B8A5C"
+                "Ref": "evtfhss3customlogbucketKinesisFirehoseToS3S3LoggingBucketAA70EACF"
               },
               " S3 bucket."
             ]

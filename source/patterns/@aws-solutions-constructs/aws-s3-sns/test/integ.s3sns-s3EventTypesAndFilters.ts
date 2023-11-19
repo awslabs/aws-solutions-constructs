@@ -23,6 +23,7 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 new S3ToSns(stack, 'test-s3-sns', {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
   },
   s3EventTypes: [
     s3.EventType.OBJECT_REMOVED

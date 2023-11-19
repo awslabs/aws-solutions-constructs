@@ -155,17 +155,17 @@
         ]
       }
     },
-    "testconstructtest167F6979": {
+    "testconstructCustomEventBusFBDE2130": {
       "Type": "AWS::Events::EventBus",
       "Properties": {
-        "Name": "test"
+        "Name": "evtsnsnewbustestconstructCustomEventBus56EA651C"
       }
     },
     "testconstructEventsRule145DBA20": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "EventBusName": {
-          "Ref": "testconstructtest167F6979"
+          "Ref": "testconstructCustomEventBusFBDE2130"
         },
         "EventPattern": {
           "source": [
