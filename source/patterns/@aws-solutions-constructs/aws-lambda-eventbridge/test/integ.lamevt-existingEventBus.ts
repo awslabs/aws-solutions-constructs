@@ -32,7 +32,7 @@ const lambdaFunctionProps = {
 };
 
 const existingFunction = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
-const existingEventBus = new events.EventBus(stack, 'existing-event-bus', {  eventBusName: 'test'  });
+const existingEventBus = new events.EventBus(stack, 'existing-event-bus', {});
 
 const props: LambdaToEventbridgeProps = {
   existingLambdaObj: existingFunction,

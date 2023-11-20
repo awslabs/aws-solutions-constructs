@@ -19,6 +19,12 @@
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
         },
+        "Tags": [
+          {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true"
+          }
+        ],
         "VersioningConfiguration": {
           "Status": "Enabled"
         }
@@ -54,6 +60,45 @@
               "Effect": "Deny",
               "Principal": {
                 "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testconstructS3LoggingBucketD59856DF",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testconstructS3LoggingBucketD59856DF",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:PutBucketPolicy",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn"
+                  ]
+                }
               },
               "Resource": [
                 {
@@ -118,6 +163,25 @@
           "Version": "2012-10-17"
         }
       }
+    },
+    "testconstructS3LoggingBucketAutoDeleteObjectsCustomResourceD451B199": {
+      "Type": "Custom::S3AutoDeleteObjects",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn"
+          ]
+        },
+        "BucketName": {
+          "Ref": "testconstructS3LoggingBucketD59856DF"
+        }
+      },
+      "DependsOn": [
+        "testconstructS3LoggingBucketPolicy02741E92"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testconstructS3Bucket81E8552A": {
       "Type": "AWS::S3::Bucket",
@@ -1406,7 +1470,7 @@
             [
               "Lambda function for auto-deleting objects in ",
               {
-                "Ref": "testconstructS3Bucket81E8552A"
+                "Ref": "testconstructS3LoggingBucketD59856DF"
               },
               " S3 bucket."
             ]

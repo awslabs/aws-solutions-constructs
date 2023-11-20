@@ -35,6 +35,10 @@ const testProps: FargateToS3Props = {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true
   },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
 };
 
 new FargateToS3(stack, 'test-construct', testProps);

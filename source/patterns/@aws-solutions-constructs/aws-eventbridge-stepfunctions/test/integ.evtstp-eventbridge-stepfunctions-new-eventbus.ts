@@ -49,7 +49,6 @@ const props: EventbridgeToStepfunctionsProps = {
   eventBusProps: { eventBusName: 'test-new' },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-    logGroupName: "integ-test-new-eventbus"
   },
 };
 

@@ -14,7 +14,7 @@
 /// !cdk-integ *
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { S3ToSns } from "../lib";
-import { addCfnSuppressRules, generateIntegStackName } from '@aws-solutions-constructs/core';
+import { SuppressCfnNagLambdaWarnings, addCfnSuppressRules, generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as sns from 'aws-cdk-lib/aws-sns';
 
 const app = new App();
@@ -26,8 +26,14 @@ addCfnSuppressRules(existingTopicObj, [ { id: "W47", reason: "This test intentio
 new S3ToSns(stack, 'test-s3-sns', {
   existingTopicObj,
   bucketProps: {
+    autoDeleteObjects: true,
     removalPolicy: RemovalPolicy.DESTROY
-  }
+  },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
+  },
 });
 
+SuppressCfnNagLambdaWarnings(stack);
 app.synth();

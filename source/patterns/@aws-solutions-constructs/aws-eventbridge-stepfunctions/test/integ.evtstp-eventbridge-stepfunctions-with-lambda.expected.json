@@ -141,7 +141,27 @@
     "testeventbridgestepfunctionsandlambdaconstructStateMachineLogGroup7C2D036A": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "with-lambda"
+        "LogGroupName": {
+          "Fn::Join": [
+            "",
+            [
+              "/aws/vendedlogs/states/constructs/evtstp-eventbridge-stepfunctions-with-lambdatest-eventbridge-stepfunctions-and-lambda-constructStateMachineLog-",
+              {
+                "Fn::Select": [
+                  2,
+                  {
+                    "Fn::Split": [
+                      "/",
+                      {
+                        "Ref": "AWS::StackId"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        }
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",

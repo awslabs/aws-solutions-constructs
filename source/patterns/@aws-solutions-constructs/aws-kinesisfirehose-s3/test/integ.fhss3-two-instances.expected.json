@@ -219,6 +219,12 @@
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
         },
+        "Tags": [
+          {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true"
+          }
+        ],
         "VersioningConfiguration": {
           "Status": "Enabled"
         }
@@ -267,11 +273,69 @@
                   ]
                 }
               ]
+            },
+            {
+              "Action": [
+                "s3:PutBucketPolicy",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn"
+                  ]
+                }
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "firstconstructS3Bucket58522C24",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "firstconstructS3Bucket58522C24",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
             }
           ],
           "Version": "2012-10-17"
         }
       }
+    },
+    "firstconstructS3BucketAutoDeleteObjectsCustomResourceB053DF99": {
+      "Type": "Custom::S3AutoDeleteObjects",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn"
+          ]
+        },
+        "BucketName": {
+          "Ref": "firstconstructS3Bucket58522C24"
+        }
+      },
+      "DependsOn": [
+        "firstconstructS3BucketPolicyC7BBECCF"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "firstconstructfirehoseloggroup6E34E778": {
       "Type": "AWS::Logs::LogGroup",

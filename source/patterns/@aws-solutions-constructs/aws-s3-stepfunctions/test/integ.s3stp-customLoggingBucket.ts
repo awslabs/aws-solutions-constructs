@@ -31,17 +31,16 @@ new S3ToStepfunctions(stack, 'test-s3-stepfunctions', {
   },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
   },
   loggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
-    bucketName: 'custom-logging-bucket',
     encryption: BucketEncryption.S3_MANAGED,
     versioned: true
   },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-    logGroupName: "with-lambda"
   }
 });
 

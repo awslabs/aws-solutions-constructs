@@ -26,7 +26,7 @@ stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
 const logBucket = defaults.CreateScrapBucket(stack);
 
-new EventbridgeToKinesisFirehoseToS3(stack, 'test-kinesisfirehose-s3', {
+new EventbridgeToKinesisFirehoseToS3(stack, 'evtfhss3-existing-log-bucket', {
   eventRuleProps: {
     schedule: events.Schedule.rate(Duration.minutes(5))
   },
@@ -36,7 +36,7 @@ new EventbridgeToKinesisFirehoseToS3(stack, 'test-kinesisfirehose-s3', {
   },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY
-  }
+  },
 });
 
 defaults.suppressAutoDeleteHandlerWarnings(stack);

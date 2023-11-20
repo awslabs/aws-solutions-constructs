@@ -29,7 +29,6 @@ new S3ToSqs(stack, 'test-s3-sqs', {
   loggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
-    bucketName: 'custom-logging-bucket',
     encryption: BucketEncryption.S3_MANAGED,
     versioned: true
   }

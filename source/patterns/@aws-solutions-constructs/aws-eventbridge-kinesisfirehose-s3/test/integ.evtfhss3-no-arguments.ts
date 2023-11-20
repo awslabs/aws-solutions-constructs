@@ -11,11 +11,10 @@
  *  and limitations under the License.
  */
 
-import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import * as events from 'aws-cdk-lib/aws-events';
+import { App, Stack, Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { EventbridgeToKinesisFirehoseToS3, EventbridgeToKinesisFirehoseToS3Props } from '../lib';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import * as defaults from '@aws-solutions-constructs/core';
-import * as s3 from "aws-cdk-lib/aws-s3";
+import { SuppressCfnNagLambdaWarnings, generateIntegStackName } from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -23,28 +22,22 @@ stack.templateOptions.description = 'Integration Test for aws-eventbridge-kinesi
 
 const props: EventbridgeToKinesisFirehoseToS3Props = {
   eventRuleProps: {
-    eventPattern: {
-      source: ['solutionsconstructs']
-    }
-  },
-  eventBusProps: { eventBusName: 'test' },
-  bucketProps: {
-    removalPolicy: RemovalPolicy.DESTROY
+    schedule: events.Schedule.rate(Duration.minutes(5))
   },
   logGroupProps: {
-    removalPolicy: RemovalPolicy.DESTROY
+    removalPolicy: RemovalPolicy.DESTROY,
   },
-  logS3AccessLogs: false
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
+  },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
+  }
 };
 
-const construct = new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-kinesisfirehose-s3', props);
-const s3Bucket = construct.s3Bucket as s3.Bucket;
+new EventbridgeToKinesisFirehoseToS3(stack, 'evtfhss3-no-args', props);
 
-defaults.addCfnSuppressRules(s3Bucket, [
-  {
-    id: 'W35',
-    reason: 'This S3 bucket is created for unit/ integration testing purposes only.'
-  },
-]);
-
+SuppressCfnNagLambdaWarnings(stack);
 app.synth();
