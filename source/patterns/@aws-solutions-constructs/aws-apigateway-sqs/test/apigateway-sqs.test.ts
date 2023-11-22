@@ -185,9 +185,8 @@ test('Test deployment for allow delete operation', () => {
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::ApiGateway::Resource', {
     PathPart: "message"
-  })
+  });
 });
-
 
 test('Test deployment with existing queue object', () => {
   const stack = new Stack();
