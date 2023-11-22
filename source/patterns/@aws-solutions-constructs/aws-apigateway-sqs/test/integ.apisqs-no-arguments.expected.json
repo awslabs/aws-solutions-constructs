@@ -198,7 +198,7 @@
         "Name": "RestApi"
       }
     },
-    "testapigatewaysqsdefaultRestApiDeploymentFB9688F5638eca4a0d71dff702d4b2c6b1d1e2df": {
+    "testapigatewaysqsdefaultRestApiDeploymentFB9688F5fb9a1a72439389c4d385b8e23725ff77": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "Description": "Automatically created by the RestApi construct",
@@ -207,8 +207,7 @@
         }
       },
       "DependsOn": [
-        "testapigatewaysqsdefaultRestApiGET733E6394",
-        "testapigatewaysqsdefaultRestApimessage41073D7F"
+        "testapigatewaysqsdefaultRestApiGET733E6394"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -234,7 +233,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "testapigatewaysqsdefaultRestApiDeploymentFB9688F5638eca4a0d71dff702d4b2c6b1d1e2df"
+          "Ref": "testapigatewaysqsdefaultRestApiDeploymentFB9688F5fb9a1a72439389c4d385b8e23725ff77"
         },
         "MethodSettings": [
           {
@@ -249,21 +248,6 @@
         },
         "StageName": "prod",
         "TracingEnabled": true
-      }
-    },
-    "testapigatewaysqsdefaultRestApimessage41073D7F": {
-      "Type": "AWS::ApiGateway::Resource",
-      "Properties": {
-        "ParentId": {
-          "Fn::GetAtt": [
-            "testapigatewaysqsdefaultRestApi554243C3",
-            "RootResourceId"
-          ]
-        },
-        "PathPart": "message",
-        "RestApiId": {
-          "Ref": "testapigatewaysqsdefaultRestApi554243C3"
-        }
       }
     },
     "testapigatewaysqsdefaultRestApiGET733E6394": {
