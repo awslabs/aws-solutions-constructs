@@ -198,7 +198,7 @@
         "Name": "RestApi"
       }
     },
-    "testapigatewaysqsintegrationresponsesRestApiDeployment9749223507b4327bc896117bc13d1c395d6fa5e7": {
+    "testapigatewaysqsintegrationresponsesRestApiDeployment9749223547b7cf1e61211d0a1959e7fc8dd7abd0": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "Description": "Automatically created by the RestApi construct",
@@ -207,8 +207,7 @@
         }
       },
       "DependsOn": [
-        "testapigatewaysqsintegrationresponsesRestApiGETD105D1F1",
-        "testapigatewaysqsintegrationresponsesRestApimessageC29A9FEB"
+        "testapigatewaysqsintegrationresponsesRestApiGETD105D1F1"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -234,7 +233,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "testapigatewaysqsintegrationresponsesRestApiDeployment9749223507b4327bc896117bc13d1c395d6fa5e7"
+          "Ref": "testapigatewaysqsintegrationresponsesRestApiDeployment9749223547b7cf1e61211d0a1959e7fc8dd7abd0"
         },
         "MethodSettings": [
           {
@@ -249,21 +248,6 @@
         },
         "StageName": "prod",
         "TracingEnabled": true
-      }
-    },
-    "testapigatewaysqsintegrationresponsesRestApimessageC29A9FEB": {
-      "Type": "AWS::ApiGateway::Resource",
-      "Properties": {
-        "ParentId": {
-          "Fn::GetAtt": [
-            "testapigatewaysqsintegrationresponsesRestApi3BE7E402",
-            "RootResourceId"
-          ]
-        },
-        "PathPart": "message",
-        "RestApiId": {
-          "Ref": "testapigatewaysqsintegrationresponsesRestApi3BE7E402"
-        }
       }
     },
     "testapigatewaysqsintegrationresponsesRestApiGETD105D1F1": {

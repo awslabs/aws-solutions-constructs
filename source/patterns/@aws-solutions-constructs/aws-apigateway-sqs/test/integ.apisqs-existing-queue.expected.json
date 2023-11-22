@@ -110,7 +110,7 @@
         "Name": "RestApi"
       }
     },
-    "testapigatewaysqsexistingqueueRestApiDeploymentA3CB681F40a3b61200f0070439f29a9d27e30e73": {
+    "testapigatewaysqsexistingqueueRestApiDeploymentA3CB681Fb34af53058b656b91c9af037460db593": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "Description": "Automatically created by the RestApi construct",
@@ -119,8 +119,7 @@
         }
       },
       "DependsOn": [
-        "testapigatewaysqsexistingqueueRestApiGET860786F8",
-        "testapigatewaysqsexistingqueueRestApimessageDF0AE465"
+        "testapigatewaysqsexistingqueueRestApiGET860786F8"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -146,7 +145,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "testapigatewaysqsexistingqueueRestApiDeploymentA3CB681F40a3b61200f0070439f29a9d27e30e73"
+          "Ref": "testapigatewaysqsexistingqueueRestApiDeploymentA3CB681Fb34af53058b656b91c9af037460db593"
         },
         "MethodSettings": [
           {
@@ -161,21 +160,6 @@
         },
         "StageName": "prod",
         "TracingEnabled": true
-      }
-    },
-    "testapigatewaysqsexistingqueueRestApimessageDF0AE465": {
-      "Type": "AWS::ApiGateway::Resource",
-      "Properties": {
-        "ParentId": {
-          "Fn::GetAtt": [
-            "testapigatewaysqsexistingqueueRestApi2E025EF5",
-            "RootResourceId"
-          ]
-        },
-        "PathPart": "message",
-        "RestApiId": {
-          "Ref": "testapigatewaysqsexistingqueueRestApi2E025EF5"
-        }
       }
     },
     "testapigatewaysqsexistingqueueRestApiGET860786F8": {

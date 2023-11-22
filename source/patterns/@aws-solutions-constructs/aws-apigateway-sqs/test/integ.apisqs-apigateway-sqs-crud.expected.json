@@ -198,7 +198,7 @@
         "Name": "RestApi"
       }
     },
-    "testapigatewaysqsRestApiDeploymentCA19D3723284170350125cf6cf25e30c33a57efd": {
+    "testapigatewaysqsRestApiDeploymentCA19D37261367bad52ebfa5cbc65d48442b36029": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "Description": "Automatically created by the RestApi construct",
@@ -236,7 +236,7 @@
           "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
         },
         "DeploymentId": {
-          "Ref": "testapigatewaysqsRestApiDeploymentCA19D3723284170350125cf6cf25e30c33a57efd"
+          "Ref": "testapigatewaysqsRestApiDeploymentCA19D37261367bad52ebfa5cbc65d48442b36029"
         },
         "MethodSettings": [
           {
@@ -251,103 +251,6 @@
         },
         "StageName": "prod",
         "TracingEnabled": true
-      }
-    },
-    "testapigatewaysqsRestApimessage6D62B7B0": {
-      "Type": "AWS::ApiGateway::Resource",
-      "Properties": {
-        "ParentId": {
-          "Fn::GetAtt": [
-            "testapigatewaysqsRestApi557C7EDC",
-            "RootResourceId"
-          ]
-        },
-        "PathPart": "message",
-        "RestApiId": {
-          "Ref": "testapigatewaysqsRestApi557C7EDC"
-        }
-      }
-    },
-    "testapigatewaysqsRestApimessageDELETE2D4539B7": {
-      "Type": "AWS::ApiGateway::Method",
-      "Properties": {
-        "AuthorizationType": "AWS_IAM",
-        "HttpMethod": "DELETE",
-        "Integration": {
-          "Credentials": {
-            "Fn::GetAtt": [
-              "testapigatewaysqsapigatewayrole07110CD6",
-              "Arn"
-            ]
-          },
-          "IntegrationHttpMethod": "POST",
-          "IntegrationResponses": [
-            {
-              "StatusCode": "200"
-            },
-            {
-              "ResponseTemplates": {
-                "text/html": "Error"
-              },
-              "SelectionPattern": "500",
-              "StatusCode": "500"
-            }
-          ],
-          "PassthroughBehavior": "NEVER",
-          "RequestParameters": {
-            "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'"
-          },
-          "RequestTemplates": {
-            "application/json": "Action=DeleteMessage&ReceiptHandle=$util.urlEncode($input.params('receiptHandle'))"
-          },
-          "Type": "AWS",
-          "Uri": {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":apigateway:",
-                {
-                  "Ref": "AWS::Region"
-                },
-                ":sqs:path/",
-                {
-                  "Ref": "AWS::AccountId"
-                },
-                "/",
-                {
-                  "Fn::GetAtt": [
-                    "testapigatewaysqsqueue8EDC3CAF",
-                    "QueueName"
-                  ]
-                }
-              ]
-            ]
-          }
-        },
-        "MethodResponses": [
-          {
-            "ResponseParameters": {
-              "method.response.header.Content-Type": true
-            },
-            "StatusCode": "200"
-          },
-          {
-            "ResponseParameters": {
-              "method.response.header.Content-Type": true
-            },
-            "StatusCode": "500"
-          }
-        ],
-        "ResourceId": {
-          "Ref": "testapigatewaysqsRestApimessage6D62B7B0"
-        },
-        "RestApiId": {
-          "Ref": "testapigatewaysqsRestApi557C7EDC"
-        }
       }
     },
     "testapigatewaysqsRestApiPOST26D15DBA": {
@@ -514,6 +417,103 @@
             "testapigatewaysqsRestApi557C7EDC",
             "RootResourceId"
           ]
+        },
+        "RestApiId": {
+          "Ref": "testapigatewaysqsRestApi557C7EDC"
+        }
+      }
+    },
+    "testapigatewaysqsRestApimessage6D62B7B0": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "testapigatewaysqsRestApi557C7EDC",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "message",
+        "RestApiId": {
+          "Ref": "testapigatewaysqsRestApi557C7EDC"
+        }
+      }
+    },
+    "testapigatewaysqsRestApimessageDELETE2D4539B7": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "AWS_IAM",
+        "HttpMethod": "DELETE",
+        "Integration": {
+          "Credentials": {
+            "Fn::GetAtt": [
+              "testapigatewaysqsapigatewayrole07110CD6",
+              "Arn"
+            ]
+          },
+          "IntegrationHttpMethod": "POST",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200"
+            },
+            {
+              "ResponseTemplates": {
+                "text/html": "Error"
+              },
+              "SelectionPattern": "500",
+              "StatusCode": "500"
+            }
+          ],
+          "PassthroughBehavior": "NEVER",
+          "RequestParameters": {
+            "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'"
+          },
+          "RequestTemplates": {
+            "application/json": "Action=DeleteMessage&ReceiptHandle=$util.urlEncode($input.params('receiptHandle'))"
+          },
+          "Type": "AWS",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":sqs:path/",
+                {
+                  "Ref": "AWS::AccountId"
+                },
+                "/",
+                {
+                  "Fn::GetAtt": [
+                    "testapigatewaysqsqueue8EDC3CAF",
+                    "QueueName"
+                  ]
+                }
+              ]
+            ]
+          }
+        },
+        "MethodResponses": [
+          {
+            "ResponseParameters": {
+              "method.response.header.Content-Type": true
+            },
+            "StatusCode": "200"
+          },
+          {
+            "ResponseParameters": {
+              "method.response.header.Content-Type": true
+            },
+            "StatusCode": "500"
+          }
+        ],
+        "ResourceId": {
+          "Ref": "testapigatewaysqsRestApimessage6D62B7B0"
         },
         "RestApiId": {
           "Ref": "testapigatewaysqsRestApi557C7EDC"

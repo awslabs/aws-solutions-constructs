@@ -241,9 +241,6 @@ export class ApiGatewayToSqs extends Construct {
       assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
     });
 
-    // Setup the API Gateway resource
-    const apiGatewayResource = this.apiGateway.root.addResource('message');
-
     // Create
     const createRequestTemplate = props.createRequestTemplate ?? this.defaultCreateRequestTemplate;
     if (props.allowCreateOperation && props.allowCreateOperation === true) {
@@ -281,6 +278,7 @@ export class ApiGatewayToSqs extends Construct {
     // Delete
     const deleteRequestTemplate = props.deleteRequestTemplate ?? this.defaultDeleteRequestTemplate;
     if (props.allowDeleteOperation && props.allowDeleteOperation === true) {
+      const apiGatewayResource = this.apiGateway.root.addResource('message');
       this.addActionToPolicy("sqs:DeleteMessage");
       defaults.addProxyMethodToApiResource({
         service: "sqs",

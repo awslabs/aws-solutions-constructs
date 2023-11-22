@@ -163,6 +163,31 @@ test('Test deployment for override ApiGateway deleteRequestTemplate', () => {
   });
 });
 
+test('Test deployment for disallow delete operation', () => {
+  const stack = new Stack();
+
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    allowDeleteOperation: false
+  });
+  const template = Template.fromStack(stack);
+  const resources = template.findResources('AWS::ApiGateway::Resource', {
+    PathPart: "message"
+  });
+  expect(Object.keys(resources).length).toBe(0);
+});
+
+test('Test deployment for allow delete operation', () => {
+  const stack = new Stack();
+
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    allowDeleteOperation: true
+  });
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Resource', {
+    PathPart: "message"
+  });
+});
+
 test('Test deployment with existing queue object', () => {
   const stack = new Stack();
 
