@@ -2,9 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+
 ## [2.47.0](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/compare/v2.14.0...v2.47.0) (2023-11-27)
 
 Test Release
+
 
 ### Features
 
@@ -15,6 +17,7 @@ Test Release
 * **aws-lambda-kinesisstream:** created new construct  ([#873](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/873)) ([81592de](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/81592de3b14a9d6f01a7e61519be6c6b90695cff))
 * **aws-lambda-opensearch:** created new construct ([#818](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/818)) ([f31f59d](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/f31f59d1ce4d945508f999d58905b1775f26a891))
 * **aws-openapi-lambda:** make names unique ([#987](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/987)) ([be9997a](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/be9997a4e7e376670ef7f3d8bf1335ea3cebc515))
+
 * **aws-wafwebacl-agigateway:** enable govcloud ([#900](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/900)) ([dd19d93](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/dd19d9363fa6c33b0c616a1a5392c26369bc02b2))
 * **aws-wafwebacl-appsync:** created new construct ([#833](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/833)) ([1c708b9](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/1c708b9bb2527ba2cbec974eab3a0e272ad26ad4))
 * **new construct:** aws-fargate-kinesisfirehose ([#881](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/881)) ([3a74a27](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/3a74a27f9c3e895a44b485ee1bb8fe9adc50a80e))
@@ -22,6 +25,7 @@ Test Release
 * **new construct:** aws-lambda-kendra ([#989](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/989)) ([24fe018](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/24fe018898dafd4be2d20d6636ad54333da4145d))
 * **new construct:** aws-lambda-kinesisfirehose ([#875](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/875)) ([aef3efa](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/aef3efab4b4658f12ed82937683d08997162d9bc))
 * **new construct:** aws-openapigateway-lambda ([#912](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/912)) ([09465d6](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/09465d65fc5969da5691cf5057c278ded8753b43)), closes [#910](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/910) [#917](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/917) [#922](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/922) [#929](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/929) [#930](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/930)
+
 
 
 ### Bug Fixes
