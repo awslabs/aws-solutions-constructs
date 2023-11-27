@@ -14,7 +14,7 @@
 import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
-import { FargateToSqs } from "../lib";
+import { FargateToSqs, FargateToSqsProps } from "../lib";
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
@@ -58,11 +58,11 @@ test('New service/new queue, dlq, public API, new VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(construct.vpc !== null);
-  expect(construct.service !== null);
-  expect(construct.container !== null);
-  expect(construct.sqsQueue !== null);
-  expect(construct.deadLetterQueue !== null);
+  expect(construct.vpc).toBeDefined();
+  expect(construct.service).toBeDefined();
+  expect(construct.container).toBeDefined();
+  expect(construct.sqsQueue).toBeDefined();
+  expect(construct.deadLetterQueue).toBeDefined();
 
   template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName
@@ -302,15 +302,11 @@ test('Existing service/new queue, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: { serviceName }
+  });
 
   new FargateToSqs(stack, 'test-construct', {
     publicApi,
@@ -405,15 +401,11 @@ test('Existing service/existing queue, private API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: { serviceName }
+  });
 
   const existingQueue = new sqs.Queue(stack, 'MyQueue', {
     queueName
@@ -560,7 +552,7 @@ test('Queue is encrypted with imported CMK when set on queueProps.encryptionMast
   });
 });
 
-test('Queue is encrypted with provided encrytionKeyProps', () => {
+test('Queue is encrypted with provided encryptionKeyProps', () => {
   const stack = new cdk.Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
@@ -589,7 +581,7 @@ test('Queue is encrypted with provided encrytionKeyProps', () => {
   });
 });
 
-test('Queue is encrypted with SQS-managed KMS key when no other encryption propreties are set', () => {
+test('Queue is encrypted with SQS-managed KMS key when no other encryption properties are set', () => {
   const stack = new cdk.Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
@@ -625,4 +617,53 @@ test('Queue is encrypted with customer managed KMS Key when enable encryption fl
       ]
     }
   });
+});
+
+test('Confirm CheckSqsProps is called', () => {
+
+  // An environment with region is required to enable logging on an ALB
+  const stack = new cdk.Stack();
+  const publicApi = false;
+
+  const props = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
+    deployDeadLetterQueue: false,
+    queueProps: {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+    existingQueueObj: new sqs.Queue(stack, 'test', {})
+  };
+
+  const app = () => {
+    new FargateToSqs(stack, 'test-fargate-sqs', props);
+  };
+  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
+});
+
+test('Confirm that CheckVpcProps was called', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+  const clusterName = "custom-cluster-name";
+  const containerName = "custom-container-name";
+  const serviceName = "custom-service-name";
+  const familyName = "custom-family-name";
+
+  const props: FargateToSqsProps = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    existingVpc: defaults.getTestVpc(stack),
+    vpcProps: {  },
+  };
+
+  const app = () => {
+    new FargateToSqs(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });

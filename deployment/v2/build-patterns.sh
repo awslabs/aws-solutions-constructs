@@ -12,7 +12,7 @@ bail="--bail"
 runtarget="build+lint+test"
 cd $source_dir/
 
-export PATH=$(npm bin):$PATH
+export PATH=$source_dir/node_modules/.bin:$PATH
 export NODE_OPTIONS="--max-old-space-size=4096 ${NODE_OPTIONS:-}"
 
 echo "============================================================================================="

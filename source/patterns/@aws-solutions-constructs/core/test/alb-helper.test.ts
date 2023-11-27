@@ -32,7 +32,11 @@ test('Test ObtainAlb with existing ALB', () => {
     loadBalancerName: 'unique-name'
   });
 
-  defaults.ObtainAlb(stack, 'test', vpc, true, existingLoadBalancer);
+  defaults.ObtainAlb(stack, 'test', {
+    vpc,
+    publicApi: true,
+    existingLoadBalancerObj: existingLoadBalancer
+  });
 
   const template = Template.fromStack(stack);
 
@@ -50,10 +54,14 @@ test('Test ObtainAlb for new ALB with provided props', () => {
     defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
   });
 
-  defaults.ObtainAlb(stack, 'test', vpc, true, undefined, {
-    loadBalancerName: 'new-loadbalancer',
+  defaults.ObtainAlb(stack, 'test', {
     vpc,
-    internetFacing: true
+    publicApi: true,
+    loadBalancerProps: {
+      loadBalancerName: 'new-loadbalancer',
+      vpc,
+      internetFacing: true
+    }
   });
 
   const template = Template.fromStack(stack);
@@ -73,7 +81,10 @@ test('Test ObtainAlb for new ALB with default props', () => {
     defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
   });
 
-  defaults.ObtainAlb(stack, 'test', vpc, false);
+  defaults.ObtainAlb(stack, 'test', {
+    vpc,
+    publicApi: false
+  });
 
   const template = Template.fromStack(stack);
 
@@ -95,7 +106,14 @@ test('Test with custom logging bucket props', () => {
 
   const testName = 'test-name';
 
-  defaults.ObtainAlb(stack, 'test', vpc, false, undefined, undefined, true, { bucketName: testName });
+  defaults.ObtainAlb(stack, 'test', {
+    vpc,
+    publicApi: false,
+    logAccessLogs: true,
+    loggingBucketProps: {
+      bucketName: testName
+    }
+  });
 
   const template = Template.fromStack(stack);
 
@@ -111,7 +129,11 @@ test('Test with no logging', () => {
     defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
   });
 
-  defaults.ObtainAlb(stack, 'test', vpc, false, undefined, undefined, false);
+  defaults.ObtainAlb(stack, 'test', {
+    vpc,
+    publicApi: false,
+    logAccessLogs: false
+  });
 
   const template = Template.fromStack(stack);
 
@@ -527,6 +549,54 @@ test('Test sending listenerProps to existingListener error', () => {
   expect(app).toThrowError("This load balancer already has a listener, listenerProps may not be specified\n");
 });
 
+test('Test sending loadBalancerProps and existingLoadBalancerObj is an error', () => {
+  const stack = new Stack();
+
+  const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
+  });
+
+  const existingLoadBalancer = new elb.ApplicationLoadBalancer(stack, 'load-balancer', {
+    vpc,
+    internetFacing: true,
+    loadBalancerName: 'unique-name'
+  });
+
+  const props = {
+    vpc,
+    existingLoadBalancerObj: existingLoadBalancer,
+    loadBalancerProps: {
+      loadBalancerName: 'new-loadbalancer',
+      vpc,
+      internetFacing: true
+    }
+  };
+
+  const app = () => {
+    defaults.CheckAlbProps(props);
+  };
+
+  expect(app).toThrowError("Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n");
+});
+
+test('Test sending albLoggingBucketProps when logAlbAccessLogs is false is an error', () => {
+
+  const props = {
+    logAlbAccessLogs: false,
+    albLoggingBucketProps: {},
+    loadBalancerProps: {
+      loadBalancerName: 'new-loadbalancer',
+      internetFacing: true
+    }
+  };
+
+  const app = () => {
+    defaults.CheckAlbProps(props);
+  };
+
+  expect(app).toThrowError("Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n");
+});
+
 test('Test sending VPC in loadBalancerProps error', () => {
   const props = {
     loadBalancerProps: {
@@ -552,18 +622,18 @@ function CreateTestLoadBalancer(stack: Stack, vpc: ec2.IVpc): elb.ApplicationLoa
 function CreateTestFunction(stack: Stack, id: string): lambda.Function {
   return new lambda.Function(stack, id, {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
   });
 }
 
 function CreateTestFargateService(stack: Stack, id: string, vpc: ec2.IVpc): ecs.FargateService {
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    `${id}-fg-svc`,
-    vpc,
-    undefined,
-    'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo',
-    'latest');
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, `${id}-fg-svc`, {
+    constructVpc: vpc,
+    clientClusterProps: undefined,
+    ecrRepositoryArn: 'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo',
+    ecrImageVersion: 'latest'
+  });
   return createFargateServiceResponse.service;
 }
 

@@ -143,14 +143,11 @@ test('check properties', () => {
 
   const construct: CloudFrontToS3 = deploy(stack);
 
-  expect(construct.cloudFrontWebDistribution !== null);
-  expect(construct.s3Bucket !== null);
+  expect(construct.cloudFrontWebDistribution).toBeDefined();
+  expect(construct.s3Bucket).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingBucket and bucketProps
-// --------------------------------------------------------------
-test("Test bad call with existingBucket and bucketProps", () => {
+test("Confirm CheckS3Props is called", () => {
   // Stack
   const stack = new cdk.Stack();
 
@@ -166,7 +163,7 @@ test("Test bad call with existingBucket and bucketProps", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
 test("Test existingBucketObj", () => {
@@ -176,7 +173,7 @@ test("Test existingBucketObj", () => {
     existingBucketObj: s3.Bucket.fromBucketName(stack, 'mybucket', 'mybucket')
   });
   // Assertion
-  expect(construct.cloudFrontWebDistribution !== null);
+  expect(construct.cloudFrontWebDistribution).toBeDefined();
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
@@ -249,25 +246,24 @@ test('test cloudfront with custom domain names', () => {
   });
 });
 
-// --------------------------------------------------------------
-// s3 bucket with bucket, loggingBucket, and auto delete objects
-// --------------------------------------------------------------
 test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   const stack = new cdk.Stack();
 
+  const testName = "test-name";
   new CloudFrontToS3(stack, 'cloudfront-s3', {
     bucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     },
     loggingBucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true
+      autoDeleteObjects: true,
+      bucketName: testName
     }
   });
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::S3::Bucket", {
-    AccessControl: "LogDeliveryWrite"
+    BucketName: testName
   });
 
   template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
@@ -283,22 +279,22 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Cloudfront logging bucket with destroy removal policy and auto delete objects
-// --------------------------------------------------------------
 test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
   const stack = new cdk.Stack();
 
+  const cloudfrontLogBucketName = 'cf-log-bucket';
   new CloudFrontToS3(stack, 'cloudfront-s3', {
     cloudFrontLoggingBucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true
+      autoDeleteObjects: true,
+      bucketName: cloudfrontLogBucketName
     }
   });
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::S3::Bucket", {
-    AccessControl: "LogDeliveryWrite"
+    OwnershipControls: { Rules: [ { ObjectOwnership: "ObjectWriter" } ] },
+    BucketName: cloudfrontLogBucketName,
   });
 
   template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
@@ -314,9 +310,6 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
   });
 });
 
-// --------------------------------------------------------------
-// Cloudfront logging bucket error providing existing log bucket and logBucketProps
-// --------------------------------------------------------------
 test('Cloudfront logging bucket error when providing existing log bucket and logBucketProps', () => {
   const stack = new cdk.Stack();
   const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
@@ -336,9 +329,6 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
   expect(app).toThrowError();
 });
 
-// --------------------------------------------------------------
-// s3 bucket with one content bucket and no logging bucket
-// --------------------------------------------------------------
 test('s3 bucket with one content bucket and no logging bucket', () => {
   const stack = new cdk.Stack();
 
@@ -354,9 +344,6 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
   expect(construct.s3LoggingBucket).toEqual(undefined);
 });
 
-// --------------------------------------------------
-// CloudFront origin path
-// --------------------------------------------------
 test('CloudFront origin path present when provided', () => {
   const stack = new cdk.Stack();
 
@@ -454,4 +441,24 @@ test("throw exception if insertHttpSecurityHeaders and responseHeadersPolicyProp
       }
     });
   }).toThrowError();
+});
+
+test("Confirm CheckCloudFrontProps is being called", () => {
+  const stack = new cdk.Stack();
+
+  expect(() => {
+    new CloudFrontToS3(stack, "test-cloudfront-apigateway", {
+      insertHttpSecurityHeaders: true,
+      responseHeadersPolicyProps: {
+        securityHeadersBehavior: {
+          strictTransportSecurity: {
+            accessControlMaxAge: Duration.seconds(63072),
+            includeSubdomains: true,
+            override: false,
+            preload: true
+          }
+        }
+      }
+    });
+  }).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
 });

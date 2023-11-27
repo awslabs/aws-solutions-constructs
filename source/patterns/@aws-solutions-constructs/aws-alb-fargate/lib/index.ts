@@ -140,7 +140,7 @@ export interface AlbToFargateProps {
   /**
    * A Fargate Service already instantiated (probably by another Solutions Construct). If
    * this is specified, then no props defining a new service can be provided, including:
-   * ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps,
+   * ecrImageVersion, containerDefinitionProps, fargateTaskDefinitionProps,
    * ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface
    *
    * @default - none
@@ -164,9 +164,9 @@ export class AlbToFargate extends Construct {
 
   constructor(scope: Construct, id: string, props: AlbToFargateProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckAlbProps(props);
     defaults.CheckFargateProps(props);
+    defaults.CheckVpcProps(props);
 
     // Obtain VPC for construct (existing or created)
     this.vpc = defaults.buildVpc(scope, {
@@ -177,16 +177,14 @@ export class AlbToFargate extends Construct {
     });
 
     // Set up the ALB
-    this.loadBalancer = defaults.ObtainAlb(
-      scope,
-      `${id}-lb`,
-      this.vpc,
-      props.publicApi,
-      props.existingLoadBalancerObj,
-      props.loadBalancerProps,
-      props.logAlbAccessLogs,
-      props.albLoggingBucketProps
-    );
+    this.loadBalancer = defaults.ObtainAlb(scope, `${id}-lb`, {
+      vpc: this.vpc,
+      publicApi: props.publicApi,
+      existingLoadBalancerObj: props.existingLoadBalancerObj,
+      loadBalancerProps: props.loadBalancerProps,
+      logAccessLogs:  props.logAlbAccessLogs,
+      loggingBucketProps: props.albLoggingBucketProps
+    });
 
     const newListener: boolean = this.loadBalancer.listeners.length === 0;
 
@@ -207,17 +205,15 @@ export class AlbToFargate extends Construct {
       // CheckFargateProps confirms that the container is provided
       this.container = props.existingContainerDefinitionObject!;
     } else {
-      const createFargateServiceResponse = defaults.CreateFargateService(
-        scope,
-        id,
-        this.vpc,
-        props.clusterProps,
-        props.ecrRepositoryArn,
-        props.ecrImageVersion,
-        props.fargateTaskDefinitionProps,
-        props.containerDefinitionProps,
-        props.fargateServiceProps
-      );
+      const createFargateServiceResponse = defaults.CreateFargateService(scope, id, {
+        constructVpc: this.vpc,
+        clientClusterProps: props.clusterProps,
+        ecrRepositoryArn: props.ecrRepositoryArn,
+        ecrImageVersion: props.ecrImageVersion,
+        clientFargateTaskDefinitionProps: props.fargateTaskDefinitionProps,
+        clientContainerDefinitionProps: props.containerDefinitionProps,
+        clientFargateServiceProps: props.fargateServiceProps
+      });
       this.service = createFargateServiceResponse.service;
       this.container = createFargateServiceResponse.containerDefinition;
     }

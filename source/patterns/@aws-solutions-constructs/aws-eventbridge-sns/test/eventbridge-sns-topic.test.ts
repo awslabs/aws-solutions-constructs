@@ -155,9 +155,24 @@ test('check events rule properties', () => {
           Ref: "testSnsTopic42942701"
         },
         Id: {
-          "Fn::GetAtt": [
-            "testSnsTopic42942701",
-            "TopicName"
+          "Fn::Join": [
+            "",
+            [
+              "Defaulttest-",
+              {
+                "Fn::Select": [
+                  2,
+                  {
+                    "Fn::Split": [
+                      "/",
+                      {
+                        Ref: "AWS::StackId"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           ]
         }
       }
@@ -169,9 +184,9 @@ test('check properties', () => {
   const stack = new cdk.Stack();
   const construct: EventbridgeToSns = deployNewStack(stack);
 
-  expect(construct.eventsRule !== null);
-  expect(construct.snsTopic !== null);
-  expect(construct.encryptionKey !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.snsTopic).toBeDefined();
+  expect(construct.encryptionKey).toBeDefined();
 });
 
 test('check the sns topic properties', () => {
@@ -224,17 +239,17 @@ test('check eventbus property, snapshot & eventbus exists', () => {
 
   const construct: EventbridgeToSns = deployStackWithNewEventBus(stack);
 
-  expect(construct.eventsRule !== null);
-  expect(construct.snsTopic !== null);
-  expect(construct.encryptionKey !== null);
-  expect(construct.eventBus !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.snsTopic).toBeDefined();
+  expect(construct.encryptionKey).toBeDefined();
+  expect(construct.eventBus).toBeDefined();
 
   // Check whether eventbus exists
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::Events::EventBus', 1);
 });
 
-test('check exception while passing existingEventBus & eventBusProps', () => {
+test('Confirm CheckEventBridgeProps is being called', () => {
   const stack = new cdk.Stack();
 
   const props: EventbridgeToSnsProps = {
@@ -250,7 +265,7 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
   const app = () => {
     new EventbridgeToSns(stack, 'test-eventbridge-sns', props);
   };
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });
 
 test('check custom event bus resource with props when deploy:true', () => {
@@ -390,4 +405,24 @@ test('Properties correctly set when unencrypted existing topic is provided', () 
 
   expect(testConstruct.snsTopic).toBeDefined();
   expect(testConstruct.encryptionKey).not.toBeDefined();
+});
+
+test('Confirm CheckSnsProps is being called', () => {
+  const stack = new cdk.Stack();
+  const existingTopicObj = new sns.Topic(stack, 'Topic', {
+    topicName: 'existing-topic-name'
+  });
+
+  const props: EventbridgeToSnsProps = {
+    existingTopicObj,
+    topicProps: {},
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    }
+  };
+  const app = () => {
+    new EventbridgeToSns(stack, 'test', props);
+  };
+
+  expect(app).toThrowError("Error - Either provide topicProps or existingTopicObj, but not both.\n");
 });

@@ -14,7 +14,7 @@
 import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
-import { FargateToSns } from "../lib";
+import { FargateToSns, FargateToSnsProps } from "../lib";
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
@@ -200,15 +200,11 @@ test('Existing service/new topic, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: { serviceName }
+  });
 
   new FargateToSns(stack, 'test-construct', {
     publicApi,
@@ -290,15 +286,13 @@ test('Existing service/existing topic, private API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   const existingTopic = new sns.Topic(stack, 'MyTopic', {
     topicName
@@ -421,7 +415,7 @@ test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop
   });
 });
 
-test('Topic is encrypted with provided encrytionKeyProps', () => {
+test('Topic is encrypted with provided encryptionKeyProps', () => {
   const stack = new cdk.Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },
   });
@@ -502,4 +496,60 @@ test('Topic is encrypted with customer managed KMS Key when enable encryption fl
       ]
     },
   });
+});
+
+test('Confirm CheckSnsProps is being called', () => {
+  // An environment with region is required to enable logging on an ALB
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+  const publicApi = false;
+  const topicName = 'custom-topic-name';
+
+  const existingVpc = defaults.getTestVpc(stack, publicApi);
+
+  const existingTopic = new sns.Topic(stack, 'MyTopic', {
+    topicName
+  });
+
+  const app = () => {
+    new FargateToSns(stack, 'test-construct', {
+      publicApi,
+      existingVpc,
+      ecrRepositoryArn: defaults.fakeEcrRepoArn,
+      existingTopicObject: existingTopic,
+      topicProps: {
+        topicName: 'topic-name'
+      },
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
+});
+
+test('Confirm that CheckVpcProps was called', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+  const clusterName = "custom-cluster-name";
+  const containerName = "custom-container-name";
+  const serviceName = "custom-service-name";
+  const familyName = "custom-family-name";
+
+  const props: FargateToSnsProps = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    existingVpc: defaults.getTestVpc(stack),
+    vpcProps: {  },
+  };
+
+  const app = () => {
+    new FargateToSns(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });

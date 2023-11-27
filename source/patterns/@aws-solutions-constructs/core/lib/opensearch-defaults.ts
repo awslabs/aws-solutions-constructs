@@ -59,6 +59,10 @@ export function DefaultOpenSearchCfnDomainProps(domainName: string, cognitoConfi
       userPoolId: props.userpool.userPoolId,
       roleArn: cognitoConfigureRole.roleArn
     },
+    domainEndpointOptions: {
+      enforceHttps: true,
+      tlsSecurityPolicy: 'Policy-Min-TLS-1-2-2019-07',
+    },
     accessPolicies: new iam.PolicyDocument({
       statements: [
         new iam.PolicyStatement({

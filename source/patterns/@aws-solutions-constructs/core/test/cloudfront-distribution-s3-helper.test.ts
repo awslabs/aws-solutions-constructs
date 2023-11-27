@@ -21,6 +21,7 @@ import { Bucket } from 'aws-cdk-lib/aws-s3';
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import { LambdaEdgeEventType } from 'aws-cdk-lib/aws-cloudfront';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
+import * as defaults from '../';
 
 test('check bucket policy metadata', () => {
   const stack = new Stack();
@@ -438,7 +439,7 @@ test('test override cloudfront replace custom lambda@edge', () => {
   // custom lambda@edg function
   const handler = new lambda.Function(stack, 'SomeHandler', {
     functionName: 'SomeHandler',
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -538,4 +539,24 @@ test('test cloudfront override cloudfront custom domain names ', () => {
       ],
     }
   });
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test CloudFront insertHttpHeaders bad props', () => {
+
+  const props: defaults.CloudFrontProps = {
+    insertHttpSecurityHeaders: true,
+    responseHeadersPolicyProps: {
+      securityHeadersBehavior: {}
+    }
+  };
+
+  const app = () => {
+    defaults.CheckCloudFrontProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
 });

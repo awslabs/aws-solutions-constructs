@@ -24,8 +24,7 @@ import * as cdk from 'aws-cdk-lib';
 import { overrideProps, addCfnSuppressRules } from './utils';
 import { buildSecurityGroup } from "./security-group-helper";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from 'constructs';
-import { IConstruct } from 'constructs';
+import { Construct, IConstruct } from 'constructs';
 
 export interface BuildLambdaFunctionProps {
   /**
@@ -51,11 +50,14 @@ export interface BuildLambdaFunctionProps {
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunctionProps): lambda.Function {
+export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunctionProps, constructId?: string): lambda.Function {
   // Conditional lambda function creation
   if (!props.existingLambdaObj) {
     if (props.lambdaFunctionProps) {
-      return deployLambdaFunction(scope, props.lambdaFunctionProps, props.lambdaFunctionProps.functionName, props.vpc);
+      // constructId may be specified by the calling code, but if not, fallback to the original behavior of using the
+      // function name as the construct id used when creating the underlying lambda function and iam role.
+      constructId = constructId ?? props.lambdaFunctionProps.functionName;
+      return deployLambdaFunction(scope, props.lambdaFunctionProps, constructId, props.vpc);
     } else {
       throw Error('Either existingLambdaObj or lambdaFunctionProps is required');
     }
@@ -65,7 +67,7 @@ export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunction
       if (props.lambdaFunctionProps?.securityGroups) {
         let ctr = 20;
         props.lambdaFunctionProps?.securityGroups.forEach(sg => {
-          // TODO: Discuss with someone why I can't get R/O access to VpcConfigSecurityGroupIds
+          // It appears we can't get R/O access to VpcConfigSecurityGroupIds, such access would make this cleaner
           levelOneFunction.addOverride(`Properties.VpcConfig.SecurityGroupIds.${ctr++}`, sg.securityGroupId);
         });
       }
@@ -82,11 +84,11 @@ export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunction
  */
 export function deployLambdaFunction(scope: Construct,
   lambdaFunctionProps: lambda.FunctionProps,
-  functionId?: string,
+  constructId?: string,
   vpc?: ec2.IVpc): lambda.Function {
 
-  const _functionId = functionId ? functionId : 'LambdaFunction';
-  const _functionRoleId = _functionId + 'ServiceRole';
+  const functionId = constructId ?? 'LambdaFunction';
+  const functionRoleId = functionId + 'ServiceRole';
 
   if (vpc && lambdaFunctionProps.vpc) {
     throw new Error(
@@ -95,7 +97,7 @@ export function deployLambdaFunction(scope: Construct,
   }
 
   // Setup the IAM Role for Lambda Service
-  const lambdaServiceRole = new iam.Role(scope, _functionRoleId, {
+  const lambdaServiceRole = new iam.Role(scope, functionRoleId, {
     assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
     inlinePolicies: {
       LambdaFunctionServiceRolePolicy: new iam.PolicyDocument({
@@ -111,7 +113,7 @@ export function deployLambdaFunction(scope: Construct,
     }
   });
 
-  // If this Lambda function is going to access resoures in a
+  // If this Lambda function is going to access resources in a
   // VPC, then it needs privileges to access an ENI in that VPC
   if (lambdaFunctionProps.vpc || vpc) {
     lambdaServiceRole.addToPolicy(new iam.PolicyStatement({
@@ -150,11 +152,9 @@ export function deployLambdaFunction(scope: Construct,
     }, true);
   }
 
-  const lambdafunction = new lambda.Function(scope, _functionId, finalLambdaFunctionProps);
+  const lambdafunction = new lambda.Function(scope, functionId, finalLambdaFunctionProps);
 
-  if (lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_14_X ||
-    lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_14_X ||
-    lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_14_X) {
+  if (lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_16_X) {
     lambdafunction.addEnvironment('AWS_NODEJS_CONNECTION_REUSE_ENABLED', '1', { removeInEdge: true });
   }
 
@@ -194,7 +194,7 @@ export function deployLambdaFunction(scope: Construct,
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  *
- * A wrapper above Function.addPermision that
+ * A wrapper above Function.addPermission that
  * prevents two different calls to addPermission using
  * the same construct id.
  */
@@ -236,4 +236,23 @@ export function getLambdaVpcSecurityGroupIds(lambdaFunction: lambda.Function): s
   lambdaFunction.connections.securityGroups.forEach(element => securityGroupIds.push(element.securityGroupId));
 
   return securityGroupIds;
+}
+
+export interface LambdaProps {
+  readonly existingLambdaObj?: lambda.Function,
+  readonly lambdaFunctionProps?: lambda.FunctionProps,
+}
+
+export function CheckLambdaProps(propsObject: LambdaProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingLambdaObj && propsObject.lambdaFunctionProps) {
+    errorMessages += 'Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }

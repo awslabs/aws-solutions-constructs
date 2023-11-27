@@ -137,7 +137,7 @@ export class ApiGatewayToKinesisStreams extends Construct {
    */
   constructor(scope: Construct, id: string, props: ApiGatewayToKinesisStreamsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckKinesisStreamProps(props);
 
     // Setup the Kinesis stream
     this.kinesisStream = defaults.buildKinesisStream(scope, {

@@ -210,7 +210,7 @@ test('check existing action in topic rule props', () => {
   template.resourceCountIs('AWS::Kinesis::Stream', 2);
 });
 
-test('check name confict', () => {
+test('check name confect', () => {
   const stack = new cdk.Stack();
 
   const props: IotToKinesisStreamsProps = {
@@ -241,7 +241,7 @@ test('check construct chaining', () => {
   template.resourceCountIs('AWS::Kinesis::Stream', 1);
 });
 
-test('check error when stream props and existing stream is supplied', () => {
+test('Confirm call to CheckKinesisStreamProps', () => {
   const stack = new cdk.Stack();
 
   const existingKinesisStream = new kinesis.Stream(stack, `existing-stream`, {});
@@ -254,5 +254,5 @@ test('check error when stream props and existing stream is supplied', () => {
   const app = () => {
     new IotToKinesisStreams(stack, 'test-iot-kinesisstreams', props);
   };
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });

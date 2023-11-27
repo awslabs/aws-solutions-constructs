@@ -196,20 +196,17 @@ export class ApiGatewayToSqs extends Construct {
    */
   constructor(scope: Construct, id: string, props: ApiGatewayToSqsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckSqsProps(props);
 
-    if ((props.createRequestTemplate || props.additionalCreateRequestTemplates || props.createIntegrationResponses)
-        && props.allowCreateOperation !== true) {
+    if (this.CheckCreateRequestProps(props)) {
       throw new Error(`The 'allowCreateOperation' property must be set to true when setting any of the following: ` +
         `'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses'`);
     }
-    if ((props.readRequestTemplate || props.additionalReadRequestTemplates || props.readIntegrationResponses)
-        && props.allowReadOperation === false) {
+    if (this.CheckReadRequestProps(props)) {
       throw new Error(`The 'allowReadOperation' property must be set to true or undefined when setting any of the following: ` +
         `'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'`);
     }
-    if ((props.deleteRequestTemplate || props.additionalDeleteRequestTemplates || props.deleteIntegrationResponses)
-        && props.allowDeleteOperation !== true) {
+    if (this.CheckDeleteRequestProps(props)) {
       throw new Error(`The 'allowDeleteOperation' property must be set to true when setting any of the following: ` +
       `'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'`);
     }
@@ -243,9 +240,6 @@ export class ApiGatewayToSqs extends Construct {
     this.apiGatewayRole = new iam.Role(this, 'api-gateway-role', {
       assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
     });
-
-    // Setup the API Gateway resource
-    const apiGatewayResource = this.apiGateway.root.addResource('message');
 
     // Create
     const createRequestTemplate = props.createRequestTemplate ?? this.defaultCreateRequestTemplate;
@@ -284,6 +278,7 @@ export class ApiGatewayToSqs extends Construct {
     // Delete
     const deleteRequestTemplate = props.deleteRequestTemplate ?? this.defaultDeleteRequestTemplate;
     if (props.allowDeleteOperation && props.allowDeleteOperation === true) {
+      const apiGatewayResource = this.apiGateway.root.addResource('message');
       this.addActionToPolicy("sqs:DeleteMessage");
       defaults.addProxyMethodToApiResource({
         service: "sqs",
@@ -297,6 +292,28 @@ export class ApiGatewayToSqs extends Construct {
         integrationResponses: props.deleteIntegrationResponses
       });
     }
+  }
+  private CheckReadRequestProps(props: ApiGatewayToSqsProps): boolean {
+    if ((props.readRequestTemplate || props.additionalReadRequestTemplates || props.readIntegrationResponses)
+        && props.allowReadOperation === false) {
+      return true;
+    }
+    return false;
+  }
+  private CheckDeleteRequestProps(props: ApiGatewayToSqsProps): boolean {
+    if ((props.deleteRequestTemplate || props.additionalDeleteRequestTemplates || props.deleteIntegrationResponses)
+        && props.allowDeleteOperation !== true)  {
+      return true;
+    }
+    return false;
+  }
+
+  private CheckCreateRequestProps(props: ApiGatewayToSqsProps): boolean {
+    if ((props.createRequestTemplate || props.additionalCreateRequestTemplates || props.createIntegrationResponses)
+        && props.allowCreateOperation !== true) {
+      return true;
+    }
+    return false;
   }
 
   private addActionToPolicy(action: string) {

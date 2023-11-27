@@ -74,7 +74,7 @@ test('Pattern minimal deployment', () => {
         }],
         Version: "2012-10-17",
       },
-      Description: "Service role that Glue custom ETL jobs will assume for exeuction",
+      Description: "Service role that Glue custom ETL jobs will assume for execution",
     },
     Type: "AWS::IAM::Role"
   });
@@ -716,10 +716,6 @@ test('When Asset for local file is defined', () => {
   const id = 'test-kinesisstreams-lambda';
   const construct = new KinesisstreamsToGluejob(stack, id, props);
 
-  expect(construct.outputBucket).toBeDefined();
-  expect(construct.outputBucket![0]).toBeDefined();
-  expect(construct.outputBucket![1]).toBeDefined();
-
   // Check for properties
   expect(construct.database).toBeDefined();
   expect(construct.glueJob).toBeDefined();
@@ -727,8 +723,14 @@ test('When Asset for local file is defined', () => {
   expect(construct.kinesisStream).toBeDefined();
   expect(construct.glueJobRole).toBeDefined();
   expect(construct.cloudwatchAlarms).toBeDefined();
+  expect(construct.outputBucket).toBeDefined();
+  expect(construct.outputBucket![0]).toBeDefined();
+  expect(construct.outputBucket![1]).toBeDefined();
 
+  // Each output bucket should have a logging bucket
   const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::S3::Bucket", 2);
+
   template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
@@ -877,4 +879,43 @@ test('Check properties when output bucket is provided', () => {
   expect(construct.outputBucket).toBeDefined();
   expect(construct.outputBucket![0]).toBeDefined();
   expect(construct.outputBucket![1]).not.toBeDefined();
+});
+
+test('Confirm call to CheckKinesisStreamProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const props: KinesisstreamsToGluejobProps = {
+    glueJobProps: {
+      command: {
+        name: 'glueetl',
+        pythonVersion: '3',
+        scriptLocation: 's3://fakebucket/fakefolder/fakefolder/fakefile.py'
+      }
+    },
+    fieldSchema: [{
+      name: "id",
+      type: "int",
+      comment: "Identifier for the record"
+    }, {
+      name: "name",
+      type: "string",
+      comment: "The name of the record"
+    }, {
+      name: "type",
+      type: "string",
+      comment: "The type of the record"
+    }, {
+      name: "numericvalue",
+      type: "int",
+      comment: "Some value associated with the record"
+    }],
+    existingStreamObj: new Stream(stack, 'test', {}),
+    kinesisStreamProps: {}
+  };
+  const app = () => {
+    new KinesisstreamsToGluejob(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });

@@ -111,26 +111,25 @@ test('check firehose and s3 overrides', () => {
         IntervalInSeconds: 600,
         SizeInMBs: 55
       }
-    }});
+    }
+  });
 });
+
 test('check properties', () => {
   const stack = new cdk.Stack();
 
   const construct: IotToKinesisFirehoseToS3 = deploy(stack);
 
-  expect(construct.iotTopicRule !== null);
-  expect(construct.kinesisFirehose !== null);
-  expect(construct.s3Bucket !== null);
-  expect(construct.iotActionsRole !== null);
-  expect(construct.kinesisFirehoseRole !== null);
-  expect(construct.kinesisFirehoseLogGroup !== null);
-  expect(construct.s3LoggingBucket !== null);
+  expect(construct.iotTopicRule).toBeDefined();
+  expect(construct.kinesisFirehose).toBeDefined();
+  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.iotActionsRole).toBeDefined();
+  expect(construct.kinesisFirehoseRole).toBeDefined();
+  expect(construct.kinesisFirehoseLogGroup).toBeDefined();
+  expect(construct.s3LoggingBucket).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingBucket and bucketProps
-// --------------------------------------------------------------
-test("Test bad call with existingBucket and bucketProps", () => {
+test("Confirm CheckS3Props is being called", () => {
   // Stack
   const stack = new cdk.Stack();
 
@@ -154,12 +153,9 @@ test("Test bad call with existingBucket and bucketProps", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+  expect(app).toThrowError("Error - Either provide bucketProps or existingBucketObj, but not both.\n");
 });
 
-// --------------------------------------------------------------
-// s3 bucket with bucket, loggingBucket, and auto delete objects
-// --------------------------------------------------------------
 test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   const stack = new cdk.Stack();
 
@@ -182,9 +178,7 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   });
 
   const template = Template.fromStack(stack);
-  template.hasResourceProperties("AWS::S3::Bucket", {
-    AccessControl: "LogDeliveryWrite"
-  });
+  template.resourceCountIs("AWS::S3::Bucket", 2);
 
   template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
@@ -199,9 +193,6 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test bad call with logS3AccessLogs as false and bucketProps
-// --------------------------------------------------------------
 test("Test bad call with logS3AccessLogs as false and bucketProps", () => {
   // Stack
   const stack = new cdk.Stack();
@@ -227,9 +218,6 @@ test("Test bad call with logS3AccessLogs as false and bucketProps", () => {
   expect(app).toThrowError('Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n');
 });
 
-// --------------------------------------------------------------
-// s3 bucket with one content bucket and no logging bucket
-// --------------------------------------------------------------
 test('s3 bucket with one content bucket and no logging bucket', () => {
   const stack = new cdk.Stack();
 

@@ -101,13 +101,18 @@ export class S3ToStepfunctions extends Construct {
    */
   constructor(scope: Construct, id: string, props: S3ToStepfunctionsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+
+    defaults.CheckS3Props(props);
 
     let bucket: s3.IBucket;
 
     if (props.deployCloudTrail !== undefined) {
-      defaults.printWarning("The deployCloudTrail prop has been deprecated since this construct no longer requires \
-      AWS CloudTrail to implement its functionality. This construct no longer creates a CloudTrail in your account.");
+      defaults.printWarning("The deployCloudTrail prop has been deprecated since this construct no longer requires " +
+      "AWS CloudTrail to implement its functionality. This construct no longer creates a CloudTrail in your account.");
     }
 
     if (!props.existingBucketObj) {

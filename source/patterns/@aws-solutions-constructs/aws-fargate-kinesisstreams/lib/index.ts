@@ -150,8 +150,9 @@ export class FargateToKinesisStreams extends Construct {
      */
     constructor(scope: Construct, id: string, props: FargateToKinesisStreamsProps) {
       super(scope, id);
-      defaults.CheckProps(props);
       defaults.CheckFargateProps(props);
+      defaults.CheckVpcProps(props);
+      defaults.CheckKinesisStreamProps(props);
 
       // Setup the VPC
       this.vpc = defaults.buildVpc(scope, {
@@ -170,17 +171,15 @@ export class FargateToKinesisStreams extends Construct {
         // CheckFargateProps confirms that the container is provided
         this.container = props.existingContainerDefinitionObject!;
       } else {
-        const createFargateServiceResponse = defaults.CreateFargateService(
-          scope,
-          id,
-          this.vpc,
-          props.clusterProps,
-          props.ecrRepositoryArn,
-          props.ecrImageVersion,
-          props.fargateTaskDefinitionProps,
-          props.containerDefinitionProps,
-          props.fargateServiceProps
-        );
+        const createFargateServiceResponse = defaults.CreateFargateService(scope, id, {
+          constructVpc:  this.vpc,
+          clientClusterProps: props.clusterProps,
+          ecrRepositoryArn: props.ecrRepositoryArn,
+          ecrImageVersion: props.ecrImageVersion,
+          clientFargateTaskDefinitionProps: props.fargateTaskDefinitionProps,
+          clientContainerDefinitionProps: props.containerDefinitionProps,
+          clientFargateServiceProps: props.fargateServiceProps
+        });
         this.service = createFargateServiceResponse.service;
         this.container = createFargateServiceResponse.containerDefinition;
       }

@@ -53,7 +53,8 @@ export class WafwebaclToAlb extends Construct {
    */
   constructor(scope: Construct, id: string, props: WafwebaclToAlbProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckWafWebAclProps(props);
+    // CheckAlbProps() not called because this only accepts and existing Load Balancer
 
     // Build the Web ACL
     this.webacl = defaults.buildWebacl(this, 'REGIONAL', {
@@ -61,11 +62,14 @@ export class WafwebaclToAlb extends Construct {
       webaclProps: props.webaclProps,
     });
 
-    // Setup the Web ACL Association
-    new waf.CfnWebACLAssociation(scope, `${id}-WebACLAssociation`, {
+    const aclProps: waf.CfnWebACLAssociationProps = {
       webAclArn: this.webacl.attrArn,
       resourceArn: props.existingLoadBalancerObj.loadBalancerArn
-    });
+    };
+
+    // Setup the Web ACL Association
+    // Before turning off SonarQube for the line, reduce the line to it's minimum
+    new waf.CfnWebACLAssociation(scope, `${id}-WebACLAssociation`, aclProps); // NOSONAR
 
     this.loadBalancer = props.existingLoadBalancerObj;
   }

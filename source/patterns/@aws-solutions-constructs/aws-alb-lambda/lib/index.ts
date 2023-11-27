@@ -121,8 +121,9 @@ export class AlbToLambda extends Construct {
 
   constructor(scope: Construct, id: string, props: AlbToLambdaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckAlbProps(props);
+    defaults.CheckVpcProps(props);
+    defaults.CheckLambdaProps(props);
 
     // Obtain VPC for construct (existing or created)
     this.vpc = defaults.buildVpc(scope, {
@@ -132,22 +133,20 @@ export class AlbToLambda extends Construct {
       constructVpcProps: props.publicApi ? {} : { enableDnsHostnames: true, enableDnsSupport: true }
     });
 
-    this.loadBalancer = defaults.ObtainAlb(
-      this,
-      id,
-      this.vpc,
-      props.publicApi,
-      props.existingLoadBalancerObj,
-      props.loadBalancerProps,
-      props.logAlbAccessLogs,
-      props.albLoggingBucketProps
-    );
+    this.loadBalancer = defaults.ObtainAlb(this, id, {
+      vpc: this.vpc,
+      publicApi: props.publicApi,
+      existingLoadBalancerObj: props.existingLoadBalancerObj,
+      loadBalancerProps: props.loadBalancerProps,
+      logAccessLogs: props.logAlbAccessLogs,
+      loggingBucketProps: props.albLoggingBucketProps
+    });
 
     // Obtain Lambda function for construct (existing or created)
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps,
-      vpc: this.vpc,
+      vpc: this.vpc
     });
 
     let newListener: boolean;
@@ -159,12 +158,7 @@ export class AlbToLambda extends Construct {
 
     // If there's no listener, then we add one here
     if (newListener) {
-      this.listener = defaults.AddListener(
-        this,
-        id,
-        this.loadBalancer,
-        props.listenerProps
-      );
+      this.listener = defaults.AddListener(this, id, this.loadBalancer, props.listenerProps);
     } else {
       this.listener = GetActiveListener(this.loadBalancer.listeners);
     }
@@ -179,13 +173,12 @@ export class AlbToLambda extends Construct {
 
     // this.listener needs to be set on the construct.
     // could be above: else { defaults.GetActiveListener }
-    // do we then move that funcionality back into the construct (not the function). If so do
+    // do we then move that functionality back into the construct (not the function). If so do
     // we leave it in AddNewTarget or just do it here and pass the listener?
     if (newListener && this.listener) {
       const levelOneListener = this.listener.node.defaultChild as CfnListener;
       const cfnTargetGroup = newTargetGroup.node.defaultChild as CfnTargetGroup;
       levelOneListener.addDependency(cfnTargetGroup);
     }
-
   }
 }

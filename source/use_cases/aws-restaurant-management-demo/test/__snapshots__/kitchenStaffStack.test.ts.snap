@@ -130,7 +130,7 @@ Object {
             "Arn",
           ],
         },
-        "Runtime": "nodejs14.x",
+        "Runtime": "nodejs16.x",
         "TracingConfig": Object {
           "Mode": "Active",
         },
@@ -443,7 +443,7 @@ Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W45",
-              "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource",
+              "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checks for it in AWS::ApiGateway::Deployment resource",
             },
           ],
         },
@@ -846,7 +846,7 @@ Object {
             "Arn",
           ],
         },
-        "Runtime": "nodejs14.x",
+        "Runtime": "nodejs16.x",
         "TracingConfig": Object {
           "Mode": "Active",
         },

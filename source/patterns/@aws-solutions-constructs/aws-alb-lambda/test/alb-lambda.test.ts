@@ -26,7 +26,7 @@ test('Test new load balancer and new lambda function', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -86,7 +86,7 @@ test('Test new load balancer and new lambda function for HTTP api', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -135,7 +135,7 @@ test('Test existing load balancer and new lambda function', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -180,7 +180,7 @@ test('Test new load balancer and existing lambda function', () => {
 
   const lambdaFunction = new lambda.Function(stack, 'existing-function', {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     functionName: testFunctionName,
     vpc: testExistingVpc
@@ -237,7 +237,7 @@ test("Test existing load balancer and existing lambda function", () => {
 
   const lambdaFunction = new lambda.Function(stack, "existing-function", {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     functionName: testFunctionName,
     vpc: testExistingVpc,
@@ -247,7 +247,7 @@ test("Test existing load balancer and existing lambda function", () => {
     existingLambdaObj: lambdaFunction,
     existingLoadBalancerObj: existingAlb,
     listenerProps: {
-      certificates: [ defaults.getFakeCertificate(stack, "fake-cert") ],
+      certificates: [defaults.getFakeCertificate(stack, "fake-cert")],
     },
     publicApi: true,
     existingVpc: testExistingVpc,
@@ -289,9 +289,9 @@ test('Test new load balancer and new lambda function', () => {
   });
 
   const props: AlbToLambdaProps = {
-    lambdaFunctionProps:  {
+    lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       functionName: testFunctionName,
     },
@@ -338,7 +338,7 @@ test('Test HTTPS adding 2 lambda targets, second with rules', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -351,7 +351,7 @@ test('Test HTTPS adding 2 lambda targets, second with rules', () => {
   const secondProps: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     ruleProps: {
@@ -408,7 +408,7 @@ test('Test HTTP adding 2 lambda targets, second with rules', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -421,7 +421,7 @@ test('Test HTTP adding 2 lambda targets, second with rules', () => {
   const secondProps: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     ruleProps: {
@@ -478,7 +478,7 @@ test('Test new load balancer and new lambda function', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -521,7 +521,7 @@ test('Test logging turned off', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -548,7 +548,7 @@ test('Check Properties', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -573,7 +573,7 @@ test('Test custom ALB properties', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -617,7 +617,7 @@ test('Test custom logging bucket', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -664,7 +664,7 @@ test('Test providing certificateArns is an error', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -692,7 +692,7 @@ test('Test logging off with logBucketProperties provided is an error', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -721,7 +721,7 @@ test('Test certificate with HTTP is an error', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -744,7 +744,7 @@ test('Test new ALB with no listenerProps is an error', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     publicApi: true
@@ -772,7 +772,7 @@ test('Test existing ALB with no listener with no listenerProps is an error', () 
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     existingLoadBalancerObj: existingAlb,
@@ -794,7 +794,7 @@ test('Test existing ALB with a listener with listenerProps is an error', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -807,7 +807,7 @@ test('Test existing ALB with a listener with listenerProps is an error', () => {
   const secondProps: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     ruleProps: {
@@ -837,7 +837,7 @@ test('Test second target with no rules is an error', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -850,7 +850,7 @@ test('Test second target with no rules is an error', () => {
   const secondProps: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     existingVpc: firstConstruct.vpc,
@@ -872,7 +872,7 @@ test('Test no cert for an HTTPS listener is an error', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -901,7 +901,7 @@ test('Test existingLoadBalancerObj and loadBalancerProps is an error', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -936,7 +936,7 @@ test('Test existingLoadBalancerObj and no existingVpc is an error', () => {
   const props: AlbToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     listenerProps: {
@@ -951,4 +951,102 @@ test('Test existingLoadBalancerObj and no existingVpc is an error', () => {
   // Assertion
   expect(app).toThrowError(
     /An existing ALB is already in a VPC, that VPC must be provided in props.existingVpc for the rest of the construct to use./);
+});
+
+test('Confirm that CheckLambdaProps is called', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+  const testExistingVpc = defaults.getTestVpc(stack);
+
+  const lambdaFunction = new lambda.Function(stack, 'existing-function', {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    functionName: 'name',
+    vpc: testExistingVpc
+  });
+
+  const props: AlbToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler'
+    },
+    existingLambdaObj: lambdaFunction,
+    listenerProps: {
+      certificates: [defaults.getFakeCertificate(stack, "fake-cert")]
+    },
+    publicApi: false,
+    existingVpc: testExistingVpc,
+  };
+  const app = () => {
+    new AlbToLambda(stack, 'new-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});
+
+test('Confirm that CheckVpcProps is called', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  const props: AlbToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler'
+    },
+    listenerProps: {
+      certificates: [defaults.getFakeCertificate(stack, "fake-cert")]
+    },
+    publicApi: false,
+    vpcProps: {},
+    existingVpc: defaults.getTestVpc(stack),
+  };
+  const app = () => {
+    new AlbToLambda(stack, 'new-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});
+
+test('Confirm that CheckAlbProps is called', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+  const testName = 'test-value';
+
+  const existingVpc = defaults.getTestVpc(stack);
+
+  const existingAlb = new elb.ApplicationLoadBalancer(stack, 'test-alb', {
+    vpc: existingVpc,
+    internetFacing: true,
+    loadBalancerName: testName,
+  });
+
+  const props: AlbToLambdaProps = {
+    existingVpc,
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler'
+    },
+    listenerProps: {
+      certificates: [defaults.getFakeCertificate(stack, "fake-cert")]
+    },
+    publicApi: false,
+    vpcProps: {},
+    loadBalancerProps: {
+      loadBalancerName: 'new-loadbalancer',
+      internetFacing: true,
+    },
+    existingLoadBalancerObj: existingAlb,
+  };
+  const app = () => {
+    new AlbToLambda(stack, 'new-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n');
 });

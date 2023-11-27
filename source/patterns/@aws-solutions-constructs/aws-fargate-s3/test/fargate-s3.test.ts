@@ -14,7 +14,7 @@
 import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
-import { FargateToS3 } from "../lib";
+import { FargateToS3, FargateToS3Props } from "../lib";
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
@@ -42,11 +42,11 @@ test('New service/new bucket, public API, new VPC', () => {
     bucketPermissions: ['Delete', 'Read', 'Write']
   });
 
-  expect(construct.vpc !== null);
-  expect(construct.service !== null);
-  expect(construct.container !== null);
-  expect(construct.s3Bucket !== null);
-  expect(construct.s3BucketInterface !== null);
+  expect(construct.vpc).toBeDefined();
+  expect(construct.service).toBeDefined();
+  expect(construct.container).toBeDefined();
+  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.s3BucketInterface).toBeDefined();
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::ECS::Service", {
@@ -437,15 +437,13 @@ test('Existing service/new bucket, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   new FargateToS3(stack, 'test-construct', {
     publicApi,
@@ -581,15 +579,13 @@ test('Existing service/existing bucket, private API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   const existingBucket = new s3.Bucket(stack, 'MyBucket', {
     bucketName
@@ -703,4 +699,60 @@ test('Existing service/existing bucket, private API, existing VPC', () => {
   template.resourceCountIs('AWS::EC2::VPC', 1);
   template.resourceCountIs('AWS::ECS::Service', 1);
   template.resourceCountIs('AWS::S3::Bucket', 1);
+});
+
+test('New service/new bucket, public API, new VPC', () => {
+  // An environment with region is required to enable logging on an ALB
+  const stack = new cdk.Stack();
+  const publicApi = true;
+  const clusterName = "custom-cluster-name";
+  const containerName = "custom-container-name";
+  const serviceName = "custom-service-name";
+  const bucketName = "custom-bucket-name";
+  const familyName = "family-name";
+
+  const props = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    bucketProps: { bucketName },
+    existingBucketObj: new s3.Bucket(stack, 'test-bucket', {}),
+    logS3AccessLogs: false,
+    bucketPermissions: ['Delete', 'Read', 'Write']
+  };
+  const app = () => {
+    new FargateToS3(stack, 'test-one', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+});
+
+test('Confirm that CheckVpcProps was called', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+  const clusterName = "custom-cluster-name";
+  const containerName = "custom-container-name";
+  const serviceName = "custom-service-name";
+  const familyName = "custom-family-name";
+
+  const props: FargateToS3Props = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    existingVpc: defaults.getTestVpc(stack),
+    vpcProps: {  },
+  };
+
+  const app = () => {
+    new FargateToS3(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });

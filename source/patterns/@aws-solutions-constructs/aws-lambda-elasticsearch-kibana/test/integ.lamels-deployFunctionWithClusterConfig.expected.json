@@ -1,0 +1,998 @@
+{
+  "Resources": {
+    "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":log-group:/aws/lambda/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy"
+          }
+        ]
+      }
+    },
+    "testlambdaelasticsearchkibana5LambdaFunctionServiceRoleDefaultPolicy8A628F4B": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "ec2:CreateNetworkInterface",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DeleteNetworkInterface",
+                "ec2:AssignPrivateIpAddresses",
+                "ec2:UnassignPrivateIpAddresses"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testlambdaelasticsearchkibana5LambdaFunctionServiceRoleDefaultPolicy8A628F4B",
+        "Roles": [
+          {
+            "Ref": "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+            }
+          ]
+        }
+      }
+    },
+    "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup375DBE67": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/ReplaceDefaultSecurityGroup-security-group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W5",
+              "reason": "Egress of 0.0.0.0/0 is default and generally considered OK"
+            },
+            {
+              "id": "W40",
+              "reason": "Egress IPProtocol of -1 is default and generally considered OK"
+            }
+          ]
+        }
+      }
+    },
+    "testlambdaelasticsearchkibana5LambdaFunction5382AC86": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "35bbbc7b04b21f225891f139adf234188f348ebad5f4bbc2c06edf8aa3784c97.zip"
+        },
+        "Environment": {
+          "Variables": {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "DOMAIN_ENDPOINT": {
+              "Fn::GetAtt": [
+                "testlambdaelasticsearchkibana5ElasticsearchDomain58F77409",
+                "DomainEndpoint"
+              ]
+            }
+          }
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs16.x",
+        "TracingConfig": {
+          "Mode": "Active"
+        },
+        "VpcConfig": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup375DBE67",
+                "GroupId"
+              ]
+            }
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
+            },
+            {
+              "Ref": "VpcisolatedSubnet2Subnet39217055"
+            }
+          ]
+        }
+      },
+      "DependsOn": [
+        "testlambdaelasticsearchkibana5LambdaFunctionServiceRoleDefaultPolicy8A628F4B",
+        "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12",
+        "VpcisolatedSubnet1RouteTableAssociationD259E31A",
+        "VpcisolatedSubnet2RouteTableAssociation25A4716F"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+            },
+            {
+              "id": "W89",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            },
+            {
+              "id": "W92",
+              "reason": "Impossible for us to define the correct concurrency for clients"
+            }
+          ]
+        }
+      }
+    },
+    "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0": {
+      "Type": "AWS::Cognito::UserPool",
+      "Properties": {
+        "AccountRecoverySetting": {
+          "RecoveryMechanisms": [
+            {
+              "Name": "verified_phone_number",
+              "Priority": 1
+            },
+            {
+              "Name": "verified_email",
+              "Priority": 2
+            }
+          ]
+        },
+        "AdminCreateUserConfig": {
+          "AllowAdminCreateUserOnly": true
+        },
+        "EmailVerificationMessage": "The verification code to your new account is {####}",
+        "EmailVerificationSubject": "Verify your new account",
+        "SmsVerificationMessage": "The verification code to your new account is {####}",
+        "UserPoolAddOns": {
+          "AdvancedSecurityMode": "ENFORCED"
+        },
+        "VerificationMessageTemplate": {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "The verification code to your new account is {####}",
+          "EmailSubject": "Verify your new account",
+          "SmsMessage": "The verification code to your new account is {####}"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
+    },
+    "testlambdaelasticsearchkibana5CognitoUserPoolClientB41FB91B": {
+      "Type": "AWS::Cognito::UserPoolClient",
+      "Properties": {
+        "AllowedOAuthFlows": [
+          "implicit",
+          "code"
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          "profile",
+          "phone",
+          "email",
+          "openid",
+          "aws.cognito.signin.user.admin"
+        ],
+        "CallbackURLs": [
+          "https://example.com"
+        ],
+        "SupportedIdentityProviders": [
+          "COGNITO"
+        ],
+        "UserPoolId": {
+          "Ref": "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0"
+        }
+      }
+    },
+    "testlambdaelasticsearchkibana5CognitoIdentityPool1B0A6046": {
+      "Type": "AWS::Cognito::IdentityPool",
+      "Properties": {
+        "AllowUnauthenticatedIdentities": false,
+        "CognitoIdentityProviders": [
+          {
+            "ClientId": {
+              "Ref": "testlambdaelasticsearchkibana5CognitoUserPoolClientB41FB91B"
+            },
+            "ProviderName": {
+              "Fn::GetAtt": [
+                "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0",
+                "ProviderName"
+              ]
+            },
+            "ServerSideTokenCheck": true
+          }
+        ]
+      }
+    },
+    "testlambdaelasticsearchkibana5UserPoolDomainE2693371": {
+      "Type": "AWS::Cognito::UserPoolDomain",
+      "Properties": {
+        "Domain": "deploytestwithclusterconfig",
+        "UserPoolId": {
+          "Ref": "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0"
+        }
+      },
+      "DependsOn": [
+        "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0"
+      ]
+    },
+    "testlambdaelasticsearchkibana5CognitoAuthorizedRole784B2C89": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": {
+                "StringEquals": {
+                  "cognito-identity.amazonaws.com:aud": {
+                    "Ref": "testlambdaelasticsearchkibana5CognitoIdentityPool1B0A6046"
+                  }
+                },
+                "ForAnyValue:StringLike": {
+                  "cognito-identity.amazonaws.com:amr": "authenticated"
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "cognito-identity.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "es:ESHttp*",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":es:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":domain/deploytestwithclusterconfig/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "CognitoAccessPolicy"
+          }
+        ]
+      }
+    },
+    "testlambdaelasticsearchkibana5IdentityPoolRoleMappingE355C8E9": {
+      "Type": "AWS::Cognito::IdentityPoolRoleAttachment",
+      "Properties": {
+        "IdentityPoolId": {
+          "Ref": "testlambdaelasticsearchkibana5CognitoIdentityPool1B0A6046"
+        },
+        "Roles": {
+          "authenticated": {
+            "Fn::GetAtt": [
+              "testlambdaelasticsearchkibana5CognitoAuthorizedRole784B2C89",
+              "Arn"
+            ]
+          }
+        }
+      }
+    },
+    "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleD2E8341A": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "es.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testlambdaelasticsearchkibana5CognitoKibanaConfigureRolePolicy11560205": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "cognito-idp:DescribeUserPool",
+                "cognito-idp:CreateUserPoolClient",
+                "cognito-idp:DeleteUserPoolClient",
+                "cognito-idp:DescribeUserPoolClient",
+                "cognito-idp:AdminInitiateAuth",
+                "cognito-idp:AdminUserGlobalSignOut",
+                "cognito-idp:ListUserPoolClients",
+                "cognito-identity:DescribeIdentityPool",
+                "cognito-identity:UpdateIdentityPool",
+                "cognito-identity:SetIdentityPoolRoles",
+                "cognito-identity:GetIdentityPoolRoles",
+                "es:UpdateElasticsearchDomainConfig"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":cognito-identity:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":identitypool/",
+                      {
+                        "Ref": "testlambdaelasticsearchkibana5CognitoIdentityPool1B0A6046"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":es:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":domain/deploytestwithclusterconfig"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "iam:PassRole",
+              "Condition": {
+                "StringLike": {
+                  "iam:PassedToService": "cognito-identity.amazonaws.com"
+                }
+              },
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleD2E8341A",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testlambdaelasticsearchkibana5CognitoKibanaConfigureRolePolicy11560205",
+        "Roles": [
+          {
+            "Ref": "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleD2E8341A"
+          }
+        ]
+      }
+    },
+    "testlambdaelasticsearchkibana5ElasticsearchDomain58F77409": {
+      "Type": "AWS::Elasticsearch::Domain",
+      "Properties": {
+        "AccessPolicies": {
+          "Statement": [
+            {
+              "Action": "es:ESHttp*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": [
+                  {
+                    "Fn::GetAtt": [
+                      "testlambdaelasticsearchkibana5CognitoAuthorizedRole784B2C89",
+                      "Arn"
+                    ]
+                  },
+                  {
+                    "Fn::GetAtt": [
+                      "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12",
+                      "Arn"
+                    ]
+                  }
+                ]
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":es:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":domain/deploytestwithclusterconfig/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "CognitoOptions": {
+          "Enabled": true,
+          "IdentityPoolId": {
+            "Ref": "testlambdaelasticsearchkibana5CognitoIdentityPool1B0A6046"
+          },
+          "RoleArn": {
+            "Fn::GetAtt": [
+              "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleD2E8341A",
+              "Arn"
+            ]
+          },
+          "UserPoolId": {
+            "Ref": "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0"
+          }
+        },
+        "DomainEndpointOptions": {
+          "EnforceHTTPS": true,
+          "TLSSecurityPolicy": "Policy-Min-TLS-1-2-2019-07"
+        },
+        "DomainName": "deploytestwithclusterconfig",
+        "EBSOptions": {
+          "EBSEnabled": true,
+          "VolumeSize": 10
+        },
+        "ElasticsearchClusterConfig": {
+          "DedicatedMasterCount": 3,
+          "DedicatedMasterEnabled": true,
+          "InstanceCount": 2,
+          "ZoneAwarenessConfig": {
+            "AvailabilityZoneCount": 2
+          },
+          "ZoneAwarenessEnabled": true
+        },
+        "ElasticsearchVersion": "6.3",
+        "EncryptionAtRestOptions": {
+          "Enabled": true
+        },
+        "NodeToNodeEncryptionOptions": {
+          "Enabled": true
+        },
+        "SnapshotOptions": {
+          "AutomatedSnapshotStartHour": 1
+        },
+        "VPCOptions": {
+          "SecurityGroupIds": [
+            {
+              "Fn::GetAtt": [
+                "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup375DBE67",
+                "GroupId"
+              ]
+            }
+          ],
+          "SubnetIds": [
+            {
+              "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
+            },
+            {
+              "Ref": "VpcisolatedSubnet2Subnet39217055"
+            }
+          ]
+        }
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W28",
+              "reason": "The ES Domain is passed dynamically as as parameter and explicitly specified to ensure that IAM policies are configured to lockdown access to this specific ES instance only"
+            },
+            {
+              "id": "W90",
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
+            }
+          ]
+        }
+      }
+    },
+    "testlambdaelasticsearchkibana5StatusRedAlarm916EC672": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "At least one primary shard and its replicas are not allocated to a node. ",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "ClusterStatus.red",
+        "Namespace": "AWS/ES",
+        "Period": 60,
+        "Statistic": "Maximum",
+        "Threshold": 1
+      }
+    },
+    "testlambdaelasticsearchkibana5StatusYellowAlarm7DCAF60A": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "At least one replica shard is not allocated to a node.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "ClusterStatus.yellow",
+        "Namespace": "AWS/ES",
+        "Period": 60,
+        "Statistic": "Maximum",
+        "Threshold": 1
+      }
+    },
+    "testlambdaelasticsearchkibana5FreeStorageSpaceTooLowAlarmEC2C0D7B": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "A node in your cluster is down to 20 GiB of free storage space.",
+        "ComparisonOperator": "LessThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "FreeStorageSpace",
+        "Namespace": "AWS/ES",
+        "Period": 60,
+        "Statistic": "Minimum",
+        "Threshold": 20000
+      }
+    },
+    "testlambdaelasticsearchkibana5IndexWritesBlockedTooHighAlarmD496CE3E": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "Your cluster is blocking write requests.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "ClusterIndexWritesBlocked",
+        "Namespace": "AWS/ES",
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 1
+      }
+    },
+    "testlambdaelasticsearchkibana5AutomatedSnapshotFailureTooHighAlarm97129BC4": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "An automated snapshot failed. This failure is often the result of a red cluster health status.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "AutomatedSnapshotFailure",
+        "Namespace": "AWS/ES",
+        "Period": 60,
+        "Statistic": "Maximum",
+        "Threshold": 1
+      }
+    },
+    "testlambdaelasticsearchkibana5CPUUtilizationTooHighAlarm3BAAA397": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "100% CPU utilization is not uncommon, but sustained high usage is problematic. Consider using larger instance types or adding instances.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 3,
+        "MetricName": "CPUUtilization",
+        "Namespace": "AWS/ES",
+        "Period": 900,
+        "Statistic": "Average",
+        "Threshold": 80
+      }
+    },
+    "testlambdaelasticsearchkibana5JVMMemoryPressureTooHighAlarm251AD583": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "JVMMemoryPressure",
+        "Namespace": "AWS/ES",
+        "Period": 900,
+        "Statistic": "Average",
+        "Threshold": 80
+      }
+    },
+    "testlambdaelasticsearchkibana5MasterCPUUtilizationTooHighAlarm97A330CC": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "Average CPU utilization over last 45 minutes too high. Consider using larger instance types for your dedicated master nodes.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 3,
+        "MetricName": "MasterCPUUtilization",
+        "Namespace": "AWS/ES",
+        "Period": 900,
+        "Statistic": "Average",
+        "Threshold": 50
+      }
+    },
+    "testlambdaelasticsearchkibana5MasterJVMMemoryPressureTooHighAlarm7DABB351": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "Average JVM memory pressure over last 15 minutes too high. Consider scaling vertically.",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": 1,
+        "MetricName": "MasterJVMMemoryPressure",
+        "Namespace": "AWS/ES",
+        "Period": 900,
+        "Statistic": "Average",
+        "Threshold": 50
+      }
+    },
+    "Vpc8378EB38": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "lamels-deployFunctionWithClusterConfig/Vpc"
+          }
+        ]
+      }
+    },
+    "VpcisolatedSubnet1SubnetE62B1B9B": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": "test-region-1a",
+        "CidrBlock": "10.0.0.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "lamels-deployFunctionWithClusterConfig/Vpc/isolatedSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      }
+    },
+    "VpcisolatedSubnet1RouteTableE442650B": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "lamels-deployFunctionWithClusterConfig/Vpc/isolatedSubnet1"
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      }
+    },
+    "VpcisolatedSubnet1RouteTableAssociationD259E31A": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcisolatedSubnet1RouteTableE442650B"
+        },
+        "SubnetId": {
+          "Ref": "VpcisolatedSubnet1SubnetE62B1B9B"
+        }
+      }
+    },
+    "VpcisolatedSubnet2Subnet39217055": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": "test-region-1b",
+        "CidrBlock": "10.0.64.0/18",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "isolated"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated"
+          },
+          {
+            "Key": "Name",
+            "Value": "lamels-deployFunctionWithClusterConfig/Vpc/isolatedSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      }
+    },
+    "VpcisolatedSubnet2RouteTable334F9764": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "lamels-deployFunctionWithClusterConfig/Vpc/isolatedSubnet2"
+          }
+        ],
+        "VpcId": {
+          "Ref": "Vpc8378EB38"
+        }
+      }
+    },
+    "VpcisolatedSubnet2RouteTableAssociation25A4716F": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "VpcisolatedSubnet2RouteTable334F9764"
+        },
+        "SubnetId": {
+          "Ref": "VpcisolatedSubnet2Subnet39217055"
+        }
+      }
+    },
+    "VpcFlowLogIAMRole6A475D41": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "vpc-flow-logs.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "lamels-deployFunctionWithClusterConfig/Vpc/FlowLog"
+          }
+        ]
+      }
+    },
+    "VpcFlowLogIAMRoleDefaultPolicy406FB995": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:DescribeLogStreams"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "VpcFlowLogLogGroup7B5C56B9",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "iam:PassRole",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "VpcFlowLogIAMRole6A475D41",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "VpcFlowLogIAMRoleDefaultPolicy406FB995",
+        "Roles": [
+          {
+            "Ref": "VpcFlowLogIAMRole6A475D41"
+          }
+        ]
+      }
+    },
+    "VpcFlowLogLogGroup7B5C56B9": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "RetentionInDays": 731,
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "lamels-deployFunctionWithClusterConfig/Vpc/FlowLog"
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W84",
+              "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+            }
+          ]
+        }
+      }
+    },
+    "VpcFlowLog8FF33A73": {
+      "Type": "AWS::EC2::FlowLog",
+      "Properties": {
+        "DeliverLogsPermissionArn": {
+          "Fn::GetAtt": [
+            "VpcFlowLogIAMRole6A475D41",
+            "Arn"
+          ]
+        },
+        "LogDestinationType": "cloud-watch-logs",
+        "LogGroupName": {
+          "Ref": "VpcFlowLogLogGroup7B5C56B9"
+        },
+        "ResourceId": {
+          "Ref": "Vpc8378EB38"
+        },
+        "ResourceType": "VPC",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "lamels-deployFunctionWithClusterConfig/Vpc/FlowLog"
+          }
+        ],
+        "TrafficType": "ALL"
+      }
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
+    }
+  }
+}

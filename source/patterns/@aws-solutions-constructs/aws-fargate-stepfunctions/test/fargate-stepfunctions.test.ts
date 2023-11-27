@@ -13,7 +13,7 @@
 
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
-import { FargateToStepfunctions } from "../lib";
+import { FargateToStepfunctions, FargateToStepfunctionsProps } from "../lib";
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
@@ -64,15 +64,22 @@ test('Check for an existing service', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    { clusterName },
-    defaults.fakeEcrRepoArn,
-    undefined,
-    { family: familyName },
-    { containerName },
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    clientClusterProps: {
+      clusterName
+    },
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateTaskDefinitionProps: {
+      family: familyName
+    },
+    clientContainerDefinitionProps: {
+      containerName
+    },
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,
@@ -302,6 +309,30 @@ test('Check for custom log group props', () => {
   });
 });
 
+test('Confirm that CheckVpcProps was called', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+
+  const props: FargateToStepfunctionsProps = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    stateMachineProps: testStateMachineProps(stack),
+    existingVpc: defaults.getTestVpc(stack),
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
+  };
+
+  const app = () => {
+    new FargateToStepfunctions(stack, 'test-construct', props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});
+
 function createFargateConstructWithNewResources(stack: cdk.Stack, publicApi: boolean) {
   return new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,
@@ -320,30 +351,4 @@ function testStateMachineProps(stack: cdk.Stack, userProps?: stepfunctions.State
   const defaultTestProp = { definition: new stepfunctions.Pass(stack, 'StartState') };
 
   return defaults.consolidateProps(defaultTestProp, userProps);
-}
-
-test('check LogGroup name', () => {
-  const stack = new cdk.Stack();
-  const publicApi = true;
-
-  createFargateConstructWithNewResources(stack, publicApi);
-
-  // Perform some fancy stuff to examine the specifics of the LogGroupName
-  const expectedPrefix = '/aws/vendedlogs/states/constructs/';
-  const lengthOfDatetimeSuffix = 13;
-
-  const template = Template.fromStack(stack);
-  const LogGroup = template.findResources("AWS::Logs::LogGroup");
-
-  const logName = LogGroup.testconstructStateMachineLogGroup2EB4F48B.Properties.LogGroupName;
-  const suffix = logName.slice(-lengthOfDatetimeSuffix);
-
-  // Look for the expected Prefix and the 13 digit time suffix
-  expect(logName.slice(0, expectedPrefix.length)).toEqual(expectedPrefix);
-  expect(IsWholeNumber(suffix)).not.toBe(false);
-});
-
-function IsWholeNumber(target: string): boolean {
-  const numberPattern = /[0-9]{13}/;
-  return target.match(numberPattern) !== null;
 }

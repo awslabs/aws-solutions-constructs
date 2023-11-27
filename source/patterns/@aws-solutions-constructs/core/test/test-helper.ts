@@ -12,9 +12,9 @@
  */
 
 // Imports
-import { Construct } from 'constructs';
+import { Construct, IConstruct } from 'constructs';
 import { Bucket, BucketProps, BucketEncryption } from "aws-cdk-lib/aws-s3";
-import { RemovalPolicy, Stack } from "aws-cdk-lib";
+import { CfnResource, RemovalPolicy, Stack, Aspects, IAspect } from "aws-cdk-lib";
 import { buildVpc } from '../lib/vpc-helper';
 import { DefaultPublicPrivateVpcProps, DefaultIsolatedVpcProps } from '../lib/vpc-defaults';
 import { overrideProps, addCfnSuppressRules } from "../lib/utils";
@@ -31,9 +31,11 @@ export const fakeEcrRepoArn = 'arn:aws:ecr:us-east-1:123456789012:repository/fak
 
 // Creates a bucket used for testing - minimal properties, destroyed after test
 export function CreateScrapBucket(scope: Construct, props?: BucketProps | any) {
-  const defaultProps = {
+
+  const defaultProps: BucketProps = {
     versioned: true,
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
     encryption: BucketEncryption.S3_MANAGED,
   };
 
@@ -46,7 +48,7 @@ export function CreateScrapBucket(scope: Construct, props?: BucketProps | any) {
 
   const scriptBucket = new Bucket(
     scope,
-    "existingScriptLocation",
+    "scrapBucket",
     synthesizedProps
   );
 
@@ -104,7 +106,7 @@ export function getFakeCertificate(scope: Construct, id: string): acm.ICertifica
 }
 
 export function suppressAutoDeleteHandlerWarnings(stack: Stack) {
-  Stack.of(stack).node.children.forEach(child => {
+  stack.node.children.forEach(child => {
     if (child.node.id === 'Custom::S3AutoDeleteObjectsCustomResourceProvider') {
       const handlerFunction = child.node.findChild('Handler') as CfnFunction;
       addCfnSuppressRules(handlerFunction, [{ id: "W58", reason: "CDK generated custom resource"}]);
@@ -112,7 +114,6 @@ export function suppressAutoDeleteHandlerWarnings(stack: Stack) {
       addCfnSuppressRules(handlerFunction, [{ id: "W92", reason: "CDK generated custom resource"}]);
     }
   });
-
 }
 
 export function CreateTestCache(scope: Construct, id: string, vpc: ec2.IVpc, port?: number) {
@@ -177,4 +178,27 @@ export function expectKmsKeyAttachedToCorrectResource(stack: Stack, parentResour
 export function expectNonexistence(stack: Stack, type: string, props: object) {
   const shouldFindNothing = Template.fromStack(stack).findResources(type, props);
   expect(Object.keys(shouldFindNothing).length).toEqual(0);
+}
+
+// private helper class to suppress the standard cfn nag warnings for lambda functions used in integ tests
+class CfnNagLambdaAspect implements IAspect {
+  public visit(node: IConstruct): void {
+    const resource = node as CfnResource;
+    if (resource.cfnResourceType === 'AWS::Lambda::Function') {
+      addCfnSuppressRules(resource, [
+        { id: 'W58', reason: 'This Lambda Function is created for integration testing purposes only and is not part of an actual construct' },
+        { id: 'W89', reason: 'This Lambda Function is created for integration testing purposes only and is not part of an actual construct' },
+        { id: 'W92', reason: 'This Lambda Function is created for integration testing purposes only and is not part of an actual construct' }
+      ]);
+    }
+  }
+}
+
+/**
+ * Used to suppress cfn nag W58, W89, and W92 rules on lambda integration test resources.
+ *
+ * @param stack - The stack to suppress cfn nag lambda rules on
+ */
+export function SuppressCfnNagLambdaWarnings(stack: Stack) {
+  Aspects.of(stack).add(new CfnNagLambdaAspect());
 }

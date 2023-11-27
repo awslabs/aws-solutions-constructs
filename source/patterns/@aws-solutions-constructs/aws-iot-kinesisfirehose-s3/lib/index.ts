@@ -19,7 +19,6 @@ import * as logs from 'aws-cdk-lib/aws-logs';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 import * as defaults from '@aws-solutions-constructs/core';
-import { overrideProps } from '@aws-solutions-constructs/core';
 import { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
 
 /**
@@ -91,7 +90,10 @@ export class IotToKinesisFirehoseToS3 extends Construct {
    */
   constructor(scope: Construct, id: string, props: IotToKinesisFirehoseToS3Props) {
     super(scope, id);
-    defaults.CheckProps(props);
+
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
     const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
       kinesisFirehoseProps: props.kinesisFirehoseProps,
@@ -129,7 +131,7 @@ export class IotToKinesisFirehoseToS3 extends Construct {
         roleArn: this.iotActionsRole.roleArn
       }
     }]);
-    const iotTopicProps = overrideProps(defaultIotTopicProps, props.iotTopicRuleProps, true);
+    const iotTopicProps = defaults.overrideProps(defaultIotTopicProps, props.iotTopicRuleProps, true);
 
     // Create the IoT topic rule
     this.iotTopicRule = new iot.CfnTopicRule(this, 'IotTopic', iotTopicProps);

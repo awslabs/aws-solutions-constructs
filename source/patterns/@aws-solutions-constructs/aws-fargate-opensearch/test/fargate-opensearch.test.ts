@@ -14,7 +14,7 @@
 import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
-import { FargateToOpenSearch } from "../lib";
+import { FargateToOpenSearch,  FargateToOpenSearchProps } from "../lib";
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
@@ -50,7 +50,7 @@ test('Test domain and cognito domain name', () => {
     clusterProps: { clusterName: CLUSTER_NAME },
     containerDefinitionProps: { CONTAINER_NAME },
     fargateTaskDefinitionProps: { family: FAMILY_NAME },
-    fargateServiceProps: { servieName: SERVICE_NAME },
+    fargateServiceProps: { serviceName: SERVICE_NAME },
     openSearchDomainName: DOMAIN_NAME,
     cognitoDomainName: COGNITO_DOMAIN_NAME
   });
@@ -71,15 +71,15 @@ test('Check construct properties', () => {
 
   const construct = deployStackWithNewResources(stack, publicApi);
 
-  expect(construct.vpc !== null);
-  expect(construct.service !== null);
-  expect(construct.container !== null);
-  expect(construct.userPool !== null);
-  expect(construct.userPoolClient !== null);
-  expect(construct.identityPool !== null);
-  expect(construct.openSearchDomain !== null);
-  expect(construct.openSearchRole !== null);
-  expect(construct.cloudWatchAlarms !== null);
+  expect(construct.vpc).toBeDefined();
+  expect(construct.service).toBeDefined();
+  expect(construct.container).toBeDefined();
+  expect(construct.userPool).toBeDefined();
+  expect(construct.userPoolClient).toBeDefined();
+  expect(construct.identityPool).toBeDefined();
+  expect(construct.openSearchDomain).toBeDefined();
+  expect(construct.openSearchRole).toBeDefined();
+  expect(construct.cloudWatchAlarms).toBeDefined();
 });
 
 test('Test cognito dashboard role IAM policy', () => {
@@ -564,15 +564,13 @@ test('Existing service/new domain, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName: SERVICE_NAME });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName: SERVICE_NAME
+    }
+  });
 
   new FargateToOpenSearch(stack, 'test-construct', {
     publicApi,
@@ -647,15 +645,13 @@ test('Existing service/new domain, private API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName: SERVICE_NAME });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName: SERVICE_NAME
+    }
+  });
 
   new FargateToOpenSearch(stack, 'test-construct', {
     publicApi,
@@ -724,7 +720,7 @@ test('Existing service/new domain, private API, existing VPC', () => {
   template.resourceCountIs('AWS::OpenSearchService::Domain', 1);
 });
 
-test('Check error for using OpenSearch VPC prop parameter', () => {
+test('Confirm CheckOpenSearchProps is called', () => {
   const stack = new cdk.Stack();
   const publicApi = false;
 
@@ -740,4 +736,32 @@ test('Check error for using OpenSearch VPC prop parameter', () => {
   };
 
   expect(app).toThrowError("Error - Define VPC using construct parameters not the OpenSearch Service props");
+});
+
+test('Confirm that CheckVpcProps was called', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+  const clusterName = "custom-cluster-name";
+  const containerName = "custom-container-name";
+  const serviceName = "custom-service-name";
+  const familyName = "custom-family-name";
+
+  const props: FargateToOpenSearchProps = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    openSearchDomainName: DOMAIN_NAME,
+    cognitoDomainName: COGNITO_DOMAIN_NAME,
+    existingVpc: defaults.getTestVpc(stack),
+    vpcProps: {  },
+  };
+
+  const app = () => {
+    new FargateToOpenSearch(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });

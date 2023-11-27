@@ -28,56 +28,60 @@ export interface CreateFargateServiceResponse {
   readonly containerDefinition: ecs.ContainerDefinition
 }
 
+export interface CreateFargateServiceProps {
+  readonly constructVpc: ec2.IVpc,
+  readonly clientClusterProps?: ecs.ClusterProps,
+  readonly ecrRepositoryArn?: string,
+  readonly ecrImageVersion?: string,
+  readonly clientFargateTaskDefinitionProps?: ecs.FargateTaskDefinitionProps | any,
+  readonly clientContainerDefinitionProps?: ecs.ContainerDefinitionProps | any,
+  readonly clientFargateServiceProps?: ecs.FargateServiceProps | any
+}
+
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function CreateFargateService(
   scope: Construct,
   id: string,
-  constructVpc: ec2.IVpc,
-  clientClusterProps?: ecs.ClusterProps,
-  ecrRepositoryArn?: string,
-  ecrImageVersion?: string,
-  clientFargateTaskDefinitionProps?: ecs.FargateTaskDefinitionProps | any,
-  clientContainerDefinitionProps?: ecs.ContainerDefinitionProps | any,
-  clientFargateServiceProps?: ecs.FargateServiceProps | any
+  props: CreateFargateServiceProps
 ): CreateFargateServiceResponse {
   defaults.AddAwsServiceEndpoint(
     scope,
-    constructVpc,
+    props.constructVpc,
     defaults.ServiceEndpointTypes.ECR_API
   );
   defaults.AddAwsServiceEndpoint(
     scope,
-    constructVpc,
+    props.constructVpc,
     defaults.ServiceEndpointTypes.ECR_DKR
   );
   defaults.AddAwsServiceEndpoint(
     scope,
-    constructVpc,
+    props.constructVpc,
     defaults.ServiceEndpointTypes.S3
   );
 
-  const constructContainerDefintionProps: any = {};
+  const constructContainerDefinitionProps: any = {};
   const constructFargateServiceDefinitionProps: any = {};
 
-  if (!clientFargateServiceProps?.cluster) {
+  if (!props.clientFargateServiceProps?.cluster) {
     // Construct Fargate Service
     constructFargateServiceDefinitionProps.cluster = CreateCluster(
       scope,
       `${id}-cluster`,
-      constructVpc,
-      clientClusterProps
+      props.constructVpc,
+      props.clientClusterProps
     );
   }
 
   // Set up the Fargate service
-  if (!clientContainerDefinitionProps?.image) {
-    constructContainerDefintionProps.image = CreateImage(
+  if (!props.clientContainerDefinitionProps?.image) {
+    constructContainerDefinitionProps.image = CreateImage(
       scope,
       id,
-      ecrRepositoryArn,
-      ecrImageVersion
+      props.ecrRepositoryArn,
+      props.ecrImageVersion
     );
   }
 
@@ -86,32 +90,32 @@ export function CreateFargateService(
   const createTaskDefinitionResponse = CreateTaskDefinition(
     scope,
     id,
-    clientFargateTaskDefinitionProps,
-    clientContainerDefinitionProps,
-    constructContainerDefintionProps
+    props.clientFargateTaskDefinitionProps,
+    props.clientContainerDefinitionProps,
+    constructContainerDefinitionProps
   );
   constructFargateServiceDefinitionProps.taskDefinition = createTaskDefinitionResponse.taskDefinition;
   newContainerDefinition = createTaskDefinitionResponse.containerDefinition;
 
-  if (!clientFargateServiceProps?.vpcSubnets) {
-    if (constructVpc.isolatedSubnets.length) {
+  if (!props.clientFargateServiceProps?.vpcSubnets) {
+    if (props.constructVpc.isolatedSubnets.length) {
       constructFargateServiceDefinitionProps.vpcSubnets = {
-        subnets: constructVpc.isolatedSubnets,
+        subnets: props.constructVpc.isolatedSubnets,
       };
     } else {
       constructFargateServiceDefinitionProps.vpcSubnets = {
-        subnets: constructVpc.privateSubnets,
+        subnets: props.constructVpc.privateSubnets,
       };
     }
   }
 
   let defaultFargateServiceProps;
 
-  if (!clientFargateServiceProps?.securityGroups) {
+  if (!props.clientFargateServiceProps?.securityGroups) {
     const serviceSecurityGroup = new ec2.SecurityGroup(scope, `${id}-sg`, {
       allowAllOutbound: true,
       disableInlineRules: false,
-      vpc: constructVpc,
+      vpc: props.constructVpc,
       // We add a description here so that this SG can be easily identified in tests
       description: 'Construct created security group'
     });
@@ -132,7 +136,7 @@ export function CreateFargateService(
 
   const fargateServiceProps = defaults.consolidateProps(
     defaultFargateServiceProps,
-    clientFargateServiceProps,
+    props.clientFargateServiceProps,
     constructFargateServiceDefinitionProps
   );
 
@@ -220,16 +224,7 @@ export function CheckFargateProps(props: any) {
   let errorMessages = "";
   let errorFound = false;
 
-  if (
-    props.existingFargateServiceObject &&
-    (props.existingImageObject ||
-      props.ecrImageVersion ||
-      props.containerDefinitionProps ||
-      props.fargateTaskDefinitionProps ||
-      props.ecrRepositoryArn ||
-      props.fargateServiceProps ||
-      props.clusterProps)
-  ) {
+  if (CheckForConflictingServiceProps(props)) {
     errorFound = true;
     errorMessages +=
       "If you provide an existingFargateServiceObject, you cannot provide any props defining a new service\n";
@@ -263,10 +258,10 @@ export function CheckFargateProps(props: any) {
       "If you provide a cluster in fargateServiceProps then you cannot provide clusterProps\n";
   }
 
-  if (props.clusterProps?.vpc) {
+  if (CheckForInvalidVpcs(props)) {
     errorFound = true;
     errorMessages +=
-      "All services in the construct use the construct VPC, you cannot specify a VPC in clusterProps\n";
+      "Provide all VPC info at Construct level, not within clusterProps nor targetGroupProps\n";
   }
 
   if (
@@ -284,6 +279,34 @@ export function CheckFargateProps(props: any) {
   if (errorFound) {
     throw new Error(errorMessages);
   }
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function CheckForConflictingServiceProps(props: any): boolean {
+  if (props.existingFargateServiceObject &&
+    (props.existingImageObject ||
+      props.ecrImageVersion ||
+      props.containerDefinitionProps ||
+      props.fargateTaskDefinitionProps ||
+      props.ecrRepositoryArn ||
+      props.fargateServiceProps ||
+      props.clusterProps)
+  ) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function CheckForInvalidVpcs(props: any): boolean {
+  if (props.clusterProps?.vpc || props.targetGroupProps?.vpc) {
+    return true;
+  }
+  return false;
 }
 
 /**

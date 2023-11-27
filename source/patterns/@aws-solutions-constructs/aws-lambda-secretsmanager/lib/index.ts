@@ -70,7 +70,7 @@ export interface LambdaToSecretsmanagerProps {
    * Optional secret permissions to grant to the Lambda function.
    * One of the following may be specified: "Read" or "ReadWrite".
    *
-   * @default - Read only acess is given to the Lambda function if no value is specified.
+   * @default - Read only access is given to the Lambda function if no value is specified.
    */
   readonly grantWriteAccess?: string;
 }
@@ -92,12 +92,11 @@ export class LambdaToSecretsmanager extends Construct {
      */
     constructor(scope: Construct, id: string, props: LambdaToSecretsmanagerProps) {
       super(scope, id);
-      defaults.CheckProps(props);
+      defaults.CheckVpcProps(props);
+      defaults.CheckLambdaProps(props);
+      defaults.CheckSecretsManagerProps(props);
 
       if (props.deployVpc || props.existingVpc) {
-        if (props.deployVpc && props.existingVpc) {
-          throw new Error("More than 1 VPC specified in the properties");
-        }
 
         this.vpc = defaults.buildVpc(scope, {
           defaultVpcProps: defaults.DefaultIsolatedVpcProps(),

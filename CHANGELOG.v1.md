@@ -261,7 +261,7 @@ All notable changes to this project will be documented in this file. See [standa
 ### Bug Fixes
 
 * **apigateway-helper:** fixed condition for cloudWatchRole creation ([#468](https://github.com/awslabs/aws-solutions-constructs/issues/468)) ([e454349](https://github.com/awslabs/aws-solutions-constructs/commit/e45434928a17cde580698a82ee53f6ee7463c6cf))
-* **Set outputBucket property on aws-kinesisstreams-gluejob:** Issue [#448](https://github.com/awslabs/aws-solutions-constructs/issues/448) to include S3 bucket for Glue Job that the consturct creates ([#452](https://github.com/awslabs/aws-solutions-constructs/issues/452)) ([c40e1f7](https://github.com/awslabs/aws-solutions-constructs/commit/c40e1f7c3524652ac8e3277b1c482975e6df9e36))
+* **Set outputBucket property on aws-kinesisstreams-gluejob:** Issue [#448](https://github.com/awslabs/aws-solutions-constructs/issues/448) to include S3 bucket for Glue Job that the construct creates ([#452](https://github.com/awslabs/aws-solutions-constructs/issues/452)) ([c40e1f7](https://github.com/awslabs/aws-solutions-constructs/commit/c40e1f7c3524652ac8e3277b1c482975e6df9e36))
 
 ## [1.125.0](https://github.com/awslabs/aws-solutions-constructs/compare/v1.124.0...v1.125.0) (2021-10-08)
 
@@ -515,7 +515,7 @@ All notable changes to this project will be documented in this file. See [standa
 ### Changed
 
 * Upgraded all patterns to CDK v1.105.0
-* aws-s3-step-function now triggers for Mulitpart uploads and Copy Object [#198](https://github.com/awslabs/aws-solutions-constructs/pull/198)
+* aws-s3-step-function now triggers for Multipart uploads and Copy Object [#198](https://github.com/awslabs/aws-solutions-constructs/pull/198)
 * Change S3 protocol in glue to use s3a:// [#197](https://github.com/awslabs/aws-solutions-constructs/pull/197)
 * Change policy name in for glue so multiple constructs can be included in a single stack [#197](https://github.com/awslabs/aws-solutions-constructs/pull/197)
 
@@ -579,14 +579,14 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Changed
 - Upgraded all patterns to CDK v1.97.0
-- Made changes to accomodate cfn_nag rule W92
+- Made changes to accommodate cfn_nag rule W92
 - Updated integration tests to destroy S3 buckets when tearing down the test stack
 
 ## 1.96.0 (2021-04-07)
 
 ### Changed
 - Upgraded all patterns to CDK v1.96.0
-- Made changes to accomodate cfn_nag rules W89 and W90
+- Made changes to accommodate cfn_nag rules W89 and W90
 
 ## 1.95.2 (2021-04-03)
 
@@ -745,7 +745,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Changed
 - Upgraded all patterns to CDK v1.76.0
-- Added ESLint rule to enfore 2 space indentation
+- Added ESLint rule to enforce 2 space indentation
 - Updated `aws-lambda-sqs` to support for VPC
 
 ## 1.75.0 (2020-12-03)

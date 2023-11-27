@@ -15,6 +15,7 @@ import * as sns from 'aws-cdk-lib/aws-sns';
 import * as events from 'aws-cdk-lib/aws-events';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as defaults from '@aws-solutions-constructs/core';
+import * as cdk from 'aws-cdk-lib';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 import { overrideProps } from '@aws-solutions-constructs/core';
@@ -87,7 +88,8 @@ export class EventbridgeToSns extends Construct {
      */
     constructor(scope: Construct, id: string, props: EventbridgeToSnsProps) {
       super(scope, id);
-      defaults.CheckProps(props);
+      defaults.CheckSnsProps(props);
+      defaults.CheckEventBridgeProps(props);
 
       let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
       if (props.enableEncryptionWithCustomerManagedKey === undefined ||
@@ -106,10 +108,22 @@ export class EventbridgeToSns extends Construct {
 
       this.snsTopic = buildTopicResponse.topic;
       this.encryptionKey = buildTopicResponse.key;
+
       // Setup the event rule target as sns topic.
+
+      // The CDK generally avoids resource names that are too long, but in this case the maximum SNS topic name is 256 characters and the maximum
+      // binding id is 64 characters, so a long SNS topic name (driven by Stack id, Construct id, etc.) breaks upon launch. Because of this, we take
+      // control of the physical name ourselves.
+      const maxBindingIdLength = 64;
+      const nameParts: string[] = [
+        cdk.Stack.of(scope).stackName, // Name of the stack
+        id,                            // Construct ID
+      ];
+      const generatedTopicName = defaults.generatePhysicalName("", nameParts, maxBindingIdLength);
+
       const topicEventTarget: events.IRuleTarget = {
         bind: () => ({
-          id: this.snsTopic.topicName,
+          id: generatedTopicName,
           arn: this.snsTopic.topicArn
         })
       };

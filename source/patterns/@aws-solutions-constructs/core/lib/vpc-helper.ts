@@ -78,7 +78,8 @@ export enum ServiceEndpointTypes {
   ECR_DKR = "ECR_DKR",
   EVENTS = "CLOUDWATCH_EVENTS",
   KINESIS_FIREHOSE = "KINESIS_FIREHOSE",
-  KINESIS_STREAMS = "KINESIS_STREAMS"
+  KINESIS_STREAMS = "KINESIS_STREAMS",
+  KENDRA = "KENDRA"
 }
 
 enum EndpointTypes {
@@ -158,6 +159,11 @@ const endpointSettings: EndpointDefinition[] = [
     endpointName: ServiceEndpointTypes.KINESIS_STREAMS,
     endpointType: EndpointTypes.INTERFACE,
     endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.KINESIS_STREAMS
+  },
+  {
+    endpointName: ServiceEndpointTypes.KENDRA,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.KENDRA
   }
 ];
 
@@ -188,7 +194,8 @@ export function AddAwsServiceEndpoint(
     AddInterfaceEndpoint(scope, vpc, service, interfaceTag);
   }
 
-  return;
+  // ESLint requires this return statement, so disabling SonarQube warning
+  return; // NOSONAR
 }
 
 function CheckIfEndpointAlreadyExists(vpc: ec2.IVpc, interfaceTag: ServiceEndpointTypes): boolean {
@@ -263,4 +270,24 @@ export function retrievePrivateSubnetIds(vpc: ec2.IVpc) {
   };
 
   return vpc.selectSubnets(subnetSelector).subnetIds;
+}
+
+export interface VpcPropsSet {
+  readonly existingVpc?: ec2.IVpc;
+  readonly vpcProps?: ec2.VpcProps;
+  readonly deployVpc?: boolean;
+}
+
+export function CheckVpcProps(propsObject: VpcPropsSet | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if ((propsObject.deployVpc || propsObject.vpcProps) && propsObject.existingVpc) {
+    errorMessages += 'Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }

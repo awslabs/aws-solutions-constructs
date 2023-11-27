@@ -82,7 +82,8 @@ export class LambdaToKinesisFirehose extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToKinesisFirehoseProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckVpcProps(props);
+    defaults.CheckLambdaProps(props);
 
     if (!props.deployVpc && props.vpcProps) {
       throw new Error('Error - If deployVpc is not true, then vpcProps is ignored');
@@ -128,7 +129,7 @@ export class LambdaToKinesisFirehose extends Construct {
     // Configure environment variables
     const deliveryStreamEnvironmentVariableName = props.firehoseEnvironmentVariableName || 'FIREHOSE_DELIVERYSTREAM_NAME';
     // We can use ! because we checked for a stream name on props.existingKinesisFirehose at the top of this function
-    this.lambdaFunction.addEnvironment(deliveryStreamEnvironmentVariableName, this.kinesisFirehose!.deliveryStreamName!);
+    this.lambdaFunction.addEnvironment(deliveryStreamEnvironmentVariableName, this.kinesisFirehose.deliveryStreamName!);
 
   }
 }

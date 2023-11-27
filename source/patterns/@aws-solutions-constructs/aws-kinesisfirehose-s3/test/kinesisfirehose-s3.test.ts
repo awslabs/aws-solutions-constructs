@@ -194,10 +194,7 @@ test('check for no SSE encryption for KinesisFirehoseToS3', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingBucket and bucketProps
-// --------------------------------------------------------------
-test("Test bad call with existingBucket and bucketProps", () => {
+test("Confirm that CheckS3Props is being called", () => {
   // Stack
   const stack = new cdk.Stack();
 
@@ -213,12 +210,9 @@ test("Test bad call with existingBucket and bucketProps", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError("Error - Either provide bucketProps or existingBucketObj, but not both.\n");
 });
 
-// --------------------------------------------------------------
-// s3 bucket with bucket, loggingBucket, and auto delete objects
-// --------------------------------------------------------------
 test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   const stack = new cdk.Stack();
 
@@ -236,9 +230,7 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   });
 
   const template = Template.fromStack(stack);
-  template.hasResourceProperties("AWS::S3::Bucket", {
-    AccessControl: "LogDeliveryWrite"
-  });
+  template.resourceCountIs("AWS::S3::Bucket", 2);
 
   template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
@@ -253,9 +245,6 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingLoggingBucketObj and loggingBucketProps
-// --------------------------------------------------------------
 test("Test bad call with existingLoggingBucketObj and loggingBucketProps", () => {
   // Stack
   const stack = new cdk.Stack();
@@ -275,9 +264,6 @@ test("Test bad call with existingLoggingBucketObj and loggingBucketProps", () =>
   expect(app).toThrowError('Error - Either provide existingLoggingBucketObj or loggingBucketProps, but not both.\n');
 });
 
-// --------------------------------------------------------------
-// Test bad call with logS3AccessLogs as false and bucketProps
-// --------------------------------------------------------------
 test("Test bad call with logS3AccessLogs as false and bucketProps", () => {
   // Stack
   const stack = new cdk.Stack();
@@ -295,9 +281,6 @@ test("Test bad call with logS3AccessLogs as false and bucketProps", () => {
   expect(app).toThrowError('Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n');
 });
 
-// --------------------------------------------------------------
-// s3 bucket with one content bucket and no logging bucket
-// --------------------------------------------------------------
 test('s3 bucket with one content bucket and no logging bucket', () => {
   const stack = new cdk.Stack();
 
@@ -338,4 +321,12 @@ test('check DeliveryStreamName is populated', () => {
   template.hasResourceProperties("AWS::KinesisFirehose::DeliveryStream", {
     DeliveryStreamName: "KinesisFirehoseteststacktestfirehoses3F50DF0E1"
   });
+});
+
+test('check resource names allow multiple instances in 1 stack', () => {
+  const stack = new cdk.Stack();
+  new KinesisFirehoseToS3(stack, 'first-construct', {});
+  new KinesisFirehoseToS3(stack, 'second-construct', {});
+
+  // Nothing to check, the above lines shouldn't throw an error
 });

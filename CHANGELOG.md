@@ -2,9 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [2.37.0](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/compare/v2.14.0...v2.37.0) (2023-04-04)
 
-test release
+## [2.47.0](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/compare/v2.14.0...v2.47.0) (2023-11-27)
+
+Test Release
+
 
 ### Features
 
@@ -14,19 +16,131 @@ test release
 * **aws-iot-lambda-dynamodb:** add vpc and environment variable name to construct interface ([#894](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/894)) ([8ee687a](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/8ee687a8d644be8c7db8f905a55e5fced5a70bfc))
 * **aws-lambda-kinesisstream:** created new construct  ([#873](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/873)) ([81592de](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/81592de3b14a9d6f01a7e61519be6c6b90695cff))
 * **aws-lambda-opensearch:** created new construct ([#818](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/818)) ([f31f59d](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/f31f59d1ce4d945508f999d58905b1775f26a891))
+* **aws-openapi-lambda:** make names unique ([#987](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/987)) ([be9997a](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/be9997a4e7e376670ef7f3d8bf1335ea3cebc515))
+
 * **aws-wafwebacl-agigateway:** enable govcloud ([#900](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/900)) ([dd19d93](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/dd19d9363fa6c33b0c616a1a5392c26369bc02b2))
 * **aws-wafwebacl-appsync:** created new construct ([#833](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/833)) ([1c708b9](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/1c708b9bb2527ba2cbec974eab3a0e272ad26ad4))
 * **new construct:** aws-fargate-kinesisfirehose ([#881](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/881)) ([3a74a27](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/3a74a27f9c3e895a44b485ee1bb8fe9adc50a80e))
 * **new construct:** aws-fargate-kinesisstreams ([#877](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/877)) ([08b7975](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/08b79756743e4a3f9930128e8318670666e01367)), closes [#875](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/875)
+* **new construct:** aws-lambda-kendra ([#989](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/989)) ([24fe018](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/24fe018898dafd4be2d20d6636ad54333da4145d))
 * **new construct:** aws-lambda-kinesisfirehose ([#875](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/875)) ([aef3efa](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/aef3efab4b4658f12ed82937683d08997162d9bc))
+* **new construct:** aws-openapigateway-lambda ([#912](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/912)) ([09465d6](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/09465d65fc5969da5691cf5057c278ded8753b43)), closes [#910](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/910) [#917](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/917) [#922](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/922) [#929](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/929) [#930](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/930)
+
 
 
 ### Bug Fixes
 
 * **all constructs:** use aws.partition where value could refer to govcloud ([#941](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/941)) ([e4cc3c0](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/e4cc3c090d669a8f163adb013c26fcd3796b5d8b))
+* **all:** typos ([#1010](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/1010)) ([0787baf](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/0787baf7c68f84599139e5b886d5942b076174f2))
+* **aws-alb-fargate:** change container used to launch integ tests ([#962](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/962)) ([30ba7d9](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/30ba7d94a3cdd3766c24af49dbf66e56053b7b41))
+* **aws-apigateway-sqs:** Remove /message path when delete method is not allowed ([#1030](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/1030)) ([f772200](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/f772200d6885cf0e0030239ce6f7511cdb2814d6))
+* **aws-eventbridge-sns:** long sns topic names break eventbridge bindings ([#1024](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/1024)) ([9da7065](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/9da706586cf6cceb9bf4eba3cb9332003af195e0))
 * **readme.md files:** update all documentation links to v2 ([#815](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/815)) ([ad1f9d7](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/ad1f9d77ad956f6a139adceec1891132996611ee))
 * **s3-bucket-helper:** not populating response.loggingBucket when bucket supplied ([#934](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/934)) ([b65986d](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/b65986d7d1791c2ed19e62c8f39ffe42b6f2a274))
+* **s3-constructs:** accommodate s3 change that disables acls by default ([#949](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/949)) ([46d02cc](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/46d02ccf98e368206b59c27a16003dc3b16d4236))
 * **StepFunctions:** Address LogGroup behavior problems ([#922](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/issues/922)) ([84e581c](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/commit/84e581cad10f59daf827fb6e8f8101e1ec6b11f3))
+
+## [2.46.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.45.0...v2.46.0) (2023-11-09)
+
+Built on CDK v2.105.0
+Renaming and refreshing of all integration test files
+
+### Bug Fixes
+
+* **aws-eventbridge-sns:** long sns topic names break eventbridge bindings ([#1024](https://github.com/awslabs/aws-solutions-constructs/issues/1024)) ([9da7065](https://github.com/awslabs/aws-solutions-constructs/commit/9da706586cf6cceb9bf4eba3cb9332003af195e0))
+
+## [2.45.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.44.0...v2.45.0) (2023-10-14)
+
+Built on CDK v2.99.1
+Significant internal clean up chores
+
+### Bug Fixes
+
+* **all:** typos ([#1010](https://github.com/awslabs/aws-solutions-constructs/issues/1010)) ([0787baf](https://github.com/awslabs/aws-solutions-constructs/commit/0787baf7c68f84599139e5b886d5942b076174f2))
+
+## [2.44.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.43.0...v2.44.0) (2023-08-29)
+
+Built on CDK v2.82.0 (no new features, just internal housekeeping)
+
+### Bug Fixes
+
+* **aws-lambda-kendra:** fixed package.json issues
+
+## [2.43.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.43.0...v2.43.1) (2023-08-28)
+
+BUG NOTICE - THIS RELEASE WAS ONLY PARTIALLY PUBLISHED in PYPI, USE 2.44.0
+
+Built on CDK v2.82.0
+
+### Bug Fixes
+
+* **aws-lambda-kendra:** remove extra info from bottom of package.json
+
+## [2.43.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.42.0...v2.43.0) (2023-08-28)
+
+BUG NOTICE - THIS RELEASE WAS ONLY PARTIALLY PUBLISHED in PYPI, USE 2.44.0
+
+Built on CDK v2.82.0
+
+### Bug Fixes
+
+* **aws-kinesisfirehose-s3:** resource name collision when two instances deployed in same stack ([#991](https://github.com/awslabs/aws-solutions-constructs/pull/991))
+
+### Features
+
+* **aws-openapi-lambda:** make names unique ([#987](https://github.com/awslabs/aws-solutions-constructs/issues/987)) ([be9997a](https://github.com/awslabs/aws-solutions-constructs/commit/be9997a4e7e376670ef7f3d8bf1335ea3cebc515))
+* **new construct:** aws-lambda-kendra ([#989](https://github.com/awslabs/aws-solutions-constructs/issues/989)) ([24fe018](https://github.com/awslabs/aws-solutions-constructs/commit/24fe018898dafd4be2d20d6636ad54333da4145d))
+
+## [2.42.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.41.0...v2.42.0) (2023-08-12)
+
+Build on CDK v2.82.0
+
+### Features
+
+* **new construct:** aws-openapigateway-lambda ([#912](https://github.com/awslabs/aws-solutions-constructs/issues/912)) ([09465d6](https://github.com/awslabs/aws-solutions-constructs/commit/09465d65fc5969da5691cf5057c278ded8753b43)), closes [#910](https://github.com/awslabs/aws-solutions-constructs/issues/910) [#917](https://github.com/awslabs/aws-solutions-constructs/issues/917) [#922](https://github.com/awslabs/aws-solutions-constructs/issues/922) [#929](https://github.com/awslabs/aws-solutions-constructs/issues/929) [#930](https://github.com/awslabs/aws-solutions-constructs/issues/930)
+
+## [2.41.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.40.0...v2.41.0) (2023-06-06)
+
+Built on CDK v2.82.0
+
+## [2.40.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.39.0...v2.40.0) (2023-06-03)
+
+Built on CDK v2.82.0
+
+### Bug Fixes
+
+* **s3 buckets:** do not remove lifecycle rules from log buckets ([#969](https://github.com/awslabs/aws-solutions-constructs/issues/969))
+
+* **aws-alb-fargate:** change container used to launch integ tests ([#962](https://github.com/awslabs/aws-solutions-constructs/issues/962)) ([30ba7d9](https://github.com/awslabs/aws-solutions-constructs/commit/30ba7d94a3cdd3766c24af49dbf66e56053b7b41))
+
+## [2.39.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.38.0...v2.39.0) (2023-04-23)
+
+Built on CDK v2.76.0
+
+### Bug Fixes
+
+* **aws-*-stepfunctions:** generate stack specific physical log group name ([#945](https://github.com/awslabs/aws-solutions-constructs/issues/945)) ([3e46579](https://github.com/awslabs/aws-solutions-constructs/commit/3e46579ef02e726143cf437be293c9435d013f5f))
+
+## [2.38.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.37.0...v2.38.0) (2023-04-16)
+
+Build on CDK v2.74.0
+
+### Bug Fixes
+
+* **s3-constructs:** accommodate s3 change that disables acls by default ([#949](https://github.com/awslabs/aws-solutions-constructs/issues/949)) ([46d02cc](https://github.com/awslabs/aws-solutions-constructs/commit/46d02ccf98e368206b59c27a16003dc3b16d4236))
+
+## [2.37.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.36.0...v2.37.0) (2023-04-11)
+
+Built on CDK v2.73.0
+
+### Features
+
+* **wafwebacl-all:** allow any type for webAclProps ([#943](https://github.com/awslabs/aws-solutions-constructs/pull/943))
+
+### Bug Fixes
+
+* **all constructs:** use aws.partition where value could refer to govcloud ([#941](https://github.com/awslabs/aws-solutions-constructs/issues/941)) ([e4cc3c0](https://github.com/awslabs/aws-solutions-constructs/commit/e4cc3c090d669a8f163adb013c26fcd3796b5d8b))
+* **s3-bucket-helper:** not populating response.loggingBucket when bucket supplied ([#934](https://github.com/awslabs/aws-solutions-constructs/issues/934)) ([b65986d](https://github.com/awslabs/aws-solutions-constructs/commit/b65986d7d1791c2ed19e62c8f39ffe42b6f2a274))
 
 ## [2.36.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.35.0...v2.36.0) (2023-03-29)
 
@@ -261,7 +375,7 @@ This is one of a number of identical releases we have created as we overhaul our
 
 ### Features
 
-* Includes all funcionality of V1.137.0
+* Includes all functionality of V1.137.0
 * Build upon underlying CDK version V2.4.0
 
 * **aws-alb-fargate:** New Construct ([#560](https://github.com/awslabs/aws-solutions-constructs/issues/560)) ([5a21b76](https://github.com/awslabs/aws-solutions-constructs/commit/5a21b7652be0be2c77957155a504a9582830eeba))
@@ -275,7 +389,7 @@ This is one of a number of identical releases we have created as we overhaul our
 
 ## [2.0.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.0.0-rc.2...v2.0.0) (2021-12-02)
 
-* Includes all funcionality of V1.129.0
+* Includes all functionality of V1.129.0
 
 ### Features
 
@@ -311,7 +425,7 @@ This is one of a number of identical releases we have created as we overhaul our
 * **apigateway-helper:** fixed condition for cloudWatchRole creation ([#468](https://github.com/awslabs/aws-solutions-constructs/issues/468)) ([e454349](https://github.com/awslabs/aws-solutions-constructs/commit/e45434928a17cde580698a82ee53f6ee7463c6cf))
 * **scripts:** Fix postinstall script ([#477](https://github.com/awslabs/aws-solutions-constructs/issues/477)) ([3902a91](https://github.com/awslabs/aws-solutions-constructs/commit/3902a912547b2e7645ad352feec9811d88678543))
 * **service-staff:** Fix create-order lambda ([#479](https://github.com/awslabs/aws-solutions-constructs/issues/479)) ([982c026](https://github.com/awslabs/aws-solutions-constructs/commit/982c02619d0bb4a5f9fd1433f60b74ef89a1603c))
-* **Set outputBucket property on aws-kinesisstreams-gluejob:** Issue [#448](https://github.com/awslabs/aws-solutions-constructs/issues/448) to include S3 bucket for Glue Job that the consturct creates ([#452](https://github.com/awslabs/aws-solutions-constructs/issues/452)) ([c40e1f7](https://github.com/awslabs/aws-solutions-constructs/commit/c40e1f7c3524652ac8e3277b1c482975e6df9e36))
+* **Set outputBucket property on aws-kinesisstreams-gluejob:** Issue [#448](https://github.com/awslabs/aws-solutions-constructs/issues/448) to include S3 bucket for Glue Job that the construct creates ([#452](https://github.com/awslabs/aws-solutions-constructs/issues/452)) ([c40e1f7](https://github.com/awslabs/aws-solutions-constructs/commit/c40e1f7c3524652ac8e3277b1c482975e6df9e36))
 
 ## 2.0.0-rc.1 (2021-10-12)
 

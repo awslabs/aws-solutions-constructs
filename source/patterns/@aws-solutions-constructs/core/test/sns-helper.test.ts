@@ -307,3 +307,112 @@ test('existing unencrypted topic is not overridden with defaults', () => {
   template.resourceCountIs('AWS::KMS::Key', 0);
   template.resourceCountIs('AWS::SNS::Topic', 1);
 });
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test fail SNS topic check', () => {
+  const stack = new Stack();
+
+  const props: defaults.SnsProps = {
+    topicProps: {},
+    existingTopicObj: new sns.Topic(stack, 'placeholder', {})
+  };
+
+  const app = () => {
+    defaults.CheckSnsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide topicProps or existingTopicObj, but not both.\n');
+});
+
+test('Test fail SNS topic check with bad topic attribute name', () => {
+  const stack = new Stack();
+
+  const props: defaults.SnsProps = {
+    topicProps: {},
+    existingTopicObj: new sns.Topic(stack, 'placeholder', {})
+  };
+
+  const app = () => {
+    defaults.CheckSnsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide topicProps or existingTopicObj, but not both.\n');
+});
+
+test('Test fail SNS topic check when both encryptionKey and encryptionKeyProps are specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.SnsProps = {
+    encryptionKey: new kms.Key(stack, 'key'),
+    encryptionKeyProps: {
+      description: 'a description'
+    }
+  };
+
+  const app = () => {
+    defaults.CheckSnsProps(props);
+  };
+
+  expect(app).toThrowError('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
+});
+
+test('Test fail SNS topic check when both topicProps.masterKey and encryptionKeyProps are specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.SnsProps = {
+    topicProps: {
+      masterKey: new kms.Key(stack, 'key')
+    },
+    encryptionKeyProps: {
+      description: 'a description'
+    }
+  };
+
+  const app = () => {
+    defaults.CheckSnsProps(props);
+  };
+
+  expect(app).toThrowError('Error - Either provide topicProps.masterKey or encryptionKeyProps, but not both.\n');
+});
+
+test('Test fail SNS topic check when both encryptionKey and topicProps.masterKey are specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.SnsProps = {
+    encryptionKey: new kms.Key(stack, 'key'),
+    topicProps: {
+      masterKey: new kms.Key(stack, 'otherkey')
+    }
+  };
+
+  const app = () => {
+    defaults.CheckSnsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide topicProps.masterKey or encryptionKey, but not both.\n');
+});
+
+test('Test fail encryption key check', () => {
+  const stack = new Stack();
+
+  const key = defaults.buildEncryptionKey(stack, {
+    enableKeyRotation: false
+  });
+
+  const props: defaults.SnsProps = {
+    encryptionKey: key,
+    encryptionKeyProps: {},
+  };
+
+  const app = () => {
+    defaults.CheckSnsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
+});

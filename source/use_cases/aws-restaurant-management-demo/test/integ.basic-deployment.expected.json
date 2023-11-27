@@ -3,7 +3,6 @@
     "CloudFrontToS3S3LoggingBucketEF5CD8B2": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
-        "AccessControl": "LogDeliveryWrite",
         "BucketEncryption": {
           "ServerSideEncryptionConfiguration": [
             {
@@ -245,7 +244,7 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs14.x"
+        "Runtime": "nodejs16.x"
       },
       "DependsOn": [
         "CloudFrontToS3SetHttpSecurityHeadersServiceRole6BABDE10"
@@ -655,7 +654,7 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs14.x",
+        "Runtime": "nodejs16.x",
         "Environment": {
           "Variables": {
             "USER_ON_EVENT_FUNCTION_ARN": {

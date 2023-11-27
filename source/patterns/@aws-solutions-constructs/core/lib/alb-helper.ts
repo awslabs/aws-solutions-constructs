@@ -27,7 +27,16 @@ import * as elbt from "aws-cdk-lib/aws-elasticloadbalancingv2-targets";
 import { printWarning, consolidateProps } from "./utils";
 import { DefaultListenerProps } from "./alb-defaults";
 import { createAlbLoggingBucket } from "./s3-bucket-helper";
-import { DefaultLoggingBucketProps } from "./s3-bucket-defaults";
+import { DefaultS3Props } from "./s3-bucket-defaults";
+
+export interface ObtainAlbProps {
+  readonly vpc: ec2.IVpc,
+  readonly publicApi: boolean,
+  readonly existingLoadBalancerObj?: elb.ApplicationLoadBalancer,
+  readonly loadBalancerProps?: elb.ApplicationLoadBalancerProps | any,
+  readonly logAccessLogs?: boolean,
+  readonly loggingBucketProps?: s3.BucketProps
+}
 
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
@@ -38,26 +47,21 @@ import { DefaultLoggingBucketProps } from "./s3-bucket-defaults";
 export function ObtainAlb(
   scope: Construct,
   id: string,
-  vpc: ec2.IVpc,
-  publicApi: boolean,
-  existingLoadBalancerObj?: elb.ApplicationLoadBalancer,
-  loadBalancerProps?: elb.ApplicationLoadBalancerProps | any,
-  logAccessLogs?: boolean,
-  loggingBucketProps?: s3.BucketProps
+  props: ObtainAlbProps
 ): elb.ApplicationLoadBalancer {
   let loadBalancer: elb.ApplicationLoadBalancer;
 
-  if (existingLoadBalancerObj) {
-    loadBalancer = existingLoadBalancerObj;
+  if (props.existingLoadBalancerObj) {
+    loadBalancer = props.existingLoadBalancerObj;
   } else {
-    const consolidatedProps = consolidateProps({}, loadBalancerProps, { vpc, internetFacing: publicApi });
+    const consolidatedProps = consolidateProps({}, props.loadBalancerProps, { vpc: props.vpc, internetFacing: props.publicApi });
     loadBalancer = new elb.ApplicationLoadBalancer(
       scope,
       `${id}-alb`,
       consolidatedProps
     );
-    if (logAccessLogs === undefined || logAccessLogs === true) {
-      const consolidatedLoggingBucketProps = consolidateProps(DefaultLoggingBucketProps(), loggingBucketProps);
+    if (props.logAccessLogs === undefined || props.logAccessLogs === true) {
+      const consolidatedLoggingBucketProps = consolidateProps(DefaultS3Props(), props.loggingBucketProps);
       const loggingBucket = createAlbLoggingBucket(scope, id, consolidatedLoggingBucketProps);
       loadBalancer.logAccessLogs(loggingBucket);
     }
@@ -108,12 +112,15 @@ export function AddListener(
       protocol: "HTTPS",
     };
 
+    // NOSONAR: (typescript:S5332)
+    // This listener is explicitly created to redirect non TLS connections
+    // The lack of SSL/TLS is intentional
     const httpListener = new elb.ApplicationListener(
       scope,
       `${id}-redirect`,
       {
         loadBalancer,
-        protocol: ApplicationProtocol.HTTP,
+        protocol: ApplicationProtocol.HTTP, // NOSONAR
         defaultAction: ListenerAction.redirect(opt),
       }
     );
@@ -212,17 +219,22 @@ export function CheckAlbProps(props: any) {
   let errorMessages = '';
   let errorFound = false;
 
+  if (props.loadBalancerProps && props.existingLoadBalancerObj) {
+    errorMessages += 'Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if ((props?.logAlbAccessLogs === false) && (props.albLoggingBucketProps)) {
+    errorMessages += 'Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n';
+    errorFound = true;
+  }
+
   if (props.listenerProps?.certificateArns) {
     errorMessages += "certificateArns is deprecated. Please supply certificates using props.listenerProps.certificates\n";
     errorFound = true;
   }
 
-  if (
-    ((props.existingLoadBalancerObj &&
-      props.existingLoadBalancerObj.listeners.length === 0) ||
-      !props.existingLoadBalancerObj) &&
-    !props.listenerProps
-  ) {
+  if (ValidateAddListenerProps(props)) {
     errorMessages += "When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP\n";
     errorFound = true;
   }
@@ -265,4 +277,15 @@ export function CheckAlbProps(props: any) {
   if (errorFound) {
     throw new Error(errorMessages);
   }
+
+}
+
+function ValidateAddListenerProps(props: any) {
+  if (((props.existingLoadBalancerObj &&
+    props.existingLoadBalancerObj.listeners.length === 0) ||
+    !props.existingLoadBalancerObj) &&
+  !props.listenerProps) {
+    return true;
+  }
+  return false;
 }

@@ -107,7 +107,7 @@ export interface KinesisstreamsToGluejobProps {
   /**
    * The props for the Glue database that the construct should use to create. If @database is set
    * then this property is ignored. If none of @database and @databaseprops is provided, the
-   * construct will define a GlueDatabase resoruce.
+   * construct will define a GlueDatabase resource.
    */
   readonly databaseProps?: glue.CfnDatabaseProps;
   /**
@@ -152,8 +152,8 @@ export class KinesisstreamsToGluejob extends Construct {
   public readonly database: glue.CfnDatabase;
   public readonly table: glue.CfnTable;
   /**
-   * This property is only set if the Glue Job is created by the construct. If an exisiting Glue Job
-   * configuraton is supplied, the construct does not create an S3 bucket and hence the @outputBucket
+   * This property is only set if the Glue Job is created by the construct. If an existing Glue Job
+   * configuration is supplied, the construct does not create an S3 bucket and hence the @outputBucket
    * property is undefined
    */
   public readonly outputBucket?: [Bucket, (Bucket | undefined)?];
@@ -168,29 +168,13 @@ export class KinesisstreamsToGluejob extends Construct {
    */
   constructor(scope: Construct, id: string, props: KinesisstreamsToGluejobProps) {
     super(scope, id);
-    defaults.CheckProps(props);
 
-    // custom props check
-    if (props.existingGlueJob && props.glueJobProps) {
-      throw Error("Either existingGlueJob instance or glueJobProps should be set, but found both");
-    }
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-    if (!props.existingGlueJob) {
-      if (!props.glueJobProps.command.scriptLocation && !props.etlCodeAsset) {
-        throw Error('Either one of CfnJob.JobCommandProperty.scriptLocation or KinesisstreamsToGluejobProps.etlCodeAsset has ' +
-        'to be provided. If the ETL Job code file exists in a local filesystem, please set ' +
-        'KinesisstreamsToGluejobProps.etlCodeAsset. If the ETL Job is available in an S3 bucket, set the ' +
-        'CfnJob.JobCommandProperty.scriptLocation property');
-      }
-
-      if (!props.etlCodeAsset) {
-        const s3Url: string = props.glueJobProps.command.scriptLocation;
-        const found = s3Url.match(/^s3:\/\/\S+\/\S+/g);
-        if (!(found && found.length > 0 && found[0].length === s3Url.length)) {
-          throw Error("Invalid S3 URL provided");
-        }
-      }
-    }
+    defaults.CheckGlueProps(props);
+    defaults.CheckKinesisStreamProps(props);
 
     this.kinesisStream = defaults.buildKinesisStream(this, {
       existingStreamObj: props.existingStreamObj,
@@ -198,10 +182,6 @@ export class KinesisstreamsToGluejob extends Construct {
     });
 
     this.database = props.existingDatabase !== undefined ? props.existingDatabase : defaults.createGlueDatabase(scope, props.databaseProps);
-
-    if (props.fieldSchema === undefined && props.existingTable === undefined && props.tableProps === undefined) {
-      throw Error("Either fieldSchema or table property has to be set, both cannot be optional");
-    }
 
     if (props.existingTable !== undefined) {
       this.table = props.existingTable;
@@ -214,9 +194,9 @@ export class KinesisstreamsToGluejob extends Construct {
     const buildGlueJobResponse = defaults.buildGlueJob(this, {
       existingCfnJob: props.existingGlueJob,
       glueJobProps: props.glueJobProps,
-      table: this.table!,
-      database: this.database!,
-      outputDataStore: props.outputDataStore!,
+      table: this.table,
+      database: this.database,
+      outputDataStore: props.outputDataStore,
       etlCodeAsset: props.etlCodeAsset
     });
     this.glueJob = buildGlueJobResponse.job;

@@ -14,8 +14,9 @@
 import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
-import { FargateToSecretsmanager } from "../lib";
+import { FargateToSecretsmanager, FargateToSecretsmanagerProps } from "../lib";
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as secrets from 'aws-cdk-lib/aws-secretsmanager';
 import { buildSecretsManagerSecret } from '@aws-solutions-constructs/core';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
@@ -44,10 +45,10 @@ test('New service/new secret, public API, new VPC', () => {
     },
   });
 
-  expect(construct.vpc !== null);
-  expect(construct.service !== null);
-  expect(construct.container !== null);
-  expect(construct.secret !== null);
+  expect(construct.vpc).toBeDefined();
+  expect(construct.service).toBeDefined();
+  expect(construct.container).toBeDefined();
+  expect(construct.secret).toBeDefined();
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::ECS::Service", {
@@ -376,15 +377,13 @@ test('Existing service/new secret, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   new FargateToSecretsmanager(stack, 'test-construct', {
     publicApi,
@@ -503,15 +502,13 @@ test('Existing service/existing secret, private API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   const existingSecretObj = defaults.buildSecretsManagerSecret(stack, 'secret', {
     secretName
@@ -619,15 +616,13 @@ test('Test error invalid secret permission', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   const existingSecretObj = buildSecretsManagerSecret(stack, 'secret', {});
 
@@ -643,4 +638,54 @@ test('Test error invalid secret permission', () => {
   };
 
   expect(app).toThrowError('Invalid grantWriteAccess submitted - REED');
+});
+
+test('Confirm that CheckVpcProps was called', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+
+  const props: FargateToSecretsmanagerProps = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    secretProps: {
+      secretName
+    },
+    existingVpc: defaults.getTestVpc(stack),
+    vpcProps: {  },
+  };
+
+  const app = () => {
+    new FargateToSecretsmanager(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});
+
+test('Confirm that CheckSecretsManagerProps was called', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+
+  const props: FargateToSecretsmanagerProps = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    secretProps: {
+      secretName
+    },
+    existingSecretObj: new secrets.Secret(stack, 'test', {}),
+    vpcProps: {  },
+  };
+
+  const app = () => {
+    new FargateToSecretsmanager(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide secretProps or existingSecretObj, but not both.\n');
 });

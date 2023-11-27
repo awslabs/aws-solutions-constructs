@@ -20,7 +20,6 @@ import { SqsToLambda } from '@aws-solutions-constructs/aws-sqs-lambda';
 import { Construct } from 'constructs';
 import { SqsEventSourceProps } from 'aws-cdk-lib/aws-lambda-event-sources';
 import * as ec2 from "aws-cdk-lib/aws-ec2";
-import * as defaults from '@aws-solutions-constructs/core';
 
 /**
  * @summary The properties for the LambdaToSqsToLambda class.
@@ -131,7 +130,6 @@ export class LambdaToSqsToLambda extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToSqsToLambdaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
 
     // Setup the aws-lambda-sqs pattern
     const lambdaToSqs = new LambdaToSqs(this, 'lambda-to-sqs', {

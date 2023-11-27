@@ -35,7 +35,7 @@ export interface WafwebaclToAppsyncProps {
    *
    * @default - Default properties are used.
    */
-  readonly webaclProps?: waf.CfnWebACLProps;
+  readonly webaclProps?: waf.CfnWebACLProps | any;
 }
 
 /**
@@ -53,7 +53,7 @@ export class WafwebaclToAppsync extends Construct {
    */
   constructor(scope: Construct, id: string, props: WafwebaclToAppsyncProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckWafWebAclProps(props);
 
     // Build the Web ACL
     this.webacl = defaults.buildWebacl(this, "REGIONAL", {
@@ -61,11 +61,14 @@ export class WafwebaclToAppsync extends Construct {
       webaclProps: props.webaclProps,
     });
 
-    // Setup the Web ACL Association
-    new waf.CfnWebACLAssociation(scope, `${id}-WebACLAssociation`, {
+    const aclAssociationId = `${id}-WebACLAssociation`;
+    const aclAssociationProps: waf.CfnWebACLAssociationProps = {
       webAclArn: this.webacl.attrArn,
       resourceArn: props.existingAppsyncApi.attrArn,
-    });
+    };
+
+    // Before turning off SonarQube for the line, reduce the line to it's minimum
+    new waf.CfnWebACLAssociation(scope, aclAssociationId, aclAssociationProps); // NOSONAR
 
     this.appsyncApi = props.existingAppsyncApi;
   }

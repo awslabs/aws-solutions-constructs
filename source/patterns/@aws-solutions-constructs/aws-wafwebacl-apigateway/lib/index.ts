@@ -36,7 +36,7 @@ export interface WafwebaclToApiGatewayProps {
    *
    * @default - Default properties are used.
    */
-  readonly webaclProps?: waf.CfnWebACLProps,
+  readonly webaclProps?: waf.CfnWebACLProps | any,
 }
 
 /**
@@ -54,7 +54,7 @@ export class WafwebaclToApiGateway extends Construct {
    */
   constructor(scope: Construct, id: string, props: WafwebaclToApiGatewayProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckWafWebAclProps(props);
 
     // Build the Web ACL
     this.webacl = defaults.buildWebacl(this, 'REGIONAL', {
@@ -64,11 +64,14 @@ export class WafwebaclToApiGateway extends Construct {
 
     const resourceArn = `arn:${Aws.PARTITION}:apigateway:${Aws.REGION}::/restapis/${props.existingApiGatewayInterface.restApiId}/stages/${props.existingApiGatewayInterface.deploymentStage.stageName}`;
 
-    // Setup the Web ACL Association
-    new waf.CfnWebACLAssociation(scope, `${id}-WebACLAssociation`, {
+    const aclAssociationId = `${id}-WebACLAssociation`;
+    const aclAssociationProps: waf.CfnWebACLAssociationProps = {
       webAclArn: this.webacl.attrArn,
       resourceArn
-    });
+    };
+
+    // Before turning off SonarQube for the line, reduce the line to it's minimum
+    new waf.CfnWebACLAssociation(scope, aclAssociationId, aclAssociationProps); // NOSONAR
 
     this.apiGateway = props.existingApiGatewayInterface;
   }

@@ -19,9 +19,6 @@ import * as api from 'aws-cdk-lib/aws-apigateway';
 import { Template } from "aws-cdk-lib/assertions";
 import * as defaults from '@aws-solutions-constructs/core';
 
-// --------------------------------------------------------------
-// Test for error with existingLambdaObj=undefined (not supplied by user).
-// --------------------------------------------------------------
 test('Error on existingLambdaObj=undefined', () => {
   // Initial Setup
   const stack = new Stack();
@@ -34,15 +31,12 @@ test('Error on existingLambdaObj=undefined', () => {
   expect(app).toThrowError();
 });
 
-// --------------------------------------------------------------
-// Test with lambdaFunctionProps.
-// --------------------------------------------------------------
 test('Test with lambdaFunctionProps', () => {
   // Initial Setup
   const stack = new Stack();
   const props: ApiGatewayToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -66,31 +60,25 @@ test('Test with lambdaFunctionProps', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test getter methods
-// --------------------------------------------------------------
 test('Test properties', () => {
   // Initial Setup
   const stack = new Stack();
   const props: ApiGatewayToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
   };
   const app = new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
   // Assertion 1
-  expect(app.lambdaFunction !== null);
+  expect(app.lambdaFunction).toBeDefined();
   // Assertion 2
-  expect(app.apiGateway !== null);
-  expect(app.apiGatewayCloudWatchRole !== null);
-  expect(app.apiGatewayLogGroup !== null);
+  expect(app.apiGateway).toBeDefined();
+  expect(app.apiGatewayCloudWatchRole).toBeDefined();
+  expect(app.apiGatewayLogGroup).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test for error with lambdaFunctionProps=undefined (not supplied by user).
-// --------------------------------------------------------------
 test('Error on lambdaFunctionProps=undefined', () => {
   // Initial Setup
   const stack = new Stack();
@@ -103,9 +91,6 @@ test('Error on lambdaFunctionProps=undefined', () => {
   expect(app).toThrowError();
 });
 
-// -----------------------------------------------------------------
-// Test deployment for override ApiGateway AuthorizationType to NONE
-// -----------------------------------------------------------------
 test('Test deployment ApiGateway AuthorizationType override', () => {
   // Stack
   const stack = new Stack();
@@ -117,7 +102,7 @@ test('Test deployment ApiGateway AuthorizationType override', () => {
       }
     },
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
@@ -130,9 +115,6 @@ test('Test deployment ApiGateway AuthorizationType override', () => {
   });
 });
 
-// -----------------------------------------------------------------
-// Test deployment for override ApiGateway cloudWatchRole = false
-// -----------------------------------------------------------------
 test('Test deployment ApiGateway override cloudWatchRole = false', () => {
   // Stack
   const stack = new Stack();
@@ -142,11 +124,41 @@ test('Test deployment ApiGateway override cloudWatchRole = false', () => {
       cloudWatchRole: false
     },
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
   });
   // Assertion 1
   defaults.expectNonexistence(stack, "AWS::ApiGateway::Account", {});
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: ApiGatewayToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        OVERRIDE_STATUS: 'true'
+      }
+    },
+    existingLambdaObj: lambdaFunction,
+    apiGatewayProps: {
+      description: "sampleApiProp"
+    }
+  };
+  const app = () => {
+    new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

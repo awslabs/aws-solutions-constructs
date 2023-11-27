@@ -58,15 +58,6 @@ function isPlainObject(o: object) {
   return true;
 }
 
-function combineMerge(target: any[], source: any[]) {
-  return target.concat(source);
-}
-
-function overwriteMerge(target: any[], source: any[]) {
-  target = source;
-  return target;
-}
-
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
@@ -79,12 +70,12 @@ export function overrideProps(DefaultProps: object, userProps: object, concatArr
   // Override the sensible defaults with user provided props
   if (concatArray) {
     return deepmerge(DefaultProps, userProps, {
-      arrayMerge: combineMerge,
+      arrayMerge: (destinationArray, sourceArray) =>  destinationArray.concat(sourceArray),
       isMergeableObject: isPlainObject
     });
   } else {
     return deepmerge(DefaultProps, userProps, {
-      arrayMerge: overwriteMerge,
+      arrayMerge: (_destinationArray, sourceArray) => sourceArray, // underscore allows arg to be ignored
       isMergeableObject: isPlainObject
     });
   }
@@ -104,10 +95,12 @@ export function printWarning(message: string) {
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  *
- * @summary Creates a resource name in the style of the CDK (string+hash)
+ * @summary Creates a resource name in the style of the CDK (string+hash) - this value should be used for logical IDs, but
+ * not Physical Names, as it will not be static within a single stack instance lifetime, or it will not be different in
+ * different stack instances
  * @param {string[]} parts - the various string components of the name (eg - stackName, solutions construct ID, L2 construct ID)
  * @param {number} maxLength - the longest string that can be returned
- * @returns {string} - a string with concatenated parts (truncated if neccessary) + a hash of the full concatenated parts
+ * @returns {string} - a string with concatenated parts (truncated if necessary) + a hash of the full concatenated parts
  *
  * This is based upon this discussion - https://github.com/aws/aws-cdk/issues/1424
  */
@@ -133,6 +126,49 @@ export function generateResourceName(
   finalName += hash;
   finalName += randomizor;
   return finalName.toLowerCase();
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
+ * @summary Creates a physical resource name in the style of the CDK (string+hash) - this value incorporates Stack ID,
+ * so it will remain static in multiple updates of a single stack, but will be different in a separate stack instance
+ * @param {string[]} parts - the various string components of the name (eg - stackName, solutions construct ID, L2 construct ID)
+ * @param {number} maxLength - the longest string that can be returned
+ * @returns {string} - a string with concatenated parts (truncated if necessary) + a hash of the full concatenated parts
+ *
+ */
+export function generatePhysicalName(
+  prefix: string,
+  parts: string[],
+  maxLength: number,
+): string {
+  // The result will consist of:
+  //    -The prefix - unaltered
+  //    -The parts concatenated, but reduced in size to meet the maxLength limit for the overall name
+  //    -A hyphen delimiter
+  //    -The GUID portion of the stack arn
+
+  const stackIdGuidLength = 36;
+  const prefixLength = prefix.length;
+  const maxPartsLength = maxLength - prefixLength - 1 - stackIdGuidLength; // 1 is the hyphen
+
+  // Extract the Stack ID Guid
+  const uniqueStackIdPart = cdk.Fn.select(2, cdk.Fn.split('/', `${cdk.Aws.STACK_ID}`));
+
+  let allParts: string = '';
+
+  parts.forEach((part) => {
+    allParts += part;
+  });
+
+  if (allParts.length > maxPartsLength) {
+    const subStringLength = maxPartsLength / 2;
+    allParts = allParts.substring(0, subStringLength) + allParts.substring(allParts.length - subStringLength);
+  }
+
+  const finalName  = prefix.toLowerCase() + allParts + '-' + uniqueStackIdPart;
+  return finalName;
 }
 
 /**
@@ -219,4 +255,15 @@ export function generateName(scope: Construct, resourceId: string = ""): string 
     return name.substring(0, 32) + name.substring(name.length - 32);
   }
   return name;
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function CheckListValues(allowedPermissions: string[], submittedValues: string[], valueType: string) {
+  submittedValues.forEach((submittedValue) => {
+    if (!allowedPermissions.includes(submittedValue)) {
+      throw Error(`Invalid ${valueType} submitted - ${submittedValue}`);
+    }
+  });
 }

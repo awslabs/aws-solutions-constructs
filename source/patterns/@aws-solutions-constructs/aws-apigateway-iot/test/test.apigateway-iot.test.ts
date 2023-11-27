@@ -18,9 +18,6 @@ import * as api from 'aws-cdk-lib/aws-apigateway';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Template } from "aws-cdk-lib/assertions";
 
-// --------------------------------------------------------------
-// Check for ApiGateway params
-// --------------------------------------------------------------
 test('Test for default Params construct props', () => {
   // Initial Setup
   const stack = new cdk.Stack();
@@ -35,9 +32,6 @@ test('Test for default Params construct props', () => {
   expect(construct.apiGatewayRole).not.toBeNull();
 });
 
-// --------------------------------------------------------------
-// Check for Default IAM Role
-// --------------------------------------------------------------
 test('Test for default IAM Role', () => {
   // Initial Setup
   const stack = new cdk.Stack();
@@ -45,7 +39,7 @@ test('Test for default IAM Role', () => {
     iotEndpoint: `a1234567890123-ats`
   };
   new ApiGatewayToIot(stack, 'test-apigateway-iot-default-iam-role', props);
-  // Check whether default IAM role is creted to access IoT core
+  // Check whether default IAM role is created to access IoT core
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::IAM::Role", {
     AssumeRolePolicyDocument: {
@@ -122,9 +116,6 @@ test('Test for default IAM Role', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Check for Request Validator
-// --------------------------------------------------------------
 test('Test for default Params request validator', () => {
   // Initial Setup
   const stack = new cdk.Stack();
@@ -140,9 +131,6 @@ test('Test for default Params request validator', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Check for Integ Props and Method Props
-// --------------------------------------------------------------
 test('Test for default Params Integ Props and Method Props', () => {
   // Initial Setup
   const stack = new cdk.Stack();
@@ -152,7 +140,7 @@ test('Test for default Params Integ Props and Method Props', () => {
   new ApiGatewayToIot(stack, 'test-apigateway-iot-integpros-methodprops', props);
 
   // Assertion for {topic-level-7} to ensure all Integration Request Params, Integration Responses,
-  // Method Request Params and Method Reponses are intact
+  // Method Request Params and Method Reposes are intact
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "POST",
@@ -234,11 +222,7 @@ test('Test for default Params Integ Props and Method Props', () => {
     }
   });
 });
-
-// --------------------------------------------------------------
-// Check for valid IoT Endpoint
-// --------------------------------------------------------------
-test('Test for valid iot enpoint', () => {
+test('Test for valid iot endpoint', () => {
   // Initial Setup
   const stack = new cdk.Stack();
   const props: ApiGatewayToIotProps = {
@@ -252,9 +236,6 @@ test('Test for valid iot enpoint', () => {
   expect(app).toThrowError();
 });
 
-// --------------------------------------------------------------
-// Check for binaryMediaTypes
-// --------------------------------------------------------------
 test('Test for Binary Media types', () => {
   // Stack
   const stack = new cdk.Stack();
@@ -272,9 +253,6 @@ test('Test for Binary Media types', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Check for Api Name and Desc
-// --------------------------------------------------------------
 test('Test for Api Name and Desc', () => {
   // Stack
   const stack = new cdk.Stack();
@@ -296,10 +274,7 @@ test('Test for Api Name and Desc', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Check for Overriden IAM Role
-// --------------------------------------------------------------
-test('Test for overriden IAM Role', () => {
+test('Test for overridden IAM Role', () => {
   // Initial Setup
   const stack = new cdk.Stack();
 
@@ -337,8 +312,8 @@ test('Test for overriden IAM Role', () => {
     apiGatewayExecutionRole,
   };
 
-  new ApiGatewayToIot(stack, 'test-apigateway-iot-overriden-iam-role', props);
-  // Check whether default IAM role is creted to access IoT core
+  new ApiGatewayToIot(stack, 'test-apigateway-iot-overridden-iam-role', props);
+  // Check whether default IAM role is created to access IoT core
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::IAM::Role", {
     AssumeRolePolicyDocument: {
@@ -407,9 +382,6 @@ test('Test for overriden IAM Role', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Check for Api Key Source
-// --------------------------------------------------------------
 test('Test for APi Key Source', () => {
   // Stack
   const stack = new cdk.Stack();
@@ -430,9 +402,6 @@ test('Test for APi Key Source', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Check for Api Key Creation
-// --------------------------------------------------------------
 test('Test for Api Key Creation', () => {
   // Initial Setup
   const stack = new cdk.Stack();
@@ -467,9 +436,6 @@ test('Test for Api Key Creation', () => {
   });
 });
 
-// -----------------------------------------------------------------
-// Test deployment for ApiGateway endPointCongiurationOverride
-// -----------------------------------------------------------------
 test('Test for deployment ApiGateway AuthorizationType override', () => {
   // Stack
   const stack = new cdk.Stack();
@@ -491,9 +457,6 @@ test('Test for deployment ApiGateway AuthorizationType override', () => {
   });
 });
 
-// -----------------------------------------------------------------
-// Test deployment for override ApiGateway AuthorizationType to NONE
-// -----------------------------------------------------------------
 test('Test for deployment ApiGateway AuthorizationType override', () => {
   // Stack
   const stack = new cdk.Stack();
@@ -514,9 +477,6 @@ test('Test for deployment ApiGateway AuthorizationType override', () => {
   });
 });
 
-// -----------------------------------------------------------------
-// Test deployment for fully qualified iotEndpoint name
-// -----------------------------------------------------------------
 test('Test for handling fully qualified iotEndpoint', () => {
   // Stack
   const stack = new cdk.Stack();

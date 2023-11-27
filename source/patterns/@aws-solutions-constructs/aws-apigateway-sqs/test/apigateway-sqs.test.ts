@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { Stack } from "aws-cdk-lib";
+import { RemovalPolicy, Stack } from "aws-cdk-lib";
 import { ApiGatewayToSqs } from '../lib';
 import * as api from "aws-cdk-lib/aws-apigateway";
 import * as kms from 'aws-cdk-lib/aws-kms';
@@ -70,14 +70,14 @@ test('Test properties', () => {
     maxReceiveCount: 3
   });
     // Assertion 1
-  expect(pattern.apiGateway !== null);
+  expect(pattern.apiGateway).toBeDefined();
   // Assertion 2
-  expect(pattern.sqsQueue !== null);
+  expect(pattern.sqsQueue).toBeDefined();
   // Assertion 3
-  expect(pattern.apiGatewayRole !== null);
-  expect(pattern.apiGatewayCloudWatchRole !== null);
-  expect(pattern.apiGatewayLogGroup !== null);
-  expect(pattern.deadLetterQueue !== null);
+  expect(pattern.apiGatewayRole).toBeDefined();
+  expect(pattern.apiGatewayCloudWatchRole).toBeDefined();
+  expect(pattern.apiGatewayLogGroup).toBeDefined();
+  expect(pattern.deadLetterQueue).toBeDefined();
 });
 
 test('Test deployment ApiGateway AuthorizationType override', () => {
@@ -163,6 +163,31 @@ test('Test deployment for override ApiGateway deleteRequestTemplate', () => {
   });
 });
 
+test('Test deployment for disallow delete operation', () => {
+  const stack = new Stack();
+
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    allowDeleteOperation: false
+  });
+  const template = Template.fromStack(stack);
+  const resources = template.findResources('AWS::ApiGateway::Resource', {
+    PathPart: "message"
+  });
+  expect(Object.keys(resources).length).toBe(0);
+});
+
+test('Test deployment for allow delete operation', () => {
+  const stack = new Stack();
+
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    allowDeleteOperation: true
+  });
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Resource', {
+    PathPart: "message"
+  });
+});
+
 test('Test deployment with existing queue object', () => {
   const stack = new Stack();
 
@@ -220,7 +245,7 @@ test('Queue is encrypted with imported CMK when set on queueProps.encryptionKeyP
   });
 });
 
-test('Queue is encrypted with provided encrytionKeyProps', () => {
+test('Queue is encrypted with provided encryptionKeyProps', () => {
   const stack = new Stack();
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
     encryptionKeyProps: {
@@ -634,4 +659,19 @@ test('Construct throws error when deleteIntegrationResponses is set and allowDel
   });
 
   expect(app).toThrowError(/The 'allowDeleteOperation' property must be set to true when setting any of the following: 'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'/);
+});
+
+test('Confirm the CheckSqsProps is being called', () => {
+  const stack = new Stack();
+
+  const app = () => {
+    new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+      queueProps: {
+        removalPolicy: RemovalPolicy.DESTROY,
+      },
+      existingQueueObj: new sqs.Queue(stack, 'test', {})
+    });
+  };
+
+  expect(app).toThrowError(/Error - Either provide queueProps or existingQueueObj, but not both.\n/);
 });

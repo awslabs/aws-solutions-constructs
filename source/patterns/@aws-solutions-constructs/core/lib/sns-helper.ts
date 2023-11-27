@@ -160,12 +160,54 @@ export function buildTopic(scope: Construct, props: BuildTopicProps): BuildTopic
     }
 
     // Create the SNS Topic
-    const topic: sns.Topic = new sns.Topic(scope, 'SnsTopic', snsTopicProps);
+    // NOSONAR (typescript:S6327) - The masterKey is set in the if statement above, SONAR is
+    // not catching it. Behavior is confirmed in the
+    // 'Test deployment with no properties using AWS Managed KMS Key' unit test
+    const topic: sns.Topic = new sns.Topic(scope, 'SnsTopic', snsTopicProps); // NOSONAR
 
     applySecureTopicPolicy(topic);
 
     return { topic, key: snsTopicProps.masterKey };
   } else {
     return { topic: props.existingTopicObj, key: props.existingTopicEncryptionKey };
+  }
+}
+
+export interface SnsProps {
+  readonly topicProps?: sns.TopicProps,
+  readonly existingTopicObj?: sns.Topic,
+  readonly existingTopicObject?: sns.Topic,
+  readonly encryptionKey?: kms.Key,
+  readonly encryptionKeyProps?: kms.KeyProps
+}
+
+export function CheckSnsProps(propsObject: SnsProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  // FargateToSns used TopicObject instead of TopicObj - to fix would be a breaking change, so we
+  // must look for both here.
+  if (propsObject.topicProps && (propsObject.existingTopicObj || propsObject.existingTopicObject)) {
+    errorMessages += 'Error - Either provide topicProps or existingTopicObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.topicProps?.masterKey && propsObject.encryptionKey) {
+    errorMessages += 'Error - Either provide topicProps.masterKey or encryptionKey, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.topicProps?.masterKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide topicProps.masterKey or encryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.encryptionKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
   }
 }

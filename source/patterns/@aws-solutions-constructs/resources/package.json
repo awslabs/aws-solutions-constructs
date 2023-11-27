@@ -1,0 +1,82 @@
+{
+  "name": "@aws-solutions-constructs/resources",
+  "version": "0.0.0",
+  "description": "Resource CDK Constructs for patterns library",
+  "main": "index.js",
+  "types": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
+    "directory": "source/patterns/@aws-solutions-constructs/resources"
+  },
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc -b .",
+    "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
+    "lint-fix": "eslint -c ../eslintrc.yml --ext=.js,.ts --fix .",
+    "test": "jest --coverage",
+    "clean": "tsc -b --clean",
+    "watch": "tsc -b -w",
+    "integ": "cdk-integ",
+    "integ-assert": "cdk-integ-assert-v2",
+    "jsii": "jsii",
+    "jsii-pacmak": "jsii-pacmak",
+    "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
+    "snapshot-update": "npm test -- -u"
+  },
+  "jsii": {
+    "outdir": "dist",
+    "targets": {
+      "java": {
+        "package": "software.amazon.awsconstructs.services.resources",
+        "maven": {
+          "groupId": "software.amazon.awsconstructs",
+          "artifactId": "resources"
+        }
+      },
+      "dotnet": {
+        "namespace": "Amazon.SolutionsConstructs.AWS.Resources",
+        "packageId": "Amazon.SolutionsConstructs.AWS.Resources",
+        "signAssembly": true,
+        "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
+      },
+      "python": {
+        "distName": "aws-solutions-constructs.resources",
+        "module": "aws_solutions_constructs.resources"
+      }
+    }
+  },
+  "dependencies": {
+    "@aws-solutions-constructs/core": "0.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "@types/node": "^10.3.0",
+    "aws-cdk-lib": "0.0.0",
+    "constructs": "^10.0.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "coverageReporters": [
+      "text",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../../../"
+        }
+      ]
+    ]
+  },
+  "peerDependencies": {
+    "@aws-solutions-constructs/core": "0.0.0",
+    "aws-cdk-lib": "^0.0.0",
+    "constructs": "^10.0.0"
+  }
+}

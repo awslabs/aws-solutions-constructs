@@ -30,7 +30,7 @@ function deployNewFunc(stack: cdk.Stack) {
 function getDefaultTestLambdaProps(): lambda.FunctionProps {
   return {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
   };
 }
@@ -58,14 +58,14 @@ test('check properties', () => {
 
   const construct: DynamoDBStreamsToLambdaToElasticSearchAndKibana = deployNewFunc(stack);
 
-  expect(construct.lambdaFunction !== null);
-  expect(construct.dynamoTable !== null);
-  expect(construct.elasticsearchDomain !== null);
-  expect(construct.elasticsearchRole !== null);
-  expect(construct.identityPool !== null);
-  expect(construct.userPool !== null);
-  expect(construct.userPoolClient !== null);
-  expect(construct.cloudwatchAlarms !== null);
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.dynamoTable).toBeDefined();
+  expect(construct.elasticsearchDomain).toBeDefined();
+  expect(construct.elasticsearchRole).toBeDefined();
+  expect(construct.identityPool).toBeDefined();
+  expect(construct.userPool).toBeDefined();
+  expect(construct.userPoolClient).toBeDefined();
+  expect(construct.cloudwatchAlarms).toBeDefined();
 });
 
 test('check exception for Missing existingObj from props for deploy = false', () => {
@@ -226,4 +226,46 @@ test('Test minimal deployment with an existing isolated VPC', () => {
 
   template.resourceCountIs("AWS::EC2::VPC", 1);
   expect(construct.vpc).toBeDefined();
+});
+
+test('Confirm CheckVpcProps is being called', () => {
+  const stack = new cdk.Stack();
+
+  const app = () => {
+    new DynamoDBStreamsToLambdaToElasticSearchAndKibana(stack, 'test-construct', {
+      lambdaFunctionProps: getDefaultTestLambdaProps(),
+      domainName: "test",
+      deployVpc: true,
+      vpcProps: {
+        vpcName: "existing-vpc-test"
+      },
+      existingVpc: defaults.getTestVpc(stack),
+    });
+  };
+
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});
+
+test('Confirm CheckLambdaProps is being called', () => {
+  const stack = new cdk.Stack();
+  const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
+    runtime: lambda.Runtime.NODEJS_18_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps = {
+    domainName: 'test-name',
+    existingLambdaObj,
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    }
+  };
+
+  const app = () => {
+    new DynamoDBStreamsToLambdaToElasticSearchAndKibana(stack, 'test-apigateway-lambda', props);
+  };
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

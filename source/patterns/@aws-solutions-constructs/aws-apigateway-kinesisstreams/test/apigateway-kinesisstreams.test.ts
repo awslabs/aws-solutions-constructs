@@ -13,28 +13,22 @@
 
 // Imports
 import { Stack, Duration } from 'aws-cdk-lib';
-import { ApiGatewayToKinesisStreams } from '../lib';
+import { ApiGatewayToKinesisStreams, ApiGatewayToKinesisStreamsProps } from '../lib';
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Test construct properties
-// --------------------------------------------------------------
 test('Test construct properties', () => {
   const stack = new Stack();
   const pattern = new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis', {});
 
-  expect(pattern.apiGateway !== null);
-  expect(pattern.apiGatewayRole !== null);
-  expect(pattern.apiGatewayCloudWatchRole !== null);
-  expect(pattern.apiGatewayLogGroup !== null);
-  expect(pattern.kinesisStream !== null);
-  expect(pattern.cloudwatchAlarms !== null);
+  expect(pattern.apiGateway).toBeDefined();
+  expect(pattern.apiGatewayRole).toBeDefined();
+  expect(pattern.apiGatewayCloudWatchRole).toBeDefined();
+  expect(pattern.apiGatewayLogGroup).toBeDefined();
+  expect(pattern.kinesisStream).toBeDefined();
+  expect(pattern.cloudwatchAlarms).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ overwritten properties
-// --------------------------------------------------------------
 test('Test deployment w/ overwritten properties', () => {
   const stack = new Stack();
 
@@ -87,9 +81,6 @@ test('Test deployment w/ overwritten properties', () => {
   template.resourceCountIs('AWS::CloudWatch::Alarm', 2);
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing stream without default cloudwatch alarms
-// --------------------------------------------------------------
 test('Test deployment w/ existing stream', () => {
   const stack = new Stack();
 
@@ -110,13 +101,13 @@ test('Test deployment w/ existing stream', () => {
 
   expect(construct.cloudwatchAlarms == null);
 
-  // Since createCloudWatchAlars is set to false, no Alarm should exist
+  // Since createCloudWatchAlarm is set to false, no Alarm should exist
   template.resourceCountIs('AWS::CloudWatch::Alarm', 0);
 });
 
 test('Construct accepts additional PutRecord request templates', () => {
   const stack = new Stack();
-  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis-streams ', {
+  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis-streams', {
     additionalPutRecordRequestTemplates: {
       'text/plain': 'custom-template'
     }
@@ -232,4 +223,18 @@ test('Construct uses custom putRecordsIntegrationResponses property', () => {
       ]
     }
   });
+});
+
+test('Confirm that CheckKinesisStreamProps is called', () => {
+  const stack = new Stack();
+
+  const props: ApiGatewayToKinesisStreamsProps = {
+    existingStreamObj: new kinesis.Stream(stack, 'test', {}),
+    kinesisStreamProps: {}
+  };
+
+  const app = () => {
+    new ApiGatewayToKinesisStreams(stack, 'test-eventbridge-kinesisstreams', props);
+  };
+  expect(app).toThrowError();
 });

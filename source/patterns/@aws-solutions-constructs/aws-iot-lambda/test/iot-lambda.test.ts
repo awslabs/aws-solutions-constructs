@@ -20,7 +20,7 @@ function deployNewFunc(stack: cdk.Stack) {
   const props: IotToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     iotTopicRuleProps: {
@@ -73,7 +73,7 @@ test('check lambda function properties for deploy: true', () => {
         "Arn"
       ]
     },
-    Runtime: "nodejs14.x"
+    Runtime: "nodejs16.x"
   });
 });
 
@@ -271,8 +271,8 @@ test('check properties', () => {
 
   const construct: IotToLambda = deployNewFunc(stack);
 
-  expect(construct.iotTopicRule !== null);
-  expect(construct.lambdaFunction !== null);
+  expect(construct.iotTopicRule).toBeDefined();
+  expect(construct.lambdaFunction).toBeDefined();
 });
 
 test('check exception for Missing existingObj from props for deploy = false', () => {
@@ -315,4 +315,36 @@ test('check deploy = true and no prop', () => {
   } catch (e) {
     expect(e).toBeInstanceOf(Error);
   }
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: IotToLambdaProps = {
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Processing of DTC messages from the AWS Connected Vehicle Solution.",
+        sql: "SELECT * FROM 'connectedcar/dtc/#'",
+        actions: []
+      }
+    },
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new IotToLambda(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

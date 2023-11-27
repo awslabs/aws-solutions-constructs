@@ -33,7 +33,7 @@ import * as api from 'aws-cdk-lib/aws-apigateway';
 
 const lambdaProps: lambda.FunctionProps = {
   code: lambda.Code.fromAsset(`lambda`),
-  runtime: lambda.Runtime.NODEJS_14_X,
+  runtime: lambda.Runtime.NODEJS_16_X,
   handler: 'index.handler'
 };
 
@@ -99,7 +99,7 @@ import software.amazon.awscdk.services.apigateway.*;
 import software.amazon.awsconstructs.services.cloudfrontapigateway.*;
 
 final Function lambdaFunction = Function.Builder.create(this, "IndexHandler")
-        .runtime(Runtime.NODEJS_14_X)
+        .runtime(Runtime.NODEJS_16_X)
         .code(Code.fromAsset("lambda"))
         .handler("index.handler")
         .build();

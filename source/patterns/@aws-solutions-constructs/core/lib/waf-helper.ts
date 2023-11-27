@@ -29,7 +29,7 @@ export interface BuildWebaclProps {
   /**
    * User provided props to override the default ACL props for WAF web ACL.
    */
-  readonly webaclProps?: waf.CfnWebACLProps;
+  readonly webaclProps?: waf.CfnWebACLProps | any;
 }
 
 /**
@@ -49,4 +49,23 @@ export function buildWebacl(scope: Construct, webaclScope: string, props: BuildW
   }
 
   return webAcl;
+}
+
+export interface WafWebAclProps {
+  readonly existingWebaclObj: waf.CfnWebACL,
+  readonly webaclProps:	waf.CfnWebACLProps,
+}
+
+export function CheckWafWebAclProps(propsObject: WafWebAclProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingWebaclObj && propsObject.webaclProps) {
+    errorMessages += 'Error - Either provide existingWebaclObj or webaclProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }

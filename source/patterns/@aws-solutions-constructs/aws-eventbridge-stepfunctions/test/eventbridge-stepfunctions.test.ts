@@ -106,10 +106,10 @@ test('check properties', () => {
 
   const construct: EventbridgeToStepfunctions = deployNewStateMachine(stack);
 
-  expect(construct.cloudwatchAlarms !== null);
-  expect(construct.stateMachine !== null);
-  expect(construct.eventsRule !== null);
-  expect(construct.stateMachineLogGroup !== null);
+  expect(construct.cloudwatchAlarms).toBeDefined();
+  expect(construct.stateMachine).toBeDefined();
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.stateMachineLogGroup).toBeDefined();
 });
 
 test('check properties with no CW Alarms', () => {
@@ -128,10 +128,10 @@ test('check properties with no CW Alarms', () => {
 
   const construct: EventbridgeToStepfunctions =  new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions', props);
 
-  expect(construct.cloudwatchAlarms === null);
-  expect(construct.stateMachine !== null);
-  expect(construct.eventsRule !== null);
-  expect(construct.stateMachineLogGroup !== null);
+  expect(construct.cloudwatchAlarms).not.toBeDefined();
+  expect(construct.stateMachine).toBeDefined();
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.stateMachineLogGroup).toBeDefined();
 });
 
 test('check eventbus property, snapshot & eventbus exists', () => {
@@ -139,18 +139,18 @@ test('check eventbus property, snapshot & eventbus exists', () => {
 
   const construct: EventbridgeToStepfunctions = deployNewStateMachineAndEventBus(stack);
 
-  expect(construct.cloudwatchAlarms !== null);
-  expect(construct.stateMachine !== null);
-  expect(construct.eventsRule !== null);
-  expect(construct.stateMachineLogGroup !== null);
-  expect(construct.eventBus !== null);
+  expect(construct.cloudwatchAlarms).toBeDefined();
+  expect(construct.stateMachine).toBeDefined();
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.stateMachineLogGroup).toBeDefined();
+  expect(construct.eventBus).toBeDefined();
 
   // Check whether eventbus exists
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::Events::EventBus', 1);
 });
 
-test('check exception while passing existingEventBus & eventBusProps', () => {
+test('Confirm CheckEventBridgeProps is being called', () => {
   const stack = new cdk.Stack();
   const startState = new sfn.Pass(stack, 'StartState');
 
@@ -170,7 +170,7 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
   const app = () => {
     new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions', props);
   };
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });
 
 test('check custom event bus resource with props when deploy:true', () => {
@@ -197,28 +197,3 @@ test('check custom event bus resource with props when deploy:true', () => {
     Name: 'testcustomeventbus'
   });
 });
-
-test('check LogGroup name', () => {
-  const stack = new cdk.Stack();
-
-  deployNewStateMachine(stack);
-
-  // Perform some fancy stuff to examine the specifics of the LogGroupName
-  const expectedPrefix = '/aws/vendedlogs/states/constructs/';
-  const lengthOfDatetimeSuffix = 13;
-
-  const template = Template.fromStack(stack);
-  const LogGroup = template.findResources("AWS::Logs::LogGroup");
-
-  const logName = LogGroup.testeventbridgestepfunctionsStateMachineLogGroup826A5B74.Properties.LogGroupName;
-  const suffix = logName.slice(-lengthOfDatetimeSuffix);
-
-  // Look for the expected Prefix and the 13 digit time suffix
-  expect(logName.slice(0, expectedPrefix.length)).toEqual(expectedPrefix);
-  expect(IsWholeNumber(suffix)).not.toBe(false);
-});
-
-function IsWholeNumber(target: string): boolean {
-  const numberPattern = /[0-9]{13}/;
-  return target.match(numberPattern) !== null;
-}

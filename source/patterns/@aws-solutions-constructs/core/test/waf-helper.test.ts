@@ -17,9 +17,6 @@ import * as defaults from '..';
 import { Template } from 'aws-cdk-lib/assertions';
 import { buildWebacl } from '..';
 
-// --------------------------------------------------------------
-// Test construct with default props
-// --------------------------------------------------------------
 test('Test construct with default props', () => {
   // Stack
   const stack = new Stack();
@@ -168,9 +165,6 @@ test('Test construct with default props', () => {
   template.resourceCountIs('AWS::WAFv2::WebACLAssociation', 0);
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ user provided custom properties
-// --------------------------------------------------------------
 test('Test deployment w/ user provided custom properties', () => {
   // Stack
   const stack = new Stack();
@@ -244,9 +238,24 @@ test('Test deployment w/ user provided custom properties', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing WAF web ACL provided
-// --------------------------------------------------------------
+test('Test deployment w/ user provided partial custom properties', () => {
+  // Stack
+  const stack = new Stack();
+  const testName = 'test-name';
+  // Build WAF web ACL
+  const props = {
+    name: testName
+  };
+
+  defaults.buildWebacl(stack, 'CLOUDFRONT', {
+    webaclProps: props
+  });
+
+  Template.fromStack(stack).hasResourceProperties("AWS::WAFv2::WebACL", {
+    Name: testName
+  });
+});
+
 test('Test deployment w/ existing WAF web ACL provided', () => {
   // Stack
   const stack = new Stack();
@@ -257,4 +266,56 @@ test('Test deployment w/ existing WAF web ACL provided', () => {
   });
 
   expect(newWaf).toBe(testWaf);
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test WebACL bad props', () => {
+  const stack = new Stack();
+  const wafProps: waf.CfnWebACLProps = {
+    scope: 'CLOUDFRONT',
+    defaultAction: {
+      allow: {}
+    },
+    visibilityConfig: {
+      cloudWatchMetricsEnabled: false,
+      metricName: 'webACL',
+      sampledRequestsEnabled: true
+    },
+    rules: [
+      defaults.wrapManagedRuleSet("AWSManagedRulesCommonRuleSet", "AWS", 0),
+      defaults.wrapManagedRuleSet("AWSManagedRulesWordPressRuleSet", "AWS", 1),
+    ]
+  };
+
+  const wafPropsTwo: waf.CfnWebACLProps = {
+    scope: 'CLOUDFRONT',
+    defaultAction: {
+      allow: {}
+    },
+    visibilityConfig: {
+      cloudWatchMetricsEnabled: false,
+      metricName: 'webACL',
+      sampledRequestsEnabled: true
+    },
+    rules: [
+      defaults.wrapManagedRuleSet("AWSManagedRulesCommonRuleSet", "AWS", 0),
+      defaults.wrapManagedRuleSet("AWSManagedRulesWordPressRuleSet", "AWS", 1),
+    ]
+  };
+
+  const acl: waf.CfnWebACL = new waf.CfnWebACL(stack, 'test',  wafProps);
+
+  const props: defaults.WafWebAclProps = {
+    existingWebaclObj: acl,
+    webaclProps: wafPropsTwo,
+  };
+
+  const app = () => {
+    defaults.CheckWafWebAclProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingWebaclObj or webaclProps, but not both.\n');
 });

@@ -22,7 +22,7 @@ function deploy(stack: cdk.Stack) {
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
 
@@ -40,10 +40,10 @@ test('check getter methods', () => {
 
   const construct: CloudFrontToApiGateway = deploy(stack);
 
-  expect(construct.cloudFrontWebDistribution !== null);
-  expect(construct.apiGateway !== null);
-  expect(construct.cloudFrontFunction !== null);
-  expect(construct.cloudFrontLoggingBucket !== null);
+  expect(construct.cloudFrontWebDistribution).toBeDefined();
+  expect(construct.apiGateway).toBeDefined();
+  expect(construct.cloudFrontFunction).toBeDefined();
+  expect(construct.cloudFrontLoggingBucket).toBeDefined();
 });
 
 test('test cloudfront DomainName', () => {
@@ -167,7 +167,7 @@ function createApi() {
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
 
@@ -177,9 +177,6 @@ function createApi() {
   return {stack, api: regionalLambdaRestApiResponse.api};
 }
 
-// --------------------------------------------------------------
-// Cloudfront logging bucket with destroy removal policy and auto delete objects
-// --------------------------------------------------------------
 test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
   const {stack, api} = createApi();
 
@@ -193,7 +190,7 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::S3::Bucket", {
-    AccessControl: "LogDeliveryWrite"
+    OwnershipControls: { Rules: [ { ObjectOwnership: "ObjectWriter" } ] },
   });
 
   template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
@@ -209,9 +206,6 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
   });
 });
 
-// --------------------------------------------------------------
-// Cloudfront logging bucket error providing existing log bucket and logBucketProps
-// --------------------------------------------------------------
 test('Cloudfront logging bucket error when providing existing log bucket and logBucketProps', () => {
   const {stack, api} = createApi();
 
@@ -275,7 +269,7 @@ test('Test the deployment with securityHeadersBehavior instead of HTTP security 
   expect(cloudFrontToS3.cloudFrontFunction).toEqual(undefined);
 });
 
-test("throw exception if insertHttpSecurityHeaders and responseHeadersPolicyProps are provided", () => {
+test("Confirm CheckCloudFrontProps is being called", () => {
   const {stack, api} = createApi();
 
   expect(() => {
@@ -293,5 +287,5 @@ test("throw exception if insertHttpSecurityHeaders and responseHeadersPolicyProp
         }
       }
     });
-  }).toThrowError();
+  }).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
 });

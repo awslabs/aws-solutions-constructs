@@ -190,3 +190,168 @@ test('Test creating a FIFO queue', () => {
   });
   expect(buildQueueResponse.queue.fifo).toBe(true);
 });
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+
+test("Test fail SQS Queue check", () => {
+  const stack = new Stack();
+
+  const props: defaults.SqsProps = {
+    queueProps: {},
+    existingQueueObj: new sqs.Queue(stack, 'placeholder', {}),
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide queueProps or existingQueueObj, but not both.\n');
+});
+
+test('Test fail SQS queue check when queueProps.encryptionMasterKey and encryptionKey are both specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.SqsProps = {
+    queueProps: {
+      encryptionMasterKey: new kms.Key(stack, 'key')
+    },
+    encryptionKey: new kms.Key(stack, 'otherkey')
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  expect(app).toThrowError('Error - Either provide queueProps.encryptionMasterKey or encryptionKey, but not both.\n');
+});
+
+test('Test fail SQS queue check when queueProps.encryptionMasterKey and encryptionKeyProps are both specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.SqsProps = {
+    encryptionKeyProps: {
+      description: 'key description'
+    },
+    queueProps: {
+      encryptionMasterKey: new kms.Key(stack, 'key')
+    }
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide queueProps.encryptionMasterKey or encryptionKeyProps, but not both.\n');
+});
+
+test('Test fail SQS check when both encryptionKey and encryptionKeyProps are specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.SqsProps = {
+    encryptionKey: new kms.Key(stack, 'key'),
+    encryptionKeyProps: {
+      description: 'a description'
+    }
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  expect(app).toThrowError('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
+});
+
+test('Test fail Dead Letter Queue check', () => {
+
+  const props: defaults.SqsProps = {
+    deployDeadLetterQueue: false,
+    deadLetterQueueProps: {},
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n');
+});
+
+test('Test fail Dead Letter Queue check with queueProps fifo set to true and undefined deadLetterQueueProps', () => {
+
+  const props: defaults.SqsProps = {
+    queueProps: { fifo: true },
+    deadLetterQueueProps: {},
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+    'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
+});
+
+test('Test fail Dead Letter Queue check with queueProps fifo set to true and deadLetterQueueProps fifo set to false', () => {
+
+  const props: defaults.SqsProps = {
+    queueProps: { fifo: true },
+    deadLetterQueueProps: { fifo: false },
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+    'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
+});
+
+test('Test fail Dead Letter Queue check with queueProps fifo set to false and deadLetterQueueProps fifo set to true', () => {
+
+  const props: defaults.SqsProps = {
+    deadLetterQueueProps: { fifo: true },
+    queueProps: { fifo: false },
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+    'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
+});
+
+test('Test fail Dead Letter Queue check with deadLetterQueueProps fifo set to true', () => {
+
+  const props: defaults.SqsProps = {
+    deadLetterQueueProps: { fifo: true },
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+    'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
+});
+
+test('Test fail Dead Letter Queue check with queueProps fifo set to false', () => {
+
+  const props: defaults.SqsProps = {
+    queueProps: { fifo: false },
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+    'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
+});

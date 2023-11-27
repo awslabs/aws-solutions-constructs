@@ -18,37 +18,31 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Test properties
-// --------------------------------------------------------------
 test('Test properties', () => {
   // Initial Setup
   const stack = new Stack();
   const props: KinesisStreamsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
   };
   const app = new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
   // Assertion 1
-  expect(app.lambdaFunction !== null);
+  expect(app.lambdaFunction).toBeDefined();
   // Assertion 2
-  expect(app.kinesisStream !== null);
+  expect(app.kinesisStream).toBeDefined();
   // Assertion 3
-  expect(app.cloudwatchAlarms !== null);
+  expect(app.cloudwatchAlarms).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test existing resources
-// --------------------------------------------------------------
 test('Test existing resources', () => {
   // Initial Setup
   const stack = new Stack();
 
   const fn = new lambda.Function(stack, 'test-fn', {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   });
@@ -75,18 +69,15 @@ test('Test existing resources', () => {
 
   template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
-    Runtime: 'nodejs14.x',
+    Runtime: 'nodejs16.x',
   });
 });
 
-// --------------------------------------------------------------
-// Test sqsDlqQueueProps override
-// --------------------------------------------------------------
 test('test sqsDlqQueueProps override', () => {
   const stack = new Stack();
   const props: KinesisStreamsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -104,15 +95,12 @@ test('test sqsDlqQueueProps override', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test properties with no CW Alarms
-// --------------------------------------------------------------
 test('Test properties with no CW Alarms', () => {
   // Initial Setup
   const stack = new Stack();
   const props: KinesisStreamsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -120,9 +108,53 @@ test('Test properties with no CW Alarms', () => {
   };
   const app = new KinesisStreamsToLambda(stack, 'test-kinesis-streams-lambda', props);
   // Assertion 1
-  expect(app.lambdaFunction !== null);
+  expect(app.lambdaFunction).toBeDefined();
   // Assertion 2
-  expect(app.kinesisStream !== null);
+  expect(app.kinesisStream).toBeDefined();
   // Assertion 3
-  expect(app.cloudwatchAlarms === null);
+  expect(app.cloudwatchAlarms).not.toBeDefined();
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: KinesisStreamsToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new KinesisStreamsToLambda(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});
+
+test('Confirm call to CheckKinesisStreamProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const props: KinesisStreamsToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingStreamObj: new kinesis.Stream(stack, 'test', {}),
+    kinesisStreamProps: {}
+  };
+  const app = () => {
+    new KinesisStreamsToLambda(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });

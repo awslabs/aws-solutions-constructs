@@ -64,6 +64,26 @@ test('Test generateResourceName with randomized extension', () => {
 
 });
 
+test('Test generatePhysicalName', () => {
+  const result = defaults.generatePhysicalName('/aws/vendedlogs/states/constructs/', parts, 255);
+
+  // The token number is not constant, so need to be flexible checking this value
+  const regex = /\/aws\/vendedlogs\/states\/constructs\/firstportionislongsecondsection-\${Token\[TOKEN\.[0-9]+\]}/;
+  expect(result).toMatch(regex);
+});
+
+test('Test truncation of generatePhysicalName', () => {
+  const longParts = [ ...parts, ...parts, ...parts, ...parts, ...parts ];
+  const prefix = '/aws/vendedlogs/states/constructs/';
+  const lengthOfGuid = 36;
+  const maxNameLength = 125;
+
+  const result = defaults.generatePhysicalName(prefix, longParts, maxNameLength);
+
+  const fixedPortion = result.split('$')[0];
+  expect(fixedPortion.length).toEqual(maxNameLength - lengthOfGuid);
+});
+
 test('Test generateIntegStackName', () => {
   const result = defaults.generateIntegStackName('integ.apigateway-dynamodb-CRUD.js');
   expect(result).toContain('apigateway-dynamodb-CRUD');
@@ -191,4 +211,40 @@ test('Test generateName uniqueness', () => {
   const nameOne = defaults.generateName(stackOne, "");
   const nameTwo = defaults.generateName(stackTwo, "");
   expect(nameOne === nameTwo).toBe(false);
+});
+
+test('Test successful CheckListValues', () => {
+
+  const app = () => {
+    defaults.CheckListValues(['one', 'two', 'four'], ['four', 'one'], 'test value');
+  };
+
+  // Assertion
+  expect(app).not.toThrowError();
+});
+
+test('Test fail OpenSearch improper vpc specification', () => {
+
+  const props: defaults.OpenSearchProps = {
+    openSearchDomainProps: {
+      vpcOptions: {}
+    },
+  };
+
+  const app = () => {
+    defaults.CheckOpenSearchProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Define VPC using construct parameters not the OpenSearch Service props\n');
+});
+
+test('Test unsuccessful CheckListValues', () => {
+
+  const app = () => {
+    defaults.CheckListValues(['one', 'two', 'four'], ['four', 'three'], 'test value');
+  };
+
+  // Assertion
+  expect(app).toThrowError('Invalid test value submitted - three');
 });

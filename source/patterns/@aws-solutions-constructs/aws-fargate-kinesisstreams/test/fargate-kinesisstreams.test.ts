@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { FargateToKinesisStreams } from "../lib";
+import { FargateToKinesisStreams, FargateToKinesisStreamsProps } from "../lib";
 import * as cdk from "aws-cdk-lib";
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import * as defaults from '@aws-solutions-constructs/core';
@@ -552,15 +552,22 @@ test('Construct uses existingFargateServiceObject when provided', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test-existing-fargate-service',
-    existingVpc,
-    { clusterName: 'my-cluster' },
-    defaults.fakeEcrRepoArn,
-    undefined,
-    { family: 'my-family' },
-    { containerName: 'my-container' },
-    { serviceName: 'my-service' }
-  );
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test-existing-fargate-service', {
+    constructVpc: existingVpc,
+    clientClusterProps: {
+      clusterName: 'my-cluster'
+    },
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateTaskDefinitionProps: {
+      family: 'my-family'
+    },
+    clientContainerDefinitionProps: {
+      containerName: 'my-container'
+    },
+    clientFargateServiceProps: {
+      serviceName: 'my-service'
+    }
+  });
 
   new FargateToKinesisStreams(stack, 'test-fargate-kinesisstreams', {
     publicApi: false,
@@ -589,4 +596,57 @@ test('Construct uses existingFargateServiceObject when provided', () => {
   template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: 'my-service',
   });
+});
+
+test('Confirm that CheckVpcProps was called', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+  const clusterName = "custom-cluster-name";
+  const containerName = "custom-container-name";
+  const serviceName = "custom-service-name";
+  const familyName = "custom-family-name";
+
+  const props: FargateToKinesisStreamsProps = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    existingVpc: defaults.getTestVpc(stack),
+    vpcProps: {  },
+  };
+
+  const app = () => {
+    new FargateToKinesisStreams(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});
+
+test('Confirm that CheckKinesisStreamsProps was called', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+  const clusterName = "custom-cluster-name";
+  const containerName = "custom-container-name";
+  const serviceName = "custom-service-name";
+  const familyName = "custom-family-name";
+
+  const props: FargateToKinesisStreamsProps = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    vpcProps: {  },
+    existingStreamObj: new kinesis.Stream(stack, 'test', {}),
+    kinesisStreamProps: {}
+  };
+
+  const app = () => {
+    new FargateToKinesisStreams(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });

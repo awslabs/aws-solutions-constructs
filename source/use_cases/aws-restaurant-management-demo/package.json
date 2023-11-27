@@ -25,7 +25,7 @@
     "watch": "tsc -b -w",
     "integ": "cdk-integ",
     "integ-no-clean": "cdk-integ --no-clean",
-    "integ-assert": "cdk-integ-assert",
+    "integ-assert": "cdk-integ-assert-v2",
     "build+lint+test": "npm run build && npm run lint && npm test && npm run integ-assert"
   },
   "devDependencies": {

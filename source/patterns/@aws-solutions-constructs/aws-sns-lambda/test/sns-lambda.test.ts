@@ -22,7 +22,7 @@ function deployNewFunc(stack: cdk.Stack) {
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
   };
@@ -35,8 +35,8 @@ test('check properties', () => {
 
   const construct: SnsToLambda = deployNewFunc(stack);
 
-  expect(construct.lambdaFunction !== null);
-  expect(construct.snsTopic !== null);
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.snsTopic).toBeDefined();
 });
 
 test('override topicProps', () => {
@@ -45,7 +45,7 @@ test('override topicProps', () => {
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     topicProps: {
@@ -71,7 +71,7 @@ test('provide existingTopicObj', () => {
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     existingTopicObj: topic
@@ -91,7 +91,7 @@ test('Topic is encrypted with imported CMK when set on encryptionKey prop', () =
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     encryptionKey: cmk
@@ -116,7 +116,7 @@ test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     topicProps: {
@@ -137,13 +137,13 @@ test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop
   });
 });
 
-test('Topic is encrypted with provided encrytionKeyProps', () => {
+test('Topic is encrypted with provided encryptionKeyProps', () => {
   const stack = new cdk.Stack();
 
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     encryptionKeyProps: {
@@ -180,7 +180,7 @@ test('Topic is encrypted by default with AWS-managed KMS key when no other encry
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
   };
@@ -218,7 +218,7 @@ test('Topic is encrypted with customer managed KMS Key when enable encryption fl
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     enableEncryptionWithCustomerManagedKey: true
@@ -235,4 +235,55 @@ test('Topic is encrypted with customer managed KMS Key when enable encryption fl
       ]
     },
   });
+});
+
+test('Confirm CheckSnsProps is getting called', () => {
+  const stack = new cdk.Stack();
+
+  const topic = new sns.Topic(stack, 'MyTopic', {
+    topicName: "custom-topic"
+  });
+
+  const props: SnsToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler'
+    },
+    existingTopicObj: topic,
+    topicProps: {
+      topicName: 'topic-name'
+    }
+  };
+
+  const app = () => {
+    new SnsToLambda(stack, 'test-sns-lambda', props);
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: SnsToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new SnsToLambda(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

@@ -77,7 +77,12 @@ export class IotToS3 extends Construct {
    */
   constructor(scope: Construct, id: string, props: IotToS3Props) {
     super(scope, id);
-    defaults.CheckProps(props);
+
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+
+    defaults.CheckS3Props(props);
 
     // Setup S3 Bucket
     if (!props.existingBucketInterface) {

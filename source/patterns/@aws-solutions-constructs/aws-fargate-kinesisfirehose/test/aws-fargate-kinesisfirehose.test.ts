@@ -13,7 +13,7 @@
 
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
-import { FargateToKinesisFirehose } from "../lib";
+import { FargateToKinesisFirehose, FargateToKinesisFirehoseProps } from "../lib";
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import { Match, Template } from "aws-cdk-lib/assertions";
 import { GetTestFirehoseDestination } from './test-helper';
@@ -39,10 +39,10 @@ test('New service/new bucket, public API, new VPC', () => {
     existingKinesisFirehose: destination.kinesisFirehose
   });
 
-  expect(construct.vpc !== null);
-  expect(construct.service !== null);
-  expect(construct.container !== null);
-  expect(construct.kinesisFirehose !== null);
+  expect(construct.vpc).toBeDefined();
+  expect(construct.service).toBeDefined();
+  expect(construct.container).toBeDefined();
+  expect(construct.kinesisFirehose).toBeDefined();
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::ECS::Service", {
@@ -648,15 +648,20 @@ test('Construct uses existingFargateServiceObject when provided', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test-existing-fargate-service',
-    existingVpc,
-    { clusterName: 'my-cluster' },
-    defaults.fakeEcrRepoArn,
-    undefined,
-    { family: 'my-family' },
-    { containerName: 'my-container' },
-    { serviceName: 'my-service' }
-  );
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test-existing-fargate-service', {
+    constructVpc: existingVpc,
+    clientClusterProps: { clusterName: 'my-cluster' },
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateTaskDefinitionProps: {
+      family: 'my-family'
+    },
+    clientContainerDefinitionProps: {
+      containerName: 'my-container'
+    },
+    clientFargateServiceProps: {
+      serviceName: 'my-service'
+    }
+  });
 
   new FargateToKinesisFirehose(stack, 'test-fargate-kinesisfirehose', {
     publicApi: false,
@@ -705,4 +710,32 @@ test('Test fail if existingFirehose does not have a stream name', () => {
   };
 
   expect(app).toThrowError(/existingKinesisFirehose must have a defined deliveryStreamName/);
+});
+
+test('Confirm that CheckVpcProps was called', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+  const clusterName = "custom-cluster-name";
+  const containerName = "custom-container-name";
+  const serviceName = "custom-service-name";
+  const familyName = "custom-family-name";
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
+
+  const props: FargateToKinesisFirehoseProps = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    existingKinesisFirehose: destination.kinesisFirehose,
+    existingVpc: defaults.getTestVpc(stack),
+    vpcProps: {  },
+  };
+
+  const app = () => {
+    new FargateToKinesisFirehose(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });

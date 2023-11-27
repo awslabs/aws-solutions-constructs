@@ -79,105 +79,119 @@ export interface LambdaToS3Props {
    *
    * @default - Default props are used
    */
-   readonly loggingBucketProps?: s3.BucketProps
+  readonly loggingBucketProps?: s3.BucketProps
   /**
    * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
    * Enabling Access Logging is a best practice.
    *
    * @default - true
    */
-    readonly logS3AccessLogs?: boolean;
+  readonly logS3AccessLogs?: boolean;
 }
 
 /**
  * @summary The LambdaToS3 class.
  */
 export class LambdaToS3 extends Construct {
-    public readonly lambdaFunction: lambda.Function;
-    public readonly s3Bucket?: s3.Bucket;
-    public readonly s3LoggingBucket?: s3.Bucket;
-    public readonly vpc?: ec2.IVpc;
-    public readonly s3BucketInterface: s3.IBucket;
+  public readonly lambdaFunction: lambda.Function;
+  public readonly s3Bucket?: s3.Bucket;
+  public readonly s3LoggingBucket?: s3.Bucket;
+  public readonly vpc?: ec2.IVpc;
+  public readonly s3BucketInterface: s3.IBucket;
 
-    /**
-     * @summary Constructs a new instance of the LambdaToS3 class.
-     * @param {cdk.App} scope - represents the scope for all the resources.
-     * @param {string} id - this is a a scope-unique id.
-     * @param {LambdaToS3Props} props - user provided props for the construct.
-     * @since 0.8.0
-     * @access public
-     */
-    constructor(scope: Construct, id: string, props: LambdaToS3Props) {
-      super(scope, id);
-      defaults.CheckProps(props);
+  /**
+   * @summary Constructs a new instance of the LambdaToS3 class.
+   * @param {cdk.App} scope - represents the scope for all the resources.
+   * @param {string} id - this is a a scope-unique id.
+   * @param {LambdaToS3Props} props - user provided props for the construct.
+   * @since 0.8.0
+   * @access public
+   */
+  constructor(scope: Construct, id: string, props: LambdaToS3Props) {
+    super(scope, id);
 
-      if (props.bucketPermissions) {
-        defaults.CheckListValues(['Delete', 'Put', 'Read', 'ReadWrite', 'Write'], props.bucketPermissions, 'bucket permission');
-      }
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-      let bucket: s3.IBucket;
+    defaults.CheckS3Props(props);
+    defaults.CheckVpcProps(props);
+    defaults.CheckLambdaProps(props);
 
-      if (props.deployVpc || props.existingVpc) {
-        this.vpc = defaults.buildVpc(scope, {
-          defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
-          existingVpc: props.existingVpc,
-          userVpcProps: props.vpcProps,
-          constructVpcProps: {
-            enableDnsHostnames: true,
-            enableDnsSupport: true,
-          },
-        });
+    if (props.bucketPermissions) {
+      defaults.CheckListValues(['Delete', 'Put', 'Read', 'ReadWrite', 'Write'], props.bucketPermissions, 'bucket permission');
+    }
 
-        defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.S3);
-      }
+    let bucket: s3.IBucket;
 
-      // Setup the Lambda function
-      this.lambdaFunction = defaults.buildLambdaFunction(this, {
-        existingLambdaObj: props.existingLambdaObj,
-        lambdaFunctionProps: props.lambdaFunctionProps,
-        vpc: this.vpc,
+    if (props.deployVpc || props.existingVpc) {
+      this.vpc = defaults.buildVpc(scope, {
+        defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+        existingVpc: props.existingVpc,
+        userVpcProps: props.vpcProps,
+        constructVpcProps: {
+          enableDnsHostnames: true,
+          enableDnsSupport: true,
+        },
       });
 
-      // Setup S3 Bucket
-      if (!props.existingBucketObj) {
-        const buildS3BucketResponse = defaults.buildS3Bucket(this, {
-          bucketProps: props.bucketProps,
-          loggingBucketProps: props.loggingBucketProps,
-          logS3AccessLogs: props.logS3AccessLogs
-        });
-        this.s3Bucket = buildS3BucketResponse.bucket;
-        this.s3LoggingBucket = buildS3BucketResponse.loggingBucket;
-
-        bucket = this.s3Bucket;
-      } else {
-        bucket = props.existingBucketObj;
-      }
-
-      this.s3BucketInterface = bucket;
-
-      // Configure environment variables
-      const bucketEnvironmentVariableName = props.bucketEnvironmentVariableName || 'S3_BUCKET_NAME';
-      this.lambdaFunction.addEnvironment(bucketEnvironmentVariableName, bucket.bucketName);
-
-      // Add the requested or default bucket permissions
-      if (props.bucketPermissions) {
-        if (props.bucketPermissions.includes('Delete')) {
-          bucket.grantDelete(this.lambdaFunction.grantPrincipal);
-        }
-        if (props.bucketPermissions.includes('Put')) {
-          bucket.grantPut(this.lambdaFunction.grantPrincipal);
-        }
-        if (props.bucketPermissions.includes('Read')) {
-          bucket.grantRead(this.lambdaFunction.grantPrincipal);
-        }
-        if (props.bucketPermissions.includes('ReadWrite')) {
-          bucket.grantReadWrite(this.lambdaFunction.grantPrincipal);
-        }
-        if (props.bucketPermissions.includes('Write')) {
-          bucket.grantWrite(this.lambdaFunction.grantPrincipal);
-        }
-      } else {
-        bucket.grantReadWrite(this.lambdaFunction.grantPrincipal);
-      }
+      defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.S3);
     }
+
+    // Setup the Lambda function
+    this.lambdaFunction = defaults.buildLambdaFunction(this, {
+      existingLambdaObj: props.existingLambdaObj,
+      lambdaFunctionProps: props.lambdaFunctionProps,
+      vpc: this.vpc,
+    });
+
+    // Setup S3 Bucket
+    if (!props.existingBucketObj) {
+      const buildS3BucketResponse = defaults.buildS3Bucket(this, {
+        bucketProps: props.bucketProps,
+        loggingBucketProps: props.loggingBucketProps,
+        logS3AccessLogs: props.logS3AccessLogs
+      });
+      this.s3Bucket = buildS3BucketResponse.bucket;
+      this.s3LoggingBucket = buildS3BucketResponse.loggingBucket;
+
+      bucket = this.s3Bucket;
+    } else {
+      bucket = props.existingBucketObj;
+    }
+
+    this.s3BucketInterface = bucket;
+
+    // Configure environment variables
+    const bucketEnvironmentVariableName = props.bucketEnvironmentVariableName || 'S3_BUCKET_NAME';
+    this.lambdaFunction.addEnvironment(bucketEnvironmentVariableName, bucket.bucketName);
+
+    // Add the requested or default bucket permissions
+    if (props.bucketPermissions) {
+      this.AssignAppropriatePrivileges(props, bucket, this.lambdaFunction);
+    } else {
+      bucket.grantReadWrite(this.lambdaFunction.grantPrincipal);
+    }
+  }
+
+  private AssignAppropriatePrivileges(props: LambdaToS3Props, bucket: s3.IBucket, clientFunction: lambda.Function) {
+    if (!props.bucketPermissions) {
+      throw new Error('bucketPermissions required here');
+    }
+    if (props.bucketPermissions.includes('Delete')) {
+      bucket.grantDelete(clientFunction.grantPrincipal);
+    }
+    if (props.bucketPermissions.includes('Put')) {
+      bucket.grantPut(clientFunction.grantPrincipal);
+    }
+    if (props.bucketPermissions.includes('Read')) {
+      bucket.grantRead(clientFunction.grantPrincipal);
+    }
+    if (props.bucketPermissions.includes('ReadWrite')) {
+      bucket.grantReadWrite(clientFunction.grantPrincipal);
+    }
+    if (props.bucketPermissions.includes('Write')) {
+      bucket.grantWrite(clientFunction.grantPrincipal);
+    }
+  }
 }

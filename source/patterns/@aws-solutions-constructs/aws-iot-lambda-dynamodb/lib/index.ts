@@ -94,7 +94,6 @@ export class IotToLambdaToDynamoDB extends Construct {
    */
   constructor(scope: Construct, id: string, props: IotToLambdaToDynamoDBProps) {
     super(scope, id);
-    defaults.CheckProps(props);
 
     // Other permissions for constructs are accepted as arrays, turning tablePermissions into
     // an array to use the same validation function.
