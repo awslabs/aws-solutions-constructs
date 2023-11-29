@@ -35,6 +35,11 @@ const func = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 const props: LambdaToS3Props = {
   existingLambdaObj: func,
   bucketProps: {
+    autoDeleteObjects: true,
+    removalPolicy: RemovalPolicy.DESTROY,
+  },
+  loggingBucketProps: {
+    autoDeleteObjects: true,
     removalPolicy: RemovalPolicy.DESTROY,
   }
 };
