@@ -61,7 +61,9 @@
         "Type": "application"
       },
       "DependsOn": [
-        "privateapistackPolicy98558170"
+        "privateapistackAutoDeleteObjectsCustomResource42A0D3D1",
+        "privateapistackPolicy98558170",
+        "privateapistack09C932BB"
       ]
     },
     "privateapistackprivateapistackalbSecurityGroup5A8A9725": {
@@ -81,6 +83,11 @@
           "Ref": "Vpc8378EB38"
         }
       },
+      "DependsOn": [
+        "privateapistackAutoDeleteObjectsCustomResource42A0D3D1",
+        "privateapistackPolicy98558170",
+        "privateapistack09C932BB"
+      ],
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [

@@ -848,7 +848,9 @@
         "Type": "application"
       },
       "DependsOn": [
+        "testconstructlbAutoDeleteObjectsCustomResource581A2B9F",
         "testconstructlbPolicy3FF14C4B",
+        "testconstructlb40BC0490",
         "VpcPublicSubnet1DefaultRoute3DA9E72A",
         "VpcPublicSubnet1RouteTableAssociation97140677",
         "VpcPublicSubnet2DefaultRoute97F91067",
@@ -874,6 +876,11 @@
           "Ref": "Vpc8378EB38"
         }
       },
+      "DependsOn": [
+        "testconstructlbAutoDeleteObjectsCustomResource581A2B9F",
+        "testconstructlbPolicy3FF14C4B",
+        "testconstructlb40BC0490"
+      ],
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
@@ -912,7 +919,12 @@
         },
         "IpProtocol": "tcp",
         "ToPort": 8080
-      }
+      },
+      "DependsOn": [
+        "testconstructlbAutoDeleteObjectsCustomResource581A2B9F",
+        "testconstructlbPolicy3FF14C4B",
+        "testconstructlb40BC0490"
+      ]
     },
     "testconstructlb40BC0490": {
       "Type": "AWS::S3::Bucket",

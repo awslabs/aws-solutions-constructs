@@ -47,7 +47,9 @@
         "Type": "application"
       },
       "DependsOn": [
-        "testonePolicyE30853FE"
+        "testoneAutoDeleteObjectsCustomResourceEDE3D2FC",
+        "testonePolicyE30853FE",
+        "testoneE6ACFBB6"
       ]
     },
     "testonetestonealbSecurityGroup4DED9E2A": {
@@ -76,6 +78,11 @@
           "Ref": "Vpc8378EB38"
         }
       },
+      "DependsOn": [
+        "testoneAutoDeleteObjectsCustomResourceEDE3D2FC",
+        "testonePolicyE30853FE",
+        "testoneE6ACFBB6"
+      ],
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [

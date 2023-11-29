@@ -408,7 +408,7 @@
             },
             {
               "Fn::GetAtt": [
-                "lammemexistingResourceslammemexistingResourcescachesg832A8E40",
+                "testtestcachesg9F6CF9E2",
                 "GroupId"
               ]
             }
@@ -518,7 +518,7 @@
           },
           {
             "Fn::GetAtt": [
-              "lammemexistingResourceslammemexistingResourcescachesg832A8E40",
+              "testtestcachesg9F6CF9E2",
               "GroupId"
             ]
           }
@@ -528,10 +528,10 @@
         "ecsubnetgrouptestcache"
       ]
     },
-    "lammemexistingResourceslammemexistingResourcescachesg832A8E40": {
+    "testtestcachesg9F6CF9E2": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "lammem-existingResources/lammem-existingResources/lammem-existingResources-cachesg",
+        "GroupDescription": "lammem-existingResources/test/test-cachesg",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -558,7 +558,7 @@
         }
       }
     },
-    "lammemexistingResourceslammemexistingResourcesingress225EA10E": {
+    "testtestingress291C0179": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "Description": "Self referencing rule to control access to Elasticache memcached cluster",
@@ -570,14 +570,14 @@
         },
         "GroupId": {
           "Fn::GetAtt": [
-            "lammemexistingResourceslammemexistingResourcescachesg832A8E40",
+            "testtestcachesg9F6CF9E2",
             "GroupId"
           ]
         },
         "IpProtocol": "TCP",
         "SourceSecurityGroupId": {
           "Fn::GetAtt": [
-            "lammemexistingResourceslammemexistingResourcescachesg832A8E40",
+            "testtestcachesg9F6CF9E2",
             "GroupId"
           ]
         },
@@ -589,7 +589,7 @@
         }
       },
       "DependsOn": [
-        "lammemexistingResourceslammemexistingResourcescachesg832A8E40"
+        "testtestcachesg9F6CF9E2"
       ]
     }
   },

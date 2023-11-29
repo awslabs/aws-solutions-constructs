@@ -46,7 +46,7 @@ const props: LambdaToElasticachememcachedProps = {
   existingCache: testCache,
 };
 
-new LambdaToElasticachememcached(stack, generateIntegStackName(__filename), props);
+new LambdaToElasticachememcached(stack, 'test', props);
 
 // Synth
 app.synth();

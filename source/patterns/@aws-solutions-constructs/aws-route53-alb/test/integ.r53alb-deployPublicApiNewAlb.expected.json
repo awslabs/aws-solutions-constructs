@@ -53,7 +53,9 @@
         "Type": "application"
       },
       "DependsOn": [
+        "newalbstackAutoDeleteObjectsCustomResourceCF8C89E0",
         "newalbstackPolicyB7C2D898",
+        "newalbstackADB02838",
         "VpcPublicSubnet1DefaultRoute3DA9E72A",
         "VpcPublicSubnet1RouteTableAssociation97140677",
         "VpcPublicSubnet2DefaultRoute97F91067",
@@ -79,6 +81,11 @@
           "Ref": "Vpc8378EB38"
         }
       },
+      "DependsOn": [
+        "newalbstackAutoDeleteObjectsCustomResourceCF8C89E0",
+        "newalbstackPolicyB7C2D898",
+        "newalbstackADB02838"
+      ],
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [

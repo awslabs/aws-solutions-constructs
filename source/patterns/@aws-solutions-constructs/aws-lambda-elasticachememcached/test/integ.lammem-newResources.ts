@@ -31,7 +31,7 @@ const props: LambdaToElasticachememcachedProps = {
   }
 };
 
-new LambdaToElasticachememcached(stack, generateIntegStackName(__filename), props);
+new LambdaToElasticachememcached(stack, 'test', props);
 
 // Synth
 app.synth();
