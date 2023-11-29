@@ -730,9 +730,7 @@
         "Type": "application"
       },
       "DependsOn": [
-        "existingzonestackAutoDeleteObjectsCustomResource5A21F306",
-        "existingzonestackPolicyFEC9C88E",
-        "existingzonestackEFB9F5B3"
+        "existingzonestackPolicyFEC9C88E"
       ]
     },
     "existingzonestackexistingzonestackalbSecurityGroup6F32DCA5": {
@@ -752,11 +750,6 @@
           "Ref": "Vpc8378EB38"
         }
       },
-      "DependsOn": [
-        "existingzonestackAutoDeleteObjectsCustomResource5A21F306",
-        "existingzonestackPolicyFEC9C88E",
-        "existingzonestackEFB9F5B3"
-      ],
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [

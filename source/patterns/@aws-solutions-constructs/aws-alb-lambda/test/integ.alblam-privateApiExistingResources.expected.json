@@ -941,9 +941,7 @@
         "Type": "application"
       },
       "DependsOn": [
-        "existingalbAutoDeleteObjectsCustomResource67152080",
-        "existingalbPolicy6C7AF240",
-        "existingalb0F60CC48"
+        "existingalbPolicy6C7AF240"
       ]
     },
     "existingalbalbSecurityGroupC8DD2920": {
@@ -972,11 +970,6 @@
           "Ref": "Vpc8378EB38"
         }
       },
-      "DependsOn": [
-        "existingalbAutoDeleteObjectsCustomResource67152080",
-        "existingalbPolicy6C7AF240",
-        "existingalb0F60CC48"
-      ],
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
