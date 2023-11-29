@@ -1,10 +1,10 @@
 {
   "Description": "Integration Test with new resourcesfor aws-lambda-elasticachememcached",
   "Resources": {
-    "testtestcachesg9F6CF9E2": {
+    "lammemnewResourceslammemnewResourcescachesg08EE8773": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "lammem-newResources/test/test-cachesg",
+        "GroupDescription": "lammem-newResources/lammem-newResources/lammem-newResources-cachesg",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -31,34 +31,34 @@
         }
       }
     },
-    "testtestingress291C0179": {
+    "lammemnewResourceslammemnewResourcesingress6740B3EB": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "Description": "Self referencing rule to control access to Elasticache memcached cluster",
         "FromPort": 11222,
         "GroupId": {
           "Fn::GetAtt": [
-            "testtestcachesg9F6CF9E2",
+            "lammemnewResourceslammemnewResourcescachesg08EE8773",
             "GroupId"
           ]
         },
         "IpProtocol": "TCP",
         "SourceSecurityGroupId": {
           "Fn::GetAtt": [
-            "testtestcachesg9F6CF9E2",
+            "lammemnewResourceslammemnewResourcescachesg08EE8773",
             "GroupId"
           ]
         },
         "ToPort": 11222
       },
       "DependsOn": [
-        "testtestcachesg9F6CF9E2"
+        "lammemnewResourceslammemnewResourcescachesg08EE8773"
       ]
     },
-    "testecsubnetgrouptest868C53AE": {
+    "lammemnewResourcesecsubnetgrouplammemnewResourcesBFA66192": {
       "Type": "AWS::ElastiCache::SubnetGroup",
       "Properties": {
-        "CacheSubnetGroupName": "test-subnet-group",
+        "CacheSubnetGroupName": "lammem-newResources-subnet-group",
         "Description": "Solutions Constructs generated Cache Subnet Group",
         "SubnetIds": [
           {
@@ -73,30 +73,30 @@
         ]
       }
     },
-    "testtestcluster57FB8D14": {
+    "lammemnewResourceslammemnewResourcescluster026E518E": {
       "Type": "AWS::ElastiCache::CacheCluster",
       "Properties": {
         "AZMode": "cross-az",
         "CacheNodeType": "cache.t3.medium",
-        "CacheSubnetGroupName": "test-subnet-group",
-        "ClusterName": "test-cdk-cluster",
+        "CacheSubnetGroupName": "lammem-newResources-subnet-group",
+        "ClusterName": "lammem-newResources-cdk-cluster",
         "Engine": "memcached",
         "NumCacheNodes": 2,
         "Port": 11222,
         "VpcSecurityGroupIds": [
           {
             "Fn::GetAtt": [
-              "testtestcachesg9F6CF9E2",
+              "lammemnewResourceslammemnewResourcescachesg08EE8773",
               "GroupId"
             ]
           }
         ]
       },
       "DependsOn": [
-        "testecsubnetgrouptest868C53AE"
+        "lammemnewResourcesecsubnetgrouplammemnewResourcesBFA66192"
       ]
     },
-    "testLambdaFunctionServiceRoleA03EDA2B": {
+    "lammemnewResourcesLambdaFunctionServiceRoleDB5D0991": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -151,7 +151,7 @@
         ]
       }
     },
-    "testLambdaFunctionServiceRoleDefaultPolicy4F560EE3": {
+    "lammemnewResourcesLambdaFunctionServiceRoleDefaultPolicyBEBDF814": {
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyDocument": {
@@ -178,10 +178,10 @@
           ],
           "Version": "2012-10-17"
         },
-        "PolicyName": "testLambdaFunctionServiceRoleDefaultPolicy4F560EE3",
+        "PolicyName": "lammemnewResourcesLambdaFunctionServiceRoleDefaultPolicyBEBDF814",
         "Roles": [
           {
-            "Ref": "testLambdaFunctionServiceRoleA03EDA2B"
+            "Ref": "lammemnewResourcesLambdaFunctionServiceRoleDB5D0991"
           }
         ]
       },
@@ -196,10 +196,10 @@
         }
       }
     },
-    "testReplaceDefaultSecurityGroupsecuritygroupAC4F969B": {
+    "lammemnewResourcesReplaceDefaultSecurityGroupsecuritygroup6C020299": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "lammem-newResources/test/ReplaceDefaultSecurityGroup-security-group",
+        "GroupDescription": "lammem-newResources/lammem-newResources/ReplaceDefaultSecurityGroup-security-group",
         "SecurityGroupEgress": [
           {
             "CidrIp": "0.0.0.0/0",
@@ -226,7 +226,7 @@
         }
       }
     },
-    "testLambdaFunction1BF7CD84": {
+    "lammemnewResourcesLambdaFunction960422D5": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -244,14 +244,14 @@
                 [
                   {
                     "Fn::GetAtt": [
-                      "testtestcluster57FB8D14",
+                      "lammemnewResourceslammemnewResourcescluster026E518E",
                       "ConfigurationEndpoint.Address"
                     ]
                   },
                   ":",
                   {
                     "Fn::GetAtt": [
-                      "testtestcluster57FB8D14",
+                      "lammemnewResourceslammemnewResourcescluster026E518E",
                       "ConfigurationEndpoint.Port"
                     ]
                   }
@@ -263,7 +263,7 @@
         "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
-            "testLambdaFunctionServiceRoleA03EDA2B",
+            "lammemnewResourcesLambdaFunctionServiceRoleDB5D0991",
             "Arn"
           ]
         },
@@ -275,13 +275,13 @@
           "SecurityGroupIds": [
             {
               "Fn::GetAtt": [
-                "testtestcachesg9F6CF9E2",
+                "lammemnewResourceslammemnewResourcescachesg08EE8773",
                 "GroupId"
               ]
             },
             {
               "Fn::GetAtt": [
-                "testReplaceDefaultSecurityGroupsecuritygroupAC4F969B",
+                "lammemnewResourcesReplaceDefaultSecurityGroupsecuritygroup6C020299",
                 "GroupId"
               ]
             }
@@ -300,8 +300,8 @@
         }
       },
       "DependsOn": [
-        "testLambdaFunctionServiceRoleDefaultPolicy4F560EE3",
-        "testLambdaFunctionServiceRoleA03EDA2B",
+        "lammemnewResourcesLambdaFunctionServiceRoleDefaultPolicyBEBDF814",
+        "lammemnewResourcesLambdaFunctionServiceRoleDB5D0991",
         "VpcisolatedSubnet1RouteTableAssociationD259E31A",
         "VpcisolatedSubnet2RouteTableAssociation25A4716F",
         "VpcisolatedSubnet3RouteTableAssociationDC010BEB"
