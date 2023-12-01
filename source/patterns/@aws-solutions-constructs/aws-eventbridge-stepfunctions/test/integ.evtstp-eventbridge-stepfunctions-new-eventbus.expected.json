@@ -141,7 +141,27 @@
     "testeventbridgestepfunctionsneweventbusconstructStateMachineLogGroup6DC6AD59": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "integ-test-new-eventbus"
+        "LogGroupName": {
+          "Fn::Join": [
+            "",
+            [
+              "/aws/vendedlogs/states/constructs/evtstp-eventbridge-stepfunctions-new-eventbustest-eventbridge-stepfunctions-new-eventbus-constructStateMachineLog-",
+              {
+                "Fn::Select": [
+                  2,
+                  {
+                    "Fn::Split": [
+                      "/",
+                      {
+                        "Ref": "AWS::StackId"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        }
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",

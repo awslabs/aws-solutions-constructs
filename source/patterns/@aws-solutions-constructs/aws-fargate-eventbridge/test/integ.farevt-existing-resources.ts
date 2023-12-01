@@ -33,7 +33,7 @@ const createFargateServiceResponse = CreateFargateService(stack, 'test', {
   clientContainerDefinitionProps: { image },
 });
 
-const existingEventBus = new events.EventBus(stack, 'existing-event-bus', {  eventBusName: 'test'  });
+const existingEventBus = new events.EventBus(stack, 'existing-event-bus', {});
 
 const testProps: FargateToEventbridgeProps = {
   publicApi: true,

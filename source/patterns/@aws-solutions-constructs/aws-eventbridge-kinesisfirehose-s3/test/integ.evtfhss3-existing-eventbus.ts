@@ -21,7 +21,7 @@ import * as s3 from "aws-cdk-lib/aws-s3";
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-eventbridge-kinesisfirehose-s3';
-const existingEventBus = new events.EventBus(stack, `test-existing-eventbus`, { eventBusName: 'test' });
+const existingEventBus = new events.EventBus(stack, `evtfhss3test-existing-eventbus`, { eventBusName: 'evtfhss3test-existing-eventbus' });
 const props: EventbridgeToKinesisFirehoseToS3Props = {
   eventRuleProps: {
     eventPattern: {
@@ -30,7 +30,8 @@ const props: EventbridgeToKinesisFirehoseToS3Props = {
   },
   existingEventBusInterface: existingEventBus,
   bucketProps: {
-    removalPolicy: RemovalPolicy.DESTROY
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects:  true,
   },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY
@@ -38,7 +39,7 @@ const props: EventbridgeToKinesisFirehoseToS3Props = {
   logS3AccessLogs: false
 };
 
-const construct = new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-kinesisfirehose-s3', props);
+const construct = new EventbridgeToKinesisFirehoseToS3(stack, 'evtfhss3-existing-bus', props);
 const s3Bucket = construct.s3Bucket as s3.Bucket;
 
 defaults.addCfnSuppressRules(s3Bucket, [
@@ -48,4 +49,5 @@ defaults.addCfnSuppressRules(s3Bucket, [
   },
 ]);
 
+defaults.SuppressCfnNagLambdaWarnings(stack);
 app.synth();

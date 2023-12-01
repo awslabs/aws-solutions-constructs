@@ -47,7 +47,6 @@ const props: EventbridgeToStepfunctionsProps = {
   },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-    logGroupName: "with-lambda"
   },
 };
 

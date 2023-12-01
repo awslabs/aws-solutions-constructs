@@ -16,7 +16,7 @@ import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { LambdaToS3, LambdaToS3Props } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -35,11 +35,17 @@ const func = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 const props: LambdaToS3Props = {
   existingLambdaObj: func,
   bucketProps: {
+    autoDeleteObjects: true,
+    removalPolicy: RemovalPolicy.DESTROY,
+  },
+  loggingBucketProps: {
+    autoDeleteObjects: true,
     removalPolicy: RemovalPolicy.DESTROY,
   }
 };
 
 new LambdaToS3(stack, 'test-lambda-s3', props);
+suppressAutoDeleteHandlerWarnings(stack);
 
 // Synth
 app.synth();

@@ -34,6 +34,7 @@ const construct = new IotToKinesisFirehoseToS3(stack, 'test-iot-kinesisfirehose-
   },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
   },
   logS3AccessLogs: false
 });
@@ -47,4 +48,5 @@ defaults.addCfnSuppressRules(s3Bucket, [
   },
 ]);
 
+defaults.SuppressCfnNagLambdaWarnings(stack);
 app.synth();

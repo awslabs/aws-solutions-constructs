@@ -39,7 +39,6 @@ const props: LambdaToStepfunctionsProps = {
   deployVpc: true,
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-    logGroupName: "with-lambda"
   }
 };
 

@@ -238,17 +238,17 @@
         ]
       }
     },
-    "constructtestD7FE2822": {
+    "constructCustomEventBusA674C94A": {
       "Type": "AWS::Events::EventBus",
       "Properties": {
-        "Name": "test"
+        "Name": "evtsqsnewbusconstructCustomEventBus3025C22E"
       }
     },
     "constructEventsRule43880ADB": {
       "Type": "AWS::Events::Rule",
       "Properties": {
         "EventBusName": {
-          "Ref": "constructtestD7FE2822"
+          "Ref": "constructCustomEventBusA674C94A"
         },
         "EventPattern": {
           "source": [

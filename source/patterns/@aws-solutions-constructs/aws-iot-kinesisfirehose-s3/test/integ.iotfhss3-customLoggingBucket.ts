@@ -37,7 +37,7 @@ new IotToKinesisFirehoseToS3(stack, 'test-iot-kinesisfirehose-s3', {
   loggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
-    bucketName: 'custom-logging-bucket',
+    bucketName: `${generateIntegStackName(__filename).toLowerCase()}-custom-logging-bucket`,
     encryption: BucketEncryption.S3_MANAGED,
     versioned: true
   }

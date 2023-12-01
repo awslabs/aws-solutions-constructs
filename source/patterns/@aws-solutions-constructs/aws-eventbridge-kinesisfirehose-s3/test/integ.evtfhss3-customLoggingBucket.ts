@@ -23,17 +23,18 @@ const app = new App();
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-new EventbridgeToKinesisFirehoseToS3(stack, 'test-kinesisfirehose-s3', {
+new EventbridgeToKinesisFirehoseToS3(stack, 'evtfhss3-custom-log-bucket', {
   eventRuleProps: {
     schedule: events.Schedule.rate(Duration.minutes(5))
   },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
   },
   loggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
-    bucketName: 'custom-logging-bucket',
+    bucketName: `${generateIntegStackName(__filename).toLowerCase()}-custom-logging-bucket`,
     encryption: s3.BucketEncryption.S3_MANAGED,
     versioned: true
   },
