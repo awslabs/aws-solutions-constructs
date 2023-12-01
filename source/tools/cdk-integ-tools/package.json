@@ -1,7 +1,7 @@
 {
   "name": "cdk-integ-tools",
   "private": true,
-  "version": "2.46.0",
+  "version": "0.0.0",
   "description": "Package with integration test scripts for CDK packages",
   "main": "index.js",
   "repository": {
@@ -31,7 +31,7 @@
     "@types/node": "18.11.9",
     "tslint": "^5.20.1",
     "typescript": "~3.9.10",
-    "aws-cdk-lib": "2.111.0",
+    "aws-cdk-lib": "2.105.0",
     "constructs": "^10.0.0"
   },
   "dependencies": {
@@ -53,7 +53,7 @@
     "node": ">= 10.3.0"
   },
   "peerDependencies": {
-    "aws-cdk-lib": "2.111.0",
+    "aws-cdk-lib": "^2.105.0",
     "constructs": "^10.0.0"
   }
 }
