@@ -123,7 +123,25 @@
       },
       "DependsOn": [
         "cftapinoargumentsapiAuthFunctionServiceRole97907F32"
-      ]
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W89",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W92",
+              "reason": "Test Resource"
+            }
+          ]
+        }
+      }
     },
     "cftapinoargumentsapiAuthFunctioncftapinoargumentscftapinoargumentsapiauthorizerCA624E68Permissions8A31DDB0": {
       "Type": "AWS::Lambda::Permission",
