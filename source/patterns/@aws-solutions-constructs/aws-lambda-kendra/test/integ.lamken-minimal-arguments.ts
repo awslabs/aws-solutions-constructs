@@ -23,7 +23,10 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-lambda-kendra';
 
-const testBucket = defaults.CreateScrapBucket(stack);
+// const loggingBucket = defaults.CreateScrapBucket(stack, "logBucket");
+const testBucket = defaults.CreateScrapBucket(stack, "contentBucket", {
+//   serverAccessLogsBucket: loggingBucket,
+});
 
 new LambdaToKendra(stack, 'minimal-arguments', {
   lambdaFunctionProps: {

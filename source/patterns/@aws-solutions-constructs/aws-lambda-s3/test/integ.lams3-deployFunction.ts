@@ -33,8 +33,7 @@ const props: LambdaToS3Props = {
   },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-  },
-  logS3AccessLogs: false
+  }
 };
 
 const construct = new LambdaToS3(stack, 'test-lambda-s3', props);

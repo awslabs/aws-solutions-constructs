@@ -27,7 +27,7 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
 let mybucket: s3.Bucket;
-mybucket = defaults.CreateScrapBucket(stack,   {
+mybucket = defaults.CreateScrapBucket(stack, "scrapBucket", {
   removalPolicy: RemovalPolicy.DESTROY,
   autoDeleteObjects: true
 });

@@ -29,7 +29,6 @@ const props: IotToS3Props = {
       actions: []
     }
   },
-  logS3AccessLogs: false,
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
   }

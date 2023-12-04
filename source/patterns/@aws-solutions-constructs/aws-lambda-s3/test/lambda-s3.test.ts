@@ -240,7 +240,7 @@ test('Test lambda function custom environment variable', () => {
   const stack = new Stack();
 
   // Helper declaration
-  const existingBucket = defaults.CreateScrapBucket(stack, {});
+  const existingBucket = defaults.CreateScrapBucket(stack, "scrapBucket");
   const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
   new LambdaToS3(stack, 'lambda-to-s3-stack', {
     existingBucketObj: mybucket,

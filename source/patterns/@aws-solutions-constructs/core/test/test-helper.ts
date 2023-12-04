@@ -26,11 +26,13 @@ import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import { CfnFunction } from "aws-cdk-lib/aws-lambda";
 import { GetDefaultCachePort } from "../lib/elasticache-defaults";
 import { Match, Template } from 'aws-cdk-lib/assertions';
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as api from "aws-cdk-lib/aws-apigateway";
 
 export const fakeEcrRepoArn = 'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo';
 
 // Creates a bucket used for testing - minimal properties, destroyed after test
-export function CreateScrapBucket(scope: Construct, props?: BucketProps | any) {
+export function CreateScrapBucket(scope: Construct, id: string, props?: BucketProps | any) {
 
   const defaultProps: BucketProps = {
     versioned: true,
@@ -48,7 +50,7 @@ export function CreateScrapBucket(scope: Construct, props?: BucketProps | any) {
 
   const scriptBucket = new Bucket(
     scope,
-    "scrapBucket",
+    id,
     synthesizedProps
   );
 
@@ -192,6 +194,56 @@ class CfnNagLambdaAspect implements IAspect {
       ]);
     }
   }
+}
+
+export function CreateTestApi(stack: Stack, id: string): api.LambdaRestApi {
+  const lambdaFunction = new lambda.Function(stack, `${id}Function`, {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: ".handler",
+  });
+  addCfnSuppressRules(lambdaFunction, [{ id: "W58", reason: "Test Resource" }]);
+  addCfnSuppressRules(lambdaFunction, [{ id: "W89", reason: "Test Resource" }]);
+  addCfnSuppressRules(lambdaFunction, [{ id: "W92", reason: "Test Resource" }]);
+  const authFn = new lambda.Function(stack, `${id}AuthFunction`, {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: ".handler",
+  });
+  addCfnSuppressRules(authFn, [{ id: "W58", reason: "Test Resource" }]);
+  addCfnSuppressRules(authFn, [{ id: "W89", reason: "Test Resource" }]);
+  addCfnSuppressRules(authFn, [{ id: "W92", reason: "Test Resource" }]);
+
+  const auth = new api.RequestAuthorizer(stack, `${id}-authorizer`, {
+    handler: authFn,
+    identitySources: [api.IdentitySource.header('Authorization')]
+  });
+
+  const restApi = new api.LambdaRestApi(stack, `${id}Api`, {
+    handler: lambdaFunction,
+    defaultMethodOptions: {
+      authorizationType: api.AuthorizationType.CUSTOM,
+      authorizer: auth
+    }
+  });
+
+  const newDeployment = restApi.latestDeployment;
+  if (newDeployment) {
+    addCfnSuppressRules(newDeployment, [
+      { id: "W68", reason: "Test Resource" },
+    ]);
+  }
+
+  const newMethod = restApi.methods[0];
+  addCfnSuppressRules(newMethod, [{ id: "W59", reason: "Test Resource" }]);
+  const newMethodTwo = restApi.methods[1];
+  addCfnSuppressRules(newMethodTwo, [{ id: "W59", reason: "Test Resource" }]);
+
+  const newStage = restApi.deploymentStage;
+  addCfnSuppressRules(newStage, [{ id: "W64", reason: "Test Resource" }]);
+  addCfnSuppressRules(newStage, [{ id: "W69", reason: "Test Resource" }]);
+
+  return restApi;
 }
 
 /**

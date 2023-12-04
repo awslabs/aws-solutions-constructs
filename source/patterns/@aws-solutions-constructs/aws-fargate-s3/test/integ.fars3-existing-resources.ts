@@ -27,7 +27,7 @@ stack.templateOptions.description = 'Integration Test with existing VPC, Service
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
 const existingVpc = getTestVpc(stack);
-const existingBucket = defaults.CreateScrapBucket(stack, {
+const existingBucket = defaults.CreateScrapBucket(stack, "scrapBucket", {
   removalPolicy: RemovalPolicy.DESTROY,
   autoDeleteObjects: true
 });

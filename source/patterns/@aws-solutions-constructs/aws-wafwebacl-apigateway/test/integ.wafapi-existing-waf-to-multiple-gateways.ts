@@ -14,8 +14,7 @@
 /// !cdk-integ *
 import { App, Stack } from "aws-cdk-lib";
 import { WafwebaclToApiGateway } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
-import { CreateTestApi } from './test-helper';
+import { generateIntegStackName, CreateTestApi } from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));

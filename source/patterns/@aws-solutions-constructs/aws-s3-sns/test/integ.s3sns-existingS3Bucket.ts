@@ -21,7 +21,7 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
 new S3ToSns(stack, 'test-s3-sns', {
-  existingBucketObj: CreateScrapBucket(stack)
+  existingBucketObj: CreateScrapBucket(stack, "scrapBucket")
 });
 suppressAutoDeleteHandlerWarnings(stack);
 

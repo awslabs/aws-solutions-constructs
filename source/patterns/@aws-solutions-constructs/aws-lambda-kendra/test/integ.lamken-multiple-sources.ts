@@ -25,7 +25,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-lambda-kendra';
 
-const testBucket = defaults.CreateScrapBucket(stack);
+const testBucket = defaults.CreateScrapBucket(stack, "scrapBucket");
 const existingIamRole = new iam.Role(stack, 'existingRole', {
   assumedBy: new iam.ServicePrincipal('kendra.amazonaws.com')
 });
