@@ -202,14 +202,17 @@ export function CreateTestApi(stack: Stack, id: string): api.LambdaRestApi {
     runtime: lambda.Runtime.NODEJS_16_X,
     handler: ".handler",
   });
+  addCfnSuppressRules(lambdaFunction, [{ id: "W58", reason: "Test Resource" }]);
+  addCfnSuppressRules(lambdaFunction, [{ id: "W89", reason: "Test Resource" }]);
+  addCfnSuppressRules(lambdaFunction, [{ id: "W92", reason: "Test Resource" }]);
   const authFn = new lambda.Function(stack, `${id}AuthFunction`, {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_16_X,
     handler: ".handler",
   });
-  addCfnSuppressRules(lambdaFunction, [{ id: "W58", reason: "Test Resource" }]);
-  addCfnSuppressRules(lambdaFunction, [{ id: "W89", reason: "Test Resource" }]);
-  addCfnSuppressRules(lambdaFunction, [{ id: "W92", reason: "Test Resource" }]);
+  addCfnSuppressRules(authFn, [{ id: "W58", reason: "Test Resource" }]);
+  addCfnSuppressRules(authFn, [{ id: "W89", reason: "Test Resource" }]);
+  addCfnSuppressRules(authFn, [{ id: "W92", reason: "Test Resource" }]);
 
   const auth = new api.RequestAuthorizer(stack, `${id}-authorizer`, {
     handler: authFn,
