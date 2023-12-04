@@ -115,7 +115,7 @@ test('check default properties', () => {
 
 test('check properties with existing S3 bucket', () => {
   const stack = new cdk.Stack();
-  const existingBucket = CreateScrapBucket(stack, {});
+  const existingBucket = CreateScrapBucket(stack, "scrapBucket");
   const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
   const construct: KinesisFirehoseToS3 = deploy(stack, {
     existingBucketObj: mybucket
@@ -130,7 +130,7 @@ test('check properties with existing S3 bucket', () => {
 
 test('check properties with existing logging S3 bucket', () => {
   const stack = new cdk.Stack();
-  const existingBucket = CreateScrapBucket(stack, {});
+  const existingBucket = CreateScrapBucket(stack, "scrapBucket");
   const myLoggingBucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'myLoggingBucket', existingBucket.bucketName);
   const construct: KinesisFirehoseToS3 = deploy(stack, {
     existingLoggingBucketObj: myLoggingBucket
@@ -145,7 +145,7 @@ test('check properties with existing logging S3 bucket', () => {
 
 test('check properties with existing logging S3 bucket and S3 bucket props', () => {
   const stack = new cdk.Stack();
-  const existingBucket = CreateScrapBucket(stack, {});
+  const existingBucket = CreateScrapBucket(stack, "scrapBucket");
   const myLoggingBucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'myLoggingBucket', existingBucket.bucketName);
   const construct: KinesisFirehoseToS3 = deploy(stack, {
     bucketProps: {

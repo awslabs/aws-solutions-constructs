@@ -369,7 +369,7 @@ test('Test fail S3 check', () => {
   const stack = new Stack();
 
   const props: defaults.S3Props = {
-    existingBucketObj: CreateScrapBucket(stack, {}),
+    existingBucketObj: CreateScrapBucket(stack, "scrapBucket"),
     bucketProps: {},
   };
 

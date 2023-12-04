@@ -22,7 +22,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-const newExternalBucket = defaults.CreateScrapBucket(stack);
+const newExternalBucket = defaults.CreateScrapBucket(stack, "scrapBucket");
 
 // Currently there is no way to customize the logging bucket, so this
 // test will leave a bucket behind

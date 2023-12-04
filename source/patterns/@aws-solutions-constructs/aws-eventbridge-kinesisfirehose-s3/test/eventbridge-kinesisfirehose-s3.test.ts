@@ -252,7 +252,7 @@ test('Supply an existing logging bucket', () => {
   const stack = new cdk.Stack();
   const logBucketName = 'log-bucket-name';
 
-  const logBucket = defaults.CreateScrapBucket(stack, {
+  const logBucket = defaults.CreateScrapBucket(stack, "scrapBucket", {
     bucketName: logBucketName
   });
 

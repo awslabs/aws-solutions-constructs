@@ -122,7 +122,7 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
 
 test('check properties with existing S3 bucket', () => {
   const stack = new cdk.Stack();
-  const existingBucket = CreateScrapBucket(stack, {});
+  const existingBucket = CreateScrapBucket(stack, "scrapBucket");
   const construct = new S3ToLambda(stack, 's3-lambda', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),

@@ -21,7 +21,7 @@ const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename));
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-const existingBucket = defaults.CreateScrapBucket(stack, {
+const existingBucket = defaults.CreateScrapBucket(stack, "scrapBucket", {
   eventBridgeEnabled: true
 });
 

@@ -141,7 +141,7 @@ test('Test properties with no CW Alarms', () => {
 
 test('Test properties with existing S3 bucket', () => {
   const stack = new cdk.Stack();
-  const existingBucket = defaults.CreateScrapBucket(stack, {});
+  const existingBucket = defaults.CreateScrapBucket(stack, "scrapBucket");
   const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
   const construct: KinesisStreamsToKinesisFirehoseToS3 = deploy(stack, {
     existingBucketObj: mybucket
@@ -153,7 +153,7 @@ test('Test properties with existing S3 bucket', () => {
 
 test('Test properties with existing logging S3 bucket', () => {
   const stack = new cdk.Stack();
-  const existingBucket = defaults.CreateScrapBucket(stack, {});
+  const existingBucket = defaults.CreateScrapBucket(stack, "scrapBucket");
   const myLoggingBucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'myLoggingBucket', existingBucket.bucketName);
   const construct: KinesisStreamsToKinesisFirehoseToS3  = deploy(stack, {
     existingLoggingBucketObj: myLoggingBucket
