@@ -45,7 +45,17 @@
             }
           ]
         },
-        "Name": "ETLJobSecurityConfig"
+        "Name": {
+          "Fn::Join": [
+            "",
+            [
+              "ETLJobSecurityConfig",
+              {
+                "Ref": "AWS::StackId"
+              }
+            ]
+          ]
+        }
       }
     },
     "testkinesisstreamslambdaLogPolicy5FB58427": {
@@ -452,7 +462,17 @@
             "Arn"
           ]
         },
-        "SecurityConfiguration": "ETLJobSecurityConfig",
+        "SecurityConfiguration": {
+          "Fn::Join": [
+            "",
+            [
+              "ETLJobSecurityConfig",
+              {
+                "Ref": "AWS::StackId"
+              }
+            ]
+          ]
+        },
         "WorkerType": "G.1X"
       }
     },

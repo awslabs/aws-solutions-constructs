@@ -829,7 +829,17 @@ test('When Asset for local file is defined', () => {
       DefaultArguments: {},
       GlueVersion: "2.0",
       NumberOfWorkers: 2,
-      SecurityConfiguration: "ETLJobSecurityConfig",
+      SecurityConfiguration: {
+        "Fn::Join": [
+          "",
+          [
+            "ETLJobSecurityConfig",
+            {
+              Ref: "AWS::StackId"
+            }
+          ]
+        ]
+      },
       WorkerType: "G.1X"
     }
   });
