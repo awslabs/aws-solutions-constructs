@@ -146,7 +146,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
   let glueSecurityConfigName: string;
 
   if (glueJobProps.securityConfiguration === undefined) {
-    glueSecurityConfigName = 'ETLJobSecurityConfig';
+    glueSecurityConfigName = `ETLJobSecurityConfig${Aws.STACK_ID}`;
     const glueKMSKey = `arn:${Aws.PARTITION}:kms:${Aws.REGION}:${Aws.ACCOUNT_ID}:alias/aws/glue`;
 
     const securityConfigurationProps: glue.CfnSecurityConfigurationProps = {

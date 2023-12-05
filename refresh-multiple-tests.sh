@@ -20,27 +20,52 @@
 # dynamodbstreams-lambda and lambda-elasticsearch)
 
 export constructs="
-  aws-s3-lambda
-  aws-s3-sns
-  aws-s3-sqs
-  aws-s3-stepfunctions
+  aws-kinesisstreams-gluejob
   aws-lambda-s3
-  aws-fargate-s3
-  aws-cloudfront-s3
 "
 
-# deployment_dir is top level aws-solutions-constructs
-deployment_dir=$(cd $(dirname $0) && pwd)
+constructs_root_dir=$(cd $(dirname $0) && pwd)
+source_dir="$constructs_root_dir/source"
 
-source ./deployment/v2/allow-partial-builds.sh
+echo "============================================================================================="
+echo "aligning versions and updating package.json for CDK v2..."
+/bin/bash $constructs_root_dir/align-version.sh
+
+bail="--bail"
+runtarget="build+lint+test"
+cd $source_dir/
+
+export PATH=$source_dir/node_modules/.bin:$PATH
+export NODE_OPTIONS="--max-old-space-size=4096 ${NODE_OPTIONS:-}"
+
+echo "============================================================================================="
+echo "installing..."
+yarn install --frozen-lockfile
+
+# echo "============================================================================================="
+# echo "updating Import statements for CDK v2..."
+# /bin/bash $constructs_root_dir/rewrite-imports.sh
+
+echo "============================================================================================="
+echo "building cdk-integ-tools..."
+cd $source_dir/tools/cdk-integ-tools
+npm install
+npm run build
+npm link
+
+cd $source_dir
+echo "============================================================================================="
+echo "building..."
+time lerna run $bail --stream $runtarget || fail
+
 for construct in $constructs; do
 
-  cd $deployment_dir/source/patterns/@aws-solutions-constructs/$construct
+  cd $constructs_root_dir/source/patterns/@aws-solutions-constructs/$construct
   echo Running in $PWD
   npm run jsii && npm run lint
-  cdk-integ
+  cdk-integ --no-clean
   npm run build+lint+test
-  cd $deployment_dir/source/patterns/@aws-solutions-constructs
+  cd $constructs_root_dir/source/patterns/@aws-solutions-constructs
 done
-cd $deployment_dir
+cd $constructs_root_dir
 ./deployment/v2/align-version.sh revert
