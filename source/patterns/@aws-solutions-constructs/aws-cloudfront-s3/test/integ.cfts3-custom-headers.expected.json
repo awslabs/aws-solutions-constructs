@@ -55,8 +55,8 @@
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
@@ -187,18 +187,12 @@
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
         },
-        "Tags": [
-          {
-            "Key": "aws-cdk:auto-delete-objects",
-            "Value": "true"
-          }
-        ],
         "VersioningConfiguration": {
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
     "testcloudfronts3S3BucketPolicy250F1F61": {
       "Type": "AWS::S3::BucketPolicy",
@@ -218,45 +212,6 @@
               "Effect": "Deny",
               "Principal": {
                 "AWS": "*"
-              },
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3S3BucketE0C5F76E",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "testcloudfronts3S3BucketE0C5F76E",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Action": [
-                "s3:PutBucketPolicy",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*"
-              ],
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::GetAtt": [
-                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-                    "Arn"
-                  ]
-                }
               },
               "Resource": [
                 {
@@ -306,6 +261,50 @@
                   ]
                 ]
               }
+            },
+            {
+              "Action": "s3:GetObject",
+              "Condition": {
+                "StringEquals": {
+                  "AWS:SourceArn": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":cloudfront::",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":distribution/",
+                        {
+                          "Ref": "testcloudfronts3CloudFrontDistribution0565DEE8"
+                        }
+                      ]
+                    ]
+                  }
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "cloudfront.amazonaws.com"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "testcloudfronts3S3BucketE0C5F76E",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
             }
           ],
           "Version": "2012-10-17"
@@ -321,25 +320,6 @@
           ]
         }
       }
-    },
-    "testcloudfronts3S3BucketAutoDeleteObjectsCustomResourceA13DD8F7": {
-      "Type": "Custom::S3AutoDeleteObjects",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::GetAtt": [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-            "Arn"
-          ]
-        },
-        "BucketName": {
-          "Ref": "testcloudfronts3S3BucketE0C5F76E"
-        }
-      },
-      "DependsOn": [
-        "testcloudfronts3S3BucketPolicy250F1F61"
-      ],
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
     },
     "testcloudfronts3SetHttpSecurityHeaders6C5A1E69": {
       "Type": "AWS::CloudFront::Function",
@@ -557,18 +537,14 @@
                 ]
               },
               "Id": "cfts3customheaderstestcloudfronts3CloudFrontDistributionOrigin126E0E496",
+              "OriginAccessControlId": {
+                "Fn::GetAtt": [
+                  "testcloudfronts3CloudFrontOac7A951AA6",
+                  "Id"
+                ]
+              },
               "S3OriginConfig": {
-                "OriginAccessIdentity": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "origin-access-identity/cloudfront/",
-                      {
-                        "Ref": "testcloudfronts3CloudFrontDistributionOrigin1S3Origin4695F058"
-                      }
-                    ]
-                  ]
-                }
+                "OriginAccessIdentity": ""
               }
             }
           ]
@@ -582,6 +558,17 @@
               "reason": "Since the distribution uses the CloudFront domain name, CloudFront automatically sets the security policy to TLSv1 regardless of the value of MinimumProtocolVersion"
             }
           ]
+        }
+      }
+    },
+    "testcloudfronts3CloudFrontOac7A951AA6": {
+      "Type": "AWS::CloudFront::OriginAccessControl",
+      "Properties": {
+        "OriginAccessControlConfig": {
+          "Name": "cloudfront-default-oac-18c3b7ae1f3",
+          "OriginAccessControlOriginType": "s3",
+          "SigningBehavior": "always",
+          "SigningProtocol": "sigv4"
         }
       }
     },
@@ -632,7 +619,7 @@
             [
               "Lambda function for auto-deleting objects in ",
               {
-                "Ref": "testcloudfronts3S3BucketE0C5F76E"
+                "Ref": "testcloudfronts3CloudfrontLoggingBucket985C0FE8"
               },
               " S3 bucket."
             ]

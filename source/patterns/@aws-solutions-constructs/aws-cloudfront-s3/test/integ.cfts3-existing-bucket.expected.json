@@ -118,6 +118,50 @@
             },
             {
               "Action": "s3:GetObject",
+              "Condition": {
+                "StringEquals": {
+                  "AWS:SourceArn": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":cloudfront::",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":distribution/",
+                        {
+                          "Ref": "testcloudfronts3CloudFrontDistribution0565DEE8"
+                        }
+                      ]
+                    ]
+                  }
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "cloudfront.amazonaws.com"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "scrapBucketB11863B7",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": "s3:GetObject",
               "Effect": "Allow",
               "Principal": {
                 "CanonicalUser": {
@@ -479,18 +523,14 @@
                 ]
               },
               "Id": "cfts3existingbuckettestcloudfronts3CloudFrontDistributionOrigin10617473F",
+              "OriginAccessControlId": {
+                "Fn::GetAtt": [
+                  "testcloudfronts3CloudFrontOac7A951AA6",
+                  "Id"
+                ]
+              },
               "S3OriginConfig": {
-                "OriginAccessIdentity": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "origin-access-identity/cloudfront/",
-                      {
-                        "Ref": "testcloudfronts3CloudFrontDistributionOrigin1S3Origin4695F058"
-                      }
-                    ]
-                  ]
-                }
+                "OriginAccessIdentity": ""
               }
             },
             {
@@ -534,6 +574,17 @@
       "Properties": {
         "CloudFrontOriginAccessIdentityConfig": {
           "Comment": "Identity for cfts3existingbuckettestcloudfronts3CloudFrontDistributionOrigin28690577F"
+        }
+      }
+    },
+    "testcloudfronts3CloudFrontOac7A951AA6": {
+      "Type": "AWS::CloudFront::OriginAccessControl",
+      "Properties": {
+        "OriginAccessControlConfig": {
+          "Name": "Stack-cloudfront-default-oac",
+          "OriginAccessControlOriginType": "s3",
+          "SigningBehavior": "always",
+          "SigningProtocol": "sigv4"
         }
       }
     },
