@@ -30,6 +30,11 @@ const props: S3ToStepfunctionsProps = {
   },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
   },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY,

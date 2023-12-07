@@ -32,6 +32,10 @@ const props: CloudFrontToS3Props = {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true
   },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
 };
 
 new CloudFrontToS3(stack, 'test-cloudfront-s3-no-security-headers', props);

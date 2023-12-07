@@ -267,7 +267,8 @@ test('Supply an existing logging bucket', () => {
   });
 
   const template = Template.fromStack(stack);
-  template.resourceCountIs("AWS::S3::Bucket", 2);
+  // Construct bucket + ScrapBucket + LogBucketNowCreatedByScrapBucket = 3
+  template.resourceCountIs("AWS::S3::Bucket", 3);
 
 });
 

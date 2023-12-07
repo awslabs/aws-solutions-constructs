@@ -12,7 +12,19 @@
             }
           ]
         },
-        "BucketName": "iotfhss3-customloggingbucket-custom-logging-bucket",
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "Status": "Enabled",
+              "Transitions": [
+                {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 7
+                }
+              ]
+            }
+          ]
+        },
         "PublicAccessBlockConfiguration": {
           "BlockPublicAcls": true,
           "BlockPublicPolicy": true,

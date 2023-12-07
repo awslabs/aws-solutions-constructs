@@ -31,6 +31,10 @@ const props: IotToS3Props = {
   },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+  },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
   }
 };
 
