@@ -11,14 +11,18 @@
  *  and limitations under the License.
  */
 
+import { Aws } from 'aws-cdk-lib';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 import * as defaults from '@aws-solutions-constructs/core';
-import { ArnFormat, CustomResource, Stack, aws_cloudfront, aws_iam, aws_lambda } from 'aws-cdk-lib';
+import { CustomResource, aws_cloudfront, aws_iam } from 'aws-cdk-lib';
 import { Provider } from 'aws-cdk-lib/custom-resources';
 import { IKey } from 'aws-cdk-lib/aws-kms';
+import { Code, Runtime } from 'aws-cdk-lib/aws-lambda';
+import { Effect, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import * as log from 'npmlog';
 
 /**
  * @summary The properties for the CloudFrontToS3 Construct
@@ -110,6 +114,14 @@ export class CloudFrontToS3 extends Construct {
   constructor(scope: Construct, id: string, props: CloudFrontToS3Props) {
     super(scope, id);
 
+    // Issue a printed warning regarding the creation of an orphaned OAI. This
+    // can and should be removed once the CDK fixes that behavior.
+    // Style the log output
+    log.prefixStyle.bold = true;
+  log.prefixStyle.fg = 'red';
+  log.enableColor();
+  log.warn('AWS_SOLUTIONS_CONSTRUCTS_WARNING: ', message);
+
     // All our tests are based upon this behavior being on, so we're setting
     // context here rather than assuming the client will set it
     this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
@@ -172,13 +184,7 @@ export class CloudFrontToS3 extends Construct {
         resources: [bucket.arnForObjects('*')],
         conditions: {
           StringEquals: {
-            'AWS:SourceArn': Stack.of(this).formatArn({
-              service: 'cloudfront',
-              region: '',
-              resource: 'distribution',
-              resourceName: this.cloudFrontWebDistribution.distributionId,
-              arnFormat: ArnFormat.SLASH_RESOURCE_NAME
-            })
+            'AWS:SourceArn': `arn:aws:cloudfront::${Aws.ACCOUNT_ID}:distribution/${this.cloudFrontWebDistribution.distributionId}`
           }
         }
       })
@@ -201,19 +207,29 @@ export class CloudFrontToS3 extends Construct {
     if (encryptionKey) {
       const lambdaHandler = defaults.buildLambdaFunction(this, {
         lambdaFunctionProps: {
-          runtime: aws_lambda.Runtime.NODEJS_18_X,
+          runtime: Runtime.NODEJS_18_X,
           handler: 'index.handler',
-          code: aws_lambda.Code.fromAsset(`${__dirname}/custom-resources/kms-key-policy-updater`),
-          role: new aws_iam.Role(this, 'KmsKeyPolicyUpdateLambdaRole', {
-            assumedBy: new aws_iam.ServicePrincipal('lambda.amazonaws.com'),
+          description: 'kms-key-policy-updater',
+          code: Code.fromAsset(`${__dirname}/custom-resources/kms-key-policy-updater`),
+          role: new Role(this, 'KmsKeyPolicyUpdateLambdaRole', {
+            assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
             description: 'Role to update kms key policy to allow cloudfront access',
             inlinePolicies: {
-              KmsPolicy: new aws_iam.PolicyDocument({
+              KmsPolicy: new PolicyDocument({
                 statements: [
-                  new aws_iam.PolicyStatement({
-                    actions: ['kms:PutKeyPolicy', 'kms:GetKeyPolicy'],
-                    effect: aws_iam.Effect.ALLOW,
-                    resources: [encryptionKey.keyArn]
+                  new PolicyStatement({
+                    actions: ['kms:PutKeyPolicy', 'kms:GetKeyPolicy', 'kms:DescribeKey'],
+                    effect: Effect.ALLOW,
+                    resources: [ encryptionKey.keyArn ]
+                  })
+                ]
+              }),
+              CWLogsPolicy: new PolicyDocument({
+                statements: [
+                  new PolicyStatement({
+                    actions: ['logs:CreateLogGroup'],
+                    effect: Effect.ALLOW,
+                    resources: [ `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:*` ]
                   })
                 ]
               })
@@ -221,6 +237,42 @@ export class CloudFrontToS3 extends Construct {
           })
         }
       });
+      // const lambdaHandler = new Function(this, 'KmsKeyPolicyUpdateLambda', {
+      //   runtime: Runtime.NODEJS_18_X,
+      //   handler: 'index.handler',
+      //   description: 'kms-key-policy-updater',
+      //   code: Code.fromAsset(`${__dirname}/custom-resources/kms-key-policy-updater`),
+      //   role: new Role(this, 'KmsKeyPolicyUpdateLambdaRole', {
+      //     assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+      //     description: 'Role to update kms key policy to allow cloudfront access',
+      //     inlinePolicies: {
+      //       KmsPolicy: new PolicyDocument({
+      //         statements: [
+      //           new PolicyStatement({
+      //             actions: ['kms:PutKeyPolicy', 'kms:GetKeyPolicy', 'kms:DescribeKey'],
+      //             effect: Effect.ALLOW,
+      //             resources: [ encryptionKey.keyArn ]
+      //           })
+      //         ]
+      //       }),
+      //       CWLogsPolicy: new PolicyDocument({
+      //         statements: [
+      //           new PolicyStatement({
+      //             actions: ['logs:CreateLogGroup'],
+      //             effect: Effect.ALLOW,
+      //             resources: [ `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:*` ]
+      //           })
+      //         ]
+      //       })
+      //     }
+      //   })
+      // });
+
+      // lambdaHandler.addToRolePolicy(new PolicyStatement({
+      //   actions: ['logs:CreateLogStream', 'logs:PutLogEvents'],
+      //   effect: Effect.ALLOW,
+      //   resources: [ `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/lambda/*:*` ]
+      // }));
 
       const kmsKeyPolicyUpdateProvider = new Provider(this, 'KmsKeyPolicyUpdateProvider', {
         onEventHandler: lambdaHandler
@@ -232,7 +284,7 @@ export class CloudFrontToS3 extends Construct {
         properties: {
           KmsKeyId: encryptionKey.keyId,
           CloudFrontDistributionId: this.cloudFrontWebDistribution.distributionId,
-          AccountId: Stack.of(this).account
+          AccountId: Aws.ACCOUNT_ID
         },
       });
     }

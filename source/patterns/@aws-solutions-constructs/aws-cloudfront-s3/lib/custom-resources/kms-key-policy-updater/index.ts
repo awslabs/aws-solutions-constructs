@@ -34,7 +34,7 @@ export const handler = async (e: any, context: any) => {
 
       if (describeKeyCommandResponse.KeyMetadata?.KeyManager === KeyManagerType.AWS) {
         return {
-          Status: '200',
+          Status: 'SUCCESS',
           Reason: 'An AWS managed key was provided, no action needed from the custom resource, exiting now.',
           PhysicalResourceId: e.PhysicalResourceId ?? context.logStreamName,
           StackId: e.StackId,
@@ -51,7 +51,7 @@ export const handler = async (e: any, context: any) => {
 
       if (!getKeyPolicyCommandResponse.Policy) {
         return {
-          Status: '404',
+          Status: 'FAILED',
           Reason: 'An error occurred while retrieving the key policy',
           PhysicalResourceId: e.PhysicalResourceId ?? context.logStreamName,
           StackId: e.StackId,

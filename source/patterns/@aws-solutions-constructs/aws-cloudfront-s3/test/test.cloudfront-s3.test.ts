@@ -462,7 +462,8 @@ test("Custom resource is provisioned if encryption key is provided as bucketProp
   });
   deploy(stack, {
     bucketProps: {
-      encryptionKey
+      encryptionKey,
+      encryption: s3.BucketEncryption.KMS
     }
   });
   const template = Template.fromStack(stack);

@@ -124,11 +124,7 @@
                     "Fn::Join": [
                       "",
                       [
-                        "arn:",
-                        {
-                          "Ref": "AWS::Partition"
-                        },
-                        ":cloudfront::",
+                        "arn:aws:cloudfront::",
                         {
                           "Ref": "AWS::AccountId"
                         },
@@ -581,7 +577,7 @@
       "Type": "AWS::CloudFront::OriginAccessControl",
       "Properties": {
         "OriginAccessControlConfig": {
-          "Name": "Stack-cloudfront-default-oac",
+          "Name": "cloudfront-default-oac-18c44fd433c",
           "OriginAccessControlOriginType": "s3",
           "SigningBehavior": "always",
           "SigningProtocol": "sigv4"

@@ -1,7 +1,7 @@
 {
   "Description": "Integration Test for aws-cloudfront-s3",
   "Resources": {
-    "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3LoggingBucket9F68902A": {
+    "existings3bucketencryptedwiths3managedkeyS3LoggingBucketF861F6B7": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -36,11 +36,11 @@
         }
       }
     },
-    "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3LoggingBucketPolicy352B6DFB": {
+    "existings3bucketencryptedwiths3managedkeyS3LoggingBucketPolicy4358229C": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3LoggingBucket9F68902A"
+          "Ref": "existings3bucketencryptedwiths3managedkeyS3LoggingBucketF861F6B7"
         },
         "PolicyDocument": {
           "Statement": [
@@ -58,7 +58,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3LoggingBucket9F68902A",
+                    "existings3bucketencryptedwiths3managedkeyS3LoggingBucketF861F6B7",
                     "Arn"
                   ]
                 },
@@ -68,7 +68,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3LoggingBucket9F68902A",
+                          "existings3bucketencryptedwiths3managedkeyS3LoggingBucketF861F6B7",
                           "Arn"
                         ]
                       },
@@ -84,7 +84,7 @@
                 "ArnLike": {
                   "aws:SourceArn": {
                     "Fn::GetAtt": [
-                      "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3Bucket79DAE7AC",
+                      "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A",
                       "Arn"
                     ]
                   }
@@ -105,7 +105,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3LoggingBucket9F68902A",
+                        "existings3bucketencryptedwiths3managedkeyS3LoggingBucketF861F6B7",
                         "Arn"
                       ]
                     },
@@ -119,7 +119,7 @@
         }
       }
     },
-    "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3Bucket79DAE7AC": {
+    "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -146,7 +146,7 @@
         },
         "LoggingConfiguration": {
           "DestinationBucketName": {
-            "Ref": "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3LoggingBucket9F68902A"
+            "Ref": "existings3bucketencryptedwiths3managedkeyS3LoggingBucketF861F6B7"
           }
         },
         "PublicAccessBlockConfiguration": {
@@ -168,11 +168,11 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3BucketPolicyBD7405C6": {
+    "existings3bucketencryptedwiths3managedkeyS3BucketPolicyFDA85248": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3Bucket79DAE7AC"
+          "Ref": "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A"
         },
         "PolicyDocument": {
           "Statement": [
@@ -190,7 +190,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3Bucket79DAE7AC",
+                    "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A",
                     "Arn"
                   ]
                 },
@@ -200,7 +200,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3Bucket79DAE7AC",
+                          "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A",
                           "Arn"
                         ]
                       },
@@ -227,7 +227,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3Bucket79DAE7AC",
+                        "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A",
                         "Arn"
                       ]
                     },
@@ -244,11 +244,7 @@
                     "Fn::Join": [
                       "",
                       [
-                        "arn:",
-                        {
-                          "Ref": "AWS::Partition"
-                        },
-                        ":cloudfront::",
+                        "arn:aws:cloudfront::",
                         {
                           "Ref": "AWS::AccountId"
                         },
@@ -271,7 +267,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3Bucket79DAE7AC",
+                        "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A",
                         "Arn"
                       ]
                     },
@@ -294,205 +290,6 @@
           ]
         }
       }
-    },
-    "DeployIndexFileAwsCliLayerEDBAD1E2": {
-      "Type": "AWS::Lambda::LayerVersion",
-      "Properties": {
-        "Content": {
-          "S3Bucket": {
-            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-          },
-          "S3Key": "3fb6287214999ddeafa7cd0e3e58bc5144c8678bb720f3b5e45e8fd32f333eb3.zip"
-        },
-        "Description": "/opt/awscli/aws"
-      }
-    },
-    "DeployIndexFileCustomResource48B0B818": {
-      "Type": "Custom::CDKBucketDeployment",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::GetAtt": [
-            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
-            "Arn"
-          ]
-        },
-        "SourceBucketNames": [
-          {
-            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-          }
-        ],
-        "SourceObjectKeys": [
-          "2c7cc812f75febed151aba5307f83ac632c2bee5b3da8890fe1d20b4e2dc1d4a.zip"
-        ],
-        "SourceMarkers": [
-          {}
-        ],
-        "DestinationBucketName": {
-          "Ref": "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3Bucket79DAE7AC"
-        },
-        "Prune": true
-      },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
-    },
-    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "lambda.amazonaws.com"
-              }
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "ManagedPolicyArns": [
-          {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-              ]
-            ]
-          }
-        ]
-      }
-    },
-    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":s3:::",
-                      {
-                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":s3:::",
-                      {
-                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Action": [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*",
-                "s3:PutObject",
-                "s3:PutObjectLegalHold",
-                "s3:PutObjectRetention",
-                "s3:PutObjectTagging",
-                "s3:PutObjectVersionTagging",
-                "s3:Abort*"
-              ],
-              "Effect": "Allow",
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3Bucket79DAE7AC",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3Bucket79DAE7AC",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            }
-          ],
-          "Version": "2012-10-17"
-        },
-        "PolicyName": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
-        "Roles": [
-          {
-            "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
-          }
-        ]
-      }
-    },
-    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": {
-            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-          },
-          "S3Key": "9eb41a5505d37607ac419321497a4f8c21cf0ee1f9b4a6b29aa04301aea5c7fd.zip"
-        },
-        "Environment": {
-          "Variables": {
-            "AWS_CA_BUNDLE": "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem"
-          }
-        },
-        "Handler": "index.handler",
-        "Layers": [
-          {
-            "Ref": "DeployIndexFileAwsCliLayerEDBAD1E2"
-          }
-        ],
-        "Role": {
-          "Fn::GetAtt": [
-            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
-            "Arn"
-          ]
-        },
-        "Runtime": "python3.9",
-        "Timeout": 900
-      },
-      "DependsOn": [
-        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
-        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
-      ]
     },
     "testcloudfronts3managedkeyCloudfrontLoggingBucket4F6525D7": {
       "Type": "AWS::S3::Bucket",
@@ -618,7 +415,7 @@
             {
               "DomainName": {
                 "Fn::GetAtt": [
-                  "18c3d8855c0existings3bucketencryptedwiths3managedkeyS3Bucket79DAE7AC",
+                  "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A",
                   "RegionalDomainName"
                 ]
               },
@@ -651,12 +448,211 @@
       "Type": "AWS::CloudFront::OriginAccessControl",
       "Properties": {
         "OriginAccessControlConfig": {
-          "Name": "cloudfront-default-oac-18c3d88567e",
+          "Name": "cloudfront-default-oac-18c44cb5acb",
           "OriginAccessControlOriginType": "s3",
           "SigningBehavior": "always",
           "SigningProtocol": "sigv4"
         }
       }
+    },
+    "DeployIndexFileAwsCliLayerEDBAD1E2": {
+      "Type": "AWS::Lambda::LayerVersion",
+      "Properties": {
+        "Content": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "3fb6287214999ddeafa7cd0e3e58bc5144c8678bb720f3b5e45e8fd32f333eb3.zip"
+        },
+        "Description": "/opt/awscli/aws"
+      }
+    },
+    "DeployIndexFileCustomResource48B0B818": {
+      "Type": "Custom::CDKBucketDeployment",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
+            "Arn"
+          ]
+        },
+        "SourceBucketNames": [
+          {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          }
+        ],
+        "SourceObjectKeys": [
+          "b84aa9c4502ab0e4440b559e6e023575fafc918f820cbf30da6f6dc303b3a5e6.zip"
+        ],
+        "SourceMarkers": [
+          {}
+        ],
+        "DestinationBucketName": {
+          "Ref": "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A"
+        },
+        "Prune": true
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject",
+                "s3:PutObjectLegalHold",
+                "s3:PutObjectRetention",
+                "s3:PutObjectTagging",
+                "s3:PutObjectVersionTagging",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+        "Roles": [
+          {
+            "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+          }
+        ]
+      }
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "9eb41a5505d37607ac419321497a4f8c21cf0ee1f9b4a6b29aa04301aea5c7fd.zip"
+        },
+        "Environment": {
+          "Variables": {
+            "AWS_CA_BUNDLE": "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem"
+          }
+        },
+        "Handler": "index.handler",
+        "Layers": [
+          {
+            "Ref": "DeployIndexFileAwsCliLayerEDBAD1E2"
+          }
+        ],
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.9",
+        "Timeout": 900
+      },
+      "DependsOn": [
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+      ]
     }
   },
   "Parameters": {
