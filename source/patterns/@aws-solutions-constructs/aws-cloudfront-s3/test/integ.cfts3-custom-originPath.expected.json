@@ -338,6 +338,46 @@
                   ]
                 ]
               }
+            },
+            {
+              "Action": "s3:GetObject",
+              "Condition": {
+                "StringEquals": {
+                  "AWS:SourceArn": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:cloudfront::",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":distribution/",
+                        {
+                          "Ref": "testcloudfronts3CloudFrontDistribution0565DEE8"
+                        }
+                      ]
+                    ]
+                  }
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "cloudfront.amazonaws.com"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "testcloudfronts3S3BucketE0C5F76E",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
             }
           ],
           "Version": "2012-10-17"
@@ -589,19 +629,15 @@
                 ]
               },
               "Id": "cfts3customoriginPathtestcloudfronts3CloudFrontDistributionOrigin1AE2DDD7C",
+              "OriginAccessControlId": {
+                "Fn::GetAtt": [
+                  "testcloudfronts3CloudFrontOac7A951AA6",
+                  "Id"
+                ]
+              },
               "OriginPath": "/testPath",
               "S3OriginConfig": {
-                "OriginAccessIdentity": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "origin-access-identity/cloudfront/",
-                      {
-                        "Ref": "testcloudfronts3CloudFrontDistributionOrigin1S3Origin4695F058"
-                      }
-                    ]
-                  ]
-                }
+                "OriginAccessIdentity": ""
               }
             }
           ]
@@ -615,6 +651,17 @@
               "reason": "Since the distribution uses the CloudFront domain name, CloudFront automatically sets the security policy to TLSv1 regardless of the value of MinimumProtocolVersion"
             }
           ]
+        }
+      }
+    },
+    "testcloudfronts3CloudFrontOac7A951AA6": {
+      "Type": "AWS::CloudFront::OriginAccessControl",
+      "Properties": {
+        "OriginAccessControlConfig": {
+          "Name": "cloudfront-default-oac-18c44e3a1ac",
+          "OriginAccessControlOriginType": "s3",
+          "SigningBehavior": "always",
+          "SigningProtocol": "sigv4"
         }
       }
     },

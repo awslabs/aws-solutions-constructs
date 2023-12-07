@@ -19,12 +19,6 @@
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
         },
-        "Tags": [
-          {
-            "Key": "aws-cdk:auto-delete-objects",
-            "Value": "true"
-          }
-        ],
         "VersioningConfiguration": {
           "Status": "Enabled"
         }
@@ -60,45 +54,6 @@
               "Effect": "Deny",
               "Principal": {
                 "AWS": "*"
-              },
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3nosecurityheadersS3LoggingBucketF644B35F",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "testcloudfronts3nosecurityheadersS3LoggingBucketF644B35F",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Action": [
-                "s3:PutBucketPolicy",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*"
-              ],
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::GetAtt": [
-                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-                    "Arn"
-                  ]
-                }
               },
               "Resource": [
                 {
@@ -163,25 +118,6 @@
           "Version": "2012-10-17"
         }
       }
-    },
-    "testcloudfronts3nosecurityheadersS3LoggingBucketAutoDeleteObjectsCustomResourceB6D397D3": {
-      "Type": "Custom::S3AutoDeleteObjects",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::GetAtt": [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-            "Arn"
-          ]
-        },
-        "BucketName": {
-          "Ref": "testcloudfronts3nosecurityheadersS3LoggingBucketF644B35F"
-        }
-      },
-      "DependsOn": [
-        "testcloudfronts3nosecurityheadersS3LoggingBucketPolicy264DE8B6"
-      ],
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
     },
     "testcloudfronts3nosecurityheadersS3Bucket4D06173D": {
       "Type": "AWS::S3::Bucket",
@@ -571,7 +507,7 @@
       "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
       "Properties": {
         "CloudFrontOriginAccessIdentityConfig": {
-          "Comment": "Identity for cfts3nosecurityheaderstestcloudfronts3nosecurityheadersCloudFrontDistributionOrigin1A0125E27"
+          "Comment": "Identity for nosecurityheaderstestcloudfronts3nosecurityheadersCloudFrontDistributionOrigin10FDD9A1E"
         }
       }
     },
@@ -582,7 +518,7 @@
           "DefaultCacheBehavior": {
             "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
             "Compress": true,
-            "TargetOriginId": "cfts3nosecurityheaderstestcloudfronts3nosecurityheadersCloudFrontDistributionOrigin1A0125E27",
+            "TargetOriginId": "nosecurityheaderstestcloudfronts3nosecurityheadersCloudFrontDistributionOrigin10FDD9A1E",
             "ViewerProtocolPolicy": "redirect-to-https"
           },
           "DefaultRootObject": "index.html",
@@ -605,7 +541,7 @@
                   "RegionalDomainName"
                 ]
               },
-              "Id": "cfts3nosecurityheaderstestcloudfronts3nosecurityheadersCloudFrontDistributionOrigin1A0125E27",
+              "Id": "nosecurityheaderstestcloudfronts3nosecurityheadersCloudFrontDistributionOrigin10FDD9A1E",
               "OriginAccessControlId": {
                 "Fn::GetAtt": [
                   "testcloudfronts3nosecurityheadersCloudFrontOac7954FB73",
@@ -634,7 +570,7 @@
       "Type": "AWS::CloudFront::OriginAccessControl",
       "Properties": {
         "OriginAccessControlConfig": {
-          "Name": "cloudfront-default-oac-18c450f723b",
+          "Name": "cloudfront-default-oac-18c454d5a95",
           "OriginAccessControlOriginType": "s3",
           "SigningBehavior": "always",
           "SigningProtocol": "sigv4"
@@ -688,7 +624,7 @@
             [
               "Lambda function for auto-deleting objects in ",
               {
-                "Ref": "testcloudfronts3nosecurityheadersS3LoggingBucketF644B35F"
+                "Ref": "testcloudfronts3nosecurityheadersS3Bucket4D06173D"
               },
               " S3 bucket."
             ]

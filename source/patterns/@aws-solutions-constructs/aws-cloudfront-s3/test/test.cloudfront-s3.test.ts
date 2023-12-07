@@ -18,6 +18,7 @@ import {Duration, RemovalPolicy, Stack} from "aws-cdk-lib";
 import {CloudFrontToS3, CloudFrontToS3Props} from "../lib";
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import * as defaults from '@aws-solutions-constructs/core';
+import { Key } from "aws-cdk-lib/aws-kms";
 
 function deploy(stack: cdk.Stack, props?: CloudFrontToS3Props) {
   return new CloudFrontToS3(stack, 'test-cloudfront-s3', {
@@ -196,17 +197,7 @@ test("Test existingBucketObj", () => {
           },
           Id: "existingIBucketCloudFrontDistributionOrigin1D5849125",
           S3OriginConfig: {
-            OriginAccessIdentity: {
-              "Fn::Join": [
-                "",
-                [
-                  "origin-access-identity/cloudfront/",
-                  {
-                    Ref: "existingIBucketCloudFrontDistributionOrigin1S3OriginDDDB1606"
-                  }
-                ]
-              ]
-            }
+            OriginAccessIdentity: ""
           }
         }
       ]
@@ -461,4 +452,64 @@ test("Confirm CheckCloudFrontProps is being called", () => {
       }
     });
   }).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
+});
+
+test("Custom resource is provisioned if encryption key is provided as bucketProp", () => {
+  const stack = new cdk.Stack();
+  const encryptionKey = new Key(stack, 'cmkKey', {
+    enableKeyRotation: true,
+    removalPolicy: RemovalPolicy.DESTROY
+  });
+  deploy(stack, {
+    bucketProps: {
+      encryptionKey,
+      encryption: s3.BucketEncryption.KMS
+    }
+  });
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
+    Role: {
+      "Fn::GetAtt": [ "testcloudfronts3KmsKeyPolicyUpdateLambdaRole08D4BED2", "Arn" ]
+    }
+  });
+});
+
+test("Custom resource is provisioned if CMK was used to encrypt an existing bucket", () => {
+  const stack = new cdk.Stack();
+  const encryptionKey = new Key(stack, 'cmkKey', {
+    enableKeyRotation: true,
+    removalPolicy: RemovalPolicy.DESTROY
+  });
+  const existingBucketObj = defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      encryption: s3.BucketEncryption.KMS,
+      encryptionKey
+    }
+  }, 'existing-s3-bucket-encrypted-with-cmk').bucket;
+  new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+    existingBucketObj
+  });
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
+    Role: {
+      "Fn::GetAtt": [ "testcloudfronts3KmsKeyPolicyUpdateLambdaRole08D4BED2", "Arn" ]
+    }
+  });
+});
+
+test("Custom resource is not provisioned if encryption key is not provided as bucketProp", () => {
+  const stack = new cdk.Stack();
+  deploy(stack);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Lambda::Function', 0);
+});
+
+test("Custom resource is not provisioned if CMK was not used to encrypt an existing bucket", () => {
+  const stack = new cdk.Stack();
+  const existingBucketObj = defaults.buildS3Bucket(stack, {}, 'existing-s3-bucket-encrypted-with-cmk').bucket;
+  new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+    existingBucketObj
+  });
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Lambda::Function', 0);
 });
