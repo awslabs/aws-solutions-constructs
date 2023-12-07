@@ -38,11 +38,7 @@ const props: IotToS3Props = {
   }
 };
 
-const testConstruct = new IotToS3(stack, 'test-iot-s3-integration', props);
+new IotToS3(stack, 'test-iot-s3-integration', props);
 
-defaults.addCfnSuppressRules(testConstruct.s3Bucket!, [
-  { id: 'W35',
-    reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
-]);
-
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 app.synth();

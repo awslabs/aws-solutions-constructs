@@ -223,17 +223,7 @@
         }
       },
       "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete",
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W35",
-              "reason": "This S3 bucket is created for unit/ integration testing purposes only."
-            }
-          ]
-        }
-      }
+      "DeletionPolicy": "Delete"
     },
     "testiots3integrationS3BucketPolicy18905375": {
       "Type": "AWS::S3::BucketPolicy",
@@ -431,7 +421,25 @@
       },
       "DependsOn": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
-      ]
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W89",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W92",
+              "reason": "CDK generated custom resource"
+            }
+          ]
+        }
+      }
     }
   },
   "Parameters": {
