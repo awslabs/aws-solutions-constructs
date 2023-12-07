@@ -12,7 +12,19 @@
             }
           ]
         },
-        "BucketName": "custom-logging-bucket",
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "Status": "Enabled",
+              "Transitions": [
+                {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 7
+                }
+              ]
+            }
+          ]
+        },
         "PublicAccessBlockConfiguration": {
           "BlockPublicAcls": true,
           "BlockPublicPolicy": true,
@@ -379,10 +391,10 @@
         "AutoPublish": true,
         "FunctionCode": "function handler(event) { var response = event.response; var headers = response.headers; headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'}; headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"}; headers['x-content-type-options'] = { value: 'nosniff'}; headers['x-frame-options'] = {value: 'DENY'}; headers['x-xss-protection'] = {value: '1; mode=block'}; return response; }",
         "FunctionConfig": {
-          "Comment": "SetHttpSecurityHeadersc8c3d2243132d57b810e98b12d9e3c4c64e6e1cabe",
+          "Comment": "SetHttpSecurityHeadersc844fcbc00f82925aea73bcda195f6b5551bdcf3d4",
           "Runtime": "cloudfront-js-1.0"
         },
-        "Name": "SetHttpSecurityHeadersc8c3d2243132d57b810e98b12d9e3c4c64e6e1cabe"
+        "Name": "SetHttpSecurityHeadersc844fcbc00f82925aea73bcda195f6b5551bdcf3d4"
       }
     },
     "testcloudfronts3CloudfrontLoggingBucket985C0FE8": {
@@ -395,6 +407,19 @@
               "ServerSideEncryptionByDefault": {
                 "SSEAlgorithm": "AES256"
               }
+            }
+          ]
+        },
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "Status": "Enabled",
+              "Transitions": [
+                {
+                  "StorageClass": "GLACIER",
+                  "TransitionInDays": 7
+                }
+              ]
             }
           ]
         },
@@ -543,7 +568,7 @@
       "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
       "Properties": {
         "CloudFrontOriginAccessIdentityConfig": {
-          "Comment": "Identity for cfts3customLoggingBuckettestcloudfronts3CloudFrontDistributionOrigin169BF6A51"
+          "Comment": "Identity for cfts3customLoggingBucketstestcloudfronts3CloudFrontDistributionOrigin1BBEA7E26"
         }
       }
     },
@@ -565,7 +590,7 @@
                 }
               }
             ],
-            "TargetOriginId": "cfts3customLoggingBuckettestcloudfronts3CloudFrontDistributionOrigin169BF6A51",
+            "TargetOriginId": "cfts3customLoggingBucketstestcloudfronts3CloudFrontDistributionOrigin1BBEA7E26",
             "ViewerProtocolPolicy": "redirect-to-https"
           },
           "DefaultRootObject": "index.html",
@@ -588,7 +613,7 @@
                   "RegionalDomainName"
                 ]
               },
-              "Id": "cfts3customLoggingBuckettestcloudfronts3CloudFrontDistributionOrigin169BF6A51",
+              "Id": "cfts3customLoggingBucketstestcloudfronts3CloudFrontDistributionOrigin1BBEA7E26",
               "S3OriginConfig": {
                 "OriginAccessIdentity": {
                   "Fn::Join": [

@@ -12,7 +12,8 @@
  */
 
 /// !cdk-integ *
-import { App, RemovalPolicy, Stack } from "aws-cdk-lib";
+import { App, RemovalPolicy, Stack, Duration } from "aws-cdk-lib";
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import { S3ToSns } from "../lib";
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
@@ -25,7 +26,16 @@ new S3ToSns(stack, 'test-s3-sns', {
   },
   loggingBucketProps: {
     autoDeleteObjects: true,
-    removalPolicy: RemovalPolicy.DESTROY
+    removalPolicy: RemovalPolicy.DESTROY,
+    // This functionality is inconsequential, it just confirms
+    // that these props continue to be utilized
+    lifecycleRules: [{
+      enabled: true,
+      transitions: [{
+        storageClass: s3.StorageClass.GLACIER,
+        transitionAfter: Duration.days(7)
+      }]
+    }]
   }
 });
 

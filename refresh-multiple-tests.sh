@@ -6,22 +6,33 @@
 # for you.
 
 # Open a docker build environment
-# Run build-patterns.sh through at least the building of core, then you can ctrl-c
 # List all the constructs whose integration tests you want to refresh in the
 #   export constructs list (you can delete the examples that are there)
 # Run this script from the top level aws-solutions-constructs folder.
 #
-# Advanced use - if you have too many constructs to wait for, you can create
-# another copy of this script to run concurrently with a different list of constructs
-# 1) Remove the align-version.sh revert lines from this script and the copy
-# 2) Remove source allow-partial-builds.sh line from the copy
-# 3) Keep any dependencies together and in order 
-# (e.g. dynamodbstreams-lambda-elasticsearch must be built AFTER 
-# dynamodbstreams-lambda and lambda-elasticsearch)
+# Options to accelerate
+# * adding --no-clean to the cdk-integ command will allow it to 
+#   finish without destroying the stack. You can then destroy the stack manually
+#   from the console or command line so the stack destruction does not slow the process
+# * adding & to the end of the cdk-integ command will execute it asynchronously. This 
+#   allows you to refresh MANY constructs' tests simultaneously. Probably good to add
+#   a sleep 10 command before the end of the loop to keep from overwhelming CloudFormation
 
 export constructs="
-  aws-kinesisstreams-gluejob
+  aws-cloudfront-s3
+  aws-fargate-s3
+  aws-iot-s3
+  aws-kinesisfirehose-s3
+  aws-lambda-kendra
   aws-lambda-s3
+  aws-openapigateway-lambda
+  aws-s3-lambda
+  aws-s3-sns
+  aws-s3-sqs
+  aws-eventbridge-stepfunctions
+  aws-s3-stepfunctions
+  aws-eventbridge-kinesisfirehose-s3
+  aws-kinesisstreams-kinesisfirehose-s3
 "
 
 constructs_root_dir=$(cd $(dirname $0) && pwd)
@@ -32,7 +43,7 @@ echo "aligning versions and updating package.json for CDK v2..."
 /bin/bash $constructs_root_dir/align-version.sh
 
 bail="--bail"
-runtarget="build+lint+test"
+runtarget="jsii"
 cd $source_dir/
 
 export PATH=$source_dir/node_modules/.bin:$PATH
@@ -62,9 +73,8 @@ for construct in $constructs; do
 
   cd $constructs_root_dir/source/patterns/@aws-solutions-constructs/$construct
   echo Running in $PWD
-  npm run jsii && npm run lint
-  cdk-integ --no-clean
-  npm run build+lint+test
+  cdk-integ --no-clean &
+  sleep 10
   cd $constructs_root_dir/source/patterns/@aws-solutions-constructs
 done
 cd $constructs_root_dir

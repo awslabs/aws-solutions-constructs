@@ -1,7 +1,7 @@
 {
   "Description": "Integration Test for aws-lambda-kendra",
   "Resources": {
-    "contentBucket356CF7A5": {
+    "contentBucketLog5B9803A6": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -29,20 +29,259 @@
         "cfn_nag": {
           "rules_to_suppress": [
             {
-              "id": "W51",
-              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
-            },
-            {
               "id": "W35",
-              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
-            },
-            {
-              "id": "W41",
-              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct"
+              "reason": "This is a log bucket"
             }
           ]
         }
       }
+    },
+    "contentBucketLogPolicy52155F9C": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "contentBucketLog5B9803A6"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "contentBucketLog5B9803A6",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "contentBucketLog5B9803A6",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:PutBucketPolicy",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn"
+                  ]
+                }
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "contentBucketLog5B9803A6",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "contentBucketLog5B9803A6",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "ArnLike": {
+                  "aws:SourceArn": {
+                    "Fn::GetAtt": [
+                      "contentBucket356CF7A5",
+                      "Arn"
+                    ]
+                  }
+                },
+                "StringEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "logging.s3.amazonaws.com"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "contentBucketLog5B9803A6",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "contentBucketLogAutoDeleteObjectsCustomResource533B8207": {
+      "Type": "Custom::S3AutoDeleteObjects",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn"
+          ]
+        },
+        "BucketName": {
+          "Ref": "contentBucketLog5B9803A6"
+        }
+      },
+      "DependsOn": [
+        "contentBucketLogPolicy52155F9C"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+          }
+        ]
+      }
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "b7f33614a69548d6bafe224d751a7ef238cde19097415e553fe8b63a4c8fd8a6.zip"
+        },
+        "Timeout": 900,
+        "MemorySize": 128,
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs18.x",
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Lambda function for auto-deleting objects in ",
+              {
+                "Ref": "contentBucketLog5B9803A6"
+              },
+              " S3 bucket."
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W89",
+              "reason": "CDK generated custom resource"
+            },
+            {
+              "id": "W92",
+              "reason": "CDK generated custom resource"
+            }
+          ]
+        }
+      }
+    },
+    "contentBucket356CF7A5": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "LoggingConfiguration": {
+          "DestinationBucketName": {
+            "Ref": "contentBucketLog5B9803A6"
+          }
+        },
+        "Tags": [
+          {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true"
+          }
+        ],
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "contentBucketPolicy71256B1B": {
       "Type": "AWS::S3::BucketPolicy",
@@ -52,6 +291,40 @@
         },
         "PolicyDocument": {
           "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "contentBucket356CF7A5",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "contentBucket356CF7A5",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
             {
               "Action": [
                 "s3:PutBucketPolicy",
@@ -114,82 +387,6 @@
       ],
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
-    },
-    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "lambda.amazonaws.com"
-              }
-            }
-          ]
-        },
-        "ManagedPolicyArns": [
-          {
-            "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-          }
-        ]
-      }
-    },
-    "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": {
-            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-          },
-          "S3Key": "b7f33614a69548d6bafe224d751a7ef238cde19097415e553fe8b63a4c8fd8a6.zip"
-        },
-        "Timeout": 900,
-        "MemorySize": 128,
-        "Handler": "index.handler",
-        "Role": {
-          "Fn::GetAtt": [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-            "Arn"
-          ]
-        },
-        "Runtime": "nodejs18.x",
-        "Description": {
-          "Fn::Join": [
-            "",
-            [
-              "Lambda function for auto-deleting objects in ",
-              {
-                "Ref": "contentBucket356CF7A5"
-              },
-              " S3 bucket."
-            ]
-          ]
-        }
-      },
-      "DependsOn": [
-        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
-      ],
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W58",
-              "reason": "CDK generated custom resource"
-            },
-            {
-              "id": "W89",
-              "reason": "CDK generated custom resource"
-            },
-            {
-              "id": "W92",
-              "reason": "CDK generated custom resource"
-            }
-          ]
-        }
-      }
     },
     "minimalargumentsLambdaFunctionServiceRole73B77FF7": {
       "Type": "AWS::IAM::Role",

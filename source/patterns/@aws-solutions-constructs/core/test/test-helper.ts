@@ -34,13 +34,23 @@ export const fakeEcrRepoArn = 'arn:aws:ecr:us-east-1:123456789012:repository/fak
 // Creates a bucket used for testing - minimal properties, destroyed after test
 export function CreateScrapBucket(scope: Construct, id: string, props?: BucketProps | any) {
 
+  if (props?.serverAccessLogsBucket) {
+    throw new Error("Don't try to send a log bucket to CreateScrapBucket");
+  }
+
+  // Basic props for scrap and log buckets
   const defaultProps: BucketProps = {
     versioned: true,
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
     encryption: BucketEncryption.S3_MANAGED,
+    enforceSSL: true
   };
 
+  // Create basic log bucket
+  const logBucket = new Bucket(scope, `${id}Log`, defaultProps);
+
+  // Combine basic props with special props from test client
   let synthesizedProps: BucketProps;
   if (props) {
     synthesizedProps = overrideProps(defaultProps, props);
@@ -48,24 +58,19 @@ export function CreateScrapBucket(scope: Construct, id: string, props?: BucketPr
     synthesizedProps = defaultProps;
   }
 
+  // Finally - set up logging for the scrap bucket
+  const finalProps = overrideProps(synthesizedProps, { serverAccessLogsBucket: logBucket });
+
   const scriptBucket = new Bucket(
     scope,
     id,
-    synthesizedProps
+    finalProps
   );
 
-  addCfnSuppressRules(scriptBucket, [
-    {
-      id: "W51",
-      reason: "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation",
-    },
+  addCfnSuppressRules(logBucket, [
     {
       id: "W35",
-      reason: "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation",
-    },
-    {
-      id: "W41",
-      reason: "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct",
+      reason: "This is a log bucket",
     }
   ]);
 

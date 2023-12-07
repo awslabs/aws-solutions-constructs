@@ -54,7 +54,11 @@ new CloudFrontToS3(stack, 'test-cloudfront-s3', {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true
-  }
+  },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
 });
 
 suppressAutoDeleteHandlerWarnings(stack);

@@ -12,8 +12,8 @@
  */
 
 /// !cdk-integ *
-import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
-import { BucketEncryption } from "aws-cdk-lib/aws-s3";
+import { App, Stack, RemovalPolicy, Duration } from "aws-cdk-lib";
+import * as s3 from "aws-cdk-lib/aws-s3";
 import { KinesisStreamsToKinesisFirehoseToS3 } from "../lib";
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
@@ -29,8 +29,15 @@ new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-kinesisfirehose-s3', {
   loggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
-    encryption: BucketEncryption.S3_MANAGED,
-    versioned: true
+    // This functionality is inconsequential, it just confirms
+    // that these props continue to be utilized
+    lifecycleRules: [{
+      enabled: true,
+      transitions: [{
+        storageClass: s3.StorageClass.GLACIER,
+        transitionAfter: Duration.days(7)
+      }]
+    }]
   },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY
