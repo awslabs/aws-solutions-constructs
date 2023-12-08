@@ -1,7 +1,7 @@
 {
     "name": "@aws-solutions-constructs/aws-cloudfront-s3/custom-resources/kms-key-policy-updater",
     "version": "0.0.0",
-    "description": "CDK Constructs for AWS Cloudfront to AWS S3 integration.",
+    "description": "Custom resource for updating CMK key policies",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "author": {
@@ -16,17 +16,11 @@
         "lint-fix": "eslint -c ../eslintrc.yml --ext=.js,.ts --fix .",
         "test": "jest --coverage",
         "clean": "tsc -b --clean",
-        "watch": "tsc -b -w",
-        "integ": "cdk-integ",
-        "integ-no-clean": "cdk-integ --no-clean",
-        "integ-assert": "cdk-integ-assert-v2",
-        "jsii": "jsii",
-        "jsii-pacmak": "jsii-pacmak",
-        "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
-        "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
+        "watch": "tsc -b -w"
     },
     "dependencies": {
-        "@aws-sdk/client-kms": "^3.460.0"
+        "@aws-sdk/client-kms": "^3.468.0",
+        "aws-sdk-client-mock": "^3.0.0"
     },
     "devDependencies": {
         "@types/jest": "^27.4.0",
@@ -45,13 +39,5 @@
                 }
             ]
         ]
-    },
-    "keywords": [
-        "aws",
-        "cdk",
-        "awscdk",
-        "AWS Solutions Constructs",
-        "Amazon CloudFront",
-        "Amazon S3"
-    ]
+    }
 }
