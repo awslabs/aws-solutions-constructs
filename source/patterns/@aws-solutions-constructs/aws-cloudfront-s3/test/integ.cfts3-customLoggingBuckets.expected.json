@@ -653,17 +653,13 @@
                   "RegionalDomainName"
                 ]
               },
-<<<<<<< HEAD:source/patterns/@aws-solutions-constructs/aws-cloudfront-s3/test/integ.cfts3-customLoggingBuckets.expected.json
               "Id": "cfts3customLoggingBucketstestcloudfronts3CloudFrontDistributionOrigin1BBEA7E26",
-=======
-              "Id": "cfts3customLoggingBuckettestcloudfronts3CloudFrontDistributionOrigin169BF6A51",
               "OriginAccessControlId": {
                 "Fn::GetAtt": [
                   "testcloudfronts3CloudFrontOac7A951AA6",
                   "Id"
                 ]
               },
->>>>>>> feature/hayesry/cloudfront-s3-oac-update:source/patterns/@aws-solutions-constructs/aws-cloudfront-s3/test/integ.cfts3-customLoggingBucket.expected.json
               "S3OriginConfig": {
                 "OriginAccessIdentity": ""
               }
@@ -686,7 +682,7 @@
       "Type": "AWS::CloudFront::OriginAccessControl",
       "Properties": {
         "OriginAccessControlConfig": {
-          "Name": "cloudfront-default-oac-18c44f4e1dc",
+          "Name": "cloudfront-default-oac-18c47aeed4d",
           "OriginAccessControlOriginType": "s3",
           "SigningBehavior": "always",
           "SigningProtocol": "sigv4"

@@ -22,7 +22,6 @@ import { Provider } from 'aws-cdk-lib/custom-resources';
 import { IKey } from 'aws-cdk-lib/aws-kms';
 import { Code, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { Effect, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import * as log from 'npmlog';
 
 /**
  * @summary The properties for the CloudFrontToS3 Construct
@@ -113,14 +112,6 @@ export class CloudFrontToS3 extends Construct {
    */
   constructor(scope: Construct, id: string, props: CloudFrontToS3Props) {
     super(scope, id);
-
-    // Issue a printed warning regarding the creation of an orphaned OAI. This
-    // can and should be removed once the CDK fixes that behavior.
-    // Style the log output
-    log.prefixStyle.bold = true;
-  log.prefixStyle.fg = 'red';
-  log.enableColor();
-  log.warn('AWS_SOLUTIONS_CONSTRUCTS_WARNING: ', message);
 
     // All our tests are based upon this behavior being on, so we're setting
     // context here rather than assuming the client will set it
@@ -237,42 +228,6 @@ export class CloudFrontToS3 extends Construct {
           })
         }
       });
-      // const lambdaHandler = new Function(this, 'KmsKeyPolicyUpdateLambda', {
-      //   runtime: Runtime.NODEJS_18_X,
-      //   handler: 'index.handler',
-      //   description: 'kms-key-policy-updater',
-      //   code: Code.fromAsset(`${__dirname}/custom-resources/kms-key-policy-updater`),
-      //   role: new Role(this, 'KmsKeyPolicyUpdateLambdaRole', {
-      //     assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-      //     description: 'Role to update kms key policy to allow cloudfront access',
-      //     inlinePolicies: {
-      //       KmsPolicy: new PolicyDocument({
-      //         statements: [
-      //           new PolicyStatement({
-      //             actions: ['kms:PutKeyPolicy', 'kms:GetKeyPolicy', 'kms:DescribeKey'],
-      //             effect: Effect.ALLOW,
-      //             resources: [ encryptionKey.keyArn ]
-      //           })
-      //         ]
-      //       }),
-      //       CWLogsPolicy: new PolicyDocument({
-      //         statements: [
-      //           new PolicyStatement({
-      //             actions: ['logs:CreateLogGroup'],
-      //             effect: Effect.ALLOW,
-      //             resources: [ `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:*` ]
-      //           })
-      //         ]
-      //       })
-      //     }
-      //   })
-      // });
-
-      // lambdaHandler.addToRolePolicy(new PolicyStatement({
-      //   actions: ['logs:CreateLogStream', 'logs:PutLogEvents'],
-      //   effect: Effect.ALLOW,
-      //   resources: [ `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/lambda/*:*` ]
-      // }));
 
       const kmsKeyPolicyUpdateProvider = new Provider(this, 'KmsKeyPolicyUpdateProvider', {
         onEventHandler: lambdaHandler

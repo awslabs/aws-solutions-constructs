@@ -490,7 +490,7 @@
       "Type": "AWS::CloudFront::OriginAccessControl",
       "Properties": {
         "OriginAccessControlConfig": {
-          "Name": "cloudfront-default-oac-18c44c5bd93",
+          "Name": "cloudfront-default-oac-18c478ad319",
           "OriginAccessControlOriginType": "s3",
           "SigningBehavior": "always",
           "SigningProtocol": "sigv4"
@@ -667,7 +667,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "83f558ef4a157664ec5e7d6b58d4b131dc53d864700c5c981434adfd62399eda.zip"
+          "S3Key": "d65f90611efee0c3ab721963c6e9a3ff045ae5ce004b0c2dac9a60919a0ece37.zip"
         },
         "Description": "kms-key-policy-updater",
         "Handler": "index.handler",
@@ -1023,7 +1023,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "9eb41a5505d37607ac419321497a4f8c21cf0ee1f9b4a6b29aa04301aea5c7fd.zip"
+          "S3Key": "0b1f5aa55d045066ed91316b823a808060c12737e0575ab7cefe2335324108b0.zip"
         },
         "Environment": {
           "Variables": {
