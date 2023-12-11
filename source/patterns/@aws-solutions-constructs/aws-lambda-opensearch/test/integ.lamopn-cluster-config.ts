@@ -41,7 +41,7 @@ const openSearchDomainProps = {
 
 new LambdaToOpenSearch(stack, 'test-lambda-opensearch', {
   lambdaFunctionProps: lambdaProps,
-  openSearchDomainName: "deploytestwithclusterconfig",
+  openSearchDomainName: defaults.CreateShortUniqueTestName("dmn"),
   openSearchDomainProps,
   deployVpc: true,
   vpcProps: {

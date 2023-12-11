@@ -34,7 +34,7 @@ const lambdaProps: lambda.FunctionProps = {
 
 new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana3', {
   lambdaFunctionProps: lambdaProps,
-  domainName: "deploytestwithvpcprops",
+  domainName: defaults.CreateShortUniqueTestName("dmn"),
   deployVpc: true,
   vpcProps: {
     ipAddresses: ec2.IpAddresses.cidr('172.168.0.0/16'),

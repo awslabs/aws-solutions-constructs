@@ -14,7 +14,7 @@
 // Imports
 import { Aws, App, Stack } from "aws-cdk-lib";
 import { FargateToSsmstringparameter, FargateToSsmstringparameterProps } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import {  generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 
 // Setup
@@ -32,7 +32,6 @@ const testProps: FargateToSsmstringparameterProps = {
     image
   },
   stringParameterProps: {
-    parameterName: "FooParameter",
     stringValue: "Foo"
   }
 };

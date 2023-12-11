@@ -289,7 +289,37 @@
     "testddbstreamslambdaeskLambdaToElasticSearchUserPoolDomainA6C84014": {
       "Type": "AWS::Cognito::UserPoolDomain",
       "Properties": {
-        "Domain": "pooldomaintest-98eb",
+        "Domain": {
+          "Fn::Join": [
+            "-",
+            [
+              "cog",
+              {
+                "Fn::Select": [
+                  4,
+                  {
+                    "Fn::Split": [
+                      "-",
+                      {
+                        "Fn::Select": [
+                          2,
+                          {
+                            "Fn::Split": [
+                              "/",
+                              {
+                                "Ref": "AWS::StackId"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        },
         "UserPoolId": {
           "Ref": "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPool97EA2952"
         }
@@ -346,7 +376,39 @@
                         {
                           "Ref": "AWS::AccountId"
                         },
-                        ":domain/pooldomaintest-98eb/*"
+                        ":domain/",
+                        {
+                          "Fn::Join": [
+                            "-",
+                            [
+                              "cog",
+                              {
+                                "Fn::Select": [
+                                  4,
+                                  {
+                                    "Fn::Split": [
+                                      "-",
+                                      {
+                                        "Fn::Select": [
+                                          2,
+                                          {
+                                            "Fn::Split": [
+                                              "/",
+                                              {
+                                                "Ref": "AWS::StackId"
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          ]
+                        },
+                        "/*"
                       ]
                     ]
                   }
@@ -459,7 +521,38 @@
                       {
                         "Ref": "AWS::AccountId"
                       },
-                      ":domain/domaintest-84ef"
+                      ":domain/",
+                      {
+                        "Fn::Join": [
+                          "-",
+                          [
+                            "dmn",
+                            {
+                              "Fn::Select": [
+                                4,
+                                {
+                                  "Fn::Split": [
+                                    "-",
+                                    {
+                                      "Fn::Select": [
+                                        2,
+                                        {
+                                          "Fn::Split": [
+                                            "/",
+                                            {
+                                              "Ref": "AWS::StackId"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        ]
+                      }
                     ]
                   ]
                 }
@@ -531,7 +624,39 @@
                     {
                       "Ref": "AWS::AccountId"
                     },
-                    ":domain/domaintest-84ef/*"
+                    ":domain/",
+                    {
+                      "Fn::Join": [
+                        "-",
+                        [
+                          "dmn",
+                          {
+                            "Fn::Select": [
+                              4,
+                              {
+                                "Fn::Split": [
+                                  "-",
+                                  {
+                                    "Fn::Select": [
+                                      2,
+                                      {
+                                        "Fn::Split": [
+                                          "/",
+                                          {
+                                            "Ref": "AWS::StackId"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      ]
+                    },
+                    "/*"
                   ]
                 ]
               }
@@ -558,7 +683,37 @@
           "EnforceHTTPS": true,
           "TLSSecurityPolicy": "Policy-Min-TLS-1-2-2019-07"
         },
-        "DomainName": "domaintest-84ef",
+        "DomainName": {
+          "Fn::Join": [
+            "-",
+            [
+              "dmn",
+              {
+                "Fn::Select": [
+                  4,
+                  {
+                    "Fn::Split": [
+                      "-",
+                      {
+                        "Fn::Select": [
+                          2,
+                          {
+                            "Fn::Split": [
+                              "/",
+                              {
+                                "Ref": "AWS::StackId"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        },
         "EBSOptions": {
           "EBSEnabled": true,
           "VolumeSize": 10

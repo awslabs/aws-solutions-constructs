@@ -15,7 +15,7 @@
 import { App, Stack } from "aws-cdk-lib";
 import { DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps, DynamoDBStreamsToLambdaToElasticSearchAndKibana } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, CreateShortUniqueTestName } from '@aws-solutions-constructs/core';
 
 const app = new App();
 
@@ -28,8 +28,8 @@ const props: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps = {
     runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   },
-  domainName: 'domaintest-1234',
-  cognitoDomainName: 'pooldomaintest-2342',
+  domainName: CreateShortUniqueTestName("dmn"),
+  cognitoDomainName: CreateShortUniqueTestName("cog"),
   deployVpc: true
 };
 
