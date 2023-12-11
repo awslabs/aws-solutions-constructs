@@ -29,7 +29,7 @@ const lambdaProps: lambda.FunctionProps = {
 
 new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
   lambdaFunctionProps: lambdaProps,
-  domainName: "deploytestfivezones",
+  domainName: defaults.CreateShortUniqueTestName("dmn"),
   deployVpc: true,
   vpcProps: {
     maxAzs: 5

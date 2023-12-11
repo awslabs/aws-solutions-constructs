@@ -14,7 +14,7 @@
 // Imports
 import { Construct, IConstruct } from 'constructs';
 import { Bucket, BucketProps, BucketEncryption } from "aws-cdk-lib/aws-s3";
-import { CfnResource, RemovalPolicy, Stack, Aspects, IAspect } from "aws-cdk-lib";
+import { CfnResource, RemovalPolicy, Stack, Aspects, IAspect, Aws, Fn } from "aws-cdk-lib";
 import { buildVpc } from '../lib/vpc-helper';
 import { DefaultPublicPrivateVpcProps, DefaultIsolatedVpcProps } from '../lib/vpc-defaults';
 import { overrideProps, addCfnSuppressRules } from "../lib/utils";
@@ -249,6 +249,16 @@ export function CreateTestApi(stack: Stack, id: string): api.LambdaRestApi {
   addCfnSuppressRules(newStage, [{ id: "W69", reason: "Test Resource" }]);
 
   return restApi;
+}
+
+// Create a short, unique to this stack name
+// technically this is not 100% OK, as it only uses a portion of the
+// stack guid - but it's for tests only so if the last segment of 2 stack guids collide someday
+// (VERY unlikely), just running again should take care of it.
+export function CreateShortUniqueTestName(stub: string) {
+  const stackGuid = Fn.select(2, Fn.split('/', `${Aws.STACK_ID}`));
+  const guidPortion = Fn.select(4, Fn.split('-', stackGuid));
+  return Fn.join("-", [stub,  guidPortion]);
 }
 
 /**

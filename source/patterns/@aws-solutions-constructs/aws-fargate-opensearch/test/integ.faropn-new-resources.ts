@@ -14,7 +14,7 @@
 // Imports
 import { Aws, App, Stack } from "aws-cdk-lib";
 import { FargateToOpenSearch, FargateToOpenSearchProps } from "../lib";
-import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings, CreateShortUniqueTestName } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 
 // Setup
@@ -31,7 +31,7 @@ const testProps: FargateToOpenSearchProps = {
   containerDefinitionProps: {
     image
   },
-  openSearchDomainName: `${generateIntegStackName(__filename)}`,
+  openSearchDomainName: CreateShortUniqueTestName("dmn"),
 };
 
 new FargateToOpenSearch(stack, 'test-construct', testProps);

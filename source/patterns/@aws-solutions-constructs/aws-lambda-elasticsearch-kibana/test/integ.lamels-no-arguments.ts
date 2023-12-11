@@ -15,7 +15,7 @@
 import { App, Stack } from "aws-cdk-lib";
 import { LambdaToElasticSearchAndKibana } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, CreateShortUniqueTestName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -27,13 +27,9 @@ const lambdaProps: lambda.FunctionProps = {
   handler: 'index.handler'
 };
 
-const esDomain = 'domain-args-23e2';
-const cognitoDomain = 'domain-args-cogn-23e';
-
 new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
   lambdaFunctionProps: lambdaProps,
-  domainName: esDomain,
-  cognitoDomainName: cognitoDomain
+  domainName: CreateShortUniqueTestName("dmn"),
 });
 
 // Synth
