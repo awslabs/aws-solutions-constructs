@@ -97,6 +97,12 @@ export function createCloudFrontLoggingBucket(scope: Construct,
   const combinedBucketProps = consolidateProps(DefaultS3Props(), loggingBucketProps);
 
   const accessLogBucket: s3.Bucket = new s3.Bucket(scope, `${bucketId}AccessLog`, combinedBucketProps); // NOSONAR
+  addCfnSuppressRules(accessLogBucket, [
+    {
+      id: 'W35',
+      reason: "This S3 bucket is used as the access logging bucket for another bucket"
+    }
+  ]);
 
   // Create the Logging Bucket
   // NOSONAR  (typescript:S6281)

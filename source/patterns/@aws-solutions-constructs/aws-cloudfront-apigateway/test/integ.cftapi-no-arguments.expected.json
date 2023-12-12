@@ -679,7 +679,17 @@
         }
       },
       "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W35",
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
+            }
+          ]
+        }
+      }
     },
     "testcloudfrontapigatewayCloudfrontLoggingBucketAccessLogPolicy1110B389": {
       "Type": "AWS::S3::BucketPolicy",
