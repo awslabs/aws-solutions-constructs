@@ -107,6 +107,10 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
     defaults.CheckLambdaProps(props);
     // CheckCloudFrontProps() is called by internal aws-cloudfront-apigateway construct
 
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps

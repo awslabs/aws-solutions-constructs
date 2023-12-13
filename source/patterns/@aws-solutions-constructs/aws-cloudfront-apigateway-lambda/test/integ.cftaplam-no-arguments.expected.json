@@ -598,10 +598,9 @@
         "Name": "SetHttpSecurityHeadersc87d9e55c0a6a55f893f95e9a700c7ce19634229d0"
       }
     },
-    "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucket7F467421": {
+    "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLog347EED57": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
-        "AccessControl": "LogDeliveryWrite",
         "BucketEncryption": {
           "ServerSideEncryptionConfiguration": [
             {
@@ -641,11 +640,196 @@
           "rules_to_suppress": [
             {
               "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution"
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
             }
           ]
         }
       }
+    },
+    "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogPolicy521355D8": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLog347EED57"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLog347EED57",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLog347EED57",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:PutBucketPolicy",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn"
+                  ]
+                }
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLog347EED57",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLog347EED57",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "ArnLike": {
+                  "aws:SourceArn": {
+                    "Fn::GetAtt": [
+                      "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucket7F467421",
+                      "Arn"
+                    ]
+                  }
+                },
+                "StringEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "logging.s3.amazonaws.com"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLog347EED57",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResource2395E2A2": {
+      "Type": "Custom::S3AutoDeleteObjects",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn"
+          ]
+        },
+        "BucketName": {
+          "Ref": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLog347EED57"
+        }
+      },
+      "DependsOn": [
+        "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogPolicy521355D8"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucket7F467421": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "LoggingConfiguration": {
+          "DestinationBucketName": {
+            "Ref": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLog347EED57"
+          }
+        },
+        "OwnershipControls": {
+          "Rules": [
+            {
+              "ObjectOwnership": "ObjectWriter"
+            }
+          ]
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "Tags": [
+          {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true"
+          }
+        ],
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketPolicy4A551B79": {
       "Type": "AWS::S3::BucketPolicy",
@@ -910,7 +1094,7 @@
             [
               "Lambda function for auto-deleting objects in ",
               {
-                "Ref": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucket7F467421"
+                "Ref": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLog347EED57"
               },
               " S3 bucket."
             ]

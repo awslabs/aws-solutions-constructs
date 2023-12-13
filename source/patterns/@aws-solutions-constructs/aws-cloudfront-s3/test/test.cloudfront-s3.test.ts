@@ -329,7 +329,7 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
   expect(app).toThrowError();
 });
 
-test('s3 bucket with one content bucket and no logging bucket', () => {
+test('s3 bucket with one content bucket and no access logging of CONTENT bucket', () => {
   const stack = new cdk.Stack();
 
   const construct = new CloudFrontToS3(stack, 'cloudfront-s3', {
@@ -340,7 +340,9 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
   });
 
   const template = Template.fromStack(stack);
-  template.resourceCountIs("AWS::S3::Bucket", 2);
+  // Content bucket+Cloudfront Logs bucket+
+  // Access Log bucket for Cloudfront Logs bucket = 3 buckets
+  template.resourceCountIs("AWS::S3::Bucket", 3);
   expect(construct.s3LoggingBucket).toEqual(undefined);
 });
 

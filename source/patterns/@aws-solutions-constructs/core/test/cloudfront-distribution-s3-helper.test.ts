@@ -42,25 +42,6 @@ test('check bucket policy metadata', () => {
   });
 });
 
-test('check bucket metadata', () => {
-  const stack = new Stack();
-  const buildS3BucketResponse = buildS3Bucket(stack, {});
-  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket);
-  const template = Template.fromStack(stack);
-  template.hasResource('AWS::S3::Bucket', {
-    Metadata: {
-      cfn_nag: {
-        rules_to_suppress: [
-          {
-            id: "W35",
-            reason: "This S3 bucket is used as the access logging bucket for CloudFront Distribution"
-          }
-        ]
-      }
-    }
-  });
-});
-
 test('test cloudfront check bucket policy', () => {
   const stack = new Stack();
   const buildS3BucketResponse = buildS3Bucket(stack, {});

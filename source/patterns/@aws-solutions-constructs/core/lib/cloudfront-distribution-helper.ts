@@ -27,7 +27,7 @@ import {
   DefaultCloudFrontDistributionForMediaStoreProps
 } from './cloudfront-distribution-defaults';
 import { addCfnSuppressRules, consolidateProps } from './utils';
-import { createLoggingBucket } from './s3-bucket-helper';
+import { createCloudFrontLoggingBucket } from './s3-bucket-helper';
 import { DefaultS3Props } from './s3-bucket-defaults';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
@@ -250,7 +250,7 @@ function getLoggingBucket(
   } else if (userSuppliedLogBucket) {
     bucketResult = userSuppliedLogBucket;
   } else {
-    bucketResult = createLoggingBucket(
+    bucketResult = createCloudFrontLoggingBucket(
       scope,
       'CloudfrontLoggingBucket',
       consolidateProps(DefaultS3Props(), cloudFrontLoggingBucketProps, { objectOwnership: s3.ObjectOwnership.OBJECT_WRITER }));
