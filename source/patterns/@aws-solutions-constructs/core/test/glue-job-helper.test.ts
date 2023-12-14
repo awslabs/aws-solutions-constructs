@@ -169,7 +169,6 @@ test('Test custom deployment properties', () => {
   });
 
   const template = Template.fromStack(stack);
-  defaults.printWarning(`***********${JSON.stringify(template)}`);
   // check if Glue Job Resource was created correctly
   template.hasResource('AWS::Glue::Job', {
     Properties: {

@@ -15,7 +15,8 @@
 import { App, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { CloudFrontToApiGatewayToLambda } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings, CreateApiAuthorizer } from '@aws-solutions-constructs/core';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 
 // Setup
 const app = new App();
@@ -29,6 +30,12 @@ const lambdaProps: lambda.FunctionProps = {
 };
 
 new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
+  apiGatewayProps: {
+    defaultMethodOptions: {
+      authorizationType: apigateway.AuthorizationType.CUSTOM,
+      authorizer: CreateApiAuthorizer(stack, `${generateIntegStackName(__filename)}-authorizer`)
+    },
+  },
   lambdaFunctionProps: lambdaProps,
   cloudFrontLoggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
