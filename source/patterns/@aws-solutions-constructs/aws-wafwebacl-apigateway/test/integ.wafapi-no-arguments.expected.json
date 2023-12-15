@@ -71,7 +71,7 @@
         }
       }
     },
-    "testAuthFunctionServiceRole67229217": {
+    "testauthorizerAuthFunctionServiceRole6F05059E": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -102,7 +102,7 @@
         ]
       }
     },
-    "testAuthFunctionDEE315BB": {
+    "testauthorizerAuthFunctionCE2F3743": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -114,14 +114,14 @@
         "Handler": ".handler",
         "Role": {
           "Fn::GetAtt": [
-            "testAuthFunctionServiceRole67229217",
+            "testauthorizerAuthFunctionServiceRole6F05059E",
             "Arn"
           ]
         },
         "Runtime": "nodejs16.x"
       },
       "DependsOn": [
-        "testAuthFunctionServiceRole67229217"
+        "testauthorizerAuthFunctionServiceRole6F05059E"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -142,13 +142,13 @@
         }
       }
     },
-    "testAuthFunctionwafapinoargumentstestauthorizerB886165DPermissions26C374CC": {
+    "testauthorizerAuthFunctionwafapinoargumentstestauthorizerB886165DPermissions0BD74048": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "testAuthFunctionDEE315BB",
+            "testauthorizerAuthFunctionCE2F3743",
             "Arn"
           ]
         },
@@ -198,7 +198,7 @@
                       ":",
                       {
                         "Fn::GetAtt": [
-                          "testAuthFunctionDEE315BB",
+                          "testauthorizerAuthFunctionCE2F3743",
                           "Arn"
                         ]
                       }
@@ -215,7 +215,7 @@
                       ":",
                       {
                         "Fn::GetAtt": [
-                          "testAuthFunctionDEE315BB",
+                          "testauthorizerAuthFunctionCE2F3743",
                           "Arn"
                         ]
                       }
@@ -226,7 +226,7 @@
               ":lambda:path/2015-03-31/functions/",
               {
                 "Fn::GetAtt": [
-                  "testAuthFunctionDEE315BB",
+                  "testauthorizerAuthFunctionCE2F3743",
                   "Arn"
                 ]
               },
