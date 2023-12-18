@@ -127,7 +127,13 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
       lambdaFunctionProps: props.lambdaFunctionProps
     });
 
-    const regionalLambdaRestApiResponse = defaults.RegionalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
+    // We can't default to IAM authentication with a CloudFront distribution, so
+    // we'll instruct core to not use any default auth to avoid override warnings
+    const regionalLambdaRestApiResponse = defaults.RegionalLambdaRestApi(this,
+      this.lambdaFunction,
+      props.apiGatewayProps,
+      props.logGroupProps,
+      false);
     this.apiGateway = regionalLambdaRestApiResponse.api;
     this.apiGatewayCloudWatchRole = regionalLambdaRestApiResponse.role;
     this.apiGatewayLogGroup = regionalLambdaRestApiResponse.group;
