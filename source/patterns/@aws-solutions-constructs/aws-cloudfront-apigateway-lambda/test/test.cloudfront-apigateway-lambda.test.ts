@@ -26,6 +26,7 @@ function deployNewFunc(stack: cdk.Stack) {
   };
 
   return new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
+    apiGatewayProps: { defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE }},
     lambdaFunctionProps
   });
 }
@@ -38,6 +39,7 @@ function useExistingFunc(stack: cdk.Stack) {
   };
 
   return new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
+    apiGatewayProps: { defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE }},
     existingLambdaObj: new lambda.Function(stack, 'MyExistingFunction', lambdaFunctionProps)
   });
 }
@@ -119,6 +121,7 @@ test('check exception for Missing existingObj from props', () => {
   const stack = new cdk.Stack();
 
   const props: CloudFrontToApiGatewayToLambdaProps = {
+    apiGatewayProps: { defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE }},
   };
 
   try {
@@ -132,6 +135,7 @@ test('check no prop', () => {
   const stack = new cdk.Stack();
 
   const props: CloudFrontToApiGatewayToLambdaProps = {
+    apiGatewayProps: { defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE }},
   };
 
   try {
@@ -155,6 +159,7 @@ test('override api gateway properties with existingLambdaObj', () => {
   new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
     existingLambdaObj: fn,
     apiGatewayProps: {
+      defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE },
       description: "Override description"
     }
   });
@@ -182,6 +187,7 @@ test('override api gateway properties without existingLambdaObj', () => {
       handler: 'index.handler'
     },
     apiGatewayProps: {
+      defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE },
       endpointConfiguration: {
         types: [api.EndpointType.PRIVATE],
       },
@@ -212,6 +218,7 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
       handler: 'index.handler'
     },
     apiGatewayProps: {
+      defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE },
       endpointConfiguration: {
         types: [api.EndpointType.PRIVATE],
       }
@@ -277,6 +284,7 @@ test('Confirm CheckLambdaProps is being called', () => {
   });
 
   const props: CloudFrontToApiGatewayToLambdaProps = {
+    apiGatewayProps: { defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE }},
     existingLambdaObj,
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_18_X,
@@ -296,6 +304,7 @@ test("Confirm CheckCloudFrontProps is being called", () => {
 
   expect(() => {
     new CloudFrontToApiGatewayToLambda(stack, "test-cloudfront-apigateway-lambda", {
+      apiGatewayProps: { defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE }},
       lambdaFunctionProps: {
         runtime: lambda.Runtime.NODEJS_18_X,
         handler: 'index.handler',
@@ -314,4 +323,42 @@ test("Confirm CheckCloudFrontProps is being called", () => {
       }
     });
   }).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
+});
+
+test('confirm error thrown for AWS_IAM authorization', () => {
+  const stack = new cdk.Stack();
+  const lambdaFunctionProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler'
+  };
+
+  const props = {
+    apiGatewayProps: { defaultMethodOptions: { authorizationType: 'AWS_IAM' }},
+    lambdaFunctionProps
+  };
+
+  const app = () => {
+    new CloudFrontToApiGatewayToLambda(stack, 'test-one', props);
+  };
+  expect(app).toThrowError(/Amazon API Gateway Rest APIs integrated with Amazon CloudFront do not support AWS_IAM authorization/);
+});
+
+test('confirm error thrown for unspecified authorization', () => {
+  const stack = new cdk.Stack();
+  const lambdaFunctionProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler'
+  };
+
+  const props = {
+    apiGatewayProps: { },
+    lambdaFunctionProps
+  };
+
+  const app = () => {
+    new CloudFrontToApiGatewayToLambda(stack, 'test-one', props);
+  };
+  expect(app).toThrowError(/As of v2.48.0, an explicit authorization type is required for CloudFront\/API Gateway patterns/);
 });

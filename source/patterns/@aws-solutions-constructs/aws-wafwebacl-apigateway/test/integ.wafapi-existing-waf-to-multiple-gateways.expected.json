@@ -71,7 +71,7 @@
         }
       }
     },
-    "testOneAuthFunctionServiceRole08948D81": {
+    "testOneauthorizerAuthFunctionServiceRoleE1B4208E": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -102,7 +102,7 @@
         ]
       }
     },
-    "testOneAuthFunction09B411BE": {
+    "testOneauthorizerAuthFunctionB12D8D93": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -114,14 +114,14 @@
         "Handler": ".handler",
         "Role": {
           "Fn::GetAtt": [
-            "testOneAuthFunctionServiceRole08948D81",
+            "testOneauthorizerAuthFunctionServiceRoleE1B4208E",
             "Arn"
           ]
         },
         "Runtime": "nodejs16.x"
       },
       "DependsOn": [
-        "testOneAuthFunctionServiceRole08948D81"
+        "testOneauthorizerAuthFunctionServiceRoleE1B4208E"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -142,13 +142,13 @@
         }
       }
     },
-    "testOneAuthFunctionwafapiexistingwaftomultiplegatewaystestOneauthorizer7F4D0710PermissionsB6FB990A": {
+    "testOneauthorizerAuthFunctionwafapiexistingwaftomultiplegatewaystestOneauthorizer7F4D0710Permissions21D6CD33": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "testOneAuthFunction09B411BE",
+            "testOneauthorizerAuthFunctionB12D8D93",
             "Arn"
           ]
         },
@@ -198,7 +198,7 @@
                       ":",
                       {
                         "Fn::GetAtt": [
-                          "testOneAuthFunction09B411BE",
+                          "testOneauthorizerAuthFunctionB12D8D93",
                           "Arn"
                         ]
                       }
@@ -215,7 +215,7 @@
                       ":",
                       {
                         "Fn::GetAtt": [
-                          "testOneAuthFunction09B411BE",
+                          "testOneauthorizerAuthFunctionB12D8D93",
                           "Arn"
                         ]
                       }
@@ -226,7 +226,7 @@
               ":lambda:path/2015-03-31/functions/",
               {
                 "Fn::GetAtt": [
-                  "testOneAuthFunction09B411BE",
+                  "testOneauthorizerAuthFunctionB12D8D93",
                   "Arn"
                 ]
               },
@@ -701,7 +701,7 @@
         }
       }
     },
-    "testTwoAuthFunctionServiceRole711DF356": {
+    "testTwoauthorizerAuthFunctionServiceRole4C3292A3": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -732,7 +732,7 @@
         ]
       }
     },
-    "testTwoAuthFunctionCD4DE414": {
+    "testTwoauthorizerAuthFunction1DBBD707": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
@@ -744,14 +744,14 @@
         "Handler": ".handler",
         "Role": {
           "Fn::GetAtt": [
-            "testTwoAuthFunctionServiceRole711DF356",
+            "testTwoauthorizerAuthFunctionServiceRole4C3292A3",
             "Arn"
           ]
         },
         "Runtime": "nodejs16.x"
       },
       "DependsOn": [
-        "testTwoAuthFunctionServiceRole711DF356"
+        "testTwoauthorizerAuthFunctionServiceRole4C3292A3"
       ],
       "Metadata": {
         "cfn_nag": {
@@ -772,13 +772,13 @@
         }
       }
     },
-    "testTwoAuthFunctionwafapiexistingwaftomultiplegatewaystestTwoauthorizer9B2C525EPermissionsE4DE5C10": {
+    "testTwoauthorizerAuthFunctionwafapiexistingwaftomultiplegatewaystestTwoauthorizer9B2C525EPermissions44287234": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "testTwoAuthFunctionCD4DE414",
+            "testTwoauthorizerAuthFunction1DBBD707",
             "Arn"
           ]
         },
@@ -828,7 +828,7 @@
                       ":",
                       {
                         "Fn::GetAtt": [
-                          "testTwoAuthFunctionCD4DE414",
+                          "testTwoauthorizerAuthFunction1DBBD707",
                           "Arn"
                         ]
                       }
@@ -845,7 +845,7 @@
                       ":",
                       {
                         "Fn::GetAtt": [
-                          "testTwoAuthFunctionCD4DE414",
+                          "testTwoauthorizerAuthFunction1DBBD707",
                           "Arn"
                         ]
                       }
@@ -856,7 +856,7 @@
               ":lambda:path/2015-03-31/functions/",
               {
                 "Fn::GetAtt": [
-                  "testTwoAuthFunctionCD4DE414",
+                  "testTwoauthorizerAuthFunction1DBBD707",
                   "Arn"
                 ]
               },
