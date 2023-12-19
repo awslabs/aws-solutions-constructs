@@ -59,6 +59,10 @@ export class WafwebaclToCloudFront extends Construct {
     super(scope, id);
     defaults.CheckWafWebAclProps(props);
 
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+
     // Build the Web ACL
     this.webacl = defaults.buildWebacl(this, 'CLOUDFRONT', {
       existingWebaclObj: props.existingWebaclObj,

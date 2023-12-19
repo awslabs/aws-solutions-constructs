@@ -20,7 +20,7 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as cdk from 'aws-cdk-lib';
 import { Duration } from "aws-cdk-lib";
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
-import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings, CreateApiAuthorizer } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -54,7 +54,8 @@ const construct = new CloudFrontToApiGatewayToLambda(stack, 'cf-api-lambda-overr
   apiGatewayProps: {
     proxy: false,
     defaultMethodOptions: {
-      authorizationType: apigateway.AuthorizationType.NONE,
+      authorizationType: apigateway.AuthorizationType.CUSTOM,
+      authorizer: CreateApiAuthorizer(stack, `${generateIntegStackName(__filename)}-authorizer`)
     },
   },
   cloudFrontDistributionProps: {

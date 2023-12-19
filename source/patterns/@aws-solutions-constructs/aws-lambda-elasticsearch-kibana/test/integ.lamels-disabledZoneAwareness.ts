@@ -38,7 +38,7 @@ const esDomainProps = {
 
 new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
   lambdaFunctionProps: lambdaProps,
-  domainName: "disabledzoneawareness",
+  domainName: defaults.CreateShortUniqueTestName("dmn"),
   esDomainProps,
   deployVpc: true,
   vpcProps: {

@@ -34,7 +34,7 @@ const lambdaProps: lambda.FunctionProps = {
 
 new LambdaToOpenSearch(stack, 'test-lambda-opensearch', {
   lambdaFunctionProps: lambdaProps,
-  openSearchDomainName: "deploytestwithvpcprops",
+  openSearchDomainName: defaults.CreateShortUniqueTestName("dmn"),
   deployVpc: true,
   vpcProps: {
     ipAddresses: ec2.IpAddresses.cidr('172.168.0.0/16'),

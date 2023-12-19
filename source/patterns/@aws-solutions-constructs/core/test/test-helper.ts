@@ -14,7 +14,7 @@
 // Imports
 import { Construct, IConstruct } from 'constructs';
 import { Bucket, BucketProps, BucketEncryption } from "aws-cdk-lib/aws-s3";
-import { CfnResource, RemovalPolicy, Stack, Aspects, IAspect } from "aws-cdk-lib";
+import { CfnResource, RemovalPolicy, Stack, Aspects, IAspect, Aws, Fn } from "aws-cdk-lib";
 import { buildVpc } from '../lib/vpc-helper';
 import { DefaultPublicPrivateVpcProps, DefaultIsolatedVpcProps } from '../lib/vpc-defaults';
 import { overrideProps, addCfnSuppressRules } from "../lib/utils";
@@ -210,25 +210,12 @@ export function CreateTestApi(stack: Stack, id: string): api.LambdaRestApi {
   addCfnSuppressRules(lambdaFunction, [{ id: "W58", reason: "Test Resource" }]);
   addCfnSuppressRules(lambdaFunction, [{ id: "W89", reason: "Test Resource" }]);
   addCfnSuppressRules(lambdaFunction, [{ id: "W92", reason: "Test Resource" }]);
-  const authFn = new lambda.Function(stack, `${id}AuthFunction`, {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
-    handler: ".handler",
-  });
-  addCfnSuppressRules(authFn, [{ id: "W58", reason: "Test Resource" }]);
-  addCfnSuppressRules(authFn, [{ id: "W89", reason: "Test Resource" }]);
-  addCfnSuppressRules(authFn, [{ id: "W92", reason: "Test Resource" }]);
-
-  const auth = new api.RequestAuthorizer(stack, `${id}-authorizer`, {
-    handler: authFn,
-    identitySources: [api.IdentitySource.header('Authorization')]
-  });
 
   const restApi = new api.LambdaRestApi(stack, `${id}Api`, {
     handler: lambdaFunction,
     defaultMethodOptions: {
       authorizationType: api.AuthorizationType.CUSTOM,
-      authorizer: auth
+      authorizer: CreateApiAuthorizer(stack, `${id}-authorizer`)
     }
   });
 
@@ -249,6 +236,34 @@ export function CreateTestApi(stack: Stack, id: string): api.LambdaRestApi {
   addCfnSuppressRules(newStage, [{ id: "W69", reason: "Test Resource" }]);
 
   return restApi;
+}
+
+export function CreateApiAuthorizer(stack: Stack, id: string): api.IAuthorizer {
+  const authFn = new lambda.Function(stack, `${id}AuthFunction`, {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: ".handler",
+  });
+  addCfnSuppressRules(authFn, [{ id: "W58", reason: "Test Resource" }]);
+  addCfnSuppressRules(authFn, [{ id: "W89", reason: "Test Resource" }]);
+  addCfnSuppressRules(authFn, [{ id: "W92", reason: "Test Resource" }]);
+
+  const authorizer = new api.RequestAuthorizer(stack, id, {
+    handler: authFn,
+    identitySources: [api.IdentitySource.header('Authorization')]
+  });
+
+  return authorizer;
+}
+
+// Create a short, unique to this stack name
+// technically this is not 100% OK, as it only uses a portion of the
+// stack guid - but it's for tests only so if the last segment of 2 stack guids collide someday
+// (VERY unlikely), just running again should take care of it.
+export function CreateShortUniqueTestName(stub: string) {
+  const stackGuid = Fn.select(2, Fn.split('/', `${Aws.STACK_ID}`));
+  const guidPortion = Fn.select(4, Fn.split('-', stackGuid));
+  return Fn.join("-", [stub,  guidPortion]);
 }
 
 /**

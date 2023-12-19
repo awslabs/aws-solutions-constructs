@@ -26,25 +26,25 @@ import { generatePhysicalName } from './utils';
 /**
  * Private function to configure an api.RestApiProps
  * @param scope - the construct to which the RestApi should be attached to.
- * @param _endpointType - endpoint type for Api Gateway e.g. Regional, Global, Private
- * @param _logGroup - CW Log group for Api Gateway access logging
+ * @param endpointType - endpoint type for Api Gateway e.g. Regional, Global, Private
+ * @param logGroup - CW Log group for Api Gateway access logging
  */
-function DefaultRestApiProps(_endpointType: api.EndpointType[], _logGroup: LogGroup): api.RestApiProps {
+function DefaultRestApiProps(endpointType: api.EndpointType[], logGroup: LogGroup, includeAuth: boolean = true): api.RestApiProps {
   return {
     endpointConfiguration: {
-      types: _endpointType
+      types: endpointType
     },
     cloudWatchRole: false,
     // Configure API Gateway Access logging
     deployOptions: {
-      accessLogDestination: new api.LogGroupLogDestination(_logGroup),
+      accessLogDestination: new api.LogGroupLogDestination(logGroup),
       accessLogFormat: api.AccessLogFormat.jsonWithStandardFields(),
       loggingLevel: api.MethodLoggingLevel.INFO,
       dataTraceEnabled: false,
       tracingEnabled: true
     },
     defaultMethodOptions: {
-      authorizationType: api.AuthorizationType.IAM
+      authorizationType: includeAuth ? api.AuthorizationType.IAM : undefined
     }
 
   } as api.RestApiProps;
@@ -74,13 +74,15 @@ export function DefaultGlobalLambdaRestApiProps(_existingLambdaObj: lambda.Funct
  * Provides the default set of properties for Regional Lambda backed RestApi
  * @param scope - the construct to which the RestApi should be attached to.
  * @param _endpointType - endpoint type for Api Gateway e.g. Regional, Global, Private
- * @param _logGroup - CW Log group for Api Gateway access logging
+ * @param logGroup - CW Log group for Api Gateway access logging
  */
-export function DefaultRegionalLambdaRestApiProps(_existingLambdaObj: lambda.Function, _logGroup: LogGroup): api.LambdaRestApiProps {
-  const baseProps: api.RestApiProps = DefaultRestApiProps([api.EndpointType.REGIONAL], _logGroup);
+export function DefaultRegionalLambdaRestApiProps(existingLambdaObj: lambda.Function,
+  logGroup: LogGroup,
+  includeAuth: boolean = true): api.LambdaRestApiProps {
+  const baseProps: api.RestApiProps = DefaultRestApiProps([api.EndpointType.REGIONAL], logGroup, includeAuth);
 
   const extraProps: api.LambdaRestApiProps = {
-    handler: _existingLambdaObj,
+    handler: existingLambdaObj,
   };
 
   return Object.assign(baseProps, extraProps);

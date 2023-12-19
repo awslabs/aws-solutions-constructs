@@ -16,7 +16,8 @@ import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { CloudFrontToApiGatewayToLambda } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
-import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressAutoDeleteHandlerWarnings, CreateApiAuthorizer } from '@aws-solutions-constructs/core';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 
 // Setup
 const app = new App();
@@ -24,6 +25,12 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-apigateway-lambda custom Cloudfront Logging Bucket';
 
 new CloudFrontToApiGatewayToLambda(stack, 'cf-apigw-lambda', {
+  apiGatewayProps: {
+    defaultMethodOptions: {
+      authorizationType: apigateway.AuthorizationType.CUSTOM,
+      authorizer: CreateApiAuthorizer(stack, `${generateIntegStackName(__filename)}-authorizer`)
+    },
+  },
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     runtime: lambda.Runtime.NODEJS_16_X,

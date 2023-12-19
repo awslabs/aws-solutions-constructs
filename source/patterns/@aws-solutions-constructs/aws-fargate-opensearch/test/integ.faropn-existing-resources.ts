@@ -38,8 +38,7 @@ const createFargateServiceResponse = CreateFargateService(stack, 'test', {
 const testProps: FargateToOpenSearchProps = {
   publicApi: true,
   existingVpc,
-  openSearchDomainName: 'solution-constructs',
-  cognitoDomainName: 'cogn-solution-constructs',
+  openSearchDomainName: defaults.CreateShortUniqueTestName("dmn"),
   existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
   existingFargateServiceObject: createFargateServiceResponse.service,
   domainEndpointEnvironmentVariableName: 'CUSTOM_NAME',

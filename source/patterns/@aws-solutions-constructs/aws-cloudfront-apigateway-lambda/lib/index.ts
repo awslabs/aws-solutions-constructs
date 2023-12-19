@@ -39,11 +39,14 @@ export interface CloudFrontToApiGatewayToLambdaProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps
   /**
-   * Optional user provided props to override the default props for the API Gateway.
+   * User provided props to override the default props for the API Gateway. As of release
+   * 2.48.0, clients must include this property with defaultMethodOptions: { authorizationType: string } specified.
+   * See Issue1043 in the github repo https://github.com/awslabs/aws-solutions-constructs/issues/1043
    *
-   * @default - Default props are used
+   * @default - defaultMethodOptions/authorizationType is required, for other, unspecified values the
+   * default props are used
    */
-  readonly apiGatewayProps?: api.LambdaRestApiProps | any
+  readonly apiGatewayProps: api.LambdaRestApiProps | any
   /**
    * Optional user provided props to override the default props
    *
@@ -106,32 +109,34 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
     super(scope, id);
     defaults.CheckLambdaProps(props);
     // CheckCloudFrontProps() is called by internal aws-cloudfront-apigateway construct
+    if (!props.apiGatewayProps?.defaultMethodOptions?.authorizationType) {
+      defaults.printWarning('As of v2.48.0, apiGatewayProps.defaultMethodOptions.authorizationType is\
+      required. To update your instantiation call, add the following to your CloudFrontToApiGatewayToLambdaProps argument\
+      \n\napiGatewayProps: { defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE }},\n\nSee Issue1043 for an explanation.');
+      throw new Error('As of v2.48.0, an explicit authorization type is required for CloudFront/API Gateway patterns');
+    } else if (props.apiGatewayProps.defaultMethodOptions.authorizationType === "AWS_IAM") {
+      throw new Error('Amazon API Gateway Rest APIs integrated with Amazon CloudFront do not support AWS_IAM authorization');
+    }
+
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
     });
 
-    const regionalLambdaRestApiResponse = defaults.RegionalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
+    // We can't default to IAM authentication with a CloudFront distribution, so
+    // we'll instruct core to not use any default auth to avoid override warnings
+    const regionalLambdaRestApiResponse = defaults.RegionalLambdaRestApi(this,
+      this.lambdaFunction,
+      props.apiGatewayProps,
+      props.logGroupProps,
+      false);
     this.apiGateway = regionalLambdaRestApiResponse.api;
     this.apiGatewayCloudWatchRole = regionalLambdaRestApiResponse.role;
     this.apiGatewayLogGroup = regionalLambdaRestApiResponse.group;
-
-    this.apiGateway.methods.forEach((apiMethod) => {
-      // Override the API Gateway Authorization Type from AWS_IAM to NONE
-      const child = apiMethod.node.findChild('Resource') as api.CfnMethod;
-      if (child.authorizationType === 'AWS_IAM') {
-        child.addPropertyOverride('AuthorizationType', 'NONE');
-
-        defaults.addCfnSuppressRules(apiMethod, [
-          {
-            id: 'W59',
-            reason: `AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication`
-          },
-        ]);
-
-      }
-    });
 
     const apiCloudfront: CloudFrontToApiGateway = new CloudFrontToApiGateway(this, 'CloudFrontToApiGateway', {
       existingApiGatewayObj: this.apiGateway,

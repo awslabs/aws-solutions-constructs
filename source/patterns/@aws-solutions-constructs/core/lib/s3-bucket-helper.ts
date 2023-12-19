@@ -52,7 +52,7 @@ export interface BuildS3BucketProps {
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function createLoggingBucket(scope: Construct,
+export function createS3AccessLoggingBucket(scope: Construct,
   bucketId: string,
   loggingBucketProps: s3.BucketProps): s3.Bucket {
 
@@ -75,23 +75,52 @@ export function createLoggingBucket(scope: Construct,
   // Verified by unit test 's3 bucket with default props'
   const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, combinedBucketProps); // NOSONAR
 
-  // Extract the CfnBucket from the loggingBucket
-  const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
-
-  let _reason = "This S3 bucket is used as the access logging bucket for another bucket";
-
-  if (bucketId === 'CloudfrontLoggingBucket') {
-    _reason = "This S3 bucket is used as the access logging bucket for CloudFront Distribution";
-  }
-
-  addCfnSuppressRules(loggingBucketResource, [
+  addCfnSuppressRules(loggingBucket, [
     {
       id: 'W35',
-      reason: _reason
+      reason: "This S3 bucket is used as the access logging bucket for another bucket"
     }
   ]);
 
   return loggingBucket;
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function createCloudFrontLoggingBucket(scope: Construct,
+  bucketId: string,
+  loggingBucketProps: s3.BucketProps): s3.Bucket {
+
+  // Introduce the default props since we can't be certain the caller used them and
+  // they are important best practices
+  const combinedBucketProps = consolidateProps(DefaultS3Props(), loggingBucketProps);
+
+  const accessLogBucket: s3.Bucket = new s3.Bucket(scope, `${bucketId}AccessLog`, combinedBucketProps); // NOSONAR
+  addCfnSuppressRules(accessLogBucket, [
+    {
+      id: 'W35',
+      reason: "This S3 bucket is used as the access logging bucket for another bucket"
+    }
+  ]);
+
+  // Create the Logging Bucket
+  // NOSONAR  (typescript:S6281)
+  // Block Public Access is set by DefaultS3Props, but Sonarqube can't detect it
+  // It is verified by 's3 bucket with default props' in the unit tests
+  // NOSONAR (typescript:S6245)
+  // Encryption is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  // NOSONAR (typescript:S6249)
+  // enforceSSL  is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  // NOSONAR (typescript:typescript:S6249)
+  // versioning is turned on in the default properties that Sonarqube doesn't see
+  // Verified by unit test 's3 bucket with default props'
+  const cloudfrontLogBucketProps = overrideProps(combinedBucketProps, { serverAccessLogsBucket: accessLogBucket });
+  const cloudfrontLogBucket: s3.Bucket = new s3.Bucket(scope, bucketId, cloudfrontLogBucketProps); // NOSONAR
+
+  return cloudfrontLogBucket;
 }
 
 /**
@@ -173,7 +202,7 @@ export function buildS3Bucket(scope: Construct,
       loggingBucketProps = overrideProps(loggingBucketProps, { removalPolicy: props.bucketProps.removalPolicy });
     }
 
-    loggingBucket = createLoggingBucket(scope, loggingBucketId, loggingBucketProps);
+    loggingBucket = createS3AccessLoggingBucket(scope, loggingBucketId, loggingBucketProps);
   } else if (props.bucketProps?.serverAccessLogsBucket) {
     loggingBucket = props.bucketProps?.serverAccessLogsBucket as s3.Bucket;
   }
