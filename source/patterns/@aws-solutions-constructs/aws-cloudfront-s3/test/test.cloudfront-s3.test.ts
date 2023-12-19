@@ -114,19 +114,6 @@ test('check existing bucket', () => {
   template.hasResourceProperties("AWS::S3::Bucket", {
     BucketName: "my-bucket"
   });
-
-  template.hasResource("AWS::S3::BucketPolicy", {
-    Metadata: {
-      cfn_nag: {
-        rules_to_suppress: [
-          {
-            id: "F16",
-            reason: "Public website bucket policy requires a wildcard principal"
-          }
-        ]
-      }
-    }
-  });
 });
 
 test('check exception for Missing existingObj from props for deploy = false', () => {
@@ -196,9 +183,8 @@ test("Test existingBucketObj", () => {
             ]
           },
           Id: "existingIBucketCloudFrontDistributionOrigin1D5849125",
-          S3OriginConfig: {
-            OriginAccessIdentity: ""
-          }
+          OriginAccessControlId: { "Fn::GetAtt": [ "existingIBucketCloudFrontOacEB42E98F", "Id" ] },
+          S3OriginConfig: { }
         }
       ]
     }

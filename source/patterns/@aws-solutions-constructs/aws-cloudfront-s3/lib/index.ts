@@ -17,7 +17,7 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 import * as defaults from '@aws-solutions-constructs/core';
-import { CustomResource, aws_cloudfront, aws_iam } from 'aws-cdk-lib';
+import { CustomResource, aws_iam } from 'aws-cdk-lib';
 import { Provider } from 'aws-cdk-lib/custom-resources';
 import { IKey } from 'aws-cdk-lib/aws-kms';
 import { Code, Runtime } from 'aws-cdk-lib/aws-lambda';
@@ -101,6 +101,7 @@ export class CloudFrontToS3 extends Construct {
   public readonly s3BucketInterface: s3.IBucket;
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
+  public readonly originAccessControl?: cloudfront.CfnOriginAccessControl;
 
   /**
    * @summary Constructs a new instance of the CloudFrontToS3 class.
@@ -143,28 +144,20 @@ export class CloudFrontToS3 extends Construct {
       this.s3BucketInterface,
       props.cloudFrontDistributionProps,
       props.insertHttpSecurityHeaders,
-      props.originPath,
       props.cloudFrontLoggingBucketProps,
       props.responseHeadersPolicyProps
     );
     this.cloudFrontWebDistribution = cloudFrontDistributionForS3Response.distribution;
     this.cloudFrontFunction = cloudFrontDistributionForS3Response.cloudfrontFunction;
     this.cloudFrontLoggingBucket = cloudFrontDistributionForS3Response.loggingBucket;
-
-    // Define the OriginAccessControl
-    const originAccessControl = new cloudfront.CfnOriginAccessControl(this, 'CloudFrontOac', {
-      originAccessControlConfig: {
-        name: `cloudfront-default-oac-${new Date().getTime().toString(16)}`,
-        originAccessControlOriginType: 's3',
-        signingBehavior: 'always',
-        signingProtocol: 'sigv4'
-      }
-    });
+    this.originAccessControl = cloudFrontDistributionForS3Response.originAccessControl;
 
     // Attach the OriginAccessControl to the CloudFront Distribution, and remove the OriginAccessIdentity
-    const l1CloudFrontDistribution = this.cloudFrontWebDistribution.node.defaultChild as aws_cloudfront.CfnDistribution;
-    l1CloudFrontDistribution.addPropertyOverride('DistributionConfig.Origins.0.OriginAccessControlId', originAccessControl.getAtt('Id'));
-    l1CloudFrontDistribution.addPropertyOverride('DistributionConfig.Origins.0.S3OriginConfig.OriginAccessIdentity', '');
+    const l1CloudFrontDistribution = this.cloudFrontWebDistribution.node.defaultChild as cloudfront.CfnDistribution;
+    l1CloudFrontDistribution.addPropertyOverride('DistributionConfig.Origins.0.OriginAccessControlId', this.originAccessControl?.attrId);
+    if (props.originPath) {
+      l1CloudFrontDistribution.addPropertyOverride('DistributionConfig.Origins.0.OriginPath', props.originPath);
+    }
 
     // Grant CloudFront permission to get the objects from the s3 bucket origin
     bucket.addToResourcePolicy(
@@ -201,7 +194,7 @@ export class CloudFrontToS3 extends Construct {
           runtime: Runtime.NODEJS_18_X,
           handler: 'index.handler',
           description: 'kms-key-policy-updater',
-          code: Code.fromAsset(`${__dirname}/custom-resources/kms-key-policy-updater`),
+          code: Code.fromAsset(`${__dirname}/../../resources/kms-key-policy-updater`),
           role: new Role(this, 'KmsKeyPolicyUpdateLambdaRole', {
             assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
             description: 'Role to update kms key policy to allow cloudfront access',

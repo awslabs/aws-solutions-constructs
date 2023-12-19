@@ -103,32 +103,6 @@ test('test cloudfront check bucket policy', () => {
               ]
             }
           ]
-        },
-        {
-          Action: "s3:GetObject",
-          Effect: "Allow",
-          Principal: {
-            CanonicalUser: {
-              "Fn::GetAtt": [
-                "CloudFrontDistributionOrigin1S3Origin3D9CA0E9",
-                "S3CanonicalUserId"
-              ]
-            }
-          },
-          Resource: {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::GetAtt": [
-                    "S3Bucket07682993",
-                    "Arn"
-                  ]
-                },
-                "/*"
-              ]
-            ]
-          }
         }
       ],
       Version: "2012-10-17"
@@ -162,31 +136,7 @@ test('test cloudfront with no security headers ', () => {
             "RegionalDomainName"
           ]
         }
-      },
-      Origins: [
-        {
-          DomainName: {
-            "Fn::GetAtt": [
-              "S3Bucket07682993",
-              "RegionalDomainName"
-            ]
-          },
-          Id: "CloudFrontDistributionOrigin176EC3A12",
-          S3OriginConfig: {
-            OriginAccessIdentity: {
-              "Fn::Join": [
-                "",
-                [
-                  "origin-access-identity/cloudfront/",
-                  {
-                    Ref: "CloudFrontDistributionOrigin1S3Origin3D9CA0E9"
-                  }
-                ]
-              ]
-            }
-          }
-        }
-      ]
+      }
     }
   });
 });
@@ -234,31 +184,7 @@ test('test cloudfront override cloudfront logging bucket ', () => {
             "RegionalDomainName"
           ]
         }
-      },
-      Origins: [
-        {
-          DomainName: {
-            "Fn::GetAtt": [
-              "S3Bucket07682993",
-              "RegionalDomainName"
-            ]
-          },
-          Id: "CloudFrontDistributionOrigin176EC3A12",
-          S3OriginConfig: {
-            OriginAccessIdentity: {
-              "Fn::Join": [
-                "",
-                [
-                  "origin-access-identity/cloudfront/",
-                  {
-                    Ref: "CloudFrontDistributionOrigin1S3Origin3D9CA0E9"
-                  }
-                ]
-              ]
-            }
-          }
-        }
-      ]
+      }
     }
   });
 });
@@ -403,31 +329,7 @@ test('test override cloudfront with custom cloudfront function', () => {
             "RegionalDomainName"
           ]
         }
-      },
-      Origins: [
-        {
-          DomainName: {
-            "Fn::GetAtt": [
-              "S3Bucket07682993",
-              "RegionalDomainName"
-            ]
-          },
-          Id: "CloudFrontDistributionOrigin176EC3A12",
-          S3OriginConfig: {
-            OriginAccessIdentity: {
-              "Fn::Join": [
-                "",
-                [
-                  "origin-access-identity/cloudfront/",
-                  {
-                    Ref: "CloudFrontDistributionOrigin1S3Origin3D9CA0E9"
-                  }
-                ]
-              ]
-            }
-          }
-        }
-      ]
+      }
     }
   });
 });
@@ -490,31 +392,7 @@ test('test override cloudfront replace custom lambda@edge', () => {
             "RegionalDomainName"
           ]
         }
-      },
-      Origins: [
-        {
-          DomainName: {
-            "Fn::GetAtt": [
-              "S3Bucket07682993",
-              "RegionalDomainName"
-            ]
-          },
-          Id: "CloudFrontDistributionOrigin176EC3A12",
-          S3OriginConfig: {
-            OriginAccessIdentity: {
-              "Fn::Join": [
-                "",
-                [
-                  "origin-access-identity/cloudfront/",
-                  {
-                    Ref: "CloudFrontDistributionOrigin1S3Origin3D9CA0E9"
-                  }
-                ]
-              ]
-            }
-          }
-        }
-      ]
+      }
     }
   });
 });

@@ -212,32 +212,6 @@
             },
             {
               "Action": "s3:GetObject",
-              "Effect": "Allow",
-              "Principal": {
-                "CanonicalUser": {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3managedkeyCloudFrontDistributionOrigin1S3Origin6A70DD8A",
-                    "S3CanonicalUserId"
-                  ]
-                }
-              },
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
-              }
-            },
-            {
-              "Action": "s3:GetObject",
               "Condition": {
                 "StringEquals": {
                   "AWS:SourceArn": {
@@ -381,11 +355,34 @@
         }
       }
     },
-    "testcloudfronts3managedkeyCloudFrontDistributionOrigin1S3Origin6A70DD8A": {
-      "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+    "testcloudfronts3managedkeyCloudFrontOac1422B0A1": {
+      "Type": "AWS::CloudFront::OriginAccessControl",
       "Properties": {
-        "CloudFrontOriginAccessIdentityConfig": {
-          "Comment": "Identity for cfts3bucketencryptedwithmanagedkeyprovidedasexistingbuckettestcloudfronts3managedkeyCloudFrontDistributionOrigin17C"
+        "OriginAccessControlConfig": {
+          "Name": {
+            "Fn::Join": [
+              "",
+              [
+                "-",
+                {
+                  "Fn::Select": [
+                    2,
+                    {
+                      "Fn::Split": [
+                        "/",
+                        {
+                          "Ref": "AWS::StackId"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            ]
+          },
+          "OriginAccessControlOriginType": "s3",
+          "SigningBehavior": "always",
+          "SigningProtocol": "sigv4"
         }
       }
     },
@@ -426,9 +423,7 @@
                   "Id"
                 ]
               },
-              "S3OriginConfig": {
-                "OriginAccessIdentity": ""
-              }
+              "S3OriginConfig": {}
             }
           ]
         }
@@ -441,17 +436,6 @@
               "reason": "Since the distribution uses the CloudFront domain name, CloudFront automatically sets the security policy to TLSv1 regardless of the value of MinimumProtocolVersion"
             }
           ]
-        }
-      }
-    },
-    "testcloudfronts3managedkeyCloudFrontOac1422B0A1": {
-      "Type": "AWS::CloudFront::OriginAccessControl",
-      "Properties": {
-        "OriginAccessControlConfig": {
-          "Name": "cloudfront-default-oac-18c478ff42f",
-          "OriginAccessControlOriginType": "s3",
-          "SigningBehavior": "always",
-          "SigningProtocol": "sigv4"
         }
       }
     },

@@ -254,32 +254,6 @@
             },
             {
               "Action": "s3:GetObject",
-              "Effect": "Allow",
-              "Principal": {
-                "CanonicalUser": {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3cmkencryptionkeyCloudFrontDistributionOrigin1S3OriginA6F11959",
-                    "S3CanonicalUserId"
-                  ]
-                }
-              },
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "testcloudfronts3cmkencryptionkeyS3Bucket0E74E5D2",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
-              }
-            },
-            {
-              "Action": "s3:GetObject",
               "Condition": {
                 "StringEquals": {
                   "AWS:SourceArn": {
@@ -423,11 +397,34 @@
         }
       }
     },
-    "testcloudfronts3cmkencryptionkeyCloudFrontDistributionOrigin1S3OriginA6F11959": {
-      "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+    "testcloudfronts3cmkencryptionkeyCloudFrontOac4EFECBD9": {
+      "Type": "AWS::CloudFront::OriginAccessControl",
       "Properties": {
-        "CloudFrontOriginAccessIdentityConfig": {
-          "Comment": "Identity for cfts3cmkprovidedasbucketproptestcloudfronts3cmkencryptionkeyCloudFrontDistributionOrigin1FA4541E3"
+        "OriginAccessControlConfig": {
+          "Name": {
+            "Fn::Join": [
+              "",
+              [
+                "-",
+                {
+                  "Fn::Select": [
+                    2,
+                    {
+                      "Fn::Split": [
+                        "/",
+                        {
+                          "Ref": "AWS::StackId"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            ]
+          },
+          "OriginAccessControlOriginType": "s3",
+          "SigningBehavior": "always",
+          "SigningProtocol": "sigv4"
         }
       }
     },
@@ -468,9 +465,7 @@
                   "Id"
                 ]
               },
-              "S3OriginConfig": {
-                "OriginAccessIdentity": ""
-              }
+              "S3OriginConfig": {}
             }
           ]
         }
@@ -483,17 +478,6 @@
               "reason": "Since the distribution uses the CloudFront domain name, CloudFront automatically sets the security policy to TLSv1 regardless of the value of MinimumProtocolVersion"
             }
           ]
-        }
-      }
-    },
-    "testcloudfronts3cmkencryptionkeyCloudFrontOac4EFECBD9": {
-      "Type": "AWS::CloudFront::OriginAccessControl",
-      "Properties": {
-        "OriginAccessControlConfig": {
-          "Name": "cloudfront-default-oac-18c4796564e",
-          "OriginAccessControlOriginType": "s3",
-          "SigningBehavior": "always",
-          "SigningProtocol": "sigv4"
         }
       }
     },
@@ -667,7 +651,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "d65f90611efee0c3ab721963c6e9a3ff045ae5ce004b0c2dac9a60919a0ece37.zip"
+          "S3Key": "b290c4e32c4882acec2ef511534c97eaf130286b6d51d42d7671d8bc8f4f039b.zip"
         },
         "Description": "kms-key-policy-updater",
         "Handler": "index.handler",

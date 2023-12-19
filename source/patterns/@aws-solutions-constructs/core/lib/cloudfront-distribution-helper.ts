@@ -26,11 +26,12 @@ import {
   DefaultCloudFrontWebDistributionForApiGatewayProps,
   DefaultCloudFrontDistributionForMediaStoreProps
 } from './cloudfront-distribution-defaults';
-import { addCfnSuppressRules, consolidateProps } from './utils';
+import { addCfnSuppressRules, consolidateProps, generatePhysicalName } from './utils';
 import { createLoggingBucket } from './s3-bucket-helper';
 import { DefaultS3Props } from './s3-bucket-defaults';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
+import { S3OacOrigin } from './s3-oac-origin';
 
 // Override Cfn_Nag rule: Cloudfront TLS-1.2 rule (https://github.com/stelligent/cfn_nag/issues/384)
 function updateSecurityPolicy(cfDistribution: cloudfront.Distribution) {
@@ -106,6 +107,7 @@ export interface CloudFrontDistributionForS3Response {
   readonly distribution: cloudfront.Distribution,
   readonly loggingBucket?: s3.Bucket,
   readonly cloudfrontFunction?: cloudfront.Function,
+  readonly originAccessControl?: cloudfront.CfnOriginAccessControl,
 }
 
 /**
@@ -116,7 +118,6 @@ export function CloudFrontDistributionForS3(
   sourceBucket: s3.IBucket,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   httpSecurityHeaders: boolean = true,
-  originPath?: string,
   cloudFrontLoggingBucketProps?: s3.BucketProps,
   responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
 ): CloudFrontDistributionForS3Response {
@@ -124,10 +125,20 @@ export function CloudFrontDistributionForS3(
 
   const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudFrontLoggingBucketProps);
 
-  const defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket,
+  const originAccessControl = new cloudfront.CfnOriginAccessControl(scope, 'CloudFrontOac', {
+    originAccessControlConfig: {
+      name: `${generatePhysicalName('', ['cloudfront-origin-access-control'], 16)}`,
+      originAccessControlOriginType: 's3',
+      signingBehavior: 'always',
+      signingProtocol: 'sigv4'
+    }
+  });
+
+  const origin = new S3OacOrigin(sourceBucket, originAccessControl);
+
+  const defaultprops = DefaultCloudFrontWebDistributionForS3Props(origin,
     loggingBucket,
     httpSecurityHeaders,
-    originPath,
     cloudfrontFunction,
     responseHeadersPolicyProps ?  new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', responseHeadersPolicyProps) : undefined
   );
@@ -148,7 +159,7 @@ export function CloudFrontDistributionForS3(
       }
     ]);
   }
-  return { distribution: cfDistribution, cloudfrontFunction, loggingBucket};
+  return { distribution: cfDistribution, cloudfrontFunction, loggingBucket, originAccessControl};
 }
 
 export interface CloudFrontDistributionForMediaStoreResponse {
