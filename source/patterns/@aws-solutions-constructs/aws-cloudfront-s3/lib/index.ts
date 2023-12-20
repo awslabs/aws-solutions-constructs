@@ -121,7 +121,7 @@ export class CloudFrontToS3 extends Construct {
     defaults.CheckS3Props(props);
     defaults.CheckCloudFrontProps(props);
 
-    let bucket: s3.IBucket;
+    let originBucket: s3.IBucket;
 
     if (!props.existingBucketObj) {
       const buildS3BucketResponse = defaults.buildS3Bucket(this, {
@@ -131,12 +131,12 @@ export class CloudFrontToS3 extends Construct {
       });
       this.s3Bucket = buildS3BucketResponse.bucket;
       this.s3LoggingBucket = buildS3BucketResponse.loggingBucket;
-      bucket = this.s3Bucket;
+      originBucket = this.s3Bucket;
     } else {
-      bucket = props.existingBucketObj;
+      originBucket = props.existingBucketObj;
     }
 
-    this.s3BucketInterface = bucket;
+    this.s3BucketInterface = originBucket;
 
     // Define the CloudFront Distribution
     const cloudFrontDistributionForS3Response = defaults.CloudFrontDistributionForS3(
@@ -160,12 +160,12 @@ export class CloudFrontToS3 extends Construct {
     }
 
     // Grant CloudFront permission to get the objects from the s3 bucket origin
-    bucket.addToResourcePolicy(
+    originBucket.addToResourcePolicy(
       new aws_iam.PolicyStatement({
         effect: aws_iam.Effect.ALLOW,
         actions: ['s3:GetObject'],
         principals: [new aws_iam.ServicePrincipal('cloudfront.amazonaws.com')],
-        resources: [bucket.arnForObjects('*')],
+        resources: [originBucket.arnForObjects('*')],
         conditions: {
           StringEquals: {
             'AWS:SourceArn': `arn:aws:cloudfront::${Aws.ACCOUNT_ID}:distribution/${this.cloudFrontWebDistribution.distributionId}`
