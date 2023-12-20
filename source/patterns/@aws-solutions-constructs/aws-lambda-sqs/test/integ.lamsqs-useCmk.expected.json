@@ -283,8 +283,8 @@
           "Version": "2012-10-17"
         }
       },
-      "UpdateReplacePolicy": "Retain",
-      "DeletionPolicy": "Retain"
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "testlambdasqsqueueDD178B7C": {
       "Type": "AWS::SQS::Queue",

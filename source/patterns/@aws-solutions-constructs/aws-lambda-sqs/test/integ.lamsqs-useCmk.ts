@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from "aws-cdk-lib";
+import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { LambdaToSqs, LambdaToSqsProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
@@ -29,7 +29,9 @@ const props: LambdaToSqsProps = {
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   },
-  enableEncryptionWithCustomerManagedKey: true
+  encryptionKeyProps: {
+    removalPolicy: RemovalPolicy.DESTROY
+  }
 };
 
 new LambdaToSqs(stack, 'test-lambda-sqs', props);
