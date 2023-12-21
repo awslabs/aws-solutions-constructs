@@ -52,7 +52,10 @@
     }
   },
   "dependencies": {
-    "@aws-solutions-constructs/core": "0.0.0"
+    "@aws-sdk/client-kms": "^3.478.0",
+    "@aws-sdk/client-s3": "^3.478.0",
+    "@aws-solutions-constructs/core": "0.0.0",
+    "aws-sdk-client-mock": "^3.0.0"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
@@ -74,6 +77,11 @@
       ]
     ]
   },
+  "bundledDependencies": [
+    "@aws-sdk/client-kms",
+    "@aws-sdk/client-s3",
+    "aws-sdk-client-mock"
+  ],
   "peerDependencies": {
     "@aws-solutions-constructs/core": "0.0.0",
     "aws-cdk-lib": "^0.0.0",
