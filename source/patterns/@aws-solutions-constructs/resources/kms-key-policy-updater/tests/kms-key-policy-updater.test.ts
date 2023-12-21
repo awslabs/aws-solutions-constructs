@@ -11,9 +11,9 @@
  *  and limitations under the License.
  */
 
-import { handler } from "..";
 import { mockClient } from "aws-sdk-client-mock";
 import { KMSClient, DescribeKeyCommand, KeyManagerType, GetKeyPolicyCommand, PutKeyPolicyCommand } from "@aws-sdk/client-kms";
+import { handler } from "../lib";
 
 const kmsMock = mockClient(KMSClient);
 

@@ -39,7 +39,7 @@ export const handler = async (event: any, context: any) => {
 
       templateValues.forEach((templateValue: any) => {
         template = template?.replace(
-          new RegExp(templateValue.id, 'g'), 
+          new RegExp(templateValue.id, 'g'),
           templateValue.value
         );
       });

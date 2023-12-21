@@ -11,5 +11,5 @@
  *  and limitations under the License.
  */
 
-export * from './kms-key-policy-updater/index';
-export * from './template-writer/lib/template-writer';
+export * from './kms-key-policy-updater';
+export * from './template-writer';

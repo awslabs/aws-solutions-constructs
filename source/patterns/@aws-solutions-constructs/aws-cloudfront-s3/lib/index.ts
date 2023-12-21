@@ -17,11 +17,9 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 import * as defaults from '@aws-solutions-constructs/core';
-import { CustomResource, aws_iam } from 'aws-cdk-lib';
-import { Provider } from 'aws-cdk-lib/custom-resources';
+import { aws_iam } from 'aws-cdk-lib';
 import { IKey } from 'aws-cdk-lib/aws-kms';
-import { Code, Runtime } from 'aws-cdk-lib/aws-lambda';
-import { Effect, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import * as resources from '@aws-solutions-constructs/resources';
 
 /**
  * @summary The properties for the CloudFrontToS3 Construct
@@ -189,51 +187,9 @@ export class CloudFrontToS3 extends Construct {
     }
 
     if (encryptionKey) {
-      const lambdaHandler = defaults.buildLambdaFunction(this, {
-        lambdaFunctionProps: {
-          runtime: Runtime.NODEJS_18_X,
-          handler: 'index.handler',
-          description: 'kms-key-policy-updater',
-          code: Code.fromAsset(`${__dirname}/../../resources/kms-key-policy-updater`),
-          role: new Role(this, 'KmsKeyPolicyUpdateLambdaRole', {
-            assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
-            description: 'Role to update kms key policy to allow cloudfront access',
-            inlinePolicies: {
-              KmsPolicy: new PolicyDocument({
-                statements: [
-                  new PolicyStatement({
-                    actions: ['kms:PutKeyPolicy', 'kms:GetKeyPolicy', 'kms:DescribeKey'],
-                    effect: Effect.ALLOW,
-                    resources: [ encryptionKey.keyArn ]
-                  })
-                ]
-              }),
-              CWLogsPolicy: new PolicyDocument({
-                statements: [
-                  new PolicyStatement({
-                    actions: ['logs:CreateLogGroup'],
-                    effect: Effect.ALLOW,
-                    resources: [ `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:*` ]
-                  })
-                ]
-              })
-            }
-          })
-        }
-      });
-
-      const kmsKeyPolicyUpdateProvider = new Provider(this, 'KmsKeyPolicyUpdateProvider', {
-        onEventHandler: lambdaHandler
-      });
-
-      new CustomResource(this, 'KmsKeyPolicyUpdater', {
-        resourceType: 'Custom::KmsKeyPolicyUpdater',
-        serviceToken: kmsKeyPolicyUpdateProvider.serviceToken,
-        properties: {
-          KmsKeyId: encryptionKey.keyId,
-          CloudFrontDistributionId: this.cloudFrontWebDistribution.distributionId,
-          AccountId: Aws.ACCOUNT_ID
-        },
+      resources.createKeyPolicyUpdaterCustomResource(this, {
+        distribution: this.cloudFrontWebDistribution,
+        encryptionKey
       });
     }
   }

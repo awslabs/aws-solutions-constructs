@@ -15,7 +15,7 @@ import { App, Duration, Stack } from "aws-cdk-lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import * as path from 'path';
-import { TemplateValue, createTemplateWriterCustomResource } from "../lib/template-writer";
+import { TemplateValue, createTemplateWriterCustomResource } from "..";
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));

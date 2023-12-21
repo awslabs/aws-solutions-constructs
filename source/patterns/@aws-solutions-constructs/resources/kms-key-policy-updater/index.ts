@@ -11,99 +11,85 @@
  *  and limitations under the License.
  */
 
-import { KMSClient, GetKeyPolicyCommand, DescribeKeyCommand, PutKeyPolicyCommand, KeyManagerType } from "@aws-sdk/client-kms";
+import * as cdk from "aws-cdk-lib";
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { Aws, CustomResource } from 'aws-cdk-lib';
+import { Provider } from "aws-cdk-lib/custom-resources";
+import { buildLambdaFunction } from "@aws-solutions-constructs/core";
+import { IKey } from "aws-cdk-lib/aws-kms";
+import { Distribution } from "aws-cdk-lib/aws-cloudfront";
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
+import { Construct } from 'constructs';
 
-const kmsClient = new KMSClient();
+export interface CreateKeyPolicyUpdaterResponse {
+  readonly lambdaFunction: lambda.Function;
+  readonly customResource: CustomResource;
+}
 
-export const handler = async (e: any, context: any) => {
+export interface KeyPolicyUpdaterProps {
+  readonly encryptionKey: IKey;
+  readonly distribution: Distribution;
+  readonly timeout?: cdk.Duration;
+  readonly memorySize?: number;
+}
 
-  let status = 'SUCCESS';
-  let responseData = {};
+export function createKeyPolicyUpdaterCustomResource(
+  scope: Construct,
+  props: KeyPolicyUpdaterProps
+): CreateKeyPolicyUpdaterResponse {
 
-  if (e.RequestType === 'Create' || e.RequestType === 'Update') {
-
-    try {
-      const kmsKeyId = e.ResourceProperties.KmsKeyId;
-      const cloudFrontDistributionId = e.ResourceProperties.CloudFrontDistributionId;
-      const accountId = e.ResourceProperties.AccountId;
-      const region = process.env.AWS_REGION;
-
-      const describeKeyCommandResponse = await kmsClient.send(new DescribeKeyCommand({
-        KeyId: kmsKeyId
-      }));
-
-      if (describeKeyCommandResponse.KeyMetadata?.KeyManager === KeyManagerType.AWS) {
-        return {
-          Status: 'SUCCESS',
-          Reason: 'An AWS managed key was provided, no action needed from the custom resource, exiting now.',
-          PhysicalResourceId: e.PhysicalResourceId ?? context.logStreamName,
-          StackId: e.StackId,
-          RequestId: e.RequestId,
-          LogicalResourceId: e.LogicalResourceId,
-          Data: 'An AWS managed key was provided, no action needed from the custom resource, exiting now.',
-        };
-      }
-
-      const getKeyPolicyCommandResponse = await kmsClient.send(new GetKeyPolicyCommand({
-        KeyId: kmsKeyId,
-        PolicyName: 'default'
-      }));
-
-      if (!getKeyPolicyCommandResponse.Policy) {
-        return {
-          Status: 'FAILED',
-          Reason: 'An error occurred while retrieving the key policy',
-          PhysicalResourceId: e.PhysicalResourceId ?? context.logStreamName,
-          StackId: e.StackId,
-          RequestId: e.RequestId,
-          LogicalResourceId: e.LogicalResourceId,
-          Data: 'An error occurred while retrieving the key policy',
-        };
-      }
-
-      const keyPolicy = JSON.parse(getKeyPolicyCommandResponse?.Policy);
-
-      // Update the existing key policy to allow the cloudfront distribution to use the key
-      keyPolicy.Statement.push({
-        Sid: 'Grant-CloudFront-Distribution-Key-Usage',
-        Effect: 'Allow',
-        Principal: {
-          Service: 'cloudfront.amazonaws.com',
-        },
-        Action: [
-          'kms:Decrypt',
-          'kms:Encrypt',
-          'kms:GenerateDataKey*',
-          'kms:ReEncrypt*'
-        ],
-        Resource: `arn:aws:kms:${region}:${accountId}:key/${kmsKeyId}`,
-        Condition: {
-          StringEquals: {
-            'AWS:SourceArn': `arn:aws:cloudfront::${accountId}:distribution/${cloudFrontDistributionId}`
-          }
+  const lambdaFunction = buildLambdaFunction(scope, {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      description: 'kms-key-policy-updater',
+      timeout: props.timeout,
+      memorySize: props.memorySize,
+      code: lambda.Code.fromAsset(`${__dirname}/custom-resource/`),
+      role: new iam.Role(scope, 'KmsKeyPolicyUpdateLambdaRole', {
+        assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+        description: 'Role to update kms key policy to allow cloudfront access',
+        inlinePolicies: {
+          KmsPolicy: new iam.PolicyDocument({
+            statements: [
+              new iam.PolicyStatement({
+                actions: ['kms:PutKeyPolicy', 'kms:GetKeyPolicy', 'kms:DescribeKey'],
+                effect: iam.Effect.ALLOW,
+                resources: [ props.encryptionKey.keyArn ]
+              })
+            ]
+          }),
+          CWLogsPolicy: new iam.PolicyDocument({
+            statements: [
+              new iam.PolicyStatement({
+                actions: ['logs:CreateLogGroup'],
+                effect: iam.Effect.ALLOW,
+                resources: [ `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:*` ]
+              })
+            ]
+          })
         }
-      });
-
-      await kmsClient.send(new PutKeyPolicyCommand({
-        KeyId: kmsKeyId,
-        Policy: JSON.stringify(keyPolicy),
-        PolicyName: 'default'
-      }));
-    } catch (err) {
-      status = 'FAILED';
-      responseData = {
-        Error: JSON.stringify(err)
-      };
+      })
     }
-  }
+  });
+
+  const kmsKeyPolicyUpdateProvider = new Provider(scope, 'KmsKeyPolicyUpdateProvider', {
+    onEventHandler: lambdaFunction
+  });
+
+  const customResource = new CustomResource(scope, 'KmsKeyPolicyUpdater', {
+    resourceType: 'Custom::KmsKeyPolicyUpdater',
+    serviceToken: kmsKeyPolicyUpdateProvider.serviceToken,
+    properties: {
+      KmsKeyId: props.encryptionKey.keyId,
+      CloudFrontDistributionId: props.distribution.distributionId,
+      AccountId: Aws.ACCOUNT_ID
+    },
+  });
 
   return {
-    Status: status,
-    Reason: JSON.stringify(responseData),
-    PhysicalResourceId: e.PhysicalResourceId ?? context.logStreamName,
-    StackId: e.StackId,
-    RequestId: e.RequestId,
-    LogicalResourceId: e.LogicalResourceId,
-    Data: responseData,
+    lambdaFunction,
+    customResource
   };
-};
+}

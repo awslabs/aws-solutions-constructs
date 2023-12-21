@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { Construct } from "constructs";
 import * as cdk from "aws-cdk-lib";
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -21,6 +20,8 @@ import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import * as path from 'path';
 import { Provider } from "aws-cdk-lib/custom-resources";
 import { addCfnSuppressRules, buildLambdaFunction } from "@aws-solutions-constructs/core";
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
+import { Construct } from 'constructs';
 
 /**
  * The TemplateValue interface defines the id-value pair that will
