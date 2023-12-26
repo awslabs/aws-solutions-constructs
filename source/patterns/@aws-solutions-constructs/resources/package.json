@@ -52,17 +52,20 @@
     }
   },
   "dependencies": {
+    "@aws-cdk/aws-cloudfront": "0.0.0",
+    "@aws-cdk/aws-iam": "0.0.0",
+    "@aws-cdk/aws-kms": "0.0.0",
+    "@aws-cdk/aws-lambda": "0.0.0",
+    "@aws-cdk/core": "0.0.0",
+    "@aws-cdk/custom-resources": "0.0.0",
     "@aws-sdk/client-kms": "^3.478.0",
     "@aws-sdk/client-s3": "^3.478.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "aws-sdk-client-mock": "^3.0.0",
-    "aws-cdk-lib": "0.0.0"
+    "aws-sdk-client-mock": "^3.0.0"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
-    "@types/node": "^10.3.0",
-    "constructs": "^10.0.0",
-    "aws-cdk-lib": "0.0.0"
+    "@types/node": "^10.3.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -84,8 +87,15 @@
     "aws-sdk-client-mock"
   ],
   "peerDependencies": {
+    "@aws-cdk/aws-cloudfront": "0.0.0",
+    "@aws-cdk/aws-iam": "0.0.0",
+    "@aws-cdk/aws-kms": "0.0.0",
+    "@aws-cdk/aws-lambda": "0.0.0",
+    "@aws-cdk/core": "0.0.0",
+    "@aws-cdk/custom-resources": "0.0.0",
+    "@aws-sdk/client-kms": "^3.478.0",
+    "@aws-sdk/client-s3": "^3.478.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "aws-cdk-lib": "0.0.0",
-    "constructs": "^10.0.0"
+    "aws-sdk-client-mock": "^3.0.0"
   }
 }
