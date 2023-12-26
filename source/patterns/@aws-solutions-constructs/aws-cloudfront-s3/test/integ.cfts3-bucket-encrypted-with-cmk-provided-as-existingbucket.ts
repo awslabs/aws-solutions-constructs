@@ -21,6 +21,7 @@ import { BucketDeployment } from "aws-cdk-lib/aws-s3-deployment";
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
 
 // Definitions
