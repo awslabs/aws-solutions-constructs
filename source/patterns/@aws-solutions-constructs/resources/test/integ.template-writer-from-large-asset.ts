@@ -11,31 +11,56 @@
  *  and limitations under the License.
  */
 
-import { App, Stack } from "aws-cdk-lib";
+import { App, Duration, Stack } from "aws-cdk-lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import * as path from 'path';
-import { TemplateValue, createTemplateWriterCustomResource } from "..";
+import { TemplateValue, createTemplateWriterCustomResource } from "../lib/template-writer";
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for Template Writer Resource';
 
 const templateAsset = new Asset(stack, 'TemplateAsset', {
-  path: path.join(__dirname, 'template/sample-template')
+  path: path.join(__dirname, 'template/large-sample-template')
 });
+
+// this test will do a total of 5,760 substitutions across a 9.4MB text file
+// Last integration test run used 286MB of memory with a function duration of 1.5 seconds
 
 const templateValues: TemplateValue[] = new Array(
   {
-    id: 'placeholder',
-    value: 'resolved_value'
+    id: 'Lorem', // 768 occurrences in large-sample-template
+    value: 'LOREM_2'
+  },
+  {
+    id: 'Velit', // 640 occurrences in large-sample-template
+    value: 'VELIT_2'
+  },
+  {
+    id: 'Ornare', // 1024 occurrences in large-sample-template
+    value: 'ORNARE_2'
+  },
+  {
+    id: 'Ullamcorper', // 1152 occurrences in large-sample-template
+    value: 'ULLAMCORPER_2'
+  },
+  {
+    id: 'Blandit', // 896 occurrences in large-sample-template
+    value: 'BLANDIT_2'
+  },
+  {
+    id: 'Bibendum', // 1280 occurrences in large-sample-template
+    value: 'BIBENDUM_2'
   }
 );
 
 createTemplateWriterCustomResource(stack, 'Test', {
   templateBucket: templateAsset.bucket,
   templateKey: templateAsset.s3ObjectKey,
-  templateValues
+  templateValues,
+  timeout: Duration.minutes(1),
+  memorySize: 1024
 });
 
 app.synth();

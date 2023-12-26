@@ -307,10 +307,9 @@
         }
       }
     },
-    "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucket7C1787CD": {
+    "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLog8863921C": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
-        "AccessControl": "LogDeliveryWrite",
         "BucketEncryption": {
           "ServerSideEncryptionConfiguration": [
             {
@@ -344,11 +343,132 @@
           "rules_to_suppress": [
             {
               "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution"
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket"
             }
           ]
         }
       }
+    },
+    "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLogPolicy8F931BD7": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLog8863921C"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLog8863921C",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLog8863921C",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "ArnLike": {
+                  "aws:SourceArn": {
+                    "Fn::GetAtt": [
+                      "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucket7C1787CD",
+                      "Arn"
+                    ]
+                  }
+                },
+                "StringEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "logging.s3.amazonaws.com"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLog8863921C",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucket7C1787CD": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "LoggingConfiguration": {
+          "DestinationBucketName": {
+            "Ref": "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLog8863921C"
+          }
+        },
+        "OwnershipControls": {
+          "Rules": [
+            {
+              "ObjectOwnership": "ObjectWriter"
+            }
+          ]
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
     "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketPolicy5E737735": {
       "Type": "AWS::S3::BucketPolicy",
@@ -405,7 +525,7 @@
             "Fn::Join": [
               "",
               [
-                "-",
+                "cloudfront-",
                 {
                   "Fn::Select": [
                     2,
@@ -651,7 +771,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "b290c4e32c4882acec2ef511534c97eaf130286b6d51d42d7671d8bc8f4f039b.zip"
+          "S3Key": "6b2c2db264b4eb57e809e3b9471fd1aa04141576043a0d13c5c55ecaf2a7e7c6.zip"
         },
         "Description": "kms-key-policy-updater",
         "Handler": "index.handler",

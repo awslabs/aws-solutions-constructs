@@ -46,7 +46,7 @@ export function createKeyPolicyUpdaterCustomResource(
       description: 'kms-key-policy-updater',
       timeout: props.timeout,
       memorySize: props.memorySize,
-      code: lambda.Code.fromAsset(`${__dirname}/custom-resource/`),
+      code: lambda.Code.fromAsset(`${__dirname}/key-policy-updater-custom-resource`),
       role: new iam.Role(scope, 'KmsKeyPolicyUpdateLambdaRole', {
         assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         description: 'Role to update kms key policy to allow cloudfront access',

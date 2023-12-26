@@ -13,7 +13,7 @@
 
 import { mockClient } from "aws-sdk-client-mock";
 import { KMSClient, DescribeKeyCommand, KeyManagerType, GetKeyPolicyCommand, PutKeyPolicyCommand } from "@aws-sdk/client-kms";
-import { handler } from "../lib";
+import { handler } from "../lib/key-policy-updater-custom-resource";
 
 const kmsMock = mockClient(KMSClient);
 
