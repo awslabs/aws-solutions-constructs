@@ -26,12 +26,12 @@ import {
   DefaultCloudFrontWebDistributionForApiGatewayProps,
   DefaultCloudFrontDistributionForMediaStoreProps
 } from './cloudfront-distribution-defaults';
-import { addCfnSuppressRules, consolidateProps, generatePhysicalName } from './utils';
+import { addCfnSuppressRules, consolidateProps } from './utils';
 import { createCloudFrontLoggingBucket } from './s3-bucket-helper';
 import { DefaultS3Props } from './s3-bucket-defaults';
+import { S3OacOrigin } from './s3-oac-origin';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
-import { S3OacOrigin } from './s3-oac-origin';
 
 // Override Cfn_Nag rule: Cloudfront TLS-1.2 rule (https://github.com/stelligent/cfn_nag/issues/384)
 function updateSecurityPolicy(cfDistribution: cloudfront.Distribution) {
@@ -127,7 +127,7 @@ export function CloudFrontDistributionForS3(
 
   const originAccessControl = new cloudfront.CfnOriginAccessControl(scope, 'CloudFrontOac', {
     originAccessControlConfig: {
-      name: `${generatePhysicalName('', ['cloudfront-origin-access-control'], 16)}`,
+      name: `cloudfront-s3-oac-${cdk.Stack.of(scope).stackName}`,
       originAccessControlOriginType: 's3',
       signingBehavior: 'always',
       signingProtocol: 'sigv4'
