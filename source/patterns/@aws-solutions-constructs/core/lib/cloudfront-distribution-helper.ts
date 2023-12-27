@@ -127,7 +127,7 @@ export function CloudFrontDistributionForS3(
 
   const originAccessControl = new cloudfront.CfnOriginAccessControl(scope, 'CloudFrontOac', {
     originAccessControlConfig: {
-      name: generatePhysicalName('aws-cloudfront-s3-', ['oac'], 16),
+      name: generatePhysicalName('aws-cloudfront-s3', ['oac'], 16),
       originAccessControlOriginType: 's3',
       signingBehavior: 'always',
       signingProtocol: 'sigv4'
