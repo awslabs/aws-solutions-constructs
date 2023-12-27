@@ -915,7 +915,25 @@
       "DependsOn": [
         "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventServiceRoleDefaultPolicy066CD751",
         "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventServiceRole3D4040AD"
-      ]
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "The CDK-provided lambda function that backs their Custom Resource Provider framework has an IAM role with the arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole Managed Policy attached, which grants permission to write to CloudWatch Logs"
+            },
+            {
+              "id": "W89",
+              "reason": "The CDK-provided lambda function that backs their Custom Resource Provider framework does not access VPC resources"
+            },
+            {
+              "id": "W92",
+              "reason": "The CDK-provided lambda function that backs their Custom Resource Provider framework does not define ReservedConcurrentExecutions"
+            }
+          ]
+        }
+      }
     },
     "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdaterFAFEBF0F": {
       "Type": "Custom::KmsKeyPolicyUpdater",

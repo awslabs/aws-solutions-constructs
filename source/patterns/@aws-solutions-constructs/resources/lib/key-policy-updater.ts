@@ -21,6 +21,7 @@ import { IKey } from "aws-cdk-lib/aws-kms";
 import { Distribution } from "aws-cdk-lib/aws-cloudfront";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
+import { addCfnSuppressRulesForCustomResourceProvider } from "./shared";
 
 export interface CreateKeyPolicyUpdaterResponse {
   readonly lambdaFunction: lambda.Function;
@@ -77,6 +78,8 @@ export function createKeyPolicyUpdaterCustomResource(
   const kmsKeyPolicyUpdateProvider = new Provider(scope, 'KmsKeyPolicyUpdateProvider', {
     onEventHandler: lambdaFunction
   });
+
+  addCfnSuppressRulesForCustomResourceProvider(kmsKeyPolicyUpdateProvider);
 
   const customResource = new CustomResource(scope, 'KmsKeyPolicyUpdater', {
     resourceType: 'Custom::KmsKeyPolicyUpdater',
