@@ -37,19 +37,9 @@ const props: CloudFrontToS3Props = {
   insertHttpSecurityHeaders: false
 };
 
-const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3-managed-key', props);
-
-const bucketDeployment = new BucketDeployment(stack, 'DeployIndexFile', {
-  sources: [ aws_s3_deployment.Source.data('index.html', '<H3>Hello, World</H3>\n<p>Existing bucket, managed encryption')],
-  destinationBucket: construct.s3BucketInterface
-});
+new CloudFrontToS3(stack, 'test-cloudfront-s3-managed-key', props);
 
 suppressAutoDeleteHandlerWarnings(stack);
-
-const cfnBucketDeploymentFunction: lambda.CfnFunction = bucketDeployment.node.findChild('Resource') as lambda.CfnFunction;
-addCfnSuppressRules(cfnBucketDeploymentFunction, [{ id: "W58", reason: "Test Resource" }]);
-addCfnSuppressRules(cfnBucketDeploymentFunction, [{ id: "W89", reason: "Test Resource" }]);
-addCfnSuppressRules(cfnBucketDeploymentFunction, [{ id: "W92", reason: "Test Resource" }]);
 
 // Synth
 app.synth();

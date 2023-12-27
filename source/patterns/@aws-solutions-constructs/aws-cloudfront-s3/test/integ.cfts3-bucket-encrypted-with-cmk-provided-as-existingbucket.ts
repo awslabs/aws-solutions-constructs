@@ -45,17 +45,12 @@ const props: CloudFrontToS3Props = {
 
 const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3-cmk-encryption-key', props);
 
-const bucketDeployment = new BucketDeployment(stack, 'DeployIndexFile', {
+new BucketDeployment(stack, 'DeployIndexFile', {
   sources: [ aws_s3_deployment.Source.data('index.html', '<H3>Hello, World</H3>\n<p>Existing bucket, CMK encryption')],
   destinationBucket: construct.s3BucketInterface
 });
 
 suppressAutoDeleteHandlerWarnings(stack);
-
-const cfnBucketDeploymentFunction: lambda.CfnFunction = bucketDeployment.node.findChild('Resource') as lambda.CfnFunction;
-addCfnSuppressRules(cfnBucketDeploymentFunction, [{ id: "W58", reason: "Test Resource" }]);
-addCfnSuppressRules(cfnBucketDeploymentFunction, [{ id: "W89", reason: "Test Resource" }]);
-addCfnSuppressRules(cfnBucketDeploymentFunction, [{ id: "W92", reason: "Test Resource" }]);
 
 // Synth
 app.synth();
