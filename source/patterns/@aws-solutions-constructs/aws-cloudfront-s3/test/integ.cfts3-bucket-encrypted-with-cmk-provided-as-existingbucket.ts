@@ -13,8 +13,9 @@
 
 // Imports
 import { App, Stack, RemovalPolicy, aws_kms, aws_s3_deployment } from "aws-cdk-lib";
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
-import { buildS3Bucket, generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { addCfnSuppressRules, buildS3Bucket, generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { BucketDeployment } from "aws-cdk-lib/aws-s3-deployment";
 
@@ -44,12 +45,17 @@ const props: CloudFrontToS3Props = {
 
 const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3-cmk-encryption-key', props);
 
-new BucketDeployment(stack, 'DeployIndexFile', {
+const bucketDeployment = new BucketDeployment(stack, 'DeployIndexFile', {
   sources: [ aws_s3_deployment.Source.data('index.html', '<H3>Hello, World</H3>\n<p>Existing bucket, CMK encryption')],
   destinationBucket: construct.s3BucketInterface
 });
 
 suppressAutoDeleteHandlerWarnings(stack);
+
+const cfnBucketDeploymentFunction: lambda.CfnFunction = bucketDeployment.node.findChild('Resource') as lambda.CfnFunction;
+addCfnSuppressRules(cfnBucketDeploymentFunction, [{ id: "W58", reason: "Test Resource" }]);
+addCfnSuppressRules(cfnBucketDeploymentFunction, [{ id: "W89", reason: "Test Resource" }]);
+addCfnSuppressRules(cfnBucketDeploymentFunction, [{ id: "W92", reason: "Test Resource" }]);
 
 // Synth
 app.synth();
