@@ -15,7 +15,7 @@ import { Template } from 'aws-cdk-lib/assertions';
 import { Stack } from 'aws-cdk-lib';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { CloudFrontDistributionForS3 } from '../lib/cloudfront-distribution-helper';
+import { createCloudFrontDistributionForS3 } from '../lib/cloudfront-distribution-helper';
 import { buildS3Bucket } from '../lib/s3-bucket-helper';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
@@ -26,7 +26,7 @@ import * as defaults from '../';
 test('check bucket policy metadata', () => {
   const stack = new Stack();
   const buildS3BucketResponse = buildS3Bucket(stack, {});
-  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket);
+  createCloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket);
   const template = Template.fromStack(stack);
   template.hasResource('AWS::S3::BucketPolicy', {
     Metadata: {
@@ -45,7 +45,7 @@ test('check bucket policy metadata', () => {
 test('test cloudfront check bucket policy', () => {
   const stack = new Stack();
   const buildS3BucketResponse = buildS3Bucket(stack, {});
-  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket);
+  createCloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket);
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::S3::BucketPolicy", {
@@ -95,7 +95,7 @@ test('test cloudfront with no security headers ', () => {
   const stack = new Stack();
   const buildS3BucketResponse = buildS3Bucket(stack, {});
 
-  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, {}, false);
+  createCloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, {}, false);
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
@@ -132,7 +132,7 @@ test('test cloudfront override cloudfront logging bucket ', () => {
     logBucket
   };
 
-  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, myprops);
+  createCloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, myprops);
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
@@ -182,7 +182,7 @@ test('test cloudfront override properties', () => {
     },
   };
 
-  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, props);
+  createCloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, props);
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
@@ -268,7 +268,7 @@ test('test override cloudfront with custom cloudfront function', () => {
     code: cloudfront.FunctionCode.fromInline("exports.handler = (event, context, callback) => {}")
   });
 
-  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, {
+  createCloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, {
     defaultBehavior: {
       functionAssociations: [
         {
@@ -331,7 +331,7 @@ test('test override cloudfront replace custom lambda@edge', () => {
     lambda: handler,
   });
 
-  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, {
+  createCloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, {
     defaultBehavior: {
       edgeLambdas: [
         {
@@ -388,7 +388,7 @@ test('test cloudfront override cloudfront custom domain names ', () => {
     certificate
   };
 
-  CloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, myprops);
+  createCloudFrontDistributionForS3(stack, buildS3BucketResponse.bucket, myprops);
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {

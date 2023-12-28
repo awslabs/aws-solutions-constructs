@@ -103,7 +103,7 @@ export function CloudFrontDistributionForApiGateway(scope: Construct,
   return { distribution: cfDistribution, cloudfrontFunction, loggingBucket};
 }
 
-export interface CloudFrontDistributionForS3Response {
+export interface CreateCloudFrontDistributionForS3Response {
   readonly distribution: cloudfront.Distribution,
   readonly loggingBucket?: s3.Bucket,
   readonly cloudfrontFunction?: cloudfront.Function,
@@ -113,14 +113,14 @@ export interface CloudFrontDistributionForS3Response {
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function CloudFrontDistributionForS3(
+export function createCloudFrontDistributionForS3(
   scope: Construct,
   sourceBucket: s3.IBucket,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   httpSecurityHeaders: boolean = true,
   cloudFrontLoggingBucketProps?: s3.BucketProps,
   responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
-): CloudFrontDistributionForS3Response {
+): CreateCloudFrontDistributionForS3Response {
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
   const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudFrontLoggingBucketProps);

@@ -137,7 +137,7 @@ export class CloudFrontToS3 extends Construct {
     this.s3BucketInterface = originBucket;
 
     // Define the CloudFront Distribution
-    const cloudFrontDistributionForS3Response = defaults.CloudFrontDistributionForS3(
+    const cloudFrontDistributionForS3Response = defaults.createCloudFrontDistributionForS3(
       this,
       this.s3BucketInterface,
       props.cloudFrontDistributionProps,
