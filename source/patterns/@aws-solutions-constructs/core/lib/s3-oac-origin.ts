@@ -25,19 +25,14 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
  */
 export interface S3OacOriginProps extends cloudfront.OriginProps {
   /**
-   * An optional Origin Access Identity of the origin identity cloudfront will use when calling your s3 bucket.
-   *
-   * @default - An Origin Access Identity will be created.
+   * The origin access control that will be used when calling your S3 bucket.
    */
   readonly originAccessControl: cloudfront.CfnOriginAccessControl;
 }
 
 /**
- * An Origin that is backed by an S3 bucket.
- *
- * If the bucket is configured for website hosting, this origin will be configured to use the bucket as an
- * HTTP server origin and will use the bucket's configured website redirects and error handling. Otherwise,
- * the origin is created as a bucket origin and will use CloudFront's redirect and error handling.
+ * An custom implementation of S3Origin that allows an origin access control (OAC) to be used instead of
+ * an origin access identity (OAI), which is currently the only option supported by default CDK.
  */
 export class S3OacOrigin implements cloudfront.IOrigin {
   private readonly origin: cloudfront.IOrigin;
@@ -52,9 +47,7 @@ export class S3OacOrigin implements cloudfront.IOrigin {
 }
 
 /**
- * An Origin specific to a S3 bucket (not configured for website hosting).
- *
- * Contains additional logic around bucket permissions and origin access identities.
+ * An origin specific to a S3 bucket (not configured for website hosting).
  */
 class S3OacBucketOrigin extends cloudfront.OriginBase {
   public originAccessControl!: cloudfront.CfnOriginAccessControl;
