@@ -12,11 +12,10 @@
  */
 
 // Imports
-import { App, Stack, RemovalPolicy, aws_kms, aws_s3_deployment } from "aws-cdk-lib";
+import { App, Stack, RemovalPolicy, aws_kms } from "aws-cdk-lib";
 import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
 import { buildS3Bucket, generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
-import { BucketDeployment } from "aws-cdk-lib/aws-s3-deployment";
 
 // Setup
 const app = new App();
@@ -42,12 +41,7 @@ const props: CloudFrontToS3Props = {
   insertHttpSecurityHeaders: false
 };
 
-const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3-cmk-encryption-key', props);
-
-new BucketDeployment(stack, 'DeployIndexFile', {
-  sources: [ aws_s3_deployment.Source.data('index.html', '<H3>Hello, World</H3>\n<p>Existing bucket, CMK encryption')],
-  destinationBucket: construct.s3BucketInterface
-});
+new CloudFrontToS3(stack, 'test-cloudfront-s3-cmk-encryption-key', props);
 
 suppressAutoDeleteHandlerWarnings(stack);
 
