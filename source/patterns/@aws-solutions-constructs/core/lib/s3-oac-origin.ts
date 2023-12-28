@@ -16,9 +16,10 @@
  *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
-import { Construct } from 'constructs';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as s3 from 'aws-cdk-lib/aws-s3';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
+import { Construct } from 'constructs';
 
 /**
  * Properties to use to customize an S3 Origin.

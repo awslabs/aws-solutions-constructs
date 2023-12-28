@@ -13,13 +13,13 @@
 
 import { Aws } from 'aws-cdk-lib';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as defaults from '@aws-solutions-constructs/core';
+import * as resources from '@aws-solutions-constructs/resources';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
-import * as defaults from '@aws-solutions-constructs/core';
-import { aws_iam } from 'aws-cdk-lib';
-import { IKey } from 'aws-cdk-lib/aws-kms';
-import * as resources from '@aws-solutions-constructs/resources';
 
 /**
  * @summary The properties for the CloudFrontToS3 Construct
@@ -159,10 +159,10 @@ export class CloudFrontToS3 extends Construct {
 
     // Grant CloudFront permission to get the objects from the s3 bucket origin
     originBucket.addToResourcePolicy(
-      new aws_iam.PolicyStatement({
-        effect: aws_iam.Effect.ALLOW,
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
         actions: ['s3:GetObject'],
-        principals: [new aws_iam.ServicePrincipal('cloudfront.amazonaws.com')],
+        principals: [new iam.ServicePrincipal('cloudfront.amazonaws.com')],
         resources: [originBucket.arnForObjects('*')],
         conditions: {
           StringEquals: {
@@ -179,7 +179,7 @@ export class CloudFrontToS3 extends Construct {
     //   * The S3 Bucket references the KMS Key
     //   * The CloudFront Distribution references the Bucket
     //   * The KMS Key references the CloudFront Distribution
-    let encryptionKey: IKey | undefined;
+    let encryptionKey: kms.IKey | undefined;
     if (props.bucketProps && props.bucketProps.encryptionKey) {
       encryptionKey = props.bucketProps.encryptionKey;
     } else if (props.existingBucketObj && props.existingBucketObj.encryptionKey) {
