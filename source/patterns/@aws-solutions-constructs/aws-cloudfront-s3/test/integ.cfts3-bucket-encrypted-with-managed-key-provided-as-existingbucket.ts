@@ -12,12 +12,10 @@
  */
 
 // Imports
-import { App, Stack, aws_s3_deployment } from "aws-cdk-lib";
-import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { App, Stack } from "aws-cdk-lib";
 import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
-import { addCfnSuppressRules, buildS3Bucket, generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { buildS3Bucket, generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
-import { BucketDeployment } from "aws-cdk-lib/aws-s3-deployment";
 
 // Setup
 const app = new App();
