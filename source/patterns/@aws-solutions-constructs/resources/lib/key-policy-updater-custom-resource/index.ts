@@ -15,17 +15,17 @@ import { KMSClient, GetKeyPolicyCommand, DescribeKeyCommand, PutKeyPolicyCommand
 
 const kmsClient = new KMSClient();
 
-export const handler = async (e: any, context: any) => {
+export const handler = async (event: any, context: any) => {
 
   let status = 'SUCCESS';
   let responseData = {};
 
-  if (e.RequestType === 'Create' || e.RequestType === 'Update') {
+  if (event.RequestType === 'Create' || event.RequestType === 'Update') {
 
     try {
-      const kmsKeyId = e.ResourceProperties.KmsKeyId;
-      const cloudFrontDistributionId = e.ResourceProperties.CloudFrontDistributionId;
-      const accountId = e.ResourceProperties.AccountId;
+      const kmsKeyId = event.ResourceProperties.KmsKeyId;
+      const cloudFrontDistributionId = event.ResourceProperties.CloudFrontDistributionId;
+      const accountId = event.ResourceProperties.AccountId;
       const region = process.env.AWS_REGION;
 
       const describeKeyCommandResponse = await kmsClient.send(new DescribeKeyCommand({
@@ -36,10 +36,10 @@ export const handler = async (e: any, context: any) => {
         return {
           Status: 'SUCCESS',
           Reason: 'An AWS managed key was provided, no action needed from the custom resource, exiting now.',
-          PhysicalResourceId: e.PhysicalResourceId ?? context.logStreamName,
-          StackId: e.StackId,
-          RequestId: e.RequestId,
-          LogicalResourceId: e.LogicalResourceId,
+          PhysicalResourceId: event.PhysicalResourceId ?? context.logStreamName,
+          StackId: event.StackId,
+          RequestId: event.RequestId,
+          LogicalResourceId: event.LogicalResourceId,
           Data: 'An AWS managed key was provided, no action needed from the custom resource, exiting now.',
         };
       }
@@ -53,10 +53,10 @@ export const handler = async (e: any, context: any) => {
         return {
           Status: 'FAILED',
           Reason: 'An error occurred while retrieving the key policy',
-          PhysicalResourceId: e.PhysicalResourceId ?? context.logStreamName,
-          StackId: e.StackId,
-          RequestId: e.RequestId,
-          LogicalResourceId: e.LogicalResourceId,
+          PhysicalResourceId: event.PhysicalResourceId ?? context.logStreamName,
+          StackId: event.StackId,
+          RequestId: event.RequestId,
+          LogicalResourceId: event.LogicalResourceId,
           Data: 'An error occurred while retrieving the key policy',
         };
       }
@@ -100,10 +100,10 @@ export const handler = async (e: any, context: any) => {
   return {
     Status: status,
     Reason: JSON.stringify(responseData),
-    PhysicalResourceId: e.PhysicalResourceId ?? context.logStreamName,
-    StackId: e.StackId,
-    RequestId: e.RequestId,
-    LogicalResourceId: e.LogicalResourceId,
+    PhysicalResourceId: event.PhysicalResourceId ?? context.logStreamName,
+    StackId: event.StackId,
+    RequestId: event.RequestId,
+    LogicalResourceId: event.LogicalResourceId,
     Data: responseData,
   };
 };

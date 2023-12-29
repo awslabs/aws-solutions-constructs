@@ -21,10 +21,6 @@
 ## Overview
 This AWS Solutions Construct provisions an Amazon CloudFront Distribution that serves objects from an AWS S3 Bucket via an Origin Access Control (OAC).
 
-> **Note:** This AWS Solutions Construct was updated in December 2023 to replace the use of Origin Access Identities (OAIs) with Origin Access Controls (OACs) for accessing objects from the Bucket. Due to the
-> current configuration of one or more underlying AWS CDK constructs, this Construct will still provison an OAI, but it will be "orphaned" and the OAC will be used for accessing the Bucket. The 
-> unused OAI does not introduce any cost or security risk, and it can be safely deleted through the AWS CloudFront Management Console if desired.
-
 Here is a minimal deployable pattern definition:
 
 Typescript

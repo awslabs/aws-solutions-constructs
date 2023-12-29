@@ -173,12 +173,12 @@ export class CloudFrontToS3 extends Construct {
     );
 
     // We need to create a custom resource to introduce the indirection necessary to avoid
-    // a circular dependency when granting the cloud front distribution access to use the
-    // kms key to decrypt objects. Without this indirection, it is not possible to reference
-    // the cloud front distribution id in the kms key policy because -
-    //   * The S3 Bucket references the KMS Key
-    //   * The CloudFront Distribution references the Bucket
-    //   * The KMS Key references the CloudFront Distribution
+    // a circular dependency when granting the CloudFront distribution access to use the
+    // KMS key to decrypt objects. Without this indirection, it is not possible to reference
+    // the CloudFront distribution ID in the KMS key policy because -
+    //   * The S3 bucket references the KMS key
+    //   * The CloudFront distribution references the bucket
+    //   * The KMS key references the CloudFront distribution
     let encryptionKey: kms.IKey | undefined;
     if (props.bucketProps && props.bucketProps.encryptionKey) {
       encryptionKey = props.bucketProps.encryptionKey;
