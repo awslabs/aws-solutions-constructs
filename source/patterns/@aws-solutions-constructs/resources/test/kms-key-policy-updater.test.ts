@@ -13,7 +13,7 @@
 
 import { mockClient } from "aws-sdk-client-mock";
 import { KMSClient, DescribeKeyCommand, KeyManagerType, GetKeyPolicyCommand, PutKeyPolicyCommand } from "@aws-sdk/client-kms";
-import { handler } from "../lib/key-policy-updater-custom-resource";
+import { checkForExistingKeyPolicyStatement, handler } from "../lib/key-policy-updater-custom-resource";
 
 const kmsMock = mockClient(KMSClient);
 
@@ -153,4 +153,78 @@ it('Should fail if an error occurs with putting the new key policy, all other in
   const res = await handler(e, context);
   // Assert
   expect(res.Status).toBe('FAILED');
+});
+
+it('Should fail if the key policy has already been applied in a previous stack update or similar event (custom resource response)', async () => {
+  // Mocks
+  kmsMock.on(DescribeKeyCommand).resolves({
+    KeyMetadata: {
+      KeyId: 'sample-key-id',
+      KeyManager: KeyManagerType.CUSTOMER
+    }
+  });
+  kmsMock.on(GetKeyPolicyCommand).resolves({
+    Policy: `{\n
+      \"Version\" : \"2012-10-17\",\n
+      \"Id\" : \"key-default-1\",\n
+      \"Statement\" : [ {\n
+          \"Sid\" : \"Grant-CloudFront-Distribution-Key-Usage\",\n
+          \"Effect\" : \"Allow\",\n
+          \"Principal\" : {\n
+              \"AWS\" : \"arn:aws:iam::111122223333:root\"\n
+          },\n
+          \"Action\" : \"kms:*\",\n
+          \"Resource\" : \"*\"\n
+      } ]\n
+    }`
+  });
+  const e = {
+    RequestType: 'Update',
+    ResourceProperties: {
+      CloudFrontDistributionId: 'sample-cf-distro-id',
+      AccountId: '111122223333'
+    }
+  };
+  const context = {
+    // ...
+  };
+  // Act
+  const res = await handler(e, context);
+  // Assert
+  expect(res.Status).toBe('SUCCESS');
+  expect(res.Reason).toBe('The key policy has already been updated in response to a previous stack event. No action needed.');
+});
+
+it('Should fail if the key policy has already been applied in a previous stack update or similar event', async () => {
+  // Arrange
+  const keyPolicyStatementSid: string = 'Grant-CloudFront-Distribution-Key-Usage';
+  const keyPolicy = {
+    Version: "2012-10-17",
+    Id: "key-default-1",
+    Statement: [
+      {
+        Sid: keyPolicyStatementSid
+      }
+    ]
+  };
+  // Act
+  const result = checkForExistingKeyPolicyStatement(keyPolicy, keyPolicyStatementSid);
+  // Assert
+  expect(result).toBe(true);
+});
+
+it('Should not fail if the key policy is being applied for the first time', async () => {
+  // Arrange
+  const keyPolicyStatementSid: string = 'Grant-CloudFront-Distribution-Key-Usage';
+  const keyPolicy = {
+    Version: "2012-10-17",
+    Id: "key-default-1",
+    Statement: [
+      // empty policy statement body or other customer-defined statements here
+    ]
+  };
+  // Act
+  const result = checkForExistingKeyPolicyStatement(keyPolicy, keyPolicyStatementSid);
+  // Assert
+  expect(result).toBe(false);
 });

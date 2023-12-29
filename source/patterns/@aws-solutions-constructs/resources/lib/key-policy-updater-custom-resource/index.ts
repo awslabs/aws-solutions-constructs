@@ -52,20 +52,33 @@ export const handler = async (event: any, context: any) => {
       if (!getKeyPolicyCommandResponse.Policy) {
         return {
           Status: 'FAILED',
-          Reason: 'An error occurred while retrieving the key policy',
+          Reason: 'An error occurred while retrieving the key policy.',
           PhysicalResourceId: event.PhysicalResourceId ?? context.logStreamName,
           StackId: event.StackId,
           RequestId: event.RequestId,
           LogicalResourceId: event.LogicalResourceId,
-          Data: 'An error occurred while retrieving the key policy',
+          Data: 'An error occurred while retrieving the key policy.',
         };
       }
 
+      // Update the existing key policy to allow the CloudFront distribution to use the key
       const keyPolicy = JSON.parse(getKeyPolicyCommandResponse?.Policy);
+      const keyPolicyStatementSid: string = 'Grant-CloudFront-Distribution-Key-Usage';
 
-      // Update the existing key policy to allow the cloudfront distribution to use the key
+      if (checkForExistingKeyPolicyStatement(keyPolicy, keyPolicyStatementSid)) {
+        return {
+          Status: 'SUCCESS',
+          Reason: 'The key policy has already been updated in response to a previous stack event. No action needed.',
+          PhysicalResourceId: event.PhysicalResourceId ?? context.logStreamName,
+          StackId: event.StackId,
+          RequestId: event.RequestId,
+          LogicalResourceId: event.LogicalResourceId,
+          Data: 'The key policy has already been updated in response to a previous stack event. No action needed.',
+        };
+      }
+
       keyPolicy.Statement.push({
-        Sid: 'Grant-CloudFront-Distribution-Key-Usage',
+        Sid: keyPolicyStatementSid,
         Effect: 'Allow',
         Principal: {
           Service: 'cloudfront.amazonaws.com',
@@ -106,4 +119,19 @@ export const handler = async (event: any, context: any) => {
     LogicalResourceId: event.LogicalResourceId,
     Data: responseData,
   };
+};
+
+/**
+ * Function that checks for a matching key policy statement using the SID. This is used to
+ * prevent duplicate key policies from being added/updated in response to a stack being
+ * updated one or more times after creation.
+ * @param parsedKeyPolicy - Parsed key policy object, which is initially delivered in the form
+ * of stringified JSON from the GetKeyPolicyCommand. See here under "Example Usage".
+ * https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/kms/command/GetKeyPolicyCommand/
+ * @param sid - The SID to match key policy statements on.
+ * @returns - True if a matching key policy was detected, false if no match found.
+ */
+export const checkForExistingKeyPolicyStatement = (parsedKeyPolicy: any, sid: string) => {
+  const matches = parsedKeyPolicy.Statement.find((statement: any) => statement.Sid === sid);
+  return matches ? true : false;
 };
