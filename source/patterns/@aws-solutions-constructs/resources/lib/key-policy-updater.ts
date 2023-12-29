@@ -44,13 +44,13 @@ export function createKeyPolicyUpdaterCustomResource(
     lambdaFunctionProps: {
       runtime: lambda.Runtime.NODEJS_18_X,
       handler: 'index.handler',
-      description: 'kms-key-policy-updater',
+      description: 'Custom resource function that updates the key policy of an existing encryption key to allow CloudFront access.',
       timeout: props.timeout,
       memorySize: props.memorySize,
       code: lambda.Code.fromAsset(`${__dirname}/key-policy-updater-custom-resource`),
       role: new iam.Role(scope, 'KmsKeyPolicyUpdateLambdaRole', {
         assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-        description: 'Role to update kms key policy to allow cloudfront access',
+        description: 'Role to update kms key policy to allow CloudFront access',
         inlinePolicies: {
           KmsPolicy: new iam.PolicyDocument({
             statements: [
@@ -58,15 +58,6 @@ export function createKeyPolicyUpdaterCustomResource(
                 actions: ['kms:PutKeyPolicy', 'kms:GetKeyPolicy', 'kms:DescribeKey'],
                 effect: iam.Effect.ALLOW,
                 resources: [ props.encryptionKey.keyArn ]
-              })
-            ]
-          }),
-          CWLogsPolicy: new iam.PolicyDocument({
-            statements: [
-              new iam.PolicyStatement({
-                actions: ['logs:CreateLogGroup'],
-                effect: iam.Effect.ALLOW,
-                resources: [ `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:*` ]
               })
             ]
           })
