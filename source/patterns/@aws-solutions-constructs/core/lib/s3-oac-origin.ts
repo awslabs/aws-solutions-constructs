@@ -19,6 +19,7 @@
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { HttpOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
+import { printWarning } from './utils';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 
@@ -42,6 +43,12 @@ export class S3OacOrigin implements cloudfront.IOrigin {
   constructor(bucket: s3.IBucket, props: S3OacOriginProps) {
     if (bucket.isWebsite) {
       // If the bucket is configured for website hosting, set up an HttpOrigin to support legacy clients
+      printWarning(`WARNING - AWS Solutions Constructs: Bucket ${bucket.bucketName} is being provided as an origin bucket
+        to aws-cloudfront-s3, but currently has static website hosting settings enabled. Please review whether this is the
+        intended configuration. If so, construct will configure an HttpOrigin to allow the distribution to access the
+        bucket. If not, we strongly recommend turning off static website hosting settings on the bucket, which will
+        result in the construct provisioning an origin access control (OAC) through which CloudFront can securely serve
+        assets from the bucket.`);
       this.origin = new HttpOrigin(bucket.bucketWebsiteDomainName, {
         protocolPolicy: cloudfront.OriginProtocolPolicy.HTTP_ONLY, // S3 only supports HTTP for website buckets
         ...props
