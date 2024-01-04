@@ -44,6 +44,9 @@ export const handler = async (event: any, context: any) => {
         };
       }
 
+      // The PolicyName is specified as "default" below because that is the only valid name as
+      // written in the documentation for @aws-sdk/client-kms.GetKeyPolicyCommandInput:
+      // https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/Package/-aws-sdk-client-kms/Interface/GetKeyPolicyCommandInput/
       const getKeyPolicyCommandResponse = await kmsClient.send(new GetKeyPolicyCommand({
         KeyId: kmsKeyId,
         PolicyName: 'default'
