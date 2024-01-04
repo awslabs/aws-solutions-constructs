@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack, aws_s3_deployment } from "aws-cdk-lib";
+import { App, Stack } from "aws-cdk-lib";
 import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
@@ -39,12 +39,7 @@ const testProps: CloudFrontToS3Props = {
   insertHttpSecurityHeaders: false
 };
 
-const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3-legacy-http-origin', testProps);
-
-new aws_s3_deployment.BucketDeployment(stack, 'DeployIndexFile', {
-  sources: [ aws_s3_deployment.Source.data('index.html', '<H3>Hello, World</H3>')],
-  destinationBucket: construct.s3BucketInterface,
-});
+new CloudFrontToS3(stack, 'test-cloudfront-s3-legacy-http-origin', testProps);
 
 suppressAutoDeleteHandlerWarnings(stack);
 
