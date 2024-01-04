@@ -37,11 +37,11 @@ const testProps: CloudFrontToS3Props = {
     websiteIndexDocument: "index.html"
   },
   insertHttpSecurityHeaders: false
-}
+};
 
 const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3-legacy-http-origin', testProps);
 
-new aws_s3_deployment.BucketDeployment(stack, 'DeployIndexFile',{
+new aws_s3_deployment.BucketDeployment(stack, 'DeployIndexFile', {
   sources: [ aws_s3_deployment.Source.data('index.html', '<H3>Hello, World</H3>')],
   destinationBucket: construct.s3BucketInterface,
 });
