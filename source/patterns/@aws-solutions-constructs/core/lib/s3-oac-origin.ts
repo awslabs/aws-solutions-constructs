@@ -18,6 +18,7 @@
 
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as s3 from 'aws-cdk-lib/aws-s3';
+import { HttpOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 
@@ -28,7 +29,7 @@ export interface S3OacOriginProps extends cloudfront.OriginProps {
   /**
    * The origin access control that will be used when calling your S3 bucket.
    */
-  readonly originAccessControl: cloudfront.CfnOriginAccessControl;
+  readonly originAccessControl?: cloudfront.CfnOriginAccessControl;
 }
 
 /**
@@ -38,8 +39,18 @@ export interface S3OacOriginProps extends cloudfront.OriginProps {
 export class S3OacOrigin implements cloudfront.IOrigin {
   private readonly origin: cloudfront.IOrigin;
 
-  constructor(bucket: s3.IBucket, originAccessControl: cloudfront.CfnOriginAccessControl) {
-    this.origin = new S3OacBucketOrigin(bucket, originAccessControl);
+  constructor(bucket: s3.IBucket, props: S3OacOriginProps) {
+    if (bucket.isWebsite) {
+      // If the bucket is configured for website hosting, set up an HttpOrigin to support legacy clients
+      this.origin = new HttpOrigin(bucket.bucketWebsiteDomainName, {
+        protocolPolicy: cloudfront.OriginProtocolPolicy.HTTP_ONLY, // S3 only supports HTTP for website buckets
+        ...props
+      });
+    }
+    else {
+      // If else, set up the origin access control
+      this.origin = new S3OacBucketOrigin(bucket, props.originAccessControl!);
+    }
   }
 
   public bind(scope: Construct, options: cloudfront.OriginBindOptions): cloudfront.OriginBindConfig {

@@ -125,16 +125,22 @@ export function createCloudFrontDistributionForS3(
 
   const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudFrontLoggingBucketProps);
 
-  const originAccessControl = new cloudfront.CfnOriginAccessControl(scope, 'CloudFrontOac', {
-    originAccessControlConfig: {
-      name: generatePhysicalName('aws-cloudfront-s3', ['oac'], 16),
-      originAccessControlOriginType: 's3',
-      signingBehavior: 'always',
-      signingProtocol: 'sigv4'
-    }
-  });
+  let originAccessControl;
+  let originProps = {};
 
-  const origin = new S3OacOrigin(sourceBucket, originAccessControl);
+  if (!sourceBucket.isWebsite) {
+    originAccessControl = new cloudfront.CfnOriginAccessControl(scope, 'CloudFrontOac', {
+      originAccessControlConfig: {
+        name: generatePhysicalName('aws-cloudfront-s3', ['oac'], 16),
+        originAccessControlOriginType: 's3',
+        signingBehavior: 'always',
+        signingProtocol: 'sigv4'
+      }
+    });
+    originProps = { originAccessControl };
+  }
+
+  const origin = new S3OacOrigin(sourceBucket, originProps);
 
   const defaultprops = DefaultCloudFrontWebDistributionForS3Props(origin,
     loggingBucket,
