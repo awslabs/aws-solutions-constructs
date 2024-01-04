@@ -46,8 +46,7 @@ export class S3OacOrigin implements cloudfront.IOrigin {
         protocolPolicy: cloudfront.OriginProtocolPolicy.HTTP_ONLY, // S3 only supports HTTP for website buckets
         ...props
       });
-    }
-    else {
+    } else {
       // If else, set up the origin access control
       this.origin = new S3OacBucketOrigin(bucket, props.originAccessControl!);
     }
