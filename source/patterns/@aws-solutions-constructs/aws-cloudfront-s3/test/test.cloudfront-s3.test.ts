@@ -19,6 +19,7 @@ import {CloudFrontToS3, CloudFrontToS3Props} from "../lib";
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Key } from "aws-cdk-lib/aws-kms";
+import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 
 function deploy(stack: cdk.Stack, props?: CloudFrontToS3Props) {
   return new CloudFrontToS3(stack, 'test-cloudfront-s3', {
@@ -500,4 +501,91 @@ test("Custom resource is not provisioned if CMK was not used to encrypt an exist
   });
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::Lambda::Function', 0);
+});
+
+test("HttpOrigin is provisioned if a static website bucket is used", () => {
+  const stack = new cdk.Stack();
+  const blockPublicAccess = false;
+  const props: CloudFrontToS3Props = {
+    bucketProps: {
+      enforceSSL: false,
+      publicReadAccess: true, // <-- required for isWebsite
+      blockPublicAccess: {
+        blockPublicAcls: blockPublicAccess,
+        restrictPublicBuckets: blockPublicAccess,
+        blockPublicPolicy: blockPublicAccess,
+        ignorePublicAcls: blockPublicAccess
+      },
+      websiteIndexDocument: "index.html" // <-- required for isWebsite
+    },
+    insertHttpSecurityHeaders: false
+  };
+  const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
+  const template = Template.fromStack(stack);
+  // Assert resources
+  template.resourceCountIs('AWS::CloudFront::OriginAccessControl', 0);
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
+    DistributionConfig: {
+      Origins: [
+        {
+          CustomOriginConfig: {
+            OriginProtocolPolicy: "http-only"
+          }
+        }
+      ]
+    }
+  });
+  template.resourceCountIs('AWS::CloudFront::OriginAccessIdentity', 0);
+  // Assert pattern properties (output props)
+  expect(construct.originAccessControl).toBe(undefined);
+});
+
+test("OAC is provisioned in all other cases", () => {
+  const stack = new cdk.Stack();
+  const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {});
+  const template = Template.fromStack(stack);
+  // Assert resources
+  template.resourceCountIs('AWS::CloudFront::OriginAccessControl', 1);
+  template.resourceCountIs('AWS::CloudFront::OriginAccessIdentity', 0);
+  // Assert pattern properties (output props)
+  expect(construct.originAccessControl).not.toBe(undefined);
+});
+
+test("If a customer provides their own httpOrigin, or other origin type, use that one", () => {
+  const stack = new cdk.Stack();
+  const blockPublicAccess = false;
+  const props: CloudFrontToS3Props = {
+    bucketProps: {
+      enforceSSL: false,
+      publicReadAccess: true, // <-- required for isWebsite
+      blockPublicAccess: {
+        blockPublicAcls: blockPublicAccess,
+        restrictPublicBuckets: blockPublicAccess,
+        blockPublicPolicy: blockPublicAccess,
+        ignorePublicAcls: blockPublicAccess
+      },
+      websiteIndexDocument: "index.html" // <-- required for isWebsite
+    },
+    insertHttpSecurityHeaders: false,
+    cloudFrontDistributionProps: {
+      defaultBehavior: {
+        origin: new origins.HttpOrigin('example.com', {
+          originId: 'custom-http-origin-for-testing'
+        })
+      }
+    }
+  };
+  new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
+  const template = Template.fromStack(stack);
+  // Assert resources
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
+    DistributionConfig: {
+      Origins: [
+        {
+          DomainName: "example.com",
+          Id: "custom-http-origin-for-testing"
+        }
+      ]
+    }
+  });
 });
