@@ -144,11 +144,7 @@ export class CloudFrontToS3 extends Construct {
       cloudFrontLoggingBucketProps: props.cloudFrontLoggingBucketProps,
       responseHeadersPolicyProps: props.responseHeadersPolicyProps
     };
-    const cloudFrontDistributionForS3Response = defaults.createCloudFrontDistributionForS3(
-      this,
-      'cloudfront-dist-for-s3',
-      cloudFrontDistributionForS3Props
-    );
+    const cloudFrontDistributionForS3Response = defaults.createCloudFrontDistributionForS3(this, id, cloudFrontDistributionForS3Props);
     this.cloudFrontWebDistribution = cloudFrontDistributionForS3Response.distribution;
     this.cloudFrontFunction = cloudFrontDistributionForS3Response.cloudfrontFunction;
     this.cloudFrontLoggingBucket = cloudFrontDistributionForS3Response.loggingBucket;
