@@ -19,9 +19,9 @@ import { Provider } from "aws-cdk-lib/custom-resources";
 import { buildLambdaFunction } from "@aws-solutions-constructs/core";
 import { IKey } from "aws-cdk-lib/aws-kms";
 import { Distribution } from "aws-cdk-lib/aws-cloudfront";
+import { addCfnSuppressRulesForCustomResourceProvider } from "./utils";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
-import { addCfnSuppressRulesForCustomResourceProvider } from "./shared";
 
 export interface CreateKeyPolicyUpdaterResponse {
   readonly lambdaFunction: lambda.Function;

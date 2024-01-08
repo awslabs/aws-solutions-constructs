@@ -20,9 +20,9 @@ import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import * as path from 'path';
 import { Provider } from "aws-cdk-lib/custom-resources";
 import { buildLambdaFunction } from "@aws-solutions-constructs/core";
+import { addCfnSuppressRulesForCustomResourceProvider } from "./utils";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
-import { addCfnSuppressRulesForCustomResourceProvider } from "./shared";
 
 /**
  * The TemplateValue interface defines the id-value pair that will
