@@ -103,6 +103,14 @@ export function CloudFrontDistributionForApiGateway(scope: Construct,
   return { distribution: cfDistribution, cloudfrontFunction, loggingBucket};
 }
 
+export interface CreateCloudFrontDistributionForS3Props {
+  readonly sourceBucket: s3.IBucket,
+  readonly cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
+  readonly httpSecurityHeaders?: boolean,
+  readonly cloudFrontLoggingBucketProps?: s3.BucketProps,
+  readonly responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
+}
+
 export interface CreateCloudFrontDistributionForS3Response {
   readonly distribution: cloudfront.Distribution,
   readonly loggingBucket?: s3.Bucket,
@@ -115,23 +123,21 @@ export interface CreateCloudFrontDistributionForS3Response {
  */
 export function createCloudFrontDistributionForS3(
   scope: Construct,
-  sourceBucket: s3.IBucket,
-  cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
-  httpSecurityHeaders: boolean = true,
-  cloudFrontLoggingBucketProps?: s3.BucketProps,
-  responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
+  id: string,
+  props: CreateCloudFrontDistributionForS3Props
 ): CreateCloudFrontDistributionForS3Response {
+  const httpSecurityHeaders = props.httpSecurityHeaders ?? true;
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
-  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudFrontLoggingBucketProps);
+  const loggingBucket = getLoggingBucket(props.cloudFrontDistributionProps, scope, props.cloudFrontLoggingBucketProps);
 
   let originAccessControl;
   let originProps = {};
 
-  if (!sourceBucket.isWebsite) {
+  if (!props.sourceBucket.isWebsite) {
     originAccessControl = new cloudfront.CfnOriginAccessControl(scope, 'CloudFrontOac', {
       originAccessControlConfig: {
-        name: generatePhysicalName('aws-cloudfront-s3', ['oac'], 16),
+        name: generatePhysicalName('aws-cloudfront-s3', ['oac', id], 16),
         originAccessControlOriginType: 's3',
         signingBehavior: 'always',
         signingProtocol: 'sigv4'
@@ -140,22 +146,24 @@ export function createCloudFrontDistributionForS3(
     originProps = { originAccessControl };
   }
 
-  const origin = new S3OacOrigin(sourceBucket, originProps);
+  const origin = new S3OacOrigin(props.sourceBucket, originProps);
 
   const defaultprops = DefaultCloudFrontWebDistributionForS3Props(origin,
     loggingBucket,
     httpSecurityHeaders,
     cloudfrontFunction,
-    responseHeadersPolicyProps ?  new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', responseHeadersPolicyProps) : undefined
+    props.responseHeadersPolicyProps ?
+      new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', props.responseHeadersPolicyProps) :
+      undefined
   );
 
-  const cfprops = consolidateProps(defaultprops, cloudFrontDistributionProps);
+  const cfprops = consolidateProps(defaultprops, props.cloudFrontDistributionProps);
   // Create the Cloudfront Distribution
   const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
 
   // Extract the CfnBucketPolicy from the sourceBucket
-  const bucketPolicy = sourceBucket.policy as s3.BucketPolicy;
+  const bucketPolicy = props.sourceBucket.policy as s3.BucketPolicy;
   // the lack of a bucketPolicy means the bucket was imported from outside the stack so the lack of cfn_nag suppression is not an issue
   if (bucketPolicy) {
     addCfnSuppressRules(bucketPolicy, [

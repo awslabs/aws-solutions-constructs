@@ -137,13 +137,17 @@ export class CloudFrontToS3 extends Construct {
     this.s3BucketInterface = originBucket;
 
     // Define the CloudFront Distribution
+    const cloudFrontDistributionForS3Props: defaults.CreateCloudFrontDistributionForS3Props = {
+      sourceBucket: this.s3BucketInterface,
+      cloudFrontDistributionProps: props.cloudFrontDistributionProps,
+      httpSecurityHeaders: props.insertHttpSecurityHeaders,
+      cloudFrontLoggingBucketProps: props.cloudFrontLoggingBucketProps,
+      responseHeadersPolicyProps: props.responseHeadersPolicyProps
+    };
     const cloudFrontDistributionForS3Response = defaults.createCloudFrontDistributionForS3(
       this,
-      this.s3BucketInterface,
-      props.cloudFrontDistributionProps,
-      props.insertHttpSecurityHeaders,
-      props.cloudFrontLoggingBucketProps,
-      props.responseHeadersPolicyProps
+      'cloudfront-dist-for-s3',
+      cloudFrontDistributionForS3Props
     );
     this.cloudFrontWebDistribution = cloudFrontDistributionForS3Response.distribution;
     this.cloudFrontFunction = cloudFrontDistributionForS3Response.cloudfrontFunction;
