@@ -733,9 +733,9 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "8658b6fb3042496cf0c4bff5c3a5bc857ec17748d2ded245206297fb8ff2b46c.zip"
+          "S3Key": "4a4b024f310aca2784b69bcb790e9ccaef785e9ad5d1b73624144f88c4465b4f.zip"
         },
-        "Description": "Custom resource function that updates the key policy of an existing encryption key to allow CloudFront access.",
+        "Description": "Custom resource function that updates a provided key policy to allow CloudFront access.",
         "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [

@@ -13,7 +13,7 @@
 
 import { mockClient } from "aws-sdk-client-mock";
 import { KMSClient, DescribeKeyCommand, KeyManagerType, GetKeyPolicyCommand, PutKeyPolicyCommand } from "@aws-sdk/client-kms";
-import { checkForExistingKeyPolicyStatement, handler } from "../lib/key-policy-updater-custom-resource";
+import { handler, updateKeyPolicy } from "../lib/key-policy-updater-custom-resource";
 
 const kmsMock = mockClient(KMSClient);
 
@@ -86,9 +86,9 @@ it('Should update the key policy if the proper params are given', async () => {
   kmsMock.on(GetKeyPolicyCommand).resolves({
     Policy: `{\n
       \"Version\" : \"2012-10-17\",\n
-      \"Id\" : \"key-default-1\",\n
+      \"Id\" : \"sample-key-id\",\n
       \"Statement\" : [ {\n
-          \"Sid\" : \"Enable IAM User Permissions\",\n
+          \"Sid\" : \"Grant-CloudFront-Distribution-Key-Usage\",\n
           \"Effect\" : \"Allow\",\n
           \"Principal\" : {\n
               \"AWS\" : \"arn:aws:iam::111122223333:root\"\n
@@ -128,7 +128,7 @@ it('Should fail if an error occurs with putting the new key policy, all other in
       \"Version\" : \"2012-10-17\",\n
       \"Id\" : \"key-default-1\",\n
       \"Statement\" : [ {\n
-          \"Sid\" : \"Enable IAM User Permissions\",\n
+          \"Sid\" : \"Grant-CloudFront-Distribution-Key-Usage\",\n
           \"Effect\" : \"Allow\",\n
           \"Principal\" : {\n
               \"AWS\" : \"arn:aws:iam::111122223333:root\"\n
@@ -192,39 +192,54 @@ it('Should fail if the key policy has already been applied in a previous stack u
   const res = await handler(e, context);
   // Assert
   expect(res.Status).toBe('SUCCESS');
-  expect(res.Reason).toBe('The key policy has already been updated in response to a previous stack event. No action needed.');
 });
 
-it('Should fail if the key policy has already been applied in a previous stack update or similar event', async () => {
+it('updateKeyPolicy() should overwrite an existing key policy statement that matches on the sid', async () => {
   // Arrange
-  const keyPolicyStatementSid: string = 'Grant-CloudFront-Distribution-Key-Usage';
   const keyPolicy = {
     Version: "2012-10-17",
     Id: "key-default-1",
     Statement: [
       {
-        Sid: keyPolicyStatementSid
+        Sid: 'Grant-CloudFront-Distribution-Key-Usage',
+        Effect: "Allow"
+      },
+      {
+        Sid: 'Some-Other-Key-Policy-Statement',
+        Effect: "Allow"
       }
     ]
   };
+  const keyPolicyStatement = {
+    Sid: 'Grant-CloudFront-Distribution-Key-Usage',
+    Effect: "Deny"
+  };
   // Act
-  const result = checkForExistingKeyPolicyStatement(keyPolicy, keyPolicyStatementSid);
+  const res = updateKeyPolicy(keyPolicy, keyPolicyStatement);
   // Assert
-  expect(result).toBe(true);
+  expect(res.Statement[0].Sid).toBe('Grant-CloudFront-Distribution-Key-Usage');
+  expect(res.Statement[0].Effect).toBe('Deny');
 });
 
-it('Should not fail if the key policy is being applied for the first time', async () => {
+it('updateKeyPolicy() should add the key policy statement if one with matching sid does not already exist', async () => {
   // Arrange
-  const keyPolicyStatementSid: string = 'Grant-CloudFront-Distribution-Key-Usage';
   const keyPolicy = {
     Version: "2012-10-17",
     Id: "key-default-1",
     Statement: [
-      // empty policy statement body or other customer-defined statements here
+      {
+        Sid: 'Some-Other-Key-Policy-Statement',
+        Effect: "Allow"
+      }
     ]
   };
+  const keyPolicyStatement = {
+    Sid: 'Grant-CloudFront-Distribution-Key-Usage',
+    Effect: "Deny"
+  };
   // Act
-  const result = checkForExistingKeyPolicyStatement(keyPolicy, keyPolicyStatementSid);
+  const res = updateKeyPolicy(keyPolicy, keyPolicyStatement);
   // Assert
-  expect(result).toBe(false);
+  expect(res.Statement[1].Sid).toBe('Grant-CloudFront-Distribution-Key-Usage');
+  expect(res.Statement[1].Effect).toBe('Deny');
 });

@@ -64,24 +64,10 @@ export const handler = async (event: any, context: any) => {
         };
       }
 
-      // Update the existing key policy to allow the CloudFront distribution to use the key
+      // Define the updated key policy to allow CloudFront access
       const keyPolicy = JSON.parse(getKeyPolicyCommandResponse?.Policy);
-      const keyPolicyStatementSid: string = 'Grant-CloudFront-Distribution-Key-Usage';
-
-      if (checkForExistingKeyPolicyStatement(keyPolicy, keyPolicyStatementSid)) {
-        return {
-          Status: 'SUCCESS',
-          Reason: 'The key policy has already been updated in response to a previous stack event. No action needed.',
-          PhysicalResourceId: event.PhysicalResourceId ?? context.logStreamName,
-          StackId: event.StackId,
-          RequestId: event.RequestId,
-          LogicalResourceId: event.LogicalResourceId,
-          Data: 'The key policy has already been updated in response to a previous stack event. No action needed.',
-        };
-      }
-
-      keyPolicy.Statement.push({
-        Sid: keyPolicyStatementSid,
+      const keyPolicyStatement = {
+        Sid: 'Grant-CloudFront-Distribution-Key-Usage',
         Effect: 'Allow',
         Principal: {
           Service: 'cloudfront.amazonaws.com',
@@ -98,11 +84,12 @@ export const handler = async (event: any, context: any) => {
             'AWS:SourceArn': `arn:aws:cloudfront::${accountId}:distribution/${cloudFrontDistributionId}`
           }
         }
-      });
+      };
+      const updatedKeyPolicy = updateKeyPolicy(keyPolicy, keyPolicyStatement);
 
       await kmsClient.send(new PutKeyPolicyCommand({
         KeyId: kmsKeyId,
-        Policy: JSON.stringify(keyPolicy),
+        Policy: JSON.stringify(updatedKeyPolicy),
         PolicyName: 'default'
       }));
     } catch (err) {
@@ -125,16 +112,24 @@ export const handler = async (event: any, context: any) => {
 };
 
 /**
- * Function that checks for a matching key policy statement using the SID. This is used to
- * prevent duplicate key policies from being added/updated in response to a stack being
- * updated one or more times after creation.
- * @param parsedKeyPolicy - Parsed key policy object, which is initially delivered in the form
- * of stringified JSON from the GetKeyPolicyCommand. See here under "Example Usage".
- * https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/kms/command/GetKeyPolicyCommand/
- * @param sid - The SID to match key policy statements on.
- * @returns - True if a matching key policy was detected, false if no match found.
+ * Updates a provided key policy with a provided key policy statement. First checks whether the provided key policy statement
+ * already exists. If an existing key policy is found with a matching sid, the provided key policy will overwrite the existing
+ * key policy. If no matching key policy is found, the provided key policy will be appended onto the array of policy statements.
+ * @param keyPolicy - the JSON.parse'd result of the otherwise stringified key policy.
+ * @param keyPolicyStatement - the key policy statement to be added to the key policy.
+ * @returns keyPolicy - the updated key policy.
  */
-export const checkForExistingKeyPolicyStatement = (parsedKeyPolicy: any, sid: string) => {
-  const matches = parsedKeyPolicy.Statement.find((statement: any) => statement.Sid === sid);
-  return matches ? true : false;
+export const updateKeyPolicy = (keyPolicy: any, keyPolicyStatement: any) => {
+  // Check to see if a duplicate key policy exists by matching on the sid. This is to prevent duplicate key policies
+  // from being added/updated in response to a stack being updated one or more times after initial creation.
+  const existingKeyPolicyIndex = keyPolicy.Statement.findIndex((statement: any) => statement.Sid === keyPolicyStatement.Sid);
+  // If a match is found, overwrite the key policy statement...
+  // Otherwise, push the new key policy to the array of statements
+  if (existingKeyPolicyIndex > -1) {
+    keyPolicy.Statement[existingKeyPolicyIndex] = keyPolicyStatement;
+  } else {
+    keyPolicy.Statement.push(keyPolicyStatement);
+  }
+  // Return the result
+  return keyPolicy;
 };
