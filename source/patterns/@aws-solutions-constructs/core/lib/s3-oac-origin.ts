@@ -34,7 +34,7 @@ export interface S3OacOriginProps extends cloudfront.OriginProps {
 }
 
 /**
- * An custom implementation of S3Origin that allows an origin access control (OAC) to be used instead of
+ * A custom implementation of S3Origin that allows an origin access control (OAC) to be used instead of
  * an origin access identity (OAI), which is currently the only option supported by default CDK.
  */
 export class S3OacOrigin implements cloudfront.IOrigin {
@@ -43,16 +43,20 @@ export class S3OacOrigin implements cloudfront.IOrigin {
   constructor(bucket: s3.IBucket, props: S3OacOriginProps) {
     if (bucket.isWebsite) {
       // If the bucket is configured for website hosting, set up an HttpOrigin to support legacy clients
-      printWarning(`Bucket ${bucket.bucketName} is being provided as an origin bucket to aws-cloudfront-s3, but currently
-        has static website hosting settings enabled. Please review whether this is the intended configuration. If so,
-        construct will configure an HttpOrigin to allow the distribution to access the bucket. If not, we strongly recommend
-        turning off static website hosting settings on the bucket, which will result in the construct provisioning an origin
-        access control (OAC) through which CloudFront can securely serve assets from the bucket.`);
+      printWarning(`Bucket ${bucket.bucketName} is being provided as a source but currently has website hosting enabled.
+        This requires both the bucket and its objects to be public. AWS strongly recommends against configuring buckets
+        and objects for public access. As an alternative, we recommend turning off website hosting settings on the bucket,
+        which will result in an origin access control (OAC) being provisioned through which CloudFront can securely
+        serve assets from the bucket.`);
       this.origin = new HttpOrigin(bucket.bucketWebsiteDomainName, {
         protocolPolicy: cloudfront.OriginProtocolPolicy.HTTP_ONLY, // S3 only supports HTTP for website buckets
         ...props
       });
     } else {
+      if (!props.originAccessControl) {
+        throw new Error(`"props.originAccessControl" is undefined. An origin access control must be provided when using a
+          bucket that does not have website hosting enabled.`);
+      }
       // If else, set up the origin access control
       this.origin = new S3OacBucketOrigin(bucket, props.originAccessControl!);
     }
