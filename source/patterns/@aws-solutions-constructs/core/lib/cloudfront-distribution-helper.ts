@@ -137,10 +137,11 @@ export function createCloudFrontDistributionForS3(
   if (!props.sourceBucket.isWebsite) {
     originAccessControl = new cloudfront.CfnOriginAccessControl(scope, 'CloudFrontOac', {
       originAccessControlConfig: {
-        name: generatePhysicalName('aws-cloudfront-s3', ['oac', id], 16),
+        name: generatePhysicalName('aws-cloudfront-s3-', [id], 64),
         originAccessControlOriginType: 's3',
         signingBehavior: 'always',
-        signingProtocol: 'sigv4'
+        signingProtocol: 'sigv4',
+        description: 'Origin access control provisioned by aws-cloudfront-s3'
       }
     });
     originProps = { originAccessControl };

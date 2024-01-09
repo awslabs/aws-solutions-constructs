@@ -729,11 +729,12 @@
       "Type": "AWS::CloudFront::OriginAccessControl",
       "Properties": {
         "OriginAccessControlConfig": {
+          "Description": "Origin access control provisioned by aws-cloudfront-s3",
           "Name": {
             "Fn::Join": [
               "",
               [
-                "aws-cloudfront-s3-",
+                "aws-cloudfront-s3-testaders-",
                 {
                   "Fn::Select": [
                     2,
