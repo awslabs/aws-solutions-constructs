@@ -1,7 +1,7 @@
 {
-  "Description": "Integration Test for originPath with aws-cloudfront-s3",
+  "Description": "Integration Test for aws-cloudfront-s3",
   "Resources": {
-    "testcloudfronts3S3LoggingBucket90D239DD": {
+    "existings3bucketencryptedwiths3managedkeyS3LoggingBucketF861F6B7": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -19,18 +19,12 @@
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
         },
-        "Tags": [
-          {
-            "Key": "aws-cdk:auto-delete-objects",
-            "Value": "true"
-          }
-        ],
         "VersioningConfiguration": {
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
@@ -42,11 +36,11 @@
         }
       }
     },
-    "testcloudfronts3S3LoggingBucketPolicy529D4CFF": {
+    "existings3bucketencryptedwiths3managedkeyS3LoggingBucketPolicy4358229C": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "testcloudfronts3S3LoggingBucket90D239DD"
+          "Ref": "existings3bucketencryptedwiths3managedkeyS3LoggingBucketF861F6B7"
         },
         "PolicyDocument": {
           "Statement": [
@@ -64,7 +58,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testcloudfronts3S3LoggingBucket90D239DD",
+                    "existings3bucketencryptedwiths3managedkeyS3LoggingBucketF861F6B7",
                     "Arn"
                   ]
                 },
@@ -74,46 +68,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testcloudfronts3S3LoggingBucket90D239DD",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Action": [
-                "s3:PutBucketPolicy",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*"
-              ],
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::GetAtt": [
-                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-                    "Arn"
-                  ]
-                }
-              },
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3S3LoggingBucket90D239DD",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "testcloudfronts3S3LoggingBucket90D239DD",
+                          "existings3bucketencryptedwiths3managedkeyS3LoggingBucketF861F6B7",
                           "Arn"
                         ]
                       },
@@ -129,7 +84,7 @@
                 "ArnLike": {
                   "aws:SourceArn": {
                     "Fn::GetAtt": [
-                      "testcloudfronts3S3BucketE0C5F76E",
+                      "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A",
                       "Arn"
                     ]
                   }
@@ -150,7 +105,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "testcloudfronts3S3LoggingBucket90D239DD",
+                        "existings3bucketencryptedwiths3managedkeyS3LoggingBucketF861F6B7",
                         "Arn"
                       ]
                     },
@@ -164,26 +119,7 @@
         }
       }
     },
-    "testcloudfronts3S3LoggingBucketAutoDeleteObjectsCustomResource6EE37727": {
-      "Type": "Custom::S3AutoDeleteObjects",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::GetAtt": [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-            "Arn"
-          ]
-        },
-        "BucketName": {
-          "Ref": "testcloudfronts3S3LoggingBucket90D239DD"
-        }
-      },
-      "DependsOn": [
-        "testcloudfronts3S3LoggingBucketPolicy529D4CFF"
-      ],
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
-    },
-    "testcloudfronts3S3BucketE0C5F76E": {
+    "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -210,7 +146,7 @@
         },
         "LoggingConfiguration": {
           "DestinationBucketName": {
-            "Ref": "testcloudfronts3S3LoggingBucket90D239DD"
+            "Ref": "existings3bucketencryptedwiths3managedkeyS3LoggingBucketF861F6B7"
           }
         },
         "PublicAccessBlockConfiguration": {
@@ -219,24 +155,18 @@
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
         },
-        "Tags": [
-          {
-            "Key": "aws-cdk:auto-delete-objects",
-            "Value": "true"
-          }
-        ],
         "VersioningConfiguration": {
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
-    "testcloudfronts3S3BucketPolicy250F1F61": {
+    "existings3bucketencryptedwiths3managedkeyS3BucketPolicyFDA85248": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "testcloudfronts3S3BucketE0C5F76E"
+          "Ref": "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A"
         },
         "PolicyDocument": {
           "Statement": [
@@ -254,7 +184,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testcloudfronts3S3BucketE0C5F76E",
+                    "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A",
                     "Arn"
                   ]
                 },
@@ -264,46 +194,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testcloudfronts3S3BucketE0C5F76E",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Action": [
-                "s3:PutBucketPolicy",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*"
-              ],
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::GetAtt": [
-                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-                    "Arn"
-                  ]
-                }
-              },
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3S3BucketE0C5F76E",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "testcloudfronts3S3BucketE0C5F76E",
+                          "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A",
                           "Arn"
                         ]
                       },
@@ -327,7 +218,7 @@
                         },
                         ":distribution/",
                         {
-                          "Ref": "testcloudfronts3CloudFrontDistribution0565DEE8"
+                          "Ref": "testcloudfronts3managedkeyCloudFrontDistributionE6431C62"
                         }
                       ]
                     ]
@@ -344,7 +235,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "testcloudfronts3S3BucketE0C5F76E",
+                        "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A",
                         "Arn"
                       ]
                     },
@@ -368,38 +259,7 @@
         }
       }
     },
-    "testcloudfronts3S3BucketAutoDeleteObjectsCustomResourceA13DD8F7": {
-      "Type": "Custom::S3AutoDeleteObjects",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::GetAtt": [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-            "Arn"
-          ]
-        },
-        "BucketName": {
-          "Ref": "testcloudfronts3S3BucketE0C5F76E"
-        }
-      },
-      "DependsOn": [
-        "testcloudfronts3S3BucketPolicy250F1F61"
-      ],
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
-    },
-    "testcloudfronts3SetHttpSecurityHeaders6C5A1E69": {
-      "Type": "AWS::CloudFront::Function",
-      "Properties": {
-        "AutoPublish": true,
-        "FunctionCode": "function handler(event) { var response = event.response; var headers = response.headers; headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'}; headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"}; headers['x-content-type-options'] = { value: 'nosniff'}; headers['x-frame-options'] = {value: 'DENY'}; headers['x-xss-protection'] = {value: '1; mode=block'}; return response; }",
-        "FunctionConfig": {
-          "Comment": "SetHttpSecurityHeadersc8966f7b24c95d47868a69c8831fbd3ccac3fa3d70",
-          "Runtime": "cloudfront-js-1.0"
-        },
-        "Name": "SetHttpSecurityHeadersc8966f7b24c95d47868a69c8831fbd3ccac3fa3d70"
-      }
-    },
-    "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58": {
+    "testcloudfronts3managedkeyCloudfrontLoggingBucketAccessLog09A44955": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -424,18 +284,12 @@
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
         },
-        "Tags": [
-          {
-            "Key": "aws-cdk:auto-delete-objects",
-            "Value": "true"
-          }
-        ],
         "VersioningConfiguration": {
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
@@ -447,11 +301,11 @@
         }
       }
     },
-    "testcloudfronts3CloudfrontLoggingBucketAccessLogPolicy526F2E14": {
+    "testcloudfronts3managedkeyCloudfrontLoggingBucketAccessLogPolicy08C15592": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58"
+          "Ref": "testcloudfronts3managedkeyCloudfrontLoggingBucketAccessLog09A44955"
         },
         "PolicyDocument": {
           "Statement": [
@@ -469,7 +323,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58",
+                    "testcloudfronts3managedkeyCloudfrontLoggingBucketAccessLog09A44955",
                     "Arn"
                   ]
                 },
@@ -479,46 +333,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Action": [
-                "s3:PutBucketPolicy",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*"
-              ],
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::GetAtt": [
-                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-                    "Arn"
-                  ]
-                }
-              },
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58",
+                          "testcloudfronts3managedkeyCloudfrontLoggingBucketAccessLog09A44955",
                           "Arn"
                         ]
                       },
@@ -534,7 +349,7 @@
                 "ArnLike": {
                   "aws:SourceArn": {
                     "Fn::GetAtt": [
-                      "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                      "testcloudfronts3managedkeyCloudfrontLoggingBucket4F6525D7",
                       "Arn"
                     ]
                   }
@@ -555,7 +370,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58",
+                        "testcloudfronts3managedkeyCloudfrontLoggingBucketAccessLog09A44955",
                         "Arn"
                       ]
                     },
@@ -569,26 +384,7 @@
         }
       }
     },
-    "testcloudfronts3CloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResourceE16E063D": {
-      "Type": "Custom::S3AutoDeleteObjects",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::GetAtt": [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-            "Arn"
-          ]
-        },
-        "BucketName": {
-          "Ref": "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58"
-        }
-      },
-      "DependsOn": [
-        "testcloudfronts3CloudfrontLoggingBucketAccessLogPolicy526F2E14"
-      ],
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
-    },
-    "testcloudfronts3CloudfrontLoggingBucket985C0FE8": {
+    "testcloudfronts3managedkeyCloudfrontLoggingBucket4F6525D7": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "LogDeliveryWrite",
@@ -603,7 +399,7 @@
         },
         "LoggingConfiguration": {
           "DestinationBucketName": {
-            "Ref": "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58"
+            "Ref": "testcloudfronts3managedkeyCloudfrontLoggingBucketAccessLog09A44955"
           }
         },
         "OwnershipControls": {
@@ -619,24 +415,18 @@
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
         },
-        "Tags": [
-          {
-            "Key": "aws-cdk:auto-delete-objects",
-            "Value": "true"
-          }
-        ],
         "VersioningConfiguration": {
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
-    "testcloudfronts3CloudfrontLoggingBucketPolicyDF55851B": {
+    "testcloudfronts3managedkeyCloudfrontLoggingBucketPolicy8952C83B": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "testcloudfronts3CloudfrontLoggingBucket985C0FE8"
+          "Ref": "testcloudfronts3managedkeyCloudfrontLoggingBucket4F6525D7"
         },
         "PolicyDocument": {
           "Statement": [
@@ -654,7 +444,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                    "testcloudfronts3managedkeyCloudfrontLoggingBucket4F6525D7",
                     "Arn"
                   ]
                 },
@@ -664,46 +454,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Action": [
-                "s3:PutBucketPolicy",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*"
-              ],
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::GetAtt": [
-                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-                    "Arn"
-                  ]
-                }
-              },
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                          "testcloudfronts3managedkeyCloudfrontLoggingBucket4F6525D7",
                           "Arn"
                         ]
                       },
@@ -718,26 +469,7 @@
         }
       }
     },
-    "testcloudfronts3CloudfrontLoggingBucketAutoDeleteObjectsCustomResource19604D88": {
-      "Type": "Custom::S3AutoDeleteObjects",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::GetAtt": [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-            "Arn"
-          ]
-        },
-        "BucketName": {
-          "Ref": "testcloudfronts3CloudfrontLoggingBucket985C0FE8"
-        }
-      },
-      "DependsOn": [
-        "testcloudfronts3CloudfrontLoggingBucketPolicyDF55851B"
-      ],
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
-    },
-    "testcloudfronts3CloudFrontOac7A951AA6": {
+    "testcloudfronts3managedkeyCloudFrontOac1422B0A1": {
       "Type": "AWS::CloudFront::OriginAccessControl",
       "Properties": {
         "OriginAccessControlConfig": {
@@ -746,7 +478,7 @@
             "Fn::Join": [
               "",
               [
-                "aws-cloudfront-s3-testnt-s3-",
+                "aws-cloudfront-s3-testd-key-",
                 {
                   "Fn::Select": [
                     2,
@@ -769,25 +501,14 @@
         }
       }
     },
-    "testcloudfronts3CloudFrontDistribution0565DEE8": {
+    "testcloudfronts3managedkeyCloudFrontDistributionE6431C62": {
       "Type": "AWS::CloudFront::Distribution",
       "Properties": {
         "DistributionConfig": {
           "DefaultCacheBehavior": {
             "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
             "Compress": true,
-            "FunctionAssociations": [
-              {
-                "EventType": "viewer-response",
-                "FunctionARN": {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3SetHttpSecurityHeaders6C5A1E69",
-                    "FunctionARN"
-                  ]
-                }
-              }
-            ],
-            "TargetOriginId": "cfts3customoriginPathtestcloudfronts3CloudFrontDistributionOrigin1AE2DDD7C",
+            "TargetOriginId": "cfts3bucketencryptedwithmanagedkeyprovidedasexistingbuckettestcloudfronts3managedkeyCloudFrontDistributionOrigin17C5092B4",
             "ViewerProtocolPolicy": "redirect-to-https"
           },
           "DefaultRootObject": "index.html",
@@ -797,7 +518,7 @@
           "Logging": {
             "Bucket": {
               "Fn::GetAtt": [
-                "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                "testcloudfronts3managedkeyCloudfrontLoggingBucket4F6525D7",
                 "RegionalDomainName"
               ]
             }
@@ -806,18 +527,17 @@
             {
               "DomainName": {
                 "Fn::GetAtt": [
-                  "testcloudfronts3S3BucketE0C5F76E",
+                  "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A",
                   "RegionalDomainName"
                 ]
               },
-              "Id": "cfts3customoriginPathtestcloudfronts3CloudFrontDistributionOrigin1AE2DDD7C",
+              "Id": "cfts3bucketencryptedwithmanagedkeyprovidedasexistingbuckettestcloudfronts3managedkeyCloudFrontDistributionOrigin17C5092B4",
               "OriginAccessControlId": {
                 "Fn::GetAtt": [
-                  "testcloudfronts3CloudFrontOac7A951AA6",
+                  "testcloudfronts3managedkeyCloudFrontOac1422B0A1",
                   "Id"
                 ]
               },
-              "OriginPath": "/testPath",
               "S3OriginConfig": {}
             }
           ]
@@ -829,82 +549,6 @@
             {
               "id": "W70",
               "reason": "Since the distribution uses the CloudFront domain name, CloudFront automatically sets the security policy to TLSv1 regardless of the value of MinimumProtocolVersion"
-            }
-          ]
-        }
-      }
-    },
-    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "lambda.amazonaws.com"
-              }
-            }
-          ]
-        },
-        "ManagedPolicyArns": [
-          {
-            "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-          }
-        ]
-      }
-    },
-    "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": {
-            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-          },
-          "S3Key": "b7f33614a69548d6bafe224d751a7ef238cde19097415e553fe8b63a4c8fd8a6.zip"
-        },
-        "Timeout": 900,
-        "MemorySize": 128,
-        "Handler": "index.handler",
-        "Role": {
-          "Fn::GetAtt": [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-            "Arn"
-          ]
-        },
-        "Runtime": "nodejs18.x",
-        "Description": {
-          "Fn::Join": [
-            "",
-            [
-              "Lambda function for auto-deleting objects in ",
-              {
-                "Ref": "testcloudfronts3S3LoggingBucket90D239DD"
-              },
-              " S3 bucket."
-            ]
-          ]
-        }
-      },
-      "DependsOn": [
-        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
-      ],
-      "Metadata": {
-        "cfn_nag": {
-          "rules_to_suppress": [
-            {
-              "id": "W58",
-              "reason": "CDK generated custom resource"
-            },
-            {
-              "id": "W89",
-              "reason": "CDK generated custom resource"
-            },
-            {
-              "id": "W92",
-              "reason": "CDK generated custom resource"
             }
           ]
         }

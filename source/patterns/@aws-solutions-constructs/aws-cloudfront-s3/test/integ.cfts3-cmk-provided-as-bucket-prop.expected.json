@@ -1,6 +1,43 @@
 {
+  "Description": "Integration Test for aws-cloudfront-s3",
   "Resources": {
-    "testcloudfronts3S3LoggingBucket90D239DD": {
+    "cmkKey598B20B2": {
+      "Type": "AWS::KMS::Key",
+      "Properties": {
+        "EnableKeyRotation": true,
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":root"
+                    ]
+                  ]
+                }
+              },
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "testcloudfronts3cmkencryptionkeyS3LoggingBucket5CE52209": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -12,37 +49,18 @@
             }
           ]
         },
-        "LifecycleConfiguration": {
-          "Rules": [
-            {
-              "Status": "Enabled",
-              "Transitions": [
-                {
-                  "StorageClass": "GLACIER",
-                  "TransitionInDays": 7
-                }
-              ]
-            }
-          ]
-        },
         "PublicAccessBlockConfiguration": {
           "BlockPublicAcls": true,
           "BlockPublicPolicy": true,
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
         },
-        "Tags": [
-          {
-            "Key": "aws-cdk:auto-delete-objects",
-            "Value": "true"
-          }
-        ],
         "VersioningConfiguration": {
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
@@ -54,11 +72,11 @@
         }
       }
     },
-    "testcloudfronts3S3LoggingBucketPolicy529D4CFF": {
+    "testcloudfronts3cmkencryptionkeyS3LoggingBucketPolicyF38CB6DD": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "testcloudfronts3S3LoggingBucket90D239DD"
+          "Ref": "testcloudfronts3cmkencryptionkeyS3LoggingBucket5CE52209"
         },
         "PolicyDocument": {
           "Statement": [
@@ -76,7 +94,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testcloudfronts3S3LoggingBucket90D239DD",
+                    "testcloudfronts3cmkencryptionkeyS3LoggingBucket5CE52209",
                     "Arn"
                   ]
                 },
@@ -86,46 +104,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testcloudfronts3S3LoggingBucket90D239DD",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Action": [
-                "s3:PutBucketPolicy",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*"
-              ],
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::GetAtt": [
-                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-                    "Arn"
-                  ]
-                }
-              },
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3S3LoggingBucket90D239DD",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "testcloudfronts3S3LoggingBucket90D239DD",
+                          "testcloudfronts3cmkencryptionkeyS3LoggingBucket5CE52209",
                           "Arn"
                         ]
                       },
@@ -141,7 +120,7 @@
                 "ArnLike": {
                   "aws:SourceArn": {
                     "Fn::GetAtt": [
-                      "testcloudfronts3S3BucketE0C5F76E",
+                      "testcloudfronts3cmkencryptionkeyS3Bucket0E74E5D2",
                       "Arn"
                     ]
                   }
@@ -162,7 +141,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "testcloudfronts3S3LoggingBucket90D239DD",
+                        "testcloudfronts3cmkencryptionkeyS3LoggingBucket5CE52209",
                         "Arn"
                       ]
                     },
@@ -176,33 +155,20 @@
         }
       }
     },
-    "testcloudfronts3S3LoggingBucketAutoDeleteObjectsCustomResource6EE37727": {
-      "Type": "Custom::S3AutoDeleteObjects",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::GetAtt": [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-            "Arn"
-          ]
-        },
-        "BucketName": {
-          "Ref": "testcloudfronts3S3LoggingBucket90D239DD"
-        }
-      },
-      "DependsOn": [
-        "testcloudfronts3S3LoggingBucketPolicy529D4CFF"
-      ],
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
-    },
-    "testcloudfronts3S3BucketE0C5F76E": {
+    "testcloudfronts3cmkencryptionkeyS3Bucket0E74E5D2": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
           "ServerSideEncryptionConfiguration": [
             {
               "ServerSideEncryptionByDefault": {
-                "SSEAlgorithm": "AES256"
+                "KMSMasterKeyID": {
+                  "Fn::GetAtt": [
+                    "cmkKey598B20B2",
+                    "Arn"
+                  ]
+                },
+                "SSEAlgorithm": "aws:kms"
               }
             }
           ]
@@ -222,7 +188,7 @@
         },
         "LoggingConfiguration": {
           "DestinationBucketName": {
-            "Ref": "testcloudfronts3S3LoggingBucket90D239DD"
+            "Ref": "testcloudfronts3cmkencryptionkeyS3LoggingBucket5CE52209"
           }
         },
         "PublicAccessBlockConfiguration": {
@@ -231,24 +197,18 @@
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
         },
-        "Tags": [
-          {
-            "Key": "aws-cdk:auto-delete-objects",
-            "Value": "true"
-          }
-        ],
         "VersioningConfiguration": {
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
-    "testcloudfronts3S3BucketPolicy250F1F61": {
+    "testcloudfronts3cmkencryptionkeyS3BucketPolicy5DF57B01": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "testcloudfronts3S3BucketE0C5F76E"
+          "Ref": "testcloudfronts3cmkencryptionkeyS3Bucket0E74E5D2"
         },
         "PolicyDocument": {
           "Statement": [
@@ -266,7 +226,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testcloudfronts3S3BucketE0C5F76E",
+                    "testcloudfronts3cmkencryptionkeyS3Bucket0E74E5D2",
                     "Arn"
                   ]
                 },
@@ -276,46 +236,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testcloudfronts3S3BucketE0C5F76E",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Action": [
-                "s3:PutBucketPolicy",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*"
-              ],
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::GetAtt": [
-                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-                    "Arn"
-                  ]
-                }
-              },
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3S3BucketE0C5F76E",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "testcloudfronts3S3BucketE0C5F76E",
+                          "testcloudfronts3cmkencryptionkeyS3Bucket0E74E5D2",
                           "Arn"
                         ]
                       },
@@ -339,7 +260,7 @@
                         },
                         ":distribution/",
                         {
-                          "Ref": "testcloudfronts3CloudFrontDistribution0565DEE8"
+                          "Ref": "testcloudfronts3cmkencryptionkeyCloudFrontDistribution57C8A907"
                         }
                       ]
                     ]
@@ -356,7 +277,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "testcloudfronts3S3BucketE0C5F76E",
+                        "testcloudfronts3cmkencryptionkeyS3Bucket0E74E5D2",
                         "Arn"
                       ]
                     },
@@ -380,38 +301,7 @@
         }
       }
     },
-    "testcloudfronts3S3BucketAutoDeleteObjectsCustomResourceA13DD8F7": {
-      "Type": "Custom::S3AutoDeleteObjects",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::GetAtt": [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-            "Arn"
-          ]
-        },
-        "BucketName": {
-          "Ref": "testcloudfronts3S3BucketE0C5F76E"
-        }
-      },
-      "DependsOn": [
-        "testcloudfronts3S3BucketPolicy250F1F61"
-      ],
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
-    },
-    "testcloudfronts3SetHttpSecurityHeaders6C5A1E69": {
-      "Type": "AWS::CloudFront::Function",
-      "Properties": {
-        "AutoPublish": true,
-        "FunctionCode": "function handler(event) { var response = event.response; var headers = response.headers; headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'}; headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"}; headers['x-content-type-options'] = { value: 'nosniff'}; headers['x-frame-options'] = {value: 'DENY'}; headers['x-xss-protection'] = {value: '1; mode=block'}; return response; }",
-        "FunctionConfig": {
-          "Comment": "SetHttpSecurityHeadersc844fcbc00f82925aea73bcda195f6b5551bdcf3d4",
-          "Runtime": "cloudfront-js-1.0"
-        },
-        "Name": "SetHttpSecurityHeadersc844fcbc00f82925aea73bcda195f6b5551bdcf3d4"
-      }
-    },
-    "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58": {
+    "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLog8863921C": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -420,19 +310,6 @@
               "ServerSideEncryptionByDefault": {
                 "SSEAlgorithm": "AES256"
               }
-            }
-          ]
-        },
-        "LifecycleConfiguration": {
-          "Rules": [
-            {
-              "Status": "Enabled",
-              "Transitions": [
-                {
-                  "StorageClass": "GLACIER",
-                  "TransitionInDays": 7
-                }
-              ]
             }
           ]
         },
@@ -449,18 +326,12 @@
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
         },
-        "Tags": [
-          {
-            "Key": "aws-cdk:auto-delete-objects",
-            "Value": "true"
-          }
-        ],
         "VersioningConfiguration": {
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete",
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
@@ -472,11 +343,11 @@
         }
       }
     },
-    "testcloudfronts3CloudfrontLoggingBucketAccessLogPolicy526F2E14": {
+    "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLogPolicy8F931BD7": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58"
+          "Ref": "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLog8863921C"
         },
         "PolicyDocument": {
           "Statement": [
@@ -494,7 +365,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58",
+                    "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLog8863921C",
                     "Arn"
                   ]
                 },
@@ -504,46 +375,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Action": [
-                "s3:PutBucketPolicy",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*"
-              ],
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::GetAtt": [
-                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-                    "Arn"
-                  ]
-                }
-              },
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58",
+                          "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLog8863921C",
                           "Arn"
                         ]
                       },
@@ -559,7 +391,7 @@
                 "ArnLike": {
                   "aws:SourceArn": {
                     "Fn::GetAtt": [
-                      "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                      "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucket7C1787CD",
                       "Arn"
                     ]
                   }
@@ -580,7 +412,7 @@
                   [
                     {
                       "Fn::GetAtt": [
-                        "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58",
+                        "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLog8863921C",
                         "Arn"
                       ]
                     },
@@ -594,26 +426,7 @@
         }
       }
     },
-    "testcloudfronts3CloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResourceE16E063D": {
-      "Type": "Custom::S3AutoDeleteObjects",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::GetAtt": [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-            "Arn"
-          ]
-        },
-        "BucketName": {
-          "Ref": "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58"
-        }
-      },
-      "DependsOn": [
-        "testcloudfronts3CloudfrontLoggingBucketAccessLogPolicy526F2E14"
-      ],
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
-    },
-    "testcloudfronts3CloudfrontLoggingBucket985C0FE8": {
+    "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucket7C1787CD": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "LogDeliveryWrite",
@@ -626,22 +439,9 @@
             }
           ]
         },
-        "LifecycleConfiguration": {
-          "Rules": [
-            {
-              "Status": "Enabled",
-              "Transitions": [
-                {
-                  "StorageClass": "GLACIER",
-                  "TransitionInDays": 7
-                }
-              ]
-            }
-          ]
-        },
         "LoggingConfiguration": {
           "DestinationBucketName": {
-            "Ref": "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58"
+            "Ref": "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLog8863921C"
           }
         },
         "OwnershipControls": {
@@ -657,24 +457,18 @@
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true
         },
-        "Tags": [
-          {
-            "Key": "aws-cdk:auto-delete-objects",
-            "Value": "true"
-          }
-        ],
         "VersioningConfiguration": {
           "Status": "Enabled"
         }
       },
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain"
     },
-    "testcloudfronts3CloudfrontLoggingBucketPolicyDF55851B": {
+    "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketPolicy5E737735": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "testcloudfronts3CloudfrontLoggingBucket985C0FE8"
+          "Ref": "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucket7C1787CD"
         },
         "PolicyDocument": {
           "Statement": [
@@ -692,7 +486,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                    "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucket7C1787CD",
                     "Arn"
                   ]
                 },
@@ -702,46 +496,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
-                          "Arn"
-                        ]
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Action": [
-                "s3:PutBucketPolicy",
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*"
-              ],
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": {
-                  "Fn::GetAtt": [
-                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-                    "Arn"
-                  ]
-                }
-              },
-              "Resource": [
-                {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
-                    "Arn"
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                          "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucket7C1787CD",
                           "Arn"
                         ]
                       },
@@ -756,26 +511,7 @@
         }
       }
     },
-    "testcloudfronts3CloudfrontLoggingBucketAutoDeleteObjectsCustomResource19604D88": {
-      "Type": "Custom::S3AutoDeleteObjects",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::GetAtt": [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-            "Arn"
-          ]
-        },
-        "BucketName": {
-          "Ref": "testcloudfronts3CloudfrontLoggingBucket985C0FE8"
-        }
-      },
-      "DependsOn": [
-        "testcloudfronts3CloudfrontLoggingBucketPolicyDF55851B"
-      ],
-      "UpdateReplacePolicy": "Delete",
-      "DeletionPolicy": "Delete"
-    },
-    "testcloudfronts3CloudFrontOac7A951AA6": {
+    "testcloudfronts3cmkencryptionkeyCloudFrontOac4EFECBD9": {
       "Type": "AWS::CloudFront::OriginAccessControl",
       "Properties": {
         "OriginAccessControlConfig": {
@@ -784,7 +520,7 @@
             "Fn::Join": [
               "",
               [
-                "aws-cloudfront-s3-testnt-s3-",
+                "aws-cloudfront-s3-testn-key-",
                 {
                   "Fn::Select": [
                     2,
@@ -807,25 +543,14 @@
         }
       }
     },
-    "testcloudfronts3CloudFrontDistribution0565DEE8": {
+    "testcloudfronts3cmkencryptionkeyCloudFrontDistribution57C8A907": {
       "Type": "AWS::CloudFront::Distribution",
       "Properties": {
         "DistributionConfig": {
           "DefaultCacheBehavior": {
             "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
             "Compress": true,
-            "FunctionAssociations": [
-              {
-                "EventType": "viewer-response",
-                "FunctionARN": {
-                  "Fn::GetAtt": [
-                    "testcloudfronts3SetHttpSecurityHeaders6C5A1E69",
-                    "FunctionARN"
-                  ]
-                }
-              }
-            ],
-            "TargetOriginId": "cfts3customLoggingBucketstestcloudfronts3CloudFrontDistributionOrigin1BBEA7E26",
+            "TargetOriginId": "cfts3cmkprovidedasbucketproptestcloudfronts3cmkencryptionkeyCloudFrontDistributionOrigin1FA4541E3",
             "ViewerProtocolPolicy": "redirect-to-https"
           },
           "DefaultRootObject": "index.html",
@@ -835,7 +560,7 @@
           "Logging": {
             "Bucket": {
               "Fn::GetAtt": [
-                "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucket7C1787CD",
                 "RegionalDomainName"
               ]
             }
@@ -844,14 +569,14 @@
             {
               "DomainName": {
                 "Fn::GetAtt": [
-                  "testcloudfronts3S3BucketE0C5F76E",
+                  "testcloudfronts3cmkencryptionkeyS3Bucket0E74E5D2",
                   "RegionalDomainName"
                 ]
               },
-              "Id": "cfts3customLoggingBucketstestcloudfronts3CloudFrontDistributionOrigin1BBEA7E26",
+              "Id": "cfts3cmkprovidedasbucketproptestcloudfronts3cmkencryptionkeyCloudFrontDistributionOrigin1FA4541E3",
               "OriginAccessControlId": {
                 "Fn::GetAtt": [
-                  "testcloudfronts3CloudFrontOac7A951AA6",
+                  "testcloudfronts3cmkencryptionkeyCloudFrontOac4EFECBD9",
                   "Id"
                 ]
               },
@@ -871,11 +596,10 @@
         }
       }
     },
-    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+    "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateLambdaRoleB7BBA8A2": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
-          "Version": "2012-10-17",
           "Statement": [
             {
               "Action": "sts:AssumeRole",
@@ -884,68 +608,317 @@
                 "Service": "lambda.amazonaws.com"
               }
             }
-          ]
+          ],
+          "Version": "2012-10-17"
         },
-        "ManagedPolicyArns": [
+        "Description": "Role to update kms key policy to allow CloudFront access",
+        "Policies": [
           {
-            "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "kms:PutKeyPolicy",
+                    "kms:GetKeyPolicy",
+                    "kms:DescribeKey"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "cmkKey598B20B2",
+                      "Arn"
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "KmsPolicy"
           }
         ]
       }
     },
-    "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+    "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateLambdaRoleDefaultPolicy0E93FCDF": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateLambdaRoleDefaultPolicy0E93FCDF",
+        "Roles": [
+          {
+            "Ref": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateLambdaRoleB7BBA8A2"
+          }
+        ]
+      },
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W12",
+              "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+            }
+          ]
+        }
+      }
+    },
+    "testcloudfronts3cmkencryptionkeyLambdaFunctionServiceRole85783D1D": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":logs:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":",
+                        {
+                          "Ref": "AWS::AccountId"
+                        },
+                        ":log-group:/aws/lambda/*"
+                      ]
+                    ]
+                  }
+                }
+              ],
+              "Version": "2012-10-17"
+            },
+            "PolicyName": "LambdaFunctionServiceRolePolicy"
+          }
+        ]
+      }
+    },
+    "testcloudfronts3cmkencryptionkeyLambdaFunction4DCD662E": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "b7f33614a69548d6bafe224d751a7ef238cde19097415e553fe8b63a4c8fd8a6.zip"
+          "S3Key": "4a4b024f310aca2784b69bcb790e9ccaef785e9ad5d1b73624144f88c4465b4f.zip"
         },
-        "Timeout": 900,
-        "MemorySize": 128,
+        "Description": "Custom resource function that updates a provided key policy to allow CloudFront access.",
         "Handler": "index.handler",
         "Role": {
           "Fn::GetAtt": [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+            "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateLambdaRoleB7BBA8A2",
             "Arn"
           ]
         },
         "Runtime": "nodejs18.x",
-        "Description": {
-          "Fn::Join": [
-            "",
-            [
-              "Lambda function for auto-deleting objects in ",
-              {
-                "Ref": "testcloudfronts3S3LoggingBucket90D239DD"
-              },
-              " S3 bucket."
-            ]
-          ]
+        "TracingConfig": {
+          "Mode": "Active"
         }
       },
       "DependsOn": [
-        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+        "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateLambdaRoleDefaultPolicy0E93FCDF",
+        "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateLambdaRoleB7BBA8A2"
       ],
       "Metadata": {
         "cfn_nag": {
           "rules_to_suppress": [
             {
               "id": "W58",
-              "reason": "CDK generated custom resource"
+              "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
             },
             {
               "id": "W89",
-              "reason": "CDK generated custom resource"
+              "reason": "This is not a rule for the general case, just for specific use cases/industries"
             },
             {
               "id": "W92",
-              "reason": "CDK generated custom resource"
+              "reason": "Impossible for us to define the correct concurrency for clients"
             }
           ]
         }
       }
+    },
+    "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventServiceRole3D4040AD": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventServiceRoleDefaultPolicy066CD751": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "testcloudfronts3cmkencryptionkeyLambdaFunction4DCD662E",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "testcloudfronts3cmkencryptionkeyLambdaFunction4DCD662E",
+                          "Arn"
+                        ]
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventServiceRoleDefaultPolicy066CD751",
+        "Roles": [
+          {
+            "Ref": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventServiceRole3D4040AD"
+          }
+        ]
+      }
+    },
+    "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEvent8BCBFC59": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "7382a0addb9f34974a1ea6c6c9b063882af874828f366f5c93b2b7b64db15c94.zip"
+        },
+        "Description": "AWS CDK resource provider framework - onEvent (cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateProvider)",
+        "Environment": {
+          "Variables": {
+            "USER_ON_EVENT_FUNCTION_ARN": {
+              "Fn::GetAtt": [
+                "testcloudfronts3cmkencryptionkeyLambdaFunction4DCD662E",
+                "Arn"
+              ]
+            }
+          }
+        },
+        "Handler": "framework.onEvent",
+        "Role": {
+          "Fn::GetAtt": [
+            "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventServiceRole3D4040AD",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs18.x",
+        "Timeout": 900
+      },
+      "DependsOn": [
+        "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventServiceRoleDefaultPolicy066CD751",
+        "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventServiceRole3D4040AD"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "The CDK-provided lambda function that backs their Custom Resource Provider framework has an IAM role with the arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole Managed Policy attached, which grants permission to write to CloudWatch Logs"
+            },
+            {
+              "id": "W89",
+              "reason": "The CDK-provided lambda function that backs their Custom Resource Provider framework does not access VPC resources"
+            },
+            {
+              "id": "W92",
+              "reason": "The CDK-provided lambda function that backs their Custom Resource Provider framework does not define ReservedConcurrentExecutions"
+            }
+          ]
+        }
+      }
+    },
+    "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdaterFAFEBF0F": {
+      "Type": "Custom::KmsKeyPolicyUpdater",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEvent8BCBFC59",
+            "Arn"
+          ]
+        },
+        "KmsKeyId": {
+          "Ref": "cmkKey598B20B2"
+        },
+        "CloudFrontDistributionId": {
+          "Ref": "testcloudfronts3cmkencryptionkeyCloudFrontDistribution57C8A907"
+        },
+        "AccountId": {
+          "Ref": "AWS::AccountId"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     }
   },
   "Parameters": {

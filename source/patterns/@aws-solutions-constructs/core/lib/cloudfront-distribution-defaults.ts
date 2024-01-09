@@ -59,27 +59,19 @@ export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: 
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function DefaultCloudFrontWebDistributionForS3Props(
-  sourceBucket: s3.IBucket,
+  origin: IOrigin,
   loggingBucket: s3.Bucket | undefined,
   setHttpSecurityHeaders: boolean,
-  originPath?: string,
   cfFunction?: cloudfront.IFunction,
   responseHeadersPolicy?: cloudfront.ResponseHeadersPolicy,
 ): cloudfront.DistributionProps {
-
-  let origin: IOrigin;
-
-  if (originPath) {
-    origin = new origins.S3Origin(sourceBucket, { originPath });
-  } else {
-    origin = new origins.S3Origin(sourceBucket);
-  }
 
   let defaultBehavior: BehaviorOptions = {
     origin,
     viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
     ...getFunctionAssociationsProp(setHttpSecurityHeaders, cfFunction)
   };
+
   if (responseHeadersPolicy) {
     defaultBehavior = {...defaultBehavior, responseHeadersPolicy };
   }

@@ -16,7 +16,7 @@ import * as crypto from 'crypto';
 
 const s3Client = new S3Client({ region: process.env.REGION });
 
-export const handler = async (event, context) => {
+export const handler = async (event: any, context: any) => {
   let status = 'SUCCESS';
   let responseData = {};
 
@@ -37,9 +37,9 @@ export const handler = async (event, context) => {
 
       let template = await getObjectResponse.Body?.transformToString();
 
-      templateValues.forEach(templateValue => {
+      templateValues.forEach((templateValue: any) => {
         template = template?.replace(
-          new RegExp(templateValue.id, 'g'), 
+          new RegExp(templateValue.id, 'g'),
           templateValue.value
         );
       });
