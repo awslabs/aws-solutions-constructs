@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import { Construct } from "constructs";
 import * as cdk from "aws-cdk-lib";
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -20,7 +19,10 @@ import { Aws, CustomResource } from 'aws-cdk-lib';
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import * as path from 'path';
 import { Provider } from "aws-cdk-lib/custom-resources";
-import { addCfnSuppressRules, buildLambdaFunction } from "@aws-solutions-constructs/core";
+import { buildLambdaFunction } from "@aws-solutions-constructs/core";
+import { addCfnSuppressRulesForCustomResourceProvider } from "./utils";
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
+import { Construct } from 'constructs';
 
 /**
  * The TemplateValue interface defines the id-value pair that will
@@ -143,22 +145,7 @@ export function createTemplateWriterCustomResource(
     onEventHandler: templateWriterLambda
   });
 
-  const providerFrameworkFunction = templateWriterProvider.node.children[0].node.findChild('Resource') as lambda.CfnFunction;
-
-  addCfnSuppressRules(providerFrameworkFunction, [
-    {
-      id: 'W58',
-      reason: `The CDK-provided lambda function that backs their Custom Resource Provider framework has an IAM role with the arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole Managed Policy attached, which grants permission to write to CloudWatch Logs`
-    },
-    {
-      id: 'W89',
-      reason: `The CDK-provided lambda function that backs their Custom Resource Provider framework does not access VPC resources`
-    },
-    {
-      id: 'W92',
-      reason: `The CDK-provided lambda function that backs their Custom Resource Provider framework does not define ReservedConcurrentExecutions`
-    }
-  ]);
+  addCfnSuppressRulesForCustomResourceProvider(templateWriterProvider);
 
   const customResource = new CustomResource(scope, `${id}TemplateWriterCustomResource`, {
     resourceType: 'Custom::TemplateWriter',

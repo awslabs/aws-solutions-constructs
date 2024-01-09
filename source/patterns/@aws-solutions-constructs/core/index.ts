@@ -40,6 +40,7 @@ export * from './lib/secretsmanager-helper';
 export * from './lib/security-group-helper';
 export * from './lib/sns-defaults';
 export * from './lib/sns-helper';
+export * from './lib/s3-oac-origin';
 export * from './lib/sqs-defaults';
 export * from './lib/sqs-helper';
 export * from './lib/cloudfront-distribution-helper';

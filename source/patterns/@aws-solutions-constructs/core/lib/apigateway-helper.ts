@@ -217,11 +217,13 @@ export interface RegionalLambdaRestApiResponse {
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function RegionalLambdaRestApi(scope: Construct, existingLambdaObj: lambda.Function,
-  apiGatewayProps?: apigateway.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): RegionalLambdaRestApiResponse {
+  apiGatewayProps?: apigateway.LambdaRestApiProps,
+  logGroupProps?: logs.LogGroupProps,
+  useDefaultAuth: boolean = true): RegionalLambdaRestApiResponse {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
-  const defaultProps = apiDefaults.DefaultRegionalLambdaRestApiProps(existingLambdaObj, logGroup);
+  const defaultProps = apiDefaults.DefaultRegionalLambdaRestApiProps(existingLambdaObj, logGroup, useDefaultAuth);
   const configureLambdaRestApiResponse = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
   return { api: configureLambdaRestApiResponse.api, role: configureLambdaRestApiResponse.role, group: logGroup};
 }

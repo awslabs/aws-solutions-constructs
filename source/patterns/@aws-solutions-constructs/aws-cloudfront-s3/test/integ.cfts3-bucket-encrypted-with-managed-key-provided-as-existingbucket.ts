@@ -12,29 +12,32 @@
  */
 
 // Imports
-import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
+import { App, Stack } from "aws-cdk-lib";
+import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
+import { buildS3Bucket, generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
-import { CloudFrontToS3 } from "../lib";
-import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
-stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3 custom CloudFront Logging Bubkcet';
+stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
 
-new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+// Definitions
+const existingBucketObj = buildS3Bucket(stack, {
   bucketProps: {
-    removalPolicy: RemovalPolicy.DESTROY,
-    autoDeleteObjects: true
-  },
-  cloudFrontLoggingBucketProps: {
-    removalPolicy: RemovalPolicy.DESTROY,
-    autoDeleteObjects: true,
-    encryption: BucketEncryption.S3_MANAGED,
-    versioned: true
+    encryption: BucketEncryption.S3_MANAGED
   }
-});
+}, 'existing-s3-bucket-encrypted-with-s3-managed-key').bucket;
+
+const props: CloudFrontToS3Props = {
+  existingBucketObj,
+  insertHttpSecurityHeaders: false
+};
+
+new CloudFrontToS3(stack, 'test-cloudfront-s3-managed-key', props);
 
 suppressAutoDeleteHandlerWarnings(stack);
+
 // Synth
 app.synth();

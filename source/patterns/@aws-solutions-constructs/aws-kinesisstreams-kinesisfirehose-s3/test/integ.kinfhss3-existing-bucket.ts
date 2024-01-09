@@ -24,7 +24,7 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-kinesisfirehose-s3';
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-const existingBucket = CreateScrapBucket(stack, { removalPolicy: RemovalPolicy.DESTROY });
+const existingBucket = CreateScrapBucket(stack, "scrapBucket", { removalPolicy: RemovalPolicy.DESTROY });
 const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
 new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-existing-bucket-firehose-s3-stack', {
   existingBucketObj: mybucket,

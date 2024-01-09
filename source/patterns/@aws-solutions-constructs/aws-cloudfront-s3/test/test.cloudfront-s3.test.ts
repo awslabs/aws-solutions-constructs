@@ -18,6 +18,8 @@ import {Duration, RemovalPolicy, Stack} from "aws-cdk-lib";
 import {CloudFrontToS3, CloudFrontToS3Props} from "../lib";
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import * as defaults from '@aws-solutions-constructs/core';
+import { Key } from "aws-cdk-lib/aws-kms";
+import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 
 function deploy(stack: cdk.Stack, props?: CloudFrontToS3Props) {
   return new CloudFrontToS3(stack, 'test-cloudfront-s3', {
@@ -113,19 +115,6 @@ test('check existing bucket', () => {
   template.hasResourceProperties("AWS::S3::Bucket", {
     BucketName: "my-bucket"
   });
-
-  template.hasResource("AWS::S3::BucketPolicy", {
-    Metadata: {
-      cfn_nag: {
-        rules_to_suppress: [
-          {
-            id: "F16",
-            reason: "Public website bucket policy requires a wildcard principal"
-          }
-        ]
-      }
-    }
-  });
 });
 
 test('check exception for Missing existingObj from props for deploy = false', () => {
@@ -195,19 +184,8 @@ test("Test existingBucketObj", () => {
             ]
           },
           Id: "existingIBucketCloudFrontDistributionOrigin1D5849125",
-          S3OriginConfig: {
-            OriginAccessIdentity: {
-              "Fn::Join": [
-                "",
-                [
-                  "origin-access-identity/cloudfront/",
-                  {
-                    Ref: "existingIBucketCloudFrontDistributionOrigin1S3OriginDDDB1606"
-                  }
-                ]
-              ]
-            }
-          }
+          OriginAccessControlId: { "Fn::GetAtt": [ "existingIBucketCloudFrontOacEB42E98F", "Id" ] },
+          S3OriginConfig: { }
         }
       ]
     }
@@ -329,7 +307,7 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
   expect(app).toThrowError();
 });
 
-test('s3 bucket with one content bucket and no logging bucket', () => {
+test('s3 bucket with one content bucket and no access logging of CONTENT bucket', () => {
   const stack = new cdk.Stack();
 
   const construct = new CloudFrontToS3(stack, 'cloudfront-s3', {
@@ -340,7 +318,9 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
   });
 
   const template = Template.fromStack(stack);
-  template.resourceCountIs("AWS::S3::Bucket", 2);
+  // Content bucket+Cloudfront Logs bucket+
+  // Access Log bucket for Cloudfront Logs bucket = 3 buckets
+  template.resourceCountIs("AWS::S3::Bucket", 3);
   expect(construct.s3LoggingBucket).toEqual(undefined);
 });
 
@@ -461,4 +441,151 @@ test("Confirm CheckCloudFrontProps is being called", () => {
       }
     });
   }).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
+});
+
+test("Custom resource is provisioned if encryption key is provided as bucketProp", () => {
+  const stack = new cdk.Stack();
+  const encryptionKey = new Key(stack, 'cmkKey', {
+    enableKeyRotation: true,
+    removalPolicy: RemovalPolicy.DESTROY
+  });
+  deploy(stack, {
+    bucketProps: {
+      encryptionKey,
+      encryption: s3.BucketEncryption.KMS
+    }
+  });
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
+    Role: {
+      "Fn::GetAtt": [ "testcloudfronts3KmsKeyPolicyUpdateLambdaRole08D4BED2", "Arn" ]
+    }
+  });
+});
+
+test("Custom resource is provisioned if CMK was used to encrypt an existing bucket", () => {
+  const stack = new cdk.Stack();
+  const encryptionKey = new Key(stack, 'cmkKey', {
+    enableKeyRotation: true,
+    removalPolicy: RemovalPolicy.DESTROY
+  });
+  const existingBucketObj = defaults.buildS3Bucket(stack, {
+    bucketProps: {
+      encryption: s3.BucketEncryption.KMS,
+      encryptionKey
+    }
+  }, 'existing-s3-bucket-encrypted-with-cmk').bucket;
+  new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+    existingBucketObj
+  });
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
+    Role: {
+      "Fn::GetAtt": [ "testcloudfronts3KmsKeyPolicyUpdateLambdaRole08D4BED2", "Arn" ]
+    }
+  });
+});
+
+test("Custom resource is not provisioned if encryption key is not provided as bucketProp", () => {
+  const stack = new cdk.Stack();
+  deploy(stack);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Lambda::Function', 0);
+});
+
+test("Custom resource is not provisioned if CMK was not used to encrypt an existing bucket", () => {
+  const stack = new cdk.Stack();
+  const existingBucketObj = defaults.buildS3Bucket(stack, {}, 'existing-s3-bucket-encrypted-with-cmk').bucket;
+  new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+    existingBucketObj
+  });
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Lambda::Function', 0);
+});
+
+test("HttpOrigin is provisioned if a static website bucket is used", () => {
+  const stack = new cdk.Stack();
+  const blockPublicAccess = false;
+  const props: CloudFrontToS3Props = {
+    bucketProps: {
+      enforceSSL: false,
+      publicReadAccess: true, // <-- required for isWebsite
+      blockPublicAccess: {
+        blockPublicAcls: blockPublicAccess,
+        restrictPublicBuckets: blockPublicAccess,
+        blockPublicPolicy: blockPublicAccess,
+        ignorePublicAcls: blockPublicAccess
+      },
+      websiteIndexDocument: "index.html" // <-- required for isWebsite
+    },
+    insertHttpSecurityHeaders: false
+  };
+  const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
+  const template = Template.fromStack(stack);
+  // Assert resources
+  template.resourceCountIs('AWS::CloudFront::OriginAccessControl', 0);
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
+    DistributionConfig: {
+      Origins: [
+        {
+          CustomOriginConfig: {
+            OriginProtocolPolicy: "http-only"
+          }
+        }
+      ]
+    }
+  });
+  template.resourceCountIs('AWS::CloudFront::OriginAccessIdentity', 0);
+  // Assert pattern properties (output props)
+  expect(construct.originAccessControl).toBe(undefined);
+});
+
+test("OAC is provisioned in all other cases", () => {
+  const stack = new cdk.Stack();
+  const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {});
+  const template = Template.fromStack(stack);
+  // Assert resources
+  template.resourceCountIs('AWS::CloudFront::OriginAccessControl', 1);
+  template.resourceCountIs('AWS::CloudFront::OriginAccessIdentity', 0);
+  // Assert pattern properties (output props)
+  expect(construct.originAccessControl).not.toBe(undefined);
+});
+
+test("If a customer provides their own httpOrigin, or other origin type, use that one", () => {
+  const stack = new cdk.Stack();
+  const blockPublicAccess = false;
+  const props: CloudFrontToS3Props = {
+    bucketProps: {
+      enforceSSL: false,
+      publicReadAccess: true, // <-- required for isWebsite
+      blockPublicAccess: {
+        blockPublicAcls: blockPublicAccess,
+        restrictPublicBuckets: blockPublicAccess,
+        blockPublicPolicy: blockPublicAccess,
+        ignorePublicAcls: blockPublicAccess
+      },
+      websiteIndexDocument: "index.html" // <-- required for isWebsite
+    },
+    insertHttpSecurityHeaders: false,
+    cloudFrontDistributionProps: {
+      defaultBehavior: {
+        origin: new origins.HttpOrigin('example.com', {
+          originId: 'custom-http-origin-for-testing'
+        })
+      }
+    }
+  };
+  new CloudFrontToS3(stack, 'test-cloudfront-s3', props);
+  const template = Template.fromStack(stack);
+  // Assert resources
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
+    DistributionConfig: {
+      Origins: [
+        {
+          DomainName: "example.com",
+          Id: "custom-http-origin-for-testing"
+        }
+      ]
+    }
+  });
 });

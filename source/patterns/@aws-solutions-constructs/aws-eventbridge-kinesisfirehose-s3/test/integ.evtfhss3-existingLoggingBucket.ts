@@ -24,7 +24,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-const logBucket = defaults.CreateScrapBucket(stack);
+const logBucket = defaults.CreateScrapBucket(stack, "scrapBucket");
 
 new EventbridgeToKinesisFirehoseToS3(stack, 'evtfhss3-existing-log-bucket', {
   eventRuleProps: {

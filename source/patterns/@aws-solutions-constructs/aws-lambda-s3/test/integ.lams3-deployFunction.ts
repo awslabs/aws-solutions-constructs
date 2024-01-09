@@ -33,12 +33,17 @@ const props: LambdaToS3Props = {
   },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
   },
-  logS3AccessLogs: false
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  }
 };
 
 const construct = new LambdaToS3(stack, 'test-lambda-s3', props);
 
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 const s3Bucket = construct.s3Bucket as s3.Bucket;
 
 defaults.addCfnSuppressRules(s3Bucket, [

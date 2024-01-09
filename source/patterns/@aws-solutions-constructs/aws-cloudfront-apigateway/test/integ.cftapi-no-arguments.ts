@@ -14,9 +14,7 @@
 /// !cdk-integ *
 import { App, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { CloudFrontToApiGateway } from "../lib";
-import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as api from 'aws-cdk-lib/aws-apigateway';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 
 // Setup
@@ -24,34 +22,10 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-apigateway';
 
-const inProps: lambda.FunctionProps = {
-  code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-  runtime: lambda.Runtime.NODEJS_16_X,
-  handler: 'index.handler'
-};
-
-const func = defaults.deployLambdaFunction(stack, inProps);
-
-const regionalLambdaRestApiResponse = defaults.RegionalLambdaRestApi(stack, func);
-
-regionalLambdaRestApiResponse.api.methods.forEach((apiMethod) => {
-  // Override the API Gateway Authorization Type from AWS_IAM to NONE
-  const child = apiMethod.node.findChild('Resource') as api.CfnMethod;
-  if (child.authorizationType === 'AWS_IAM') {
-    child.addPropertyOverride('AuthorizationType', 'NONE');
-
-    defaults.addCfnSuppressRules(apiMethod, [
-      {
-        id: "W59",
-        reason: `AWS::ApiGateway::Method AuthorizationType is set to 'NONE' because API Gateway behind CloudFront does not support AWS_IAM authentication`,
-      },
-    ]);
-
-  }
-});
+const testApi = defaults.CreateTestApi(stack, `${generateIntegStackName(__filename)}-api`);
 
 new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
-  existingApiGatewayObj: regionalLambdaRestApiResponse.api,
+  existingApiGatewayObj: testApi,
   cloudFrontLoggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true

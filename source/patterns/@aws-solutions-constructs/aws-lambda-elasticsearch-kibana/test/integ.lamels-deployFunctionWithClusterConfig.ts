@@ -41,7 +41,7 @@ const esDomainProps = {
 
 new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana5', {
   lambdaFunctionProps: lambdaProps,
-  domainName: "deploytestwithclusterconfig",
+  domainName: defaults.CreateShortUniqueTestName("dmn"),
   esDomainProps,
   deployVpc: true,
   vpcProps: {

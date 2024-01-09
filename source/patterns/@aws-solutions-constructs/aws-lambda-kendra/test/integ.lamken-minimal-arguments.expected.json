@@ -1,7 +1,7 @@
 {
   "Description": "Integration Test for aws-lambda-kendra",
   "Resources": {
-    "scrapBucketB11863B7": {
+    "contentBucketLog5B9803A6": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketEncryption": {
@@ -29,29 +29,55 @@
         "cfn_nag": {
           "rules_to_suppress": [
             {
-              "id": "W51",
-              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
-            },
-            {
               "id": "W35",
-              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct implementation"
-            },
-            {
-              "id": "W41",
-              "reason": "This S3 bucket is created for unit/ integration testing purposes only and not part of       the actual construct"
+              "reason": "This is a log bucket"
             }
           ]
         }
       }
     },
-    "scrapBucketPolicy189B0607": {
+    "contentBucketLogPolicy52155F9C": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
         "Bucket": {
-          "Ref": "scrapBucketB11863B7"
+          "Ref": "contentBucketLog5B9803A6"
         },
         "PolicyDocument": {
           "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "contentBucketLog5B9803A6",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "contentBucketLog5B9803A6",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
             {
               "Action": [
                 "s3:PutBucketPolicy",
@@ -71,7 +97,7 @@
               "Resource": [
                 {
                   "Fn::GetAtt": [
-                    "scrapBucketB11863B7",
+                    "contentBucketLog5B9803A6",
                     "Arn"
                   ]
                 },
@@ -81,7 +107,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "scrapBucketB11863B7",
+                          "contentBucketLog5B9803A6",
                           "Arn"
                         ]
                       },
@@ -90,13 +116,49 @@
                   ]
                 }
               ]
+            },
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "ArnLike": {
+                  "aws:SourceArn": {
+                    "Fn::GetAtt": [
+                      "contentBucket356CF7A5",
+                      "Arn"
+                    ]
+                  }
+                },
+                "StringEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "logging.s3.amazonaws.com"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "contentBucketLog5B9803A6",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
             }
           ],
           "Version": "2012-10-17"
         }
       }
     },
-    "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275": {
+    "contentBucketLogAutoDeleteObjectsCustomResource533B8207": {
       "Type": "Custom::S3AutoDeleteObjects",
       "Properties": {
         "ServiceToken": {
@@ -106,11 +168,11 @@
           ]
         },
         "BucketName": {
-          "Ref": "scrapBucketB11863B7"
+          "Ref": "contentBucketLog5B9803A6"
         }
       },
       "DependsOn": [
-        "scrapBucketPolicy189B0607"
+        "contentBucketLogPolicy52155F9C"
       ],
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete"
@@ -162,7 +224,7 @@
             [
               "Lambda function for auto-deleting objects in ",
               {
-                "Ref": "scrapBucketB11863B7"
+                "Ref": "contentBucketLog5B9803A6"
               },
               " S3 bucket."
             ]
@@ -190,6 +252,141 @@
           ]
         }
       }
+    },
+    "contentBucket356CF7A5": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "LoggingConfiguration": {
+          "DestinationBucketName": {
+            "Ref": "contentBucketLog5B9803A6"
+          }
+        },
+        "Tags": [
+          {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true"
+          }
+        ],
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "contentBucketPolicy71256B1B": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "contentBucket356CF7A5"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "contentBucket356CF7A5",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "contentBucket356CF7A5",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:PutBucketPolicy",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn"
+                  ]
+                }
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "contentBucket356CF7A5",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "contentBucket356CF7A5",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "contentBucketAutoDeleteObjectsCustomResourceD6F9707E": {
+      "Type": "Custom::S3AutoDeleteObjects",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn"
+          ]
+        },
+        "BucketName": {
+          "Ref": "contentBucket356CF7A5"
+        }
+      },
+      "DependsOn": [
+        "contentBucketPolicy71256B1B"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
     },
     "minimalargumentsLambdaFunctionServiceRole73B77FF7": {
       "Type": "AWS::IAM::Role",
@@ -553,7 +750,7 @@
                       [
                         "arn:aws:s3:::",
                         {
-                          "Ref": "scrapBucketB11863B7"
+                          "Ref": "contentBucket356CF7A5"
                         },
                         "/*"
                       ]
@@ -569,7 +766,7 @@
                       [
                         "arn:aws:s3:::",
                         {
-                          "Ref": "scrapBucketB11863B7"
+                          "Ref": "contentBucket356CF7A5"
                         }
                       ]
                     ]
@@ -602,7 +799,7 @@
         "DataSourceConfiguration": {
           "S3Configuration": {
             "BucketName": {
-              "Ref": "scrapBucketB11863B7"
+              "Ref": "contentBucket356CF7A5"
             }
           }
         },

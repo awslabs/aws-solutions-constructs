@@ -38,7 +38,7 @@ const openSearchDomainProps = {
 
 new LambdaToOpenSearch(stack, 'test-lambda-opensearch', {
   lambdaFunctionProps: lambdaProps,
-  openSearchDomainName: "disabledzoneawareness",
+  openSearchDomainName: defaults.CreateShortUniqueTestName("dmn"),
   openSearchDomainProps,
   deployVpc: true,
   vpcProps: {

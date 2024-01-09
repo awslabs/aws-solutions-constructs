@@ -11,4 +11,5 @@
  *  and limitations under the License.
  */
 
+export * from './lib/key-policy-updater';
 export * from './lib/template-writer';

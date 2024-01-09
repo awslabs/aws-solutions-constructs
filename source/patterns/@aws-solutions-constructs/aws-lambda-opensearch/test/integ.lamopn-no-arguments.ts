@@ -15,7 +15,7 @@
 import { App, Stack } from "aws-cdk-lib";
 import { LambdaToOpenSearch } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, CreateShortUniqueTestName } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -27,11 +27,9 @@ const lambdaProps: lambda.FunctionProps = {
   handler: 'index.handler'
 };
 
-const openSearchDomain = 'lamopn-no-args';
-
 new LambdaToOpenSearch(stack, 'test-lambda-opensearch', {
   lambdaFunctionProps: lambdaProps,
-  openSearchDomainName: openSearchDomain,
+  openSearchDomainName: CreateShortUniqueTestName("dn"),
 });
 
 // Synth

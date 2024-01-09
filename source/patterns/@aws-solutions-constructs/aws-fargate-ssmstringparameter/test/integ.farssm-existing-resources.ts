@@ -29,7 +29,6 @@ const existingVpc = getTestVpc(stack);
 const existingStringParameterObj = new ssm.StringParameter(stack, 'Parameter', {
   allowedPattern: '.*',
   description: 'The value Foo',
-  parameterName: 'FooParameter',
   stringValue: 'Foo',
 });
 

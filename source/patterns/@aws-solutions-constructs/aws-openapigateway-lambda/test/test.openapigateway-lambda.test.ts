@@ -78,7 +78,7 @@ test('API Definition can be specified from Asset', () => {
 test('API Definition can be specified from S3 Bucket and Key', () => {
   const stack = new Stack();
 
-  const apiDefinitionBucket = CreateScrapBucket(stack, {});
+  const apiDefinitionBucket = CreateScrapBucket(stack, "scrapBucket");
   const apiDefinitionKey = 'api.yaml';
 
   const construct = new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
@@ -262,7 +262,7 @@ test('Throws error when no api integration is specified', () => {
 test('Throws error when api definition s3 bucket is specified but s3 object key is missing', () => {
   const stack = new Stack();
 
-  const apiDefinitionBucket = CreateScrapBucket(stack, {});
+  const apiDefinitionBucket = CreateScrapBucket(stack, "scrapBucket");
 
   const app = () => {
     new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
@@ -291,7 +291,7 @@ test('Throws error when api is defined as asset and s3 bucket is specified', () 
   const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
     path: path.join(__dirname, 'openapi/apiDefinition.yaml')
   });
-  const apiDefinitionBucket = CreateScrapBucket(stack, {});
+  const apiDefinitionBucket = CreateScrapBucket(stack, "scrapBucket");
 
   const app = () => {
     new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {

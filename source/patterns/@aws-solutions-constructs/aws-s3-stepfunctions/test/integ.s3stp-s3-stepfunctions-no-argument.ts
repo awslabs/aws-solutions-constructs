@@ -30,11 +30,15 @@ const props: S3ToStepfunctionsProps = {
   },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
   },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY,
-  },
-  logS3AccessLogs: false
+  }
 };
 
 const construct = new S3ToStepfunctions(stack, 'test-s3-stepfunctions-construct', props);
@@ -45,4 +49,5 @@ defaults.addCfnSuppressRules(s3Bucket, [
     reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
 ]);
 
+defaults.suppressAutoDeleteHandlerWarnings(stack);
 app.synth();

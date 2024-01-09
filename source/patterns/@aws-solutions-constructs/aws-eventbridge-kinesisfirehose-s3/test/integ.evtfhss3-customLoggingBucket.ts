@@ -34,9 +34,15 @@ new EventbridgeToKinesisFirehoseToS3(stack, 'evtfhss3-custom-log-bucket', {
   loggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
-    bucketName: `${generateIntegStackName(__filename).toLowerCase()}-custom-logging-bucket`,
-    encryption: s3.BucketEncryption.S3_MANAGED,
-    versioned: true
+    // This functionality is inconsequential, it just confirms
+    // that these props continue to be utilized
+    lifecycleRules: [{
+      enabled: true,
+      transitions: [{
+        storageClass: s3.StorageClass.GLACIER,
+        transitionAfter: Duration.days(7)
+      }]
+    }]
   },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY

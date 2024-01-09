@@ -38,7 +38,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f.zip"
+          "S3Key": "42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c.zip"
         },
         "Handler": ".handler",
         "Role": {
@@ -69,6 +69,177 @@
             }
           ]
         }
+      }
+    },
+    "testOneauthorizerAuthFunctionServiceRoleE1B4208E": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    "testOneauthorizerAuthFunctionB12D8D93": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c.zip"
+        },
+        "Handler": ".handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testOneauthorizerAuthFunctionServiceRoleE1B4208E",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs16.x"
+      },
+      "DependsOn": [
+        "testOneauthorizerAuthFunctionServiceRoleE1B4208E"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W89",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W92",
+              "reason": "Test Resource"
+            }
+          ]
+        }
+      }
+    },
+    "testOneauthorizerAuthFunctionwafapiexistingwaftomultiplegatewaystestOneauthorizer7F4D0710Permissions21D6CD33": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "testOneauthorizerAuthFunctionB12D8D93",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "testOneApi71064556"
+              },
+              "/authorizers/",
+              {
+                "Ref": "testOneauthorizerA10D8AB0"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "testOneauthorizerA10D8AB0": {
+      "Type": "AWS::ApiGateway::Authorizer",
+      "Properties": {
+        "AuthorizerUri": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Fn::Select": [
+                  1,
+                  {
+                    "Fn::Split": [
+                      ":",
+                      {
+                        "Fn::GetAtt": [
+                          "testOneauthorizerAuthFunctionB12D8D93",
+                          "Arn"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              ":apigateway:",
+              {
+                "Fn::Select": [
+                  3,
+                  {
+                    "Fn::Split": [
+                      ":",
+                      {
+                        "Fn::GetAtt": [
+                          "testOneauthorizerAuthFunctionB12D8D93",
+                          "Arn"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              ":lambda:path/2015-03-31/functions/",
+              {
+                "Fn::GetAtt": [
+                  "testOneauthorizerAuthFunctionB12D8D93",
+                  "Arn"
+                ]
+              },
+              "/invocations"
+            ]
+          ]
+        },
+        "IdentitySource": "method.request.header.Authorization",
+        "Name": "wafapiexistingwaftomultiplegatewaystestOneauthorizer7F4D0710",
+        "RestApiId": {
+          "Ref": "testOneApi71064556"
+        },
+        "Type": "REQUEST"
       }
     },
     "testOneApi71064556": {
@@ -126,7 +297,7 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testOneApiDeploymentEF63BD86e15daf42da17689cb6d56b07d074b512": {
+    "testOneApiDeploymentEF63BD86a865c36eea9cba5c46fac363ae4bd2fe": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "Description": "Automatically created by the RestApi construct",
@@ -154,7 +325,7 @@
       "Type": "AWS::ApiGateway::Stage",
       "Properties": {
         "DeploymentId": {
-          "Ref": "testOneApiDeploymentEF63BD86e15daf42da17689cb6d56b07d074b512"
+          "Ref": "testOneApiDeploymentEF63BD86a865c36eea9cba5c46fac363ae4bd2fe"
         },
         "RestApiId": {
           "Ref": "testOneApi71064556"
@@ -275,7 +446,10 @@
     "testOneApiproxyANY7F46A6A5": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
-        "AuthorizationType": "NONE",
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "testOneauthorizerA10D8AB0"
+        },
         "HttpMethod": "ANY",
         "Integration": {
           "IntegrationHttpMethod": "POST",
@@ -403,7 +577,10 @@
     "testOneApiANY899DD2DA": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
-        "AuthorizationType": "NONE",
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "testOneauthorizerA10D8AB0"
+        },
         "HttpMethod": "ANY",
         "Integration": {
           "IntegrationHttpMethod": "POST",
@@ -491,7 +668,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f.zip"
+          "S3Key": "42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c.zip"
         },
         "Handler": ".handler",
         "Role": {
@@ -522,6 +699,177 @@
             }
           ]
         }
+      }
+    },
+    "testTwoauthorizerAuthFunctionServiceRole4C3292A3": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      }
+    },
+    "testTwoauthorizerAuthFunction1DBBD707": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c.zip"
+        },
+        "Handler": ".handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "testTwoauthorizerAuthFunctionServiceRole4C3292A3",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs16.x"
+      },
+      "DependsOn": [
+        "testTwoauthorizerAuthFunctionServiceRole4C3292A3"
+      ],
+      "Metadata": {
+        "cfn_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "W58",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W89",
+              "reason": "Test Resource"
+            },
+            {
+              "id": "W92",
+              "reason": "Test Resource"
+            }
+          ]
+        }
+      }
+    },
+    "testTwoauthorizerAuthFunctionwafapiexistingwaftomultiplegatewaystestTwoauthorizer9B2C525EPermissions44287234": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "testTwoauthorizerAuthFunction1DBBD707",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "testTwoApi17A08EF5"
+              },
+              "/authorizers/",
+              {
+                "Ref": "testTwoauthorizer627F159B"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "testTwoauthorizer627F159B": {
+      "Type": "AWS::ApiGateway::Authorizer",
+      "Properties": {
+        "AuthorizerUri": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Fn::Select": [
+                  1,
+                  {
+                    "Fn::Split": [
+                      ":",
+                      {
+                        "Fn::GetAtt": [
+                          "testTwoauthorizerAuthFunction1DBBD707",
+                          "Arn"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              ":apigateway:",
+              {
+                "Fn::Select": [
+                  3,
+                  {
+                    "Fn::Split": [
+                      ":",
+                      {
+                        "Fn::GetAtt": [
+                          "testTwoauthorizerAuthFunction1DBBD707",
+                          "Arn"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              ":lambda:path/2015-03-31/functions/",
+              {
+                "Fn::GetAtt": [
+                  "testTwoauthorizerAuthFunction1DBBD707",
+                  "Arn"
+                ]
+              },
+              "/invocations"
+            ]
+          ]
+        },
+        "IdentitySource": "method.request.header.Authorization",
+        "Name": "wafapiexistingwaftomultiplegatewaystestTwoauthorizer9B2C525E",
+        "RestApiId": {
+          "Ref": "testTwoApi17A08EF5"
+        },
+        "Type": "REQUEST"
       }
     },
     "testTwoApi17A08EF5": {
@@ -579,7 +927,7 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
-    "testTwoApiDeployment4EDBF4DF26b103f50979cda2b3c8314c6d694485": {
+    "testTwoApiDeployment4EDBF4DF95b82d465529f1ef03094fcbb57621d9": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "Description": "Automatically created by the RestApi construct",
@@ -607,7 +955,7 @@
       "Type": "AWS::ApiGateway::Stage",
       "Properties": {
         "DeploymentId": {
-          "Ref": "testTwoApiDeployment4EDBF4DF26b103f50979cda2b3c8314c6d694485"
+          "Ref": "testTwoApiDeployment4EDBF4DF95b82d465529f1ef03094fcbb57621d9"
         },
         "RestApiId": {
           "Ref": "testTwoApi17A08EF5"
@@ -728,7 +1076,10 @@
     "testTwoApiproxyANY63FFF74A": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
-        "AuthorizationType": "NONE",
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "testTwoauthorizer627F159B"
+        },
         "HttpMethod": "ANY",
         "Integration": {
           "IntegrationHttpMethod": "POST",
@@ -856,7 +1207,10 @@
     "testTwoApiANY91121C6F": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
-        "AuthorizationType": "NONE",
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "testTwoauthorizer627F159B"
+        },
         "HttpMethod": "ANY",
         "Integration": {
           "IntegrationHttpMethod": "POST",

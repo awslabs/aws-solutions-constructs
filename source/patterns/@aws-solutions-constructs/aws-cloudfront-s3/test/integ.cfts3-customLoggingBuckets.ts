@@ -12,10 +12,10 @@
  */
 
 /// !cdk-integ *
-import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
-import { BucketEncryption } from "aws-cdk-lib/aws-s3";
+import { App, Stack, RemovalPolicy, Duration } from "aws-cdk-lib";
 import { CloudFrontToS3 } from "../lib";
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 
 const app = new App();
 
@@ -27,16 +27,32 @@ new CloudFrontToS3(stack, 'test-cloudfront-s3', {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true
   },
+  // Confirms custom log buckets for S3 AND CloudFront
   loggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
-    bucketName: 'custom-logging-bucket',
-    encryption: BucketEncryption.S3_MANAGED,
-    versioned: true
+    // This functionality is inconsequential, it just confirms
+    // that these props continue to be utilized
+    lifecycleRules: [{
+      enabled: true,
+      transitions: [{
+        storageClass: s3.StorageClass.GLACIER,
+        transitionAfter: Duration.days(7)
+      }]
+    }]
   },
   cloudFrontLoggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
+    // This functionality is inconsequential, it just confirms
+    // that these props continue to be utilized
+    lifecycleRules: [{
+      enabled: true,
+      transitions: [{
+        storageClass: s3.StorageClass.GLACIER,
+        transitionAfter: Duration.days(7)
+      }]
+    }]
   }
 });
 suppressAutoDeleteHandlerWarnings(stack);

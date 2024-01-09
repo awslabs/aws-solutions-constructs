@@ -46,7 +46,7 @@ test('Test deployment with role creation', () => {
       name: "id",
       type: "int",
       comment: ""
-    }], 'kinesis', {STREAM_NAME: 'testStream'})
+    }], 'kinesis', { STREAM_NAME: 'testStream' })
   });
 
   expect(glueJob.bucket).toBeDefined();
@@ -105,7 +105,7 @@ test('Create a Glue Job outside the construct', () => {
       name: "id",
       type: "int",
       comment: ""
-    }], 'kinesis', {STREAM_NAME: 'testStream'})
+    }], 'kinesis', { STREAM_NAME: 'testStream' })
   });
 
   expect(glueJob.bucket).not.toBeDefined();
@@ -165,7 +165,7 @@ test('Test custom deployment properties', () => {
       name: "id",
       type: "int",
       comment: ""
-    }], 'kinesis', {STREAM_NAME: 'testStream'})
+    }], 'kinesis', { STREAM_NAME: 'testStream' })
   });
 
   const template = Template.fromStack(stack);
@@ -185,14 +185,24 @@ test('Test custom deployment properties', () => {
           "Arn",
         ],
       },
-      SecurityConfiguration: "ETLJobSecurityConfig",
+      SecurityConfiguration: {
+        "Fn::Join": [
+          "",
+          [
+            "ETLJobSecurityConfig",
+            {
+              Ref: "AWS::StackId"
+            }
+          ]
+        ]
+      },
       WorkerType: "Standard",
     },
     Type: "AWS::Glue::Job"
   });
 
   // check if the role is created
-  template.hasResource('AWS::IAM::Role',         {
+  template.hasResource('AWS::IAM::Role', {
     Type: "AWS::IAM::Role",
     Properties: {
       AssumeRolePolicyDocument: {
@@ -238,7 +248,17 @@ test('Test custom deployment properties', () => {
           S3EncryptionMode: "SSE-S3",
         }],
       },
-      Name: "ETLJobSecurityConfig",
+      Name: {
+        "Fn::Join": [
+          "",
+          [
+            "ETLJobSecurityConfig",
+            {
+              Ref: "AWS::StackId"
+            }
+          ]
+        ]
+      },
     },
     Type: "AWS::Glue::SecurityConfiguration",
   });
@@ -257,7 +277,7 @@ test('Do no supply glueJobProps or existingCfnJob and error out', () => {
         name: "id",
         type: "int",
         comment: ""
-      }], 'kinesis', {STREAM_NAME: 'testStream'}))
+      }], 'kinesis', { STREAM_NAME: 'testStream' }))
     });
   } catch (error) {
     expect(error).toBeInstanceOf(Error);
@@ -289,7 +309,7 @@ test('llow the construct to create the job role required', () => {
       name: "id",
       type: "int",
       comment: ""
-    }], 'kinesis', {STREAM_NAME: 'testStream'})
+    }], 'kinesis', { STREAM_NAME: 'testStream' })
   });
   Template.fromStack(stack).hasResource('AWS::IAM::Role', {
     Type: "AWS::IAM::Role",
@@ -340,7 +360,7 @@ test('Test deployment when output location is provided', () => {
       name: "id",
       type: "int",
       comment: ""
-    }], 'kinesis', {STREAM_NAME: 'testStream'})
+    }], 'kinesis', { STREAM_NAME: 'testStream' })
   });
   Template.fromStack(stack).hasResource('AWS::S3::Bucket', {
     Type: 'AWS::S3::Bucket',
@@ -370,7 +390,7 @@ test('Test for incorrect Job Command property', () => {
         name: "id",
         type: "int",
         comment: ""
-      }], 'kinesis', {STREAM_NAME: 'testStream'})
+      }], 'kinesis', { STREAM_NAME: 'testStream' })
     });
   } catch (error) {
     expect(error).toBeInstanceOf(Error);
@@ -395,7 +415,7 @@ test('check for JobCommandProperty type', () => {
         name: "id",
         type: "int",
         comment: ""
-      }], 'kinesis', {STREAM_NAME: 'testStream'})
+      }], 'kinesis', { STREAM_NAME: 'testStream' })
     });
   } catch (error) {
     expect(error).toBeInstanceOf(Error);
@@ -418,7 +438,7 @@ test('GlueJob configuration with glueVersion 2.0 should not support maxCapacity 
         name: "id",
         type: "int",
         comment: ""
-      }], 'kinesis', {STREAM_NAME: 'testStream'})),
+      }], 'kinesis', { STREAM_NAME: 'testStream' })),
       glueJobProps: {
         glueVersion: '2.0',
         maxCapacity: '2'
@@ -442,7 +462,7 @@ test('Cannot use maxCapacity and WorkerType, so error out', () => {
         name: "id",
         type: "int",
         comment: ""
-      }], 'kinesis', {STREAM_NAME: 'testStream'})),
+      }], 'kinesis', { STREAM_NAME: 'testStream' })),
       glueJobProps: {
         command: {
           name: "gluejob1.0",
@@ -471,7 +491,7 @@ test('Cannot use maxCapacity and WorkerType, so error out', () => {
         name: "id",
         type: "int",
         comment: ""
-      }], 'kinesis', {STREAM_NAME: 'testStream'})),
+      }], 'kinesis', { STREAM_NAME: 'testStream' })),
       glueJobProps: {
         command: {
           name: "gluejob1.0",
@@ -500,7 +520,7 @@ test('Cannot use maxCapacity and WorkerType, so error out', () => {
         name: "id",
         type: "int",
         comment: ""
-      }], 'kinesis', {STREAM_NAME: 'testStream'})),
+      }], 'kinesis', { STREAM_NAME: 'testStream' })),
       glueJobProps: {
         command: {
           name: "gluejob1.0",

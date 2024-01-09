@@ -123,7 +123,7 @@ function CreateFirehose(stack: Stack): kinesisFirehose.CfnDeliveryStream {
   // Creating the Firehose is kind of a big deal. FirehoseToS3 is not readily available here in core,
   // so this routine pretty much replicates it. If this function ceases to work correctly, look at
   // FirehoseToS3 and see if that changed.
-  const destinationBucket = defaults.CreateScrapBucket(stack, {
+  const destinationBucket = defaults.CreateScrapBucket(stack, "scrapBucket", {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
   });

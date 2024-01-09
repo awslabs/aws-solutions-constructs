@@ -252,7 +252,7 @@ test('Supply an existing logging bucket', () => {
   const stack = new cdk.Stack();
   const logBucketName = 'log-bucket-name';
 
-  const logBucket = defaults.CreateScrapBucket(stack, {
+  const logBucket = defaults.CreateScrapBucket(stack, "scrapBucket", {
     bucketName: logBucketName
   });
 
@@ -267,7 +267,8 @@ test('Supply an existing logging bucket', () => {
   });
 
   const template = Template.fromStack(stack);
-  template.resourceCountIs("AWS::S3::Bucket", 2);
+  // Construct bucket + ScrapBucket + LogBucketNowCreatedByScrapBucket = 3
+  template.resourceCountIs("AWS::S3::Bucket", 3);
 
 });
 

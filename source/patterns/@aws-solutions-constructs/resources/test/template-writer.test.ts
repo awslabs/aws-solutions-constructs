@@ -13,9 +13,9 @@
 
 import { Duration, Stack } from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
-import { TemplateValue, createTemplateWriterCustomResource } from '../lib/template-writer';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
 import * as path from 'path';
+import { TemplateValue, createTemplateWriterCustomResource } from '../lib/template-writer';
 
 test('TemplateWriter sets properties correctly', () => {
   const stack = new Stack();
