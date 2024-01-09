@@ -185,6 +185,7 @@
     "testauthorizer92817493": {
       "Type": "AWS::ApiGateway::Authorizer",
       "Properties": {
+        "AuthorizerResultTtlInSeconds": 300,
         "AuthorizerUri": {
           "Fn::Join": [
             "",
