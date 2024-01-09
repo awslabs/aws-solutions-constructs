@@ -115,6 +115,7 @@
     "cftaplamnoargumentsauthorizerD7B341B1": {
       "Type": "AWS::ApiGateway::Authorizer",
       "Properties": {
+        "AuthorizerResultTtlInSeconds": 300,
         "AuthorizerUri": {
           "Fn::Join": [
             "",

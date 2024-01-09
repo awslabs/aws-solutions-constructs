@@ -185,6 +185,7 @@
     "testOneauthorizerA10D8AB0": {
       "Type": "AWS::ApiGateway::Authorizer",
       "Properties": {
+        "AuthorizerResultTtlInSeconds": 300,
         "AuthorizerUri": {
           "Fn::Join": [
             "",
@@ -815,6 +816,7 @@
     "testTwoauthorizer627F159B": {
       "Type": "AWS::ApiGateway::Authorizer",
       "Properties": {
+        "AuthorizerResultTtlInSeconds": 300,
         "AuthorizerUri": {
           "Fn::Join": [
             "",
