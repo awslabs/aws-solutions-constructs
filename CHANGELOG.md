@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.48.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.47.0...v2.48.0) (2024-01-09)
+
+
+### Features
+
+* **aws-cloudfront-apigateway-lambda:** require explicit authentication type ([#1044](https://github.com/awslabs/aws-solutions-constructs/issues/1044)) ([720dec5](https://github.com/awslabs/aws-solutions-constructs/commit/720dec500a728a3c57832b7e479ee8eca1f08056))
+* **aws-cloudfront-s3:** update construct to use origin access controls; add support for CMK-encrypted buckets ([#1038](https://github.com/awslabs/aws-solutions-constructs/issues/1038)) ([012f9e7](https://github.com/awslabs/aws-solutions-constructs/commit/012f9e7b6ebd3a717ff120941131a84e803b2922)), closes [#1037](https://github.com/awslabs/aws-solutions-constructs/issues/1037)
+* **cloudfront constructs:** add s3 access logging to cloudfront access log buckets by default ([#1042](https://github.com/awslabs/aws-solutions-constructs/issues/1042)) ([51ec028](https://github.com/awslabs/aws-solutions-constructs/commit/51ec028ebd4763965671483e74924e3b8e328337))
+
 ## [2.47.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.46.0...v2.47.0) (2023-12-01)
 
 Built on CDK v2.111.0
