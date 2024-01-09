@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.48.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.47.0...v2.48.0) (2024-01-09)
 
+Built on CDK v2.111.0
+
 ### ⚠ BREAKING CHANGES
 
 * **aws-cloudfront-apigateway-lambda:** require explicit authentication type ([#1044](https://github.com/awslabs/aws-solutions-constructs/issues/1044)) ([720dec5](https://github.com/awslabs/aws-solutions-constructs/commit/720dec500a728a3c57832b7e479ee8eca1f08056))
