@@ -21,6 +21,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
 
 const cfLogAccessLogs = new s3.Bucket(stack, 'cfLogAccessLogs', {
