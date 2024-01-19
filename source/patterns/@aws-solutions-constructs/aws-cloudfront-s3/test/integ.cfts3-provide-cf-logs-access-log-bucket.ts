@@ -26,7 +26,7 @@ stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
 const cfLogAccessLogs = new s3.Bucket(stack, 'cfLogAccessLogs', {
   removalPolicy: RemovalPolicy.DESTROY,
   autoDeleteObjects: true,
-})
+});
 
 const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
   cloudFrontLoggingBucketProps: {
@@ -44,7 +44,7 @@ const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
   },
 });
 
-new aws_s3_deployment.BucketDeployment(stack, 'DeployIndexFile',{
+new aws_s3_deployment.BucketDeployment(stack, 'DeployIndexFile', {
   sources: [ aws_s3_deployment.Source.data('index.html', '<H3>Hello, World</H3>')],
   destinationBucket: construct.s3BucketInterface,
 });
