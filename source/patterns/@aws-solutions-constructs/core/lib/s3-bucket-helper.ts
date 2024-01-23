@@ -94,15 +94,20 @@ export function createCloudFrontLoggingBucket(scope: Construct,
 
   // Introduce the default props since we can't be certain the caller used them and
   // they are important best practices
-  const combinedBucketProps = consolidateProps(DefaultS3Props(), loggingBucketProps);
+  let combinedBucketProps = consolidateProps(DefaultS3Props(), loggingBucketProps);
 
-  const accessLogBucket: s3.Bucket = new s3.Bucket(scope, `${bucketId}AccessLog`, combinedBucketProps); // NOSONAR
-  addCfnSuppressRules(accessLogBucket, [
-    {
-      id: 'W35',
-      reason: "This S3 bucket is used as the access logging bucket for another bucket"
-    }
-  ]);
+  if (!loggingBucketProps.serverAccessLogsBucket) {
+    // Create bucket and add to props
+    const accessLogBucket: s3.Bucket = new s3.Bucket(scope, `${bucketId}AccessLog`, combinedBucketProps); // NOSONAR
+    combinedBucketProps = overrideProps(combinedBucketProps, { serverAccessLogsBucket: accessLogBucket });
+
+    addCfnSuppressRules(accessLogBucket, [
+      {
+        id: 'W35',
+        reason: "This S3 bucket is used as the access logging bucket for another bucket"
+      }
+    ]);
+  }
 
   // Create the Logging Bucket
   // NOSONAR  (typescript:S6281)
@@ -117,8 +122,7 @@ export function createCloudFrontLoggingBucket(scope: Construct,
   // NOSONAR (typescript:typescript:S6249)
   // versioning is turned on in the default properties that Sonarqube doesn't see
   // Verified by unit test 's3 bucket with default props'
-  const cloudfrontLogBucketProps = overrideProps(combinedBucketProps, { serverAccessLogsBucket: accessLogBucket });
-  const cloudfrontLogBucket: s3.Bucket = new s3.Bucket(scope, bucketId, cloudfrontLogBucketProps); // NOSONAR
+  const cloudfrontLogBucket: s3.Bucket = new s3.Bucket(scope, bucketId, combinedBucketProps); // NOSONAR
 
   return cloudfrontLogBucket;
 }

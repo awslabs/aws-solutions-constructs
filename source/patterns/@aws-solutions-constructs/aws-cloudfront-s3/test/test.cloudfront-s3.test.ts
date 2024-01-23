@@ -589,3 +589,17 @@ test("If a customer provides their own httpOrigin, or other origin type, use tha
     }
   });
 });
+
+test('Test that we do not create an S3 Access Log bucket for CF logs if one is provided', () => {
+  const stack = new cdk.Stack();
+  const cfS3AccessLogBucket = new s3.Bucket(stack, 'cf-s3-access-logs');
+  new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+    cloudFrontLoggingBucketProps: {
+      serverAccessLogsBucket: cfS3AccessLogBucket
+    }
+  });
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::S3::Bucket", 4);
+
+});

@@ -163,6 +163,7 @@
     "cftaplamoverridebehaviorauthorizer74D77225": {
       "Type": "AWS::ApiGateway::Authorizer",
       "Properties": {
+        "AuthorizerResultTtlInSeconds": 300,
         "AuthorizerUri": {
           "Fn::Join": [
             "",
