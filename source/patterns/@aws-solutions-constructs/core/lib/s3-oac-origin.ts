@@ -83,6 +83,6 @@ class S3OacBucketOrigin extends cloudfront.OriginBase {
   }
 
   protected renderS3OriginConfig(): cloudfront.CfnDistribution.S3OriginConfigProperty | undefined {
-    return { };
+    return { originAccessIdentity: '' };
   }
 }
