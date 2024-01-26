@@ -96,7 +96,7 @@ cat > ${dist_dir}/build.json <<HERE
 HERE
 
 # copy CHANGELOG.md to dist/ for github releases
-changelog_file=$deployment_dir/../../CHANGELOG.md
+changelog_file=$deployment_dir/../CHANGELOG.md
 cp ${changelog_file} ${dist_dir}/CHANGELOG.md
 
 echo "------------------------------------------------------------------------------"
