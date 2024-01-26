@@ -84,7 +84,7 @@ echo "[Create] build.json file"
 echo "------------------------------------------------------------------------------"
 # Get commit hash from CodePipeline env variable CODEBUILD_RESOLVED_SOURCE_VERSION
 echo $deployment_dir
-version=$(node -p "require('$deployment_dir/get-version.js')")
+version=$(node -p "require('$deployment_dir/get-sc-version.js')")
 commit="${CODEBUILD_RESOLVED_SOURCE_VERSION:-}"
 
 cat > ${dist_dir}/build.json <<HERE
