@@ -95,11 +95,11 @@ aws-wafwebacl-cloudfront
 
 deployment_dir=$(cd $(dirname $0) && pwd)
 constructs_root_dir="$deployment_dir/../.."
-source_dir="$deployment_dir/../../source"
+source_dir="$deployment_dir/../source"
 
 echo "============================================================================================="
 echo "aligning versions and updating package.json for CDK v2..."
-/bin/bash $constructs_root_dir/deployment/v2/align-version.sh
+/bin/bash $constructs_root_dir/deployment/align-version.sh
 
 bail="--bail"
 runtarget="jsii"
@@ -137,4 +137,4 @@ for construct in $constructs; do
   cd $constructs_root_dir/source/patterns/@aws-solutions-constructs
 done
 cd $constructs_root_dir
-./deployment/v2/align-version.sh revert
+./deployment/align-version.sh revert

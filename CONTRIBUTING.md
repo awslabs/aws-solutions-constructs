@@ -200,9 +200,9 @@ All `package.json` files in this repo use a stable marker version of `0.0.0`. Th
 
 Additional scripts that take part in the versioning mechanism:
 
-- `deployment/v2/get-version.js` can be used to obtain the actual version of the repo. You can use either from JavaScript code by `require('./deployment/v2/get-version')` or from a shell script `node -p "require('./deployment/v2/get-version')"`.
-- `deployment/v2/get-version-marker.js` returns `0.0.0` and used to DRY the version marker.
-- `deployment/v2/align-version.sh` and `deployment/v2/align-version.js` are used to align all package.json files in the repo to the official version. This script is invoked in from `build-patterns.sh`, first time before the build process to replace the versions from marker version (`0.0.0`) to the release version e.g. `2.13.0` and then the second time at the end of the build process to revert the versions back from release version e.g. `2.13.0` to marker version (`0.0.0`).
+- `deployment/get-version.js` can be used to obtain the actual version of the repo. You can use either from JavaScript code by `require('./deployment/get-version')` or from a shell script `node -p "require('./deployment/get-version')"`.
+- `deployment/get-version-marker.js` returns `0.0.0` and used to DRY the version marker.
+- `deployment/align-version.sh` and `deployment/align-version.js` are used to align all package.json files in the repo to the official version. This script is invoked in from `build-patterns.sh`, first time before the build process to replace the versions from marker version (`0.0.0`) to the release version e.g. `2.13.0` and then the second time at the end of the build process to revert the versions back from release version e.g. `2.13.0` to marker version (`0.0.0`).
 
 ### Full Build
 
@@ -211,7 +211,7 @@ $ cd <root-of-aws-solutions-constructs-repo>
 $ docker run -u root --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain:1-buster-slim-node16
 # The build-patterns.sh command can take along time, be sure to allocate enough resources in the Docker dashboard
 # (6 CPUs is good)
-docker$ ./deployment/v2/build-patterns.sh
+docker$ ./deployment/build-patterns.sh
 # At this point the container is configured and ready to work on. 
 # To work on a specific construct, execute the Partial Build steps below
 ```
@@ -225,7 +225,7 @@ build and test individual constructs by following the steps below.
 ```console
 $ cd <root-of-aws-solutions-constructs-repo>
 $ docker run -u root --rm --net=host -it -v $PWD:$PWD -w $PWD jsii/superchain:1-buster-slim-node16
-docker$ source ./deployment/v2/allow-partial-builds.sh
+docker$ source ./deployment/allow-partial-builds.sh
 docker$ cd my-module
 docker$ npm run build+lint+test
 ```

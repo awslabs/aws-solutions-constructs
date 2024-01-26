@@ -39,7 +39,7 @@ After cloning this project into your local environment, we recommend performing 
 your account:
 ```
 # Set the proper version numbers in the package.json file
-../../../deployment/v2/align-version.sh
+../../../deployment/align-version.sh
 
 # Install all dependencies
 npm install

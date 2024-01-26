@@ -13,7 +13,7 @@ Below are the steps to deploy the use case:
 
 ```
 # Set the proper version numbers in the package.json file
-../../../deployment/v2/align-version.sh
+../../../deployment/align-version.sh
 
 # Install dependencies
 npm install

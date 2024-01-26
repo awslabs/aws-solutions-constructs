@@ -1,8 +1,9 @@
 #!/bin/bash
 set -euo pipefail
+# Is this script still used?
 
 deployment_dir=$(cd $(dirname $0) && pwd)
-source_dir="$deployment_dir/../../source"
+source_dir="$deployment_dir/../source"
 
 cd $source_dir/
 
