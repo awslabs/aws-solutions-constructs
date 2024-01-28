@@ -6,8 +6,8 @@
 // 4 - Add { "aws-cdk-lib": "2.0.0-rc.1", "constructs": "^10.0.0" } to "devDependencies"
 const fs = require('fs');
 
-const findVersion = process.argv[2];
-const replaceVersion = process.argv[3];
+const nullVersionMarker = process.argv[2];
+const newSolutionsConstrucstVersion = process.argv[3];
 
 // these versions need to be sourced from a config file
 const awsCdkLibVersion = '2.118.0';
@@ -20,11 +20,11 @@ const MODULE_EXEMPTIONS = new Set([
 for (const file of process.argv.splice(4)) {
   const pkg = JSON.parse(fs.readFileSync(file).toString());
 
-  if (pkg.version !== findVersion && pkg.version !== replaceVersion) {
-    throw new Error(`unexpected - all package.json files in this repo should have a version of ${findVersion} or ${replaceVersion}: ${file}`);
+  if (pkg.version !== nullVersionMarker && pkg.version !== newSolutionsConstrucstVersion) {
+    throw new Error(`unexpected - all package.json files in this repo should have a version of ${nullVersionMarker} or ${newSolutionsConstrucstVersion}: ${file}`);
   }
 
-  pkg.version = replaceVersion;
+  pkg.version = newSolutionsConstrucstVersion;
 
   pkg.dependencies = processDependencies(pkg.dependencies || { }, file);
   pkg.peerDependencies = processPeerDependencies(pkg.peerDependencies || { }, file);
@@ -33,7 +33,7 @@ for (const file of process.argv.splice(4)) {
     pkg.scripts["integ-assert"] = "cdk-integ-assert-v2";
   }
 
-  console.error(`${file} => ${replaceVersion}`);
+  console.error(`${file} => ${newSolutionsConstrucstVersion}`);
   fs.writeFileSync(file, JSON.stringify(pkg, undefined, 2));
 
 }
@@ -43,10 +43,10 @@ function processDependencies(section, file) {
   for (const [ name, version ] of Object.entries(section)) {
     // Remove all entries starting with @aws-cdk/* and constructs
     if ((!name.startsWith('@aws-cdk/') && !name.startsWith('constructs'))) {
-      newdependencies[name] = version.replace(findVersion, replaceVersion);
+      newdependencies[name] = version.replace(nullVersionMarker, newSolutionsConstrucstVersion);
     }
     if (MODULE_EXEMPTIONS.has(name)) {
-      newdependencies[name] = version.replace(findVersion, awsCdkLibVersion);
+      newdependencies[name] = version.replace(nullVersionMarker, awsCdkLibVersion);
     }
   }
   return newdependencies;
@@ -57,10 +57,10 @@ function processPeerDependencies(section, file) {
   for (const [ name, version ] of Object.entries(section)) {
     // Remove all entries starting with @aws-cdk/* and constructs
     if ((!name.startsWith('@aws-cdk/') && !name.startsWith('constructs'))) {
-      newdependencies[name] = version.replace(findVersion, replaceVersion);
+      newdependencies[name] = version.replace(nullVersionMarker, newSolutionsConstrucstVersion);
     }
     if (MODULE_EXEMPTIONS.has(name)) {
-      newdependencies[name] = version.replace(findVersion, awsCdkLibVersion);
+      newdependencies[name] = version.replace(nullVersionMarker, awsCdkLibVersion);
     }
   }
   newdependencies["aws-cdk-lib"] = `^${awsCdkLibVersion}`;
@@ -73,10 +73,10 @@ function processDevDependencies(section, file) {
   for (const [ name, version ] of Object.entries(section)) {
     // Remove all entries starting with @aws-cdk/* and constructs
     if ((!name.startsWith('@aws-cdk/') && !name.startsWith('constructs'))) {
-      newdependencies[name] = version.replace(findVersion, replaceVersion);
+      newdependencies[name] = version.replace(nullVersionMarker, newSolutionsConstrucstVersion);
     }
     if (MODULE_EXEMPTIONS.has(name)) {
-      newdependencies[name] = version.replace(findVersion, awsCdkLibVersion);
+      newdependencies[name] = version.replace(nullVersionMarker, awsCdkLibVersion);
     }
   }
 

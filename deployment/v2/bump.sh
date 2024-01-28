@@ -17,7 +17,7 @@ version=${1:-prerelease}
 deployment_dir=$(cd $(dirname $0) && pwd)
 
 echo "Starting ${version} version bump"
-echo "Loading ${deployment_dir}/get-version"
+echo "Loading ${deployment_dir}/get-sc-version"
 
 # # Rename CHANGELOG.md
 # echo "Rename CHANGELOG.md to CHANGELOG.md.bak"
@@ -59,7 +59,7 @@ git fetch origin "refs/tags/*:refs/tags/*"
 
 # Disabled the autocommit of 'standard-version' due to faulty CHANGELOG.md updates during CDK v2  build
 # and hence need to run git add/commit commands outside of 'standard-version'
-repoVersion=$(node -p "require('${deployment_dir}/get-version')")
+repoVersion=$(node -p "require('${deployment_dir}/get-sc-version')")
 echo "repoVersion=${repoVersion}"
 
 git add source/lerna.json

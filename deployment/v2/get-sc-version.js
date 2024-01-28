@@ -3,11 +3,11 @@
  * 
  * Usage:
  * 
- *    const version = require('./get-version');
+ *    const version = require('./get-sc-version');
  * 
  * Or from the command line:
  * 
- *    node -p require('./get-version')
+ *    node -p require('./get-sc-version')
  * 
  */
 const versionFile = 'source/lerna.json';
