@@ -7,11 +7,13 @@ echo
 read -p "Press key to continue.. " -n1 -s
 
 
-rm -r */*/*/*/lib/*.js
-rm -r */*/*/*/lib/*.d.ts
-rm -r */*/*/*/test/*.js
-rm -r */*/*/*/test/*.d.ts
-rm -r */*/*/*/.jsii
+rm ./*/*/*/*/lib/*.js
+rm ./*/*/*/*/lib/*.d.ts
+rm ./*/*/*/*/test/*.js
+rm ./*/*/*/*/test/*.d.ts
+rm ./*/*/*/*/.jsii
+rm ./*/*/*/*/tsconfig.json
+rm ./*/*/*/*/tsconfig.tsbuildinfo
 find . -depth -name "node_modules" -exec rm -r {} +
-find . -depth -name "dist" -exec rm -r {} +
 find . -depth -name "coverage" -exec rm -r {} +
+find . -depth -name "dist" -exec rm -r {} +

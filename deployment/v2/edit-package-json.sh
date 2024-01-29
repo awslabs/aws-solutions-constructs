@@ -6,8 +6,9 @@ source_dir="$deployment_dir/../../source"
 
 cd $source_dir/
 
-# Align versions in ALL package.json with the one in lerna.json
+# Assemble a collection of all package.json file folder/names
 files=$(find . -name package.json |\
     grep -v node_modules)
 
+# Pass the collection of package.json files to be processed
 ${deployment_dir}/edit-package-json.js ${files}

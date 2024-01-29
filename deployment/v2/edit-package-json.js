@@ -29,6 +29,6 @@ function removeCdkModules(section, file) {
     }
   }
   newdependencies["constructs"]= '10.0.0';
-//  newdependencies["aws-cdk-lib"]= "0.0.0";
+  newdependencies["aws-cdk-lib"]= "0.0.0";
   return newdependencies;
 }
