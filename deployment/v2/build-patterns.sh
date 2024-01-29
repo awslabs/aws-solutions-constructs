@@ -19,10 +19,6 @@ echo "==========================================================================
 echo "installing..."
 yarn install --frozen-lockfile
 
-# echo "============================================================================================="
-# echo "updating Import statements for CDK v2..."
-# /bin/bash $deployment_dir/rewrite-imports.sh
-
 echo "============================================================================================="
 echo "building cdk-integ-tools..."
 cd $source_dir/tools/cdk-integ-tools
