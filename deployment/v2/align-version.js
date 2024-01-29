@@ -7,81 +7,45 @@
 const fs = require('fs');
 
 const nullVersionMarker = process.argv[2];
-const newSolutionsConstrucstVersion = process.argv[3];
+const targetSolutionsConstructsVersion = process.argv[3];
 
 // these versions need to be sourced from a config file
 const awsCdkLibVersion = '2.118.0';
-const constructsVersion = '10.0.0';
-const MODULE_EXEMPTIONS = new Set([
-  '@aws-cdk/cloudformation-diff',
-  'aws-cdk'
-]);
 
 for (const file of process.argv.splice(4)) {
   const pkg = JSON.parse(fs.readFileSync(file).toString());
 
-  if (pkg.version !== nullVersionMarker && pkg.version !== newSolutionsConstrucstVersion) {
-    throw new Error(`unexpected - all package.json files in this repo should have a version of ${nullVersionMarker} or ${newSolutionsConstrucstVersion}: ${file}`);
+  if (pkg.version !== nullVersionMarker && pkg.version !== targetSolutionsConstructsVersion) {
+    throw new Error(`unexpected - all package.json files in this repo should have a version of ${nullVersionMarker} or ${targetSolutionsConstructsVersion}: ${file}`);
   }
 
-  pkg.version = newSolutionsConstrucstVersion;
+  pkg.version = targetSolutionsConstructsVersion;
 
-  pkg.dependencies = processDependencies(pkg.dependencies || { }, file);
-  pkg.peerDependencies = processPeerDependencies(pkg.peerDependencies || { }, file);
-  pkg.devDependencies = processDevDependencies(pkg.devDependencies || { }, file);
+  pkg.dependencies = updateDependencyVersionNumbers(pkg.dependencies || { });
+  pkg.peerDependencies = updateDependencyVersionNumbers(pkg.peerDependencies || { });
+  pkg.devDependencies = updateDependencyVersionNumbers(pkg.devDependencies || { });
+
+  // This will be removed in the next PR when we remove cdk-integ
   if (pkg.scripts) {
     pkg.scripts["integ-assert"] = "cdk-integ-assert-v2";
   }
 
-  console.error(`${file} => ${newSolutionsConstrucstVersion}`);
+  console.error(`${file} => ${targetSolutionsConstructsVersion}`);
   fs.writeFileSync(file, JSON.stringify(pkg, undefined, 2));
 
 }
 
-function processDependencies(section, file) {
-  let newdependencies = {};
+function updateDependencyVersionNumbers(section) {  let newdependencies = {};
   for (const [ name, version ] of Object.entries(section)) {
-    // Remove all entries starting with @aws-cdk/* and constructs
-    if ((!name.startsWith('@aws-cdk/') && !name.startsWith('constructs'))) {
-      newdependencies[name] = version.replace(nullVersionMarker, newSolutionsConstrucstVersion);
+    if (name.startsWith('@aws-solutions-constructs')) {
+      newdependencies[name] = version.replace(nullVersionMarker, targetSolutionsConstructsVersion);
     }
-    if (MODULE_EXEMPTIONS.has(name)) {
+    else if (name.startsWith('aws-cdk-lib')) {
       newdependencies[name] = version.replace(nullVersionMarker, awsCdkLibVersion);
     }
-  }
-  return newdependencies;
-}
-
-function processPeerDependencies(section, file) {
-  let newdependencies = {};
-  for (const [ name, version ] of Object.entries(section)) {
-    // Remove all entries starting with @aws-cdk/* and constructs
-    if ((!name.startsWith('@aws-cdk/') && !name.startsWith('constructs'))) {
-      newdependencies[name] = version.replace(nullVersionMarker, newSolutionsConstrucstVersion);
-    }
-    if (MODULE_EXEMPTIONS.has(name)) {
-      newdependencies[name] = version.replace(nullVersionMarker, awsCdkLibVersion);
+    else {
+      newdependencies[name] = version;
     }
   }
-  newdependencies["aws-cdk-lib"] = `^${awsCdkLibVersion}`;
-  newdependencies["constructs"] = `^${constructsVersion}`;
-  return newdependencies;
-}
-
-function processDevDependencies(section, file) {
-  let newdependencies = {};
-  for (const [ name, version ] of Object.entries(section)) {
-    // Remove all entries starting with @aws-cdk/* and constructs
-    if ((!name.startsWith('@aws-cdk/') && !name.startsWith('constructs'))) {
-      newdependencies[name] = version.replace(nullVersionMarker, newSolutionsConstrucstVersion);
-    }
-    if (MODULE_EXEMPTIONS.has(name)) {
-      newdependencies[name] = version.replace(nullVersionMarker, awsCdkLibVersion);
-    }
-  }
-
-  // note: no ^ to make sure we test against the minimum version
-  newdependencies["aws-cdk-lib"] = `${awsCdkLibVersion}`;
-  newdependencies["constructs"] = `^${constructsVersion}`;
   return newdependencies;
 }
