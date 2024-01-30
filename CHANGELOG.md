@@ -2,15 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.50.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.49.0...v2.50.0) (2024-01-30)
+
+Built on CDK v2.118.0
+
+### Bug Fixes
+
+* **aws-eventbridge-lambda:** handle provided role correctly (PR [1063](https://github.com/awslabs/aws-solutions-constructs/pull/1063))
+
 ## [2.49.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.48.0...v2.49.0) (2024-01-23)
 
 Built on CDK v2.118.0
 
 ### Bug Fixes
 
-* **aws-clloudfront-s3:** do not create s3 access log bucket for cf log bucket when an existing bucket is provided (PR [1052](https://github.com/awslabs/aws-solutions-constructs/pull/1052))
+* **aws-cloudfront-s3:** do not create s3 access log bucket for cf log bucket when an existing bucket is provided (PR [1052](https://github.com/awslabs/aws-solutions-constructs/pull/1052))
 
-* **aws-clloudfront-s3:** insert empty originAccessIdentity (PR [1053](https://github.com/awslabs/aws-solutions-constructs/pull/1053))
+* **aws-cloudfront-s3:** insert empty originAccessIdentity (PR [1053](https://github.com/awslabs/aws-solutions-constructs/pull/1053))
 
 ## [2.48.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.47.0...v2.48.0) (2024-01-09)
 
