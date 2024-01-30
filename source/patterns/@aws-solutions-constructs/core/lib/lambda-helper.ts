@@ -179,13 +179,15 @@ export function deployLambdaFunction(scope: Construct,
     // Find the X-Ray IAM Policy
     const cfnLambdafunctionDefPolicy = lambdafunction.role?.node.tryFindChild('DefaultPolicy')?.node.findChild('Resource') as iam.CfnPolicy;
 
-    // Add the CFN NAG suppress to allow for "Resource": "*" for AWS X-Ray
-    addCfnSuppressRules(cfnLambdafunctionDefPolicy, [
-      {
-        id: 'W12',
-        reason: `Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.`
-      }
-    ]);
+    if (cfnLambdafunctionDefPolicy) {
+      // Add the CFN NAG suppress to allow for "Resource": "*" for AWS X-Ray
+      addCfnSuppressRules(cfnLambdafunctionDefPolicy, [
+        {
+          id: 'W12',
+          reason: `Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.`
+        }
+      ]);
+    }
   }
 
   return lambdafunction;

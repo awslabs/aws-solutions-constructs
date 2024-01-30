@@ -53,23 +53,15 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/core": "0.0.0",
-    "@aws-cdk/aws-ec2": "0.0.0",
-    "@aws-cdk/aws-opensearchservice": "0.0.0",
-    "@aws-cdk/aws-ecs": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "constructs": "^3.2.0"
+    "constructs": "10.0.0"
   },
   "devDependencies": {
-    "@aws-cdk/core": "0.0.0",
-    "@aws-cdk/aws-ec2": "0.0.0",
-    "@aws-cdk/awsopensearchservice": "0.0.0",
-    "@aws-cdk/aws-ecs": "0.0.0",
-    "@aws-cdk/aws-iam": "0.0.0",
     "@types/jest": "^26.0.22",
     "@aws-solutions-constructs/core": "0.0.0",
     "@types/node": "^10.3.0",
-    "constructs": "3.2.0"
+    "constructs": "10.0.0",
+    "aws-cdk-lib": "0.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -86,12 +78,9 @@
     ]
   },
   "peerDependencies": {
-    "@aws-cdk/core": "0.0.0",
-    "@aws-cdk/aws-ec2": "0.0.0",
-    "@aws-cdk/aws-opensearchservice": "0.0.0",
-    "@aws-cdk/aws-ecs": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "constructs": "^3.2.0"
+    "constructs": "10.0.0",
+    "aws-cdk-lib": "0.0.0"
   },
   "keywords": [
     "aws",

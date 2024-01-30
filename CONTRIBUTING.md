@@ -200,8 +200,8 @@ All `package.json` files in this repo use a stable marker version of `0.0.0`. Th
 
 Additional scripts that take part in the versioning mechanism:
 
-- `deployment/v2/get-version.js` can be used to obtain the actual version of the repo. You can use either from JavaScript code by `require('./deployment/v2/get-version')` or from a shell script `node -p "require('./deployment/v2/get-version')"`.
-- `deployment/v2/get-version-marker.js` returns `0.0.0` and used to DRY the version marker.
+- `deployment/v2/get-sc-version.js` can be used to obtain the actual version of the repo. You can use either from JavaScript code by `require('./deployment/v2/get-sc-version')` or from a shell script `node -p "require('./deployment/v2/get-sc-version')"`.
+- `deployment/v2/get-version-placeholder.js` returns `0.0.0` and used to DRY the version marker.
 - `deployment/v2/align-version.sh` and `deployment/v2/align-version.js` are used to align all package.json files in the repo to the official version. This script is invoked in from `build-patterns.sh`, first time before the build process to replace the versions from marker version (`0.0.0`) to the release version e.g. `2.13.0` and then the second time at the end of the build process to revert the versions back from release version e.g. `2.13.0` to marker version (`0.0.0`).
 
 ### Full Build
