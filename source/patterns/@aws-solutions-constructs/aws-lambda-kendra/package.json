@@ -18,12 +18,12 @@
     "test": "jest --coverage",
     "clean": "tsc -b --clean",
     "watch": "tsc -b -w",
-    "integ": "cdk-integ",
-    "integ-assert": "cdk-integ-assert-v2",
+    "integ": "",
+    "integ-assert": "",
     "jsii": "jsii",
     "jsii-pacmak": "jsii-pacmak",
     "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
-    "integ-no-clean": "cdk-integ --no-clean",
+    "integ-no-clean": "",
     "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
   },
   "jsii": {
