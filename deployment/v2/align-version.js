@@ -25,11 +25,6 @@ for (const file of process.argv.splice(4)) {
   pkg.peerDependencies = updateDependencyVersionNumbers(pkg.peerDependencies || { });
   pkg.devDependencies = updateDependencyVersionNumbers(pkg.devDependencies || { });
 
-  // This will be removed in the next PR when we remove cdk-integ
-  if (pkg.scripts) {
-    pkg.scripts["integ-assert"] = "cdk-integ-assert-v2";
-  }
-
   console.error(`${file} => ${targetSolutionsConstructsVersion}`);
   fs.writeFileSync(file, JSON.stringify(pkg, undefined, 2));
 

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # ------------------------------------
 #
 # Runs the steps required to be able to build and test individual
@@ -12,13 +14,13 @@
 
 # Obtains the current folder name (with no folder hierarchy)
 # to assign to a variable
-currentFolderName=${PWD##*/}
+result=${PWD##*/}          # to assign to a variable
 
 # Some forgotten mysticism that allows us to check whether this
 # script was invoked within a 'source' command. This is required
 # so that it runs in the context of the window, not in a new context - thus
 # ensuring the environment variables set by the script persist.
-(return 0 2>/dev/null) && sourced=1 || sourced=0	(return 0 2>/dev/null) && sourced=1 || sourced=0
+(return 0 2>/dev/null) && sourced=1 || sourced=0
 
 if [ $sourced -ne 1 ]
 then

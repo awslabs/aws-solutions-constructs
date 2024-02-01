@@ -17,6 +17,7 @@ import { SnsToSqs, SnsToSqsProps } from "../lib";
 import { KeyProps } from 'aws-cdk-lib/aws-kms';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -47,5 +48,6 @@ const props: SnsToSqsProps = {
 
 new SnsToSqs(stack, 'test-sns-sqs', props);
 
-// Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

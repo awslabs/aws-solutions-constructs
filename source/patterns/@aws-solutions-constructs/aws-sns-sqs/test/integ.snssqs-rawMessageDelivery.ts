@@ -19,11 +19,14 @@ import * as sns from 'aws-cdk-lib/aws-sns';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-sns-sqs';
+stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", false);
+
 const sqsEncryptionKey = new kms.Key(stack, 'ImportedSQSEncryptionKey', {
   enableKeyRotation: true
 });
@@ -65,5 +68,6 @@ const policyStatement = new iam.PolicyStatement({
 
 snsToSqsStack.encryptionKey?.addToResourcePolicy(policyStatement);
 
-// Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });
