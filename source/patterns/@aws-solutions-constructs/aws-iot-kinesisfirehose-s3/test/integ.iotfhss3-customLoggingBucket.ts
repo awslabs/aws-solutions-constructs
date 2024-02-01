@@ -50,4 +50,6 @@ new IotToKinesisFirehoseToS3(stack, 'test-iot-kinesisfirehose-s3', {
 });
 
 suppressAutoDeleteHandlerWarnings(stack);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

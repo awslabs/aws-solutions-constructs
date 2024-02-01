@@ -29,4 +29,6 @@ const props: EventbridgeToKinesisStreamsProps = {
 
 new EventbridgeToKinesisStreams(stack, 'test-eventbridge-kinesis-stream', props);
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

@@ -41,4 +41,6 @@ const props: dynamodb.GlobalSecondaryIndexProps = {
 };
 construct.dynamoTable.addGlobalSecondaryIndex(props);
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

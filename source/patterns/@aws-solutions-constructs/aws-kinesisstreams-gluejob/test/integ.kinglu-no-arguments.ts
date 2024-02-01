@@ -59,4 +59,6 @@ new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', {
 });
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

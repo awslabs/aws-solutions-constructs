@@ -31,4 +31,6 @@ new WafwebaclToApiGateway(stack, 'second-construct', {
   existingWebaclObj: ownsWaf.webacl
 });
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

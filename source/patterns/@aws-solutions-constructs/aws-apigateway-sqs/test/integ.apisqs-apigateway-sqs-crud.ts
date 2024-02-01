@@ -32,4 +32,6 @@ const props: ApiGatewayToSqsProps = {
 new ApiGatewayToSqs(stack, 'test-api-gateway-sqs', props);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

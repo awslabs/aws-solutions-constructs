@@ -41,4 +41,6 @@ new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana4', {
 });
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

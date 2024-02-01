@@ -29,4 +29,6 @@ new WafwebaclToCloudFront(stack, 'test-wafwebacl-cloudfront-s3', {
   existingCloudFrontWebDistribution: newDistro,
 });
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

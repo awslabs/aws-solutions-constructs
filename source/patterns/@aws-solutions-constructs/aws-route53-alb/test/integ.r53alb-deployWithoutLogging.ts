@@ -43,4 +43,6 @@ defaults.addCfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK create
 defaults.addCfnSuppressRules(testConstruct.loadBalancer, [{ id: 'W52', reason: 'This test is explicitly to test the no logging case.'}]);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

@@ -51,4 +51,6 @@ new ApiGatewayToDynamoDB(stack, 'test-api-gateway-dynamodb-additional-request-te
 });
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

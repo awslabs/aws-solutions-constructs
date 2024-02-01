@@ -28,4 +28,6 @@ new ApiGatewayToSqs(stack, 'test-api-gateway-sqs-existing-queue', {
 });
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

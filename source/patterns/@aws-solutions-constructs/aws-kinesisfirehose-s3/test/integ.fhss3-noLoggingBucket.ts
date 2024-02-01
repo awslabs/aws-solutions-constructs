@@ -38,4 +38,6 @@ defaults.addCfnSuppressRules(s3Bucket, [
     reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
 ]);
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

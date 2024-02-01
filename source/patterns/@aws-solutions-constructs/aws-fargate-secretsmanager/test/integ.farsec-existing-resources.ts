@@ -46,4 +46,6 @@ const constructProps: FargateToSecretsmanagerProps = {
 new FargateToSecretsmanager(stack, 'test-construct', constructProps);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

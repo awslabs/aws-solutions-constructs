@@ -38,4 +38,6 @@ const props: KinesisStreamsToLambdaProps = {
 new KinesisStreamsToLambda(stack, 'test-kinesisstreams-lambda', props);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

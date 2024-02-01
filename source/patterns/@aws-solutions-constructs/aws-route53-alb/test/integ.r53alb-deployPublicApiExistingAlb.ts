@@ -54,4 +54,6 @@ const newSecurityGroup = testConstruct.loadBalancer.connections.securityGroups[0
 defaults.addCfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK created rule that blocks all traffic.'}]);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

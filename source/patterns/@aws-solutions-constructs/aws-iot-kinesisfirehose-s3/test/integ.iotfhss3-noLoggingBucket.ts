@@ -50,4 +50,6 @@ defaults.addCfnSuppressRules(s3Bucket, [
 ]);
 
 defaults.SuppressCfnNagLambdaWarnings(stack);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

@@ -33,4 +33,6 @@ const props: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps = {
 };
 
 new DynamoDBStreamsToLambdaToElasticSearchAndKibana(stack, 'test-ddbstreams-lambda-esk', props);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

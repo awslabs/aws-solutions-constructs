@@ -54,4 +54,6 @@ const constructProps: FargateToSsmstringparameterProps = {
 new FargateToSsmstringparameter(stack, 'test-construct', constructProps);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

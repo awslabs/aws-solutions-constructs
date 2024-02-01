@@ -41,4 +41,6 @@ const newSecurityGroup = loadBalancer.connections.securityGroups[0].node.default
 defaults.addCfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK created rule that blocks all traffic.'}]);
 defaults.addCfnSuppressRules(loadBalancer, [{ id: 'W52', reason: 'This test is explicitly to test the no logging case.'}]);
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

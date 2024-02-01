@@ -41,4 +41,6 @@ new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', {
   }
 });
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

@@ -39,4 +39,6 @@ const props: S3ToLambdaProps = {
 new S3ToLambda(stack, 'test-s3-lambda', props);
 
 suppressAutoDeleteHandlerWarnings(stack);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

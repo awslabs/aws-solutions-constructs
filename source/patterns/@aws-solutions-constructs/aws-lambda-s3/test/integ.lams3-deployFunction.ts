@@ -53,4 +53,6 @@ defaults.addCfnSuppressRules(s3Bucket, [
 ]);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

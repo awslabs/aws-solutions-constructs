@@ -35,4 +35,6 @@ const props: LambdaToEventbridgeProps = {
 new LambdaToEventbridge(stack, 'test-lambda-eventbridge', props);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

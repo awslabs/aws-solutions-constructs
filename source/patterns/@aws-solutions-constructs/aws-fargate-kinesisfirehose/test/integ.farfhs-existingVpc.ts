@@ -37,4 +37,6 @@ new FargateToKinesisFirehose(stack, 'test-fargate-kinesisstreams', {
 });
 
 suppressAutoDeleteHandlerWarnings(stack);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

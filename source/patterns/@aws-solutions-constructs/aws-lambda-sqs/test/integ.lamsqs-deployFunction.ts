@@ -35,4 +35,6 @@ const props: LambdaToSqsProps = {
 new LambdaToSqs(stack, 'test-lambda-sqs', props);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

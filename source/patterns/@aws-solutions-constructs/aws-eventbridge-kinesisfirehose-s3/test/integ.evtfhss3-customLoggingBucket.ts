@@ -50,4 +50,6 @@ new EventbridgeToKinesisFirehoseToS3(stack, 'evtfhss3-custom-log-bucket', {
 });
 
 suppressAutoDeleteHandlerWarnings(stack);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

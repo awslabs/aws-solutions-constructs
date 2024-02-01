@@ -51,4 +51,6 @@ new FargateToDynamoDB(stack, 'test-construct', constructProps);
 
 defaults.suppressAutoDeleteHandlerWarnings(stack);
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

@@ -35,4 +35,6 @@ const props: DynamoDBStreamsToLambdaProps = {
 };
 
 new DynamoDBStreamsToLambda(stack, 'test-dynamodbstreams-lambda', props);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

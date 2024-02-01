@@ -33,4 +33,6 @@ new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', {
   existingLambdaObj: func
 });
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

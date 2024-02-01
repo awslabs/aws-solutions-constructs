@@ -30,4 +30,6 @@ const props: EventbridgeToSnsProps = {
 
 new EventbridgeToSns(stack, 'test-construct', props);
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

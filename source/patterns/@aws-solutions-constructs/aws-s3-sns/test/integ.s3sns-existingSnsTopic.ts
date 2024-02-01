@@ -40,4 +40,6 @@ new S3ToSns(stack, 'test-s3-sns', {
 });
 
 defaults.SuppressCfnNagLambdaWarnings(stack);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

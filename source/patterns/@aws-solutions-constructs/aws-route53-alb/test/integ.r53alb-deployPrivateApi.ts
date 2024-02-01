@@ -45,4 +45,6 @@ defaults.addCfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK create
 
 defaults.suppressAutoDeleteHandlerWarnings(stack);
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

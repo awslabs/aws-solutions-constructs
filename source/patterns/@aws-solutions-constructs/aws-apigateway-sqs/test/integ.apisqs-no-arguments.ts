@@ -25,4 +25,6 @@ stack.templateOptions.description = 'Integration Test for aws-apigateway-sqs';
 new ApiGatewayToSqs(stack, 'test-api-gateway-sqs-default', {});
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

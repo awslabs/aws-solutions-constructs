@@ -29,4 +29,6 @@ const props: ApiGatewayToDynamoDBProps = {
 new ApiGatewayToDynamoDB(stack, 'test-api-gateway-dynamodb-default', props);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

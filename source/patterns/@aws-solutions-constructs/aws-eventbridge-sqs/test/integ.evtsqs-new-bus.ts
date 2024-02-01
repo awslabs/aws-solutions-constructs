@@ -29,4 +29,6 @@ const props: EventbridgeToSqsProps = {
 };
 
 new EventbridgeToSqs(stack, 'construct', props);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

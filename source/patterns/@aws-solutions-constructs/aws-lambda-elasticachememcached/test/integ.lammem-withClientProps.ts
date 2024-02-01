@@ -42,4 +42,6 @@ const props: LambdaToElasticachememcachedProps = {
 new LambdaToElasticachememcached(stack, generateIntegStackName(__filename), props);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

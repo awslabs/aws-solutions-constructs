@@ -53,4 +53,6 @@ const constructProps: FargateToStepfunctionsProps = {
 new FargateToStepfunctions(stack, 'test-construct', constructProps);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

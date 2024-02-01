@@ -35,4 +35,6 @@ const props: LambdaToSnsProps = {
 new LambdaToSns(stack, 'test-lambda-sns', props);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });
