@@ -16,6 +16,7 @@ import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { S3ToSns } from "../lib";
 import { SuppressCfnNagLambdaWarnings, generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as s3 from 'aws-cdk-lib/aws-s3';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));

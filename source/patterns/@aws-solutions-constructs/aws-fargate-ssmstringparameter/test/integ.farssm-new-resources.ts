@@ -14,8 +14,9 @@
 // Imports
 import { Aws, App, Stack } from "aws-cdk-lib";
 import { FargateToSsmstringparameter, FargateToSsmstringparameterProps } from "../lib";
-import {  generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();

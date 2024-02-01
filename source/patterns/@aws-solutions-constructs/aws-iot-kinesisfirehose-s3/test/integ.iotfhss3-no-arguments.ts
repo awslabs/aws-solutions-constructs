@@ -15,6 +15,7 @@
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { IotToKinesisFirehoseToS3, IotToKinesisFirehoseToS3Props } from "../lib";
 import { SuppressCfnNagLambdaWarnings, generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();

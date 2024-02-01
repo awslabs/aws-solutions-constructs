@@ -18,6 +18,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings, CreateApiAuthorizer } from '@aws-solutions-constructs/core';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();

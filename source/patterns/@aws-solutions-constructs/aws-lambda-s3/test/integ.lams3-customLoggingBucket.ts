@@ -17,6 +17,7 @@ import * as s3 from "aws-cdk-lib/aws-s3";
 import { LambdaToS3 } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 

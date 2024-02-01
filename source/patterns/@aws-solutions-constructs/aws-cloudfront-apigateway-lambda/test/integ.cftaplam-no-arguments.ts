@@ -17,6 +17,7 @@ import { CloudFrontToApiGatewayToLambda } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings, CreateApiAuthorizer } from '@aws-solutions-constructs/core';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();

@@ -36,6 +36,6 @@ const propsTwo: EventbridgeToSnsProps = {
 new EventbridgeToSns(stackTwo, 'test-construct', propsTwo);
 new EventbridgeToSns(stackTwo, 'second-construct', propsTwo);
 
-new IntegTest(stack, 'Integ', { testCases: [
-  stack
+new IntegTest(stackTwo, 'Integ', { testCases: [
+  stackTwo
 ] });

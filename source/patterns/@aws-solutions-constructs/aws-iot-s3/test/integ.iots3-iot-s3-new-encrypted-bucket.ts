@@ -17,6 +17,7 @@ import * as kms from 'aws-cdk-lib/aws-kms';
 import { IotToS3, IotToS3Props } from "../lib";
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));

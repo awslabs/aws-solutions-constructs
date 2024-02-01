@@ -17,6 +17,7 @@ import { FargateToSqs, FargateToSqsProps } from "../lib";
 import { generateIntegStackName, getTestVpc, CreateFargateService } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();

@@ -18,6 +18,7 @@ import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-
 import * as ecs from "aws-cdk-lib/aws-ecs";
 import { GetTestFirehoseDestination } from './test-helper';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));

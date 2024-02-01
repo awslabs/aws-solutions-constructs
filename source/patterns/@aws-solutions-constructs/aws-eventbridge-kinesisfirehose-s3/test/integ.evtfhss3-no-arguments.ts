@@ -15,6 +15,7 @@ import * as events from 'aws-cdk-lib/aws-events';
 import { App, Stack, Duration, RemovalPolicy } from 'aws-cdk-lib';
 import { EventbridgeToKinesisFirehoseToS3, EventbridgeToKinesisFirehoseToS3Props } from '../lib';
 import { SuppressCfnNagLambdaWarnings, generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));

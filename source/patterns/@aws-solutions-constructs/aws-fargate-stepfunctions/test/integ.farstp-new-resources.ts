@@ -17,6 +17,7 @@ import { FargateToStepfunctions, FargateToStepfunctionsProps } from "../lib";
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();

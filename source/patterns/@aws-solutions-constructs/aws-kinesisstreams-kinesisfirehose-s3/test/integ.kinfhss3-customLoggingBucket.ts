@@ -16,6 +16,7 @@ import { App, Stack, RemovalPolicy, Duration } from "aws-cdk-lib";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import { KinesisStreamsToKinesisFirehoseToS3 } from "../lib";
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 

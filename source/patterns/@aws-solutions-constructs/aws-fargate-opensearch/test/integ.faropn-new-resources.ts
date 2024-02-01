@@ -16,6 +16,7 @@ import { Aws, App, Stack } from "aws-cdk-lib";
 import { FargateToOpenSearch, FargateToOpenSearchProps } from "../lib";
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings, CreateShortUniqueTestName } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();

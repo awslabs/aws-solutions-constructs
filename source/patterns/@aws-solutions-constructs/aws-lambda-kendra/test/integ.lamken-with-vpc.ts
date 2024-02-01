@@ -17,6 +17,7 @@ import { LambdaToKendra } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -44,3 +45,7 @@ new LambdaToKendra(stack, 'minimal-arguments', {
 });
 
 suppressAutoDeleteHandlerWarnings(stack);
+// Synth
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

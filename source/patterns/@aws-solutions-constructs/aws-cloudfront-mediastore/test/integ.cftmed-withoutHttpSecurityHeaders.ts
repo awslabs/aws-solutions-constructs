@@ -15,6 +15,7 @@
 import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { CloudFrontToMediaStore } from '../lib';
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();

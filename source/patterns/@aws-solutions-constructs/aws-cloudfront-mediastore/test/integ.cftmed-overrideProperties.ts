@@ -17,6 +17,7 @@ import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import { CloudFrontToMediaStore } from '../lib';
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();

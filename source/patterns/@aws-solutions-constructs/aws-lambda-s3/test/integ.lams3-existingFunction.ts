@@ -17,6 +17,7 @@ import { LambdaToS3, LambdaToS3Props } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();

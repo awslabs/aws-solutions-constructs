@@ -16,6 +16,7 @@ import { App, Stack, RemovalPolicy, aws_kms } from "aws-cdk-lib";
 import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
 import { buildS3Bucket, generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();

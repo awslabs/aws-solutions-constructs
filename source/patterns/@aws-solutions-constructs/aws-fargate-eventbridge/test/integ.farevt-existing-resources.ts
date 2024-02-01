@@ -17,6 +17,7 @@ import { FargateToEventbridge, FargateToEventbridgeProps } from "../lib";
 import { generateIntegStackName, getTestVpc, CreateFargateService } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as events from 'aws-cdk-lib/aws-events';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();

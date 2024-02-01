@@ -16,6 +16,7 @@ import { App, Stack } from "aws-cdk-lib";
 import { LambdaToKinesisStreams } from "../lib";
 import { buildVpc, DefaultPublicPrivateVpcProps, generateIntegStackName } from '@aws-solutions-constructs/core';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));

@@ -17,6 +17,7 @@ import { FargateToSsmstringparameter, FargateToSsmstringparameterProps } from ".
 import { generateIntegStackName, getTestVpc, CreateFargateService } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();

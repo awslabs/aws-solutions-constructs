@@ -16,6 +16,7 @@ import { LambdaToElasticSearchAndKibana } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();

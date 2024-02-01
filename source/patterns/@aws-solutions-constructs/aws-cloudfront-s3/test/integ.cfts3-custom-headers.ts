@@ -16,6 +16,7 @@ import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { CloudFrontToS3 } from "../lib";
 import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
