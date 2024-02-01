@@ -17,6 +17,7 @@ import { App, Stack, RemovalPolicy } from 'aws-cdk-lib';
 import { CreateScrapBucket, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
 import { KinesisStreamsToKinesisFirehoseToS3 } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -35,4 +36,6 @@ new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-existing-bucket-firehose-s3
 suppressAutoDeleteHandlerWarnings(stack);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

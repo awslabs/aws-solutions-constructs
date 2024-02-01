@@ -45,4 +45,6 @@ new FargateToS3(stack, 'test-construct', testProps);
 
 suppressAutoDeleteHandlerWarnings(stack);
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

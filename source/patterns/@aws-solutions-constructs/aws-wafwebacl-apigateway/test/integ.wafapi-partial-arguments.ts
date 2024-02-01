@@ -30,4 +30,6 @@ new WafwebaclToApiGateway(stack, "test-wafwebacl-apigateway-lambda", {
   }
 });
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

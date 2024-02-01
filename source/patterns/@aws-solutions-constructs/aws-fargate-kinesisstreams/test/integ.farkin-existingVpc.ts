@@ -32,4 +32,6 @@ new FargateToKinesisStreams(stack, 'test-fargate-kinesisstreams', {
   existingVpc
 });
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

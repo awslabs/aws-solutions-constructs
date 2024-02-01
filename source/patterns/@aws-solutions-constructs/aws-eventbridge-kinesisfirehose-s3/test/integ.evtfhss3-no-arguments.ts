@@ -40,4 +40,6 @@ const props: EventbridgeToKinesisFirehoseToS3Props = {
 new EventbridgeToKinesisFirehoseToS3(stack, 'evtfhss3-no-args', props);
 
 SuppressCfnNagLambdaWarnings(stack);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

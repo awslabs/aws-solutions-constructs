@@ -53,4 +53,6 @@ const testProps: FargateToSqsProps = {
 new FargateToSqs(stack, 'test-construct', testProps);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

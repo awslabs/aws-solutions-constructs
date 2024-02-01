@@ -27,4 +27,6 @@ new WafwebaclToApiGateway(stack, "test-wafwebacl-apigateway-lambda", {
   existingApiGatewayInterface: restApi,
 });
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

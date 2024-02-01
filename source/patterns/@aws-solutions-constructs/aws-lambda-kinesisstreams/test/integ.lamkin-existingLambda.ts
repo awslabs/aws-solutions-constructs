@@ -30,4 +30,6 @@ new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
   existingLambdaObj
 });
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

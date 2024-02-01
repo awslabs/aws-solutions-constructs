@@ -33,4 +33,6 @@ new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
   existingVpc
 });
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

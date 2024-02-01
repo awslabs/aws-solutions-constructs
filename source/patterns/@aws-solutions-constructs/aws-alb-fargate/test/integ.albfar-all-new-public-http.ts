@@ -15,6 +15,7 @@
 import { Aws, App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { AlbToFargate, AlbToFargateProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as defaults from '@aws-solutions-constructs/core';
 import { CfnSecurityGroup } from "aws-cdk-lib/aws-ec2";
@@ -59,4 +60,6 @@ defaults.addCfnSuppressRules(newSecurityGroup, [
 defaults.suppressAutoDeleteHandlerWarnings(stack);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

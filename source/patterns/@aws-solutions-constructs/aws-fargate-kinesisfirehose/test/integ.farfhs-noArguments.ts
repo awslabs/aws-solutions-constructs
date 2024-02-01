@@ -39,4 +39,6 @@ const testProps: FargateToKinesisFirehoseProps = {
 new FargateToKinesisFirehose(stack, 'test-construct', testProps);
 
 suppressAutoDeleteHandlerWarnings(stack);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

@@ -18,6 +18,7 @@ import { Duration } from 'aws-cdk-lib';
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import * as events from 'aws-cdk-lib/aws-events';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -37,4 +38,6 @@ const props: EventbridgeToStepfunctionsProps = {
 };
 
 new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions-construct', props);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

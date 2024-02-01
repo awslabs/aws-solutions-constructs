@@ -40,4 +40,6 @@ new CloudFrontToS3(stack, 'test-cloudfront-s3-managed-key', props);
 suppressAutoDeleteHandlerWarnings(stack);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

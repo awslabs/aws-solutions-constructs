@@ -58,4 +58,6 @@ new OpenApiGatewayToLambda(stack, 'OpenApiGatewayToLambda', {
 });
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

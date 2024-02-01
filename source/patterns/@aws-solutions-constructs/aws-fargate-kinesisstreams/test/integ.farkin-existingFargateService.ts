@@ -38,4 +38,6 @@ new FargateToKinesisStreams(stack, 'test-fargate-kinesisstreams', {
   existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition
 });
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

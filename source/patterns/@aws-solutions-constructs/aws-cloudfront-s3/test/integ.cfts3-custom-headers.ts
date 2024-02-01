@@ -63,4 +63,6 @@ new CloudFrontToS3(stack, 'test-cloudfront-s3', {
 
 suppressAutoDeleteHandlerWarnings(stack);
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

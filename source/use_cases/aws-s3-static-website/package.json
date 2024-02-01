@@ -28,6 +28,7 @@
     "build+lint+test": "npm run build && npm run lint && npm test && npm run integ-assert"
   },
   "dependencies": {
+    "@aws-cdk/integ-tests-alpha": "0.0.0",
     "@aws-solutions-constructs/aws-cloudfront-s3": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
     "source-map-support": "^0.5.16",

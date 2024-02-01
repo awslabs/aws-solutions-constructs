@@ -116,11 +116,6 @@ yarn install --frozen-lockfile
 # echo "updating Import statements for CDK v2..."
 # /bin/bash $constructs_root_dir/rewrite-imports.sh
 
-echo "============================================================================================="
-echo "building cdk-integ-tools..."
-cd $source_dir/tools/cdk-integ-tools
-npm install
-npm run build
 npm link
 
 cd $source_dir
@@ -132,7 +127,8 @@ for construct in $constructs; do
 
   cd $constructs_root_dir/source/patterns/@aws-solutions-constructs/$construct
   echo Running in $PWD
-  cdk-integ --no-clean &
+  npm run jsii
+  integ-runner --update-on-failed --no-clean &
   sleep 10
   cd $constructs_root_dir/source/patterns/@aws-solutions-constructs
 done

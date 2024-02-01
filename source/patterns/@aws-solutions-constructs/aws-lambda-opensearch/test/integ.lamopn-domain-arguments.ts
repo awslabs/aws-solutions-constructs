@@ -33,4 +33,6 @@ new LambdaToOpenSearch(stack, 'test-lambda-opensearch', {
 });
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

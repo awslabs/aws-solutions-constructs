@@ -16,6 +16,7 @@ import { App, Stack } from "aws-cdk-lib";
 import { LambdaToElasticachememcached, LambdaToElasticachememcachedProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 // Setup

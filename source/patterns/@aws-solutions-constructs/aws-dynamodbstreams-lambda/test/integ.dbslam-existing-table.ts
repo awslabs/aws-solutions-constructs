@@ -17,6 +17,7 @@ import { DynamoDBStreamsToLambdaProps, DynamoDBStreamsToLambda } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 

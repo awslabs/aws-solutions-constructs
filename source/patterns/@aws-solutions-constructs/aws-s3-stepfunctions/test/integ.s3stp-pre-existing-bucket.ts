@@ -43,4 +43,6 @@ new S3ToStepfunctions(stack, 'test-s3-stepfunctions-pre-existing-bucket-construc
 defaults.addCfnNagS3BucketNotificationRulesToSuppress(stack, 'BucketNotificationsHandler050a0587b7544547bf325f094a3db834');
 defaults.suppressAutoDeleteHandlerWarnings(stack);
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

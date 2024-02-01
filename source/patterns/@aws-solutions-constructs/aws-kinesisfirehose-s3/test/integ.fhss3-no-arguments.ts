@@ -34,4 +34,6 @@ new KinesisFirehoseToS3(stack, 'test-firehose-s3', {
 
 suppressAutoDeleteHandlerWarnings(stack);
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

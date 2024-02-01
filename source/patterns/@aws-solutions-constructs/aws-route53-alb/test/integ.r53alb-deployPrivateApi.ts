@@ -15,6 +15,7 @@
 import { App, Stack, Aws, RemovalPolicy } from "aws-cdk-lib";
 import { Route53ToAlb, Route53ToAlbProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
 import { CfnSecurityGroup } from "aws-cdk-lib/aws-ec2";
 

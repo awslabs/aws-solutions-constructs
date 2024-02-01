@@ -45,4 +45,6 @@ new IotToKinesisFirehoseToS3(stack, 'test-iot-firehose-s3', props);
 
 SuppressCfnNagLambdaWarnings(stack);
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

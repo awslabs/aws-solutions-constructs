@@ -52,4 +52,6 @@ new S3ToStepfunctions(stack, 'test-s3-stepfunctions', {
 });
 
 suppressAutoDeleteHandlerWarnings(stack);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

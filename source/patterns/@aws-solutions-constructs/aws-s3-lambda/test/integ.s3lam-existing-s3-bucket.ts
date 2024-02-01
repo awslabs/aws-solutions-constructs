@@ -17,6 +17,7 @@ import { S3ToLambda, S3ToLambdaProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { CreateScrapBucket, suppressAutoDeleteHandlerWarnings } from "@aws-solutions-constructs/core";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 

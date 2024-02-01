@@ -15,6 +15,7 @@
 import { Aws, App, Stack } from "aws-cdk-lib";
 import { FargateToEventbridge, FargateToEventbridgeProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 
 // Setup
@@ -39,4 +40,6 @@ const testProps: FargateToEventbridgeProps = {
 new FargateToEventbridge(stack, 'test-construct', testProps);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

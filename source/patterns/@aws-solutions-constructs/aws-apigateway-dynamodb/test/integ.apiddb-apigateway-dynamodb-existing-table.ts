@@ -17,6 +17,7 @@ import { ApiGatewayToDynamoDBProps, ApiGatewayToDynamoDB } from "../lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import { BillingMode } from "aws-cdk-lib/aws-dynamodb";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();

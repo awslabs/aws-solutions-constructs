@@ -15,6 +15,7 @@
 import { App, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { IotToS3, IotToS3Props } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
 
 const app = new App();
@@ -41,4 +42,6 @@ const props: IotToS3Props = {
 new IotToS3(stack, 'test-iot-s3-integration', props);
 
 defaults.suppressAutoDeleteHandlerWarnings(stack);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

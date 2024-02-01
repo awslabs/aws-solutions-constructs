@@ -41,4 +41,6 @@ new S3ToSqs(stack, 'test-s3-sqs', {
   }
 });
 suppressAutoDeleteHandlerWarnings(stack);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

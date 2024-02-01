@@ -35,7 +35,7 @@ function updateDependencyVersionNumbers(section) {  let newdependencies = {};
     if (name.startsWith('@aws-solutions-constructs')) {
       newdependencies[name] = version.replace(nullVersionMarker, targetSolutionsConstructsVersion);
     }
-    else if (name.startsWith('aws-cdk-lib')) {
+    else if (name.startsWith('aws-cdk-lib') || name === '@aws-cdk/integ-tests-alpha') {
       newdependencies[name] = version.replace(nullVersionMarker, awsCdkLibVersion);
     }
     else {

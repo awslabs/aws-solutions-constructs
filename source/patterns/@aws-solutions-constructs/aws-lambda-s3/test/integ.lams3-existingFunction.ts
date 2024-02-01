@@ -48,4 +48,6 @@ new LambdaToS3(stack, 'test-lambda-s3', props);
 suppressAutoDeleteHandlerWarnings(stack);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

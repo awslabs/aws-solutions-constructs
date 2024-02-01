@@ -32,4 +32,6 @@ new WafwebaclToAppsync(stack, "test-wafwebacl-appsync", {
   existingAppsyncApi: api,
 });
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

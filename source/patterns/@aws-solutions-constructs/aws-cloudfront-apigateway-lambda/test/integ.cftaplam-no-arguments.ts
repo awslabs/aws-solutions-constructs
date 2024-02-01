@@ -45,4 +45,6 @@ new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
 
 suppressAutoDeleteHandlerWarnings(stack);
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

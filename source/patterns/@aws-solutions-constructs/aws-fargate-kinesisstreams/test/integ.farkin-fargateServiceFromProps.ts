@@ -15,6 +15,7 @@
 import { App, Stack } from "aws-cdk-lib";
 import { FargateToKinesisStreams } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as ecs from "aws-cdk-lib/aws-ecs";
 
 const app = new App();
@@ -31,4 +32,6 @@ new FargateToKinesisStreams(stack, 'test-fargate-kinesisstreams', {
   }
 });
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

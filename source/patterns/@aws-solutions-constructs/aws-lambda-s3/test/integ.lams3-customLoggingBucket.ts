@@ -47,4 +47,6 @@ new LambdaToS3(stack, 'test-lambda-s3', {
   }
 });
 suppressAutoDeleteHandlerWarnings(stack);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

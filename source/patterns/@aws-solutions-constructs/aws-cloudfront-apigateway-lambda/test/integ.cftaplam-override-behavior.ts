@@ -103,4 +103,6 @@ function suppressWarnings(method: apigateway.Method) {
 
 suppressAutoDeleteHandlerWarnings(stack);
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

@@ -15,6 +15,7 @@
 import { App, Stack, Duration } from 'aws-cdk-lib';
 import { ApiGatewayToKinesisStreams, ApiGatewayToKinesisStreamsProps } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -48,4 +49,6 @@ const props: ApiGatewayToKinesisStreamsProps = {
 new ApiGatewayToKinesisStreams(stack, 'test-apigateway-kinesis-overwrite', props);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

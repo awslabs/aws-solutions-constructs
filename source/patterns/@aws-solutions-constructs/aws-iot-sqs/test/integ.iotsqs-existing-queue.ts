@@ -17,6 +17,7 @@ import { IotToSqs, IotToSqsProps } from "../lib";
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import { QueueEncryption } from "aws-cdk-lib/aws-sqs";
 
 // Setup
@@ -55,4 +56,6 @@ const policyStatement = new iam.PolicyStatement({
 iotToSqsStack.encryptionKey?.addToResourcePolicy(policyStatement);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });
