@@ -39,7 +39,7 @@ for subdir in $source_dir/patterns/\@aws-solutions-constructs/* ; do
       prefix=`basename $subdir`
       suffix=`basename $i`
       # integ-runner creates additional json files we want to skip
-      if [[ $string != *"DeployAssert"* ]]; then
+      if [[ $i != *"DeployAssert"* ]]; then
         cp $subdir/test/$i $dist_dir/$prefix-$suffix.template
       fi
     done
