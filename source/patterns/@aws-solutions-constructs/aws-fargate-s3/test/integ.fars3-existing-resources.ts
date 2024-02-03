@@ -55,7 +55,7 @@ const testProps: FargateToS3Props = {
 
 new FargateToS3(stack, 'test-construct', testProps);
 
-defaults.suppressAutoDeleteHandlerWarnings(stack);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
   stack

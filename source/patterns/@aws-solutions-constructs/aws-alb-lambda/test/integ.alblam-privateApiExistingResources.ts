@@ -86,7 +86,7 @@ defaults.addCfnSuppressRules(testSg, [
   { id: 'W29', reason: 'CDK created rule that blocks all traffic.'},
 ]);
 
-defaults.suppressAutoDeleteHandlerWarnings(stack);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
   stack

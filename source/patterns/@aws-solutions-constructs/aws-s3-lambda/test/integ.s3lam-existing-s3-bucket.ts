@@ -15,7 +15,7 @@
 import { App, Stack } from "aws-cdk-lib";
 import { S3ToLambda, S3ToLambdaProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { CreateScrapBucket, suppressAutoDeleteHandlerWarnings } from "@aws-solutions-constructs/core";
+import { CreateScrapBucket, suppressCustomHandlerCfnNagWarnings } from "@aws-solutions-constructs/core";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
@@ -38,7 +38,7 @@ const props: S3ToLambdaProps = {
 
 new S3ToLambda(stack, 'test-s3-lambda', props);
 
-suppressAutoDeleteHandlerWarnings(stack);
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 new IntegTest(stack, 'Integ', { testCases: [
   stack
 ] });

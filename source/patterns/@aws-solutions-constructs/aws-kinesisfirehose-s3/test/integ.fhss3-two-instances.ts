@@ -14,7 +14,7 @@
 // Imports
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { KinesisFirehoseToS3 } from "../lib";
-import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
@@ -44,7 +44,7 @@ new KinesisFirehoseToS3(stack, 'second-construct', {
   }
 });
 
-suppressAutoDeleteHandlerWarnings(stack);
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
   stack

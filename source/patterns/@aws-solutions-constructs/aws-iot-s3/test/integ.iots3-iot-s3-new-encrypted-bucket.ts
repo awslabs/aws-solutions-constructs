@@ -15,7 +15,7 @@
 import { App, RemovalPolicy, Stack } from "aws-cdk-lib";
 import * as kms from 'aws-cdk-lib/aws-kms';
 import { IotToS3, IotToS3Props } from "../lib";
-import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
@@ -49,7 +49,7 @@ const props: IotToS3Props = {
 
 new IotToS3(stack, 'test-iot-s3-integration', props);
 
-suppressAutoDeleteHandlerWarnings(stack);
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 new IntegTest(stack, 'Integ', { testCases: [
   stack
 ] });

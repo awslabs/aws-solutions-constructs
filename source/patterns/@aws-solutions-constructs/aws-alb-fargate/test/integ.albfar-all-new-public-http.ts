@@ -57,7 +57,7 @@ defaults.addCfnSuppressRules(newSecurityGroup, [
   { id: 'W9', reason: 'Rule does not apply for ELB.'}
 ]);
 
-defaults.suppressAutoDeleteHandlerWarnings(stack);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [

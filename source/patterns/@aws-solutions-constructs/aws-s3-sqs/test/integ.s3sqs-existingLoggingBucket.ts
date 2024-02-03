@@ -34,7 +34,7 @@ const props: S3ToSqsProps = {
     autoDeleteObjects: true
   }
 };
-defaults.suppressAutoDeleteHandlerWarnings(stack);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 
 new S3ToSqs(stack, 'test-s3-sqs-temp', props);
 new IntegTest(stack, 'Integ', { testCases: [

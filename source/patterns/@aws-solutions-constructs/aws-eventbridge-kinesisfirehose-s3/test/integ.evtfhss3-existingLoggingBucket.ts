@@ -40,7 +40,7 @@ new EventbridgeToKinesisFirehoseToS3(stack, 'evtfhss3-existing-log-bucket', {
   },
 });
 
-defaults.suppressAutoDeleteHandlerWarnings(stack);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 new IntegTest(stack, 'Integ', { testCases: [
   stack
 ] });

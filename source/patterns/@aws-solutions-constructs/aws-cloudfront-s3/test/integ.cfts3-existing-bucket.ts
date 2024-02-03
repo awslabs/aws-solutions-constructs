@@ -54,7 +54,7 @@ _construct.cloudFrontWebDistribution.addBehavior('/images/*.jpg', new origins.S3
   cachePolicy: myCachePolicy
 });
 
-defaults.suppressAutoDeleteHandlerWarnings(stack);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
   stack

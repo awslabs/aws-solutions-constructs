@@ -16,7 +16,7 @@ import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { CloudFrontToApiGatewayToLambda } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
-import { generateIntegStackName, suppressAutoDeleteHandlerWarnings, CreateApiAuthorizer } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings, CreateApiAuthorizer } from '@aws-solutions-constructs/core';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
@@ -44,7 +44,7 @@ new CloudFrontToApiGatewayToLambda(stack, 'cf-apigw-lambda', {
     versioned: true
   }
 });
-suppressAutoDeleteHandlerWarnings(stack);
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [

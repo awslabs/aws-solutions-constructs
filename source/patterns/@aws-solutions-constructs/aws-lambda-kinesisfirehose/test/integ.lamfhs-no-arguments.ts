@@ -35,7 +35,7 @@ new LambdaToKinesisFirehose(stack, 'test-construct', {
   existingKinesisFirehose: destination.kinesisFirehose
 });
 
-defaults.suppressAutoDeleteHandlerWarnings(stack);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [

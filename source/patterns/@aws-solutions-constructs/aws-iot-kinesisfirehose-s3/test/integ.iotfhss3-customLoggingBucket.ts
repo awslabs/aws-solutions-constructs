@@ -14,7 +14,7 @@
 /// !cdk-integ *
 import { Duration, App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { IotToKinesisFirehoseToS3 } from "../lib";
-import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
@@ -50,7 +50,7 @@ new IotToKinesisFirehoseToS3(stack, 'test-iot-kinesisfirehose-s3', {
   }
 });
 
-suppressAutoDeleteHandlerWarnings(stack);
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 new IntegTest(stack, 'Integ', { testCases: [
   stack
 ] });

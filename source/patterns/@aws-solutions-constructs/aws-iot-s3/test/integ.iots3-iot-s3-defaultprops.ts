@@ -41,7 +41,7 @@ const props: IotToS3Props = {
 
 new IotToS3(stack, 'test-iot-s3-integration', props);
 
-defaults.suppressAutoDeleteHandlerWarnings(stack);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 new IntegTest(stack, 'Integ', { testCases: [
   stack
 ] });

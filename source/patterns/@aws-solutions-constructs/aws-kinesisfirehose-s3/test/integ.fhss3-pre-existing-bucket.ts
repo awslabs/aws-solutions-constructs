@@ -14,7 +14,7 @@
 // Imports
 import { App, Stack } from "aws-cdk-lib";
 import { KinesisFirehoseToS3 } from "../lib";
-import { CreateScrapBucket, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { CreateScrapBucket, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import * as s3 from "aws-cdk-lib/aws-s3";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
@@ -32,7 +32,7 @@ const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existin
 new KinesisFirehoseToS3(stack, 'test-firehose-s3-pre-existing-bucket-stack', {
   existingBucketObj: mybucket,
 });
-suppressAutoDeleteHandlerWarnings(stack);
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [

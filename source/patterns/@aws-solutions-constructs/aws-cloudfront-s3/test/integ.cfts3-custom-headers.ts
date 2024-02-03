@@ -14,7 +14,7 @@
 // Imports
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { CloudFrontToS3 } from "../lib";
-import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
@@ -62,7 +62,7 @@ new CloudFrontToS3(stack, 'test-cloudfront-s3', {
   },
 });
 
-suppressAutoDeleteHandlerWarnings(stack);
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
   stack

@@ -14,7 +14,7 @@
 // Imports
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { App, Stack, RemovalPolicy } from 'aws-cdk-lib';
-import { CreateScrapBucket, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { CreateScrapBucket, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { KinesisStreamsToKinesisFirehoseToS3 } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
@@ -41,7 +41,7 @@ new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-existing-logging-bucket-str
     removalPolicy: RemovalPolicy.DESTROY
   }
 });
-suppressAutoDeleteHandlerWarnings(stack);
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [

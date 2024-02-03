@@ -50,7 +50,7 @@ const constructProps: FargateToDynamoDBProps = {
 
 new FargateToDynamoDB(stack, 'test-construct', constructProps);
 
-defaults.suppressAutoDeleteHandlerWarnings(stack);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
   stack

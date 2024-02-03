@@ -14,7 +14,7 @@
 /// !cdk-integ *
 import { App, Stack } from "aws-cdk-lib";
 import { FargateToKinesisFirehose } from "../lib";
-import { buildVpc, DefaultPublicPrivateVpcProps, generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { buildVpc, DefaultPublicPrivateVpcProps, generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import { GetTestFirehoseDestination } from './test-helper';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
@@ -37,7 +37,7 @@ new FargateToKinesisFirehose(stack, 'test-fargate-kinesisstreams', {
   existingKinesisFirehose: destination.kinesisFirehose
 });
 
-suppressAutoDeleteHandlerWarnings(stack);
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 new IntegTest(stack, 'Integ', { testCases: [
   stack
 ] });

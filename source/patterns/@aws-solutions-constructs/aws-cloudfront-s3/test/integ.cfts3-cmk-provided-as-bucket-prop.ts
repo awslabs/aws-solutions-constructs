@@ -14,7 +14,7 @@
 // Imports
 import { App, Stack, RemovalPolicy, aws_kms } from "aws-cdk-lib";
 import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
-import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
@@ -40,7 +40,7 @@ const props: CloudFrontToS3Props = {
 
 new CloudFrontToS3(stack, 'test-cloudfront-s3-cmk-encryption-key', props);
 
-suppressAutoDeleteHandlerWarnings(stack);
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [

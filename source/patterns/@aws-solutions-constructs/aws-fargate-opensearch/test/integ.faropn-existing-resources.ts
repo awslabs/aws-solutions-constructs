@@ -47,7 +47,7 @@ const testProps: FargateToOpenSearchProps = {
 
 new FargateToOpenSearch(stack, 'test-construct', testProps);
 
-defaults.suppressAutoDeleteHandlerWarnings(stack);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
   stack
