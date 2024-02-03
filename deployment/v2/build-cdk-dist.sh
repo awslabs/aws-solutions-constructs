@@ -38,7 +38,10 @@ for subdir in $source_dir/patterns/\@aws-solutions-constructs/* ; do
     for i in `find . -name "*.template.json" -type f`; do
       prefix=`basename $subdir`
       suffix=`basename $i`
-      cp $subdir/test/$i $dist_dir/$prefix-$suffix.template
+      # integ-runner creates additional json files we want to skip
+      if [[ $string != *"DeployAssert"* ]]; then
+        cp $subdir/test/$i $dist_dir/$prefix-$suffix.template
+      fi
     done
     cd $source_dir
   fi
