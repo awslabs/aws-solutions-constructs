@@ -12,7 +12,7 @@ export NODE_OPTIONS="--max-old-space-size=4096 ${NODE_OPTIONS:-}"
 cd $deployment_dir/
 
 echo "------------------------------------------------------------------------------"
-echo "[Copy] CDK templates for all patterns into the deployment dir for CfnNagScan"
+echo "[Copy] integration test snapshots for all patterns into the deployment dir for CfnNagScan"
 echo "------------------------------------------------------------------------------"
 
 echo "mkdir -p $dist_dir"
@@ -23,19 +23,19 @@ for subdir in $source_dir/patterns/\@aws-solutions-constructs/* ; do
     cd $subdir/test
 
     echo "Checking integ CFN templates in $subdir/test"
-    cnt=`find . -name "*expected.json" -type f | wc -l`
+    cnt=`find . -name "*.template.json" -type f | wc -l`
     prefix=`basename $subdir`
     if [ "$prefix" != "core" ]
     then
       if [ "$cnt" -eq "0" ]
       then
-        echo "************** [ERROR] ************* Did not find any integ CFN templates in $subdir; please add at least one by writing an integ test case and running cdk-integ command to generate the CFN template for it"
+        echo "************** [ERROR] ************* Did not find any integ tests in $subdir; please add at least one by writing an integ test case and running 'npm run integ' command to generate the snapshot for it"
         exit 1
       fi
     fi
 
     echo "Copying templates from $subdir/test"
-    for i in `find . -name "*expected.json" -type f`; do
+    for i in `find . -name "*.template.json" -type f`; do
       prefix=`basename $subdir`
       suffix=`basename $i`
       cp $subdir/test/$i $dist_dir/$prefix-$suffix.template
