@@ -22,7 +22,7 @@ for (const file of process.argv.splice(4)) {
   pkg.version = targetSolutionsConstructsVersion;
 
   pkg.dependencies = updateDependencyVersionNumbers(pkg.dependencies || { });
-  pkg.peerDependencies = updateDependencyVersionNumbers(pkg.peerDependencies || { });
+  pkg.peerDependencies = updateDependencyVersionNumbers(pkg.peerDependencies || { }, '^');
   pkg.devDependencies = updateDependencyVersionNumbers(pkg.devDependencies || { });
 
   console.error(`${file} => ${targetSolutionsConstructsVersion}`);
@@ -30,11 +30,12 @@ for (const file of process.argv.splice(4)) {
 
 }
 
-function updateDependencyVersionNumbers(section) {  let newdependencies = {};
+function updateDependencyVersionNumbers(section, orBetter = '') {  let newdependencies = {};
   for (const [ name, version ] of Object.entries(section)) {
     if (name.startsWith('@aws-solutions-constructs')) {
       newdependencies[name] = version.replace(nullVersionMarker, targetSolutionsConstructsVersion);
     }
+
     else if (name.startsWith('aws-cdk-lib') || name === '@aws-cdk/integ-tests-alpha') {
       newdependencies[name] = version.replace(nullVersionMarker, awsCdkLibVersion);
     }
