@@ -1,0 +1,203 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "iotfhss3noargumentsIntegDefaultTestDeployAssert6230CC38.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "iotfhss3noargumentsIntegDefaultTestDeployAssert6230CC38.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "iotfhss3noargumentsIntegDefaultTestDeployAssert6230CC38": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "iotfhss3noargumentsIntegDefaultTestDeployAssert6230CC38.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "iotfhss3noargumentsIntegDefaultTestDeployAssert6230CC38.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "iotfhss3noargumentsIntegDefaultTestDeployAssert6230CC38.assets"
+      ],
+      "metadata": {
+        "/iotfhss3-no-arguments/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/iotfhss3-no-arguments/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "iotfhss3-no-arguments/Integ/DefaultTest/DeployAssert"
+    },
+    "iotfhss3-no-arguments.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "iotfhss3-no-arguments.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "iotfhss3-no-arguments": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "iotfhss3-no-arguments.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/25012696253bb9209060cf3ea17359b028f56d82bc589e9a0e41870de7c221b2.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "iotfhss3-no-arguments.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "iotfhss3-no-arguments.assets"
+      ],
+      "metadata": {
+        "/iotfhss3-no-arguments/test-iot-firehose-s3/KinesisFirehoseToS3/S3LoggingBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotfirehoses3KinesisFirehoseToS3S3LoggingBucketC786B050"
+          }
+        ],
+        "/iotfhss3-no-arguments/test-iot-firehose-s3/KinesisFirehoseToS3/S3LoggingBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotfirehoses3KinesisFirehoseToS3S3LoggingBucketPolicyE5A94728"
+          }
+        ],
+        "/iotfhss3-no-arguments/test-iot-firehose-s3/KinesisFirehoseToS3/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotfirehoses3KinesisFirehoseToS3S3LoggingBucketAutoDeleteObjectsCustomResource1CDEA6AE"
+          }
+        ],
+        "/iotfhss3-no-arguments/test-iot-firehose-s3/KinesisFirehoseToS3/S3Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotfirehoses3KinesisFirehoseToS3S3Bucket19C97D09"
+          }
+        ],
+        "/iotfhss3-no-arguments/test-iot-firehose-s3/KinesisFirehoseToS3/S3Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotfirehoses3KinesisFirehoseToS3S3BucketPolicy39975CE7"
+          }
+        ],
+        "/iotfhss3-no-arguments/test-iot-firehose-s3/KinesisFirehoseToS3/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotfirehoses3KinesisFirehoseToS3S3BucketAutoDeleteObjectsCustomResourceF96C70D4"
+          }
+        ],
+        "/iotfhss3-no-arguments/test-iot-firehose-s3/KinesisFirehoseToS3/firehose-log-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotfirehoses3KinesisFirehoseToS3firehoseloggroup4A2E4212"
+          }
+        ],
+        "/iotfhss3-no-arguments/test-iot-firehose-s3/KinesisFirehoseToS3/firehose-log-group/firehose-log-stream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstreamD1B6E670"
+          }
+        ],
+        "/iotfhss3-no-arguments/test-iot-firehose-s3/KinesisFirehoseToS3/KinesisFirehoseRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotfirehoses3KinesisFirehoseToS3KinesisFirehoseRole93DE9170"
+          }
+        ],
+        "/iotfhss3-no-arguments/test-iot-firehose-s3/KinesisFirehoseToS3/KinesisFirehosePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotfirehoses3KinesisFirehoseToS3KinesisFirehosePolicy5914CC69"
+          }
+        ],
+        "/iotfhss3-no-arguments/test-iot-firehose-s3/KinesisFirehoseToS3/KinesisFirehose": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotfirehoses3KinesisFirehoseToS3KinesisFirehose68DB2BEE"
+          }
+        ],
+        "/iotfhss3-no-arguments/test-iot-firehose-s3/IotActionsRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotfirehoses3IotActionsRole743F8973"
+          }
+        ],
+        "/iotfhss3-no-arguments/test-iot-firehose-s3/IotActionsPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotfirehoses3IotActionsPolicy1B38E4E3"
+          }
+        ],
+        "/iotfhss3-no-arguments/test-iot-firehose-s3/IotTopic": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotfirehoses3IotTopicAC1CA58D"
+          }
+        ],
+        "/iotfhss3-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/iotfhss3-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/iotfhss3-no-arguments/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/iotfhss3-no-arguments/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "iotfhss3-no-arguments"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

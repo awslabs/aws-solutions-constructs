@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "62e68cb4c718094007c82e76893b9f393693c7efefd70366dc8aa834344bf8ba": {
+      "source": {
+        "path": "evtsnssecondlongstacknameThisIsTheLongestNameForAStackItMustractersLongAndThisShouldJustAboutDoItNoItMustBeABitLessShort71F0A431.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "62e68cb4c718094007c82e76893b9f393693c7efefd70366dc8aa834344bf8ba.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

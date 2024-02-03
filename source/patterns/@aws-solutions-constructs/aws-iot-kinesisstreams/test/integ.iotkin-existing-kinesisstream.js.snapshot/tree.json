@@ -1,0 +1,322 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "iotkin-existing-kinesisstream": {
+        "id": "iotkin-existing-kinesisstream",
+        "path": "iotkin-existing-kinesisstream",
+        "children": {
+          "existing-stream": {
+            "id": "existing-stream",
+            "path": "iotkin-existing-kinesisstream/existing-stream",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "iotkin-existing-kinesisstream/existing-stream/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Kinesis::Stream",
+                  "aws:cdk:cloudformation:props": {
+                    "retentionPeriodHours": 25,
+                    "shardCount": 2,
+                    "streamEncryption": {
+                      "encryptionType": "KMS",
+                      "keyId": "alias/aws/kinesis"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_kinesis.CfnStream",
+                  "version": "2.118.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_kinesis.Stream",
+              "version": "2.118.0"
+            }
+          },
+          "test-iot-kinesisstreams": {
+            "id": "test-iot-kinesisstreams",
+            "path": "iotkin-existing-kinesisstream/test-iot-kinesisstreams",
+            "children": {
+              "IotActionsRole": {
+                "id": "IotActionsRole",
+                "path": "iotkin-existing-kinesisstream/test-iot-kinesisstreams/IotActionsRole",
+                "children": {
+                  "ImportIotActionsRole": {
+                    "id": "ImportIotActionsRole",
+                    "path": "iotkin-existing-kinesisstream/test-iot-kinesisstreams/IotActionsRole/ImportIotActionsRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.118.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "iotkin-existing-kinesisstream/test-iot-kinesisstreams/IotActionsRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "iot.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.118.0"
+                }
+              },
+              "IotActionsPolicy": {
+                "id": "IotActionsPolicy",
+                "path": "iotkin-existing-kinesisstream/test-iot-kinesisstreams/IotActionsPolicy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "iotkin-existing-kinesisstream/test-iot-kinesisstreams/IotActionsPolicy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "kinesis:PutRecord",
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "existingstream0A902451",
+                                  "Arn"
+                                ]
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policyName": "testiotkinesisstreamsIotActionsPolicy82B08962",
+                        "roles": [
+                          {
+                            "Ref": "testiotkinesisstreamsIotActionsRoleAE74F764"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Policy",
+                  "version": "2.118.0"
+                }
+              },
+              "IotTopic": {
+                "id": "IotTopic",
+                "path": "iotkin-existing-kinesisstream/test-iot-kinesisstreams/IotTopic",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IoT::TopicRule",
+                  "aws:cdk:cloudformation:props": {
+                    "topicRulePayload": {
+                      "ruleDisabled": false,
+                      "actions": [
+                        {
+                          "kinesis": {
+                            "streamName": {
+                              "Ref": "existingstream0A902451"
+                            },
+                            "roleArn": {
+                              "Fn::GetAtt": [
+                                "testiotkinesisstreamsIotActionsRoleAE74F764",
+                                "Arn"
+                              ]
+                            }
+                          }
+                        }
+                      ],
+                      "sql": "SELECT * FROM 'solutions/constructs'",
+                      "description": "sends data to kinesis streams"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iot.CfnTopicRule",
+                  "version": "2.118.0"
+                }
+              },
+              "KinesisStreamGetRecordsIteratorAgeAlarm": {
+                "id": "KinesisStreamGetRecordsIteratorAgeAlarm",
+                "path": "iotkin-existing-kinesisstream/test-iot-kinesisstreams/KinesisStreamGetRecordsIteratorAgeAlarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "iotkin-existing-kinesisstream/test-iot-kinesisstreams/KinesisStreamGetRecordsIteratorAgeAlarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "evaluationPeriods": 1,
+                        "metricName": "GetRecords.IteratorAgeMilliseconds",
+                        "namespace": "AWS/Kinesis",
+                        "period": 300,
+                        "statistic": "Maximum",
+                        "threshold": 43200000
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.118.0"
+                }
+              },
+              "KinesisStreamReadProvisionedThroughputExceededAlarm": {
+                "id": "KinesisStreamReadProvisionedThroughputExceededAlarm",
+                "path": "iotkin-existing-kinesisstream/test-iot-kinesisstreams/KinesisStreamReadProvisionedThroughputExceededAlarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "iotkin-existing-kinesisstream/test-iot-kinesisstreams/KinesisStreamReadProvisionedThroughputExceededAlarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
+                        "comparisonOperator": "GreaterThanThreshold",
+                        "evaluationPeriods": 1,
+                        "metricName": "ReadProvisionedThroughputExceeded",
+                        "namespace": "AWS/Kinesis",
+                        "period": 300,
+                        "statistic": "Average",
+                        "threshold": 0
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.118.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-solutions-constructs/aws-iot-kinesisstreams.IotToKinesisStreams",
+              "version": "2.50.0"
+            }
+          },
+          "Integ": {
+            "id": "Integ",
+            "path": "iotkin-existing-kinesisstream/Integ",
+            "children": {
+              "DefaultTest": {
+                "id": "DefaultTest",
+                "path": "iotkin-existing-kinesisstream/Integ/DefaultTest",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "iotkin-existing-kinesisstream/Integ/DefaultTest/Default",
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.0.0"
+                    }
+                  },
+                  "DeployAssert": {
+                    "id": "DeployAssert",
+                    "path": "iotkin-existing-kinesisstream/Integ/DefaultTest/DeployAssert",
+                    "children": {
+                      "BootstrapVersion": {
+                        "id": "BootstrapVersion",
+                        "path": "iotkin-existing-kinesisstream/Integ/DefaultTest/DeployAssert/BootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnParameter",
+                          "version": "2.118.0"
+                        }
+                      },
+                      "CheckBootstrapVersion": {
+                        "id": "CheckBootstrapVersion",
+                        "path": "iotkin-existing-kinesisstream/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnRule",
+                          "version": "2.118.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Stack",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
+                  "version": "2.118.0-alpha.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
+              "version": "2.118.0-alpha.0"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "iotkin-existing-kinesisstream/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.118.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "iotkin-existing-kinesisstream/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.118.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.118.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.0.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.118.0"
+    }
+  }
+}

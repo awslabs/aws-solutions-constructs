@@ -1,0 +1,161 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "kinlamexistingIntegDefaultTestDeployAssert64C292A9.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "kinlamexistingIntegDefaultTestDeployAssert64C292A9.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "kinlamexistingIntegDefaultTestDeployAssert64C292A9": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "kinlamexistingIntegDefaultTestDeployAssert64C292A9.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "kinlamexistingIntegDefaultTestDeployAssert64C292A9.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "kinlamexistingIntegDefaultTestDeployAssert64C292A9.assets"
+      ],
+      "metadata": {
+        "/kinlam-existing/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/kinlam-existing/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "kinlam-existing/Integ/DefaultTest/DeployAssert"
+    },
+    "kinlam-existing.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "kinlam-existing.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "kinlam-existing": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "kinlam-existing.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a45c371148aa6b54f1a010e3af523a5235148051d71d6bd6ede118d689c07550.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "kinlam-existing.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "kinlam-existing.assets"
+      ],
+      "metadata": {
+        "/kinlam-existing/test-role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testroleB50A37BE"
+          }
+        ],
+        "/kinlam-existing/test-role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testroleDefaultPolicy884631E2"
+          }
+        ],
+        "/kinlam-existing/test-fn/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testfn76BCC25C"
+          }
+        ],
+        "/kinlam-existing/test-fn/KinesisEventSource:kinlamexistingteststream6B91D225/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testfnKinesisEventSourcekinlamexistingteststream6B91D22533D472A8"
+          }
+        ],
+        "/kinlam-existing/test-stream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "teststream04374A09"
+          }
+        ],
+        "/kinlam-existing/test-ks-lambda/SqsDlqQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkslambdaSqsDlqQueueDE67EC6C"
+          }
+        ],
+        "/kinlam-existing/test-ks-lambda/SqsDlqQueue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkslambdaSqsDlqQueuePolicy48897D8E"
+          }
+        ],
+        "/kinlam-existing/test-ks-lambda/KinesisStreamGetRecordsIteratorAgeAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkslambdaKinesisStreamGetRecordsIteratorAgeAlarmD5DC1A73"
+          }
+        ],
+        "/kinlam-existing/test-ks-lambda/KinesisStreamReadProvisionedThroughputExceededAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkslambdaKinesisStreamReadProvisionedThroughputExceededAlarmFAEF1236"
+          }
+        ],
+        "/kinlam-existing/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/kinlam-existing/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "kinlam-existing"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

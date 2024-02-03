@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "6b25c8a51786cca4d3db60bef0ea078a6873ba0aa67fe15fa0863889b5b90323": {
+      "source": {
+        "path": "apisqs-apigateway-sqs-crud.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "6b25c8a51786cca4d3db60bef0ea078a6873ba0aa67fe15fa0863889b5b90323.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "c53fa038c848653ec631f7bfbc5526ceea1f11274ee9b46709f0ece8a605fc5d": {
+      "source": {
+        "path": "iotsqs-dead-letter-queue-off.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "c53fa038c848653ec631f7bfbc5526ceea1f11274ee9b46709f0ece8a605fc5d.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

@@ -1,0 +1,257 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "dbslamelsnoargumentsIntegDefaultTestDeployAssert903053D4.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "dbslamelsnoargumentsIntegDefaultTestDeployAssert903053D4.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "dbslamelsnoargumentsIntegDefaultTestDeployAssert903053D4": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "dbslamelsnoargumentsIntegDefaultTestDeployAssert903053D4.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "dbslamelsnoargumentsIntegDefaultTestDeployAssert903053D4.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "dbslamelsnoargumentsIntegDefaultTestDeployAssert903053D4.assets"
+      ],
+      "metadata": {
+        "/dbslamels-no-arguments/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/dbslamels-no-arguments/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "dbslamels-no-arguments/Integ/DefaultTest/DeployAssert"
+    },
+    "dbslamels-no-arguments.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "dbslamels-no-arguments.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "dbslamels-no-arguments": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "dbslamels-no-arguments.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/dab447c2fff85dba815a02dda8bcbd94a0f4c04f4ed00750f937a7092bfd352a.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "dbslamels-no-arguments.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "dbslamels-no-arguments.assets"
+      ],
+      "metadata": {
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleEC11512B"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleDefaultPolicyA7EEDEDA"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionB70B7296"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/DynamoDBEventSource:dbslamelsnoargumentstestddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableE5DA3737/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionDynamoDBEventSourcedbslamelsnoargumentstestddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableE5DA3737A0F8E1D7"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CognitoUserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPool97EA2952"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CognitoUserPoolClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPoolClient25D50E3D"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CognitoIdentityPool": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchCognitoIdentityPoolFAA4D969"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/UserPoolDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchUserPoolDomainA6C84014"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CognitoAuthorizedRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchCognitoAuthorizedRoleB096BF2F"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/IdentityPoolRoleMapping": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchIdentityPoolRoleMapping508D4D41"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CognitoKibanaConfigureRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchCognitoKibanaConfigureRole9DE845CD"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CognitoKibanaConfigureRolePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchCognitoKibanaConfigureRolePolicy62E429A3"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/ElasticsearchDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchElasticsearchDomain96DEE173"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/StatusRedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchStatusRedAlarmAFFE3439"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/StatusYellowAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchStatusYellowAlarm44E1DC4E"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/FreeStorageSpaceTooLowAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchFreeStorageSpaceTooLowAlarm65BF7F2F"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/IndexWritesBlockedTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchIndexWritesBlockedTooHighAlarmCE3D0C51"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/AutomatedSnapshotFailureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchAutomatedSnapshotFailureTooHighAlarmFD8E066E"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CPUUtilizationTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchCPUUtilizationTooHighAlarm274094A6"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/JVMMemoryPressureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchJVMMemoryPressureTooHighAlarm2E49D5CC"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/MasterCPUUtilizationTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchMasterCPUUtilizationTooHighAlarm05E1EBEF"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/MasterJVMMemoryPressureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchMasterJVMMemoryPressureTooHighAlarm1090161B"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/DynamoDBStreamsToLambda/DynamoTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableDD18004A"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/DynamoDBStreamsToLambda/SqsDlqQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskDynamoDBStreamsToLambdaSqsDlqQueue82B4D17B"
+          }
+        ],
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/DynamoDBStreamsToLambda/SqsDlqQueue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskDynamoDBStreamsToLambdaSqsDlqQueuePolicyD4864CD5"
+          }
+        ],
+        "/dbslamels-no-arguments/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/dbslamels-no-arguments/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "dbslamels-no-arguments"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

@@ -1,0 +1,197 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "lamkenminimalargumentsIntegDefaultTestDeployAssert70C0F38A.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamkenminimalargumentsIntegDefaultTestDeployAssert70C0F38A.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamkenminimalargumentsIntegDefaultTestDeployAssert70C0F38A": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamkenminimalargumentsIntegDefaultTestDeployAssert70C0F38A.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamkenminimalargumentsIntegDefaultTestDeployAssert70C0F38A.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamkenminimalargumentsIntegDefaultTestDeployAssert70C0F38A.assets"
+      ],
+      "metadata": {
+        "/lamken-minimal-arguments/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamken-minimal-arguments/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamken-minimal-arguments/Integ/DefaultTest/DeployAssert"
+    },
+    "lamken-minimal-arguments.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamken-minimal-arguments.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamken-minimal-arguments": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamken-minimal-arguments.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8580efe3fd26f681fd54ea431ac89cedb51cd29d31cc147a36452371f7f10619.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamken-minimal-arguments.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamken-minimal-arguments.assets"
+      ],
+      "metadata": {
+        "/lamken-minimal-arguments/contentBucketLog/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "contentBucketLog5B9803A6"
+          }
+        ],
+        "/lamken-minimal-arguments/contentBucketLog/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "contentBucketLogPolicy52155F9C"
+          }
+        ],
+        "/lamken-minimal-arguments/contentBucketLog/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "contentBucketLogAutoDeleteObjectsCustomResource533B8207"
+          }
+        ],
+        "/lamken-minimal-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/lamken-minimal-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/lamken-minimal-arguments/contentBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "contentBucket356CF7A5"
+          }
+        ],
+        "/lamken-minimal-arguments/contentBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "contentBucketPolicy71256B1B"
+          }
+        ],
+        "/lamken-minimal-arguments/contentBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "contentBucketAutoDeleteObjectsCustomResourceD6F9707E"
+          }
+        ],
+        "/lamken-minimal-arguments/minimal-arguments/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentsLambdaFunctionServiceRole73B77FF7"
+          }
+        ],
+        "/lamken-minimal-arguments/minimal-arguments/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentsLambdaFunctionServiceRoleDefaultPolicy59EC60ED"
+          }
+        ],
+        "/lamken-minimal-arguments/minimal-arguments/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentsLambdaFunctionC19CFAAC"
+          }
+        ],
+        "/lamken-minimal-arguments/minimal-arguments/kendra-index-role-minimal-arguments/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentskendraindexroleminimalargumentsB1DBDF7D"
+          }
+        ],
+        "/lamken-minimal-arguments/minimal-arguments/kendra-index-minimal-arguments": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentskendraindexminimalarguments5CBDD236"
+          }
+        ],
+        "/lamken-minimal-arguments/minimal-arguments/data-source-role-minimal-arguments0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentsdatasourceroleminimalarguments00EAC5006"
+          }
+        ],
+        "/lamken-minimal-arguments/minimal-arguments/data-source-minimal-arguments0": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentsdatasourceminimalarguments05A02FF3B"
+          }
+        ],
+        "/lamken-minimal-arguments/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamken-minimal-arguments/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamken-minimal-arguments"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

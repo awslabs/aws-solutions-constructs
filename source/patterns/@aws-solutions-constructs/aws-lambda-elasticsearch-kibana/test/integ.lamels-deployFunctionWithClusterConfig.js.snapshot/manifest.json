@@ -1,0 +1,323 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "lamelsdeployFunctionWithClusterConfigIntegDefaultTestDeployAssert98B343BF.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamelsdeployFunctionWithClusterConfigIntegDefaultTestDeployAssert98B343BF.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamelsdeployFunctionWithClusterConfigIntegDefaultTestDeployAssert98B343BF": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamelsdeployFunctionWithClusterConfigIntegDefaultTestDeployAssert98B343BF.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamelsdeployFunctionWithClusterConfigIntegDefaultTestDeployAssert98B343BF.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamelsdeployFunctionWithClusterConfigIntegDefaultTestDeployAssert98B343BF.assets"
+      ],
+      "metadata": {
+        "/lamels-deployFunctionWithClusterConfig/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamels-deployFunctionWithClusterConfig/Integ/DefaultTest/DeployAssert"
+    },
+    "lamels-deployFunctionWithClusterConfig.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamels-deployFunctionWithClusterConfig.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamels-deployFunctionWithClusterConfig": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamels-deployFunctionWithClusterConfig.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6cc9a00a2f6c460042504c1527e2d9848e9a25034a41eabf5d636ea1a3d07c90.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamels-deployFunctionWithClusterConfig.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamels-deployFunctionWithClusterConfig.assets"
+      ],
+      "metadata": {
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5LambdaFunctionServiceRole26E43B12"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5LambdaFunctionServiceRoleDefaultPolicy8A628F4B"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/ReplaceDefaultSecurityGroup-security-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5ReplaceDefaultSecurityGroupsecuritygroup375DBE67"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5LambdaFunction5382AC86"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/CognitoUserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5CognitoUserPool4E321CD0"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/CognitoUserPoolClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5CognitoUserPoolClientB41FB91B"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/CognitoIdentityPool": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5CognitoIdentityPool1B0A6046"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/UserPoolDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5UserPoolDomainE2693371"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/CognitoAuthorizedRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5CognitoAuthorizedRole784B2C89"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/IdentityPoolRoleMapping": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5IdentityPoolRoleMappingE355C8E9"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/CognitoKibanaConfigureRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleD2E8341A"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/CognitoKibanaConfigureRolePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5CognitoKibanaConfigureRolePolicy11560205"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/ElasticsearchDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5ElasticsearchDomain58F77409"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/StatusRedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5StatusRedAlarm916EC672"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/StatusYellowAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5StatusYellowAlarm7DCAF60A"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/FreeStorageSpaceTooLowAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5FreeStorageSpaceTooLowAlarmEC2C0D7B"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/IndexWritesBlockedTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5IndexWritesBlockedTooHighAlarmD496CE3E"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/AutomatedSnapshotFailureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5AutomatedSnapshotFailureTooHighAlarm97129BC4"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/CPUUtilizationTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5CPUUtilizationTooHighAlarm3BAAA397"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/JVMMemoryPressureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5JVMMemoryPressureTooHighAlarm251AD583"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/MasterCPUUtilizationTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5MasterCPUUtilizationTooHighAlarm97A330CC"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/test-lambda-elasticsearch-kibana5/MasterJVMMemoryPressureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana5MasterJVMMemoryPressureTooHighAlarm7DABB351"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/Vpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Vpc8378EB38"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/Vpc/isolatedSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1SubnetE62B1B9B"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/Vpc/isolatedSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1RouteTableE442650B"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/Vpc/isolatedSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1RouteTableAssociationD259E31A"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/Vpc/isolatedSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet2Subnet39217055"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/Vpc/isolatedSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet2RouteTable334F9764"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/Vpc/isolatedSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet2RouteTableAssociation25A4716F"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/Vpc/FlowLog/IAMRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRole6A475D41"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/Vpc/FlowLog/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogLogGroup7B5C56B9"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/Vpc/FlowLog/FlowLog": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLog8FF33A73"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamels-deployFunctionWithClusterConfig/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamels-deployFunctionWithClusterConfig"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

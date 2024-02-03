@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "36bf4339abc26733e355b1e3a1199bce5554697e5fd81fad67f485db45f998d9": {
+      "source": {
+        "path": "apiddb-apigateway-dynamodb-CRUD.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "36bf4339abc26733e355b1e3a1199bce5554697e5fd81fad67f485db45f998d9.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

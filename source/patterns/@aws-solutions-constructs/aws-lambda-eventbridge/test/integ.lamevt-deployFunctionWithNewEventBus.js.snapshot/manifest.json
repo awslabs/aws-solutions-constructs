@@ -1,0 +1,233 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "lamevtdeployFunctionWithNewEventBusIntegDefaultTestDeployAssert890EC771.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamevtdeployFunctionWithNewEventBusIntegDefaultTestDeployAssert890EC771.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamevtdeployFunctionWithNewEventBusIntegDefaultTestDeployAssert890EC771": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamevtdeployFunctionWithNewEventBusIntegDefaultTestDeployAssert890EC771.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamevtdeployFunctionWithNewEventBusIntegDefaultTestDeployAssert890EC771.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamevtdeployFunctionWithNewEventBusIntegDefaultTestDeployAssert890EC771.assets"
+      ],
+      "metadata": {
+        "/lamevt-deployFunctionWithNewEventBus/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamevt-deployFunctionWithNewEventBus/Integ/DefaultTest/DeployAssert"
+    },
+    "lamevt-deployFunctionWithNewEventBus.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamevt-deployFunctionWithNewEventBus.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamevt-deployFunctionWithNewEventBus": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamevt-deployFunctionWithNewEventBus.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/83f731b0d178f6696b2081bff29a4e67933dfb8900d31167c2441b5e3100059e.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamevt-deployFunctionWithNewEventBus.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamevt-deployFunctionWithNewEventBus.assets"
+      ],
+      "metadata": {
+        "/lamevt-deployFunctionWithNewEventBus/test-lambda-eventbridge/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaeventbridgeLambdaFunctionServiceRole0FD85077"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/test-lambda-eventbridge/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaeventbridgeLambdaFunctionServiceRoleDefaultPolicy0F454786"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/test-lambda-eventbridge/ReplaceDefaultSecurityGroup-security-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaeventbridgeReplaceDefaultSecurityGroupsecuritygroup11BC24F6"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/test-lambda-eventbridge/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaeventbridgeLambdaFunction361ABB82"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/test-lambda-eventbridge/CustomEventBus/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaeventbridgeCustomEventBus5F110E81"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/Vpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Vpc8378EB38"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/Vpc/isolatedSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1SubnetE62B1B9B"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/Vpc/isolatedSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1RouteTableE442650B"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/Vpc/isolatedSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1RouteTableAssociationD259E31A"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/Vpc/isolatedSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet2Subnet39217055"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/Vpc/isolatedSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet2RouteTable334F9764"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/Vpc/isolatedSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet2RouteTableAssociation25A4716F"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/Vpc/FlowLog/IAMRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRole6A475D41"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/Vpc/FlowLog/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogLogGroup7B5C56B9"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/Vpc/FlowLog/FlowLog": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLog8FF33A73"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/Vpc/CLOUDWATCH_EVENTS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcCLOUDWATCHEVENTS1A0DAFBF"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/lamevt-deployFunctionWithNewEventBus-CLOUDWATCH_EVENTS-security-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lamevtdeployFunctionWithNewEventBusCLOUDWATCHEVENTSsecuritygroup53EAC818"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamevt-deployFunctionWithNewEventBus"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

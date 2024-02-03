@@ -1,0 +1,143 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "iotkinexistingkinesisstreamIntegDefaultTestDeployAssert3D0E1512.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "iotkinexistingkinesisstreamIntegDefaultTestDeployAssert3D0E1512.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "iotkinexistingkinesisstreamIntegDefaultTestDeployAssert3D0E1512": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "iotkinexistingkinesisstreamIntegDefaultTestDeployAssert3D0E1512.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "iotkinexistingkinesisstreamIntegDefaultTestDeployAssert3D0E1512.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "iotkinexistingkinesisstreamIntegDefaultTestDeployAssert3D0E1512.assets"
+      ],
+      "metadata": {
+        "/iotkin-existing-kinesisstream/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/iotkin-existing-kinesisstream/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "iotkin-existing-kinesisstream/Integ/DefaultTest/DeployAssert"
+    },
+    "iotkin-existing-kinesisstream.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "iotkin-existing-kinesisstream.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "iotkin-existing-kinesisstream": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "iotkin-existing-kinesisstream.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9e1d3c9bb3fed355ee4478e1cda5b53d3e17006f7309a644f55002432eef8200.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "iotkin-existing-kinesisstream.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "iotkin-existing-kinesisstream.assets"
+      ],
+      "metadata": {
+        "/iotkin-existing-kinesisstream/existing-stream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingstream0A902451"
+          }
+        ],
+        "/iotkin-existing-kinesisstream/test-iot-kinesisstreams/IotActionsRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotkinesisstreamsIotActionsRoleAE74F764"
+          }
+        ],
+        "/iotkin-existing-kinesisstream/test-iot-kinesisstreams/IotActionsPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotkinesisstreamsIotActionsPolicy82B08962"
+          }
+        ],
+        "/iotkin-existing-kinesisstream/test-iot-kinesisstreams/IotTopic": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotkinesisstreamsIotTopic707346E2"
+          }
+        ],
+        "/iotkin-existing-kinesisstream/test-iot-kinesisstreams/KinesisStreamGetRecordsIteratorAgeAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotkinesisstreamsKinesisStreamGetRecordsIteratorAgeAlarmD446A9D0"
+          }
+        ],
+        "/iotkin-existing-kinesisstream/test-iot-kinesisstreams/KinesisStreamReadProvisionedThroughputExceededAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotkinesisstreamsKinesisStreamReadProvisionedThroughputExceededAlarm45349C37"
+          }
+        ],
+        "/iotkin-existing-kinesisstream/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/iotkin-existing-kinesisstream/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "iotkin-existing-kinesisstream"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

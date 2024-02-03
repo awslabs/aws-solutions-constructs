@@ -1,0 +1,227 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "apikinapigatewaykinesisoverwriteIntegDefaultTestDeployAssert7C9693F2.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "apikinapigatewaykinesisoverwriteIntegDefaultTestDeployAssert7C9693F2.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "apikinapigatewaykinesisoverwriteIntegDefaultTestDeployAssert7C9693F2": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "apikinapigatewaykinesisoverwriteIntegDefaultTestDeployAssert7C9693F2.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "apikinapigatewaykinesisoverwriteIntegDefaultTestDeployAssert7C9693F2.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "apikinapigatewaykinesisoverwriteIntegDefaultTestDeployAssert7C9693F2.assets"
+      ],
+      "metadata": {
+        "/apikin-apigateway-kinesis-overwrite/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "apikin-apigateway-kinesis-overwrite/Integ/DefaultTest/DeployAssert"
+    },
+    "apikin-apigateway-kinesis-overwrite.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "apikin-apigateway-kinesis-overwrite.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "apikin-apigateway-kinesis-overwrite": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "apikin-apigateway-kinesis-overwrite.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/30e4d148467efe329472921a8d7405abee032bdcdd485dad32070f29527be515.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "apikin-apigateway-kinesis-overwrite.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "apikin-apigateway-kinesis-overwrite.assets"
+      ],
+      "metadata": {
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/ApiAccessLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteApiAccessLogGroupE34C0A70"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/RestApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteRestApi77ABE5DA"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/RestApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteRestApiDeployment1EE3B096ca960d6e964dacd9ef8ada66856cca97"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/RestApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteRestApiDeploymentStageprodA3A23FDE"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/RestApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteRestApiEndpoint2A940432"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/RestApi/Default/record/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteRestApirecordAECF6BBC"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/RestApi/Default/record/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteRestApirecordPOST2B249308"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/RestApi/Default/records/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteRestApirecordsB70B7E7F"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/RestApi/Default/records/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteRestApirecordsPOST1501AC33"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/RestApi/UsagePlan/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteRestApiUsagePlan3037D903"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/RestApi/request-validator/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteRestApirequestvalidatorBAD987F2"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/RestApi/PutRecordModel/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteRestApiPutRecordModel82F936E0"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/RestApi/PutRecordsModel/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteRestApiPutRecordsModel120A48A8"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/LambdaRestApiCloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteLambdaRestApiCloudWatchRole5ABBFDA0"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/LambdaRestApiAccount": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteLambdaRestApiAccount54AFDE68"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/api-gateway-role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteapigatewayroleFAABFF26"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/api-gateway-role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteapigatewayroleDefaultPolicy51F086B6"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/KinesisStreamGetRecordsIteratorAgeAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteKinesisStreamGetRecordsIteratorAgeAlarmAF0BEF52"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/test-apigateway-kinesis-overwrite/KinesisStreamReadProvisionedThroughputExceededAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisoverwriteKinesisStreamReadProvisionedThroughputExceededAlarm5C0040FB"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/KinesisStream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisStream46752A3E"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/apikin-apigateway-kinesis-overwrite/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "apikin-apigateway-kinesis-overwrite"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

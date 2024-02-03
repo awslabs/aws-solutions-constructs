@@ -1,0 +1,209 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "lamkenmultiplesourcesIntegDefaultTestDeployAssertDE50B828.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamkenmultiplesourcesIntegDefaultTestDeployAssertDE50B828.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamkenmultiplesourcesIntegDefaultTestDeployAssertDE50B828": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamkenmultiplesourcesIntegDefaultTestDeployAssertDE50B828.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamkenmultiplesourcesIntegDefaultTestDeployAssertDE50B828.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamkenmultiplesourcesIntegDefaultTestDeployAssertDE50B828.assets"
+      ],
+      "metadata": {
+        "/lamken-multiple-sources/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamken-multiple-sources/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamken-multiple-sources/Integ/DefaultTest/DeployAssert"
+    },
+    "lamken-multiple-sources.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamken-multiple-sources.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamken-multiple-sources": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamken-multiple-sources.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d7525633944a7b968ad3592638d1ff0116991e97c963896bc9c74fecbbdbbd10.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamken-multiple-sources.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamken-multiple-sources.assets"
+      ],
+      "metadata": {
+        "/lamken-multiple-sources/scrapBucketLog/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketLog7B53B25C"
+          }
+        ],
+        "/lamken-multiple-sources/scrapBucketLog/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketLogPolicy2972C573"
+          }
+        ],
+        "/lamken-multiple-sources/scrapBucketLog/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketLogAutoDeleteObjectsCustomResource307F3D47"
+          }
+        ],
+        "/lamken-multiple-sources/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/lamken-multiple-sources/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/lamken-multiple-sources/scrapBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketB11863B7"
+          }
+        ],
+        "/lamken-multiple-sources/scrapBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketPolicy189B0607"
+          }
+        ],
+        "/lamken-multiple-sources/scrapBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275"
+          }
+        ],
+        "/lamken-multiple-sources/existingRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingRole3E995BBA"
+          }
+        ],
+        "/lamken-multiple-sources/minimal-arguments/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentsLambdaFunctionServiceRole73B77FF7"
+          }
+        ],
+        "/lamken-multiple-sources/minimal-arguments/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentsLambdaFunctionServiceRoleDefaultPolicy59EC60ED"
+          }
+        ],
+        "/lamken-multiple-sources/minimal-arguments/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentsLambdaFunctionC19CFAAC"
+          }
+        ],
+        "/lamken-multiple-sources/minimal-arguments/kendra-index-role-minimal-arguments/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentskendraindexroleminimalargumentsB1DBDF7D"
+          }
+        ],
+        "/lamken-multiple-sources/minimal-arguments/kendra-index-minimal-arguments": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentskendraindexminimalarguments5CBDD236"
+          }
+        ],
+        "/lamken-multiple-sources/minimal-arguments/data-source-role-minimal-arguments0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentsdatasourceroleminimalarguments00EAC5006"
+          }
+        ],
+        "/lamken-multiple-sources/minimal-arguments/data-source-minimal-arguments0": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentsdatasourceminimalarguments05A02FF3B"
+          }
+        ],
+        "/lamken-multiple-sources/minimal-arguments/kendra-data-source-minimal-arguments1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentskendradatasourceminimalarguments1DA6FACEE"
+          }
+        ],
+        "/lamken-multiple-sources/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamken-multiple-sources/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamken-multiple-sources"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

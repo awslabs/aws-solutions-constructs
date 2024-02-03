@@ -1,0 +1,336 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "evtkin-eventbridge-kinesisstreams-no-arguments": {
+        "id": "evtkin-eventbridge-kinesisstreams-no-arguments",
+        "path": "evtkin-eventbridge-kinesisstreams-no-arguments",
+        "children": {
+          "test-eventbridge-kinesis-stream": {
+            "id": "test-eventbridge-kinesis-stream",
+            "path": "evtkin-eventbridge-kinesisstreams-no-arguments/test-eventbridge-kinesis-stream",
+            "children": {
+              "KinesisStream": {
+                "id": "KinesisStream",
+                "path": "evtkin-eventbridge-kinesisstreams-no-arguments/test-eventbridge-kinesis-stream/KinesisStream",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "evtkin-eventbridge-kinesisstreams-no-arguments/test-eventbridge-kinesis-stream/KinesisStream/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Kinesis::Stream",
+                      "aws:cdk:cloudformation:props": {
+                        "retentionPeriodHours": 24,
+                        "shardCount": 1,
+                        "streamEncryption": {
+                          "encryptionType": "KMS",
+                          "keyId": "alias/aws/kinesis"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_kinesis.CfnStream",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_kinesis.Stream",
+                  "version": "2.118.0"
+                }
+              },
+              "eventsRole": {
+                "id": "eventsRole",
+                "path": "evtkin-eventbridge-kinesisstreams-no-arguments/test-eventbridge-kinesis-stream/eventsRole",
+                "children": {
+                  "ImporteventsRole": {
+                    "id": "ImporteventsRole",
+                    "path": "evtkin-eventbridge-kinesisstreams-no-arguments/test-eventbridge-kinesis-stream/eventsRole/ImporteventsRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.118.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "evtkin-eventbridge-kinesisstreams-no-arguments/test-eventbridge-kinesis-stream/eventsRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "events.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "description": "Events Rule Role"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.118.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "evtkin-eventbridge-kinesisstreams-no-arguments/test-eventbridge-kinesis-stream/eventsRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "evtkin-eventbridge-kinesisstreams-no-arguments/test-eventbridge-kinesis-stream/eventsRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "kinesis:ListShards",
+                                    "kinesis:PutRecord",
+                                    "kinesis:PutRecords"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "testeventbridgekinesisstreamKinesisStream2A352C09",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "testeventbridgekinesisstreameventsRoleDefaultPolicy51F5A4FA",
+                            "roles": [
+                              {
+                                "Ref": "testeventbridgekinesisstreameventsRole43473E44"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.118.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.118.0"
+                }
+              },
+              "EventsRule": {
+                "id": "EventsRule",
+                "path": "evtkin-eventbridge-kinesisstreams-no-arguments/test-eventbridge-kinesis-stream/EventsRule",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "evtkin-eventbridge-kinesisstreams-no-arguments/test-eventbridge-kinesis-stream/EventsRule/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Events::Rule",
+                      "aws:cdk:cloudformation:props": {
+                        "scheduleExpression": "rate(5 minutes)",
+                        "state": "ENABLED",
+                        "targets": [
+                          {
+                            "id": "Target0",
+                            "arn": {
+                              "Fn::GetAtt": [
+                                "testeventbridgekinesisstreamKinesisStream2A352C09",
+                                "Arn"
+                              ]
+                            },
+                            "roleArn": {
+                              "Fn::GetAtt": [
+                                "testeventbridgekinesisstreameventsRole43473E44",
+                                "Arn"
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_events.CfnRule",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_events.Rule",
+                  "version": "2.118.0"
+                }
+              },
+              "KinesisStreamGetRecordsIteratorAgeAlarm": {
+                "id": "KinesisStreamGetRecordsIteratorAgeAlarm",
+                "path": "evtkin-eventbridge-kinesisstreams-no-arguments/test-eventbridge-kinesis-stream/KinesisStreamGetRecordsIteratorAgeAlarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "evtkin-eventbridge-kinesisstreams-no-arguments/test-eventbridge-kinesis-stream/KinesisStreamGetRecordsIteratorAgeAlarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "evaluationPeriods": 1,
+                        "metricName": "GetRecords.IteratorAgeMilliseconds",
+                        "namespace": "AWS/Kinesis",
+                        "period": 300,
+                        "statistic": "Maximum",
+                        "threshold": 43200000
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.118.0"
+                }
+              },
+              "KinesisStreamReadProvisionedThroughputExceededAlarm": {
+                "id": "KinesisStreamReadProvisionedThroughputExceededAlarm",
+                "path": "evtkin-eventbridge-kinesisstreams-no-arguments/test-eventbridge-kinesis-stream/KinesisStreamReadProvisionedThroughputExceededAlarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "evtkin-eventbridge-kinesisstreams-no-arguments/test-eventbridge-kinesis-stream/KinesisStreamReadProvisionedThroughputExceededAlarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
+                        "comparisonOperator": "GreaterThanThreshold",
+                        "evaluationPeriods": 1,
+                        "metricName": "ReadProvisionedThroughputExceeded",
+                        "namespace": "AWS/Kinesis",
+                        "period": 300,
+                        "statistic": "Average",
+                        "threshold": 0
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.118.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-solutions-constructs/aws-eventbridge-kinesisstreams.EventbridgeToKinesisStreams",
+              "version": "2.50.0"
+            }
+          },
+          "Integ": {
+            "id": "Integ",
+            "path": "evtkin-eventbridge-kinesisstreams-no-arguments/Integ",
+            "children": {
+              "DefaultTest": {
+                "id": "DefaultTest",
+                "path": "evtkin-eventbridge-kinesisstreams-no-arguments/Integ/DefaultTest",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "evtkin-eventbridge-kinesisstreams-no-arguments/Integ/DefaultTest/Default",
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.0.0"
+                    }
+                  },
+                  "DeployAssert": {
+                    "id": "DeployAssert",
+                    "path": "evtkin-eventbridge-kinesisstreams-no-arguments/Integ/DefaultTest/DeployAssert",
+                    "children": {
+                      "BootstrapVersion": {
+                        "id": "BootstrapVersion",
+                        "path": "evtkin-eventbridge-kinesisstreams-no-arguments/Integ/DefaultTest/DeployAssert/BootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnParameter",
+                          "version": "2.118.0"
+                        }
+                      },
+                      "CheckBootstrapVersion": {
+                        "id": "CheckBootstrapVersion",
+                        "path": "evtkin-eventbridge-kinesisstreams-no-arguments/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnRule",
+                          "version": "2.118.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Stack",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
+                  "version": "2.118.0-alpha.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
+              "version": "2.118.0-alpha.0"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "evtkin-eventbridge-kinesisstreams-no-arguments/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.118.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "evtkin-eventbridge-kinesisstreams-no-arguments/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.118.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.118.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.0.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.118.0"
+    }
+  }
+}

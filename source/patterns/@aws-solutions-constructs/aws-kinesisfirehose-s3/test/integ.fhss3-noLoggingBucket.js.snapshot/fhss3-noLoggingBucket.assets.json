@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "ab6f53f6f03f4e3f8ea7c32cf35052c755c624b01c2e9b7c7ffa42b3ccd88f44": {
+      "source": {
+        "path": "fhss3-noLoggingBucket.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "ab6f53f6f03f4e3f8ea7c32cf35052c755c624b01c2e9b7c7ffa42b3ccd88f44.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

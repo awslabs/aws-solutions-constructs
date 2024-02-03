@@ -1,0 +1,155 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "evtsnslongstacknameThisIsTheLongestNameForAStackItMustBeGreaustAboutDoItNoItMustBeABitLongerIntegDefaultTestDeployAssertF2297F22.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "evtsnslongstacknameThisIsTheLongestNameForAStackItMustBeGreaustAboutDoItNoItMustBeABitLongerIntegDefaultTestDeployAssertF2297F22.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "evtsnslongstacknameThisIsTheLongestNameForAStackItMustBeGreaustAboutDoItNoItMustBeABitLongerIntegDefaultTestDeployAssertF2297F22": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "evtsnslongstacknameThisIsTheLongestNameForAStackItMustBeGreaustAboutDoItNoItMustBeABitLongerIntegDefaultTestDeployAssertF2297F22.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "evtsnslongstacknameThisIsTheLongestNameForAStackItMustBeGreaustAboutDoItNoItMustBeABitLongerIntegDefaultTestDeployAssertF2297F22.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "evtsnslongstacknameThisIsTheLongestNameForAStackItMustBeGreaustAboutDoItNoItMustBeABitLongerIntegDefaultTestDeployAssertF2297F22.assets"
+      ],
+      "metadata": {
+        "/evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/Integ/DefaultTest/DeployAssert"
+    },
+    "evtsnslongstacknameThisIsTheLongestNameForAStackItMustBeGreaCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLongerEB7CA918.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "evtsnslongstacknameThisIsTheLongestNameForAStackItMustBeGreaCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLongerEB7CA918.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "evtsnslongstacknameThisIsTheLongestNameForAStackItMustBeGreaCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLongerEB7CA918": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "evtsnslongstacknameThisIsTheLongestNameForAStackItMustBeGreaCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLongerEB7CA918.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0a3b6e1e0ac17f0736620e65820a7e189cc91dd8904065c4e40b7739b033937f.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "evtsnslongstacknameThisIsTheLongestNameForAStackItMustBeGreaCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLongerEB7CA918.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "evtsnslongstacknameThisIsTheLongestNameForAStackItMustBeGreaCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLongerEB7CA918.assets"
+      ],
+      "metadata": {
+        "/evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/test-construct/EncryptionKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructEncryptionKey6153B053"
+          }
+        ],
+        "/evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/test-construct/SnsTopic/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructSnsTopic44188529"
+          }
+        ],
+        "/evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/test-construct/SnsTopic/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructSnsTopicPolicy72FFD530"
+          }
+        ],
+        "/evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/test-construct/EventsRule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructEventsRule145DBA20"
+          }
+        ],
+        "/evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/second-construct/EncryptionKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondconstructEncryptionKey6A63A25A"
+          }
+        ],
+        "/evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/second-construct/SnsTopic/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondconstructSnsTopicCE75056B"
+          }
+        ],
+        "/evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/second-construct/SnsTopic/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondconstructSnsTopicPolicyD6D4DA55"
+          }
+        ],
+        "/evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/second-construct/EventsRule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondconstructEventsRuleFA5C1CE6"
+          }
+        ],
+        "/evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

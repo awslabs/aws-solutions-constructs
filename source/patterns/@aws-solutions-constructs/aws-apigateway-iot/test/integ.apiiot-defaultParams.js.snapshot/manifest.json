@@ -1,0 +1,287 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "apiiotdefaultParamsIntegDefaultTestDeployAssert0C0894FA.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "apiiotdefaultParamsIntegDefaultTestDeployAssert0C0894FA.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "apiiotdefaultParamsIntegDefaultTestDeployAssert0C0894FA": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "apiiotdefaultParamsIntegDefaultTestDeployAssert0C0894FA.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "apiiotdefaultParamsIntegDefaultTestDeployAssert0C0894FA.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "apiiotdefaultParamsIntegDefaultTestDeployAssert0C0894FA.assets"
+      ],
+      "metadata": {
+        "/apiiot-defaultParams/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/apiiot-defaultParams/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "apiiot-defaultParams/Integ/DefaultTest/DeployAssert"
+    },
+    "apiiot-defaultParams.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "apiiot-defaultParams.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "apiiot-defaultParams": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "apiiot-defaultParams.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/00b077686517099127b4a6bddb15d23a9911cd7b03945f347f7b9fd05b2a5ee0.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "apiiot-defaultParams.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "apiiot-defaultParams.assets"
+      ],
+      "metadata": {
+        "/apiiot-defaultParams/test-apigateway-iot/apigateway-iot-role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotapigatewayiotrole70232C5F"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/ApiAccessLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotApiAccessLogGroupC8FC70E8"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApi0EC16DD2"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApiDeploymentA8FCF5057ffc77ee6fd9f35b0f1c353f67d36988"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApiDeploymentStageprod25838482"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApiEndpointEB540424"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/message/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApimessageBF928745"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/message/{topic-level-1}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApimessagetopiclevel1CB1305F5"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/message/{topic-level-1}/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApimessagetopiclevel1POST4E6A3C44"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/message/{topic-level-1}/{topic-level-2}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApimessagetopiclevel1topiclevel25B0B16A2"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/message/{topic-level-1}/{topic-level-2}/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApimessagetopiclevel1topiclevel2POST09BB4430"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/message/{topic-level-1}/{topic-level-2}/{topic-level-3}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel35F49E3DD"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/message/{topic-level-1}/{topic-level-2}/{topic-level-3}/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3POST0B6A3876"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/message/{topic-level-1}/{topic-level-2}/{topic-level-3}/{topic-level-4}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4C5A3338B"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/message/{topic-level-1}/{topic-level-2}/{topic-level-3}/{topic-level-4}/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4POST93CAD241"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/message/{topic-level-1}/{topic-level-2}/{topic-level-3}/{topic-level-4}/{topic-level-5}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5497EB56B"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/message/{topic-level-1}/{topic-level-2}/{topic-level-3}/{topic-level-4}/{topic-level-5}/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5POST2D2539FA"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/message/{topic-level-1}/{topic-level-2}/{topic-level-3}/{topic-level-4}/{topic-level-5}/{topic-level-6}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel69F2FBFA8"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/message/{topic-level-1}/{topic-level-2}/{topic-level-3}/{topic-level-4}/{topic-level-5}/{topic-level-6}/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6POST806C543B"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/message/{topic-level-1}/{topic-level-2}/{topic-level-3}/{topic-level-4}/{topic-level-5}/{topic-level-6}/{topic-level-7}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6topiclevel78397BAEF"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/message/{topic-level-1}/{topic-level-2}/{topic-level-3}/{topic-level-4}/{topic-level-5}/{topic-level-6}/{topic-level-7}/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6topiclevel7POSTAF784AE7"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/shadow/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApishadow5E904929"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/shadow/{thingName}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApishadowthingName3837242E"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/shadow/{thingName}/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApishadowthingNamePOSTD37686D4"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/shadow/{thingName}/{shadowName}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApishadowthingNameshadowName04D15774"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/Default/shadow/{thingName}/{shadowName}/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApishadowthingNameshadowNamePOST260BE793"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/RestApi/UsagePlan/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotRestApiUsagePlan1433EB76"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/LambdaRestApiCloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotLambdaRestApiCloudWatchRoleD58A5490"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/LambdaRestApiAccount": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotLambdaRestApiAccountE36AC46D"
+          }
+        ],
+        "/apiiot-defaultParams/test-apigateway-iot/aws-apigateway-iot-req-val/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
+          }
+        ],
+        "/apiiot-defaultParams/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/apiiot-defaultParams/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "apiiot-defaultParams"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

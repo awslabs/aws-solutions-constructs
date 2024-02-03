@@ -1,0 +1,215 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "apisqsapigatewaysqscrudIntegDefaultTestDeployAssert82FC6BB1.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "apisqsapigatewaysqscrudIntegDefaultTestDeployAssert82FC6BB1.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "apisqsapigatewaysqscrudIntegDefaultTestDeployAssert82FC6BB1": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "apisqsapigatewaysqscrudIntegDefaultTestDeployAssert82FC6BB1.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "apisqsapigatewaysqscrudIntegDefaultTestDeployAssert82FC6BB1.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "apisqsapigatewaysqscrudIntegDefaultTestDeployAssert82FC6BB1.assets"
+      ],
+      "metadata": {
+        "/apisqs-apigateway-sqs-crud/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "apisqs-apigateway-sqs-crud/Integ/DefaultTest/DeployAssert"
+    },
+    "apisqs-apigateway-sqs-crud.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "apisqs-apigateway-sqs-crud.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "apisqs-apigateway-sqs-crud": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "apisqs-apigateway-sqs-crud.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6b25c8a51786cca4d3db60bef0ea078a6873ba0aa67fe15fa0863889b5b90323.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "apisqs-apigateway-sqs-crud.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "apisqs-apigateway-sqs-crud.assets"
+      ],
+      "metadata": {
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/deadLetterQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsdeadLetterQueueAA4F6060"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/deadLetterQueue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsdeadLetterQueuePolicy3CC9D87F"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/queue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsqueue8EDC3CAF"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/queue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsqueuePolicy8623EDE8"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/ApiAccessLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsApiAccessLogGroup37AB0350"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/RestApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsRestApi557C7EDC"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/RestApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsRestApiDeploymentCA19D37261367bad52ebfa5cbc65d48442b36029"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/RestApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsRestApiDeploymentStageprod1C007159"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/RestApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsRestApiEndpointD98015FF"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/RestApi/Default/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsRestApiPOST26D15DBA"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/RestApi/Default/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsRestApiGET4AA265C9"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/RestApi/Default/message/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsRestApimessage6D62B7B0"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/RestApi/Default/message/DELETE/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsRestApimessageDELETE2D4539B7"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/RestApi/UsagePlan/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsRestApiUsagePlan2295EB95"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/LambdaRestApiCloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsLambdaRestApiCloudWatchRoleF10D0F78"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/LambdaRestApiAccount": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsLambdaRestApiAccountACC6BE82"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/api-gateway-role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsapigatewayrole07110CD6"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/api-gateway-role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsapigatewayroleDefaultPolicy052E7AD5"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/apisqs-apigateway-sqs-crud/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "apisqs-apigateway-sqs-crud"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

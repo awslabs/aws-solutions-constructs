@@ -1,0 +1,197 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "kinglucodeassetjobIntegDefaultTestDeployAssert8ECD9869.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "kinglucodeassetjobIntegDefaultTestDeployAssert8ECD9869.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "kinglucodeassetjobIntegDefaultTestDeployAssert8ECD9869": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "kinglucodeassetjobIntegDefaultTestDeployAssert8ECD9869.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "kinglucodeassetjobIntegDefaultTestDeployAssert8ECD9869.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "kinglucodeassetjobIntegDefaultTestDeployAssert8ECD9869.assets"
+      ],
+      "metadata": {
+        "/kinglu-code-asset-job/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/kinglu-code-asset-job/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "kinglu-code-asset-job/Integ/DefaultTest/DeployAssert"
+    },
+    "kinglu-code-asset-job.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "kinglu-code-asset-job.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "kinglu-code-asset-job": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "kinglu-code-asset-job.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/670cda0a7b1e318f7710e681effa040cb55086d8d12a9a7101d0865c4d4992e4.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "kinglu-code-asset-job.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "kinglu-code-asset-job.assets"
+      ],
+      "metadata": {
+        "/kinglu-code-asset-job/test-kinesisstreams-lambda/KinesisStream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaKinesisStream374D6D56"
+          }
+        ],
+        "/kinglu-code-asset-job/test-kinesisstreams-lambda/GlueSecurityConfig": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaGlueSecurityConfig3568178F"
+          }
+        ],
+        "/kinglu-code-asset-job/test-kinesisstreams-lambda/LogPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaLogPolicy5FB58427"
+          }
+        ],
+        "/kinglu-code-asset-job/test-kinesisstreams-lambda/JobRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaJobRole42199B9C"
+          }
+        ],
+        "/kinglu-code-asset-job/test-kinesisstreams-lambda/JobRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaJobRoleDefaultPolicy943FFA49"
+          }
+        ],
+        "/kinglu-code-asset-job/test-kinesisstreams-lambda/S3LoggingBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaS3LoggingBucket48F70267"
+          }
+        ],
+        "/kinglu-code-asset-job/test-kinesisstreams-lambda/S3LoggingBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaS3LoggingBucketPolicy43C89C6D"
+          }
+        ],
+        "/kinglu-code-asset-job/test-kinesisstreams-lambda/S3Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaS3Bucket54759F5C"
+          }
+        ],
+        "/kinglu-code-asset-job/test-kinesisstreams-lambda/S3Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaS3BucketPolicy78EB663C"
+          }
+        ],
+        "/kinglu-code-asset-job/test-kinesisstreams-lambda/KinesisETLJob": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaKinesisETLJobF9454612"
+          }
+        ],
+        "/kinglu-code-asset-job/test-kinesisstreams-lambda/KinesisStreamGetRecordsIteratorAgeAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaKinesisStreamGetRecordsIteratorAgeAlarmFB74C363"
+          }
+        ],
+        "/kinglu-code-asset-job/test-kinesisstreams-lambda/KinesisStreamReadProvisionedThroughputExceededAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaKinesisStreamReadProvisionedThroughputExceededAlarm5ABF4346"
+          }
+        ],
+        "/kinglu-code-asset-job/GlueDatabase": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueDatabase"
+          }
+        ],
+        "/kinglu-code-asset-job/GlueTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueTable"
+          }
+        ],
+        "/kinglu-code-asset-job/test-kinesisstreams-lambdaGlueJobPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaGlueJobPolicy10DEE7DE"
+          }
+        ],
+        "/kinglu-code-asset-job/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/kinglu-code-asset-job/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "kinglu-code-asset-job"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

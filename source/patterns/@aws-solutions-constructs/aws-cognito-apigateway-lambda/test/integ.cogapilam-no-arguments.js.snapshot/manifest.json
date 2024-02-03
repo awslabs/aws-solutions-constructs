@@ -1,0 +1,233 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "cogapilamnoargumentsIntegDefaultTestDeployAssert6872A16C.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "cogapilamnoargumentsIntegDefaultTestDeployAssert6872A16C.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "cogapilamnoargumentsIntegDefaultTestDeployAssert6872A16C": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "cogapilamnoargumentsIntegDefaultTestDeployAssert6872A16C.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "cogapilamnoargumentsIntegDefaultTestDeployAssert6872A16C.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "cogapilamnoargumentsIntegDefaultTestDeployAssert6872A16C.assets"
+      ],
+      "metadata": {
+        "/cogapilam-no-arguments/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/cogapilam-no-arguments/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "cogapilam-no-arguments/Integ/DefaultTest/DeployAssert"
+    },
+    "cogapilam-no-arguments.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "cogapilam-no-arguments.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "cogapilam-no-arguments": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "cogapilam-no-arguments.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e8c5a5735a1a959cb02d04eb9a0b57bd5ec395afd0de3da960012b87a99e0bd4.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "cogapilam-no-arguments.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "cogapilam-no-arguments.assets"
+      ],
+      "metadata": {
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaFunctionServiceRole943D8510"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyED0AF2CF"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaFunction0C8EAC23"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/ApiAccessLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaApiAccessLogGroup9D0D0917"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaRestApi2E272431"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaRestApiDeployment96AFD8CA5d8e3257747e529ac6f9e48e8d20548e"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaRestApiDeploymentStageprod850C17D1"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaRestApiEndpointBF0175D7"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Default/{proxy+}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaRestApiproxy23E1DA20"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Default/{proxy+}/ANY/ApiPermission.cogapilamnoargumentstestcognitoapigatewaylambdaLambdaRestApi67DF35F8.ANY..{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaRestApiproxyANYApiPermissioncogapilamnoargumentstestcognitoapigatewaylambdaLambdaRestApi67DF35F8ANYproxyEED76CEA"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Default/{proxy+}/ANY/ApiPermission.Test.cogapilamnoargumentstestcognitoapigatewaylambdaLambdaRestApi67DF35F8.ANY..{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaRestApiproxyANYApiPermissionTestcogapilamnoargumentstestcognitoapigatewaylambdaLambdaRestApi67DF35F8ANYproxyD56E5373"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Default/{proxy+}/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaRestApiproxyANY18BA6246"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Default/ANY/ApiPermission.cogapilamnoargumentstestcognitoapigatewaylambdaLambdaRestApi67DF35F8.ANY..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaRestApiANYApiPermissioncogapilamnoargumentstestcognitoapigatewaylambdaLambdaRestApi67DF35F8ANYF85B79BE"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Default/ANY/ApiPermission.Test.cogapilamnoargumentstestcognitoapigatewaylambdaLambdaRestApi67DF35F8.ANY..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaRestApiANYApiPermissionTestcogapilamnoargumentstestcognitoapigatewaylambdaLambdaRestApi67DF35F8ANYC215720C"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Default/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaRestApiANY1BCFE40A"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/UsagePlan/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaRestApiUsagePlan75371896"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApiCloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaRestApiCloudWatchRole0AC7FF3B"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApiAccount": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaRestApiAccountD303BB82"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/CognitoUserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaCognitoUserPoolD5E74489"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/CognitoUserPoolClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaCognitoUserPoolClientDA118627"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/CognitoAuthorizer": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaCognitoAuthorizer170CACC9"
+          }
+        ],
+        "/cogapilam-no-arguments/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/cogapilam-no-arguments/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "cogapilam-no-arguments"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

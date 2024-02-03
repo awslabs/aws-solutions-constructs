@@ -1,0 +1,305 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "lamelsdisabledZoneAwarenessIntegDefaultTestDeployAssert961A0C2F.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamelsdisabledZoneAwarenessIntegDefaultTestDeployAssert961A0C2F.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamelsdisabledZoneAwarenessIntegDefaultTestDeployAssert961A0C2F": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamelsdisabledZoneAwarenessIntegDefaultTestDeployAssert961A0C2F.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamelsdisabledZoneAwarenessIntegDefaultTestDeployAssert961A0C2F.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamelsdisabledZoneAwarenessIntegDefaultTestDeployAssert961A0C2F.assets"
+      ],
+      "metadata": {
+        "/lamels-disabledZoneAwareness/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamels-disabledZoneAwareness/Integ/DefaultTest/DeployAssert"
+    },
+    "lamels-disabledZoneAwareness.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamels-disabledZoneAwareness.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamels-disabledZoneAwareness": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamels-disabledZoneAwareness.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9b2e81d516328c812f349d100c116a5db32ff64bbf379b4287fe150c0a4e4b67.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamels-disabledZoneAwareness.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamels-disabledZoneAwareness.assets"
+      ],
+      "metadata": {
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaLambdaFunctionServiceRole3AFFEAA2"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaLambdaFunctionServiceRoleDefaultPolicy199413EB"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/ReplaceDefaultSecurityGroup-security-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaReplaceDefaultSecurityGroupsecuritygroup9C517245"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaLambdaFunction601D26D3"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/CognitoUserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaCognitoUserPool9537802B"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/CognitoUserPoolClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaCognitoUserPoolClient8F70A2AA"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/CognitoIdentityPool": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaCognitoIdentityPoolC48068F0"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/UserPoolDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaUserPoolDomainB9BDF063"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/CognitoAuthorizedRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaCognitoAuthorizedRole88FAFCFA"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/IdentityPoolRoleMapping": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaIdentityPoolRoleMappingBD0A239B"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/CognitoKibanaConfigureRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaCognitoKibanaConfigureRole8F40C1A1"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/CognitoKibanaConfigureRolePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaCognitoKibanaConfigureRolePolicyB7090E91"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/ElasticsearchDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaElasticsearchDomain50D5F86E"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/StatusRedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaStatusRedAlarmCFCDB629"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/StatusYellowAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaStatusYellowAlarm24B9D1CB"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/FreeStorageSpaceTooLowAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaFreeStorageSpaceTooLowAlarm0B4D4E35"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/IndexWritesBlockedTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaIndexWritesBlockedTooHighAlarmB8C0E99C"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/AutomatedSnapshotFailureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaAutomatedSnapshotFailureTooHighAlarm75F2676B"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/CPUUtilizationTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaCPUUtilizationTooHighAlarmF16BA5D9"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/JVMMemoryPressureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaJVMMemoryPressureTooHighAlarm18224533"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/MasterCPUUtilizationTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaMasterCPUUtilizationTooHighAlarmE5E5999F"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/MasterJVMMemoryPressureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaMasterJVMMemoryPressureTooHighAlarm297FF1BE"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/Vpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Vpc8378EB38"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/Vpc/isolatedSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1SubnetE62B1B9B"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/Vpc/isolatedSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1RouteTableE442650B"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/Vpc/isolatedSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1RouteTableAssociationD259E31A"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/Vpc/FlowLog/IAMRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRole6A475D41"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/Vpc/FlowLog/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogLogGroup7B5C56B9"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/Vpc/FlowLog/FlowLog": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLog8FF33A73"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamels-disabledZoneAwareness/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamels-disabledZoneAwareness"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

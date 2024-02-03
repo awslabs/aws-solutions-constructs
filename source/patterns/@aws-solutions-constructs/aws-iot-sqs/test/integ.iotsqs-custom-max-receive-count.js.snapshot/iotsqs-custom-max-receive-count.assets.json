@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "e5dd81090e0ae5d0c366e2c419e9d56428808d51a057d66718b736df170f8211": {
+      "source": {
+        "path": "iotsqs-custom-max-receive-count.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "e5dd81090e0ae5d0c366e2c419e9d56428808d51a057d66718b736df170f8211.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
