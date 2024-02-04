@@ -45,6 +45,8 @@ new LambdaToKendra(stack, 'minimal-arguments', {
 });
 
 suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
+
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
   stack

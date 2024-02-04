@@ -15,7 +15,7 @@
 import { App, Stack } from "aws-cdk-lib";
 import { LambdaToSqsToLambda, LambdaToSqsToLambdaProps } from "../lib";
 import * as lambda from "aws-cdk-lib/aws-lambda";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
@@ -39,6 +39,8 @@ const props: LambdaToSqsToLambdaProps = {
 };
 
 new LambdaToSqsToLambda(stack, "test-lambda-sqs", props);
+
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [

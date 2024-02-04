@@ -27,7 +27,7 @@
         }
       }
     },
-    "2e16a8d91cb9e3f86330c1127dff82dbedca944fd987b0d6d546429cc8e49ecf": {
+    "08c0ee8d67f97a0a4958f0448fc69818357399cf74f87dfd65aeeab124054eb7": {
       "source": {
         "path": "iotlamddb-with-vpc.template.json",
         "packaging": "file"
@@ -35,7 +35,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "2e16a8d91cb9e3f86330c1127dff82dbedca944fd987b0d6d546429cc8e49ecf.json",
+          "objectKey": "08c0ee8d67f97a0a4958f0448fc69818357399cf74f87dfd65aeeab124054eb7.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

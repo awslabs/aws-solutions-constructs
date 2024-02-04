@@ -720,7 +720,25 @@
    },
    "DependsOn": [
     "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
-   ]
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "CDK generated custom resource"
+      },
+      {
+       "id": "W89",
+       "reason": "CDK generated custom resource"
+      },
+      {
+       "id": "W92",
+       "reason": "CDK generated custom resource"
+      }
+     ]
+    }
+   }
   },
   "faropnexistingresourcesECRAPIsecuritygroup9E21D9FB": {
    "Type": "AWS::EC2::SecurityGroup",

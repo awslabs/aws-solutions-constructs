@@ -47,6 +47,8 @@ new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
   }
 });
 
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
+
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
   stack

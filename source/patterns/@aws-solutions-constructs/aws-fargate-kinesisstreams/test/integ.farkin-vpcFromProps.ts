@@ -14,7 +14,7 @@
 /// !cdk-integ *
 import { App, Stack } from "aws-cdk-lib";
 import { FargateToKinesisStreams } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as ecs from "aws-cdk-lib/aws-ecs";
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
@@ -31,6 +31,8 @@ new FargateToKinesisStreams(stack, 'test-fargate-kinesisstreams', {
     ipAddresses: ec2.IpAddresses.cidr('10.100.0.0/16')
   }
 });
+
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 
 new IntegTest(stack, 'Integ', { testCases: [
   stack

@@ -16,7 +16,7 @@ import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { LambdaToStepfunctions, LambdaToStepfunctionsProps } from "../lib";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
@@ -44,6 +44,8 @@ const props: LambdaToStepfunctionsProps = {
 };
 
 new LambdaToStepfunctions(stack, "test-lambda-stepfunctions", props);
+
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [

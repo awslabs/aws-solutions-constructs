@@ -40,6 +40,7 @@ new WafwebaclToAlb(stack, 'test-wafwebacl-alb', {
 const newSecurityGroup = loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
 defaults.addCfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK created rule that blocks all traffic.'}]);
 defaults.addCfnSuppressRules(loadBalancer, [{ id: 'W52', reason: 'This test is explicitly to test the no logging case.'}]);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 
 new IntegTest(stack, 'Integ', { testCases: [
   stack

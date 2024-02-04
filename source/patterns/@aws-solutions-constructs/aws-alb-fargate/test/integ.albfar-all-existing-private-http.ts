@@ -67,6 +67,7 @@ defaults.addCfnSuppressRules(newSecurityGroup, [
   { id: 'W2', reason: 'Rule does not apply for ELB.'},
   { id: 'W9', reason: 'Rule does not apply for ELB.'}
 ]);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [

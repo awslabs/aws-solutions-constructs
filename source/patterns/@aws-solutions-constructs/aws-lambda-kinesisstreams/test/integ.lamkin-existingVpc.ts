@@ -14,7 +14,7 @@
 /// !cdk-integ *
 import { App, Stack } from "aws-cdk-lib";
 import { LambdaToKinesisStreams } from "../lib";
-import { buildVpc, DefaultPublicPrivateVpcProps, generateIntegStackName } from '@aws-solutions-constructs/core';
+import { buildVpc, DefaultPublicPrivateVpcProps, generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
@@ -33,6 +33,8 @@ new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
   },
   existingVpc
 });
+
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 
 new IntegTest(stack, 'Integ', { testCases: [
   stack

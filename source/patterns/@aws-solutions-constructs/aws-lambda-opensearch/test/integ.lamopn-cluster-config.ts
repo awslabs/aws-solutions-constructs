@@ -50,6 +50,8 @@ new LambdaToOpenSearch(stack, 'test-lambda-opensearch', {
   }
 });
 
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
+
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
   stack

@@ -14,7 +14,7 @@
         }
       }
     },
-    "55efc6ac4d1a49e021b3d410d195e41fef36a31daa67216600ed31acaff09326": {
+    "040b5a447f50dac80e7513659e1637a6ac0d48aec0b54391566737bda7feb2ae": {
       "source": {
         "path": "farkin-existingFargateService.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "55efc6ac4d1a49e021b3d410d195e41fef36a31daa67216600ed31acaff09326.json",
+          "objectKey": "040b5a447f50dac80e7513659e1637a6ac0d48aec0b54391566737bda7feb2ae.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

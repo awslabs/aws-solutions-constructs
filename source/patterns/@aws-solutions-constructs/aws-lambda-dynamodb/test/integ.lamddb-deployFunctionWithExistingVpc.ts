@@ -46,6 +46,8 @@ const props: LambdaToDynamoDBProps = {
 
 new LambdaToDynamoDB(stack, "test-lambda-dynamodb-stack", props);
 
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
+
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
   stack

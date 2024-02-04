@@ -48,6 +48,8 @@ const props: LambdaToSecretsmanagerProps = {
 
 new LambdaToSecretsmanager(stack, "test-lambda-secretsmanager-stack", props);
 
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
+
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
   stack

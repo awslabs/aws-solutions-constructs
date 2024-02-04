@@ -37,6 +37,8 @@ new FargateToKinesisFirehose(stack, 'test-fargate-kinesisstreams', {
 });
 
 suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
+
 new IntegTest(stack, 'Integ', { testCases: [
   stack
 ] });

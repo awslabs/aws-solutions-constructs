@@ -40,6 +40,8 @@ const testProps: FargateToKinesisFirehoseProps = {
 new FargateToKinesisFirehose(stack, 'test-construct', testProps);
 
 suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
+
 new IntegTest(stack, 'Integ', { testCases: [
   stack
 ] });

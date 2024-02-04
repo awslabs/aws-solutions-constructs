@@ -50,6 +50,8 @@ const newSecurityGroup = testConstruct.loadBalancer.connections.securityGroups[0
 defaults.addCfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK created rule that blocks all traffic.'}]);
 
 defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
+
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
   stack

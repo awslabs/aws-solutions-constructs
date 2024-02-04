@@ -14,7 +14,7 @@
 // Imports
 import { Aws, App, Stack } from "aws-cdk-lib";
 import { FargateToSsmstringparameter, FargateToSsmstringparameterProps } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
@@ -38,6 +38,8 @@ const testProps: FargateToSsmstringparameterProps = {
 };
 
 new FargateToSsmstringparameter(stack, 'test-construct', testProps);
+
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [

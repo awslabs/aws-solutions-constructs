@@ -42,6 +42,8 @@ defaults.addCfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK create
 
 defaults.addCfnSuppressRules(testConstruct.loadBalancer, [{ id: 'W52', reason: 'This test is explicitly to test the no logging case.'}]);
 
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
+
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
   stack

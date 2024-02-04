@@ -751,7 +751,25 @@
    },
    "DependsOn": [
     "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
-   ]
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "CDK generated custom resource"
+      },
+      {
+       "id": "W89",
+       "reason": "CDK generated custom resource"
+      },
+      {
+       "id": "W92",
+       "reason": "CDK generated custom resource"
+      }
+     ]
+    }
+   }
   },
   "testconstructlbalb33E0EB59": {
    "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",

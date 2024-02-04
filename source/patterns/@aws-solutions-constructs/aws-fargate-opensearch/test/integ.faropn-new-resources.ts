@@ -38,6 +38,8 @@ const testProps: FargateToOpenSearchProps = {
 new FargateToOpenSearch(stack, 'test-construct', testProps);
 
 suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
+
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
   stack

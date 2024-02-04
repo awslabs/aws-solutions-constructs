@@ -16,10 +16,10 @@ files=$(find . -name package.json |\
     grep -v node_modules)
 
 if [ $# -eq 0 ]; then
-    echo "Updating ALL package.json for CDK v2"
+    echo "Syncing the version numbers for all packages"
     ${deployment_dir}/align-version.js ${nullVersionMarker} ${scRepoVersion} ${files}
 else
-    echo "Reverting back CDK v2 updatesfrom ALL package.json files"
+    echo "Reverting version numbers by getting all package.json files from git"
     # This command is required ONLY for the local development and it fails in CodePipeline
     if [[ -z "${CODEBUILD_BUILD_ID+x}" ]]; then
         git checkout `find . -name package.json | grep -v node_modules`
