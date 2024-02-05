@@ -1,0 +1,32 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "84f8d5b3b3970239322b59ef748d86a112fab19fd3c8079859ed1569aad0eeeb": {
+      "source": {
+        "path": "asset.84f8d5b3b3970239322b59ef748d86a112fab19fd3c8079859ed1569aad0eeeb.py",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "84f8d5b3b3970239322b59ef748d86a112fab19fd3c8079859ed1569aad0eeeb.py",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    },
+    "f06dec671e2247660b421f7c66dcf0191b573e715d33b978c720e69361586132": {
+      "source": {
+        "path": "IntegTestGlueJob.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "f06dec671e2247660b421f7c66dcf0191b573e715d33b978c720e69361586132.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

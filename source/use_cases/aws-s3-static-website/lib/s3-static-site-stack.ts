@@ -15,6 +15,7 @@ import { Construct } from 'constructs';
 import { Stack, StackProps, CfnOutput } from 'aws-cdk-lib';
 import { CloudFrontToS3 } from '@aws-solutions-constructs/aws-cloudfront-s3';
 import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
+import * as path from 'path';
 
 export class S3StaticWebsiteStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -23,7 +24,7 @@ export class S3StaticWebsiteStack extends Stack {
     const construct = new CloudFrontToS3(this, 'CloudFrontToS3', {});
 
     new s3deploy.BucketDeployment(this, 'DeployWebsite', {
-      sources: [s3deploy.Source.asset('./website-dist')],
+      sources: [s3deploy.Source.asset(path.join(__dirname, 'website-dist'))],
       destinationBucket: construct.s3Bucket!,
     });
 
