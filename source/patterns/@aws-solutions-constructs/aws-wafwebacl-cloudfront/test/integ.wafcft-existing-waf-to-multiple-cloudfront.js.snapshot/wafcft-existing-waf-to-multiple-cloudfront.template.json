@@ -1,0 +1,350 @@
+{
+ "Resources": {
+  "distroOneBA9A3958": {
+   "Type": "AWS::CloudFront::Distribution",
+   "Properties": {
+    "DistributionConfig": {
+     "DefaultCacheBehavior": {
+      "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+      "Compress": true,
+      "TargetOriginId": "wafcftexistingwaftomultiplecloudfrontdistroOneOriginGroup16D711F19",
+      "ViewerProtocolPolicy": "allow-all"
+     },
+     "Enabled": true,
+     "HttpVersion": "http2",
+     "IPV6Enabled": true,
+     "OriginGroups": {
+      "Items": [
+       {
+        "FailoverCriteria": {
+         "StatusCodes": {
+          "Items": [
+           404
+          ],
+          "Quantity": 1
+         }
+        },
+        "Id": "wafcftexistingwaftomultiplecloudfrontdistroOneOriginGroup16D711F19",
+        "Members": {
+         "Items": [
+          {
+           "OriginId": "wafcftexistingwaftomultiplecloudfrontdistroOneOrigin17FBA6436"
+          },
+          {
+           "OriginId": "wafcftexistingwaftomultiplecloudfrontdistroOneOrigin23A024C57"
+          }
+         ],
+         "Quantity": 2
+        }
+       }
+      ],
+      "Quantity": 1
+     },
+     "Origins": [
+      {
+       "CustomOriginConfig": {
+        "OriginProtocolPolicy": "https-only",
+        "OriginSSLProtocols": [
+         "TLSv1.2"
+        ]
+       },
+       "DomainName": "www.example.com",
+       "Id": "wafcftexistingwaftomultiplecloudfrontdistroOneOrigin17FBA6436"
+      },
+      {
+       "CustomOriginConfig": {
+        "OriginProtocolPolicy": "https-only",
+        "OriginSSLProtocols": [
+         "TLSv1.2"
+        ]
+       },
+       "DomainName": "admin.example.com",
+       "Id": "wafcftexistingwaftomultiplecloudfrontdistroOneOrigin23A024C57"
+      }
+     ],
+     "WebACLId": {
+      "Fn::GetAtt": [
+       "firstconstructfirstconstructWebACLCB39A850",
+       "Arn"
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W10",
+       "reason": "Test Resource"
+      },
+      {
+       "id": "W70",
+       "reason": "Test Resource"
+      }
+     ]
+    }
+   }
+  },
+  "distroTwo0B353343": {
+   "Type": "AWS::CloudFront::Distribution",
+   "Properties": {
+    "DistributionConfig": {
+     "DefaultCacheBehavior": {
+      "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+      "Compress": true,
+      "TargetOriginId": "wafcftexistingwaftomultiplecloudfrontdistroTwoOriginGroup1786AF0DE",
+      "ViewerProtocolPolicy": "allow-all"
+     },
+     "Enabled": true,
+     "HttpVersion": "http2",
+     "IPV6Enabled": true,
+     "OriginGroups": {
+      "Items": [
+       {
+        "FailoverCriteria": {
+         "StatusCodes": {
+          "Items": [
+           404
+          ],
+          "Quantity": 1
+         }
+        },
+        "Id": "wafcftexistingwaftomultiplecloudfrontdistroTwoOriginGroup1786AF0DE",
+        "Members": {
+         "Items": [
+          {
+           "OriginId": "wafcftexistingwaftomultiplecloudfrontdistroTwoOrigin17844DE3F"
+          },
+          {
+           "OriginId": "wafcftexistingwaftomultiplecloudfrontdistroTwoOrigin210278EB5"
+          }
+         ],
+         "Quantity": 2
+        }
+       }
+      ],
+      "Quantity": 1
+     },
+     "Origins": [
+      {
+       "CustomOriginConfig": {
+        "OriginProtocolPolicy": "https-only",
+        "OriginSSLProtocols": [
+         "TLSv1.2"
+        ]
+       },
+       "DomainName": "www.example.com",
+       "Id": "wafcftexistingwaftomultiplecloudfrontdistroTwoOrigin17844DE3F"
+      },
+      {
+       "CustomOriginConfig": {
+        "OriginProtocolPolicy": "https-only",
+        "OriginSSLProtocols": [
+         "TLSv1.2"
+        ]
+       },
+       "DomainName": "admin.example.com",
+       "Id": "wafcftexistingwaftomultiplecloudfrontdistroTwoOrigin210278EB5"
+      }
+     ],
+     "WebACLId": {
+      "Fn::GetAtt": [
+       "firstconstructfirstconstructWebACLCB39A850",
+       "Arn"
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W10",
+       "reason": "Test Resource"
+      },
+      {
+       "id": "W70",
+       "reason": "Test Resource"
+      }
+     ]
+    }
+   }
+  },
+  "firstconstructfirstconstructWebACLCB39A850": {
+   "Type": "AWS::WAFv2::WebACL",
+   "Properties": {
+    "DefaultAction": {
+     "Allow": {}
+    },
+    "Rules": [
+     {
+      "Name": "AWS-AWSManagedRulesBotControlRuleSet",
+      "OverrideAction": {
+       "None": {}
+      },
+      "Priority": 0,
+      "Statement": {
+       "ManagedRuleGroupStatement": {
+        "Name": "AWSManagedRulesBotControlRuleSet",
+        "VendorName": "AWS"
+       }
+      },
+      "VisibilityConfig": {
+       "CloudWatchMetricsEnabled": true,
+       "MetricName": "AWSManagedRulesBotControlRuleSet",
+       "SampledRequestsEnabled": true
+      }
+     },
+     {
+      "Name": "AWS-AWSManagedRulesKnownBadInputsRuleSet",
+      "OverrideAction": {
+       "None": {}
+      },
+      "Priority": 1,
+      "Statement": {
+       "ManagedRuleGroupStatement": {
+        "Name": "AWSManagedRulesKnownBadInputsRuleSet",
+        "VendorName": "AWS"
+       }
+      },
+      "VisibilityConfig": {
+       "CloudWatchMetricsEnabled": true,
+       "MetricName": "AWSManagedRulesKnownBadInputsRuleSet",
+       "SampledRequestsEnabled": true
+      }
+     },
+     {
+      "Name": "AWS-AWSManagedRulesCommonRuleSet",
+      "OverrideAction": {
+       "None": {}
+      },
+      "Priority": 2,
+      "Statement": {
+       "ManagedRuleGroupStatement": {
+        "Name": "AWSManagedRulesCommonRuleSet",
+        "VendorName": "AWS"
+       }
+      },
+      "VisibilityConfig": {
+       "CloudWatchMetricsEnabled": true,
+       "MetricName": "AWSManagedRulesCommonRuleSet",
+       "SampledRequestsEnabled": true
+      }
+     },
+     {
+      "Name": "AWS-AWSManagedRulesAnonymousIpList",
+      "OverrideAction": {
+       "None": {}
+      },
+      "Priority": 3,
+      "Statement": {
+       "ManagedRuleGroupStatement": {
+        "Name": "AWSManagedRulesAnonymousIpList",
+        "VendorName": "AWS"
+       }
+      },
+      "VisibilityConfig": {
+       "CloudWatchMetricsEnabled": true,
+       "MetricName": "AWSManagedRulesAnonymousIpList",
+       "SampledRequestsEnabled": true
+      }
+     },
+     {
+      "Name": "AWS-AWSManagedRulesAmazonIpReputationList",
+      "OverrideAction": {
+       "None": {}
+      },
+      "Priority": 4,
+      "Statement": {
+       "ManagedRuleGroupStatement": {
+        "Name": "AWSManagedRulesAmazonIpReputationList",
+        "VendorName": "AWS"
+       }
+      },
+      "VisibilityConfig": {
+       "CloudWatchMetricsEnabled": true,
+       "MetricName": "AWSManagedRulesAmazonIpReputationList",
+       "SampledRequestsEnabled": true
+      }
+     },
+     {
+      "Name": "AWS-AWSManagedRulesAdminProtectionRuleSet",
+      "OverrideAction": {
+       "None": {}
+      },
+      "Priority": 5,
+      "Statement": {
+       "ManagedRuleGroupStatement": {
+        "Name": "AWSManagedRulesAdminProtectionRuleSet",
+        "VendorName": "AWS"
+       }
+      },
+      "VisibilityConfig": {
+       "CloudWatchMetricsEnabled": true,
+       "MetricName": "AWSManagedRulesAdminProtectionRuleSet",
+       "SampledRequestsEnabled": true
+      }
+     },
+     {
+      "Name": "AWS-AWSManagedRulesSQLiRuleSet",
+      "OverrideAction": {
+       "None": {}
+      },
+      "Priority": 6,
+      "Statement": {
+       "ManagedRuleGroupStatement": {
+        "Name": "AWSManagedRulesSQLiRuleSet",
+        "VendorName": "AWS"
+       }
+      },
+      "VisibilityConfig": {
+       "CloudWatchMetricsEnabled": true,
+       "MetricName": "AWSManagedRulesSQLiRuleSet",
+       "SampledRequestsEnabled": true
+      }
+     }
+    ],
+    "Scope": "CLOUDFRONT",
+    "VisibilityConfig": {
+     "CloudWatchMetricsEnabled": true,
+     "MetricName": "webACL",
+     "SampledRequestsEnabled": true
+    }
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

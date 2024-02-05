@@ -98,7 +98,7 @@ constructs_root_dir="$deployment_dir/../.."
 source_dir="$deployment_dir/../../source"
 
 echo "============================================================================================="
-echo "aligning versions and updating package.json for CDK v2..."
+echo "Syncing the version numbers for all packages"
 /bin/bash $constructs_root_dir/deployment/v2/align-version.sh
 
 bail="--bail"
@@ -116,11 +116,6 @@ yarn install --frozen-lockfile
 # echo "updating Import statements for CDK v2..."
 # /bin/bash $constructs_root_dir/rewrite-imports.sh
 
-echo "============================================================================================="
-echo "building cdk-integ-tools..."
-cd $source_dir/tools/cdk-integ-tools
-npm install
-npm run build
 npm link
 
 cd $source_dir
@@ -132,9 +127,10 @@ for construct in $constructs; do
 
   cd $constructs_root_dir/source/patterns/@aws-solutions-constructs/$construct
   echo Running in $PWD
-  cdk-integ --no-clean &
+  integ-runner --update-on-failed --no-clean &
   sleep 10
   cd $constructs_root_dir/source/patterns/@aws-solutions-constructs
 done
 cd $constructs_root_dir
+echo "Reverting version numbers by getting all package.json files from git"
 ./deployment/v2/align-version.sh revert

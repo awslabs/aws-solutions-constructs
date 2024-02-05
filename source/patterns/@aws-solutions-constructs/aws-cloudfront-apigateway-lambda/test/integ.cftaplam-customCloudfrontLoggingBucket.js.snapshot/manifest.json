@@ -1,0 +1,299 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "cftaplamcustomCloudfrontLoggingBucketIntegDefaultTestDeployAssert35A683E0.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "cftaplamcustomCloudfrontLoggingBucketIntegDefaultTestDeployAssert35A683E0.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "cftaplamcustomCloudfrontLoggingBucketIntegDefaultTestDeployAssert35A683E0": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "cftaplamcustomCloudfrontLoggingBucketIntegDefaultTestDeployAssert35A683E0.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "cftaplamcustomCloudfrontLoggingBucketIntegDefaultTestDeployAssert35A683E0.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "cftaplamcustomCloudfrontLoggingBucketIntegDefaultTestDeployAssert35A683E0.assets"
+      ],
+      "metadata": {
+        "/cftaplam-customCloudfrontLoggingBucket/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "cftaplam-customCloudfrontLoggingBucket/Integ/DefaultTest/DeployAssert"
+    },
+    "cftaplam-customCloudfrontLoggingBucket.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "cftaplam-customCloudfrontLoggingBucket.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "cftaplam-customCloudfrontLoggingBucket": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "cftaplam-customCloudfrontLoggingBucket.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/115afb006da2f317e27c09ceedffdfa599e5c46663ba58f3a681d855d5fc0f68.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "cftaplam-customCloudfrontLoggingBucket.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "cftaplam-customCloudfrontLoggingBucket.assets"
+      ],
+      "metadata": {
+        "/cftaplam-customCloudfrontLoggingBucket/cftaplam-customCloudfrontLoggingBucket-authorizerAuthFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftaplamcustomCloudfrontLoggingBucketauthorizerAuthFunctionServiceRole00AAA44C"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cftaplam-customCloudfrontLoggingBucket-authorizerAuthFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftaplamcustomCloudfrontLoggingBucketauthorizerAuthFunction86ECA8C3"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cftaplam-customCloudfrontLoggingBucket-authorizerAuthFunction/cftaplamcustomCloudfrontLoggingBucketcftaplamcustomCloudfrontLoggingBucketauthorizer02C97B0F:Permissions": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftaplamcustomCloudfrontLoggingBucketauthorizerAuthFunctioncftaplamcustomCloudfrontLoggingBucketcftaplamcustomCloudfrontLoggingBucketauthorizer02C97B0FPermissionsBF8A1A3B"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cftaplam-customCloudfrontLoggingBucket-authorizer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftaplamcustomCloudfrontLoggingBucketauthorizer4D180075"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaFunctionServiceRole9B40D826"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaFunctionServiceRoleDefaultPolicy388158BB"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaFunction10C09D31"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/ApiAccessLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaApiAccessLogGroup16C73450"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaRestApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaRestApi775C255B"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaRestApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaRestApiDeployment33C24C7D969bc994bbb2c876761cc93e485b8c67"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaRestApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaRestApiDeploymentStageprod83104011"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaRestApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaRestApiEndpoint1004A97F"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaRestApi/Default/{proxy+}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaRestApiproxy6A768910"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaRestApi/Default/{proxy+}/ANY/ApiPermission.cftaplamcustomCloudfrontLoggingBucketcfapigwlambdaLambdaRestApi92F6CCCC.ANY..{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaRestApiproxyANYApiPermissioncftaplamcustomCloudfrontLoggingBucketcfapigwlambdaLambdaRestApi92F6CCCCANYproxy3A68AEF4"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaRestApi/Default/{proxy+}/ANY/ApiPermission.Test.cftaplamcustomCloudfrontLoggingBucketcfapigwlambdaLambdaRestApi92F6CCCC.ANY..{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaRestApiproxyANYApiPermissionTestcftaplamcustomCloudfrontLoggingBucketcfapigwlambdaLambdaRestApi92F6CCCCANYproxyCDE7366D"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaRestApi/Default/{proxy+}/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaRestApiproxyANY68181290"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaRestApi/Default/ANY/ApiPermission.cftaplamcustomCloudfrontLoggingBucketcfapigwlambdaLambdaRestApi92F6CCCC.ANY..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaRestApiANYApiPermissioncftaplamcustomCloudfrontLoggingBucketcfapigwlambdaLambdaRestApi92F6CCCCANY63987F12"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaRestApi/Default/ANY/ApiPermission.Test.cftaplamcustomCloudfrontLoggingBucketcfapigwlambdaLambdaRestApi92F6CCCC.ANY..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaRestApiANYApiPermissionTestcftaplamcustomCloudfrontLoggingBucketcfapigwlambdaLambdaRestApi92F6CCCCANYA05B319C"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaRestApi/Default/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaRestApiANY81C176E9"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaRestApi/UsagePlan/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaRestApiUsagePlan11CE9748"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaRestApiCloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaRestApiCloudWatchRole76F5ABDF"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaRestApiAccount": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaRestApiAccountB2390110"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/CloudFrontToApiGateway/SetHttpSecurityHeaders/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaCloudFrontToApiGatewaySetHttpSecurityHeadersE20F2933"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucketAccessLog/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLog48BE423A"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucketAccessLog/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogPolicyC05E1C71"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResource296BC002"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaCloudFrontToApiGatewayCloudfrontLoggingBucket2E8E3DC2"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaCloudFrontToApiGatewayCloudfrontLoggingBucketPolicy416A95E3"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAutoDeleteObjectsCustomResource4AC22AEE"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/CloudFrontToApiGateway/CloudFrontDistribution/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaCloudFrontToApiGatewayCloudFrontDistributionF8B75200"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "cftaplam-customCloudfrontLoggingBucket"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

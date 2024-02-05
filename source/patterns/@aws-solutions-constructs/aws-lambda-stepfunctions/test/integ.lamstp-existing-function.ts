@@ -18,6 +18,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup the app and stack
 const app = new App();
@@ -51,4 +52,6 @@ const props: LambdaToStepfunctionsProps = {
 new LambdaToStepfunctions(stack, 'test-lambda-stepfunctions-construct', props);
 
 // Synth the app
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

@@ -1,0 +1,161 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "kingluexistingjobIntegDefaultTestDeployAssert58B0BE0E.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "kingluexistingjobIntegDefaultTestDeployAssert58B0BE0E.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "kingluexistingjobIntegDefaultTestDeployAssert58B0BE0E": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "kingluexistingjobIntegDefaultTestDeployAssert58B0BE0E.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "kingluexistingjobIntegDefaultTestDeployAssert58B0BE0E.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "kingluexistingjobIntegDefaultTestDeployAssert58B0BE0E.assets"
+      ],
+      "metadata": {
+        "/kinglu-existing-job/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/kinglu-existing-job/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "kinglu-existing-job/Integ/DefaultTest/DeployAssert"
+    },
+    "kinglu-existing-job.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "kinglu-existing-job.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "kinglu-existing-job": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "kinglu-existing-job.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c38b1f7ed602d2b715661cc618e46f771899f7adc3f57cd3ac76eba4b5161a6f.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "kinglu-existing-job.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "kinglu-existing-job.assets"
+      ],
+      "metadata": {
+        "/kinglu-existing-job/existingScriptLocation/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingScriptLocation845F3C51"
+          }
+        ],
+        "/kinglu-existing-job/JobRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "JobRole014917C6"
+          }
+        ],
+        "/kinglu-existing-job/ExistingJob": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExistingJob"
+          }
+        ],
+        "/kinglu-existing-job/test-kinesisstreams-lambda/KinesisStream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaKinesisStream374D6D56"
+          }
+        ],
+        "/kinglu-existing-job/test-kinesisstreams-lambda/KinesisStreamGetRecordsIteratorAgeAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaKinesisStreamGetRecordsIteratorAgeAlarmFB74C363"
+          }
+        ],
+        "/kinglu-existing-job/test-kinesisstreams-lambda/KinesisStreamReadProvisionedThroughputExceededAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaKinesisStreamReadProvisionedThroughputExceededAlarm5ABF4346"
+          }
+        ],
+        "/kinglu-existing-job/GlueDatabase": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueDatabase"
+          }
+        ],
+        "/kinglu-existing-job/GlueTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueTable"
+          }
+        ],
+        "/kinglu-existing-job/test-kinesisstreams-lambdaGlueJobPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaGlueJobPolicy10DEE7DE"
+          }
+        ],
+        "/kinglu-existing-job/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/kinglu-existing-job/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "kinglu-existing-job"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

@@ -18,6 +18,7 @@ import { Bucket, BucketEncryption, CfnBucket } from 'aws-cdk-lib/aws-s3';
 import { App, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { generateIntegStackName, SinkStoreType } from '@aws-solutions-constructs/core';
 import { KinesisstreamsToGluejob } from '../lib';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -88,4 +89,6 @@ new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', {
 });
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

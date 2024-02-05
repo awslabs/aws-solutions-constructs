@@ -14,9 +14,10 @@
 // Imports
 import { Aws, App, Stack } from "aws-cdk-lib";
 import { FargateToKinesisFirehose, FargateToKinesisFirehoseProps } from "../lib";
-import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import { GetTestFirehoseDestination } from './test-helper';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -38,5 +39,9 @@ const testProps: FargateToKinesisFirehoseProps = {
 
 new FargateToKinesisFirehose(stack, 'test-construct', testProps);
 
-suppressAutoDeleteHandlerWarnings(stack);
-app.synth();
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
+
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

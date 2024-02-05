@@ -15,6 +15,7 @@
 import { App, Stack } from "aws-cdk-lib";
 import { WafwebaclToApiGateway } from "../lib";
 import { generateIntegStackName, CreateTestApi } from "@aws-solutions-constructs/core";
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 
@@ -27,4 +28,6 @@ new WafwebaclToApiGateway(stack, "test-wafwebacl-apigateway-lambda", {
   existingApiGatewayInterface: restApi,
 });
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

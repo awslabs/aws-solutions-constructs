@@ -1,0 +1,173 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "lamsqslamexistingConsumerFunctionIntegDefaultTestDeployAssert11D1BE4A.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamsqslamexistingConsumerFunctionIntegDefaultTestDeployAssert11D1BE4A.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamsqslamexistingConsumerFunctionIntegDefaultTestDeployAssert11D1BE4A": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamsqslamexistingConsumerFunctionIntegDefaultTestDeployAssert11D1BE4A.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamsqslamexistingConsumerFunctionIntegDefaultTestDeployAssert11D1BE4A.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamsqslamexistingConsumerFunctionIntegDefaultTestDeployAssert11D1BE4A.assets"
+      ],
+      "metadata": {
+        "/lamsqslam-existingConsumerFunction/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamsqslam-existingConsumerFunction/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamsqslam-existingConsumerFunction/Integ/DefaultTest/DeployAssert"
+    },
+    "lamsqslam-existingConsumerFunction.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamsqslam-existingConsumerFunction.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamsqslam-existingConsumerFunction": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamsqslam-existingConsumerFunction.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1f28693634bfd46b904c43e6de2132e383ed501504905c4afd6f5d16e355fc20.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamsqslam-existingConsumerFunction.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamsqslam-existingConsumerFunction.assets"
+      ],
+      "metadata": {
+        "/lamsqslam-existingConsumerFunction/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRole0C4CDE0B"
+          }
+        ],
+        "/lamsqslam-existingConsumerFunction/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRoleDefaultPolicy126C8897"
+          }
+        ],
+        "/lamsqslam-existingConsumerFunction/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionBF21E41F"
+          }
+        ],
+        "/lamsqslam-existingConsumerFunction/LambdaFunction/SqsEventSource:lamsqslamexistingConsumerFunctiontestlambdasqslambdalambdatosqsqueueADB261AF/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionSqsEventSourcelamsqslamexistingConsumerFunctiontestlambdasqslambdalambdatosqsqueueADB261AF57113DBC"
+          }
+        ],
+        "/lamsqslam-existingConsumerFunction/test-lambda-sqs-lambda/lambda-to-sqs/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqslambdalambdatosqsLambdaFunctionServiceRoleAE4A8DCD"
+          }
+        ],
+        "/lamsqslam-existingConsumerFunction/test-lambda-sqs-lambda/lambda-to-sqs/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqslambdalambdatosqsLambdaFunctionServiceRoleDefaultPolicyA63E8A47"
+          }
+        ],
+        "/lamsqslam-existingConsumerFunction/test-lambda-sqs-lambda/lambda-to-sqs/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqslambdalambdatosqsLambdaFunction8CCC2F0B"
+          }
+        ],
+        "/lamsqslam-existingConsumerFunction/test-lambda-sqs-lambda/lambda-to-sqs/deadLetterQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqslambdalambdatosqsdeadLetterQueue016B6E58"
+          }
+        ],
+        "/lamsqslam-existingConsumerFunction/test-lambda-sqs-lambda/lambda-to-sqs/deadLetterQueue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqslambdalambdatosqsdeadLetterQueuePolicyAA313AD2"
+          }
+        ],
+        "/lamsqslam-existingConsumerFunction/test-lambda-sqs-lambda/lambda-to-sqs/queue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqslambdalambdatosqsqueueF2ED40D2"
+          }
+        ],
+        "/lamsqslam-existingConsumerFunction/test-lambda-sqs-lambda/lambda-to-sqs/queue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqslambdalambdatosqsqueuePolicy58AAC34A"
+          }
+        ],
+        "/lamsqslam-existingConsumerFunction/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamsqslam-existingConsumerFunction/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamsqslam-existingConsumerFunction"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

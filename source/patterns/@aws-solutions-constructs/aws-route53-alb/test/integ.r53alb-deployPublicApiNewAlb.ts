@@ -17,6 +17,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 import { PublicHostedZone } from "aws-cdk-lib/aws-route53";
 import { Route53ToAlb, Route53ToAlbProps } from "../lib";
 import { CfnSecurityGroup } from "aws-cdk-lib/aws-ec2";
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -44,6 +45,10 @@ const testConstruct = new Route53ToAlb(stack, 'new-alb-stack', props);
 const newSecurityGroup = testConstruct.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
 defaults.addCfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK created rule that blocks all traffic.'}]);
 
-defaults.suppressAutoDeleteHandlerWarnings(stack);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
+
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

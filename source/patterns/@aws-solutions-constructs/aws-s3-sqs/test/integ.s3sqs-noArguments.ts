@@ -15,6 +15,7 @@
 import {App, Stack, RemovalPolicy} from "aws-cdk-lib";
 import {S3ToSqs} from "../lib";
 import { SuppressCfnNagLambdaWarnings, generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 
@@ -32,4 +33,6 @@ new S3ToSqs(stack, 'test-s3-sqs', {
   },
 });
 SuppressCfnNagLambdaWarnings(stack);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

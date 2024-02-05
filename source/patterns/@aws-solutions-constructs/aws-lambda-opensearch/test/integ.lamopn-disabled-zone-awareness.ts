@@ -16,6 +16,7 @@ import { App, Stack } from "aws-cdk-lib";
 import { LambdaToOpenSearch } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -46,5 +47,9 @@ new LambdaToOpenSearch(stack, 'test-lambda-opensearch', {
   }
 });
 
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
+
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

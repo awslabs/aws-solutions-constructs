@@ -16,6 +16,7 @@ import { App, Stack, Aws } from 'aws-cdk-lib';
 import { ApiGatewayToSageMakerEndpoint, ApiGatewayToSageMakerEndpointProps } from '../lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -71,4 +72,6 @@ const props: ApiGatewayToSageMakerEndpointProps = {
 new ApiGatewayToSageMakerEndpoint(stack, 'test-apigateway-sagemakerendpoint-overwrite', props);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

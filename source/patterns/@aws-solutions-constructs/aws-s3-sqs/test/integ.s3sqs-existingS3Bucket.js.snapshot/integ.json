@@ -1,0 +1,12 @@
+{
+  "version": "36.0.0",
+  "testCases": {
+    "s3sqs-existingS3Bucket/Integ/DefaultTest": {
+      "stacks": [
+        "s3sqs-existingS3Bucket"
+      ],
+      "assertionStack": "s3sqs-existingS3Bucket/Integ/DefaultTest/DeployAssert",
+      "assertionStackName": "s3sqsexistingS3BucketIntegDefaultTestDeployAssertECBDD151"
+    }
+  }
+}

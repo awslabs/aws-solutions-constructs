@@ -16,6 +16,7 @@ import { KinesisStreamsToLambda, KinesisStreamsToLambdaProps } from '../lib';
 import { Stack, App } from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -37,4 +38,6 @@ const props: KinesisStreamsToLambdaProps = {
 new KinesisStreamsToLambda(stack, 'test-kinesisstreams-lambda', props);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

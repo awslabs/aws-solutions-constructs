@@ -17,6 +17,7 @@ import { ApiGatewayToDynamoDBProps, ApiGatewayToDynamoDB } from "../lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import { BillingMode } from "aws-cdk-lib/aws-dynamodb";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -43,4 +44,6 @@ const props: ApiGatewayToDynamoDBProps = {
 new ApiGatewayToDynamoDB(stack, 'test-api-gateway-dynamodb-default', props);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

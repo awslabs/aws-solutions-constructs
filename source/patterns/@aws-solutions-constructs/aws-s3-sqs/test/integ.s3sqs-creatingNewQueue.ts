@@ -17,6 +17,7 @@ import { S3ToSqs, S3ToSqsProps } from "../lib";
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
@@ -64,4 +65,6 @@ defaults.addCfnSuppressRules(s3Bucket, [
 
 defaults.SuppressCfnNagLambdaWarnings(stack);
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

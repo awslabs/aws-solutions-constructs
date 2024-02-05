@@ -1,0 +1,155 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "sqslamdeployFifoQueueIntegDefaultTestDeployAssert77FD67F7.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "sqslamdeployFifoQueueIntegDefaultTestDeployAssert77FD67F7.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "sqslamdeployFifoQueueIntegDefaultTestDeployAssert77FD67F7": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "sqslamdeployFifoQueueIntegDefaultTestDeployAssert77FD67F7.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "sqslamdeployFifoQueueIntegDefaultTestDeployAssert77FD67F7.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "sqslamdeployFifoQueueIntegDefaultTestDeployAssert77FD67F7.assets"
+      ],
+      "metadata": {
+        "/sqslam-deployFifoQueue/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/sqslam-deployFifoQueue/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "sqslam-deployFifoQueue/Integ/DefaultTest/DeployAssert"
+    },
+    "sqslam-deployFifoQueue.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "sqslam-deployFifoQueue.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "sqslam-deployFifoQueue": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "sqslam-deployFifoQueue.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/817e41a3726a1aef06fd47096bfb783eb137669c1bbb377f2b45af210d5d98fb.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "sqslam-deployFifoQueue.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "sqslam-deployFifoQueue.assets"
+      ],
+      "metadata": {
+        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqslambdafifoLambdaFunctionServiceRole74463822"
+          }
+        ],
+        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqslambdafifoLambdaFunctionServiceRoleDefaultPolicy016B538E"
+          }
+        ],
+        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqslambdafifoLambdaFunction0F3AE705"
+          }
+        ],
+        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/LambdaFunction/SqsEventSource:sqslamdeployFifoQueuetestsqslambdafifoqueue471FB916/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqslambdafifoLambdaFunctionSqsEventSourcesqslamdeployFifoQueuetestsqslambdafifoqueue471FB9167780560F"
+          }
+        ],
+        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/deadLetterQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqslambdafifodeadLetterQueue99A41920"
+          }
+        ],
+        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/deadLetterQueue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqslambdafifodeadLetterQueuePolicy32FA63A7"
+          }
+        ],
+        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/queue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqslambdafifoqueue45DD24D7"
+          }
+        ],
+        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/queue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqslambdafifoqueuePolicyCCA7CAF9"
+          }
+        ],
+        "/sqslam-deployFifoQueue/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/sqslam-deployFifoQueue/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "sqslam-deployFifoQueue"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

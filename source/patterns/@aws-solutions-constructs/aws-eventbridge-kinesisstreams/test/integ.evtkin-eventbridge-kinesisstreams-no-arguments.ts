@@ -15,6 +15,7 @@ import * as events from 'aws-cdk-lib/aws-events';
 import { App, Stack, Duration } from 'aws-cdk-lib';
 import { EventbridgeToKinesisStreams, EventbridgeToKinesisStreamsProps } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -28,4 +29,6 @@ const props: EventbridgeToKinesisStreamsProps = {
 
 new EventbridgeToKinesisStreams(stack, 'test-eventbridge-kinesis-stream', props);
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

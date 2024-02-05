@@ -1,0 +1,185 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "cftmedcustomCloudFrontLoggingBucketIntegDefaultTestDeployAssert70E088B8.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "cftmedcustomCloudFrontLoggingBucketIntegDefaultTestDeployAssert70E088B8.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "cftmedcustomCloudFrontLoggingBucketIntegDefaultTestDeployAssert70E088B8": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "cftmedcustomCloudFrontLoggingBucketIntegDefaultTestDeployAssert70E088B8.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "cftmedcustomCloudFrontLoggingBucketIntegDefaultTestDeployAssert70E088B8.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "cftmedcustomCloudFrontLoggingBucketIntegDefaultTestDeployAssert70E088B8.assets"
+      ],
+      "metadata": {
+        "/cftmed-customCloudFrontLoggingBucket/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/cftmed-customCloudFrontLoggingBucket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "cftmed-customCloudFrontLoggingBucket/Integ/DefaultTest/DeployAssert"
+    },
+    "cftmed-customCloudFrontLoggingBucket.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "cftmed-customCloudFrontLoggingBucket.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "cftmed-customCloudFrontLoggingBucket": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "cftmed-customCloudFrontLoggingBucket.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/81c2c087bcf144adc437b724af9d2f29e5c6bd0830d770be0f38acbee95b235c.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "cftmed-customCloudFrontLoggingBucket.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "cftmed-customCloudFrontLoggingBucket.assets"
+      ],
+      "metadata": {
+        "/cftmed-customCloudFrontLoggingBucket/cloudfront-mediastore/CloudFrontOriginAccessIdentity/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cloudfrontmediastoreCloudFrontOriginAccessIdentityEA1869C4"
+          }
+        ],
+        "/cftmed-customCloudFrontLoggingBucket/cloudfront-mediastore/MediaStoreContainer": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cloudfrontmediastoreMediaStoreContainer1772C1D5"
+          }
+        ],
+        "/cftmed-customCloudFrontLoggingBucket/cloudfront-mediastore/CloudfrontLoggingBucketAccessLog/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cloudfrontmediastoreCloudfrontLoggingBucketAccessLogB829BA56"
+          }
+        ],
+        "/cftmed-customCloudFrontLoggingBucket/cloudfront-mediastore/CloudfrontLoggingBucketAccessLog/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cloudfrontmediastoreCloudfrontLoggingBucketAccessLogPolicyB512EE2A"
+          }
+        ],
+        "/cftmed-customCloudFrontLoggingBucket/cloudfront-mediastore/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cloudfrontmediastoreCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResource5D7907AB"
+          }
+        ],
+        "/cftmed-customCloudFrontLoggingBucket/cloudfront-mediastore/CloudfrontLoggingBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cloudfrontmediastoreCloudfrontLoggingBucketE54A8D50"
+          }
+        ],
+        "/cftmed-customCloudFrontLoggingBucket/cloudfront-mediastore/CloudfrontLoggingBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cloudfrontmediastoreCloudfrontLoggingBucketPolicyBB2766C9"
+          }
+        ],
+        "/cftmed-customCloudFrontLoggingBucket/cloudfront-mediastore/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cloudfrontmediastoreCloudfrontLoggingBucketAutoDeleteObjectsCustomResource2199BFBD"
+          }
+        ],
+        "/cftmed-customCloudFrontLoggingBucket/cloudfront-mediastore/CloudfrontOriginRequestPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cloudfrontmediastoreCloudfrontOriginRequestPolicyC99EB0D7"
+          }
+        ],
+        "/cftmed-customCloudFrontLoggingBucket/cloudfront-mediastore/SetHttpSecurityHeaders/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cloudfrontmediastoreSetHttpSecurityHeadersC55C3265"
+          }
+        ],
+        "/cftmed-customCloudFrontLoggingBucket/cloudfront-mediastore/CloudFrontDistribution/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cloudfrontmediastoreCloudFrontDistribution639346BB"
+          }
+        ],
+        "/cftmed-customCloudFrontLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/cftmed-customCloudFrontLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/cftmed-customCloudFrontLoggingBucket/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/cftmed-customCloudFrontLoggingBucket/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "cftmed-customCloudFrontLoggingBucket"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

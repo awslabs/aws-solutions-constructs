@@ -20,6 +20,7 @@ import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import { Duration } from "aws-cdk-lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -53,6 +54,8 @@ _construct.cloudFrontWebDistribution.addBehavior('/images/*.jpg', new origins.S3
   cachePolicy: myCachePolicy
 });
 
-defaults.suppressAutoDeleteHandlerWarnings(stack);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

@@ -1,0 +1,443 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "farfhsexistingVpcIntegDefaultTestDeployAssert701C2EAB.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "farfhsexistingVpcIntegDefaultTestDeployAssert701C2EAB.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "farfhsexistingVpcIntegDefaultTestDeployAssert701C2EAB": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "farfhsexistingVpcIntegDefaultTestDeployAssert701C2EAB.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "farfhsexistingVpcIntegDefaultTestDeployAssert701C2EAB.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "farfhsexistingVpcIntegDefaultTestDeployAssert701C2EAB.assets"
+      ],
+      "metadata": {
+        "/farfhs-existingVpc/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/farfhs-existingVpc/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "farfhs-existingVpc/Integ/DefaultTest/DeployAssert"
+    },
+    "farfhs-existingVpc.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "farfhs-existingVpc.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "farfhs-existingVpc": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "farfhs-existingVpc.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/52f4c784a1d1cc5ccbfe3478719ced4e772174e5a7a89ae55b2518c1ec8dc813.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "farfhs-existingVpc.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "farfhs-existingVpc.assets"
+      ],
+      "metadata": {
+        "/farfhs-existingVpc/Vpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Vpc8378EB38"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PublicSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1Subnet5C2D37C4"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PublicSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1RouteTable6C95E38E"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PublicSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1RouteTableAssociation97140677"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PublicSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1DefaultRoute3DA9E72A"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PublicSubnet1/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1EIPD7E02669"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PublicSubnet1/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1NATGateway4D7517AA"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PublicSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2Subnet691E08A3"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PublicSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2RouteTable94F7E489"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PublicSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2RouteTableAssociationDD5762D8"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PublicSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2DefaultRoute97F91067"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PublicSubnet2/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2EIP3C605A87"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PublicSubnet2/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2NATGateway9182C01D"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PrivateSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet1Subnet536B997A"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PrivateSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet1RouteTableB2C5B500"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PrivateSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet1RouteTableAssociation70C59FA6"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PrivateSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet1DefaultRouteBE02A9ED"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PrivateSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet2Subnet3788AAA1"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PrivateSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet2RouteTableA678073B"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PrivateSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet2RouteTableAssociationA89CAD56"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/PrivateSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet2DefaultRoute060D2087"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcIGWD7BA715C"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcVPCGWBF912B6E"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/FlowLog/IAMRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRole6A475D41"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/FlowLog/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogLogGroup7B5C56B9"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/FlowLog/FlowLog": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLog8FF33A73"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/KINESIS_FIREHOSE/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcKINESISFIREHOSE4115B5D1"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/ECR_API/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcECRAPI9A3B6A2B"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/ECR_DKR/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcECRDKR604E039F"
+          }
+        ],
+        "/farfhs-existingVpc/Vpc/S3/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcS3A5408339"
+          }
+        ],
+        "/farfhs-existingVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+          }
+        ],
+        "/farfhs-existingVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+          }
+        ],
+        "/farfhs-existingVpc/destination-firehose/S3LoggingBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseS3LoggingBucket19A32AC0"
+          }
+        ],
+        "/farfhs-existingVpc/destination-firehose/S3LoggingBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseS3LoggingBucketPolicyE4970A90"
+          }
+        ],
+        "/farfhs-existingVpc/destination-firehose/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseS3LoggingBucketAutoDeleteObjectsCustomResourceDE2506F2"
+          }
+        ],
+        "/farfhs-existingVpc/destination-firehose/S3Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseS3BucketEC05EE08"
+          }
+        ],
+        "/farfhs-existingVpc/destination-firehose/S3Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseS3BucketPolicy19ACA86F"
+          }
+        ],
+        "/farfhs-existingVpc/destination-firehose/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseS3BucketAutoDeleteObjectsCustomResource87C9D64B"
+          }
+        ],
+        "/farfhs-existingVpc/destination-firehose/firehose-log-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehosefirehoseloggroup874764AF"
+          }
+        ],
+        "/farfhs-existingVpc/destination-firehose/firehose-log-group/firehose-log-stream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehosefirehoseloggroupfirehoselogstreamC03C78F6"
+          }
+        ],
+        "/farfhs-existingVpc/destination-firehose/KinesisFirehoseRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseKinesisFirehoseRole5542AE95"
+          }
+        ],
+        "/farfhs-existingVpc/destination-firehose/KinesisFirehosePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseKinesisFirehosePolicyCEB14055"
+          }
+        ],
+        "/farfhs-existingVpc/destination-firehose/KinesisFirehose": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseKinesisFirehoseE8EB5D91"
+          }
+        ],
+        "/farfhs-existingVpc/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/farfhs-existingVpc/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/farfhs-existingVpc/farfhs-existingVpc-KINESIS_FIREHOSE-security-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "farfhsexistingVpcKINESISFIREHOSEsecuritygroup14103283"
+          }
+        ],
+        "/farfhs-existingVpc/farfhs-existingVpc-ECR_API-security-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "farfhsexistingVpcECRAPIsecuritygroup51B9740B"
+          }
+        ],
+        "/farfhs-existingVpc/farfhs-existingVpc-ECR_DKR-security-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "farfhsexistingVpcECRDKRsecuritygroup0940D84A"
+          }
+        ],
+        "/farfhs-existingVpc/test-fargate-kinesisstreams-cluster/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testfargatekinesisstreamsclusterEA5A2AD7"
+          }
+        ],
+        "/farfhs-existingVpc/test-fargate-kinesisstreams-taskdef/TaskRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testfargatekinesisstreamstaskdefTaskRole9811F3BE"
+          }
+        ],
+        "/farfhs-existingVpc/test-fargate-kinesisstreams-taskdef/TaskRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testfargatekinesisstreamstaskdefTaskRoleDefaultPolicyAE7EF3E4"
+          }
+        ],
+        "/farfhs-existingVpc/test-fargate-kinesisstreams-taskdef/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testfargatekinesisstreamstaskdef402FE0B3"
+          }
+        ],
+        "/farfhs-existingVpc/test-fargate-kinesisstreams-sg/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testfargatekinesisstreamssgBA506AC6"
+          }
+        ],
+        "/farfhs-existingVpc/test-fargate-kinesisstreams-service/Service": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testfargatekinesisstreamsserviceService5AE7AADF"
+          }
+        ],
+        "/farfhs-existingVpc/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/farfhs-existingVpc/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "farfhs-existingVpc"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

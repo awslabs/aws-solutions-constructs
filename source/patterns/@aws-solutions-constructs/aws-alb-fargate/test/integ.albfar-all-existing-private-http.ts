@@ -18,6 +18,7 @@ import * as elb from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import { CfnSecurityGroup } from "aws-cdk-lib/aws-ec2";
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -66,6 +67,9 @@ defaults.addCfnSuppressRules(newSecurityGroup, [
   { id: 'W2', reason: 'Rule does not apply for ELB.'},
   { id: 'W9', reason: 'Rule does not apply for ELB.'}
 ]);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

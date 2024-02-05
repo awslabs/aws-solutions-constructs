@@ -21,6 +21,7 @@ import { EventbridgeToSns, EventbridgeToSnsProps } from '../lib';
 import * as events from 'aws-cdk-lib/aws-events';
 import { App, Stack } from 'aws-cdk-lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 
@@ -35,4 +36,6 @@ const propsTwo: EventbridgeToSnsProps = {
 new EventbridgeToSns(stackTwo, 'test-construct', propsTwo);
 new EventbridgeToSns(stackTwo, 'second-construct', propsTwo);
 
-app.synth();
+new IntegTest(stackTwo, 'Integ', { testCases: [
+  stackTwo
+] });

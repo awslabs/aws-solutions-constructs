@@ -1,0 +1,233 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "lamelsdomainargumentsIntegDefaultTestDeployAssert01468AA9.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamelsdomainargumentsIntegDefaultTestDeployAssert01468AA9.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamelsdomainargumentsIntegDefaultTestDeployAssert01468AA9": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamelsdomainargumentsIntegDefaultTestDeployAssert01468AA9.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamelsdomainargumentsIntegDefaultTestDeployAssert01468AA9.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamelsdomainargumentsIntegDefaultTestDeployAssert01468AA9.assets"
+      ],
+      "metadata": {
+        "/lamels-domain-arguments/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamels-domain-arguments/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamels-domain-arguments/Integ/DefaultTest/DeployAssert"
+    },
+    "lamels-domain-arguments.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamels-domain-arguments.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamels-domain-arguments": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamels-domain-arguments.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1c908f9559c76931b95e80b67fbe66ec9ce90da7d8cb218257195edc500e1cff.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamels-domain-arguments.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamels-domain-arguments.assets"
+      ],
+      "metadata": {
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleA59E9EBF"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleDefaultPolicy438CAC76"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2LambdaFunctionE665DF63"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoUserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoUserPoolClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2CognitoUserPoolClientB0F3872A"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoIdentityPool": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2CognitoIdentityPool0681F400"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/UserPoolDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2UserPoolDomainF6BF7A6F"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoAuthorizedRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2CognitoAuthorizedRole7AD979E9"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/IdentityPoolRoleMapping": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2IdentityPoolRoleMapping5CE56BBF"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoKibanaConfigureRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2CognitoKibanaConfigureRoleC9C9E921"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoKibanaConfigureRolePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2CognitoKibanaConfigureRolePolicy6DE68343"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/ElasticsearchDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2ElasticsearchDomainE2BD1E73"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/StatusRedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2StatusRedAlarm508A4D17"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/StatusYellowAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2StatusYellowAlarmEF13F129"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/FreeStorageSpaceTooLowAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2FreeStorageSpaceTooLowAlarm1ED7AA90"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/IndexWritesBlockedTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2IndexWritesBlockedTooHighAlarmCE02A217"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/AutomatedSnapshotFailureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2AutomatedSnapshotFailureTooHighAlarm75E8F988"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CPUUtilizationTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2CPUUtilizationTooHighAlarm7E4A7ADE"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/JVMMemoryPressureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2JVMMemoryPressureTooHighAlarm7CB5E1C7"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/MasterCPUUtilizationTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2MasterCPUUtilizationTooHighAlarmE22B714C"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/MasterJVMMemoryPressureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2MasterJVMMemoryPressureTooHighAlarm37A392A6"
+          }
+        ],
+        "/lamels-domain-arguments/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamels-domain-arguments/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamels-domain-arguments"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

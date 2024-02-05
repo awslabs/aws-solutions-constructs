@@ -1,0 +1,251 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "fhss3twoinstancesIntegDefaultTestDeployAssertFD2CF598.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "fhss3twoinstancesIntegDefaultTestDeployAssertFD2CF598.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "fhss3twoinstancesIntegDefaultTestDeployAssertFD2CF598": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "fhss3twoinstancesIntegDefaultTestDeployAssertFD2CF598.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "fhss3twoinstancesIntegDefaultTestDeployAssertFD2CF598.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "fhss3twoinstancesIntegDefaultTestDeployAssertFD2CF598.assets"
+      ],
+      "metadata": {
+        "/fhss3-two-instances/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/fhss3-two-instances/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "fhss3-two-instances/Integ/DefaultTest/DeployAssert"
+    },
+    "fhss3-two-instances.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "fhss3-two-instances.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "fhss3-two-instances": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "fhss3-two-instances.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b7634314b795a695f7f33c0e17ae73974f1b6995c4ffa78e58e450e76061733d.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "fhss3-two-instances.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "fhss3-two-instances.assets"
+      ],
+      "metadata": {
+        "/fhss3-two-instances/first-construct/S3LoggingBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "firstconstructS3LoggingBucket7A5DAF91"
+          }
+        ],
+        "/fhss3-two-instances/first-construct/S3LoggingBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "firstconstructS3LoggingBucketPolicy14219998"
+          }
+        ],
+        "/fhss3-two-instances/first-construct/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "firstconstructS3LoggingBucketAutoDeleteObjectsCustomResourceF1551A63"
+          }
+        ],
+        "/fhss3-two-instances/first-construct/S3Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "firstconstructS3Bucket58522C24"
+          }
+        ],
+        "/fhss3-two-instances/first-construct/S3Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "firstconstructS3BucketPolicyC7BBECCF"
+          }
+        ],
+        "/fhss3-two-instances/first-construct/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "firstconstructS3BucketAutoDeleteObjectsCustomResourceB053DF99"
+          }
+        ],
+        "/fhss3-two-instances/first-construct/firehose-log-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "firstconstructfirehoseloggroup6E34E778"
+          }
+        ],
+        "/fhss3-two-instances/first-construct/firehose-log-group/firehose-log-stream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "firstconstructfirehoseloggroupfirehoselogstream9883B2C1"
+          }
+        ],
+        "/fhss3-two-instances/first-construct/KinesisFirehoseRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "firstconstructKinesisFirehoseRoleB93C8983"
+          }
+        ],
+        "/fhss3-two-instances/first-construct/KinesisFirehosePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "firstconstructKinesisFirehosePolicyC2362A56"
+          }
+        ],
+        "/fhss3-two-instances/first-construct/KinesisFirehose": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "firstconstructKinesisFirehoseE18EBAA6"
+          }
+        ],
+        "/fhss3-two-instances/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/fhss3-two-instances/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/fhss3-two-instances/second-construct/S3LoggingBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondconstructS3LoggingBucketBB57C475"
+          }
+        ],
+        "/fhss3-two-instances/second-construct/S3LoggingBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondconstructS3LoggingBucketPolicy88BAA4BE"
+          }
+        ],
+        "/fhss3-two-instances/second-construct/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondconstructS3LoggingBucketAutoDeleteObjectsCustomResource11E44F47"
+          }
+        ],
+        "/fhss3-two-instances/second-construct/S3Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondconstructS3Bucket6D7D46A0"
+          }
+        ],
+        "/fhss3-two-instances/second-construct/S3Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondconstructS3BucketPolicy4B404A49"
+          }
+        ],
+        "/fhss3-two-instances/second-construct/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondconstructS3BucketAutoDeleteObjectsCustomResource02D988EB"
+          }
+        ],
+        "/fhss3-two-instances/second-construct/firehose-log-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondconstructfirehoseloggroupB59EDD4C"
+          }
+        ],
+        "/fhss3-two-instances/second-construct/firehose-log-group/firehose-log-stream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondconstructfirehoseloggroupfirehoselogstreamA2E1EA50"
+          }
+        ],
+        "/fhss3-two-instances/second-construct/KinesisFirehoseRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondconstructKinesisFirehoseRoleD4EF457F"
+          }
+        ],
+        "/fhss3-two-instances/second-construct/KinesisFirehosePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondconstructKinesisFirehosePolicy7D9CF702"
+          }
+        ],
+        "/fhss3-two-instances/second-construct/KinesisFirehose": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondconstructKinesisFirehoseB2AED79C"
+          }
+        ],
+        "/fhss3-two-instances/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/fhss3-two-instances/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "fhss3-two-instances"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

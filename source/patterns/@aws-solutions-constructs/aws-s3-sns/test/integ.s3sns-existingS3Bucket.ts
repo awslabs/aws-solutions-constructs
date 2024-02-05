@@ -14,7 +14,8 @@
 /// !cdk-integ *
 import { App, Stack } from "aws-cdk-lib";
 import { S3ToSns } from "../lib";
-import { CreateScrapBucket, generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { CreateScrapBucket, generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -23,6 +24,8 @@ stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 new S3ToSns(stack, 'test-s3-sns', {
   existingBucketObj: CreateScrapBucket(stack, "scrapBucket")
 });
-suppressAutoDeleteHandlerWarnings(stack);
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

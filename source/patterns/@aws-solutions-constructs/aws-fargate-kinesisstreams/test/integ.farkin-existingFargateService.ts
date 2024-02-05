@@ -14,8 +14,9 @@
 /// !cdk-integ *
 import { App, Stack } from "aws-cdk-lib";
 import { FargateToKinesisStreams } from "../lib";
-import { CreateFargateService, generateIntegStackName, getTestVpc } from '@aws-solutions-constructs/core';
+import { CreateFargateService, generateIntegStackName, getTestVpc, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -38,4 +39,8 @@ new FargateToKinesisStreams(stack, 'test-fargate-kinesisstreams', {
   existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition
 });
 
-app.synth();
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
+
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

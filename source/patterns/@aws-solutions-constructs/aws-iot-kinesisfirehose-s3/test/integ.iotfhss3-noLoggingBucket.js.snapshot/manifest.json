@@ -1,0 +1,185 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "iotfhss3noLoggingBucketIntegDefaultTestDeployAssert8E11992C.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "iotfhss3noLoggingBucketIntegDefaultTestDeployAssert8E11992C.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "iotfhss3noLoggingBucketIntegDefaultTestDeployAssert8E11992C": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "iotfhss3noLoggingBucketIntegDefaultTestDeployAssert8E11992C.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "iotfhss3noLoggingBucketIntegDefaultTestDeployAssert8E11992C.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "iotfhss3noLoggingBucketIntegDefaultTestDeployAssert8E11992C.assets"
+      ],
+      "metadata": {
+        "/iotfhss3-noLoggingBucket/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/iotfhss3-noLoggingBucket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "iotfhss3-noLoggingBucket/Integ/DefaultTest/DeployAssert"
+    },
+    "iotfhss3-noLoggingBucket.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "iotfhss3-noLoggingBucket.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "iotfhss3-noLoggingBucket": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "iotfhss3-noLoggingBucket.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/186e4bb820be742040d033d933c2c82d7bf19ce246bac2094d58ab237c34f010.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "iotfhss3-noLoggingBucket.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "iotfhss3-noLoggingBucket.assets"
+      ],
+      "metadata": {
+        "/iotfhss3-noLoggingBucket/test-iot-kinesisfirehose-s3/KinesisFirehoseToS3/S3Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotkinesisfirehoses3KinesisFirehoseToS3S3BucketAEE2D91B"
+          }
+        ],
+        "/iotfhss3-noLoggingBucket/test-iot-kinesisfirehose-s3/KinesisFirehoseToS3/S3Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotkinesisfirehoses3KinesisFirehoseToS3S3BucketPolicy8BDDB6C2"
+          }
+        ],
+        "/iotfhss3-noLoggingBucket/test-iot-kinesisfirehose-s3/KinesisFirehoseToS3/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotkinesisfirehoses3KinesisFirehoseToS3S3BucketAutoDeleteObjectsCustomResourceB38DFE2A"
+          }
+        ],
+        "/iotfhss3-noLoggingBucket/test-iot-kinesisfirehose-s3/KinesisFirehoseToS3/firehose-log-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotkinesisfirehoses3KinesisFirehoseToS3firehoseloggroupDD0940D4"
+          }
+        ],
+        "/iotfhss3-noLoggingBucket/test-iot-kinesisfirehose-s3/KinesisFirehoseToS3/firehose-log-group/firehose-log-stream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotkinesisfirehoses3KinesisFirehoseToS3firehoseloggroupfirehoselogstream93DF029F"
+          }
+        ],
+        "/iotfhss3-noLoggingBucket/test-iot-kinesisfirehose-s3/KinesisFirehoseToS3/KinesisFirehoseRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotkinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseRole1BC69C9C"
+          }
+        ],
+        "/iotfhss3-noLoggingBucket/test-iot-kinesisfirehose-s3/KinesisFirehoseToS3/KinesisFirehosePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotkinesisfirehoses3KinesisFirehoseToS3KinesisFirehosePolicyABB5FC58"
+          }
+        ],
+        "/iotfhss3-noLoggingBucket/test-iot-kinesisfirehose-s3/KinesisFirehoseToS3/KinesisFirehose": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotkinesisfirehoses3KinesisFirehoseToS3KinesisFirehoseBD88A36B"
+          }
+        ],
+        "/iotfhss3-noLoggingBucket/test-iot-kinesisfirehose-s3/IotActionsRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotkinesisfirehoses3IotActionsRole47344B2F"
+          }
+        ],
+        "/iotfhss3-noLoggingBucket/test-iot-kinesisfirehose-s3/IotActionsPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotkinesisfirehoses3IotActionsPolicy89971F7F"
+          }
+        ],
+        "/iotfhss3-noLoggingBucket/test-iot-kinesisfirehose-s3/IotTopic": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotkinesisfirehoses3IotTopic4CCBBBDC"
+          }
+        ],
+        "/iotfhss3-noLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/iotfhss3-noLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/iotfhss3-noLoggingBucket/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/iotfhss3-noLoggingBucket/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "iotfhss3-noLoggingBucket"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

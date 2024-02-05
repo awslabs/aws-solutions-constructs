@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "8a0aa9dec8beea5b063fbeb2d576f284e9dd9fd85856a72c950a276b1115ff5d": {
+      "source": {
+        "path": "apisag-apigateway-sagemakerendpoint-overwrite.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "8a0aa9dec8beea5b063fbeb2d576f284e9dd9fd85856a72c950a276b1115ff5d.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

@@ -1,0 +1,50 @@
+openapi: "3.0.1"
+info:
+  title: "api"
+  version: "2023-02-20T20:46:08Z"
+components:
+  securitySchemes:
+    CognitoAuthorizer:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authtype: cognito_user_pools
+      x-amazon-apigateway-authorizer:
+        type: cognito_user_pools
+        providerARNs:
+          - arn:aws:cognito-idp:us-west-2:000000000000:userpool/us-west-2_aaaaa1111
+paths:
+  /messages:
+    get:
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: MessagesHandler
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+      security:
+        - CognitoAuthorizer: []
+    post:
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: MessagesHandler
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+      security:
+        - CognitoAuthorizer: []
+  /photos:
+    get:
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: PhotosHandler
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+      security:
+        - CognitoAuthorizer: []
+    post:
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: PhotosHandler
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+      security:
+        - CognitoAuthorizer: []
