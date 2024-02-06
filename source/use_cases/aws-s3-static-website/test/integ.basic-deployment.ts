@@ -10,9 +10,14 @@
  *  OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions
  *  and limitations under the License.
  */
-
+import 'source-map-support/register';
 import { App } from 'aws-cdk-lib';
 import { S3StaticWebsiteStack } from '../lib/s3-static-site-stack';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
-new S3StaticWebsiteStack(app, 'StaticWebsiteStack');
+const stack = new S3StaticWebsiteStack(app, 'StaticWebsiteStack');
+
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

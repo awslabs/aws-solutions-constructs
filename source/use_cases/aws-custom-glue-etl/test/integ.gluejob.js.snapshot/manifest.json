@@ -1,0 +1,215 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "IntegTestGlueJobIntegDefaultTestDeployAssert49434261.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "IntegTestGlueJobIntegDefaultTestDeployAssert49434261.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "IntegTestGlueJobIntegDefaultTestDeployAssert49434261": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "IntegTestGlueJobIntegDefaultTestDeployAssert49434261.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "IntegTestGlueJobIntegDefaultTestDeployAssert49434261.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "IntegTestGlueJobIntegDefaultTestDeployAssert49434261.assets"
+      ],
+      "metadata": {
+        "/IntegTestGlueJob/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/IntegTestGlueJob/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "IntegTestGlueJob/Integ/DefaultTest/DeployAssert"
+    },
+    "IntegTestGlueJob.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "IntegTestGlueJob.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "IntegTestGlueJob": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "IntegTestGlueJob.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f06dec671e2247660b421f7c66dcf0191b573e715d33b978c720e69361586132.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "IntegTestGlueJob.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "IntegTestGlueJob.assets"
+      ],
+      "metadata": {
+        "/IntegTestGlueJob/CustomETL/KinesisStream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomETLKinesisStreamB4F1869F"
+          }
+        ],
+        "/IntegTestGlueJob/CustomETL/GlueSecurityConfig": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomETLGlueSecurityConfigDFE12B1C"
+          }
+        ],
+        "/IntegTestGlueJob/CustomETL/LogPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomETLLogPolicyA74138E8"
+          }
+        ],
+        "/IntegTestGlueJob/CustomETL/JobRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomETLJobRole53A1671F"
+          }
+        ],
+        "/IntegTestGlueJob/CustomETL/JobRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomETLJobRoleDefaultPolicy564ADEA9"
+          }
+        ],
+        "/IntegTestGlueJob/CustomETL/S3LoggingBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomETLS3LoggingBucketBBDD45CB"
+          }
+        ],
+        "/IntegTestGlueJob/CustomETL/S3LoggingBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomETLS3LoggingBucketPolicy15C78253"
+          }
+        ],
+        "/IntegTestGlueJob/CustomETL/S3Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomETLS3Bucket3EE58725"
+          }
+        ],
+        "/IntegTestGlueJob/CustomETL/S3Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomETLS3BucketPolicy20FB337A"
+          }
+        ],
+        "/IntegTestGlueJob/CustomETL/KinesisETLJob": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomETLKinesisETLJob04F57BEF"
+          }
+        ],
+        "/IntegTestGlueJob/CustomETL/KinesisStreamGetRecordsIteratorAgeAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomETLKinesisStreamGetRecordsIteratorAgeAlarmCD7F4E34"
+          }
+        ],
+        "/IntegTestGlueJob/CustomETL/KinesisStreamReadProvisionedThroughputExceededAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomETLKinesisStreamReadProvisionedThroughputExceededAlarm6AB32664"
+          }
+        ],
+        "/IntegTestGlueJob/GlueDatabase": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueDatabase"
+          }
+        ],
+        "/IntegTestGlueJob/GlueTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueTable"
+          }
+        ],
+        "/IntegTestGlueJob/CustomETLGlueJobPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomETLGlueJobPolicy0AE5B5CB"
+          }
+        ],
+        "/IntegTestGlueJob/KinesisStreamName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisStreamName"
+          }
+        ],
+        "/IntegTestGlueJob/GlueJob": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueJob"
+          }
+        ],
+        "/IntegTestGlueJob/JobRole": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "JobRole"
+          }
+        ],
+        "/IntegTestGlueJob/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/IntegTestGlueJob/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "IntegTestGlueJob"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

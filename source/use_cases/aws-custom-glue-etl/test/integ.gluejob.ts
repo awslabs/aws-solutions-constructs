@@ -13,7 +13,12 @@
 
 import { App } from "aws-cdk-lib";
 import { AwsCustomGlueEtlStack } from "../lib/aws-custom-glue-etl-stack";
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 const stack = new AwsCustomGlueEtlStack(app, 'IntegTestGlueJob');
 stack.templateOptions.description = 'Integration Test for sample application that uses aws-kineisstream-glue-job construct';
+
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });
