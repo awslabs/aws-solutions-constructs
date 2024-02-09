@@ -22,6 +22,7 @@ import { LambdaToElasticSearchAndKibana } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
+import { suppressCustomHandlerCfnNagWarnings } from "@aws-solutions-constructs/core";
 
 const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
@@ -42,6 +43,7 @@ new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana4', {
   domainName: defaults.CreateShortUniqueTestName("dmn"),
   existingVpc: vpc
 });
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [

@@ -23,6 +23,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
+import { suppressCustomHandlerCfnNagWarnings } from "@aws-solutions-constructs/core";
 
 // Setup
 const app = new App();
@@ -44,6 +45,7 @@ new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana3', {
     ipAddresses: ec2.IpAddresses.cidr('172.168.0.0/16'),
   }
 });
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
