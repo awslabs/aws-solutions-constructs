@@ -16,20 +16,18 @@
  * the transition, it's disabled and we will dig deeper into it in the future
  */
 
-import { App, Stack } from "aws-cdk-lib";
-import { LambdaToElasticSearchAndKibana } from "../lib";
+import { App, Aws, Stack } from "aws-cdk-lib";
+import { LambdaToOpenSearch } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
+import { suppressCustomHandlerCfnNagWarnings } from "@aws-solutions-constructs/core";
 
 // Setup
 const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
-  env: {
-    region: process.env.CDK_DEFAULT_REGION,
-    account: process.env.CDK_DEFAULT_ACCOUNT,
-  }
+  env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
 
 const lambdaProps: lambda.FunctionProps = {
@@ -38,14 +36,15 @@ const lambdaProps: lambda.FunctionProps = {
   handler: 'index.handler',
 };
 
-new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana3', {
+new LambdaToOpenSearch(stack, 'test-lambda-opensearch', {
   lambdaFunctionProps: lambdaProps,
-  domainName: defaults.CreateShortUniqueTestName("dmn"),
+  openSearchDomainName: defaults.CreateShortUniqueTestName("dmn"),
   deployVpc: true,
   vpcProps: {
     ipAddresses: ec2.IpAddresses.cidr('172.168.0.0/16'),
   }
 });
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [

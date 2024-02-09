@@ -17,34 +17,35 @@
  */
 
 /// !cdk-integ *
-import { App, Stack } from "aws-cdk-lib";
+import { App, Aws, Stack } from "aws-cdk-lib";
 import { LambdaToElasticSearchAndKibana } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
+import { suppressCustomHandlerCfnNagWarnings } from "@aws-solutions-constructs/core";
 
+// Setup
 const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
-  env: {
-    region: process.env.CDK_DEFAULT_REGION,
-    account: process.env.CDK_DEFAULT_ACCOUNT,
-  }
+  env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
 
-// Create VPC
-const vpc = defaults.getTestVpc(stack);
-
 const lambdaProps: lambda.FunctionProps = {
-  code: lambda.Code.fromAsset(`lambda`),
+  code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   runtime: lambda.Runtime.NODEJS_16_X,
   handler: 'index.handler',
 };
 
-new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana4', {
+new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana3', {
   lambdaFunctionProps: lambdaProps,
   domainName: defaults.CreateShortUniqueTestName("dmn"),
-  existingVpc: vpc
+  deployVpc: true,
+  vpcProps: {
+    ipAddresses: ec2.IpAddresses.cidr('172.168.0.0/16'),
+  }
 });
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
