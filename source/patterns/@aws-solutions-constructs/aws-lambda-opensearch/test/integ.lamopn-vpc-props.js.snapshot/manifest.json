@@ -1,0 +1,323 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "lamopnvpcpropsIntegDefaultTestDeployAssertC7FD49B0.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamopnvpcpropsIntegDefaultTestDeployAssertC7FD49B0.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamopnvpcpropsIntegDefaultTestDeployAssertC7FD49B0": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamopnvpcpropsIntegDefaultTestDeployAssertC7FD49B0.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamopnvpcpropsIntegDefaultTestDeployAssertC7FD49B0.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamopnvpcpropsIntegDefaultTestDeployAssertC7FD49B0.assets"
+      ],
+      "metadata": {
+        "/lamopn-vpc-props/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamopn-vpc-props/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamopn-vpc-props/Integ/DefaultTest/DeployAssert"
+    },
+    "lamopn-vpc-props.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamopn-vpc-props.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamopn-vpc-props": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/us-east-1",
+      "properties": {
+        "templateFile": "lamopn-vpc-props.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/b1f31369b3e7e5622a58a11e4d14573bb98ceb5f1d8739b8db39cbd7717c0006.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamopn-vpc-props.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamopn-vpc-props.assets"
+      ],
+      "metadata": {
+        "/lamopn-vpc-props/test-lambda-opensearch/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchLambdaFunctionServiceRole4722AB8A"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchLambdaFunctionServiceRoleDefaultPolicy78C56359"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/ReplaceDefaultSecurityGroup-security-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchReplaceDefaultSecurityGroupsecuritygroupB44718EC"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchLambdaFunction93FD38F7"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/CognitoUserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchCognitoUserPoolA09096F9"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/CognitoUserPoolClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchCognitoUserPoolClient39C21D94"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/CognitoIdentityPool": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchCognitoIdentityPool0B1FB311"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/UserPoolDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchUserPoolDomain98864920"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/CognitoAuthorizedRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchCognitoAuthorizedRole58A1ED44"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/IdentityPoolRoleMapping": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchIdentityPoolRoleMappingD8C765B1"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/CognitoDashboardConfigureRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchCognitoDashboardConfigureRole1F2B7B7A"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/CognitoDashboardConfigureRolePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchCognitoDashboardConfigureRolePolicyC9C6A6A2"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/OpenSearchDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchOpenSearchDomainF9CCC3D3"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/StatusRedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchStatusRedAlarm1627144D"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/StatusYellowAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchStatusYellowAlarm57139CF0"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/FreeStorageSpaceTooLowAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchFreeStorageSpaceTooLowAlarm6A5E1E96"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/IndexWritesBlockedTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchIndexWritesBlockedTooHighAlarmD2E041A3"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/AutomatedSnapshotFailureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchAutomatedSnapshotFailureTooHighAlarm9A4D0B1F"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/CPUUtilizationTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchCPUUtilizationTooHighAlarmC4850758"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/JVMMemoryPressureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchJVMMemoryPressureTooHighAlarmEFB09A7C"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/MasterCPUUtilizationTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchMasterCPUUtilizationTooHighAlarm124D5748"
+          }
+        ],
+        "/lamopn-vpc-props/test-lambda-opensearch/MasterJVMMemoryPressureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchMasterJVMMemoryPressureTooHighAlarmBC9524D3"
+          }
+        ],
+        "/lamopn-vpc-props/Vpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Vpc8378EB38"
+          }
+        ],
+        "/lamopn-vpc-props/Vpc/isolatedSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1SubnetE62B1B9B"
+          }
+        ],
+        "/lamopn-vpc-props/Vpc/isolatedSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1RouteTableE442650B"
+          }
+        ],
+        "/lamopn-vpc-props/Vpc/isolatedSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1RouteTableAssociationD259E31A"
+          }
+        ],
+        "/lamopn-vpc-props/Vpc/isolatedSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet2Subnet39217055"
+          }
+        ],
+        "/lamopn-vpc-props/Vpc/isolatedSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet2RouteTable334F9764"
+          }
+        ],
+        "/lamopn-vpc-props/Vpc/isolatedSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet2RouteTableAssociation25A4716F"
+          }
+        ],
+        "/lamopn-vpc-props/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
+          }
+        ],
+        "/lamopn-vpc-props/Vpc/FlowLog/IAMRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRole6A475D41"
+          }
+        ],
+        "/lamopn-vpc-props/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
+          }
+        ],
+        "/lamopn-vpc-props/Vpc/FlowLog/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogLogGroup7B5C56B9"
+          }
+        ],
+        "/lamopn-vpc-props/Vpc/FlowLog/FlowLog": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLog8FF33A73"
+          }
+        ],
+        "/lamopn-vpc-props/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+          }
+        ],
+        "/lamopn-vpc-props/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+          }
+        ],
+        "/lamopn-vpc-props/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamopn-vpc-props/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamopn-vpc-props"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}
