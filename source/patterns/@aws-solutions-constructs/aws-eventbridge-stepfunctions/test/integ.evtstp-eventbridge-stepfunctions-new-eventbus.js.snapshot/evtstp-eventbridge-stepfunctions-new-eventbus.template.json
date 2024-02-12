@@ -211,11 +211,6 @@
         "logs:ListLogDeliveries"
        ],
        "Effect": "Allow",
-       "Resource": "*"
-      },
-      {
-       "Action": "lambda:InvokeFunction",
-       "Effect": "Allow",
        "Resource": [
         {
          "Fn::GetAtt": [
@@ -238,6 +233,20 @@
          ]
         }
        ]
+      },
+      {
+       "Action": [
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
       },
       {
        "Action": [
