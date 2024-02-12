@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.52.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.51.0...v2.52.0) (2024-02-12)
+
+
+### Bug Fixes
+
+* **npmlog:** update npmlog version ([#1075](https://github.com/awslabs/aws-solutions-constructs/issues/1075)) ([968639a](https://github.com/awslabs/aws-solutions-constructs/commit/968639ae3048dc933a6c6e7baf9013e0f41bd16a))
+
 ## [2.51.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.50.0...v2.51.0) (2024-01-30)
 
 Built on CDK v2.118.0
