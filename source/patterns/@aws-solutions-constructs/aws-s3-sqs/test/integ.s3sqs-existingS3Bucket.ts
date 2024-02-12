@@ -16,6 +16,7 @@ import { App, Stack } from "aws-cdk-lib";
 import { S3ToSqs, S3ToSqsProps } from "../lib";
 import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 
@@ -31,6 +32,8 @@ const props: S3ToSqsProps = {
 };
 
 new S3ToSqs(stack, 'test-s3-sqs', props);
-defaults.suppressAutoDeleteHandlerWarnings(stack);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

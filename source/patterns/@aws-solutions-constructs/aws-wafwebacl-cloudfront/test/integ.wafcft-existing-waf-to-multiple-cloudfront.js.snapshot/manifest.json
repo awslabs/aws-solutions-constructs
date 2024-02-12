@@ -1,0 +1,125 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "wafcftexistingwaftomultiplecloudfrontIntegDefaultTestDeployAssert118FBD28.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "wafcftexistingwaftomultiplecloudfrontIntegDefaultTestDeployAssert118FBD28.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "wafcftexistingwaftomultiplecloudfrontIntegDefaultTestDeployAssert118FBD28": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "wafcftexistingwaftomultiplecloudfrontIntegDefaultTestDeployAssert118FBD28.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "wafcftexistingwaftomultiplecloudfrontIntegDefaultTestDeployAssert118FBD28.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "wafcftexistingwaftomultiplecloudfrontIntegDefaultTestDeployAssert118FBD28.assets"
+      ],
+      "metadata": {
+        "/wafcft-existing-waf-to-multiple-cloudfront/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/wafcft-existing-waf-to-multiple-cloudfront/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "wafcft-existing-waf-to-multiple-cloudfront/Integ/DefaultTest/DeployAssert"
+    },
+    "wafcft-existing-waf-to-multiple-cloudfront.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "wafcft-existing-waf-to-multiple-cloudfront.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "wafcft-existing-waf-to-multiple-cloudfront": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "wafcft-existing-waf-to-multiple-cloudfront.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8737468161fd98a1f296254a39ac44d2be3663e9ed65fd37b3864a7fb0786c7b.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "wafcft-existing-waf-to-multiple-cloudfront.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "wafcft-existing-waf-to-multiple-cloudfront.assets"
+      ],
+      "metadata": {
+        "/wafcft-existing-waf-to-multiple-cloudfront/distroOne/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "distroOneBA9A3958"
+          }
+        ],
+        "/wafcft-existing-waf-to-multiple-cloudfront/distroTwo/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "distroTwo0B353343"
+          }
+        ],
+        "/wafcft-existing-waf-to-multiple-cloudfront/first-construct/first-construct-WebACL": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "firstconstructfirstconstructWebACLCB39A850"
+          }
+        ],
+        "/wafcft-existing-waf-to-multiple-cloudfront/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/wafcft-existing-waf-to-multiple-cloudfront/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "wafcft-existing-waf-to-multiple-cloudfront"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

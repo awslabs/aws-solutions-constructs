@@ -1,0 +1,329 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "wafapiexistingwaftomultiplegatewaysIntegDefaultTestDeployAssert419156F9.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "wafapiexistingwaftomultiplegatewaysIntegDefaultTestDeployAssert419156F9.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "wafapiexistingwaftomultiplegatewaysIntegDefaultTestDeployAssert419156F9": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "wafapiexistingwaftomultiplegatewaysIntegDefaultTestDeployAssert419156F9.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "wafapiexistingwaftomultiplegatewaysIntegDefaultTestDeployAssert419156F9.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "wafapiexistingwaftomultiplegatewaysIntegDefaultTestDeployAssert419156F9.assets"
+      ],
+      "metadata": {
+        "/wafapi-existing-waf-to-multiple-gateways/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "wafapi-existing-waf-to-multiple-gateways/Integ/DefaultTest/DeployAssert"
+    },
+    "wafapi-existing-waf-to-multiple-gateways.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "wafapi-existing-waf-to-multiple-gateways.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "wafapi-existing-waf-to-multiple-gateways": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "wafapi-existing-waf-to-multiple-gateways.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6fc46fa3c15c767df1e380b7179a372404c7c9e7f44aa31e3824678b1bc38cbd.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "wafapi-existing-waf-to-multiple-gateways.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "wafapi-existing-waf-to-multiple-gateways.assets"
+      ],
+      "metadata": {
+        "/wafapi-existing-waf-to-multiple-gateways/testOneFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneFunctionServiceRole3F9CD9E7"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneFunction5860F00A"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOne-authorizerAuthFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneauthorizerAuthFunctionServiceRoleE1B4208E"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOne-authorizerAuthFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneauthorizerAuthFunctionB12D8D93"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOne-authorizerAuthFunction/wafapiexistingwaftomultiplegatewaystestOneauthorizer7F4D0710:Permissions": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneauthorizerAuthFunctionwafapiexistingwaftomultiplegatewaystestOneauthorizer7F4D0710Permissions21D6CD33"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOne-authorizer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneauthorizerA10D8AB0"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneApi71064556"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneApiDeploymentEF63BD8609fc6a0f86e232515b5cb988fd677939"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneApiDeploymentStageprod5B67F2DF"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneApiEndpoint1C7554D8"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Default/{proxy+}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneApiproxyC9BD4274"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Default/{proxy+}/ANY/ApiPermission.wafapiexistingwaftomultiplegatewaystestOneApiB9044B59.ANY..{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneApiproxyANYApiPermissionwafapiexistingwaftomultiplegatewaystestOneApiB9044B59ANYproxy1B0A478E"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Default/{proxy+}/ANY/ApiPermission.Test.wafapiexistingwaftomultiplegatewaystestOneApiB9044B59.ANY..{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneApiproxyANYApiPermissionTestwafapiexistingwaftomultiplegatewaystestOneApiB9044B59ANYproxy0DF6631B"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Default/{proxy+}/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneApiproxyANY7F46A6A5"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Default/ANY/ApiPermission.wafapiexistingwaftomultiplegatewaystestOneApiB9044B59.ANY..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneApiANYApiPermissionwafapiexistingwaftomultiplegatewaystestOneApiB9044B59ANYDB292C51"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Default/ANY/ApiPermission.Test.wafapiexistingwaftomultiplegatewaystestOneApiB9044B59.ANY..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneApiANYApiPermissionTestwafapiexistingwaftomultiplegatewaystestOneApiB9044B59ANY2BFAB738"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Default/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneApiANY899DD2DA"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoFunctionServiceRoleF678C905"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoFunctionE0EEB0EF"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwo-authorizerAuthFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoauthorizerAuthFunctionServiceRole4C3292A3"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwo-authorizerAuthFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoauthorizerAuthFunction1DBBD707"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwo-authorizerAuthFunction/wafapiexistingwaftomultiplegatewaystestTwoauthorizer9B2C525E:Permissions": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoauthorizerAuthFunctionwafapiexistingwaftomultiplegatewaystestTwoauthorizer9B2C525EPermissions44287234"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwo-authorizer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoauthorizer627F159B"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoApi17A08EF5"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoApiDeployment4EDBF4DF16b5f55503554b1a9ae378c4dff33c43"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoApiDeploymentStageprod8DB1EDB4"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoApiEndpointFE406EE7"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Default/{proxy+}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoApiproxy2575DCE3"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Default/{proxy+}/ANY/ApiPermission.wafapiexistingwaftomultiplegatewaystestTwoApi3F5A8986.ANY..{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoApiproxyANYApiPermissionwafapiexistingwaftomultiplegatewaystestTwoApi3F5A8986ANYproxy1DFBDD22"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Default/{proxy+}/ANY/ApiPermission.Test.wafapiexistingwaftomultiplegatewaystestTwoApi3F5A8986.ANY..{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoApiproxyANYApiPermissionTestwafapiexistingwaftomultiplegatewaystestTwoApi3F5A8986ANYproxy0FCB1905"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Default/{proxy+}/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoApiproxyANY63FFF74A"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Default/ANY/ApiPermission.wafapiexistingwaftomultiplegatewaystestTwoApi3F5A8986.ANY..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoApiANYApiPermissionwafapiexistingwaftomultiplegatewaystestTwoApi3F5A8986ANY258342E0"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Default/ANY/ApiPermission.Test.wafapiexistingwaftomultiplegatewaystestTwoApi3F5A8986.ANY..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoApiANYApiPermissionTestwafapiexistingwaftomultiplegatewaystestTwoApi3F5A8986ANY6B2BB285"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Default/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoApiANY91121C6F"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/first-construct/first-construct-WebACL": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "firstconstructfirstconstructWebACLCB39A850"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/first-construct-WebACLAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "firstconstructWebACLAssociation"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/second-construct-WebACLAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondconstructWebACLAssociation"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "wafapi-existing-waf-to-multiple-gateways"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

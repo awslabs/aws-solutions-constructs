@@ -22,9 +22,9 @@
     "test": "jest --coverage",
     "clean": "tsc -b --clean",
     "watch": "tsc -b -w",
-    "integ": "cdk-integ",
-    "integ-no-clean": "cdk-integ --no-clean",
-    "integ-assert": "cdk-integ-assert-v2",
+    "integ": "integ-runner --update-on-failed",
+    "integ-no-clean": "integ-runner --update-on-failed --no-clean",
+    "integ-assert": "integ-runner",
     "jsii": "jsii",
     "jsii-pacmak": "jsii-pacmak",
     "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
@@ -53,6 +53,7 @@
     }
   },
   "dependencies": {
+    "@aws-cdk/integ-tests-alpha": "0.0.0-alpha.0",
     "@aws-solutions-constructs/core": "0.0.0",
     "constructs": "^10.0.0"
   },

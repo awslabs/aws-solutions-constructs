@@ -15,6 +15,7 @@
 import { App, Stack, RemovalPolicy, Duration } from "aws-cdk-lib";
 import { EventbridgeToKinesisFirehoseToS3 } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as events from 'aws-cdk-lib/aws-events';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -39,5 +40,7 @@ new EventbridgeToKinesisFirehoseToS3(stack, 'evtfhss3-existing-log-bucket', {
   },
 });
 
-defaults.suppressAutoDeleteHandlerWarnings(stack);
-app.synth();
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

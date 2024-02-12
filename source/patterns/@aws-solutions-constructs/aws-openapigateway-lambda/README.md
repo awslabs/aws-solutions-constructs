@@ -28,7 +28,7 @@ Typescript
 ``` typescript
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { OpenApiApiGatewayToLambda } from './construct';
+import { OpenApiGatewayToLambda } from '@aws-solutions-constructs/aws-openapigateway-lambda';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
 import * as path from 'path';
 import * as lambda from 'aws-cdk-lib/aws-lambda';

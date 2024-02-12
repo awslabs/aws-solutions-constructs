@@ -1,0 +1,120 @@
+{
+ "Description": "Integration Test for aws-iot-sqs",
+ "Resources": {
+  "existingqueueobjF8AF0ED1": {
+   "Type": "AWS::SQS::Queue",
+   "Properties": {
+    "KmsMasterKeyId": "alias/aws/sqs",
+    "QueueName": "existing-queue-obj"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "testiotsqsstackiotactionsrole5F8821AA": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "iot.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "testiotsqsstackiotactionsroleDefaultPolicy02ED7F00": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "sqs:GetQueueAttributes",
+        "sqs:GetQueueUrl",
+        "sqs:SendMessage"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "existingqueueobjF8AF0ED1",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testiotsqsstackiotactionsroleDefaultPolicy02ED7F00",
+    "Roles": [
+     {
+      "Ref": "testiotsqsstackiotactionsrole5F8821AA"
+     }
+    ]
+   }
+  },
+  "testiotsqsstackIotTopicRule02F8F602": {
+   "Type": "AWS::IoT::TopicRule",
+   "Properties": {
+    "TopicRulePayload": {
+     "Actions": [
+      {
+       "Sqs": {
+        "QueueUrl": {
+         "Ref": "existingqueueobjF8AF0ED1"
+        },
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "testiotsqsstackiotactionsrole5F8821AA",
+          "Arn"
+         ]
+        }
+       }
+      }
+     ],
+     "Description": "Processing messages from IoT devices or factory machines",
+     "RuleDisabled": false,
+     "Sql": "SELECT * FROM 'test/topic/#'"
+    }
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

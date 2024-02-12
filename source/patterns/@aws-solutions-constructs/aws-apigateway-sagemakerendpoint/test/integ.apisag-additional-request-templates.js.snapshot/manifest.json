@@ -1,0 +1,185 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "apisagadditionalrequesttemplatesIntegDefaultTestDeployAssert6CEA10C7.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "apisagadditionalrequesttemplatesIntegDefaultTestDeployAssert6CEA10C7.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "apisagadditionalrequesttemplatesIntegDefaultTestDeployAssert6CEA10C7": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "apisagadditionalrequesttemplatesIntegDefaultTestDeployAssert6CEA10C7.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "apisagadditionalrequesttemplatesIntegDefaultTestDeployAssert6CEA10C7.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "apisagadditionalrequesttemplatesIntegDefaultTestDeployAssert6CEA10C7.assets"
+      ],
+      "metadata": {
+        "/apisag-additional-request-templates/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/apisag-additional-request-templates/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "apisag-additional-request-templates/Integ/DefaultTest/DeployAssert"
+    },
+    "apisag-additional-request-templates.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "apisag-additional-request-templates.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "apisag-additional-request-templates": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "apisag-additional-request-templates.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/bc631b30b4ddf22810ebb537d27823dfa473ed77ad51e328a787c63622449cce.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "apisag-additional-request-templates.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "apisag-additional-request-templates.assets"
+      ],
+      "metadata": {
+        "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/ApiAccessLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysagemakerendpointdefaultApiAccessLogGroupAD5E1ADF"
+          }
+        ],
+        "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysagemakerendpointdefaultRestApi7D1DA11B"
+          }
+        ],
+        "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysagemakerendpointdefaultRestApiDeployment04BFEB63ab5dc870083af2a47a41af0f4ee69fff"
+          }
+        ],
+        "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysagemakerendpointdefaultRestApiDeploymentStageprodFD1743A7"
+          }
+        ],
+        "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysagemakerendpointdefaultRestApiEndpoint1EFF6760"
+          }
+        ],
+        "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/Default/{user_id}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysagemakerendpointdefaultRestApiuserid9952BA11"
+          }
+        ],
+        "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/Default/{user_id}/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysagemakerendpointdefaultRestApiuseridGETB3BB79AA"
+          }
+        ],
+        "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/UsagePlan/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysagemakerendpointdefaultRestApiUsagePlan7C5B0716"
+          }
+        ],
+        "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/request-validator/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysagemakerendpointdefaultRestApirequestvalidator1A23C251"
+          }
+        ],
+        "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/LambdaRestApiCloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysagemakerendpointdefaultLambdaRestApiCloudWatchRole56EE67C8"
+          }
+        ],
+        "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/LambdaRestApiAccount": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysagemakerendpointdefaultLambdaRestApiAccount6B3C7FDD"
+          }
+        ],
+        "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/api-gateway-role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysagemakerendpointdefaultapigatewayrole8EA61BE4"
+          }
+        ],
+        "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/InvokeEndpointPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysagemakerendpointdefaultInvokeEndpointPolicyB835D2B2"
+          }
+        ],
+        "/apisag-additional-request-templates/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/apisag-additional-request-templates/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "apisag-additional-request-templates"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

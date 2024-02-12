@@ -15,6 +15,7 @@
 import { App, Stack } from "aws-cdk-lib";
 import { WafwebaclToAlb } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import { CfnSecurityGroup } from "aws-cdk-lib/aws-ec2";
 import * as defaults from '@aws-solutions-constructs/core';
 import * as elb from "aws-cdk-lib/aws-elasticloadbalancingv2";
@@ -39,5 +40,8 @@ new WafwebaclToAlb(stack, 'test-wafwebacl-alb', {
 const newSecurityGroup = loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
 defaults.addCfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK created rule that blocks all traffic.'}]);
 defaults.addCfnSuppressRules(loadBalancer, [{ id: 'W52', reason: 'This test is explicitly to test the no logging case.'}]);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

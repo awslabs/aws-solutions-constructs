@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "2b151b792f7e373c32a164f58ea2ccfa810a96b751cdbb87f223a5223375bcff": {
+      "source": {
+        "path": "apiiot-overrideParams.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "2b151b792f7e373c32a164f58ea2ccfa810a96b751cdbb87f223a5223375bcff.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

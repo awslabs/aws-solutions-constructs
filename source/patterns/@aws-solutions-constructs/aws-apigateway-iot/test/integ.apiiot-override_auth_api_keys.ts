@@ -16,6 +16,7 @@ import { App, Stack } from "aws-cdk-lib";
 import { ApiGatewayToIot, ApiGatewayToIotProps } from "../lib";
 import { AuthorizationType } from "aws-cdk-lib/aws-apigateway";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -36,4 +37,6 @@ const props: ApiGatewayToIotProps = {
 new ApiGatewayToIot(stack, 'test-apigateway-iot', props);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

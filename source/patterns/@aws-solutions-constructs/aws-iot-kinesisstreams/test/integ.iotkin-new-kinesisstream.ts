@@ -15,6 +15,7 @@
 import { App, Stack, Duration } from "aws-cdk-lib";
 import { IotToKinesisStreams, IotToKinesisStreamsProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -39,4 +40,6 @@ const props: IotToKinesisStreamsProps = {
 new IotToKinesisStreams(stack, 'test-iot-kinesisstreams', props);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

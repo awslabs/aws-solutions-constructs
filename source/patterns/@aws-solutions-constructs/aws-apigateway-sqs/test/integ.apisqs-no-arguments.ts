@@ -15,6 +15,7 @@
 import { App, Stack } from "aws-cdk-lib";
 import { ApiGatewayToSqs } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -24,4 +25,6 @@ stack.templateOptions.description = 'Integration Test for aws-apigateway-sqs';
 new ApiGatewayToSqs(stack, 'test-api-gateway-sqs-default', {});
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

@@ -16,6 +16,7 @@ import { CfnTable } from 'aws-cdk-lib/aws-glue';
 import { App, Stack } from 'aws-cdk-lib';
 import { KinesisstreamsToGluejob } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 // import { Asset } from '@aws-cdk/aws-s3-assets';
 
 // Setup
@@ -58,4 +59,6 @@ new KinesisstreamsToGluejob(stack, 'test-kinesisstreams-lambda', {
 });
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

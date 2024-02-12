@@ -14,7 +14,8 @@
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { CloudFrontToMediaStore } from "../lib";
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
-import { generateIntegStackName, suppressAutoDeleteHandlerWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -30,6 +31,8 @@ new CloudFrontToMediaStore(stack, 'cloudfront-mediastore', {
   }
 });
 
-suppressAutoDeleteHandlerWarnings(stack);
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

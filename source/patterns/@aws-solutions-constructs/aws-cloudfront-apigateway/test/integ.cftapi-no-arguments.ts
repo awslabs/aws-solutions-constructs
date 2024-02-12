@@ -16,6 +16,7 @@ import { App, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { CloudFrontToApiGateway } from "../lib";
 import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -32,6 +33,8 @@ new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
   },
 });
 
-defaults.suppressAutoDeleteHandlerWarnings(stack);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

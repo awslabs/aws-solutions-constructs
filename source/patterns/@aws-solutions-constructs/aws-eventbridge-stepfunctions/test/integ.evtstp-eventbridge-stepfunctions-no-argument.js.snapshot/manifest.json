@@ -1,0 +1,167 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "evtstpeventbridgestepfunctionsnoargumentIntegDefaultTestDeployAssertC11044AB.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "evtstpeventbridgestepfunctionsnoargumentIntegDefaultTestDeployAssertC11044AB.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "evtstpeventbridgestepfunctionsnoargumentIntegDefaultTestDeployAssertC11044AB": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "evtstpeventbridgestepfunctionsnoargumentIntegDefaultTestDeployAssertC11044AB.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "evtstpeventbridgestepfunctionsnoargumentIntegDefaultTestDeployAssertC11044AB.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "evtstpeventbridgestepfunctionsnoargumentIntegDefaultTestDeployAssertC11044AB.assets"
+      ],
+      "metadata": {
+        "/evtstp-eventbridge-stepfunctions-no-argument/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-no-argument/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "evtstp-eventbridge-stepfunctions-no-argument/Integ/DefaultTest/DeployAssert"
+    },
+    "evtstp-eventbridge-stepfunctions-no-argument.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "evtstp-eventbridge-stepfunctions-no-argument.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "evtstp-eventbridge-stepfunctions-no-argument": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "evtstp-eventbridge-stepfunctions-no-argument.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a2b717be0cc15f970accbb140a60f1e3b476049031f96be81324d837e2638014.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "evtstp-eventbridge-stepfunctions-no-argument.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "evtstp-eventbridge-stepfunctions-no-argument.assets"
+      ],
+      "metadata": {
+        "/evtstp-eventbridge-stepfunctions-no-argument/test-eventbridge-stepfunctions-construct/StateMachineLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsconstructStateMachineLogGroup3098B32C"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-no-argument/test-eventbridge-stepfunctions-construct/StateMachine/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsconstructStateMachineRoleED595422"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-no-argument/test-eventbridge-stepfunctions-construct/StateMachine/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsconstructStateMachineRoleDefaultPolicyBA8BB0B3"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-no-argument/test-eventbridge-stepfunctions-construct/StateMachine/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsconstructStateMachine08688697"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-no-argument/test-eventbridge-stepfunctions-construct/EventsRuleRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsconstructEventsRuleRole18E9101A"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-no-argument/test-eventbridge-stepfunctions-construct/EventsRuleRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsconstructEventsRuleRoleDefaultPolicyC40CE54A"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-no-argument/test-eventbridge-stepfunctions-construct/EventsRule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsconstructEventsRuleECA8B70F"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-no-argument/test-eventbridge-stepfunctions-construct/ExecutionFailedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsconstructExecutionFailedAlarm57DF694C"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-no-argument/test-eventbridge-stepfunctions-construct/ExecutionThrottledAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsconstructExecutionThrottledAlarmE43E1426"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-no-argument/test-eventbridge-stepfunctions-construct/ExecutionAbortedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsconstructExecutionAbortedAlarmAACA66A8"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-no-argument/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-no-argument/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "evtstp-eventbridge-stepfunctions-no-argument"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

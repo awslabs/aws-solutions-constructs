@@ -14,9 +14,10 @@
 // Imports
 import { Aws, App, Stack } from "aws-cdk-lib";
 import { FargateToSqs, FargateToSqsProps } from "../lib";
-import { generateIntegStackName, getTestVpc, CreateFargateService } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, getTestVpc, CreateFargateService, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -52,5 +53,9 @@ const testProps: FargateToSqsProps = {
 
 new FargateToSqs(stack, 'test-construct', testProps);
 
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
+
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

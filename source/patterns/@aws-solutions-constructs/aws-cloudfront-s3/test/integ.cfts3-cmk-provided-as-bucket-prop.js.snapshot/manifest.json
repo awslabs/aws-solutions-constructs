@@ -1,0 +1,221 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "cfts3cmkprovidedasbucketpropIntegDefaultTestDeployAssert38E63D55.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "cfts3cmkprovidedasbucketpropIntegDefaultTestDeployAssert38E63D55.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "cfts3cmkprovidedasbucketpropIntegDefaultTestDeployAssert38E63D55": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "cfts3cmkprovidedasbucketpropIntegDefaultTestDeployAssert38E63D55.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "cfts3cmkprovidedasbucketpropIntegDefaultTestDeployAssert38E63D55.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "cfts3cmkprovidedasbucketpropIntegDefaultTestDeployAssert38E63D55.assets"
+      ],
+      "metadata": {
+        "/cfts3-cmk-provided-as-bucket-prop/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "cfts3-cmk-provided-as-bucket-prop/Integ/DefaultTest/DeployAssert"
+    },
+    "cfts3-cmk-provided-as-bucket-prop.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "cfts3-cmk-provided-as-bucket-prop.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "cfts3-cmk-provided-as-bucket-prop": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "cfts3-cmk-provided-as-bucket-prop.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3b916da5e0b7278b836a8f72b65c811103da6d358dc17a76cb930355bb5bf377.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "cfts3-cmk-provided-as-bucket-prop.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "cfts3-cmk-provided-as-bucket-prop.assets"
+      ],
+      "metadata": {
+        "/cfts3-cmk-provided-as-bucket-prop/cmkKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cmkKey598B20B2"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/S3LoggingBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyS3LoggingBucket5CE52209"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/S3LoggingBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyS3LoggingBucketPolicyF38CB6DD"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/S3Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyS3Bucket0E74E5D2"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/S3Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyS3BucketPolicy5DF57B01"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/CloudfrontLoggingBucketAccessLog/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLog8863921C"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/CloudfrontLoggingBucketAccessLog/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLogPolicy8F931BD7"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/CloudfrontLoggingBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucket7C1787CD"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/CloudfrontLoggingBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketPolicy5E737735"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/CloudFrontOac": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyCloudFrontOac4EFECBD9"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/CloudFrontDistribution/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyCloudFrontDistribution57C8A907"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateLambdaRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateLambdaRoleB7BBA8A2"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateLambdaRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateLambdaRoleDefaultPolicy0E93FCDF"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyLambdaFunctionServiceRole85783D1D"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyLambdaFunction4DCD662E"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateProvider/framework-onEvent/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventServiceRole3D4040AD"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventServiceRoleDefaultPolicy066CD751"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateProvider/framework-onEvent/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEvent8BCBFC59"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdater/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdaterFAFEBF0F"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/cfts3-cmk-provided-as-bucket-prop/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "cfts3-cmk-provided-as-bucket-prop"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

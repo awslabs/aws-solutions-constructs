@@ -1,0 +1,1430 @@
+{
+ "Description": "Integration Test for aws-apigateway-iot with default params",
+ "Resources": {
+  "testapigatewayiotapigatewayiotrole70232C5F": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Path": "/",
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": "iot:UpdateThingShadow",
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":iot:",
+            {
+             "Ref": "AWS::Region"
+            },
+            ":",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":thing/*"
+           ]
+          ]
+         }
+        },
+        {
+         "Action": "iot:Publish",
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":iot:",
+            {
+             "Ref": "AWS::Region"
+            },
+            ":",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":topic/*"
+           ]
+          ]
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "awsapigatewayiotpolicy"
+     }
+    ]
+   }
+  },
+  "testapigatewayiotApiAccessLogGroupC8FC70E8": {
+   "Type": "AWS::Logs::LogGroup",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W86",
+       "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+      },
+      {
+       "id": "W84",
+       "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+      }
+     ]
+    }
+   }
+  },
+  "testapigatewayiotRestApi0EC16DD2": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "BinaryMediaTypes": [
+     "application/octet-stream"
+    ],
+    "EndpointConfiguration": {
+     "Types": [
+      "EDGE"
+     ]
+    },
+    "Name": "RestApi"
+   }
+  },
+  "testapigatewayiotRestApiDeploymentA8FCF50585c5ccbacf1bb79394cb3eea4f66a01a": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Automatically created by the RestApi construct",
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   },
+   "DependsOn": [
+    "testapigatewayiotawsapigatewayiotreqval2BA7D930",
+    "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6topiclevel7POSTAF784AE7",
+    "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6topiclevel78397BAEF",
+    "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6POST806C543B",
+    "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel69F2FBFA8",
+    "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5POST2D2539FA",
+    "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5497EB56B",
+    "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4POST93CAD241",
+    "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4C5A3338B",
+    "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3POST0B6A3876",
+    "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel35F49E3DD",
+    "testapigatewayiotRestApimessagetopiclevel1topiclevel2POST09BB4430",
+    "testapigatewayiotRestApimessagetopiclevel1topiclevel25B0B16A2",
+    "testapigatewayiotRestApimessagetopiclevel1POST4E6A3C44",
+    "testapigatewayiotRestApimessagetopiclevel1CB1305F5",
+    "testapigatewayiotRestApimessageBF928745",
+    "testapigatewayiotRestApishadowthingNameshadowNamePOST260BE793",
+    "testapigatewayiotRestApishadowthingNameshadowName04D15774",
+    "testapigatewayiotRestApishadowthingNamePOSTD37686D4",
+    "testapigatewayiotRestApishadowthingName3837242E",
+    "testapigatewayiotRestApishadow5E904929"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W45",
+       "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checks for it in AWS::ApiGateway::Deployment resource"
+      }
+     ]
+    }
+   }
+  },
+  "testapigatewayiotRestApiDeploymentStageprod25838482": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "AccessLogSetting": {
+     "DestinationArn": {
+      "Fn::GetAtt": [
+       "testapigatewayiotApiAccessLogGroupC8FC70E8",
+       "Arn"
+      ]
+     },
+     "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
+    },
+    "DeploymentId": {
+     "Ref": "testapigatewayiotRestApiDeploymentA8FCF50585c5ccbacf1bb79394cb3eea4f66a01a"
+    },
+    "MethodSettings": [
+     {
+      "DataTraceEnabled": false,
+      "HttpMethod": "*",
+      "LoggingLevel": "INFO",
+      "ResourcePath": "/*"
+     }
+    ],
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    },
+    "StageName": "prod",
+    "TracingEnabled": true
+   }
+  },
+  "testapigatewayiotRestApimessageBF928745": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "testapigatewayiotRestApi0EC16DD2",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "message",
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   }
+  },
+  "testapigatewayiotRestApimessagetopiclevel1CB1305F5": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "testapigatewayiotRestApimessageBF928745"
+    },
+    "PathPart": "{topic-level-1}",
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   }
+  },
+  "testapigatewayiotRestApimessagetopiclevel1POST4E6A3C44": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": true,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "testapigatewayiotapigatewayiotrole70232C5F",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "2\\d{2}",
+       "StatusCode": "200"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "5\\d{2}",
+       "StatusCode": "500"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "StatusCode": "403"
+      }
+     ],
+     "PassthroughBehavior": "WHEN_NO_MATCH",
+     "RequestParameters": {
+      "integration.request.header.Content-Type": "'application/json'",
+      "integration.request.path.topic-level-1": "method.request.path.topic-level-1"
+     },
+     "RequestTemplates": {
+      "application/json": "$input.json('$')"
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":a1234567890123-ats.iotdata:path/topics/{topic-level-1}"
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "StatusCode": "200"
+     },
+     {
+      "StatusCode": "500"
+     },
+     {
+      "StatusCode": "403"
+     }
+    ],
+    "RequestParameters": {
+     "method.request.path.topic-level-1": true
+    },
+    "RequestValidatorId": {
+     "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
+    },
+    "ResourceId": {
+     "Ref": "testapigatewayiotRestApimessagetopiclevel1CB1305F5"
+    },
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W59",
+       "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+      }
+     ]
+    }
+   }
+  },
+  "testapigatewayiotRestApimessagetopiclevel1topiclevel25B0B16A2": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "testapigatewayiotRestApimessagetopiclevel1CB1305F5"
+    },
+    "PathPart": "{topic-level-2}",
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   }
+  },
+  "testapigatewayiotRestApimessagetopiclevel1topiclevel2POST09BB4430": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": true,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "testapigatewayiotapigatewayiotrole70232C5F",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "2\\d{2}",
+       "StatusCode": "200"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "5\\d{2}",
+       "StatusCode": "500"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "StatusCode": "403"
+      }
+     ],
+     "PassthroughBehavior": "WHEN_NO_MATCH",
+     "RequestParameters": {
+      "integration.request.header.Content-Type": "'application/json'",
+      "integration.request.path.topic-level-1": "method.request.path.topic-level-1",
+      "integration.request.path.topic-level-2": "method.request.path.topic-level-2"
+     },
+     "RequestTemplates": {
+      "application/json": "$input.json('$')"
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":a1234567890123-ats.iotdata:path/topics/{topic-level-1}/{topic-level-2}"
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "StatusCode": "200"
+     },
+     {
+      "StatusCode": "500"
+     },
+     {
+      "StatusCode": "403"
+     }
+    ],
+    "RequestParameters": {
+     "method.request.path.topic-level-1": true,
+     "method.request.path.topic-level-2": true
+    },
+    "RequestValidatorId": {
+     "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
+    },
+    "ResourceId": {
+     "Ref": "testapigatewayiotRestApimessagetopiclevel1topiclevel25B0B16A2"
+    },
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W59",
+       "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+      }
+     ]
+    }
+   }
+  },
+  "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel35F49E3DD": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "testapigatewayiotRestApimessagetopiclevel1topiclevel25B0B16A2"
+    },
+    "PathPart": "{topic-level-3}",
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   }
+  },
+  "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3POST0B6A3876": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": true,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "testapigatewayiotapigatewayiotrole70232C5F",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "2\\d{2}",
+       "StatusCode": "200"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "5\\d{2}",
+       "StatusCode": "500"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "StatusCode": "403"
+      }
+     ],
+     "PassthroughBehavior": "WHEN_NO_MATCH",
+     "RequestParameters": {
+      "integration.request.header.Content-Type": "'application/json'",
+      "integration.request.path.topic-level-1": "method.request.path.topic-level-1",
+      "integration.request.path.topic-level-2": "method.request.path.topic-level-2",
+      "integration.request.path.topic-level-3": "method.request.path.topic-level-3"
+     },
+     "RequestTemplates": {
+      "application/json": "$input.json('$')"
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":a1234567890123-ats.iotdata:path/topics/{topic-level-1}/{topic-level-2}/{topic-level-3}"
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "StatusCode": "200"
+     },
+     {
+      "StatusCode": "500"
+     },
+     {
+      "StatusCode": "403"
+     }
+    ],
+    "RequestParameters": {
+     "method.request.path.topic-level-1": true,
+     "method.request.path.topic-level-2": true,
+     "method.request.path.topic-level-3": true
+    },
+    "RequestValidatorId": {
+     "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
+    },
+    "ResourceId": {
+     "Ref": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel35F49E3DD"
+    },
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W59",
+       "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+      }
+     ]
+    }
+   }
+  },
+  "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4C5A3338B": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel35F49E3DD"
+    },
+    "PathPart": "{topic-level-4}",
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   }
+  },
+  "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4POST93CAD241": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": true,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "testapigatewayiotapigatewayiotrole70232C5F",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "2\\d{2}",
+       "StatusCode": "200"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "5\\d{2}",
+       "StatusCode": "500"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "StatusCode": "403"
+      }
+     ],
+     "PassthroughBehavior": "WHEN_NO_MATCH",
+     "RequestParameters": {
+      "integration.request.header.Content-Type": "'application/json'",
+      "integration.request.path.topic-level-1": "method.request.path.topic-level-1",
+      "integration.request.path.topic-level-2": "method.request.path.topic-level-2",
+      "integration.request.path.topic-level-3": "method.request.path.topic-level-3",
+      "integration.request.path.topic-level-4": "method.request.path.topic-level-4"
+     },
+     "RequestTemplates": {
+      "application/json": "$input.json('$')"
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":a1234567890123-ats.iotdata:path/topics/{topic-level-1}/{topic-level-2}/{topic-level-3}/{topic-level-4}"
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "StatusCode": "200"
+     },
+     {
+      "StatusCode": "500"
+     },
+     {
+      "StatusCode": "403"
+     }
+    ],
+    "RequestParameters": {
+     "method.request.path.topic-level-1": true,
+     "method.request.path.topic-level-2": true,
+     "method.request.path.topic-level-3": true,
+     "method.request.path.topic-level-4": true
+    },
+    "RequestValidatorId": {
+     "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
+    },
+    "ResourceId": {
+     "Ref": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4C5A3338B"
+    },
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W59",
+       "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+      }
+     ]
+    }
+   }
+  },
+  "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5497EB56B": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4C5A3338B"
+    },
+    "PathPart": "{topic-level-5}",
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   }
+  },
+  "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5POST2D2539FA": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": true,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "testapigatewayiotapigatewayiotrole70232C5F",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "2\\d{2}",
+       "StatusCode": "200"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "5\\d{2}",
+       "StatusCode": "500"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "StatusCode": "403"
+      }
+     ],
+     "PassthroughBehavior": "WHEN_NO_MATCH",
+     "RequestParameters": {
+      "integration.request.header.Content-Type": "'application/json'",
+      "integration.request.path.topic-level-1": "method.request.path.topic-level-1",
+      "integration.request.path.topic-level-2": "method.request.path.topic-level-2",
+      "integration.request.path.topic-level-3": "method.request.path.topic-level-3",
+      "integration.request.path.topic-level-4": "method.request.path.topic-level-4",
+      "integration.request.path.topic-level-5": "method.request.path.topic-level-5"
+     },
+     "RequestTemplates": {
+      "application/json": "$input.json('$')"
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":a1234567890123-ats.iotdata:path/topics/{topic-level-1}/{topic-level-2}/{topic-level-3}/{topic-level-4}/{topic-level-5}"
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "StatusCode": "200"
+     },
+     {
+      "StatusCode": "500"
+     },
+     {
+      "StatusCode": "403"
+     }
+    ],
+    "RequestParameters": {
+     "method.request.path.topic-level-1": true,
+     "method.request.path.topic-level-2": true,
+     "method.request.path.topic-level-3": true,
+     "method.request.path.topic-level-4": true,
+     "method.request.path.topic-level-5": true
+    },
+    "RequestValidatorId": {
+     "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
+    },
+    "ResourceId": {
+     "Ref": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5497EB56B"
+    },
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W59",
+       "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+      }
+     ]
+    }
+   }
+  },
+  "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel69F2FBFA8": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5497EB56B"
+    },
+    "PathPart": "{topic-level-6}",
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   }
+  },
+  "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6POST806C543B": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": true,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "testapigatewayiotapigatewayiotrole70232C5F",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "2\\d{2}",
+       "StatusCode": "200"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "5\\d{2}",
+       "StatusCode": "500"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "StatusCode": "403"
+      }
+     ],
+     "PassthroughBehavior": "WHEN_NO_MATCH",
+     "RequestParameters": {
+      "integration.request.header.Content-Type": "'application/json'",
+      "integration.request.path.topic-level-1": "method.request.path.topic-level-1",
+      "integration.request.path.topic-level-2": "method.request.path.topic-level-2",
+      "integration.request.path.topic-level-3": "method.request.path.topic-level-3",
+      "integration.request.path.topic-level-4": "method.request.path.topic-level-4",
+      "integration.request.path.topic-level-5": "method.request.path.topic-level-5",
+      "integration.request.path.topic-level-6": "method.request.path.topic-level-6"
+     },
+     "RequestTemplates": {
+      "application/json": "$input.json('$')"
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":a1234567890123-ats.iotdata:path/topics/{topic-level-1}/{topic-level-2}/{topic-level-3}/{topic-level-4}/{topic-level-5}/{topic-level-6}"
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "StatusCode": "200"
+     },
+     {
+      "StatusCode": "500"
+     },
+     {
+      "StatusCode": "403"
+     }
+    ],
+    "RequestParameters": {
+     "method.request.path.topic-level-1": true,
+     "method.request.path.topic-level-2": true,
+     "method.request.path.topic-level-3": true,
+     "method.request.path.topic-level-4": true,
+     "method.request.path.topic-level-5": true,
+     "method.request.path.topic-level-6": true
+    },
+    "RequestValidatorId": {
+     "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
+    },
+    "ResourceId": {
+     "Ref": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel69F2FBFA8"
+    },
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W59",
+       "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+      }
+     ]
+    }
+   }
+  },
+  "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6topiclevel78397BAEF": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel69F2FBFA8"
+    },
+    "PathPart": "{topic-level-7}",
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   }
+  },
+  "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6topiclevel7POSTAF784AE7": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": true,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "testapigatewayiotapigatewayiotrole70232C5F",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "2\\d{2}",
+       "StatusCode": "200"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "5\\d{2}",
+       "StatusCode": "500"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "StatusCode": "403"
+      }
+     ],
+     "PassthroughBehavior": "WHEN_NO_MATCH",
+     "RequestParameters": {
+      "integration.request.header.Content-Type": "'application/json'",
+      "integration.request.path.topic-level-1": "method.request.path.topic-level-1",
+      "integration.request.path.topic-level-2": "method.request.path.topic-level-2",
+      "integration.request.path.topic-level-3": "method.request.path.topic-level-3",
+      "integration.request.path.topic-level-4": "method.request.path.topic-level-4",
+      "integration.request.path.topic-level-5": "method.request.path.topic-level-5",
+      "integration.request.path.topic-level-6": "method.request.path.topic-level-6",
+      "integration.request.path.topic-level-7": "method.request.path.topic-level-7"
+     },
+     "RequestTemplates": {
+      "application/json": "$input.json('$')"
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":a1234567890123-ats.iotdata:path/topics/{topic-level-1}/{topic-level-2}/{topic-level-3}/{topic-level-4}/{topic-level-5}/{topic-level-6}/{topic-level-7}"
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "StatusCode": "200"
+     },
+     {
+      "StatusCode": "500"
+     },
+     {
+      "StatusCode": "403"
+     }
+    ],
+    "RequestParameters": {
+     "method.request.path.topic-level-1": true,
+     "method.request.path.topic-level-2": true,
+     "method.request.path.topic-level-3": true,
+     "method.request.path.topic-level-4": true,
+     "method.request.path.topic-level-5": true,
+     "method.request.path.topic-level-6": true,
+     "method.request.path.topic-level-7": true
+    },
+    "RequestValidatorId": {
+     "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
+    },
+    "ResourceId": {
+     "Ref": "testapigatewayiotRestApimessagetopiclevel1topiclevel2topiclevel3topiclevel4topiclevel5topiclevel6topiclevel78397BAEF"
+    },
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W59",
+       "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+      }
+     ]
+    }
+   }
+  },
+  "testapigatewayiotRestApishadow5E904929": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "testapigatewayiotRestApi0EC16DD2",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "shadow",
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   }
+  },
+  "testapigatewayiotRestApishadowthingName3837242E": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "testapigatewayiotRestApishadow5E904929"
+    },
+    "PathPart": "{thingName}",
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   }
+  },
+  "testapigatewayiotRestApishadowthingNamePOSTD37686D4": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": true,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "testapigatewayiotapigatewayiotrole70232C5F",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "2\\d{2}",
+       "StatusCode": "200"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "5\\d{2}",
+       "StatusCode": "500"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "StatusCode": "403"
+      }
+     ],
+     "PassthroughBehavior": "WHEN_NO_MATCH",
+     "RequestParameters": {
+      "integration.request.header.Content-Type": "'application/json'",
+      "integration.request.path.thingName": "method.request.path.thingName"
+     },
+     "RequestTemplates": {
+      "application/json": "$input.json('$')"
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":a1234567890123-ats.iotdata:path/things/{thingName}/shadow"
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "StatusCode": "200"
+     },
+     {
+      "StatusCode": "500"
+     },
+     {
+      "StatusCode": "403"
+     }
+    ],
+    "RequestParameters": {
+     "method.request.path.thingName": true
+    },
+    "RequestValidatorId": {
+     "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
+    },
+    "ResourceId": {
+     "Ref": "testapigatewayiotRestApishadowthingName3837242E"
+    },
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W59",
+       "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+      }
+     ]
+    }
+   }
+  },
+  "testapigatewayiotRestApishadowthingNameshadowName04D15774": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "testapigatewayiotRestApishadowthingName3837242E"
+    },
+    "PathPart": "{shadowName}",
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   }
+  },
+  "testapigatewayiotRestApishadowthingNameshadowNamePOST260BE793": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": true,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "testapigatewayiotapigatewayiotrole70232C5F",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "2\\d{2}",
+       "StatusCode": "200"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "SelectionPattern": "5\\d{2}",
+       "StatusCode": "500"
+      },
+      {
+       "ResponseTemplates": {
+        "application/json": "$input.json('$')"
+       },
+       "StatusCode": "403"
+      }
+     ],
+     "PassthroughBehavior": "WHEN_NO_MATCH",
+     "RequestParameters": {
+      "integration.request.header.Content-Type": "'application/json'",
+      "integration.request.path.shadowName": "method.request.path.shadowName",
+      "integration.request.path.thingName": "method.request.path.thingName"
+     },
+     "RequestTemplates": {
+      "application/json": "$input.json('$')"
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":a1234567890123-ats.iotdata:path/things/{thingName}/shadow?name={shadowName}"
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "StatusCode": "200"
+     },
+     {
+      "StatusCode": "500"
+     },
+     {
+      "StatusCode": "403"
+     }
+    ],
+    "RequestParameters": {
+     "method.request.path.shadowName": true,
+     "method.request.path.thingName": true
+    },
+    "RequestValidatorId": {
+     "Ref": "testapigatewayiotawsapigatewayiotreqval2BA7D930"
+    },
+    "ResourceId": {
+     "Ref": "testapigatewayiotRestApishadowthingNameshadowName04D15774"
+    },
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    }
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W59",
+       "reason": "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE"
+      }
+     ]
+    }
+   }
+  },
+  "testapigatewayiotRestApiUsagePlan1433EB76": {
+   "Type": "AWS::ApiGateway::UsagePlan",
+   "Properties": {
+    "ApiStages": [
+     {
+      "ApiId": {
+       "Ref": "testapigatewayiotRestApi0EC16DD2"
+      },
+      "Stage": {
+       "Ref": "testapigatewayiotRestApiDeploymentStageprod25838482"
+      },
+      "Throttle": {}
+     }
+    ]
+   }
+  },
+  "testapigatewayiotRestApiUsagePlanUsagePlanKeyResourceapiiotoverrideauthapikeystestapigatewayiotRestApiApiKey08654B853EA9B936": {
+   "Type": "AWS::ApiGateway::UsagePlanKey",
+   "Properties": {
+    "KeyId": {
+     "Ref": "testapigatewayiotRestApiApiKey469A6F8F"
+    },
+    "KeyType": "API_KEY",
+    "UsagePlanId": {
+     "Ref": "testapigatewayiotRestApiUsagePlan1433EB76"
+    }
+   }
+  },
+  "testapigatewayiotRestApiApiKey469A6F8F": {
+   "Type": "AWS::ApiGateway::ApiKey",
+   "Properties": {
+    "Enabled": true,
+    "StageKeys": [
+     {
+      "RestApiId": {
+       "Ref": "testapigatewayiotRestApi0EC16DD2"
+      },
+      "StageName": {
+       "Ref": "testapigatewayiotRestApiDeploymentStageprod25838482"
+      }
+     }
+    ]
+   }
+  },
+  "testapigatewayiotLambdaRestApiCloudWatchRoleD58A5490": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
+          "logs:FilterLogEvents",
+          "logs:GetLogEvents",
+          "logs:PutLogEvents"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":logs:",
+            {
+             "Ref": "AWS::Region"
+            },
+            ":",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":*"
+           ]
+          ]
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "LambdaRestApiCloudWatchRolePolicy"
+     }
+    ]
+   }
+  },
+  "testapigatewayiotLambdaRestApiAccountE36AC46D": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "testapigatewayiotLambdaRestApiCloudWatchRoleD58A5490",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "testapigatewayiotRestApi0EC16DD2"
+   ]
+  },
+  "testapigatewayiotawsapigatewayiotreqval2BA7D930": {
+   "Type": "AWS::ApiGateway::RequestValidator",
+   "Properties": {
+    "RestApiId": {
+     "Ref": "testapigatewayiotRestApi0EC16DD2"
+    },
+    "ValidateRequestBody": false,
+    "ValidateRequestParameters": true
+   }
+  }
+ },
+ "Outputs": {
+  "testapigatewayiotRestApiEndpointEB540424": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "testapigatewayiotRestApi0EC16DD2"
+      },
+      ".execute-api.",
+      {
+       "Ref": "AWS::Region"
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "testapigatewayiotRestApiDeploymentStageprod25838482"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

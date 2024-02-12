@@ -17,6 +17,7 @@ import { CloudFrontToApiGateway } from "../lib";
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -35,6 +36,8 @@ new CloudFrontToApiGateway(stack, 'cf-apigw', {
   }
 });
 
-defaults.suppressAutoDeleteHandlerWarnings(stack);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

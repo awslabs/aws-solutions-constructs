@@ -1,0 +1,167 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "iotsqswithexistingkeyIntegDefaultTestDeployAssert7A2CD336.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "iotsqswithexistingkeyIntegDefaultTestDeployAssert7A2CD336.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "iotsqswithexistingkeyIntegDefaultTestDeployAssert7A2CD336": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "iotsqswithexistingkeyIntegDefaultTestDeployAssert7A2CD336.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "iotsqswithexistingkeyIntegDefaultTestDeployAssert7A2CD336.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "iotsqswithexistingkeyIntegDefaultTestDeployAssert7A2CD336.assets"
+      ],
+      "metadata": {
+        "/iotsqs-with-existing-key/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/iotsqs-with-existing-key/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "iotsqs-with-existing-key/Integ/DefaultTest/DeployAssert"
+    },
+    "iotsqs-with-existing-key.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "iotsqs-with-existing-key.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "iotsqs-with-existing-key": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "iotsqs-with-existing-key.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fad634acec977d356a2c8bc163fc40c7072fc6f611258a39284c982d476ab93b.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "iotsqs-with-existing-key.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "iotsqs-with-existing-key.assets"
+      ],
+      "metadata": {
+        "/iotsqs-with-existing-key/existing-key/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingkey205DFC01"
+          }
+        ],
+        "/iotsqs-with-existing-key/existing-key/Alias/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingkeyAliasE18FEC67"
+          }
+        ],
+        "/iotsqs-with-existing-key/test-iot-sqs-stack/deadLetterQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackdeadLetterQueueA417EB97"
+          }
+        ],
+        "/iotsqs-with-existing-key/test-iot-sqs-stack/deadLetterQueue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackdeadLetterQueuePolicyD0F4B7D3"
+          }
+        ],
+        "/iotsqs-with-existing-key/test-iot-sqs-stack/queue": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "encryption: Automatically changed to QueueEncryption.KMS, was: QueueEncryption.KMS_MANAGED\nWhen encryptionMasterKey is provided, always set `encryption: QueueEncryption.KMS` [ack: @aws-cdk/aws-sqs:queueEncryptionChangedToKMS]"
+          }
+        ],
+        "/iotsqs-with-existing-key/test-iot-sqs-stack/queue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackqueue3DEA94EF"
+          }
+        ],
+        "/iotsqs-with-existing-key/test-iot-sqs-stack/queue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackqueuePolicy76FA6440"
+          }
+        ],
+        "/iotsqs-with-existing-key/test-iot-sqs-stack/iot-actions-role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackiotactionsrole5F8821AA"
+          }
+        ],
+        "/iotsqs-with-existing-key/test-iot-sqs-stack/iot-actions-role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackiotactionsroleDefaultPolicy02ED7F00"
+          }
+        ],
+        "/iotsqs-with-existing-key/test-iot-sqs-stack/IotTopicRule": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackIotTopicRule02F8F602"
+          }
+        ],
+        "/iotsqs-with-existing-key/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/iotsqs-with-existing-key/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "iotsqs-with-existing-key"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

@@ -1,0 +1,215 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "apilamexistingFunctionIntegDefaultTestDeployAssert4238FD03.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "apilamexistingFunctionIntegDefaultTestDeployAssert4238FD03.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "apilamexistingFunctionIntegDefaultTestDeployAssert4238FD03": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "apilamexistingFunctionIntegDefaultTestDeployAssert4238FD03.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "apilamexistingFunctionIntegDefaultTestDeployAssert4238FD03.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "apilamexistingFunctionIntegDefaultTestDeployAssert4238FD03.assets"
+      ],
+      "metadata": {
+        "/apilam-existingFunction/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/apilam-existingFunction/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "apilam-existingFunction/Integ/DefaultTest/DeployAssert"
+    },
+    "apilam-existingFunction.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "apilam-existingFunction.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "apilam-existingFunction": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "apilam-existingFunction.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/78e827f281035db1c86a00fd6a2a077db91df9d4da007adc154d742647faf1bd.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "apilam-existingFunction.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "apilam-existingFunction.assets"
+      ],
+      "metadata": {
+        "/apilam-existingFunction/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRole0C4CDE0B"
+          }
+        ],
+        "/apilam-existingFunction/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRoleDefaultPolicy126C8897"
+          }
+        ],
+        "/apilam-existingFunction/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionBF21E41F"
+          }
+        ],
+        "/apilam-existingFunction/test-apigateway-lambda/ApiAccessLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaApiAccessLogGroupEB3253A2"
+          }
+        ],
+        "/apilam-existingFunction/test-apigateway-lambda/LambdaRestApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiE957E944"
+          }
+        ],
+        "/apilam-existingFunction/test-apigateway-lambda/LambdaRestApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiDeployment85334BB3938813331492485ced06ab87062fb015"
+          }
+        ],
+        "/apilam-existingFunction/test-apigateway-lambda/LambdaRestApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiDeploymentStageprod4EBF7247"
+          }
+        ],
+        "/apilam-existingFunction/test-apigateway-lambda/LambdaRestApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiEndpoint2EF0B753"
+          }
+        ],
+        "/apilam-existingFunction/test-apigateway-lambda/LambdaRestApi/Default/{proxy+}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiproxy2C2C544E"
+          }
+        ],
+        "/apilam-existingFunction/test-apigateway-lambda/LambdaRestApi/Default/{proxy+}/ANY/ApiPermission.apilamexistingFunctiontestapigatewaylambdaLambdaRestApiEC1EB7CD.ANY..{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiproxyANYApiPermissionapilamexistingFunctiontestapigatewaylambdaLambdaRestApiEC1EB7CDANYproxy184097FE"
+          }
+        ],
+        "/apilam-existingFunction/test-apigateway-lambda/LambdaRestApi/Default/{proxy+}/ANY/ApiPermission.Test.apilamexistingFunctiontestapigatewaylambdaLambdaRestApiEC1EB7CD.ANY..{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiproxyANYApiPermissionTestapilamexistingFunctiontestapigatewaylambdaLambdaRestApiEC1EB7CDANYproxy0716AB43"
+          }
+        ],
+        "/apilam-existingFunction/test-apigateway-lambda/LambdaRestApi/Default/{proxy+}/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiproxyANYF6150927"
+          }
+        ],
+        "/apilam-existingFunction/test-apigateway-lambda/LambdaRestApi/Default/ANY/ApiPermission.apilamexistingFunctiontestapigatewaylambdaLambdaRestApiEC1EB7CD.ANY..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiANYApiPermissionapilamexistingFunctiontestapigatewaylambdaLambdaRestApiEC1EB7CDANY245ECD8E"
+          }
+        ],
+        "/apilam-existingFunction/test-apigateway-lambda/LambdaRestApi/Default/ANY/ApiPermission.Test.apilamexistingFunctiontestapigatewaylambdaLambdaRestApiEC1EB7CD.ANY..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiANYApiPermissionTestapilamexistingFunctiontestapigatewaylambdaLambdaRestApiEC1EB7CDANYCE9E6EFA"
+          }
+        ],
+        "/apilam-existingFunction/test-apigateway-lambda/LambdaRestApi/Default/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiANY1FACA749"
+          }
+        ],
+        "/apilam-existingFunction/test-apigateway-lambda/LambdaRestApi/UsagePlan/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiUsagePlan658131E3"
+          }
+        ],
+        "/apilam-existingFunction/test-apigateway-lambda/LambdaRestApiCloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiCloudWatchRole6D45E039"
+          }
+        ],
+        "/apilam-existingFunction/test-apigateway-lambda/LambdaRestApiAccount": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiAccount0D88B6B8"
+          }
+        ],
+        "/apilam-existingFunction/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/apilam-existingFunction/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "apilam-existingFunction"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

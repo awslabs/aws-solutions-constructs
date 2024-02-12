@@ -17,6 +17,7 @@ import { LambdaToDynamoDB } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -32,4 +33,6 @@ new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', {
   existingLambdaObj: func
 });
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

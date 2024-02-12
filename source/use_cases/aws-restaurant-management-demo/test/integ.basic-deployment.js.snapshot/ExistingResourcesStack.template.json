@@ -1,0 +1,64 @@
+{
+ "Resources": {
+  "existingorderarchivebucket95AB7C99": {
+   "Type": "AWS::S3::Bucket",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  }
+ },
+ "Outputs": {
+  "ExportsOutputFnGetAttexistingorderarchivebucket95AB7C99Arn7A4BF717": {
+   "Value": {
+    "Fn::GetAtt": [
+     "existingorderarchivebucket95AB7C99",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "ExistingResourcesStack:ExportsOutputFnGetAttexistingorderarchivebucket95AB7C99Arn7A4BF717"
+   }
+  },
+  "ExportsOutputRefexistingorderarchivebucket95AB7C994BD2255B": {
+   "Value": {
+    "Ref": "existingorderarchivebucket95AB7C99"
+   },
+   "Export": {
+    "Name": "ExistingResourcesStack:ExportsOutputRefexistingorderarchivebucket95AB7C994BD2255B"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

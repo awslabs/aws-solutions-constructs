@@ -17,6 +17,7 @@ import { LambdaToSagemakerEndpoint, LambdaToSagemakerEndpointProps } from '../li
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { getSagemakerModel } from './test-helper';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
@@ -46,4 +47,6 @@ const lambdaToSagemakerConstruct = new LambdaToSagemakerEndpoint(stack, 'test-la
 lambdaToSagemakerConstruct.node.addDependency(getSagemakerModelResponse.asset);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

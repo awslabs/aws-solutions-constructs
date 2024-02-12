@@ -13,6 +13,7 @@
 
 import { App, Duration, Stack } from "aws-cdk-lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import * as path from 'path';
 import { TemplateValue, createTemplateWriterCustomResource } from "../lib/template-writer";
@@ -63,4 +64,6 @@ createTemplateWriterCustomResource(stack, 'Test', {
   memorySize: 1024
 });
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

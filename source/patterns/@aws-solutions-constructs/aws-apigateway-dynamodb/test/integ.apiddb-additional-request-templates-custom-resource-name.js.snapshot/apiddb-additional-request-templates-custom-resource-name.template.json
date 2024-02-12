@@ -1,0 +1,426 @@
+{
+ "Description": "Integration Test for aws-apigateway-dynamodb",
+ "Resources": {
+  "existingtableE51CCC93": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "PK",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "SK",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "PK",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "SK",
+      "KeyType": "RANGE"
+     }
+    ],
+    "PointInTimeRecoverySpecification": {
+     "PointInTimeRecoveryEnabled": true
+    },
+    "SSESpecification": {
+     "SSEEnabled": true
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
+  "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameApiAccessLogGroup89C7FD92": {
+   "Type": "AWS::Logs::LogGroup",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W86",
+       "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+      },
+      {
+       "id": "W84",
+       "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+      }
+     ]
+    }
+   }
+  },
+  "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiC4813ABE": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "EndpointConfiguration": {
+     "Types": [
+      "EDGE"
+     ]
+    },
+    "Name": "RestApi"
+   }
+  },
+  "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiDeployment7F5497B67361a1e02c5799cae81447bf3ad5ef46": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Automatically created by the RestApi construct",
+    "RestApiId": {
+     "Ref": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiC4813ABE"
+    }
+   },
+   "DependsOn": [
+    "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiidGETB657BB05",
+    "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiid4EBF99AB"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W45",
+       "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checks for it in AWS::ApiGateway::Deployment resource"
+      }
+     ]
+    }
+   }
+  },
+  "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiDeploymentStageprodDD2DED0B": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "AccessLogSetting": {
+     "DestinationArn": {
+      "Fn::GetAtt": [
+       "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameApiAccessLogGroup89C7FD92",
+       "Arn"
+      ]
+     },
+     "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
+    },
+    "DeploymentId": {
+     "Ref": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiDeployment7F5497B67361a1e02c5799cae81447bf3ad5ef46"
+    },
+    "MethodSettings": [
+     {
+      "DataTraceEnabled": false,
+      "HttpMethod": "*",
+      "LoggingLevel": "INFO",
+      "ResourcePath": "/*"
+     }
+    ],
+    "RestApiId": {
+     "Ref": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiC4813ABE"
+    },
+    "StageName": "prod",
+    "TracingEnabled": true
+   }
+  },
+  "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiid4EBF99AB": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiC4813ABE",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "{id}",
+    "RestApiId": {
+     "Ref": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiC4813ABE"
+    }
+   }
+  },
+  "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiidGETB657BB05": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "AWS_IAM",
+    "HttpMethod": "GET",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameapigatewayrole3D282506",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "StatusCode": "200"
+      },
+      {
+       "ResponseTemplates": {
+        "text/html": "Error"
+       },
+       "SelectionPattern": "500",
+       "StatusCode": "500"
+      }
+     ],
+     "PassthroughBehavior": "NEVER",
+     "RequestParameters": {
+      "integration.request.header.Content-Type": "'application/json'"
+     },
+     "RequestTemplates": {
+      "application/json": {
+       "Fn::Join": [
+        "",
+        [
+         "{           \"TableName\": \"",
+         {
+          "Ref": "existingtableE51CCC93"
+         },
+         "\",           \"KeyConditionExpression\": \"PK = :v1\",           \"ExpressionAttributeValues\": {             \":v1\": {               \"S\": \"$input.params('id')\"             }           }         }"
+        ]
+       ]
+      },
+      "text/plain": {
+       "Fn::Join": [
+        "",
+        [
+         "{       \"TableName\": \"",
+         {
+          "Ref": "existingtableE51CCC93"
+         },
+         "\",       \"KeyConditionExpression\": \"PK = :v2 AND SK = :v1\",       \"ExpressionAttributeValues\": {         \":v1\": {           \"S\": \"$input.params('id')\"         },         \":v2\": {           \"S\": \"MY_VALUE\"         }       }     }"
+        ]
+       ]
+      }
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":dynamodb:action/Query"
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Content-Type": true
+      },
+      "StatusCode": "200"
+     },
+     {
+      "ResponseParameters": {
+       "method.response.header.Content-Type": true
+      },
+      "StatusCode": "500"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiid4EBF99AB"
+    },
+    "RestApiId": {
+     "Ref": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiC4813ABE"
+    }
+   }
+  },
+  "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiUsagePlan4D14DF10": {
+   "Type": "AWS::ApiGateway::UsagePlan",
+   "Properties": {
+    "ApiStages": [
+     {
+      "ApiId": {
+       "Ref": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiC4813ABE"
+      },
+      "Stage": {
+       "Ref": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiDeploymentStageprodDD2DED0B"
+      },
+      "Throttle": {}
+     }
+    ]
+   }
+  },
+  "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameLambdaRestApiCloudWatchRoleA4832ADD": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
+          "logs:FilterLogEvents",
+          "logs:GetLogEvents",
+          "logs:PutLogEvents"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":logs:",
+            {
+             "Ref": "AWS::Region"
+            },
+            ":",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":*"
+           ]
+          ]
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "LambdaRestApiCloudWatchRolePolicy"
+     }
+    ]
+   }
+  },
+  "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameLambdaRestApiAccountFA4A4D09": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameLambdaRestApiCloudWatchRoleA4832ADD",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiC4813ABE"
+   ]
+  },
+  "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameapigatewayrole3D282506": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameapigatewayroleDefaultPolicyAC080A34": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "dynamodb:Query",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "existingtableE51CCC93",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameapigatewayroleDefaultPolicyAC080A34",
+    "Roles": [
+     {
+      "Ref": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameapigatewayrole3D282506"
+     }
+    ]
+   }
+  }
+ },
+ "Outputs": {
+  "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiEndpoint4892309E": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiC4813ABE"
+      },
+      ".execute-api.",
+      {
+       "Ref": "AWS::Region"
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiDeploymentStageprodDD2DED0B"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

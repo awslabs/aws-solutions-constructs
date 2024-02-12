@@ -10,7 +10,7 @@ const nullVersionMarker = process.argv[2];
 const targetSolutionsConstructsVersion = process.argv[3];
 
 // these versions need to be sourced from a config file
-const awsCdkLibVersion = '2.118.0';
+const awsCdkLibVersion = '2.127.0';
 
 for (const file of process.argv.splice(4)) {
   const pkg = JSON.parse(fs.readFileSync(file).toString());
@@ -25,11 +25,6 @@ for (const file of process.argv.splice(4)) {
   pkg.peerDependencies = updateDependencyVersionNumbers(pkg.peerDependencies || { }, '^');
   pkg.devDependencies = updateDependencyVersionNumbers(pkg.devDependencies || { });
 
-  // This will be removed in the next PR when we remove cdk-integ
-  if (pkg.scripts) {
-    pkg.scripts["integ-assert"] = "cdk-integ-assert-v2";
-  }
-
   console.error(`${file} => ${targetSolutionsConstructsVersion}`);
   fs.writeFileSync(file, JSON.stringify(pkg, undefined, 2));
 
@@ -40,8 +35,9 @@ function updateDependencyVersionNumbers(section, orBetter = '') {  let newdepend
     if (name.startsWith('@aws-solutions-constructs')) {
       newdependencies[name] = version.replace(nullVersionMarker, targetSolutionsConstructsVersion);
     }
-    else if (name.startsWith('aws-cdk-lib')) {
-      newdependencies[name] = version.replace(nullVersionMarker, orBetter+awsCdkLibVersion);
+
+    else if (name.startsWith('aws-cdk-lib') || name === '@aws-cdk/integ-tests-alpha') {
+      newdependencies[name] = version.replace(nullVersionMarker, awsCdkLibVersion);
     }
     else {
       newdependencies[name] = version;

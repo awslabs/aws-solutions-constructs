@@ -1,0 +1,968 @@
+{
+ "Resources": {
+  "getopenordersLambdaFunctionServiceRoleFA20DF64": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":logs:",
+            {
+             "Ref": "AWS::Region"
+            },
+            ":",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":log-group:/aws/lambda/*"
+           ]
+          ]
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "LambdaFunctionServiceRolePolicy"
+     }
+    ]
+   }
+  },
+  "getopenordersLambdaFunctionServiceRoleDefaultPolicy2BBF8B21": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttordertable80C56090ArnFF5A50B5"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttordertable80C56090ArnFF5A50B5"
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "getopenordersLambdaFunctionServiceRoleDefaultPolicy2BBF8B21",
+    "Roles": [
+     {
+      "Ref": "getopenordersLambdaFunctionServiceRoleFA20DF64"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
+  "getopenordersLambdaFunctionCAD5B34A": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "3839faae79dc98cb27aae54e5c7f0c281592853e7fb0f04238098ad02a25952c.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+      "DDB_TABLE_NAME": {
+       "Fn::ImportValue": "SharedStack:ExportsOutputRefordertable80C5609084F626AD"
+      }
+     }
+    },
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "getopenordersLambdaFunctionServiceRoleFA20DF64",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs16.x",
+    "Timeout": 15,
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "getopenordersLambdaFunctionServiceRoleDefaultPolicy2BBF8B21",
+    "getopenordersLambdaFunctionServiceRoleFA20DF64"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+      },
+      {
+       "id": "W89",
+       "reason": "This is not a rule for the general case, just for specific use cases/industries"
+      },
+      {
+       "id": "W92",
+       "reason": "Impossible for us to define the correct concurrency for clients"
+      }
+     ]
+    }
+   }
+  },
+  "completeorderLambdaFunctionServiceRoleFDF8F85D": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":logs:",
+            {
+             "Ref": "AWS::Region"
+            },
+            ":",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":log-group:/aws/lambda/*"
+           ]
+          ]
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "LambdaFunctionServiceRolePolicy"
+     }
+    ]
+   }
+  },
+  "completeorderLambdaFunctionServiceRoleDefaultPolicyB81B4D1C": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttordertable80C56090ArnFF5A50B5"
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "SharedStack:ExportsOutputFnGetAttordertable80C56090ArnFF5A50B5"
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "completeorderLambdaFunctionServiceRoleDefaultPolicyB81B4D1C",
+    "Roles": [
+     {
+      "Ref": "completeorderLambdaFunctionServiceRoleFDF8F85D"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
+  "completeorderLambdaFunction1B59DF2A": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "346587a19365916b741034524422c072ee85b4b82a0e01fb28ef8dc62bdb9737.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+      "DDB_TABLE_NAME": {
+       "Fn::ImportValue": "SharedStack:ExportsOutputRefordertable80C5609084F626AD"
+      }
+     }
+    },
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "completeorderLambdaFunctionServiceRoleFDF8F85D",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs16.x",
+    "Timeout": 15,
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "completeorderLambdaFunctionServiceRoleDefaultPolicyB81B4D1C",
+    "completeorderLambdaFunctionServiceRoleFDF8F85D"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+      },
+      {
+       "id": "W89",
+       "reason": "This is not a rule for the general case, just for specific use cases/industries"
+      },
+      {
+       "id": "W92",
+       "reason": "Impossible for us to define the correct concurrency for clients"
+      }
+     ]
+    }
+   }
+  },
+  "kitchenstaffapiApiAccessLogGroup30DB1160": {
+   "Type": "AWS::Logs::LogGroup",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W86",
+       "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+      },
+      {
+       "id": "W84",
+       "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+      }
+     ]
+    }
+   }
+  },
+  "kitchenstaffapiLambdaRestApiF3F7D4FC": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Description": "Demo: Kitchen staff API",
+    "EndpointConfiguration": {
+     "Types": [
+      "EDGE"
+     ]
+    },
+    "Name": "LambdaRestApi"
+   }
+  },
+  "kitchenstaffapiLambdaRestApiDeployment832EAD6B983d9ce6284ee8e6f3c6844bc18ebcc3": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Demo: Kitchen staff API",
+    "RestApiId": {
+     "Ref": "kitchenstaffapiLambdaRestApiF3F7D4FC"
+    }
+   },
+   "DependsOn": [
+    "kitchenstaffapiLambdaRestApicompleteorderproxyANYAA8E4C52",
+    "kitchenstaffapiLambdaRestApicompleteorderproxyF9BF19EB",
+    "kitchenstaffapiLambdaRestApicompleteorder8E72FD84",
+    "kitchenstaffapiLambdaRestApigetopenordersproxyANY7A3BF144",
+    "kitchenstaffapiLambdaRestApigetopenordersproxyFF3E7DFD",
+    "kitchenstaffapiLambdaRestApigetopenorders25EC2468"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W45",
+       "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checks for it in AWS::ApiGateway::Deployment resource"
+      }
+     ]
+    }
+   }
+  },
+  "kitchenstaffapiLambdaRestApiDeploymentStageprodB9D4F4B3": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "AccessLogSetting": {
+     "DestinationArn": {
+      "Fn::GetAtt": [
+       "kitchenstaffapiApiAccessLogGroup30DB1160",
+       "Arn"
+      ]
+     },
+     "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
+    },
+    "DeploymentId": {
+     "Ref": "kitchenstaffapiLambdaRestApiDeployment832EAD6B983d9ce6284ee8e6f3c6844bc18ebcc3"
+    },
+    "MethodSettings": [
+     {
+      "DataTraceEnabled": false,
+      "HttpMethod": "*",
+      "LoggingLevel": "INFO",
+      "ResourcePath": "/*"
+     }
+    ],
+    "RestApiId": {
+     "Ref": "kitchenstaffapiLambdaRestApiF3F7D4FC"
+    },
+    "StageName": "prod",
+    "TracingEnabled": true
+   }
+  },
+  "kitchenstaffapiLambdaRestApigetopenorders25EC2468": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "kitchenstaffapiLambdaRestApiF3F7D4FC",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "get-open-orders",
+    "RestApiId": {
+     "Ref": "kitchenstaffapiLambdaRestApiF3F7D4FC"
+    }
+   }
+  },
+  "kitchenstaffapiLambdaRestApigetopenordersproxyFF3E7DFD": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "kitchenstaffapiLambdaRestApigetopenorders25EC2468"
+    },
+    "PathPart": "{proxy+}",
+    "RestApiId": {
+     "Ref": "kitchenstaffapiLambdaRestApiF3F7D4FC"
+    }
+   }
+  },
+  "kitchenstaffapiLambdaRestApigetopenordersproxyANYApiPermissionKitchenStaffStackkitchenstaffapiLambdaRestApi652BB0C4ANYgetopenordersproxy897FB53F": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "getopenordersLambdaFunctionCAD5B34A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "kitchenstaffapiLambdaRestApiF3F7D4FC"
+       },
+       "/",
+       {
+        "Ref": "kitchenstaffapiLambdaRestApiDeploymentStageprodB9D4F4B3"
+       },
+       "/*/get-open-orders/*"
+      ]
+     ]
+    }
+   }
+  },
+  "kitchenstaffapiLambdaRestApigetopenordersproxyANYApiPermissionTestKitchenStaffStackkitchenstaffapiLambdaRestApi652BB0C4ANYgetopenordersproxy966B02A6": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "getopenordersLambdaFunctionCAD5B34A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "kitchenstaffapiLambdaRestApiF3F7D4FC"
+       },
+       "/test-invoke-stage/*/get-open-orders/*"
+      ]
+     ]
+    }
+   }
+  },
+  "kitchenstaffapiLambdaRestApigetopenordersproxyANY7A3BF144": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "kitchenstaffapiCognitoAuthorizerA7F33D82"
+    },
+    "HttpMethod": "ANY",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "getopenordersLambdaFunctionCAD5B34A",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "kitchenstaffapiLambdaRestApigetopenordersproxyFF3E7DFD"
+    },
+    "RestApiId": {
+     "Ref": "kitchenstaffapiLambdaRestApiF3F7D4FC"
+    }
+   }
+  },
+  "kitchenstaffapiLambdaRestApicompleteorder8E72FD84": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "kitchenstaffapiLambdaRestApiF3F7D4FC",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "complete-order",
+    "RestApiId": {
+     "Ref": "kitchenstaffapiLambdaRestApiF3F7D4FC"
+    }
+   }
+  },
+  "kitchenstaffapiLambdaRestApicompleteorderproxyF9BF19EB": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "kitchenstaffapiLambdaRestApicompleteorder8E72FD84"
+    },
+    "PathPart": "{proxy+}",
+    "RestApiId": {
+     "Ref": "kitchenstaffapiLambdaRestApiF3F7D4FC"
+    }
+   }
+  },
+  "kitchenstaffapiLambdaRestApicompleteorderproxyANYApiPermissionKitchenStaffStackkitchenstaffapiLambdaRestApi652BB0C4ANYcompleteorderproxyD7DDAD90": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "completeorderLambdaFunction1B59DF2A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "kitchenstaffapiLambdaRestApiF3F7D4FC"
+       },
+       "/",
+       {
+        "Ref": "kitchenstaffapiLambdaRestApiDeploymentStageprodB9D4F4B3"
+       },
+       "/*/complete-order/*"
+      ]
+     ]
+    }
+   }
+  },
+  "kitchenstaffapiLambdaRestApicompleteorderproxyANYApiPermissionTestKitchenStaffStackkitchenstaffapiLambdaRestApi652BB0C4ANYcompleteorderproxy3F69EF93": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "completeorderLambdaFunction1B59DF2A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "kitchenstaffapiLambdaRestApiF3F7D4FC"
+       },
+       "/test-invoke-stage/*/complete-order/*"
+      ]
+     ]
+    }
+   }
+  },
+  "kitchenstaffapiLambdaRestApicompleteorderproxyANYAA8E4C52": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "kitchenstaffapiCognitoAuthorizerA7F33D82"
+    },
+    "HttpMethod": "ANY",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "completeorderLambdaFunction1B59DF2A",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "kitchenstaffapiLambdaRestApicompleteorderproxyF9BF19EB"
+    },
+    "RestApiId": {
+     "Ref": "kitchenstaffapiLambdaRestApiF3F7D4FC"
+    }
+   }
+  },
+  "kitchenstaffapiLambdaRestApiUsagePlan1249F8F9": {
+   "Type": "AWS::ApiGateway::UsagePlan",
+   "Properties": {
+    "ApiStages": [
+     {
+      "ApiId": {
+       "Ref": "kitchenstaffapiLambdaRestApiF3F7D4FC"
+      },
+      "Stage": {
+       "Ref": "kitchenstaffapiLambdaRestApiDeploymentStageprodB9D4F4B3"
+      },
+      "Throttle": {}
+     }
+    ]
+   }
+  },
+  "kitchenstaffapiLambdaRestApiCloudWatchRole0A152CE6": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
+          "logs:FilterLogEvents",
+          "logs:GetLogEvents",
+          "logs:PutLogEvents"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":logs:",
+            {
+             "Ref": "AWS::Region"
+            },
+            ":",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":*"
+           ]
+          ]
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "LambdaRestApiCloudWatchRolePolicy"
+     }
+    ]
+   }
+  },
+  "kitchenstaffapiLambdaRestApiAccount3F0B8F7C": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "kitchenstaffapiLambdaRestApiCloudWatchRole0A152CE6",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "kitchenstaffapiLambdaRestApiF3F7D4FC"
+   ]
+  },
+  "kitchenstaffapiCognitoUserPool21035423": {
+   "Type": "AWS::Cognito::UserPool",
+   "Properties": {
+    "AccountRecoverySetting": {
+     "RecoveryMechanisms": [
+      {
+       "Name": "verified_phone_number",
+       "Priority": 1
+      },
+      {
+       "Name": "verified_email",
+       "Priority": 2
+      }
+     ]
+    },
+    "AdminCreateUserConfig": {
+     "AllowAdminCreateUserOnly": true
+    },
+    "EmailVerificationMessage": "The verification code to your new account is {####}",
+    "EmailVerificationSubject": "Verify your new account",
+    "SmsVerificationMessage": "The verification code to your new account is {####}",
+    "UserPoolAddOns": {
+     "AdvancedSecurityMode": "ENFORCED"
+    },
+    "VerificationMessageTemplate": {
+     "DefaultEmailOption": "CONFIRM_WITH_CODE",
+     "EmailMessage": "The verification code to your new account is {####}",
+     "EmailSubject": "Verify your new account",
+     "SmsMessage": "The verification code to your new account is {####}"
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
+  "kitchenstaffapiCognitoUserPoolClient064BFF69": {
+   "Type": "AWS::Cognito::UserPoolClient",
+   "Properties": {
+    "AllowedOAuthFlows": [
+     "implicit",
+     "code"
+    ],
+    "AllowedOAuthFlowsUserPoolClient": true,
+    "AllowedOAuthScopes": [
+     "profile",
+     "phone",
+     "email",
+     "openid",
+     "aws.cognito.signin.user.admin"
+    ],
+    "CallbackURLs": [
+     "https://example.com"
+    ],
+    "SupportedIdentityProviders": [
+     "COGNITO"
+    ],
+    "UserPoolId": {
+     "Ref": "kitchenstaffapiCognitoUserPool21035423"
+    }
+   }
+  },
+  "kitchenstaffapiCognitoAuthorizerA7F33D82": {
+   "Type": "AWS::ApiGateway::Authorizer",
+   "Properties": {
+    "IdentitySource": "method.request.header.Authorization",
+    "Name": "authorizer",
+    "ProviderARNs": [
+     {
+      "Fn::GetAtt": [
+       "kitchenstaffapiCognitoUserPool21035423",
+       "Arn"
+      ]
+     }
+    ],
+    "RestApiId": {
+     "Ref": "kitchenstaffapiLambdaRestApiF3F7D4FC"
+    },
+    "Type": "COGNITO_USER_POOLS"
+   }
+  }
+ },
+ "Outputs": {
+  "kitchenstaffapiLambdaRestApiEndpoint79E1D2E0": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "kitchenstaffapiLambdaRestApiF3F7D4FC"
+      },
+      ".execute-api.",
+      {
+       "Ref": "AWS::Region"
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "kitchenstaffapiLambdaRestApiDeploymentStageprodB9D4F4B3"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

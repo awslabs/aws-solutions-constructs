@@ -16,6 +16,7 @@ import { App, Stack } from "aws-cdk-lib";
 import { DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps, DynamoDBStreamsToLambdaToElasticSearchAndKibana } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { generateIntegStackName, CreateShortUniqueTestName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 
@@ -33,4 +34,6 @@ const props: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps = {
 };
 
 new DynamoDBStreamsToLambdaToElasticSearchAndKibana(stack, 'test-ddbstreams-lambda-esk', props);
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

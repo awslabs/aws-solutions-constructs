@@ -17,6 +17,7 @@ import { ApiGatewayToLambda, ApiGatewayToLambdaProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // App setup
 const app = new App();
@@ -41,4 +42,6 @@ const props: ApiGatewayToLambdaProps = {
 new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

@@ -15,6 +15,7 @@
 import { App, Stack } from "aws-cdk-lib";
 import { WafwebaclToAppsync } from "../lib";
 import { generateIntegStackName } from "@aws-solutions-constructs/core";
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as appsync from "aws-cdk-lib/aws-appsync";
 
 const app = new App();
@@ -32,4 +33,6 @@ new WafwebaclToAppsync(stack, "test-wafwebacl-appsync", {
   existingAppsyncApi: api,
 });
 
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

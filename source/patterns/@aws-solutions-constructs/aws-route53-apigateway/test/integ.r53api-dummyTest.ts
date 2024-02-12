@@ -14,6 +14,7 @@
 // Imports
 import { App, Stack } from "aws-cdk-lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
@@ -33,4 +34,6 @@ const regionalRestApiResponse = defaults.RegionalRestApi(stack);
 regionalRestApiResponse.api.root.addMethod('GET');
 
 // Synth
-app.synth();
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

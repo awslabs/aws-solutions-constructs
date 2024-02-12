@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "0cff903e6478a46bcedd549b1790f7b879e9f9a9efc276ecc819ae5a7d41d23c": {
+      "source": {
+        "path": "evtkin-eventbridge-kinesisstreams-no-arguments.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "0cff903e6478a46bcedd549b1790f7b879e9f9a9efc276ecc819ae5a7d41d23c.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

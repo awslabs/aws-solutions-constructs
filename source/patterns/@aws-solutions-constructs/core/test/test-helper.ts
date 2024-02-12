@@ -112,9 +112,9 @@ export function getFakeCertificate(scope: Construct, id: string): acm.ICertifica
   );
 }
 
-export function suppressAutoDeleteHandlerWarnings(stack: Stack) {
+export function suppressCustomHandlerCfnNagWarnings(stack: Stack, handlerId: string) {
   stack.node.children.forEach(child => {
-    if (child.node.id === 'Custom::S3AutoDeleteObjectsCustomResourceProvider') {
+    if (child.node.id === handlerId) {
       const handlerFunction = child.node.findChild('Handler') as CfnFunction;
       addCfnSuppressRules(handlerFunction, [{ id: "W58", reason: "CDK generated custom resource"}]);
       addCfnSuppressRules(handlerFunction, [{ id: "W89", reason: "CDK generated custom resource"}]);
