@@ -15,7 +15,7 @@
         }
       }
     },
-    "c2b106d1047c93f2b3ec72f7d05e59b29aa185f9e10652378e11338d3b61bb3d": {
+    "ab98c1a38fd4451b6b4b362fbcdc7ce5647a809f7cb96d31674747b6d4d5042a": {
       "source": {
         "path": "farstp-no-cloudwatch-alarms.template.json",
         "packaging": "file"
@@ -23,7 +23,7 @@
       "destinations": {
         "current_account-us-east-1": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "c2b106d1047c93f2b3ec72f7d05e59b29aa185f9e10652378e11338d3b61bb3d.json",
+          "objectKey": "ab98c1a38fd4451b6b4b362fbcdc7ce5647a809f7cb96d31674747b6d4d5042a.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }
