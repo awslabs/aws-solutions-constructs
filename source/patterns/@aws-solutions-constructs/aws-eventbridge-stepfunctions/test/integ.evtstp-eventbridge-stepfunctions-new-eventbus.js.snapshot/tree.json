@@ -347,20 +347,6 @@
                                     },
                                     {
                                       "Action": [
-                                        "logs:CreateLogDelivery",
-                                        "logs:DeleteLogDelivery",
-                                        "logs:DescribeLogGroups",
-                                        "logs:DescribeResourcePolicies",
-                                        "logs:GetLogDelivery",
-                                        "logs:ListLogDeliveries",
-                                        "logs:PutResourcePolicy",
-                                        "logs:UpdateLogDelivery"
-                                      ],
-                                      "Effect": "Allow",
-                                      "Resource": "*"
-                                    },
-                                    {
-                                      "Action": [
                                         "logs:DescribeLogGroups",
                                         "logs:DescribeResourcePolicies",
                                         "logs:PutResourcePolicy"
@@ -386,6 +372,17 @@
                                           ]
                                         ]
                                       }
+                                    },
+                                    {
+                                      "Action": [
+                                        "logs:CreateLogDelivery",
+                                        "logs:DeleteLogDelivery",
+                                        "logs:GetLogDelivery",
+                                        "logs:ListLogDeliveries",
+                                        "logs:UpdateLogDelivery"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": "*"
                                     }
                                   ],
                                   "Version": "2012-10-17"
@@ -748,7 +745,7 @@
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-eventbridge-stepfunctions.EventbridgeToStepfunctions",
-              "version": "2.52.0"
+              "version": "2.52.1"
             }
           },
           "Integ": {

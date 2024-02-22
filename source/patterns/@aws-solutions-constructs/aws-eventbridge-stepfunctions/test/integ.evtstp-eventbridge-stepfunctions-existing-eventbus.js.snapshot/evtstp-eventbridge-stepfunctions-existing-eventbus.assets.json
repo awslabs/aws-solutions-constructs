@@ -14,7 +14,7 @@
         }
       }
     },
-    "da11f95fde1d9075ed3264126ffcd826047a6aa868f5cbd98eff1d1a3df9bcdc": {
+    "05fc1edac52c415d21de480b023de45248585d3e28f56576b766faa03e026538": {
       "source": {
         "path": "evtstp-eventbridge-stepfunctions-existing-eventbus.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "da11f95fde1d9075ed3264126ffcd826047a6aa868f5cbd98eff1d1a3df9bcdc.json",
+          "objectKey": "05fc1edac52c415d21de480b023de45248585d3e28f56576b766faa03e026538.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
