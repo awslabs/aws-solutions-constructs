@@ -433,17 +433,6 @@
      "Statement": [
       {
        "Action": [
-        "logs:CreateLogDelivery",
-        "logs:GetLogDelivery",
-        "logs:UpdateLogDelivery",
-        "logs:DeleteLogDelivery",
-        "logs:ListLogDeliveries"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      },
-      {
-       "Action": [
         "logs:DescribeLogGroups",
         "logs:DescribeResourcePolicies",
         "logs:PutResourcePolicy"
@@ -469,6 +458,17 @@
          ]
         ]
        }
+      },
+      {
+       "Action": [
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:UpdateLogDelivery"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
       }
      ],
      "Version": "2012-10-17"

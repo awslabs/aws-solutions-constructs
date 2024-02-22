@@ -87,17 +87,35 @@ export function buildStateMachine(scope: Construct, stateMachineProps: sfn.State
   // If the client did not pass a role we got the default role and will trim the privileges
   if (!stateMachineProps.role) {
     const role = newStateMachine.node.findChild('Role') as iam.Role;
-    const cfnDefaultPolicy = role.node.findChild('DefaultPolicy').node.defaultChild as iam.CfnPolicy;
+    const cfnDefaultPolicy = role.node.findChild('DefaultPolicy').node.defaultChild as any;
+    const jsonPolicyDocument = cfnDefaultPolicy.policyDocument.toJSON();
 
-    // Reduce the scope of actions for the existing DefaultPolicy
-    cfnDefaultPolicy.addPropertyOverride('PolicyDocument.Statement.0.Action',
-      [
+    jsonPolicyDocument.Statement =
+      jsonPolicyDocument.Statement.filter((statement: any) => !Array.isArray(statement.Action) || !statement.Action[0].startsWith("logs:") );
+
+    jsonPolicyDocument.Statement.push({
+      Action: [
+        'logs:PutResourcePolicy',
+        'logs:DescribeResourcePolicies',
+        'logs:DescribeLogGroups'
+      ],
+      Effect: "Allow",
+      Resource: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:*`]
+    });
+
+    jsonPolicyDocument.Statement.push({
+      Action: [
         "logs:CreateLogDelivery",
         'logs:GetLogDelivery',
         'logs:UpdateLogDelivery',
         'logs:DeleteLogDelivery',
         'logs:ListLogDeliveries'
-      ]);
+      ],
+      Effect: "Allow",
+      Resource: "*"
+    });
+
+    cfnDefaultPolicy.policyDocument = iam.PolicyDocument.fromJson(jsonPolicyDocument);
 
     // Override Cfn Nag warning W12: IAM policy should not allow * resource
     addCfnSuppressRules(cfnDefaultPolicy, [
@@ -106,16 +124,6 @@ export function buildStateMachine(scope: Construct, stateMachineProps: sfn.State
         reason: `The 'LogDelivery' actions do not support resource-level authorizations`
       }
     ]);
-
-    // Add a new policy with logging permissions for the given cloudwatch log group
-    newStateMachine.addToRolePolicy(new iam.PolicyStatement({
-      actions: [
-        'logs:PutResourcePolicy',
-        'logs:DescribeResourcePolicies',
-        'logs:DescribeLogGroups'
-      ],
-      resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:*`]
-    }));
   }
   return { stateMachine: newStateMachine, logGroup };
 }

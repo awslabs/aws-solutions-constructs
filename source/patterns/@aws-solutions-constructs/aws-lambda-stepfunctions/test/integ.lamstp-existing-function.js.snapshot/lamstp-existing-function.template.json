@@ -107,7 +107,6 @@
     },
     "Environment": {
      "Variables": {
-      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
       "STATE_MACHINE_ARN": {
        "Ref": "testlambdastepfunctionsconstructStateMachineE1526513"
       }
@@ -120,7 +119,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs16.x",
+    "Runtime": "nodejs20.x",
     "TracingConfig": {
      "Mode": "Active"
     }
@@ -214,17 +213,6 @@
      "Statement": [
       {
        "Action": [
-        "logs:CreateLogDelivery",
-        "logs:GetLogDelivery",
-        "logs:UpdateLogDelivery",
-        "logs:DeleteLogDelivery",
-        "logs:ListLogDeliveries"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      },
-      {
-       "Action": [
         "logs:DescribeLogGroups",
         "logs:DescribeResourcePolicies",
         "logs:PutResourcePolicy"
@@ -250,6 +238,17 @@
          ]
         ]
        }
+      },
+      {
+       "Action": [
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:UpdateLogDelivery"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
       }
      ],
      "Version": "2012-10-17"

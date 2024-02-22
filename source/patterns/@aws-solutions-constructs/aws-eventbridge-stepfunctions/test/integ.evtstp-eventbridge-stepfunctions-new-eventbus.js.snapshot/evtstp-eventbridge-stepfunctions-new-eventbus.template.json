@@ -203,13 +203,7 @@
     "PolicyDocument": {
      "Statement": [
       {
-       "Action": [
-        "logs:CreateLogDelivery",
-        "logs:GetLogDelivery",
-        "logs:UpdateLogDelivery",
-        "logs:DeleteLogDelivery",
-        "logs:ListLogDeliveries"
-       ],
+       "Action": "lambda:InvokeFunction",
        "Effect": "Allow",
        "Resource": [
         {
@@ -233,20 +227,6 @@
          ]
         }
        ]
-      },
-      {
-       "Action": [
-        "logs:CreateLogDelivery",
-        "logs:DeleteLogDelivery",
-        "logs:DescribeLogGroups",
-        "logs:DescribeResourcePolicies",
-        "logs:GetLogDelivery",
-        "logs:ListLogDeliveries",
-        "logs:PutResourcePolicy",
-        "logs:UpdateLogDelivery"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
       },
       {
        "Action": [
@@ -275,6 +255,17 @@
          ]
         ]
        }
+      },
+      {
+       "Action": [
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:UpdateLogDelivery"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
       }
      ],
      "Version": "2012-10-17"

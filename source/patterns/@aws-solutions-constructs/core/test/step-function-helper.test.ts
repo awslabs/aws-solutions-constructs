@@ -90,21 +90,9 @@ test('Check default Cloudwatch permissions', () => {
   });
   // Assertion
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
-  expect(buildStateMachineResponse.stateMachine).toBeDefined();
   Template.fromStack(stack).hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
-        {
-          Action: [
-            "logs:CreateLogDelivery",
-            "logs:GetLogDelivery",
-            "logs:UpdateLogDelivery",
-            "logs:DeleteLogDelivery",
-            "logs:ListLogDeliveries"
-          ],
-          Effect: "Allow",
-          Resource: "*"
-        },
         {
           Action: [
             "logs:PutResourcePolicy",
@@ -132,6 +120,17 @@ test('Check default Cloudwatch permissions', () => {
               ]
             ]
           }
+        },
+        {
+          Action: [
+            "logs:CreateLogDelivery",
+            "logs:GetLogDelivery",
+            "logs:UpdateLogDelivery",
+            "logs:DeleteLogDelivery",
+            "logs:ListLogDeliveries"
+          ],
+          Effect: "Allow",
+          Resource: "*"
         }
       ],
       Version: "2012-10-17"
@@ -149,7 +148,6 @@ test('Count State Machine CW Alarms', () => {
     definition: startState
   });
   const cwList = defaults.buildStepFunctionCWAlarms(stack, buildStateMachineResponse.stateMachine);
-  expect(buildStateMachineResponse.stateMachine).toBeDefined();
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
 
   expect(cwList.length).toEqual(3);
