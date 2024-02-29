@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.54.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.53.0...v2.54.0) (2024-02-29)
 
+Built on CDK v2.130.0
+
+### Bug Fixes
+
+* **step-functions** no longer attempt to modify cloudwatch logs permissions for state machines ([#1090](https://github.com/awslabs/aws-solutions-constructs/pull/1090))
+
 ## [2.53.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.52.1...v2.53.0) (2024-02-22)
 
 Built on CDK v2.127.0
