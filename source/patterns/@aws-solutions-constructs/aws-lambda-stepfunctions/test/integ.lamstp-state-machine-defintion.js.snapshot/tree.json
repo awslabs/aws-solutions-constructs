@@ -4,17 +4,17 @@
     "id": "App",
     "path": "",
     "children": {
-      "lamstp-deploy-lambda": {
-        "id": "lamstp-deploy-lambda",
-        "path": "lamstp-deploy-lambda",
+      "lamstp-state-machine-defintion": {
+        "id": "lamstp-state-machine-defintion",
+        "path": "lamstp-state-machine-defintion",
         "children": {
-          "taskFunctionServiceRole": {
-            "id": "taskFunctionServiceRole",
-            "path": "lamstp-deploy-lambda/taskFunctionServiceRole",
+          "first-functionServiceRole": {
+            "id": "first-functionServiceRole",
+            "path": "lamstp-state-machine-defintion/first-functionServiceRole",
             "children": {
-              "ImporttaskFunctionServiceRole": {
-                "id": "ImporttaskFunctionServiceRole",
-                "path": "lamstp-deploy-lambda/taskFunctionServiceRole/ImporttaskFunctionServiceRole",
+              "Importfirst-functionServiceRole": {
+                "id": "Importfirst-functionServiceRole",
+                "path": "lamstp-state-machine-defintion/first-functionServiceRole/Importfirst-functionServiceRole",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.Resource",
                   "version": "2.127.0"
@@ -22,7 +22,7 @@
               },
               "Resource": {
                 "id": "Resource",
-                "path": "lamstp-deploy-lambda/taskFunctionServiceRole/Resource",
+                "path": "lamstp-state-machine-defintion/first-functionServiceRole/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                   "aws:cdk:cloudformation:props": {
@@ -85,11 +85,11 @@
               },
               "DefaultPolicy": {
                 "id": "DefaultPolicy",
-                "path": "lamstp-deploy-lambda/taskFunctionServiceRole/DefaultPolicy",
+                "path": "lamstp-state-machine-defintion/first-functionServiceRole/DefaultPolicy",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "lamstp-deploy-lambda/taskFunctionServiceRole/DefaultPolicy/Resource",
+                    "path": "lamstp-state-machine-defintion/first-functionServiceRole/DefaultPolicy/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                       "aws:cdk:cloudformation:props": {
@@ -106,10 +106,10 @@
                           ],
                           "Version": "2012-10-17"
                         },
-                        "policyName": "taskFunctionServiceRoleDefaultPolicyDD9784DE",
+                        "policyName": "firstfunctionServiceRoleDefaultPolicy05FFD222",
                         "roles": [
                           {
-                            "Ref": "taskFunctionServiceRole31E35058"
+                            "Ref": "firstfunctionServiceRole0FF7D94B"
                           }
                         ]
                       }
@@ -131,57 +131,23 @@
               "version": "2.127.0"
             }
           },
-          "taskFunction": {
-            "id": "taskFunction",
-            "path": "lamstp-deploy-lambda/taskFunction",
+          "first-function": {
+            "id": "first-function",
+            "path": "lamstp-state-machine-defintion/first-function",
             "children": {
-              "Code": {
-                "id": "Code",
-                "path": "lamstp-deploy-lambda/taskFunction/Code",
-                "children": {
-                  "Stage": {
-                    "id": "Stage",
-                    "path": "lamstp-deploy-lambda/taskFunction/Code/Stage",
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.AssetStaging",
-                      "version": "2.127.0"
-                    }
-                  },
-                  "AssetBucket": {
-                    "id": "AssetBucket",
-                    "path": "lamstp-deploy-lambda/taskFunction/Code/AssetBucket",
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                      "version": "2.127.0"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                  "version": "2.127.0"
-                }
-              },
               "Resource": {
                 "id": "Resource",
-                "path": "lamstp-deploy-lambda/taskFunction/Resource",
+                "path": "lamstp-state-machine-defintion/first-function/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
                   "aws:cdk:cloudformation:props": {
                     "code": {
-                      "s3Bucket": {
-                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-                      },
-                      "s3Key": "2c77a7150383973352510b020ce9abcf00245f43f72cf37c75d7ee9dc413fee8.zip"
-                    },
-                    "environment": {
-                      "variables": {
-                        "LAMBDA_NAME": "existing-function"
-                      }
+                      "zipFile": "exports.handler = async (event) => { console.log(\"First Function\");}"
                     },
                     "handler": "index.handler",
                     "role": {
                       "Fn::GetAtt": [
-                        "taskFunctionServiceRole31E35058",
+                        "firstfunctionServiceRole0FF7D94B",
                         "Arn"
                       ]
                     },
@@ -202,9 +168,177 @@
               "version": "2.127.0"
             }
           },
-          "permission-test": {
-            "id": "permission-test",
-            "path": "lamstp-deploy-lambda/permission-test",
+          "task-one": {
+            "id": "task-one",
+            "path": "lamstp-state-machine-defintion/task-one",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_stepfunctions_tasks.LambdaInvoke",
+              "version": "2.127.0"
+            }
+          },
+          "second-functionServiceRole": {
+            "id": "second-functionServiceRole",
+            "path": "lamstp-state-machine-defintion/second-functionServiceRole",
+            "children": {
+              "Importsecond-functionServiceRole": {
+                "id": "Importsecond-functionServiceRole",
+                "path": "lamstp-state-machine-defintion/second-functionServiceRole/Importsecond-functionServiceRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.127.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "lamstp-state-machine-defintion/second-functionServiceRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "lambda.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "policies": [
+                      {
+                        "policyName": "LambdaFunctionServiceRolePolicy",
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    "arn:",
+                                    {
+                                      "Ref": "AWS::Partition"
+                                    },
+                                    ":logs:",
+                                    {
+                                      "Ref": "AWS::Region"
+                                    },
+                                    ":",
+                                    {
+                                      "Ref": "AWS::AccountId"
+                                    },
+                                    ":log-group:/aws/lambda/*"
+                                  ]
+                                ]
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.127.0"
+                }
+              },
+              "DefaultPolicy": {
+                "id": "DefaultPolicy",
+                "path": "lamstp-state-machine-defintion/second-functionServiceRole/DefaultPolicy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "lamstp-state-machine-defintion/second-functionServiceRole/DefaultPolicy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "xray:PutTelemetryRecords",
+                                "xray:PutTraceSegments"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policyName": "secondfunctionServiceRoleDefaultPolicy02F27461",
+                        "roles": [
+                          {
+                            "Ref": "secondfunctionServiceRole5264DF4C"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                      "version": "2.127.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Policy",
+                  "version": "2.127.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_iam.Role",
+              "version": "2.127.0"
+            }
+          },
+          "second-function": {
+            "id": "second-function",
+            "path": "lamstp-state-machine-defintion/second-function",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "lamstp-state-machine-defintion/second-function/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "zipFile": "exports.handler = async (event) => { console.log(\"Second Function\");}"
+                    },
+                    "handler": "index.handler",
+                    "role": {
+                      "Fn::GetAtt": [
+                        "secondfunctionServiceRole5264DF4C",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs20.x",
+                    "tracingConfig": {
+                      "mode": "Active"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.127.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.127.0"
+            }
+          },
+          "task-two": {
+            "id": "task-two",
+            "path": "lamstp-state-machine-defintion/task-two",
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_stepfunctions_tasks.LambdaInvoke",
               "version": "2.127.0"
@@ -212,15 +346,15 @@
           },
           "test-lambda-stepfunctions-construct": {
             "id": "test-lambda-stepfunctions-construct",
-            "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct",
+            "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct",
             "children": {
               "StateMachineLogGroup": {
                 "id": "StateMachineLogGroup",
-                "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/StateMachineLogGroup",
+                "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/StateMachineLogGroup",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/StateMachineLogGroup/Resource",
+                    "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/StateMachineLogGroup/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::Logs::LogGroup",
                       "aws:cdk:cloudformation:props": {
@@ -228,7 +362,7 @@
                           "Fn::Join": [
                             "",
                             [
-                              "/aws/vendedlogs/states/constructs/lamstp-deploy-lambdatest-lambda-stepfunctions-constructStateMachineLog-",
+                              "/aws/vendedlogs/states/constructs/lamstp-state-machine-defintiontest-lambda-stepfunctions-constructStateMachineLog-",
                               {
                                 "Fn::Select": [
                                   2,
@@ -260,15 +394,15 @@
               },
               "StateMachine": {
                 "id": "StateMachine",
-                "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/StateMachine",
+                "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/StateMachine",
                 "children": {
                   "Role": {
                     "id": "Role",
-                    "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/StateMachine/Role",
+                    "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/StateMachine/Role",
                     "children": {
                       "ImportRole": {
                         "id": "ImportRole",
-                        "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/StateMachine/Role/ImportRole",
+                        "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/StateMachine/Role/ImportRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
                           "version": "2.127.0"
@@ -276,7 +410,7 @@
                       },
                       "Resource": {
                         "id": "Resource",
-                        "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/StateMachine/Role/Resource",
+                        "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/StateMachine/Role/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                           "aws:cdk:cloudformation:props": {
@@ -301,11 +435,11 @@
                       },
                       "DefaultPolicy": {
                         "id": "DefaultPolicy",
-                        "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/StateMachine/Role/DefaultPolicy",
+                        "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/StateMachine/Role/DefaultPolicy",
                         "children": {
                           "Resource": {
                             "id": "Resource",
-                            "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/StateMachine/Role/DefaultPolicy/Resource",
+                            "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/StateMachine/Role/DefaultPolicy/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                               "aws:cdk:cloudformation:props": {
@@ -317,7 +451,13 @@
                                       "Resource": [
                                         {
                                           "Fn::GetAtt": [
-                                            "taskFunctionBFDAC5DE",
+                                            "firstfunction297AC5AB",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::GetAtt": [
+                                            "secondfunctionB2F1D4DD",
                                             "Arn"
                                           ]
                                         },
@@ -327,7 +467,21 @@
                                             [
                                               {
                                                 "Fn::GetAtt": [
-                                                  "taskFunctionBFDAC5DE",
+                                                  "firstfunction297AC5AB",
+                                                  "Arn"
+                                                ]
+                                              },
+                                              ":*"
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::GetAtt": [
+                                                  "secondfunctionB2F1D4DD",
                                                   "Arn"
                                                 ]
                                               },
@@ -381,7 +535,7 @@
                   },
                   "Resource": {
                     "id": "Resource",
-                    "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/StateMachine/Resource",
+                    "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/StateMachine/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::StepFunctions::StateMachine",
                       "aws:cdk:cloudformation:props": {
@@ -389,14 +543,25 @@
                           "Fn::Join": [
                             "",
                             [
-                              "{\"StartAt\":\"permission-test\",\"States\":{\"permission-test\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ClientExecutionTimeoutException\",\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+                              "{\"StartAt\":\"task-one\",\"States\":{\"task-one\":{\"Next\":\"task-two\",\"Retry\":[{\"ErrorEquals\":[\"Lambda.ClientExecutionTimeoutException\",\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
                               {
                                 "Ref": "AWS::Partition"
                               },
                               ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
                               {
                                 "Fn::GetAtt": [
-                                  "taskFunctionBFDAC5DE",
+                                  "firstfunction297AC5AB",
+                                  "Arn"
+                                ]
+                              },
+                              "\",\"Payload.$\":\"$\"}},\"task-two\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ClientExecutionTimeoutException\",\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
+                              {
+                                "Fn::GetAtt": [
+                                  "secondfunctionB2F1D4DD",
                                   "Arn"
                                 ]
                               },
@@ -440,11 +605,11 @@
               },
               "LambdaFunctionServiceRole": {
                 "id": "LambdaFunctionServiceRole",
-                "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/LambdaFunctionServiceRole",
+                "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/LambdaFunctionServiceRole",
                 "children": {
                   "ImportLambdaFunctionServiceRole": {
                     "id": "ImportLambdaFunctionServiceRole",
-                    "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole",
+                    "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
                       "version": "2.127.0"
@@ -452,7 +617,7 @@
                   },
                   "Resource": {
                     "id": "Resource",
-                    "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/LambdaFunctionServiceRole/Resource",
+                    "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/LambdaFunctionServiceRole/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                       "aws:cdk:cloudformation:props": {
@@ -515,11 +680,11 @@
                   },
                   "DefaultPolicy": {
                     "id": "DefaultPolicy",
-                    "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/LambdaFunctionServiceRole/DefaultPolicy",
+                    "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/LambdaFunctionServiceRole/DefaultPolicy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/LambdaFunctionServiceRole/DefaultPolicy/Resource",
+                        "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/LambdaFunctionServiceRole/DefaultPolicy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                           "aws:cdk:cloudformation:props": {
@@ -570,15 +735,15 @@
               },
               "LambdaFunction": {
                 "id": "LambdaFunction",
-                "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/LambdaFunction",
+                "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/LambdaFunction",
                 "children": {
                   "Code": {
                     "id": "Code",
-                    "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/LambdaFunction/Code",
+                    "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/LambdaFunction/Code",
                     "children": {
                       "Stage": {
                         "id": "Stage",
-                        "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/LambdaFunction/Code/Stage",
+                        "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/LambdaFunction/Code/Stage",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.AssetStaging",
                           "version": "2.127.0"
@@ -586,7 +751,7 @@
                       },
                       "AssetBucket": {
                         "id": "AssetBucket",
-                        "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/LambdaFunction/Code/AssetBucket",
+                        "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/LambdaFunction/Code/AssetBucket",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.BucketBase",
                           "version": "2.127.0"
@@ -600,7 +765,7 @@
                   },
                   "Resource": {
                     "id": "Resource",
-                    "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/LambdaFunction/Resource",
+                    "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/LambdaFunction/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
                       "aws:cdk:cloudformation:props": {
@@ -643,11 +808,11 @@
               },
               "ExecutionFailedAlarm": {
                 "id": "ExecutionFailedAlarm",
-                "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/ExecutionFailedAlarm",
+                "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/ExecutionFailedAlarm",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/ExecutionFailedAlarm/Resource",
+                    "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/ExecutionFailedAlarm/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
                       "aws:cdk:cloudformation:props": {
@@ -682,11 +847,11 @@
               },
               "ExecutionThrottledAlarm": {
                 "id": "ExecutionThrottledAlarm",
-                "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/ExecutionThrottledAlarm",
+                "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/ExecutionThrottledAlarm",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/ExecutionThrottledAlarm/Resource",
+                    "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/ExecutionThrottledAlarm/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
                       "aws:cdk:cloudformation:props": {
@@ -721,11 +886,11 @@
               },
               "ExecutionAbortedAlarm": {
                 "id": "ExecutionAbortedAlarm",
-                "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/ExecutionAbortedAlarm",
+                "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/ExecutionAbortedAlarm",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "lamstp-deploy-lambda/test-lambda-stepfunctions-construct/ExecutionAbortedAlarm/Resource",
+                    "path": "lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/ExecutionAbortedAlarm/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
                       "aws:cdk:cloudformation:props": {
@@ -766,15 +931,15 @@
           },
           "Integ": {
             "id": "Integ",
-            "path": "lamstp-deploy-lambda/Integ",
+            "path": "lamstp-state-machine-defintion/Integ",
             "children": {
               "DefaultTest": {
                 "id": "DefaultTest",
-                "path": "lamstp-deploy-lambda/Integ/DefaultTest",
+                "path": "lamstp-state-machine-defintion/Integ/DefaultTest",
                 "children": {
                   "Default": {
                     "id": "Default",
-                    "path": "lamstp-deploy-lambda/Integ/DefaultTest/Default",
+                    "path": "lamstp-state-machine-defintion/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
                       "version": "10.3.0"
@@ -782,11 +947,11 @@
                   },
                   "DeployAssert": {
                     "id": "DeployAssert",
-                    "path": "lamstp-deploy-lambda/Integ/DefaultTest/DeployAssert",
+                    "path": "lamstp-state-machine-defintion/Integ/DefaultTest/DeployAssert",
                     "children": {
                       "BootstrapVersion": {
                         "id": "BootstrapVersion",
-                        "path": "lamstp-deploy-lambda/Integ/DefaultTest/DeployAssert/BootstrapVersion",
+                        "path": "lamstp-state-machine-defintion/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
                           "version": "2.127.0"
@@ -794,7 +959,7 @@
                       },
                       "CheckBootstrapVersion": {
                         "id": "CheckBootstrapVersion",
-                        "path": "lamstp-deploy-lambda/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
+                        "path": "lamstp-state-machine-defintion/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
                           "version": "2.127.0"
@@ -820,7 +985,7 @@
           },
           "BootstrapVersion": {
             "id": "BootstrapVersion",
-            "path": "lamstp-deploy-lambda/BootstrapVersion",
+            "path": "lamstp-state-machine-defintion/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
               "version": "2.127.0"
@@ -828,7 +993,7 @@
           },
           "CheckBootstrapVersion": {
             "id": "CheckBootstrapVersion",
-            "path": "lamstp-deploy-lambda/CheckBootstrapVersion",
+            "path": "lamstp-state-machine-defintion/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
               "version": "2.127.0"
