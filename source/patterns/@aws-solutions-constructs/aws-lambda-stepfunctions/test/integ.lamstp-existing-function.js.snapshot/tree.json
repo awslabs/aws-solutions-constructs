@@ -322,38 +322,13 @@
                                   "Statement": [
                                     {
                                       "Action": [
-                                        "logs:DescribeLogGroups",
-                                        "logs:DescribeResourcePolicies",
-                                        "logs:PutResourcePolicy"
-                                      ],
-                                      "Effect": "Allow",
-                                      "Resource": {
-                                        "Fn::Join": [
-                                          "",
-                                          [
-                                            "arn:",
-                                            {
-                                              "Ref": "AWS::Partition"
-                                            },
-                                            ":logs:",
-                                            {
-                                              "Ref": "AWS::Region"
-                                            },
-                                            ":",
-                                            {
-                                              "Ref": "AWS::AccountId"
-                                            },
-                                            ":*"
-                                          ]
-                                        ]
-                                      }
-                                    },
-                                    {
-                                      "Action": [
                                         "logs:CreateLogDelivery",
                                         "logs:DeleteLogDelivery",
+                                        "logs:DescribeLogGroups",
+                                        "logs:DescribeResourcePolicies",
                                         "logs:GetLogDelivery",
                                         "logs:ListLogDeliveries",
+                                        "logs:PutResourcePolicy",
                                         "logs:UpdateLogDelivery"
                                       ],
                                       "Effect": "Allow",
@@ -548,7 +523,7 @@
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-lambda-stepfunctions.LambdaToStepfunctions",
-              "version": "2.52.1"
+              "version": "2.53.0"
             }
           },
           "Integ": {

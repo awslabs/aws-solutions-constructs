@@ -88,40 +88,11 @@ export function buildStateMachine(scope: Construct, stateMachineProps: sfn.State
   if (!stateMachineProps.role) {
     const role = newStateMachine.node.findChild('Role') as iam.Role;
     const cfnDefaultPolicy = role.node.findChild('DefaultPolicy').node.defaultChild as any;
-    const jsonPolicyDocument = cfnDefaultPolicy.policyDocument.toJSON();
-
-    jsonPolicyDocument.Statement =
-      jsonPolicyDocument.Statement.filter((statement: any) => !Array.isArray(statement.Action) || !statement.Action[0].startsWith("logs:") );
-
-    jsonPolicyDocument.Statement.push({
-      Action: [
-        'logs:PutResourcePolicy',
-        'logs:DescribeResourcePolicies',
-        'logs:DescribeLogGroups'
-      ],
-      Effect: "Allow",
-      Resource: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:*`]
-    });
-
-    jsonPolicyDocument.Statement.push({
-      Action: [
-        "logs:CreateLogDelivery",
-        'logs:GetLogDelivery',
-        'logs:UpdateLogDelivery',
-        'logs:DeleteLogDelivery',
-        'logs:ListLogDeliveries'
-      ],
-      Effect: "Allow",
-      Resource: "*"
-    });
-
-    cfnDefaultPolicy.policyDocument = iam.PolicyDocument.fromJson(jsonPolicyDocument);
-
     // Override Cfn Nag warning W12: IAM policy should not allow * resource
     addCfnSuppressRules(cfnDefaultPolicy, [
       {
         id: 'W12',
-        reason: `The 'LogDelivery' actions do not support resource-level authorizations`
+        reason: `These are CDK defaults. The 'LogDelivery' actions do not support resource-level authorizations. Any logging is done by State Machine code`
       }
     ]);
   }

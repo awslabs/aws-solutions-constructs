@@ -433,38 +433,13 @@
      "Statement": [
       {
        "Action": [
-        "logs:DescribeLogGroups",
-        "logs:DescribeResourcePolicies",
-        "logs:PutResourcePolicy"
-       ],
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::Join": [
-         "",
-         [
-          "arn:",
-          {
-           "Ref": "AWS::Partition"
-          },
-          ":logs:",
-          {
-           "Ref": "AWS::Region"
-          },
-          ":",
-          {
-           "Ref": "AWS::AccountId"
-          },
-          ":*"
-         ]
-        ]
-       }
-      },
-      {
-       "Action": [
         "logs:CreateLogDelivery",
         "logs:DeleteLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
         "logs:GetLogDelivery",
         "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
         "logs:UpdateLogDelivery"
        ],
        "Effect": "Allow",
@@ -485,7 +460,7 @@
      "rules_to_suppress": [
       {
        "id": "W12",
-       "reason": "The 'LogDelivery' actions do not support resource-level authorizations"
+       "reason": "These are CDK defaults. The 'LogDelivery' actions do not support resource-level authorizations. Any logging is done by State Machine code"
       }
      ]
     }

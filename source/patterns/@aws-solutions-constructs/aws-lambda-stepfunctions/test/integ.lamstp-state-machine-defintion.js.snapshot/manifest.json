@@ -1,19 +1,19 @@
 {
   "version": "36.0.0",
   "artifacts": {
-    "lamstpexistingfunctionIntegDefaultTestDeployAssert68ED3FE4.assets": {
+    "lamstpstatemachinedefintionIntegDefaultTestDeployAssert926FFCBD.assets": {
       "type": "cdk:asset-manifest",
       "properties": {
-        "file": "lamstpexistingfunctionIntegDefaultTestDeployAssert68ED3FE4.assets.json",
+        "file": "lamstpstatemachinedefintionIntegDefaultTestDeployAssert926FFCBD.assets.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
       }
     },
-    "lamstpexistingfunctionIntegDefaultTestDeployAssert68ED3FE4": {
+    "lamstpstatemachinedefintionIntegDefaultTestDeployAssert926FFCBD": {
       "type": "aws:cloudformation:stack",
       "environment": "aws://unknown-account/unknown-region",
       "properties": {
-        "templateFile": "lamstpexistingfunctionIntegDefaultTestDeployAssert68ED3FE4.template.json",
+        "templateFile": "lamstpstatemachinedefintionIntegDefaultTestDeployAssert926FFCBD.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
@@ -22,7 +22,7 @@
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
-          "lamstpexistingfunctionIntegDefaultTestDeployAssert68ED3FE4.assets"
+          "lamstpstatemachinedefintionIntegDefaultTestDeployAssert926FFCBD.assets"
         ],
         "lookupRole": {
           "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
@@ -31,46 +31,46 @@
         }
       },
       "dependencies": [
-        "lamstpexistingfunctionIntegDefaultTestDeployAssert68ED3FE4.assets"
+        "lamstpstatemachinedefintionIntegDefaultTestDeployAssert926FFCBD.assets"
       ],
       "metadata": {
-        "/lamstp-existing-function/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+        "/lamstp-state-machine-defintion/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BootstrapVersion"
           }
         ],
-        "/lamstp-existing-function/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+        "/lamstp-state-machine-defintion/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
         ]
       },
-      "displayName": "lamstp-existing-function/Integ/DefaultTest/DeployAssert"
+      "displayName": "lamstp-state-machine-defintion/Integ/DefaultTest/DeployAssert"
     },
-    "lamstp-existing-function.assets": {
+    "lamstp-state-machine-defintion.assets": {
       "type": "cdk:asset-manifest",
       "properties": {
-        "file": "lamstp-existing-function.assets.json",
+        "file": "lamstp-state-machine-defintion.assets.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
       }
     },
-    "lamstp-existing-function": {
+    "lamstp-state-machine-defintion": {
       "type": "aws:cloudformation:stack",
       "environment": "aws://unknown-account/unknown-region",
       "properties": {
-        "templateFile": "lamstp-existing-function.template.json",
+        "templateFile": "lamstp-state-machine-defintion.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ee5cc6011db359a08ee82fa7f2da099539e4296e68228f43d93cf6b09fecb1d9.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9abc1a527d46abb263a904b246bdc8af0f2efd8615dd28fd6ec36c084ae75019.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
-          "lamstp-existing-function.assets"
+          "lamstp-state-machine-defintion.assets"
         ],
         "lookupRole": {
           "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
@@ -79,83 +79,119 @@
         }
       },
       "dependencies": [
-        "lamstp-existing-function.assets"
+        "lamstp-state-machine-defintion.assets"
       ],
       "metadata": {
-        "/lamstp-existing-function/LambdaFunctionServiceRole/Resource": [
+        "/lamstp-state-machine-defintion/first-functionServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "LambdaFunctionServiceRole0C4CDE0B"
+            "data": "firstfunctionServiceRole0FF7D94B"
           }
         ],
-        "/lamstp-existing-function/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+        "/lamstp-state-machine-defintion/first-functionServiceRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "LambdaFunctionServiceRoleDefaultPolicy126C8897"
+            "data": "firstfunctionServiceRoleDefaultPolicy05FFD222"
           }
         ],
-        "/lamstp-existing-function/LambdaFunction/Resource": [
+        "/lamstp-state-machine-defintion/first-function/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "LambdaFunctionBF21E41F"
+            "data": "firstfunction297AC5AB"
           }
         ],
-        "/lamstp-existing-function/test-lambda-stepfunctions-construct/StateMachineLogGroup/Resource": [
+        "/lamstp-state-machine-defintion/second-functionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondfunctionServiceRole5264DF4C"
+          }
+        ],
+        "/lamstp-state-machine-defintion/second-functionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondfunctionServiceRoleDefaultPolicy02F27461"
+          }
+        ],
+        "/lamstp-state-machine-defintion/second-function/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secondfunctionB2F1D4DD"
+          }
+        ],
+        "/lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/StateMachineLogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdastepfunctionsconstructStateMachineLogGroup1FD4C0D4"
           }
         ],
-        "/lamstp-existing-function/test-lambda-stepfunctions-construct/StateMachine/Role/Resource": [
+        "/lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/StateMachine/Role/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdastepfunctionsconstructStateMachineRoleD2891199"
           }
         ],
-        "/lamstp-existing-function/test-lambda-stepfunctions-construct/StateMachine/Role/DefaultPolicy/Resource": [
+        "/lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/StateMachine/Role/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdastepfunctionsconstructStateMachineRoleDefaultPolicyE8456E47"
           }
         ],
-        "/lamstp-existing-function/test-lambda-stepfunctions-construct/StateMachine/Resource": [
+        "/lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/StateMachine/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdastepfunctionsconstructStateMachineE1526513"
           }
         ],
-        "/lamstp-existing-function/test-lambda-stepfunctions-construct/ExecutionFailedAlarm/Resource": [
+        "/lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsconstructLambdaFunctionServiceRole2D3C3FD0"
+          }
+        ],
+        "/lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsconstructLambdaFunctionServiceRoleDefaultPolicyB6E73348"
+          }
+        ],
+        "/lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsconstructLambdaFunction561377BC"
+          }
+        ],
+        "/lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/ExecutionFailedAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdastepfunctionsconstructExecutionFailedAlarm47C759E2"
           }
         ],
-        "/lamstp-existing-function/test-lambda-stepfunctions-construct/ExecutionThrottledAlarm/Resource": [
+        "/lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/ExecutionThrottledAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdastepfunctionsconstructExecutionThrottledAlarm23275AB5"
           }
         ],
-        "/lamstp-existing-function/test-lambda-stepfunctions-construct/ExecutionAbortedAlarm/Resource": [
+        "/lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/ExecutionAbortedAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdastepfunctionsconstructExecutionAbortedAlarm6DBA2A2E"
           }
         ],
-        "/lamstp-existing-function/BootstrapVersion": [
+        "/lamstp-state-machine-defintion/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BootstrapVersion"
           }
         ],
-        "/lamstp-existing-function/CheckBootstrapVersion": [
+        "/lamstp-state-machine-defintion/CheckBootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
         ]
       },
-      "displayName": "lamstp-existing-function"
+      "displayName": "lamstp-state-machine-defintion"
     },
     "Tree": {
       "type": "cdk:tree",
