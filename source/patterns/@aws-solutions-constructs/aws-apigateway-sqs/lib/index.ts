@@ -169,6 +169,27 @@ export interface ApiGatewayToSqsProps {
    * @default - None
    */
   readonly encryptionKeyProps?: kms.KeyProps;
+  /**
+   * Optional, custom API Gateway path for the GET method.
+   * This property can only be specified if the `allowReadOperation` property is not set to false.
+   *
+   * @default - ""
+   */
+  readonly readRequestPath?: string;
+  /**
+   * Optional, custom API Gateway path for the POST method.
+   * This property can only be specified if the `allowCreateOperation` property is not set to false.
+   *
+   * @default - ""
+   */
+  readonly createRequestPath?: string;
+  /**
+   * Optional, custom API Gateway path for the DELETE method.
+   * This property can only be specif||ied if the `allowDeleteOperation` property is not set to false.
+   *
+   * @default - "message"
+   */
+  readonly deleteRequestPath?: string;
 }
 
 /**
@@ -200,15 +221,15 @@ export class ApiGatewayToSqs extends Construct {
 
     if (this.CheckCreateRequestProps(props)) {
       throw new Error(`The 'allowCreateOperation' property must be set to true when setting any of the following: ` +
-        `'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses'`);
+          `'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses', 'createRequestPath'`);
     }
     if (this.CheckReadRequestProps(props)) {
       throw new Error(`The 'allowReadOperation' property must be set to true or undefined when setting any of the following: ` +
-        `'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'`);
+          `'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses', 'readRequestPath'`);
     }
     if (this.CheckDeleteRequestProps(props)) {
       throw new Error(`The 'allowDeleteOperation' property must be set to true when setting any of the following: ` +
-      `'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'`);
+          `'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses', 'deleteRequestPath'`);
     }
 
     // Setup the dead letter queue, if applicable
@@ -244,13 +265,14 @@ export class ApiGatewayToSqs extends Construct {
     // Create
     const createRequestTemplate = props.createRequestTemplate ?? this.defaultCreateRequestTemplate;
     if (props.allowCreateOperation && props.allowCreateOperation === true) {
+      const apiCreateRequestResource = props.createRequestPath ? this.apiGateway.root.addResource(props.createRequestPath) : this.apiGateway.root;
       this.addActionToPolicy("sqs:SendMessage");
       defaults.addProxyMethodToApiResource({
         service: "sqs",
         path: `${cdk.Aws.ACCOUNT_ID}/${this.sqsQueue.queueName}`,
         apiGatewayRole: this.apiGatewayRole,
         apiMethod: "POST",
-        apiResource: this.apiGateway.root,
+        apiResource: apiCreateRequestResource,
         requestTemplate: createRequestTemplate,
         additionalRequestTemplates: props.additionalCreateRequestTemplates,
         contentType: "'application/x-www-form-urlencoded'",
@@ -261,13 +283,14 @@ export class ApiGatewayToSqs extends Construct {
     // Read
     const readRequestTemplate = props.readRequestTemplate ?? this.defaultReadRequestTemplate;
     if (props.allowReadOperation === undefined || props.allowReadOperation === true) {
+      const apiReadRequestResource = props.readRequestPath ? this.apiGateway.root.addResource(props.readRequestPath) : this.apiGateway.root;
       this.addActionToPolicy("sqs:ReceiveMessage");
       defaults.addProxyMethodToApiResource({
         service: "sqs",
         path: `${cdk.Aws.ACCOUNT_ID}/${this.sqsQueue.queueName}`,
         apiGatewayRole: this.apiGatewayRole,
         apiMethod: "GET",
-        apiResource: this.apiGateway.root,
+        apiResource: apiReadRequestResource,
         requestTemplate: readRequestTemplate,
         additionalRequestTemplates: props.additionalReadRequestTemplates,
         contentType: "'application/x-www-form-urlencoded'",
@@ -278,14 +301,14 @@ export class ApiGatewayToSqs extends Construct {
     // Delete
     const deleteRequestTemplate = props.deleteRequestTemplate ?? this.defaultDeleteRequestTemplate;
     if (props.allowDeleteOperation && props.allowDeleteOperation === true) {
-      const apiGatewayResource = this.apiGateway.root.addResource('message');
+      const apiDeleteRequestResource = this.apiGateway.root.addResource(props.deleteRequestPath ?? 'message');
       this.addActionToPolicy("sqs:DeleteMessage");
       defaults.addProxyMethodToApiResource({
         service: "sqs",
         path: `${cdk.Aws.ACCOUNT_ID}/${this.sqsQueue.queueName}`,
         apiGatewayRole: this.apiGatewayRole,
         apiMethod: "DELETE",
-        apiResource: apiGatewayResource,
+        apiResource: apiDeleteRequestResource,
         requestTemplate: deleteRequestTemplate,
         additionalRequestTemplates: props.additionalDeleteRequestTemplates,
         contentType: "'application/x-www-form-urlencoded'",
@@ -294,14 +317,14 @@ export class ApiGatewayToSqs extends Construct {
     }
   }
   private CheckReadRequestProps(props: ApiGatewayToSqsProps): boolean {
-    if ((props.readRequestTemplate || props.additionalReadRequestTemplates || props.readIntegrationResponses)
+    if ((props.readRequestTemplate || props.additionalReadRequestTemplates || props.readIntegrationResponses || props.readRequestPath)
         && props.allowReadOperation === false) {
       return true;
     }
     return false;
   }
   private CheckDeleteRequestProps(props: ApiGatewayToSqsProps): boolean {
-    if ((props.deleteRequestTemplate || props.additionalDeleteRequestTemplates || props.deleteIntegrationResponses)
+    if ((props.deleteRequestTemplate || props.additionalDeleteRequestTemplates || props.deleteIntegrationResponses || props.deleteRequestPath)
         && props.allowDeleteOperation !== true)  {
       return true;
     }
@@ -309,7 +332,7 @@ export class ApiGatewayToSqs extends Construct {
   }
 
   private CheckCreateRequestProps(props: ApiGatewayToSqsProps): boolean {
-    if ((props.createRequestTemplate || props.additionalCreateRequestTemplates || props.createIntegrationResponses)
+    if ((props.createRequestTemplate || props.additionalCreateRequestTemplates || props.createIntegrationResponses || props.createRequestPath)
         && props.allowCreateOperation !== true) {
       return true;
     }
