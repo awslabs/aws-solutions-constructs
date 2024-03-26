@@ -54,30 +54,32 @@ new OpenApiGatewayToLambda(this, 'OpenApiGatewayToLambda', {
 
 Python
 ``` python
-from aws_solutions_constructs.aws_openapigateway_lambda import ApiGatewayToLambda
 from aws_cdk import (
-    Stack
+    Stack,
+    aws_s3_assets as s3_assets,
+    aws_lambda as lambda_,
 )
-
-import aws_cdk.aws_s3_assets as s3_assets
-import aws_cdk.aws_lambda as lambda_
 from constructs import Construct
-from .api_definition import ApiDefinition
+from aws_solutions_constructs.aws_openapigateway_lambda import OpenApiGatewayToLambda, ApiIntegration
 
-api_definition_asset = s3_assets.Asset(self, "ApiDefinitionAsset",
-  path="openapispec.yaml"
-)
+class TestStack(Stack):
 
-api_integration = ApiDefinition("MessagesHandler", (
-  runtime=lambda_.Runtime.NODEJS_18_X,
-  handler="index.handler",
-  code=lambda_.Code.from_inline("exports.handler = handler.toString()")
-))
+    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+        super().__init__(scope, construct_id, **kwargs)
 
-ApiGatewayToLambda(self, "OpenApiGatewayToLambda",
-  api_definition_asset = api_definition_asset,
-  api_integrations = [ api_integration]
-)
+        api_definition_asset = s3_assets.Asset(self, "ApiDefinitionAsset", path="./openapi/apiDefinition.yaml")
+
+        api_integration = ApiIntegration(id="MessagesHandler", lambda_function_props={
+            "runtime": lambda_.Runtime.NODEJS_18_X,
+            "handler": "index.handler",
+            "code": lambda_.Code.from_asset("./messages-lambda")
+        })
+
+        openapigateway_to_lambda = OpenApiGatewayToLambda(self,
+            id="OpenApiGatewayToLambda",
+            api_integrations=[api_integration],
+            api_definition_asset=api_definition_asset
+        )
 ```
 
 Java
