@@ -4,10 +4,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [2.54.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.54.0...v2.54.1) (2024-04-04)
 
+Built on CDK v2.135.0
 
 ### Bug Fixes
 
 * **openapigateway-to-lambda:** refine python example in README based on deployed code ([#1093](https://github.com/awslabs/aws-solutions-constructs/issues/1093)) ([57738a2](https://github.com/awslabs/aws-solutions-constructs/commit/57738a227fb073188ce1ac1c06c696e03e87bfae))
+
+* **aws-kinesisstreams-kinesisfirehose-s3:** allow later versions of cdk lib by updating peerDependencies ([#1094](https://github.com/awslabs/aws-solutions-constructs/issues/1094)) ([e08903f7f6839e343cd0df207ae80c03c2dcace3](https://github.com/awslabs/aws-solutions-constructs/pull/1095/commits/e08903f7f6839e343cd0df207ae80c03c2dcace3))
 
 ## [2.54.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.53.0...v2.54.0) (2024-02-29)
 
