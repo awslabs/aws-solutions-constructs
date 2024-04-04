@@ -22,7 +22,9 @@
 
 This AWS Solutions Construct implements an Amazon API Gateway REST API defined by an OpenAPI specification file connected to an AWS Lambda function.
 
-Here is a minimal deployable pattern definition:
+Here is a minimal deployable pattern definition. 
+
+**NOTE** The referenced `openapi/apiDefinition.yaml` openapi definition file and `messages-lambda` lambda package directory for the three code samples below can both be found under this constructs `test` folder (`<repository_root>/source/patterns/@aws-solutions-constructs/aws-openapigateway-lambda/test`)
 
 Typescript
 ``` typescript
@@ -34,7 +36,7 @@ import * as path from 'path';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 const apiDefinitionAsset = new Asset(this, 'ApiDefinitionAsset', {
-  path: path.join(__dirname, 'openapispec.yaml')
+  path: path.join(__dirname, 'openapi/apiDefinition.yaml')
 });
 
 new OpenApiGatewayToLambda(this, 'OpenApiGatewayToLambda', {
@@ -54,30 +56,32 @@ new OpenApiGatewayToLambda(this, 'OpenApiGatewayToLambda', {
 
 Python
 ``` python
-from aws_solutions_constructs.aws_openapigateway_lambda import ApiGatewayToLambda
 from aws_cdk import (
-    Stack
+    Stack,
+    aws_s3_assets as s3_assets,
+    aws_lambda as lambda_,
 )
-
-import aws_cdk.aws_s3_assets as s3_assets
-import aws_cdk.aws_lambda as lambda_
 from constructs import Construct
-from .api_definition import ApiDefinition
+from aws_solutions_constructs.aws_openapigateway_lambda import OpenApiGatewayToLambda, ApiIntegration
 
-api_definition_asset = s3_assets.Asset(self, "ApiDefinitionAsset",
-  path="openapispec.yaml"
-)
+class TestStack(Stack):
 
-api_integration = ApiDefinition("MessagesHandler", (
-  runtime=lambda_.Runtime.NODEJS_18_X,
-  handler="index.handler",
-  code=lambda_.Code.from_inline("exports.handler = handler.toString()")
-))
+    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+        super().__init__(scope, construct_id, **kwargs)
 
-ApiGatewayToLambda(self, "OpenApiGatewayToLambda",
-  api_definition_asset = api_definition_asset,
-  api_integrations = [ api_integration]
-)
+        api_definition_asset = s3_assets.Asset(self, "ApiDefinitionAsset", path="./openapi/apiDefinition.yaml")
+
+        api_integration = ApiIntegration(id="MessagesHandler", lambda_function_props={
+            "runtime": lambda_.Runtime.NODEJS_18_X,
+            "handler": "index.handler",
+            "code": lambda_.Code.from_asset("./messages-lambda")
+        })
+
+        openapigateway_to_lambda = OpenApiGatewayToLambda(self,
+            id="OpenApiGatewayToLambda",
+            api_integrations=[api_integration],
+            api_definition_asset=api_definition_asset
+        )
 ```
 
 Java
@@ -97,13 +101,13 @@ import java.util.Collections;
 
 import static software.amazon.awscdk.services.lambda.Runtime.NODEJS_18_X;
 
-final Asset apiDefinitionAsset = new Asset(this, "ApiDefinition", AssetProps.builder().path("openapispec.yaml").build());
+final Asset apiDefinitionAsset = new Asset(this, "ApiDefinition", AssetProps.builder().path("openapi/apiDefinition.yaml").build());
 
 final ApiIntegration apiIntegration = ApiIntegration.builder()
     .id("MessagesHandler")
     .lambdaFunctionProps(new FunctionProps.Builder()
         .runtime(NODEJS_18_X)
-        .code(Code.fromAsset("lambda"))
+        .code(Code.fromAsset("messages-lambda"))
         .handler("index.handler")
         .build())
     .build();
