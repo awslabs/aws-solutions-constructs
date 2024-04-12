@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/14cf304aa246a6004b4c329ba964e9c3394a9d11b1c376fa4d40886d6590e495.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/7fdd1d3c2f19ccc39f555cfef1bca298d0ceb465581088bbf4d4f649184c8268.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -94,10 +94,10 @@
             "data": "testiotsqsstackdeadLetterQueuePolicyD0F4B7D3"
           }
         ],
-        "/iotsqs-use-queue-props/test-iot-sqs-stack/EncryptionKey/Resource": [
+        "/iotsqs-use-queue-props/test-iot-sqs-stack/'queueKey'/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testiotsqsstackEncryptionKeyAB09201B"
+            "data": "testiotsqsstackqueueKey077AA61D"
           }
         ],
         "/iotsqs-use-queue-props/test-iot-sqs-stack/queue": [
@@ -146,6 +146,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testiotsqsstackEncryptionKeyAB09201B": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackEncryptionKeyAB09201B",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

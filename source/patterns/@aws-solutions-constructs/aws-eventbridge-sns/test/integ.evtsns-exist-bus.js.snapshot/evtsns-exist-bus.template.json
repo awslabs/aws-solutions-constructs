@@ -6,7 +6,7 @@
     "Name": "evtsnsexistbusexistingeventbusEAEACB72"
    }
   },
-  "testconstructEncryptionKey6153B053": {
+  "testconstructtestconstructKey1FB48CCA": {
    "Type": "AWS::KMS::Key",
    "Properties": {
     "EnableKeyRotation": true,
@@ -60,7 +60,7 @@
    "Properties": {
     "KmsMasterKeyId": {
      "Fn::GetAtt": [
-      "testconstructEncryptionKey6153B053",
+      "testconstructtestconstructKey1FB48CCA",
       "Arn"
      ]
     }

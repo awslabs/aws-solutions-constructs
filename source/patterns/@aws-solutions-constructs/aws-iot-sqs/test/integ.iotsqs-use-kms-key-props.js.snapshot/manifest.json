@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c852f21bd9d311a8af41f61d8efbbccc6bc1c1903e5b8ad27951a141189aa5a0.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8a6a1dd419bec167f76681aa4737672b4e7552a26d67c990e512393bef3ac357.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -94,16 +94,16 @@
             "data": "testiotsqsstackdeadLetterQueuePolicyD0F4B7D3"
           }
         ],
-        "/iotsqs-use-kms-key-props/test-iot-sqs-stack/EncryptionKey/Resource": [
+        "/iotsqs-use-kms-key-props/test-iot-sqs-stack/'queueKey'/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testiotsqsstackEncryptionKeyAB09201B"
+            "data": "testiotsqsstackqueueKey077AA61D"
           }
         ],
-        "/iotsqs-use-kms-key-props/test-iot-sqs-stack/EncryptionKey/Alias/Resource": [
+        "/iotsqs-use-kms-key-props/test-iot-sqs-stack/'queueKey'/Alias/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testiotsqsstackEncryptionKeyAlias45D0FE2E"
+            "data": "testiotsqsstackqueueKeyAliasB4280862"
           }
         ],
         "/iotsqs-use-kms-key-props/test-iot-sqs-stack/queue": [
@@ -152,6 +152,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testiotsqsstackEncryptionKeyAB09201B": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackEncryptionKeyAB09201B",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testiotsqsstackEncryptionKeyAlias45D0FE2E": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackEncryptionKeyAlias45D0FE2E",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

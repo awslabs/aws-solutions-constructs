@@ -500,7 +500,7 @@
     ]
    }
   },
-  "tests3sqsEncryptionKeyFD4D5946": {
+  "tests3sqsqueueKey27AABDC5": {
    "Type": "AWS::KMS::Key",
    "Properties": {
     "EnableKeyRotation": true,
@@ -575,7 +575,7 @@
    "Properties": {
     "KmsMasterKeyId": {
      "Fn::GetAtt": [
-      "tests3sqsEncryptionKeyFD4D5946",
+      "tests3sqsqueueKey27AABDC5",
       "Arn"
      ]
     },

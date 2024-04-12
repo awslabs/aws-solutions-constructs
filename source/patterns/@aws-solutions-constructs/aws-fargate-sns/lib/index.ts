@@ -185,7 +185,7 @@ export class FargateToSns extends Construct {
     }
 
     // Setup the SNS topic
-    const buildTopicResponse = defaults.buildTopic(this, {
+    const buildTopicResponse = defaults.buildTopic(this, id, {
       existingTopicObj: props.existingTopicObject,
       topicProps: props.topicProps,
       enableEncryptionWithCustomerManagedKey: props.enableEncryptionWithCustomerManagedKey,

@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6072ad2aa5aa15fc49fb7ffe7444bee04cf91ca14a27a46ce6cababdd839a1f7.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f1af5c48fe8513b952ac452e3275c1c0373b0efdebbace57a242af454fb2937f.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -124,10 +124,10 @@
             "data": "tests3snsS3BucketNotificationsFCF8E340"
           }
         ],
-        "/s3sns-s3EventTypesAndFilters/test-s3-sns/EncryptionKey/Resource": [
+        "/s3sns-s3EventTypesAndFilters/test-s3-sns/'test-s3-snsKey'/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "tests3snsEncryptionKey6C553584"
+            "data": "tests3snstests3snsKey1D741F34"
           }
         ],
         "/s3sns-s3EventTypesAndFilters/test-s3-sns/SnsTopic/Resource": [
@@ -182,6 +182,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "tests3snsEncryptionKey6C553584": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3snsEncryptionKey6C553584",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

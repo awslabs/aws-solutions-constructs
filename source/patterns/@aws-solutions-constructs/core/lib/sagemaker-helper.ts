@@ -230,6 +230,7 @@ export interface BuildSagemakerNotebookResponse {
  */
 export function buildSagemakerNotebook(
   scope: Construct,
+  id: string,
   props: BuildSagemakerNotebookProps
 ): BuildSagemakerNotebookResponse {
   // Setup the notebook properties
@@ -251,7 +252,7 @@ export function buildSagemakerNotebook(
   addPermissions(props.role);
 
   if (props.sagemakerNotebookProps?.kmsKeyId === undefined) {
-    kmsKeyId = buildEncryptionKey(scope).keyId;
+    kmsKeyId = buildEncryptionKey(scope,  id).keyId;
   } else {
     kmsKeyId = props.sagemakerNotebookProps.kmsKeyId;
   }
@@ -367,12 +368,13 @@ export interface BuildSagemakerEndpointResponse {
  */
 export function BuildSagemakerEndpoint(
   scope: Construct,
+  id: string,
   props: BuildSagemakerEndpointProps
 ): BuildSagemakerEndpointResponse {
   /** Conditional Sagemaker endpoint creation */
   if (!props.existingSagemakerEndpointObj) {
     if (props.modelProps) {
-      const deploySagemakerEndpointResponse = deploySagemakerEndpoint(scope, props);
+      const deploySagemakerEndpointResponse = deploySagemakerEndpoint(scope, id, props);
       return { ...deploySagemakerEndpointResponse };
     } else {
       throw Error('Either existingSagemakerEndpointObj or at least modelProps is required');
@@ -394,6 +396,7 @@ export interface DeploySagemakerEndpointResponse {
  */
 export function deploySagemakerEndpoint(
   scope: Construct,
+  id: string,
   props: BuildSagemakerEndpointProps
 ): DeploySagemakerEndpointResponse {
   let model: sagemaker.CfnModel;
@@ -422,7 +425,7 @@ export function deploySagemakerEndpoint(
     // Create Sagemaker Model
     model = createSagemakerModel(scope, props.modelProps, sagemakerRole, props.vpc);
     // Create Sagemaker EndpointConfig
-    endpointConfig = createSagemakerEndpointConfig(scope, model.attrModelName, props.endpointConfigProps);
+    endpointConfig = createSagemakerEndpointConfig(scope, `${id}`, model.attrModelName, props.endpointConfigProps);
     // Add dependency on model
     endpointConfig.addDependency(model);
     // Create Sagemaker Endpoint
@@ -508,6 +511,7 @@ export function createSagemakerModel(
  */
 export function createSagemakerEndpointConfig(
   scope: Construct,
+  id: string,
   modelName: string,
   endpointConfigProps?: sagemaker.CfnEndpointConfigProps
 ): sagemaker.CfnEndpointConfig {
@@ -519,7 +523,7 @@ export function createSagemakerEndpointConfig(
   if (endpointConfigProps && endpointConfigProps.kmsKeyId) {
     kmsKeyId = endpointConfigProps.kmsKeyId;
   } else {
-    kmsKeyId = buildEncryptionKey(scope).keyId;
+    kmsKeyId = buildEncryptionKey(scope, id).keyId;
   }
 
   // Overwrite default EndpointConfig properties

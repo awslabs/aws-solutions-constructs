@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/32809a976867bad5005b318c13bff642ad7289b128f0c1d3b1a0f63e56974529.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9f15cd399d6f02627acbc8a7614442a9aae8dc8c3d422afbb7d29ae80c0a4cf0.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -112,10 +112,10 @@
             "data": "testlambdasqsdeadLetterQueuePolicy270F1626"
           }
         ],
-        "/lamsqs-useCmk/test-lambda-sqs/EncryptionKey/Resource": [
+        "/lamsqs-useCmk/test-lambda-sqs/'queueKey'/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasqsEncryptionKeyDAAFCB9F"
+            "data": "testlambdasqsqueueKey37A590CE"
           }
         ],
         "/lamsqs-useCmk/test-lambda-sqs/queue": [
@@ -146,6 +146,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testlambdasqsEncryptionKeyDAAFCB9F": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqsEncryptionKeyDAAFCB9F",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

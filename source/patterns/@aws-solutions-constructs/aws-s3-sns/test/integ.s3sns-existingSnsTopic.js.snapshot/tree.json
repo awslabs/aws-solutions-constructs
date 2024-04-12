@@ -8,13 +8,13 @@
         "id": "s3sns-existingSnsTopic",
         "path": "s3sns-existingSnsTopic",
         "children": {
-          "EncryptionKey": {
-            "id": "EncryptionKey",
-            "path": "s3sns-existingSnsTopic/EncryptionKey",
+          "'testKey'": {
+            "id": "'testKey'",
+            "path": "s3sns-existingSnsTopic/'testKey'",
             "children": {
               "Resource": {
                 "id": "Resource",
-                "path": "s3sns-existingSnsTopic/EncryptionKey/Resource",
+                "path": "s3sns-existingSnsTopic/'testKey'/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::KMS::Key",
                   "aws:cdk:cloudformation:props": {
@@ -83,7 +83,7 @@
                   "aws:cdk:cloudformation:props": {
                     "kmsMasterKeyId": {
                       "Fn::GetAtt": [
-                        "EncryptionKey1B843E66",
+                        "testKey2C00E5E5",
                         "Arn"
                       ]
                     }

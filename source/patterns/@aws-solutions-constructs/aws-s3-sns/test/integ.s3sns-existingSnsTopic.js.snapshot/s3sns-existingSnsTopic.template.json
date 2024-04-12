@@ -1,6 +1,6 @@
 {
  "Resources": {
-  "EncryptionKey1B843E66": {
+  "testKey2C00E5E5": {
    "Type": "AWS::KMS::Key",
    "Properties": {
     "EnableKeyRotation": true,
@@ -52,7 +52,7 @@
    "Properties": {
     "KmsMasterKeyId": {
      "Fn::GetAtt": [
-      "EncryptionKey1B843E66",
+      "testKey2C00E5E5",
       "Arn"
      ]
     }

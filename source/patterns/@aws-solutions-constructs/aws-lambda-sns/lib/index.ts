@@ -139,7 +139,7 @@ export class LambdaToSns extends Construct {
       });
 
       // Setup the SNS topic
-      const buildTopicResponse = defaults.buildTopic(this, {
+      const buildTopicResponse = defaults.buildTopic(this, id, {
         existingTopicObj: props.existingTopicObj,
         topicProps: props.topicProps,
         enableEncryptionWithCustomerManagedKey: props.enableEncryptionWithCustomerManagedKey,

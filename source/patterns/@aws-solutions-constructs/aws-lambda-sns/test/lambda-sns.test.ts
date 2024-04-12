@@ -431,7 +431,7 @@ test('Topic is encrypted with provided encryptionKeyProps', () => {
   template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       'Fn::GetAtt': [
-        'testconstructEncryptionKey6153B053',
+        'testconstructtestconstructKey1FB48CCA',
         'Arn'
       ]
     },
@@ -441,7 +441,7 @@ test('Topic is encrypted with provided encryptionKeyProps', () => {
     AliasName: 'alias/new-key-alias-from-props',
     TargetKeyId: {
       'Fn::GetAtt': [
-        'testconstructEncryptionKey6153B053',
+        'testconstructtestconstructKey1FB48CCA',
         'Arn'
       ]
     }
@@ -506,7 +506,7 @@ test('Topic is encrypted with customer managed KMS Key when enable encryption fl
   template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       'Fn::GetAtt': [
-        'testconstructEncryptionKey6153B053',
+        'testconstructtestconstructKey1FB48CCA',
         'Arn'
       ]
     },

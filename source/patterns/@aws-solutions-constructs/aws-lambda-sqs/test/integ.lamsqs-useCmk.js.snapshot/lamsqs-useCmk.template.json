@@ -93,7 +93,7 @@
        "Effect": "Allow",
        "Resource": {
         "Fn::GetAtt": [
-         "testlambdasqsEncryptionKeyDAAFCB9F",
+         "testlambdasqsqueueKey37A590CE",
          "Arn"
         ]
        }
@@ -250,7 +250,7 @@
     ]
    }
   },
-  "testlambdasqsEncryptionKeyDAAFCB9F": {
+  "testlambdasqsqueueKey37A590CE": {
    "Type": "AWS::KMS::Key",
    "Properties": {
     "EnableKeyRotation": true,
@@ -291,7 +291,7 @@
    "Properties": {
     "KmsMasterKeyId": {
      "Fn::GetAtt": [
-      "testlambdasqsEncryptionKeyDAAFCB9F",
+      "testlambdasqsqueueKey37A590CE",
       "Arn"
      ]
     },

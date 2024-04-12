@@ -80,7 +80,7 @@
     ]
    }
   },
-  "testiotsqsstackEncryptionKeyAB09201B": {
+  "testiotsqsstackqueueKey077AA61D": {
    "Type": "AWS::KMS::Key",
    "Properties": {
     "EnableKeyRotation": true,
@@ -142,13 +142,13 @@
    "UpdateReplacePolicy": "Retain",
    "DeletionPolicy": "Retain"
   },
-  "testiotsqsstackEncryptionKeyAlias45D0FE2E": {
+  "testiotsqsstackqueueKeyAliasB4280862": {
    "Type": "AWS::KMS::Alias",
    "Properties": {
     "AliasName": "alias/new-key-alias-from-props",
     "TargetKeyId": {
      "Fn::GetAtt": [
-      "testiotsqsstackEncryptionKeyAB09201B",
+      "testiotsqsstackqueueKey077AA61D",
       "Arn"
      ]
     }
@@ -159,7 +159,7 @@
    "Properties": {
     "KmsMasterKeyId": {
      "Fn::GetAtt": [
-      "testiotsqsstackEncryptionKeyAB09201B",
+      "testiotsqsstackqueueKey077AA61D",
       "Arn"
      ]
     },
@@ -293,7 +293,7 @@
        "Effect": "Allow",
        "Resource": {
         "Fn::GetAtt": [
-         "testiotsqsstackEncryptionKeyAB09201B",
+         "testiotsqsstackqueueKey077AA61D",
          "Arn"
         ]
        }

@@ -1,7 +1,7 @@
 {
   "version": "36.0.0",
   "files": {
-    "110d5034e5f4b467291448d9e01ef01321432f181fa42bd2b3f67c1d0f895d6b": {
+    "230982447f4c4bb2ebce07ba3a5aa73b5a03964bd0a51838283e40220f712d5a": {
       "source": {
         "path": "evtsqs-new-bus.template.json",
         "packaging": "file"
@@ -9,7 +9,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "110d5034e5f4b467291448d9e01ef01321432f181fa42bd2b3f67c1d0f895d6b.json",
+          "objectKey": "230982447f4c4bb2ebce07ba3a5aa73b5a03964bd0a51838283e40220f712d5a.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

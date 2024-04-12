@@ -134,13 +134,13 @@ export class SnsToSqs extends Construct {
         enableEncryptionParam = true;
         // Create the encryptionKey if none was provided
         if (!props.encryptionKey) {
-          encryptionKeyParam = buildEncryptionKey(scope, props.encryptionKeyProps);
+          encryptionKeyParam = buildEncryptionKey(scope, id, props.encryptionKeyProps);
         }
       }
       // Setup the SNS topic
       if (!props.existingTopicObj) {
         // If an existingTopicObj was not specified create new topic
-        const buildTopicResponse = defaults.buildTopic(this, {
+        const buildTopicResponse = defaults.buildTopic(this, id, {
           topicProps: props.topicProps,
           enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
           encryptionKey: encryptionKeyParam
