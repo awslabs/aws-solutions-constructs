@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/93ea0ee9e9630296a0342ec7c2317f5008162745a46818f454a71db14d978d6c.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/944b4cffd7e94b787f623853f3fdacfaac7f61c694e2356785012757e7bf776d.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -118,10 +118,10 @@
             "data": "tests3snsS3BucketNotificationsFCF8E340"
           }
         ],
-        "/s3sns-customLoggingBucket/test-s3-sns/EncryptionKey/Resource": [
+        "/s3sns-customLoggingBucket/test-s3-sns/'test-s3-snsKey'/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "tests3snsEncryptionKey6C553584"
+            "data": "tests3snstests3snsKey1D741F34"
           }
         ],
         "/s3sns-customLoggingBucket/test-s3-sns/SnsTopic/Resource": [
@@ -176,6 +176,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "tests3snsEncryptionKey6C553584": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3snsEncryptionKey6C553584",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

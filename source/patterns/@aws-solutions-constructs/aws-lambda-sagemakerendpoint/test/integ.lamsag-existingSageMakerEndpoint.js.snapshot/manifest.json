@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/23bc9581ff80cb00aefd94df87855ad3fa92b07b0291e84c37c4e16cdbd6e130.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f01bf77bf7fc43e5afb8bf0024066fbfce2e9128bcb925a7f22bc0094094762e.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -106,16 +106,19 @@
             "data": "SagemakerModel"
           }
         ],
-        "/lamsag-existingSageMakerEndpoint/EncryptionKey/Resource": [
+        "/lamsag-existingSageMakerEndpoint/'testKey'/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "EncryptionKey1B843E66"
+            "data": "testKey2C00E5E5"
           }
         ],
         "/lamsag-existingSageMakerEndpoint/SagemakerEndpointConfig": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "SagemakerEndpointConfig"
+            "data": "SagemakerEndpointConfig",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_REPLACE"
+            ]
           }
         ],
         "/lamsag-existingSageMakerEndpoint/SagemakerEndpoint": [
@@ -152,6 +155,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "EncryptionKey1B843E66": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EncryptionKey1B843E66",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

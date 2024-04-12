@@ -70,10 +70,10 @@ test('construct uses existingBucketObj property', () => {
 
 test('construct uses existing topic and key', () => {
   const stack = new Stack();
-  const cmk = defaults.buildEncryptionKey(stack, {
+  const cmk = defaults.buildEncryptionKey(stack, 'test', {
     description: 'existing-key-description'
   });
-  const buildTopicResponse = defaults.buildTopic(stack, {
+  const buildTopicResponse = defaults.buildTopic(stack, 'test', {
     encryptionKey: cmk,
     topicProps: {
       topicName: 'existing-topic-name'
@@ -146,7 +146,7 @@ test('construct uses specific event types and filters', () => {
 
 test('Topic is encrypted with imported CMK when set on encryptionKey prop', () => {
   const stack = new Stack();
-  const cmk = defaults.buildEncryptionKey(stack, {
+  const cmk = defaults.buildEncryptionKey(stack, 'test', {
     description: 'existing-key-description'
   });
   new S3ToSns(stack, 'test-s3-sns', {
@@ -169,7 +169,7 @@ test('Topic is encrypted with provided encryptionKeyProps', () => {
 
 test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop', () => {
   const stack = new Stack();
-  const cmk = defaults.buildEncryptionKey(stack, {
+  const cmk = defaults.buildEncryptionKey(stack, 'test', {
     description: 'existing-key-description'
   });
   new S3ToSns(stack, 'test-s3-sns', {
@@ -190,7 +190,7 @@ test('Topic is encrypted by default with Customer-managed KMS key when no other 
   template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "tests3snsEncryptionKey6C553584",
+        "tests3snstests3snsKey1D741F34",
         "Arn"
       ]
     }

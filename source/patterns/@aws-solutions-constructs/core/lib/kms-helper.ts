@@ -25,7 +25,7 @@ import { Construct } from 'constructs';
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function buildEncryptionKey(scope: Construct, keyProps?: kms.KeyProps): kms.Key {
+export function buildEncryptionKey(scope: Construct, id: string, keyProps?: kms.KeyProps): kms.Key {
   // Setup the key properties
   let encryptionKeyProps;
 
@@ -33,5 +33,5 @@ export function buildEncryptionKey(scope: Construct, keyProps?: kms.KeyProps): k
   encryptionKeyProps = consolidateProps(DefaultEncryptionProps, keyProps);
 
   // Create the encryption key and return
-  return new kms.Key(scope, 'EncryptionKey', encryptionKeyProps);
+  return new kms.Key(scope, `'${id}Key'`, encryptionKeyProps);
 }

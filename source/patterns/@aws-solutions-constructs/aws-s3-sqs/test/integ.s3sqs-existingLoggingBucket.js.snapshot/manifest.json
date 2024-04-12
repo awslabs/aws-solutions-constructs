@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ccd43bdc423afa78f46a2b4be6f2495f3b9f8afc7565ade04c3404e5554fa9aa.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d0ab375d516b11abd4d39332af9bcf42faf443fcbb20fcfdc37972c120910686.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -166,10 +166,10 @@
             "data": "tests3sqstempdeadLetterQueuePolicy56962C75"
           }
         ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/EncryptionKey/Resource": [
+        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/'queueKey'/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "tests3sqstempEncryptionKey57CC85E2"
+            "data": "tests3sqstempqueueKeyC7A07658"
           }
         ],
         "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue": [
@@ -218,6 +218,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "tests3sqstempEncryptionKey57CC85E2": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3sqstempEncryptionKey57CC85E2",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

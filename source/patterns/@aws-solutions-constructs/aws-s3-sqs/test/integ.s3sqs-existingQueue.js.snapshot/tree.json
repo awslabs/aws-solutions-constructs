@@ -8,13 +8,13 @@
         "id": "s3sqs-existingQueue",
         "path": "s3sqs-existingQueue",
         "children": {
-          "EncryptionKey": {
-            "id": "EncryptionKey",
-            "path": "s3sqs-existingQueue/EncryptionKey",
+          "'test-existing-queueKey'": {
+            "id": "'test-existing-queueKey'",
+            "path": "s3sqs-existingQueue/'test-existing-queueKey'",
             "children": {
               "Resource": {
                 "id": "Resource",
-                "path": "s3sqs-existingQueue/EncryptionKey/Resource",
+                "path": "s3sqs-existingQueue/'test-existing-queueKey'/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::KMS::Key",
                   "aws:cdk:cloudformation:props": {
@@ -106,7 +106,7 @@
                   "aws:cdk:cloudformation:props": {
                     "kmsMasterKeyId": {
                       "Fn::GetAtt": [
-                        "EncryptionKey1B843E66",
+                        "testexistingqueueKey84D97AF0",
                         "Arn"
                       ]
                     }

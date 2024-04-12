@@ -381,7 +381,7 @@
     "tests3snsSnsTopicF02F6BD0"
    ]
   },
-  "tests3snsEncryptionKey6C553584": {
+  "tests3snstests3snsKey1D741F34": {
    "Type": "AWS::KMS::Key",
    "Properties": {
     "EnableKeyRotation": true,
@@ -433,7 +433,7 @@
    "Properties": {
     "KmsMasterKeyId": {
      "Fn::GetAtt": [
-      "tests3snsEncryptionKey6C553584",
+      "tests3snstests3snsKey1D741F34",
       "Arn"
      ]
     }

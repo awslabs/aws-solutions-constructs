@@ -12,13 +12,13 @@
             "id": "test-construct",
             "path": "evtsns-new-bus/test-construct",
             "children": {
-              "EncryptionKey": {
-                "id": "EncryptionKey",
-                "path": "evtsns-new-bus/test-construct/EncryptionKey",
+              "'test-constructKey'": {
+                "id": "'test-constructKey'",
+                "path": "evtsns-new-bus/test-construct/'test-constructKey'",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "evtsns-new-bus/test-construct/EncryptionKey/Resource",
+                    "path": "evtsns-new-bus/test-construct/'test-constructKey'/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::KMS::Key",
                       "aws:cdk:cloudformation:props": {
@@ -68,13 +68,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_kms.CfnKey",
-                      "version": "2.118.0"
+                      "version": "2.135.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_kms.Key",
-                  "version": "2.118.0"
+                  "version": "2.135.0"
                 }
               },
               "SnsTopic": {
@@ -89,7 +89,7 @@
                       "aws:cdk:cloudformation:props": {
                         "kmsMasterKeyId": {
                           "Fn::GetAtt": [
-                            "testconstructEncryptionKey6153B053",
+                            "testconstructtestconstructKey1FB48CCA",
                             "Arn"
                           ]
                         }
@@ -97,7 +97,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sns.CfnTopic",
-                      "version": "2.118.0"
+                      "version": "2.135.0"
                     }
                   },
                   "Policy": {
@@ -204,19 +204,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_sns.CfnTopicPolicy",
-                          "version": "2.118.0"
+                          "version": "2.135.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sns.TopicPolicy",
-                      "version": "2.118.0"
+                      "version": "2.135.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_sns.Topic",
-                  "version": "2.118.0"
+                  "version": "2.135.0"
                 }
               },
               "CustomEventBus": {
@@ -234,13 +234,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_events.CfnEventBus",
-                      "version": "2.118.0"
+                      "version": "2.135.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_events.EventBus",
-                  "version": "2.118.0"
+                  "version": "2.135.0"
                 }
               },
               "EventsRule": {
@@ -294,19 +294,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_events.CfnRule",
-                      "version": "2.118.0"
+                      "version": "2.135.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_events.Rule",
-                  "version": "2.118.0"
+                  "version": "2.135.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-eventbridge-sns.EventbridgeToSns",
-              "version": "2.50.0"
+              "version": "2.54.1"
             }
           },
           "Integ": {
@@ -322,7 +322,7 @@
                     "path": "evtsns-new-bus/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
-                      "version": "10.0.0"
+                      "version": "10.3.0"
                     }
                   },
                   "DeployAssert": {
@@ -334,7 +334,7 @@
                         "path": "evtsns-new-bus/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.118.0"
+                          "version": "2.135.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -342,25 +342,25 @@
                         "path": "evtsns-new-bus/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.118.0"
+                          "version": "2.135.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.118.0"
+                      "version": "2.135.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.118.0-alpha.0"
+                  "version": "2.135.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.118.0-alpha.0"
+              "version": "2.135.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -368,7 +368,7 @@
             "path": "evtsns-new-bus/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.118.0"
+              "version": "2.135.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -376,13 +376,13 @@
             "path": "evtsns-new-bus/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.118.0"
+              "version": "2.135.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.118.0"
+          "version": "2.135.0"
         }
       },
       "Tree": {
@@ -390,13 +390,13 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.0.0"
+          "version": "10.3.0"
         }
       }
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.118.0"
+      "version": "2.135.0"
     }
   }
 }

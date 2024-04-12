@@ -27,7 +27,7 @@ test('Test deployment with VPC', () => {
   });
 
   // Build Sagemaker Notebook Instance
-  const buildSagemakerNotebookResponse = defaults.buildSagemakerNotebook(stack, {
+  const buildSagemakerNotebookResponse = defaults.buildSagemakerNotebook(stack, 'test', {
     role: sagemakerRole,
   });
   // Assertion
@@ -45,7 +45,7 @@ test('Test deployment without VPC', () => {
   });
 
   // Build Sagemaker Notebook Instance
-  const buildSagemakerNotebookResponse = defaults.buildSagemakerNotebook(stack, {
+  const buildSagemakerNotebookResponse = defaults.buildSagemakerNotebook(stack, 'test', {
     role: sagemakerRole,
     deployInsideVpc: false,
   });
@@ -62,7 +62,7 @@ test('Test deployment w/ existing VPC', () => {
     assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
   });
   // Build Sagemaker Notebook Instance
-  const buildSagemakerNotebookResponse = defaults.buildSagemakerNotebook(stack, {
+  const buildSagemakerNotebookResponse = defaults.buildSagemakerNotebook(stack, 'test', {
     role: sagemakerRole,
     deployInsideVpc: true,
     sagemakerNotebookProps: {
@@ -90,7 +90,7 @@ test('Test default values encrypt notebook', () => {
   });
 
   // Build Sagemaker Notebook Instance
-  defaults.buildSagemakerNotebook(stack, {
+  defaults.buildSagemakerNotebook(stack, 'test', {
     role: sagemakerRole,
     deployInsideVpc: false,
   });
@@ -98,7 +98,7 @@ test('Test default values encrypt notebook', () => {
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::SageMaker::NotebookInstance', {
     KmsKeyId: {
-      Ref: "EncryptionKey1B843E66"
+      Ref: "testKey2C00E5E5"
     },
   });
 });
@@ -111,7 +111,7 @@ test('Test deployment w/ override', () => {
   });
   const key = new kms.Key(stack, 'MyEncryptionKey');
   // Build Sagemaker Notebook Instance
-  defaults.buildSagemakerNotebook(stack, {
+  defaults.buildSagemakerNotebook(stack, 'test', {
     role: sagemakerRole,
     sagemakerNotebookProps: {
       instanceType: 'ml.c4.2xlarge',
@@ -136,7 +136,7 @@ test('Test exception', () => {
 
   expect(() => {
     // Build Sagemaker Notebook Instance
-    defaults.buildSagemakerNotebook(stack, {
+    defaults.buildSagemakerNotebook(stack, 'test', {
       role: sagemakerRole,
       deployInsideVpc: true,
       sagemakerNotebookProps: {
@@ -152,7 +152,7 @@ test('Test exception for not providing primaryContainer in modelProps', () => {
 
   const app = () => {
     // Build Sagemaker Inference Endpoint
-    defaults.BuildSagemakerEndpoint(stack, {
+    defaults.BuildSagemakerEndpoint(stack, 'test', {
       modelProps: {},
     });
   };
@@ -174,7 +174,7 @@ test('Test exception for not providing modelProps', () => {
 
   const app = () => {
     // Build Sagemaker Inference Endpoint
-    defaults.deploySagemakerEndpoint(stack, { vpc });
+    defaults.deploySagemakerEndpoint(stack, 'test',  { vpc });
   };
   // Assertion 1
   expect(app).toThrowError();
@@ -194,7 +194,7 @@ test('Test exception for not providing modelProps or existingSagemkaerObj', () =
 
   const app = () => {
     // Build Sagemaker Inference Endpoint
-    defaults.BuildSagemakerEndpoint(stack, { vpc });
+    defaults.BuildSagemakerEndpoint(stack, 'test', { vpc });
   };
   // Assertion 1
   expect(app).toThrowError();
@@ -225,7 +225,7 @@ test('Test exception for not providing private or isolated subnets in an existin
 
   const app = () => {
     // Build Sagemaker Inference Endpoint
-    defaults.deploySagemakerEndpoint(stack, {
+    defaults.deploySagemakerEndpoint(stack, 'test', {
       modelProps: {
         primaryContainer: {
           image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
@@ -253,7 +253,7 @@ test('Test fail SageMaker endpoint check', () => {
     },
   };
 
-  const buildSagemakerEndpointResponse = BuildSagemakerEndpoint(stack, { modelProps });
+  const buildSagemakerEndpointResponse = BuildSagemakerEndpoint(stack, 'test', { modelProps });
 
   const props: defaults.SagemakerProps = {
     existingSagemakerEndpointObj: buildSagemakerEndpointResponse.endpoint,

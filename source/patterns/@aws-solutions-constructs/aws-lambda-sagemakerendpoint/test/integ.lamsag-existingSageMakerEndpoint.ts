@@ -27,7 +27,7 @@ stack.templateOptions.description = 'Integration Test for aws-lambda-sagemakeren
 
 const getSagemakerModelResponse = getSagemakerModel(stack);
 
-const deploySagemakerEndpointResponse = defaults.deploySagemakerEndpoint(stack, {
+const deploySagemakerEndpointResponse = defaults.deploySagemakerEndpoint(stack, 'test', {
   modelProps: {
     primaryContainer: {
       image: getSagemakerModelResponse.mapping.findInMap(Stack.of(stack).region, "containerArn"),

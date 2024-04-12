@@ -690,7 +690,7 @@
     ]
    }
   },
-  "tests3sqstempEncryptionKey57CC85E2": {
+  "tests3sqstempqueueKeyC7A07658": {
    "Type": "AWS::KMS::Key",
    "Properties": {
     "EnableKeyRotation": true,
@@ -765,7 +765,7 @@
    "Properties": {
     "KmsMasterKeyId": {
      "Fn::GetAtt": [
-      "tests3sqstempEncryptionKey57CC85E2",
+      "tests3sqstempqueueKeyC7A07658",
       "Arn"
      ]
     },

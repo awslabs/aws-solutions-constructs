@@ -98,7 +98,7 @@ export class EventbridgeToSns extends Construct {
       }
 
       // Setup the sns topic.
-      const buildTopicResponse = defaults.buildTopic(this, {
+      const buildTopicResponse = defaults.buildTopic(this, id, {
         existingTopicObj: props.existingTopicObj,
         topicProps: props.topicProps,
         enableEncryptionWithCustomerManagedKey: enableEncryptionParam,

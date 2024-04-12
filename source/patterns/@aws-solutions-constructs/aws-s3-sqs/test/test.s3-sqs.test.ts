@@ -188,7 +188,7 @@ test('Test deployment w/ SSE encryption enabled using customer managed KMS CMK',
   template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "tests3sqsEncryptionKeyFD4D5946",
+        "tests3sqsqueueKey27AABDC5",
         "Arn"
       ]
     }
@@ -292,7 +292,7 @@ test('Queue is encrypted with provided encryptionKeyProps', () => {
   template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "tests3sqsEncryptionKeyFD4D5946",
+        "tests3sqsqueueKey27AABDC5",
         "Arn"
       ]
     }
@@ -302,7 +302,7 @@ test('Queue is encrypted with provided encryptionKeyProps', () => {
     AliasName: 'alias/new-key-alias-from-props',
     TargetKeyId: {
       "Fn::GetAtt": [
-        "tests3sqsEncryptionKeyFD4D5946",
+        "tests3sqsqueueKey27AABDC5",
         "Arn"
       ]
     }
@@ -338,7 +338,7 @@ test('Queue is encrypted by default with Customer-managed KMS key when no other 
   template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "tests3sqsEncryptionKeyFD4D5946",
+        "tests3sqsqueueKey27AABDC5",
         "Arn"
       ]
     }
