@@ -333,7 +333,7 @@
     "SagemakerRole5FDB64E1"
    ]
   },
-  "EncryptionKey1B843E66": {
+  "testKey2C00E5E5": {
    "Type": "AWS::KMS::Key",
    "Properties": {
     "EnableKeyRotation": true,
@@ -373,7 +373,7 @@
    "Type": "AWS::SageMaker::EndpointConfig",
    "Properties": {
     "KmsKeyId": {
-     "Ref": "EncryptionKey1B843E66"
+     "Ref": "testKey2C00E5E5"
     },
     "ProductionVariants": [
      {

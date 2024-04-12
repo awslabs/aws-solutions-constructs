@@ -37,7 +37,7 @@ test('Test deployment w/ custom properties', () => {
   // Stack
   const stack = new Stack();
   // Helper setup
-  const encKey = defaults.buildEncryptionKey(stack);
+  const encKey = defaults.buildEncryptionKey(stack, 'key-test');
   // Helper declaration
   defaults.buildKinesisStream(stack, {
     kinesisStreamProps: {

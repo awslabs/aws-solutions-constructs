@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/eb9f72639c274ae2e85626afd2172315d096681c914f6a57d5a192e07a2fa009.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5c8ca01207d193c2396db5103fa5311586a144b9d42960137a0f44921d1f19bf.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -148,10 +148,10 @@
             "data": "testsnssqsstackqueuesnssqsrawMessageDeliverytestsnssqsstackSnsTopic3172B66321A5F373"
           }
         ],
-        "/snssqs-rawMessageDelivery/EncryptionKey/Resource": [
+        "/snssqs-rawMessageDelivery/'test-sns-sqs-stackKey'/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "EncryptionKey1B843E66"
+            "data": "testsnssqsstackKeyCECC9471"
           }
         ],
         "/snssqs-rawMessageDelivery/BootstrapVersion": [
@@ -164,6 +164,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "EncryptionKey1B843E66": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EncryptionKey1B843E66",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

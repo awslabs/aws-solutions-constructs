@@ -39,7 +39,7 @@ test('Pattern deployment with default props', () => {
   template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "testiotsqsEncryptionKey64EE64B1",
+        "testiotsqsqueueKeyC5935B79",
         "Arn"
       ]
     }
@@ -434,7 +434,7 @@ test('Pattern deployment passing KMS key props', () => {
   template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "testiotsqsEncryptionKey64EE64B1",
+        "testiotsqsqueueKeyC5935B79",
         "Arn"
       ]
     }
@@ -476,7 +476,7 @@ test('Pattern deployment passing KMS key props', () => {
     AliasName: "alias/new-key-alias-from-props",
     TargetKeyId: {
       "Fn::GetAtt": [
-        "testiotsqsEncryptionKey64EE64B1",
+        "testiotsqsqueueKeyC5935B79",
         "Arn",
       ]
     }

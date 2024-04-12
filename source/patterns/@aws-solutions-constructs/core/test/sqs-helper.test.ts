@@ -45,7 +45,7 @@ test('Test deployment w/ imported encryption key', () => {
       queueName: 'existing-queue'
     },
     enableEncryptionWithCustomerManagedKey: true,
-    encryptionKey: defaults.buildEncryptionKey(stack)
+    encryptionKey: defaults.buildEncryptionKey(stack, 'key-test')
   });
 
   const template = Template.fromStack(stack);

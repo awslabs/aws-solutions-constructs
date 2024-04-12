@@ -103,7 +103,7 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
     } else if (props.encryptionKey) {
       queueProps.encryptionMasterKey = props.encryptionKey;
     } else if (props.encryptionKeyProps || props.enableEncryptionWithCustomerManagedKey === true) {
-      queueProps.encryptionMasterKey = buildEncryptionKey(scope, props.encryptionKeyProps);
+      queueProps.encryptionMasterKey = buildEncryptionKey(scope, id, props.encryptionKeyProps);
     }
 
     // NOSONAR (typescript:S6330)

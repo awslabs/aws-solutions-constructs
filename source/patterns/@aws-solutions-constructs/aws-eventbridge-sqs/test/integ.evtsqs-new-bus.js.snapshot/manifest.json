@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/110d5034e5f4b467291448d9e01ef01321432f181fa42bd2b3f67c1d0f895d6b.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/230982447f4c4bb2ebce07ba3a5aa73b5a03964bd0a51838283e40220f712d5a.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -94,10 +94,10 @@
             "data": "constructdeadLetterQueuePolicyBA602BC6"
           }
         ],
-        "/evtsqs-new-bus/construct/EncryptionKey/Resource": [
+        "/evtsqs-new-bus/construct/'queueKey'/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "constructEncryptionKey9426451E"
+            "data": "constructqueueKey0638E1FB"
           }
         ],
         "/evtsqs-new-bus/construct/queue": [
@@ -140,6 +140,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "constructEncryptionKey9426451E": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructEncryptionKey9426451E",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

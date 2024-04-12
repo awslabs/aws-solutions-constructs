@@ -333,7 +333,7 @@
     "testlambdasagemakerSagemakerRoleD84546B8"
    ]
   },
-  "testlambdasagemakerEncryptionKey2AACF9E0": {
+  "testlambdasagemakertestlambdasagemakerKey5BF0746F": {
    "Type": "AWS::KMS::Key",
    "Properties": {
     "EnableKeyRotation": true,
@@ -373,7 +373,7 @@
    "Type": "AWS::SageMaker::EndpointConfig",
    "Properties": {
     "KmsKeyId": {
-     "Ref": "testlambdasagemakerEncryptionKey2AACF9E0"
+     "Ref": "testlambdasagemakertestlambdasagemakerKey5BF0746F"
     },
     "ProductionVariants": [
      {

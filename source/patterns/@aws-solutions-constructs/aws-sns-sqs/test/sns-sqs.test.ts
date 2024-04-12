@@ -32,7 +32,7 @@ test('Pattern deployment w/ new Topic, new Queue and default props', () => {
   template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "EncryptionKey1B843E66",
+        "testsnssqsKey08A506C4",
         "Arn"
       ]
     }
@@ -41,7 +41,7 @@ test('Pattern deployment w/ new Topic, new Queue and default props', () => {
   template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "EncryptionKey1B843E66",
+        "testsnssqsKey08A506C4",
         "Arn"
       ]
     }
@@ -86,7 +86,7 @@ test('Pattern deployment w/ new topic, new queue, and overridden props', () => {
     TopicName: "new-topic",
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "EncryptionKey1B843E66",
+        "testsnssqsKey08A506C4",
         "Arn"
       ]
     }

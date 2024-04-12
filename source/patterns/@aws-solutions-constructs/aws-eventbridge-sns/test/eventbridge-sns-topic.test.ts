@@ -196,7 +196,7 @@ test('check the sns topic properties', () => {
   template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "testEncryptionKeyB55BFDBC",
+        "testtestKeyDC306BBB",
         "Arn"
       ]
     }
@@ -205,7 +205,7 @@ test('check the sns topic properties', () => {
 
 test('check the sns topic properties with existing KMS key', () => {
   const stack = new cdk.Stack();
-  const key = defaults.buildEncryptionKey(stack, {
+  const key = defaults.buildEncryptionKey(stack, 'test', {
     description: 'my-key'
   });
 
@@ -222,7 +222,7 @@ test('check the sns topic properties with existing KMS key', () => {
   template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "EncryptionKey1B843E66",
+        "testKey2C00E5E5",
         "Arn"
       ]
     }
@@ -291,7 +291,7 @@ test('check custom event bus resource with props when deploy:true', () => {
 
 test('Topic is encrypted when key is provided on topicProps.masterKey prop', () => {
   const stack = new cdk.Stack();
-  const key = defaults.buildEncryptionKey(stack, {
+  const key = defaults.buildEncryptionKey(stack, 'test', {
     description: 'my-key'
   });
 
@@ -310,7 +310,7 @@ test('Topic is encrypted when key is provided on topicProps.masterKey prop', () 
   template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "EncryptionKey1B843E66",
+        "testKey2C00E5E5",
         "Arn"
       ]
     }
@@ -340,7 +340,7 @@ test('Topic is encrypted when keyProps are provided', () => {
   template.hasResourceProperties('AWS::SNS::Topic', {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "testeventsrulesqsEncryptionKey19AB0C02",
+        "testeventsrulesqstesteventsrulesqsKey0BF3CCD9",
         "Arn"
       ]
     }

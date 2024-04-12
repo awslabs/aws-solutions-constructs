@@ -26,7 +26,7 @@ test('Test deployment with no properties using AWS Managed KMS Key', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  const buildTopicResponse = defaults.buildTopic(stack, {});
+  const buildTopicResponse = defaults.buildTopic(stack, 'test', {});
 
   expect(buildTopicResponse.topic).toBeDefined();
   expect(buildTopicResponse.key).toBeDefined();
@@ -61,7 +61,7 @@ test('Test deployment without imported encryption key', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  defaults.buildTopic(stack, {
+  defaults.buildTopic(stack, 'test', {
     topicProps: {
       topicName: "custom-topic"
     },
@@ -85,9 +85,9 @@ test('Test deployment w/ imported encryption key', () => {
   // Stack
   const stack = new Stack();
   // Generate KMS Key
-  const key = defaults.buildEncryptionKey(stack);
+  const key = defaults.buildEncryptionKey(stack, 'key-test');
   // Helper declaration
-  const buildTopicResponse = defaults.buildTopic(stack, {
+  const buildTopicResponse = defaults.buildTopic(stack, 'test', {
     topicProps: {
       topicName: "custom-topic"
     },
@@ -101,7 +101,7 @@ test('Test deployment w/ imported encryption key', () => {
   Template.fromStack(stack).hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "EncryptionKey1B843E66",
+        "keytestKey8AE2FF0A",
         "Arn"
       ]
     },
@@ -111,15 +111,15 @@ test('Test deployment w/ imported encryption key', () => {
 
 test('enableEncryptionWithCustomerManagedKey flag is ignored when encryptionKey is set', () => {
   const stack = new Stack();
-  defaults.buildTopic(stack, {
+  defaults.buildTopic(stack, 'test', {
     enableEncryptionWithCustomerManagedKey: false,
-    encryptionKey: defaults.buildEncryptionKey(stack)
+    encryptionKey: defaults.buildEncryptionKey(stack, 'key-test')
   });
 
   Template.fromStack(stack).hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "EncryptionKey1B843E66",
+        "keytestKey8AE2FF0A",
         "Arn"
       ]
     }
@@ -128,17 +128,17 @@ test('enableEncryptionWithCustomerManagedKey flag is ignored when encryptionKey 
 
 test('enableEncryptionWithCustomerManagedKey flag is ignored when topicProps.masterKey is set', () => {
   const stack = new Stack();
-  defaults.buildTopic(stack, {
+  defaults.buildTopic(stack, 'test', {
     enableEncryptionWithCustomerManagedKey: false,
     topicProps: {
-      masterKey: defaults.buildEncryptionKey(stack)
+      masterKey: defaults.buildEncryptionKey(stack, 'key-test')
     }
   });
 
   Template.fromStack(stack).hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "EncryptionKey1B843E66",
+        "keytestKey8AE2FF0A",
         "Arn"
       ]
     }
@@ -148,7 +148,7 @@ test('enableEncryptionWithCustomerManagedKey flag is ignored when topicProps.mas
 test('enableEncryptionWithCustomerManagedKey flag is ignored when encryptionKeyProps is set', () => {
   const stack = new Stack();
   const description = "custom description";
-  defaults.buildTopic(stack, {
+  defaults.buildTopic(stack, 'test', {
     enableEncryptionWithCustomerManagedKey: false,
     encryptionKeyProps: {
       description
@@ -159,7 +159,7 @@ test('enableEncryptionWithCustomerManagedKey flag is ignored when encryptionKeyP
   template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "EncryptionKey1B843E66",
+        "testKey2C00E5E5",
         "Arn"
       ]
     }
@@ -173,7 +173,7 @@ test('enableEncryptionWithCustomerManagedKey flag is ignored when encryptionKeyP
 test('encryptionProps are set correctly on the SNS Topic', () => {
   const stack = new Stack();
   const description = "custom description";
-  defaults.buildTopic(stack, {
+  defaults.buildTopic(stack, 'test', {
     encryptionKeyProps: {
       description
     }
@@ -186,7 +186,7 @@ test('encryptionProps are set correctly on the SNS Topic', () => {
 
 test('Check SNS Topic policy', () => {
   const stack = new Stack();
-  defaults.buildTopic(stack, {});
+  defaults.buildTopic(stack, 'test', {});
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::SNS::TopicPolicy", {
@@ -278,7 +278,7 @@ test('existing topic encrypted with CMK is not overridden by defaults', () => {
     masterKey: cmk
   });
 
-  defaults.buildTopic(stack, {
+  defaults.buildTopic(stack, 'test', {
     existingTopicObj: topic,
     existingTopicEncryptionKey: cmk
   });
@@ -296,7 +296,7 @@ test('existing unencrypted topic is not overridden with defaults', () => {
 
   const topic = new sns.Topic(stack, 'Topic');
 
-  const buildBuildTopicResponse = defaults.buildTopic(stack, {
+  const buildBuildTopicResponse = defaults.buildTopic(stack, 'test', {
     existingTopicObj: topic,
   });
 
@@ -400,7 +400,7 @@ test('Test fail SNS topic check when both encryptionKey and topicProps.masterKey
 test('Test fail encryption key check', () => {
   const stack = new Stack();
 
-  const key = defaults.buildEncryptionKey(stack, {
+  const key = defaults.buildEncryptionKey(stack, 'key-test', {
     enableKeyRotation: false
   });
 

@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e7e0a1b12a31e1e85080179b09df265b6652494f525a34319aa8b86123555964.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5c9d5d2dbb170ac984547dcb25dd08c6c5a0f66cdd68920e2fb328fd21226214.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -106,16 +106,19 @@
             "data": "testlambdasagemakerSagemakerModelEC3E4E39"
           }
         ],
-        "/lamsag-deployFunction/test-lambda-sagemaker/EncryptionKey/Resource": [
+        "/lamsag-deployFunction/test-lambda-sagemaker/'test-lambda-sagemakerKey'/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasagemakerEncryptionKey2AACF9E0"
+            "data": "testlambdasagemakertestlambdasagemakerKey5BF0746F"
           }
         ],
         "/lamsag-deployFunction/test-lambda-sagemaker/SagemakerEndpointConfig": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasagemakerSagemakerEndpointConfig6BABA334"
+            "data": "testlambdasagemakerSagemakerEndpointConfig6BABA334",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_REPLACE"
+            ]
           }
         ],
         "/lamsag-deployFunction/test-lambda-sagemaker/SagemakerEndpoint": [
@@ -152,6 +155,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testlambdasagemakerEncryptionKey2AACF9E0": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasagemakerEncryptionKey2AACF9E0",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

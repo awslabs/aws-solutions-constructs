@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d20dbaa3ddb6772aad8fba215cb3d8b5e17cd8a9bed3a3c449d7661c94ce4a5f.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/55e20ba83a81e14e2d30928a2e02a4e217211737f47ee041ec635a72b650e17f.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -130,10 +130,10 @@
             "data": "testsnssqsstackqueuesnssqsnoargumentstestsnssqsstackSnsTopic716318502B9FD0D3"
           }
         ],
-        "/snssqs-no-arguments/EncryptionKey/Resource": [
+        "/snssqs-no-arguments/'test-sns-sqs-stackKey'/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "EncryptionKey1B843E66"
+            "data": "testsnssqsstackKeyCECC9471"
           }
         ],
         "/snssqs-no-arguments/BootstrapVersion": [
@@ -146,6 +146,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "EncryptionKey1B843E66": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EncryptionKey1B843E66",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

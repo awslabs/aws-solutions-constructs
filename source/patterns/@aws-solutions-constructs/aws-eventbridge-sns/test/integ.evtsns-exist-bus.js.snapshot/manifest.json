@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/2451021956d0c5f2cdf62fa8cda83a732366091373b3685aab517752ed37428e.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9862b639359bc5c3fec9dffccc166e084b05fc540a1c162a1bde6ec167bd37f4.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -88,10 +88,10 @@
             "data": "existingeventbusA5B80487"
           }
         ],
-        "/evtsns-exist-bus/test-construct/EncryptionKey/Resource": [
+        "/evtsns-exist-bus/test-construct/'test-constructKey'/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testconstructEncryptionKey6153B053"
+            "data": "testconstructtestconstructKey1FB48CCA"
           }
         ],
         "/evtsns-exist-bus/test-construct/SnsTopic/Resource": [
@@ -122,6 +122,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testconstructEncryptionKey6153B053": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructEncryptionKey6153B053",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

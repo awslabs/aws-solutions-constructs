@@ -12,13 +12,13 @@
             "id": "test-iot-sqs-stack",
             "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack",
             "children": {
-              "EncryptionKey": {
-                "id": "EncryptionKey",
-                "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack/EncryptionKey",
+              "'queueKey'": {
+                "id": "'queueKey'",
+                "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack/'queueKey'",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack/EncryptionKey/Resource",
+                    "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack/'queueKey'/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::KMS::Key",
                       "aws:cdk:cloudformation:props": {
@@ -81,13 +81,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_kms.CfnKey",
-                      "version": "2.118.0"
+                      "version": "2.135.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_kms.Key",
-                  "version": "2.118.0"
+                  "version": "2.135.0"
                 }
               },
               "queue": {
@@ -102,7 +102,7 @@
                       "aws:cdk:cloudformation:props": {
                         "kmsMasterKeyId": {
                           "Fn::GetAtt": [
-                            "testiotsqsstackEncryptionKeyAB09201B",
+                            "testiotsqsstackqueueKey077AA61D",
                             "Arn"
                           ]
                         },
@@ -111,7 +111,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
-                      "version": "2.118.0"
+                      "version": "2.135.0"
                     }
                   },
                   "Policy": {
@@ -194,19 +194,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
-                          "version": "2.118.0"
+                          "version": "2.135.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
-                      "version": "2.118.0"
+                      "version": "2.135.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_sqs.Queue",
-                  "version": "2.118.0"
+                  "version": "2.135.0"
                 }
               },
               "iot-actions-role": {
@@ -218,7 +218,7 @@
                     "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack/iot-actions-role/Importiot-actions-role",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.118.0"
+                      "version": "2.135.0"
                     }
                   },
                   "Resource": {
@@ -243,7 +243,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.118.0"
+                      "version": "2.135.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -282,7 +282,7 @@
                                   "Effect": "Allow",
                                   "Resource": {
                                     "Fn::GetAtt": [
-                                      "testiotsqsstackEncryptionKeyAB09201B",
+                                      "testiotsqsstackqueueKey077AA61D",
                                       "Arn"
                                     ]
                                   }
@@ -300,19 +300,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.118.0"
+                          "version": "2.135.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.118.0"
+                      "version": "2.135.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.118.0"
+                  "version": "2.135.0"
                 }
               },
               "IotTopicRule": {
@@ -345,13 +345,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iot.CfnTopicRule",
-                  "version": "2.118.0"
+                  "version": "2.135.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-iot-sqs.IotToSqs",
-              "version": "2.50.0"
+              "version": "2.54.1"
             }
           },
           "Integ": {
@@ -367,7 +367,7 @@
                     "path": "iotsqs-dead-letter-queue-off/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
-                      "version": "10.0.0"
+                      "version": "10.3.0"
                     }
                   },
                   "DeployAssert": {
@@ -379,7 +379,7 @@
                         "path": "iotsqs-dead-letter-queue-off/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.118.0"
+                          "version": "2.135.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -387,25 +387,25 @@
                         "path": "iotsqs-dead-letter-queue-off/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.118.0"
+                          "version": "2.135.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.118.0"
+                      "version": "2.135.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.118.0-alpha.0"
+                  "version": "2.135.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.118.0-alpha.0"
+              "version": "2.135.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -413,7 +413,7 @@
             "path": "iotsqs-dead-letter-queue-off/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.118.0"
+              "version": "2.135.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -421,13 +421,13 @@
             "path": "iotsqs-dead-letter-queue-off/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.118.0"
+              "version": "2.135.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.118.0"
+          "version": "2.135.0"
         }
       },
       "Tree": {
@@ -435,13 +435,13 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.0.0"
+          "version": "10.3.0"
         }
       }
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.118.0"
+      "version": "2.135.0"
     }
   }
 }

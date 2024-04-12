@@ -169,7 +169,7 @@
    "Properties": {
     "KmsMasterKeyId": {
      "Fn::GetAtt": [
-      "EncryptionKey1B843E66",
+      "testsnssqsstackKeyCECC9471",
       "Arn"
      ]
     }
@@ -264,7 +264,7 @@
    "Properties": {
     "KmsMasterKeyId": {
      "Fn::GetAtt": [
-      "EncryptionKey1B843E66",
+      "testsnssqsstackKeyCECC9471",
       "Arn"
      ]
     },
@@ -437,7 +437,7 @@
     "testsnssqsstackqueuePolicyFD3F4725"
    ]
   },
-  "EncryptionKey1B843E66": {
+  "testsnssqsstackKeyCECC9471": {
    "Type": "AWS::KMS::Key",
    "Properties": {
     "EnableKeyRotation": true,

@@ -79,7 +79,7 @@
     ]
    }
   },
-  "constructEncryptionKey9426451E": {
+  "constructqueueKey0638E1FB": {
    "Type": "AWS::KMS::Key",
    "Properties": {
     "EnableKeyRotation": true,
@@ -133,7 +133,7 @@
    "Properties": {
     "KmsMasterKeyId": {
      "Fn::GetAtt": [
-      "constructEncryptionKey9426451E",
+      "constructqueueKey0638E1FB",
       "Arn"
      ]
     },

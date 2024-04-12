@@ -1,7 +1,7 @@
 {
  "Description": "Integration Test for aws-iot-sqs",
  "Resources": {
-  "testiotsqsstackEncryptionKeyAB09201B": {
+  "testiotsqsstackqueueKey077AA61D": {
    "Type": "AWS::KMS::Key",
    "Properties": {
     "EnableKeyRotation": true,
@@ -68,7 +68,7 @@
    "Properties": {
     "KmsMasterKeyId": {
      "Fn::GetAtt": [
-      "testiotsqsstackEncryptionKeyAB09201B",
+      "testiotsqsstackqueueKey077AA61D",
       "Arn"
      ]
     },
@@ -194,7 +194,7 @@
        "Effect": "Allow",
        "Resource": {
         "Fn::GetAtt": [
-         "testiotsqsstackEncryptionKeyAB09201B",
+         "testiotsqsstackqueueKey077AA61D",
          "Arn"
         ]
        }

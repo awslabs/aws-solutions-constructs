@@ -1,6 +1,6 @@
 {
  "Resources": {
-  "EncryptionKey1B843E66": {
+  "testexistingqueueKey84D97AF0": {
    "Type": "AWS::KMS::Key",
    "Properties": {
     "EnableKeyRotation": true,
@@ -75,7 +75,7 @@
    "Properties": {
     "KmsMasterKeyId": {
      "Fn::GetAtt": [
-      "EncryptionKey1B843E66",
+      "testexistingqueueKey84D97AF0",
       "Arn"
      ]
     }

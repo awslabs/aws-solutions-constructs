@@ -131,6 +131,7 @@ export class LambdaToSagemakerEndpoint extends Construct {
     // Build SageMaker Endpoint (inclduing SageMaker's Endpoint Configuration and Model)
     const buildSagemakerEndpointResponse = defaults.BuildSagemakerEndpoint(
       this,
+      id,
       {
         ...props,
         vpc: this.vpc,

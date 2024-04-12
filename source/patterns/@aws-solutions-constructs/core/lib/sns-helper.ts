@@ -139,7 +139,7 @@ export interface BuildTopicResponse {
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function buildTopic(scope: Construct, props: BuildTopicProps): BuildTopicResponse {
+export function buildTopic(scope: Construct, id: string, props: BuildTopicProps): BuildTopicResponse {
   if (!props.existingTopicObj) {
     // Setup the topic properties
     const snsTopicProps = consolidateProps(DefaultSnsTopicProps, props.topicProps);
@@ -154,7 +154,7 @@ export function buildTopic(scope: Construct, props: BuildTopicProps): BuildTopic
     } else if (props.encryptionKey) {
       snsTopicProps.masterKey = props.encryptionKey;
     } else if (props.encryptionKeyProps || props.enableEncryptionWithCustomerManagedKey === true) {
-      snsTopicProps.masterKey = buildEncryptionKey(scope, props.encryptionKeyProps);
+      snsTopicProps.masterKey = buildEncryptionKey(scope, id, props.encryptionKeyProps);
     } else {
       snsTopicProps.masterKey = kms.Alias.fromAliasName(scope, 'aws-managed-key', 'alias/aws/sns');
     }

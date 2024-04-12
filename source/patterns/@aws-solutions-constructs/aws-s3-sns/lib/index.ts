@@ -151,7 +151,7 @@ export class S3ToSns extends Construct {
       }
 
       // Setup the topic
-      const buildTopicResponse = defaults.buildTopic(this, {
+      const buildTopicResponse = defaults.buildTopic(this, id, {
         existingTopicObj: props.existingTopicObj,
         existingTopicEncryptionKey: props.existingTopicEncryptionKey,
         topicProps: props.topicProps,

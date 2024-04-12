@@ -767,13 +767,13 @@
                   "version": "2.135.0"
                 }
               },
-              "EncryptionKey": {
-                "id": "EncryptionKey",
-                "path": "s3sqs-existingLoggingBucket/test-s3-sqs-temp/EncryptionKey",
+              "'queueKey'": {
+                "id": "'queueKey'",
+                "path": "s3sqs-existingLoggingBucket/test-s3-sqs-temp/'queueKey'",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "s3sqs-existingLoggingBucket/test-s3-sqs-temp/EncryptionKey/Resource",
+                    "path": "s3sqs-existingLoggingBucket/test-s3-sqs-temp/'queueKey'/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::KMS::Key",
                       "aws:cdk:cloudformation:props": {
@@ -865,7 +865,7 @@
                       "aws:cdk:cloudformation:props": {
                         "kmsMasterKeyId": {
                           "Fn::GetAtt": [
-                            "tests3sqstempEncryptionKey57CC85E2",
+                            "tests3sqstempqueueKeyC7A07658",
                             "Arn"
                           ]
                         },

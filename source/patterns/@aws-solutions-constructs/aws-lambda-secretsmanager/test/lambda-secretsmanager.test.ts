@@ -344,7 +344,7 @@ test('Test overriding secretProps to pass a customer provided CMK', () => {
   // Stack
   const stack = new Stack();
 
-  const encryptionKey = defaults.buildEncryptionKey(stack, {
+  const encryptionKey = defaults.buildEncryptionKey(stack, 'test', {
     description: 'secret-key'
   });
 
@@ -383,7 +383,7 @@ test('Test overriding secretProps to pass a customer provided CMK', () => {
     GenerateSecretString: {},
     KmsKeyId: {
       "Fn::GetAtt": [
-        "EncryptionKey1B843E66",
+        "testKey2C00E5E5",
         "Arn"
       ]
     }

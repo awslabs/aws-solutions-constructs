@@ -21,8 +21,8 @@ import * as defaults from '@aws-solutions-constructs/core';
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const existingTopicEncryptionKey = defaults.buildEncryptionKey(stack, {});
-const buildTopicResponse = defaults.buildTopic(stack, {
+const existingTopicEncryptionKey = defaults.buildEncryptionKey(stack, 'test', {});
+const buildTopicResponse = defaults.buildTopic(stack, 'test', {
   encryptionKey: existingTopicEncryptionKey
 });
 
