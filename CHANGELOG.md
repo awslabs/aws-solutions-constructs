@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.55.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.54.1...v2.55.0) (2024-04-12)
 
+Built on CDK v2.135.0
+
+### Bug Fixes
+
+* **kms:** do not use fixed name when building kms key constructs ([#1103](https://github.com/awslabs/aws-solutions-constructs/issues/1103))
+
 ## [2.54.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.54.0...v2.54.1) (2024-04-04)
 
 Built on CDK v2.135.0
