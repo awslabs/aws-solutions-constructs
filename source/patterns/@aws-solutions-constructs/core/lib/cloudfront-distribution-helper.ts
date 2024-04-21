@@ -109,6 +109,7 @@ export interface CreateCloudFrontDistributionForS3Props {
   readonly httpSecurityHeaders?: boolean,
   readonly cloudFrontLoggingBucketProps?: s3.BucketProps,
   readonly responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
+  readonly enableCloudFrontLogging?: boolean;
 }
 
 export interface CreateCloudFrontDistributionForS3Response {
@@ -129,7 +130,12 @@ export function createCloudFrontDistributionForS3(
   const httpSecurityHeaders = props.httpSecurityHeaders ?? true;
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
-  const loggingBucket = getLoggingBucket(props.cloudFrontDistributionProps, scope, props.cloudFrontLoggingBucketProps);
+  const enableCloudFrontLogging = props.enableCloudFrontLogging ?? true;
+
+  const loggingBucket = enableCloudFrontLogging ? 
+    getLoggingBucket(props.cloudFrontDistributionProps, scope, props.cloudFrontLoggingBucketProps) : 
+    undefined;
+
 
   let originAccessControl;
   let originProps = {};
@@ -157,6 +163,8 @@ export function createCloudFrontDistributionForS3(
       new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', props.responseHeadersPolicyProps) :
       undefined
   );
+
+  defaultprops.enableLogging = enableCloudFrontLogging;
 
   const cfprops = consolidateProps(defaultprops, props.cloudFrontDistributionProps);
   // Create the Cloudfront Distribution
