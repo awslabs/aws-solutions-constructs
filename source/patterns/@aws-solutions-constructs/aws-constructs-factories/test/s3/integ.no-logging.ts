@@ -14,7 +14,7 @@
 /// !cdk-integ *
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { ConstructsFactories } from "../../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, addCfnSuppressRules } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
@@ -24,10 +24,17 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 
 const factories = new ConstructsFactories(stack, 'integ-test');
 
-factories.s3BucketFactory('test', {
+const response = factories.s3BucketFactory('test', {
   bucketProps: { removalPolicy: RemovalPolicy.DESTROY },
   logS3AccessLogs: false,
 });
+
+addCfnSuppressRules(response.s3Bucket, [
+  {
+    id: 'W35',
+    reason: "Access Logging disabled intentionally on this bucket for the test."
+  }
+]);
 
 new IntegTest(stack, 'Integ', { testCases: [
   stack

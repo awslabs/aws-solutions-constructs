@@ -36,7 +36,17 @@
     }
    },
    "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete"
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W35",
+       "reason": "Access Logging disabled intentionally on this bucket for the test."
+      }
+     ]
+    }
+   }
   },
   "integtesttestS3BucketPolicy54E2DE38": {
    "Type": "AWS::S3::BucketPolicy",
