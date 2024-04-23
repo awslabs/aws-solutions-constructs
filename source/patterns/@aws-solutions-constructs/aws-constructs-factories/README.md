@@ -1,4 +1,4 @@
-# aws-dynamodbstreams-lambda module
+# aws-constructs-factories module
 <!--BEGIN STABILITY BANNER-->
 
 ---
@@ -25,7 +25,9 @@
 ## Overview
 This AWS Solutions Construct exposes the same code used to create our underlying resources as factories, so clients can create individual resources that are well-architected.
 
-Here is a minimal deployable pattern definition:
+### S3 Buckets
+
+Create fully well-architected S3 buckets with as little as one function call. Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
