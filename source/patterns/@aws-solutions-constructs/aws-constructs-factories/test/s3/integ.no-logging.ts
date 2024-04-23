@@ -14,7 +14,7 @@
 /// !cdk-integ *
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { ConstructsFactories } from "../../lib";
-import { generateIntegStackName, addCfnSuppressRules } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, addCfnSuppressRules, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
@@ -35,6 +35,8 @@ addCfnSuppressRules(response.s3Bucket, [
     reason: "Access Logging disabled intentionally on this bucket for the test."
   }
 ]);
+
+suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 
 new IntegTest(stack, 'Integ', { testCases: [
   stack
