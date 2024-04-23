@@ -19,7 +19,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 export interface S3BucketFactoryProps {
   readonly bucketProps?: s3.BucketProps | any,
   readonly logS3AccessLogs?: boolean,
-  readonly loggingBucketProps?: s3.BucketProps
+  readonly loggingBucketProps?: s3.BucketProps,
 }
 
 // Create a response specifically for the interface to avoid coupling client with internal implementation
@@ -34,10 +34,14 @@ export class ConstructsFactories extends Construct {
   }
 
   public s3BucketFactory(id: string, props?: S3BucketFactoryProps): S3BucketFactoryResponse {
+    if (props) {
+      defaults.CheckS3Props(props);
+    }
+
     const propsArg: defaults.BuildS3BucketProps = props ? {
       bucketProps: props.bucketProps,
       loggingBucketProps: props.loggingBucketProps,
-      logS3AccessLogs: props.logS3AccessLogs
+      logS3AccessLogs: props.logS3AccessLogs,
     } : {};
 
     const buildS3BucketResponse = defaults.buildS3Bucket(this, propsArg, id);

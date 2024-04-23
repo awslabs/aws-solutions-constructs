@@ -18,12 +18,12 @@
 
 | **Language**     | **Package**        |
 |:-------------|-----------------|
-|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_dynamodbstreams_lambda`|
-|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-dynamodbstreams-lambda`|
-|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.dynamodbstreamslambda`|
+|![Python Logo](https://docs.aws.amazon.com/cdk/api/latest/img/python32.png) Python|`aws_solutions_constructs.aws_constructs_factories`|
+|![Typescript Logo](https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png) Typescript|`@aws-solutions-constructs/aws-constructs-factories`|
+|![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.constructsfactories`|
 
 ## Overview
-This AWS Solutions Construct implements a pattern Amazon DynamoDB table with stream to invoke the AWS Lambda function  with the least privileged permissions.
+This AWS Solutions Construct exposes the same code used to create our underlying resources as factories, so clients can create individual resources that are well-architected.
 
 Here is a minimal deployable pattern definition:
 
@@ -31,92 +31,60 @@ Typescript
 ``` typescript
 import { Construct } from 'constructs';
 import { Stack, StackProps } from 'aws-cdk-lib';
-import { DynamoDBStreamsToLambdaProps,  DynamoDBStreamsToLambda} from '@aws-solutions-constructs/aws-dynamodbstreams-lambda';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { ConstructsFactories } from '@aws-solutions-constructs/aws-constructs-factories';
 
-new DynamoDBStreamsToLambda(this, 'test-dynamodbstreams-lambda', {
-  lambdaFunctionProps: {
-      code: lambda.Code.fromAsset(`lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
-      handler: 'index.handler'
-  },
-});
+const factories = new ConstructsFactories(this, 'integ-test');
+
+factories.s3BucketFactory('test');
 ```
 
 Python
 ``` python
-from aws_solutions_constructs.aws_dynamodbstreams_lambda import DynamoDBStreamsToLambda
-from aws_cdk import (
-  aws_lambda as _lambda,
-  Stack
-)
-from constructs import Construct
-
-DynamoDBStreamsToLambda(self, 'test-dynamodbstreams-lambda',
-                        lambda_function_props=_lambda.FunctionProps(
-                            code=_lambda.Code.from_asset('lambda'),
-                            runtime=_lambda.Runtime.PYTHON_3_9,
-                            handler='index.handler'
-                        )
-                        )
+# TBD
 ```
 
 Java
 ``` java
-import software.constructs.Construct;
-
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
-import software.amazon.awscdk.services.lambda.*;
-import software.amazon.awscdk.services.lambda.Runtime;
-import software.amazon.awsconstructs.services.dynamodbstreamslambda.*;
-
-new DynamoDBStreamsToLambda(this, "test-dynamodbstreams-lambda",
-        new DynamoDBStreamsToLambdaProps.Builder()
-                .lambdaFunctionProps(new FunctionProps.Builder()
-                        .runtime(Runtime.NODEJS_16_X)
-                        .code(Code.fromAsset("lambda"))
-                        .handler("index.handler")
-                        .build())
-                .build());
+// TBD
 ```
 
-## Pattern Construct Props
+## S3BucketFactoryProps
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-|existingLambdaObj?|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)|Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.|
-|lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html)|User provided props to override the default props for the Lambda function.|
-|dynamoTableProps?|[`dynamodb.TableProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.TableProps.html)|Optional user provided props to override the default props for DynamoDB Table|
-|existingTableInterface?|[`dynamodb.ITable`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.ITable.html)|Existing instance of DynamoDB table object or interface, providing both this and `dynamoTableProps` will cause an error.|
-|dynamoEventSourceProps?|[`aws-lambda-event-sources.DynamoEventSourceProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda_event_sources.DynamoEventSourceProps.html)|Optional user provided props to override the default props for DynamoDB Event Source|
+|bucketProps?|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html)|Optional user provided props to override the default props for the S3 Bucket.|
+|logS3AccessLogs?|`boolean`|Whether to turn on Access Logging for the S3 bucket. Creates an S3 bucket with associated storage costs for the logs. Enabling Access Logging is a best practice. default - true|
+|loggingBucketProps?|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html)|Optional user provided props to override the default props for the S3 Logging Bucket.|
 
-## Pattern Properties
+## S3BucketFactoryResponse
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-|dynamoTableInterface|[`dynamodb.ITable`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.ITable.html)|Returns an instance of dynamodb.ITable created by the construct|
-|dynamoTable?|[`dynamodb.Table`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.Table.html)|Returns an instance of dynamodb.Table created by the construct. IMPORTANT: If existingTableInterface was provided in Pattern Construct Props, this property will be `undefined`|
-|lambdaFunction|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)|Returns an instance of lambda.Function created by the construct|
+|s3Bucket|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html)|The s3.Bucket created by the factory. |
+|s3LoggingBucket?|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html)|The s3.Bucket created by the construct as the logging bucket for the primary bucket. If the logS3AccessLogs property is false, this value will be undefined.|
 
 ## Default settings
 
 Out of the box implementation of the Construct without any override will set the following defaults:
 
-### Amazon DynamoDB Table
-* Set the billing mode for DynamoDB Table to On-Demand (Pay per request)
-* Enable server-side encryption for DynamoDB Table using AWS managed KMS Key
-* Creates a partition key called 'id' for DynamoDB Table
-* Retain the Table when deleting the CloudFormation stack
-* Enable continuous backups and point-in-time recovery
-
-### AWS Lambda Function
-* Configure limited privilege access IAM role for Lambda function
-* Enable reusing connections with Keep-Alive for NodeJs Lambda function
-* Enable X-Ray Tracing
-* Enable Failure-Handling features like enable bisect on function Error, set defaults for Maximum Record Age (24 hours) & Maximum Retry Attempts (500) and deploy SQS dead-letter queue as destination on failure
-* Set Environment Variables
-  * AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x and higher functions)
+* An S3 Content Bucket
+  * AWS managed Server Side Encryption (AES256)
+  * Lifecycle rule to transition objects to Glacier storage class in 90 days
+  * Access Logging enabled
+  * All Public access blocked
+  * Versioning enabled
+  * UpdateReplacePolicy is delete
+  * Deletion policy is delete
+  * Bucket policy requiring SecureTransport
+* An S3 Bucket for Access Logs
+  * AWS managed Server Side Encryption (AES256)
+  * All public access blocked
+  * Versioning enabled
+  * UpdateReplacePolicy is delete
+  * Deletion policy is delete
+  * Bucket policy requiring SecureTransport
+  * Bucket policy granting PutObject privileges to the S3 logging service, from the content bucket in the content bucket account.
+  * cfn_nag suppression of access logging finding (not logging access to the access log bucket)
 
 ## Architecture
 ![Architecture Diagram](architecture.png)

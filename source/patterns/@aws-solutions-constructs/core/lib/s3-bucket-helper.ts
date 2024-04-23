@@ -173,6 +173,7 @@ export interface BuildS3BucketResponse {
 
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ * @internal This functionality is exposed externally through aws-constructs-factories
  */
 export function buildS3Bucket(scope: Construct,
   props: BuildS3BucketProps,

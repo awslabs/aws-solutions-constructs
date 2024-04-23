@@ -12,7 +12,7 @@
  */
 
 import { Stack } from 'aws-cdk-lib';
-// import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Template } from 'aws-cdk-lib/assertions';
 import { ConstructsFactories, /* S3BucketFactoryProps, S3BucketFactoryResponse */ } from "../../lib";
 
@@ -37,7 +37,7 @@ test('All defaults', () => {
   });
 });
 
-test('Logging off', () => {
+test('With Logging off', () => {
   const stack = new Stack();
 
   const factories = new ConstructsFactories(stack, 'target');
@@ -71,4 +71,50 @@ test('Use log bucket props', () => {
   template.hasResourceProperties("AWS::S3::Bucket", {
     BucketName: testName
   });
+});
+
+test('Use existing log bucket props', () => {
+  const testName = 'my-log-bucket';
+  const stack = new Stack();
+
+  const existingLogBucket = new s3.Bucket(stack, 'existing-log-bucket', {
+    bucketName: testName
+  });
+
+  const factories = new ConstructsFactories(stack, 'target');
+
+  factories.s3BucketFactory('testBucket', {
+    bucketProps: {
+      serverAccessLogsBucket: existingLogBucket
+    }
+  });
+
+  const template = Template.fromStack(stack);
+  // Does it have the expected number of buckets?
+  template.resourceCountIs("AWS::S3::Bucket", 2);
+  template.hasResourceProperties("AWS::S3::Bucket", {
+    LoggingConfiguration: {
+      DestinationBucketName: {
+        Ref: "existinglogbucket385335A9"
+      }
+    },
+  });
+});
+
+test('Catch Props Errors', () => {
+  const testName = 'my-log-bucket';
+  const stack = new Stack();
+
+  const factories = new ConstructsFactories(stack, 'target');
+
+  const app = () => {
+    factories.s3BucketFactory('testBucket', {
+      logS3AccessLogs: false,
+      loggingBucketProps: {
+        bucketName: testName
+      }
+    });
+  };
+  // Assertion
+  expect(app).toThrowError('Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n');
 });
