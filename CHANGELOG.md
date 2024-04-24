@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.56.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.55.0...v2.56.0) (2024-04-24)
+
+
+### Features
+
+* **s3:** constructs factories - create well architected s3 buckets ([#1110](https://github.com/awslabs/aws-solutions-constructs/issues/1110)) ([f561cf6](https://github.com/awslabs/aws-solutions-constructs/commit/f561cf65c377684c0579417b404b33cdc97fa407))
+
 ## [2.55.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.54.1...v2.55.0) (2024-04-12)
 
 Built on CDK v2.135.0
