@@ -18,7 +18,7 @@
 
 The core library includes the basic building blocks of the AWS Solutions Constructs Library. It defines the core classes that are used in the rest of the AWS Solutions Constructs Library.
 
-> NOTE: Functions in the core library are not part of the published interface for Solutions Constructs. While they are not hidden, using them directly can result in breaking changes outside the scope of a Major  release. As many users have expressed an interest in accessing this functionality, we are in the process of exposing this functionality through factories that will produce individual well architected resources. Find the current state  of this effort under `aws-constructs-factories`.
+> NOTE: Functions in the core library are not part of the published interface for Solutions Constructs. While they are not hidden, using them directly can result in breaking changes outside the scope of a Major release. As many users have expressed an interest in accessing this functionality, we are in the process of exposing this functionality through factories that will produce individual well architected resources. Find the current state  of this effort under `aws-constructs-factories`.
 
 ## Default Properties for AWS CDK Constructs
 
