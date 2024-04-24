@@ -21,7 +21,7 @@ test('All defaults', () => {
 
   const factories = new ConstructsFactories(stack, 'target');
 
-  const newBucketStructure = factories.s3BucketFactory('testBucket');
+  const newBucketStructure = factories.s3BucketFactory('testBucket', {});
 
   expect(newBucketStructure.s3Bucket).toBeDefined();
   expect(newBucketStructure.s3LoggingBucket).toBeDefined();
