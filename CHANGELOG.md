@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.56.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.55.0...v2.56.0) (2024-04-24)
 
+Built on CDK v2.138.0
 
 ### Features
 
