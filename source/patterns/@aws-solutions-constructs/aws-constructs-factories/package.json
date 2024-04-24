@@ -1,0 +1,92 @@
+{
+  "name": "@aws-solutions-constructs/aws-constructs-factories",
+  "version": "0.0.0",
+  "description": "Factories to allow creation of individual resources",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
+    "directory": "source/patterns/@aws-solutions-constructs/aws-constructs-factories"
+  },
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc -b .",
+    "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
+    "lint-fix": "eslint -c ../eslintrc.yml --ext=.js,.ts --fix .",
+    "test": "jest --coverage",
+    "clean": "tsc -b --clean",
+    "watch": "tsc -b -w",
+    "integ": "integ-runner --update-on-failed",
+    "integ-no-clean": "integ-runner --update-on-failed --no-clean",
+    "integ-assert": "integ-runner",
+    "jsii": "jsii",
+    "jsii-pacmak": "jsii-pacmak",
+    "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
+    "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
+  },
+  "jsii": {
+    "outdir": "dist",
+    "targets": {
+      "java": {
+        "package": "software.amazon.awsconstructs.services.constructsfactories",
+        "maven": {
+          "groupId": "software.amazon.awsconstructs",
+          "artifactId": "constructsfactories"
+        }
+      },
+      "dotnet": {
+        "namespace": "Amazon.SolutionsConstructs.AWS.ConstructsFactories",
+        "packageId": "Amazon.SolutionsConstructs.AWS.ConstructsFactories",
+        "signAssembly": true,
+        "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
+      },
+      "python": {
+        "distName": "aws-solutions-constructs.aws-constructs-factories",
+        "module": "aws_solutions_constructs.aws_constructs_factories"
+      }
+    }
+  },
+  "dependencies": {
+    "@aws-cdk/integ-tests-alpha": "0.0.0-alpha.0",
+    "@aws-solutions-constructs/core": "0.0.0",
+    "constructs": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "@types/node": "^10.3.0",
+    "aws-cdk-lib": "0.0.0",
+    "constructs": "^10.0.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "coverageReporters": [
+      "text",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../../../"
+        }
+      ]
+    ]
+  },
+  "peerDependencies": {
+    "@aws-solutions-constructs/core": "0.0.0",
+    "aws-cdk-lib": "0.0.0",
+    "constructs": "^10.0.0"
+  },
+  "keywords": [
+    "aws",
+    "cdk",
+    "awscdk",
+    "Constructs Factories",
+    "AWS Solutions Constructs"
+  ]
+}
