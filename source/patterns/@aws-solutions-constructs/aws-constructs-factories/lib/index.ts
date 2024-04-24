@@ -33,10 +33,8 @@ export class ConstructsFactories extends Construct {
     super(scope, id);
   }
 
-  public s3BucketFactory(id: string, props?: S3BucketFactoryProps): S3BucketFactoryResponse {
-    if (props) {
-      defaults.CheckS3Props(props);
-    }
+  public s3BucketFactory(id: string, props: S3BucketFactoryProps): S3BucketFactoryResponse {
+    defaults.CheckS3Props(props);
 
     const propsArg: defaults.BuildS3BucketProps = props ? {
       bucketProps: props.bucketProps,

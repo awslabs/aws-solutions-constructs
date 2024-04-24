@@ -37,7 +37,7 @@ import { ConstructsFactories } from '@aws-solutions-constructs/aws-constructs-fa
 
 const factories = new ConstructsFactories(this, 'integ-test');
 
-factories.s3BucketFactory('test');
+factories.s3BucketFactory('test', {});
 ```
 
 Python
@@ -48,6 +48,12 @@ Python
 Java
 ``` java
 // TBD
+```
+
+## S3BucketFactory Function Signature
+
+``` typescript
+s3BucketFactory(id: string, props: S3BucketFactoryProps): S3BucketFactoryResponse
 ```
 
 ## S3BucketFactoryProps
