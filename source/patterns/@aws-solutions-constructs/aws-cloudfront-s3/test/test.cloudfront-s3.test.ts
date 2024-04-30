@@ -456,6 +456,7 @@ test("Custom resource is provisioned if encryption key is provided as bucketProp
     }
   });
   const template = Template.fromStack(stack);
+  defaults.printWarning(`******************${JSON.stringify(template)}`);
   template.hasResourceProperties('AWS::Lambda::Function', {
     Role: {
       "Fn::GetAtt": [ "testcloudfronts3KmsKeyPolicyUpdateLambdaRole08D4BED2", "Arn" ]

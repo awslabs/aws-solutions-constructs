@@ -66,20 +66,20 @@
         }
       }
     },
-    "7382a0addb9f34974a1ea6c6c9b063882af874828f366f5c93b2b7b64db15c94": {
+    "3542be390685e0c8353d92ccb5796d343cd93ca946b6b0de798004206a199adc": {
       "source": {
-        "path": "asset.7382a0addb9f34974a1ea6c6c9b063882af874828f366f5c93b2b7b64db15c94",
+        "path": "asset.3542be390685e0c8353d92ccb5796d343cd93ca946b6b0de798004206a199adc",
         "packaging": "zip"
       },
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "7382a0addb9f34974a1ea6c6c9b063882af874828f366f5c93b2b7b64db15c94.zip",
+          "objectKey": "3542be390685e0c8353d92ccb5796d343cd93ca946b6b0de798004206a199adc.zip",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
     },
-    "c878627febe785b75392d4236de7b69a9e1037729a797f51783019b9ec70b2f2": {
+    "502a5977676cce02e8641f8e8803c6407be000d04a9fd8256d43993f3e073035": {
       "source": {
         "path": "opilam-apiFromAssetWithCognitoAuth.template.json",
         "packaging": "file"
@@ -87,7 +87,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "c878627febe785b75392d4236de7b69a9e1037729a797f51783019b9ec70b2f2.json",
+          "objectKey": "502a5977676cce02e8641f8e8803c6407be000d04a9fd8256d43993f3e073035.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

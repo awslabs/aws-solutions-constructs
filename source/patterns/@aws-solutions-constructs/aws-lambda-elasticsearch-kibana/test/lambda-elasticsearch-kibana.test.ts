@@ -532,7 +532,7 @@ test('Test error for Lambda function VPC props', () => {
 
   const app = () => {
     new LambdaToElasticSearchAndKibana(stack, 'test-lambda-elasticsearch-kibana', {
-      lambdaFunctionProps: defaults.consolidateProps(getDefaultTestLambdaProps(), { vpc }),
+      lambdaFunctionProps: defaults.consolidateProps(getDefaultTestLambdaProps(), {}, { vpc }),
       domainName: "test",
       deployVpc: true,
     });

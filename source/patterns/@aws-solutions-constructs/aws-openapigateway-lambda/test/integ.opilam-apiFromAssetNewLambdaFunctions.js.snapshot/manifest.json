@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5ed5b436125aa9cff200ea76610a1a9b32f78c2206416685f79d4f385731ec30.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/446711b828666a3bba5f7b61f0d600c522647885762402ff4023fc948e83833c.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -130,28 +130,28 @@
             "data": "OpenApiGatewayToLambdaPhotosHandlerApiFunction1PermitAPIGInvocationA20E40FB"
           }
         ],
-        "/opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/ApiTemplateWriterLambdaRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaApiTemplateWriterLambdaRoleCBDA4014"
-          }
-        ],
-        "/opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/ApiTemplateWriterLambdaRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaApiTemplateWriterLambdaRoleDefaultPolicy5136571F"
-          }
-        ],
         "/opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/LambdaFunctionServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "OpenApiGatewayToLambdaLambdaFunctionServiceRoleACE09A85"
           }
         ],
+        "/opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaLambdaFunctionServiceRoleDefaultPolicy90DFA0A8"
+          }
+        ],
         "/opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/LambdaFunction/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "OpenApiGatewayToLambdaLambdaFunctionC7227471"
+          }
+        ],
+        "/opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/ApiTemplateWriterPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaApiTemplateWriterPolicy5B3085E5"
           }
         ],
         "/opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/ServiceRole/Resource": [
@@ -236,6 +236,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "OpenApiGatewayToLambdaApiTemplateWriterLambdaRoleCBDA4014": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaApiTemplateWriterLambdaRoleCBDA4014",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "OpenApiGatewayToLambdaApiTemplateWriterLambdaRoleDefaultPolicy5136571F": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaApiTemplateWriterLambdaRoleDefaultPolicy5136571F",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

@@ -205,7 +205,7 @@ function CreateTaskDefinition(
     taskDefinitionProps
   );
 
-  const defaultContainerDefinitionProps = defaults.consolidateProps(defaults.DefaultContainerDefinitionProps(), {
+  const defaultContainerDefinitionProps = defaults.consolidateProps(defaults.DefaultContainerDefinitionProps(), {}, {
     containerName: `${id}-container`,
   });
   const containerDefinitionProps = defaults.consolidateProps(
