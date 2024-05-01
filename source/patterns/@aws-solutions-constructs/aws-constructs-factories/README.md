@@ -35,19 +35,38 @@ import { Construct } from 'constructs';
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { ConstructsFactories } from '@aws-solutions-constructs/aws-constructs-factories';
 
-const factories = new ConstructsFactories(this, 'integ-test');
+const factories = new ConstructsFactories(this, MyFactories');
 
-factories.s3BucketFactory('test', {});
+factories.s3BucketFactory('GoodBucket', {});
 ```
 
 Python
 ``` python
-# TBD
+from aws_cdk import (
+    Stack,
+)
+from constructs import Construct
+
+from aws_solutions_constructs import (
+    aws_constructs_factories as cf
+)
+
+factories = cf.ConstructsFactories(self, 'MyFactories')
+factories.s3_bucket_factory('GoodBucket')
 ```
 
 Java
 ``` java
-// TBD
+import software.constructs.Construct;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+
+import software.amazon.awsconstructs.services.constructsfactories.ConstructsFactories;
+import software.amazon.awsconstructs.services.constructsfactories.S3BucketFactoryProps;
+
+final ConstructsFactories factories = new ConstructsFactories(this, "MyFactories");
+factories.s3BucketFactory("GoodBucket", 
+  new S3BucketFactoryProps.Builder().build());
 ```
 
 ## S3BucketFactory Function Signature
