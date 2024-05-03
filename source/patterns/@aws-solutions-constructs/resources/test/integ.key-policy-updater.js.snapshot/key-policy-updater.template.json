@@ -4,6 +4,7 @@
   "testkey9B36F12B": {
    "Type": "AWS::KMS::Key",
    "Properties": {
+    "EnableKeyRotation": true,
     "KeyPolicy": {
      "Statement": [
       {
@@ -38,8 +39,33 @@
   },
   "testbucketA976ABFD": {
    "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"
+       }
+      }
+     ]
+    }
+   },
    "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete"
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W35",
+       "reason": "Test resource"
+      },
+      {
+       "id": "41",
+       "reason": "Test resource"
+      }
+     ]
+    }
+   }
   },
   "testbucketPolicy68299958": {
    "Type": "AWS::S3::BucketPolicy",
@@ -123,6 +149,20 @@
          ]
         }
        }
+      }
+     ]
+    }
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W10",
+       "reason": "Test resource"
+      },
+      {
+       "id": "W70",
+       "reason": "Test resource"
       }
      ]
     }
