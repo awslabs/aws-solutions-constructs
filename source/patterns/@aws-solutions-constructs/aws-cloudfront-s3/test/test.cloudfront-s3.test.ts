@@ -459,7 +459,6 @@ test("Custom resource is provisioned if encryption key is provided as bucketProp
   // 2 Functions - our custom resource and a function created by the CDK
   template.resourceCountIs('AWS::Lambda::Function', 2);
 
-  defaults.printWarning(`********${JSON.stringify(template)}`);
   template.hasResourceProperties('AWS::Lambda::Function', {
     Description: "Custom resource function that updates a provided key policy to allow CloudFront access.",
     Role: {
