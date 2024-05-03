@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d9186d28cd49ee716beeff9b26cf42801457ea2f023fb2548e958e6d518f11f2.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/dc4873c297a66110326bbfedd2e906df9b9ff73790162fd4f09a490c0d6d0acc.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -148,28 +148,28 @@
             "data": "testcloudfronts3cmkencryptionkeyCloudFrontDistribution57C8A907"
           }
         ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateLambdaRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateLambdaRoleB7BBA8A2"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateLambdaRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateLambdaRoleDefaultPolicy0E93FCDF"
-          }
-        ],
         "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/LambdaFunctionServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfronts3cmkencryptionkeyLambdaFunctionServiceRole85783D1D"
           }
         ],
+        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyLambdaFunctionServiceRoleDefaultPolicyE566BC43"
+          }
+        ],
         "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/LambdaFunction/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfronts3cmkencryptionkeyLambdaFunction4DCD662E"
+          }
+        ],
+        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/test-cloudfront-s3-cmk-encryption-keyResourceCmkPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeytestcloudfronts3cmkencryptionkeyResourceCmkPolicyBD4BA975"
           }
         ],
         "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateProvider/framework-onEvent/ServiceRole/Resource": [
@@ -206,6 +206,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateLambdaRoleB7BBA8A2": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateLambdaRoleB7BBA8A2",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateLambdaRoleDefaultPolicy0E93FCDF": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateLambdaRoleDefaultPolicy0E93FCDF",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

@@ -187,7 +187,7 @@ export class CloudFrontToS3 extends Construct {
     }
 
     if (encryptionKey) {
-      resources.createKeyPolicyUpdaterCustomResource(this, {
+      resources.createKeyPolicyUpdaterCustomResource(this, id,  {
         distribution: this.cloudFrontWebDistribution,
         encryptionKey
       });

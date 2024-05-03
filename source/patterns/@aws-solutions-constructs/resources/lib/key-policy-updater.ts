@@ -37,6 +37,7 @@ export interface KeyPolicyUpdaterProps {
 
 export function createKeyPolicyUpdaterCustomResource(
   scope: Construct,
+  id: string,
   props: KeyPolicyUpdaterProps
 ): CreateKeyPolicyUpdaterResponse {
 
@@ -47,24 +48,21 @@ export function createKeyPolicyUpdaterCustomResource(
       description: 'Custom resource function that updates a provided key policy to allow CloudFront access.',
       timeout: props.timeout,
       memorySize: props.memorySize,
-      code: lambda.Code.fromAsset(`${__dirname}/key-policy-updater-custom-resource`),
-      role: new iam.Role(scope, 'KmsKeyPolicyUpdateLambdaRole', {
-        assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-        description: 'Role to update kms key policy to allow CloudFront access',
-        inlinePolicies: {
-          KmsPolicy: new iam.PolicyDocument({
-            statements: [
-              new iam.PolicyStatement({
-                actions: ['kms:PutKeyPolicy', 'kms:GetKeyPolicy', 'kms:DescribeKey'],
-                effect: iam.Effect.ALLOW,
-                resources: [ props.encryptionKey.keyArn ]
-              })
-            ]
-          })
-        }
-      })
+      code: lambda.Code.fromAsset(`${__dirname}/key-policy-updater-custom-resource`)
     }
   });
+
+  const customResourceCmkPrivilegePolicy = new iam.Policy(scope, `${id}ResourceCmkPolicy`, {
+    statements: [
+      new iam.PolicyStatement({
+        actions: ['kms:PutKeyPolicy', 'kms:GetKeyPolicy', 'kms:DescribeKey'],
+        effect: iam.Effect.ALLOW,
+        resources: [props.encryptionKey.keyArn]
+      })
+    ]
+  });
+
+  lambdaFunction.role?.attachInlinePolicy(customResourceCmkPrivilegePolicy);
 
   const kmsKeyPolicyUpdateProvider = new Provider(scope, 'KmsKeyPolicyUpdateProvider', {
     onEventHandler: lambdaFunction

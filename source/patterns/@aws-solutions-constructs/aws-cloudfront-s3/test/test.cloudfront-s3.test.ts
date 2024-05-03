@@ -14,8 +14,8 @@
 import { Template } from "aws-cdk-lib/assertions";
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cdk from "aws-cdk-lib";
-import {Duration, RemovalPolicy, Stack} from "aws-cdk-lib";
-import {CloudFrontToS3, CloudFrontToS3Props} from "../lib";
+import { Duration, RemovalPolicy, Stack } from "aws-cdk-lib";
+import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Key } from "aws-cdk-lib/aws-kms";
@@ -184,8 +184,8 @@ test("Test existingBucketObj", () => {
             ]
           },
           Id: "existingIBucketCloudFrontDistributionOrigin1D5849125",
-          OriginAccessControlId: { "Fn::GetAtt": [ "existingIBucketCloudFrontOacEB42E98F", "Id" ] },
-          S3OriginConfig: { }
+          OriginAccessControlId: { "Fn::GetAtt": ["existingIBucketCloudFrontOacEB42E98F", "Id"] },
+          S3OriginConfig: {}
         }
       ]
     }
@@ -271,7 +271,7 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::S3::Bucket", {
-    OwnershipControls: { Rules: [ { ObjectOwnership: "ObjectWriter" } ] },
+    OwnershipControls: { Rules: [{ ObjectOwnership: "ObjectWriter" }] },
     BucketName: cloudfrontLogBucketName,
   });
 
@@ -456,10 +456,14 @@ test("Custom resource is provisioned if encryption key is provided as bucketProp
     }
   });
   const template = Template.fromStack(stack);
-  defaults.printWarning(`******************${JSON.stringify(template)}`);
+  // 2 Functions - our custom resource and a function created by the CDK
+  template.resourceCountIs('AWS::Lambda::Function', 2);
+
+  defaults.printWarning(`********${JSON.stringify(template)}`);
   template.hasResourceProperties('AWS::Lambda::Function', {
+    Description: "Custom resource function that updates a provided key policy to allow CloudFront access.",
     Role: {
-      "Fn::GetAtt": [ "testcloudfronts3KmsKeyPolicyUpdateLambdaRole08D4BED2", "Arn" ]
+      "Fn::GetAtt": ["testcloudfronts3LambdaFunctionServiceRole2A43EA92", "Arn"]
     }
   });
 });
@@ -480,9 +484,14 @@ test("Custom resource is provisioned if CMK was used to encrypt an existing buck
     existingBucketObj
   });
   const template = Template.fromStack(stack);
+  // 2 Functions - our custom resource and a function created by the CDK
+  template.resourceCountIs('AWS::Lambda::Function', 2);
+
+  // ensure that our Function has the correct role attached
   template.hasResourceProperties('AWS::Lambda::Function', {
+    Description: "Custom resource function that updates a provided key policy to allow CloudFront access.",
     Role: {
-      "Fn::GetAtt": [ "testcloudfronts3KmsKeyPolicyUpdateLambdaRole08D4BED2", "Arn" ]
+      "Fn::GetAtt": ["testcloudfronts3LambdaFunctionServiceRole2A43EA92", "Arn"]
     }
   });
 });
