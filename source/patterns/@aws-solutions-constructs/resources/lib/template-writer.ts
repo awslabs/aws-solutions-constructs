@@ -102,44 +102,25 @@ export function createTemplateWriterCustomResource(
       code: lambda.Code.fromAsset(`${__dirname}/template-writer-custom-resource`),
       timeout: props.timeout,
       memorySize: props.memorySize,
-      role: new iam.Role(scope, `${id}TemplateWriterLambdaRole`, {
-        assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-        description: 'Role used by the TemplateWriterLambda to transform the incoming asset',
-        inlinePolicies: {
-          CloudWatchLogsPolicy: new iam.PolicyDocument({
-            statements: [
-              new iam.PolicyStatement({
-                actions: [
-                  'logs:CreateLogGroup',
-                  'logs:CreateLogStream',
-                  'logs:PutLogEvents'
-                ],
-                resources: [ `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/lambda/*` ]
-              })
-            ]
-          }),
-          ReadInputAssetPolicy: new iam.PolicyDocument({
-            statements: [
-              new iam.PolicyStatement({
-                actions: [ 's3:GetObject' ],
-                effect: iam.Effect.ALLOW,
-                resources: [ `arn:${Aws.PARTITION}:s3:::${props.templateBucket.bucketName}/${props.templateKey}`]
-              })
-            ]
-          }),
-          WriteOutputAssetPolicy: new iam.PolicyDocument({
-            statements: [
-              new iam.PolicyStatement({
-                actions: [ 's3:PutObject' ],
-                effect: iam.Effect.ALLOW,
-                resources: [ `arn:${Aws.PARTITION}:s3:::${outputAsset.s3BucketName}/*`]
-              })
-            ]
-          })
-        }
-      })
     }
   });
+
+  const templateWriterPolicy = new iam.Policy(scope, `${id}TemplateWriterPolicy`, {
+    statements: [
+      new iam.PolicyStatement({
+        actions: [ 's3:GetObject' ],
+        effect: iam.Effect.ALLOW,
+        resources: [ `arn:${Aws.PARTITION}:s3:::${props.templateBucket.bucketName}/${props.templateKey}`]
+      }),
+      new iam.PolicyStatement({
+        actions: [ 's3:PutObject' ],
+        effect: iam.Effect.ALLOW,
+        resources: [ `arn:${Aws.PARTITION}:s3:::${outputAsset.s3BucketName}/*`]
+      })
+    ]
+  });
+
+  templateWriterLambda.role?.attachInlinePolicy(templateWriterPolicy);
 
   const templateWriterProvider = new Provider(scope, `${id}TemplateWriterProvider`, {
     onEventHandler: templateWriterLambda

@@ -14,6 +14,7 @@
 // Imports
 import * as defaults from '../';
 import * as cdk from 'aws-cdk-lib';
+import * as log from 'npmlog';
 
 // Need 2 parts, but they can't overlap
 // so we can explicitly find them in the results.
@@ -93,6 +94,10 @@ test('Test generateIntegStackName', () => {
 });
 
 test('Test consolidate props with all args', () => {
+  jest.resetModules();
+  jest.clearAllMocks();
+  process.env.overrideWarningsEnabled = 'true';
+
   const arg1 = {
     val1: 11,
     val2: 12,
@@ -108,6 +113,7 @@ test('Test consolidate props with all args', () => {
     val1: 31,
   };
 
+  const warn = jest.spyOn(log, 'warn');
   const result = defaults.consolidateProps(arg1, arg2, arg3);
 
   expect(result).toEqual({
@@ -116,9 +122,15 @@ test('Test consolidate props with all args', () => {
     val3: 13,
   });
 
+  expect(warn).toBeCalledTimes(2);
+
 });
 
 test('Test consolidate props with first and third args', () => {
+  jest.resetModules();
+  jest.clearAllMocks();
+  process.env.overrideWarningsEnabled = 'true';
+
   const arg1 = {
     val1: 11,
     val2: 12,
@@ -129,6 +141,7 @@ test('Test consolidate props with first and third args', () => {
     val1: 31,
   };
 
+  const warn = jest.spyOn(log, 'warn');
   const result = defaults.consolidateProps(arg1, undefined, arg3);
 
   expect(result).toEqual({
@@ -137,9 +150,15 @@ test('Test consolidate props with first and third args', () => {
     val3: 13,
   });
 
+  expect(warn).toBeCalledTimes(0);
+
 });
 
 test('Test consolidate props with first and second args', () => {
+  jest.resetModules();
+  jest.clearAllMocks();
+  process.env.overrideWarningsEnabled = 'true';
+
   const arg1 = {
     val1: 11,
     val2: 12,
@@ -151,6 +170,7 @@ test('Test consolidate props with first and second args', () => {
     val2: 22,
   };
 
+  const warn = jest.spyOn(log, 'warn');
   const result = defaults.consolidateProps(arg1, arg2);
 
   expect(result).toEqual({
@@ -159,18 +179,27 @@ test('Test consolidate props with first and second args', () => {
     val3: 13,
   });
 
+  expect(warn).toBeCalledTimes(2);
+
 });
 
 test('Test consolidate props with one arg', () => {
+  jest.resetModules();
+  jest.clearAllMocks();
+  process.env.overrideWarningsEnabled = 'true';
+
   const arg1 = {
     val1: 11,
     val2: 12,
     val3: 13,
   };
 
+  const warn = jest.spyOn(log, 'warn');
   const result = defaults.consolidateProps(arg1);
 
   expect(result).toEqual(arg1);
+
+  expect(warn).toBeCalledTimes(0);
 
 });
 
@@ -247,4 +276,30 @@ test('Test unsuccessful CheckListValues', () => {
 
   // Assertion
   expect(app).toThrowError('Invalid test value submitted - three');
+});
+
+test('ConsolidateProps does not generate warnings for construct props overrides', () => {
+  jest.resetModules();
+  jest.clearAllMocks();
+  process.env.overrideWarningsEnabled = 'true';
+
+  const defaultProps = {
+    val1: 'one'
+  };
+
+  const clientProps = {
+    val1: 'two',
+    val2: 'three'
+  };
+
+  const constructProps = {
+    val2: 'four'
+  };
+
+  const warn = jest.spyOn(log, 'warn');
+  defaults.consolidateProps(defaultProps, clientProps,  constructProps);
+
+  // Assert
+  expect(warn).toBeCalledTimes(1);
+
 });

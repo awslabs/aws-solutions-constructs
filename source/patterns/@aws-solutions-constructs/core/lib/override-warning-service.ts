@@ -51,9 +51,12 @@ export function flagOverriddenDefaults(defaultProps: object, userProps: object) 
  * 'Argument to Intrinsic must be a plain value object', so such props are excluded from the diff check.
  */
 function _prefilter(_path: any[], _key: string): boolean {
-  const prefilters = ['maxRecordAge', 'expiration', 'transitionAfter', 'destination', 'timeout', 'period'];
+  const prefilters = ['maxRecordAge', 'expiration', 'transitionAfter', 'destination', 'timeout', 'period', 'node'];
 
   if (prefilters.indexOf(_key) >= 0) {
+    if (_key !== 'node') {
+      printWarning(`Possible override of ${_key} value.`);
+    }
     return true;
   }
   return false;

@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/607f8919f35dbe3be4de5051acf319da2372109f3746775b9d7275220e050c54.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3213fb7881b23f688306a63ce482339ecdd784c63cdc80c7cb4e432ad6804a58.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,28 +82,28 @@
         "template-writer-from-large-asset.assets"
       ],
       "metadata": {
-        "/template-writer-from-large-asset/TestTemplateWriterLambdaRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "TestTemplateWriterLambdaRole192FE23A"
-          }
-        ],
-        "/template-writer-from-large-asset/TestTemplateWriterLambdaRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "TestTemplateWriterLambdaRoleDefaultPolicyBCFD88FC"
-          }
-        ],
         "/template-writer-from-large-asset/LambdaFunctionServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "LambdaFunctionServiceRole0C4CDE0B"
           }
         ],
+        "/template-writer-from-large-asset/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRoleDefaultPolicy126C8897"
+          }
+        ],
         "/template-writer-from-large-asset/LambdaFunction/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "LambdaFunctionBF21E41F"
+          }
+        ],
+        "/template-writer-from-large-asset/TestTemplateWriterPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TestTemplateWriterPolicy8177DE02"
           }
         ],
         "/template-writer-from-large-asset/TestTemplateWriterProvider/framework-onEvent/ServiceRole/Resource": [
@@ -140,6 +140,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "TestTemplateWriterLambdaRole192FE23A": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TestTemplateWriterLambdaRole192FE23A",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "TestTemplateWriterLambdaRoleDefaultPolicyBCFD88FC": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TestTemplateWriterLambdaRoleDefaultPolicyBCFD88FC",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

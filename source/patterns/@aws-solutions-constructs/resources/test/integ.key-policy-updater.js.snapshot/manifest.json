@@ -1,0 +1,185 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "keypolicyupdaterIntegDefaultTestDeployAssert2855331B.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "keypolicyupdaterIntegDefaultTestDeployAssert2855331B.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "keypolicyupdaterIntegDefaultTestDeployAssert2855331B": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "keypolicyupdaterIntegDefaultTestDeployAssert2855331B.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "keypolicyupdaterIntegDefaultTestDeployAssert2855331B.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "keypolicyupdaterIntegDefaultTestDeployAssert2855331B.assets"
+      ],
+      "metadata": {
+        "/key-policy-updater/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/key-policy-updater/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "key-policy-updater/Integ/DefaultTest/DeployAssert"
+    },
+    "key-policy-updater.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "key-policy-updater.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "key-policy-updater": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "key-policy-updater.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ce2a8018385dd7565e57e724cd0780b4d6d707af2e6640a2f590f7a7ea17a3a4.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "key-policy-updater.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "key-policy-updater.assets"
+      ],
+      "metadata": {
+        "/key-policy-updater/test key/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkey9B36F12B"
+          }
+        ],
+        "/key-policy-updater/test bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testbucketA976ABFD"
+          }
+        ],
+        "/key-policy-updater/test bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testbucketPolicy68299958"
+          }
+        ],
+        "/key-policy-updater/test dist/Origin1/S3Origin/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdistOrigin1S3Origin7E994241"
+          }
+        ],
+        "/key-policy-updater/test dist/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdistE978BF1A"
+          }
+        ],
+        "/key-policy-updater/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRole0C4CDE0B"
+          }
+        ],
+        "/key-policy-updater/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRoleDefaultPolicy126C8897"
+          }
+        ],
+        "/key-policy-updater/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionBF21E41F"
+          }
+        ],
+        "/key-policy-updater/TestResourceCmkPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TestResourceCmkPolicy977FBAA4"
+          }
+        ],
+        "/key-policy-updater/KmsKeyPolicyUpdateProvider/framework-onEvent/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KmsKeyPolicyUpdateProviderframeworkonEventServiceRoleD0164B97"
+          }
+        ],
+        "/key-policy-updater/KmsKeyPolicyUpdateProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KmsKeyPolicyUpdateProviderframeworkonEventServiceRoleDefaultPolicyC8853973"
+          }
+        ],
+        "/key-policy-updater/KmsKeyPolicyUpdateProvider/framework-onEvent/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KmsKeyPolicyUpdateProviderframeworkonEventEC76BE2C"
+          }
+        ],
+        "/key-policy-updater/KmsKeyPolicyUpdater/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KmsKeyPolicyUpdater"
+          }
+        ],
+        "/key-policy-updater/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/key-policy-updater/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "key-policy-updater"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}
