@@ -35,7 +35,7 @@ import { Construct } from 'constructs';
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { ConstructsFactories } from '@aws-solutions-constructs/aws-constructs-factories';
 
-const factories = new ConstructsFactories(this, MyFactories');
+const factories = new ConstructsFactories(this, 'MyFactories');
 
 factories.s3BucketFactory('GoodBucket', {});
 ```
