@@ -558,7 +558,7 @@ test('Test error for Lambda function VPC props', () => {
 
   const app = () => {
     new LambdaToOpenSearch(stack, 'test-lambda-opensearch', {
-      lambdaFunctionProps: defaults.consolidateProps(getDefaultTestLambdaProps(), { vpc }),
+      lambdaFunctionProps: defaults.consolidateProps(getDefaultTestLambdaProps(), {}, { vpc }),
       openSearchDomainName: "test",
       deployVpc: true,
     });

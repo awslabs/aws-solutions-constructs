@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.57.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.56.0...v2.57.0) (2024-05-06)
+
+Built on CDK v2.138.0
+
+### Bug Fixes
+
+* **utils:** address issues in printing override warnings ([#1113](https://github.com/awslabs/aws-solutions-constructs/issues/1113)) ([1732949](https://github.com/awslabs/aws-solutions-constructs/commit/1732949a7b81fe4670d642a83db091e08b954317))
+
 ## [2.56.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.55.0...v2.56.0) (2024-04-24)
 
 Built on CDK v2.138.0
