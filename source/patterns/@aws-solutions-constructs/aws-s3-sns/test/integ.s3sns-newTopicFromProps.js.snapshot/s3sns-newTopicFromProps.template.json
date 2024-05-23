@@ -417,13 +417,13 @@
   "tests3snsSnsTopicF02F6BD0": {
    "Type": "AWS::SNS::Topic",
    "Properties": {
+    "DisplayName": "new-topic-from-props",
     "KmsMasterKeyId": {
      "Fn::GetAtt": [
       "tests3snstests3snsKey1D741F34",
       "Arn"
      ]
-    },
-    "TopicName": "new-topic-from-props"
+    }
    }
   },
   "tests3snsSnsTopicPolicyBB44DF16": {
