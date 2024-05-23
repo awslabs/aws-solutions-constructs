@@ -25,8 +25,7 @@
        ":alias/aws/sns"
       ]
      ]
-    },
-    "TopicName": "testTopic"
+    }
    }
   },
   "ImportedEncryptionKeyBE10B2FC": {
@@ -70,17 +69,6 @@
          }
         }
        },
-       "Effect": "Allow",
-       "Principal": {
-        "Service": "sns.amazonaws.com"
-       },
-       "Resource": "*"
-      },
-      {
-       "Action": [
-        "kms:Decrypt",
-        "kms:GenerateDataKey*"
-       ],
        "Effect": "Allow",
        "Principal": {
         "Service": "sns.amazonaws.com"

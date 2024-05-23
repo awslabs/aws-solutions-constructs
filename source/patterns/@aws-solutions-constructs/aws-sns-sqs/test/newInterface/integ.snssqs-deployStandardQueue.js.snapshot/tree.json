@@ -47,8 +47,7 @@
                           ":alias/aws/sns"
                         ]
                       ]
-                    },
-                    "topicName": "testTopic"
+                    }
                   }
                 },
                 "constructInfo": {
@@ -110,17 +109,6 @@
                               }
                             }
                           },
-                          "Effect": "Allow",
-                          "Principal": {
-                            "Service": "sns.amazonaws.com"
-                          },
-                          "Resource": "*"
-                        },
-                        {
-                          "Action": [
-                            "kms:Decrypt",
-                            "kms:GenerateDataKey*"
-                          ],
                           "Effect": "Allow",
                           "Principal": {
                             "Service": "sns.amazonaws.com"

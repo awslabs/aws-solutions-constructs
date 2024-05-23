@@ -27,7 +27,7 @@
       ]
      ]
     },
-    "TopicName": "testTopic.fifo"
+    "TopicName": "snssqsolddeployFIFOQueue-TestTopic-B0D4ACA9.fifo"
    }
   },
   "ImportedEncryptionKeyBE10B2FC": {
@@ -62,8 +62,7 @@
       {
        "Action": [
         "kms:Decrypt",
-        "kms:GenerateDataKey",
-        "kms:GenerateDataKey*"
+        "kms:GenerateDataKey"
        ],
        "Effect": "Allow",
        "Principal": {

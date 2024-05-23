@@ -49,7 +49,7 @@
                         ]
                       ]
                     },
-                    "topicName": "testTopic.fifo"
+                    "topicName": "snssqsolddeployFIFOQueue-TestTopic-B0D4ACA9.fifo"
                   }
                 },
                 "constructInfo": {
@@ -102,8 +102,7 @@
                         {
                           "Action": [
                             "kms:Decrypt",
-                            "kms:GenerateDataKey",
-                            "kms:GenerateDataKey*"
+                            "kms:GenerateDataKey"
                           ],
                           "Effect": "Allow",
                           "Principal": {

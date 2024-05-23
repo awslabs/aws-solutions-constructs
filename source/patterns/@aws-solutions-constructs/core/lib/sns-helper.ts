@@ -21,7 +21,7 @@ import * as sns from 'aws-cdk-lib/aws-sns';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import { DefaultSnsTopicProps } from './sns-defaults';
 import { buildEncryptionKey } from './kms-helper';
-import { consolidateProps, printWarning } from './utils';
+import { consolidateProps } from './utils';
 import { PolicyStatement, AnyPrincipal, Effect, AccountPrincipal } from 'aws-cdk-lib/aws-iam';
 import { Stack } from 'aws-cdk-lib';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
@@ -143,10 +143,6 @@ export function buildTopic(scope: Construct, id: string, props: BuildTopicProps)
   if (!props.existingTopicObj) {
     // Setup the topic properties
     const snsTopicProps = consolidateProps(DefaultSnsTopicProps, props.topicProps);
-
-    if ((props.topicProps?.masterKey || props.encryptionKey || props.encryptionKeyProps) && props.enableEncryptionWithCustomerManagedKey === true) {
-      printWarning("Ignoring enableEncryptionWithCustomerManagedKey because one of topicProps.masterKey, encryptionKey, or encryptionKeyProps was already specified");
-    }
 
     // Set encryption properties
     if (props.topicProps?.masterKey) {

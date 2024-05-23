@@ -32,7 +32,6 @@ const snsManagedKey = kms.Alias.fromAliasName(stack, 'sns-managed-key', 'alias/a
 const topic = new sns.Topic(stack, 'TestTopic', {
   displayName: 'Customer subscription topic',
   fifo: false,
-  topicName: 'testTopic',
   masterKey: snsManagedKey
 });
 

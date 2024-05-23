@@ -329,25 +329,12 @@ test('Pattern deployment w/ existing topic and FIFO queue', () => {
     }
   };
 
-  const testConstruct = new SnsToSqs(stack, 'test-sns-sqs', props);
+  const app = () => {
+    new SnsToSqs(stack, 'test-sns-sqs', props);
+  };
 
-  CheckKeyProperty(testConstruct.queueEncryptionKey, keyType.none);
-  CheckKeyProperty(testConstruct.topicEncryptionKey, keyType.none);
-  CheckKeyProperty(testConstruct.encryptionKey, keyType.none);
-
-  expect(testConstruct.snsTopic).toBeDefined();
-  expect(testConstruct.sqsQueue).toBeDefined();
-  expect(testConstruct.deadLetterQueue).toBeDefined();
-
-  const template = Template.fromStack(stack);
-
-  template.resourceCountIs("AWS::KMS::Key", 0);
-  template.resourceCountIs("AWS::SQS::Queue", 2);
-  template.resourceCountIs("AWS::SNS::Topic", 1);
-  template.resourceCountIs("AWS::SNS::Subscription", 1);
-
-  CheckQueueKeyType(template, keyType.none);
-  CheckTopicKeyType(template, keyType.none);
+  // Assertion
+  expect(app).toThrowError("SQS queue encrypted by AWS managed KMS key cannot be used as SNS subscription");
 });
 
 test('Pattern deployment w/ existing topic and Standard queue', () => {
@@ -372,32 +359,12 @@ test('Pattern deployment w/ existing topic and Standard queue', () => {
       fifo: false,
     }
   };
+  const app = () => {
+    new SnsToSqs(stack, 'test-sns-sqs', props);
+  };
 
-  const testConstruct = new SnsToSqs(stack, 'test-sns-sqs', props);
-
-  CheckKeyProperty(testConstruct.queueEncryptionKey, keyType.none);
-  CheckKeyProperty(testConstruct.topicEncryptionKey, keyType.none);
-  CheckKeyProperty(testConstruct.encryptionKey, keyType.none);
-
-  expect(testConstruct.snsTopic).toBeDefined();
-  expect(testConstruct.sqsQueue).toBeDefined();
-  expect(testConstruct.deadLetterQueue).toBeDefined();
-
-  const template = Template.fromStack(stack);
-
-  template.resourceCountIs("AWS::KMS::Key", 0);
-  template.resourceCountIs("AWS::SQS::Queue", 2);
-  template.resourceCountIs("AWS::SNS::Topic", 1);
-  template.resourceCountIs("AWS::SNS::Subscription", 1);
-
-  CheckQueueKeyType(template, keyType.none);
-  CheckTopicKeyType(template, keyType.none);
-
-  template.hasResourceProperties("AWS::SQS::Queue", {
-    RedrivePolicy: {
-      deadLetterTargetArn: Match.anyValue(),
-    }
-  });
+  // Assertion
+  expect(app).toThrowError("SQS queue encrypted by AWS managed KMS key cannot be used as SNS subscription");
 });
 
 test('Check sqsSubscriptionProps are used', () => {

@@ -27,7 +27,7 @@
       ]
      ]
     },
-    "TopicName": "testTopic.fifo"
+    "TopicName": "snssqsdeployFIFOQueue-TestTopic-E42F11A6.fifo"
    }
   },
   "ImportedEncryptionKeyBE10B2FC": {
@@ -71,17 +71,6 @@
          }
         }
        },
-       "Effect": "Allow",
-       "Principal": {
-        "Service": "sns.amazonaws.com"
-       },
-       "Resource": "*"
-      },
-      {
-       "Action": [
-        "kms:Decrypt",
-        "kms:GenerateDataKey*"
-       ],
        "Effect": "Allow",
        "Principal": {
         "Service": "sns.amazonaws.com"

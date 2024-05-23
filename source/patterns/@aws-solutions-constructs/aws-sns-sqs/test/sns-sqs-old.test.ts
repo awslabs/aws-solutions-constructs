@@ -603,6 +603,21 @@ test('Confirm that Construct checks for mixed deprecated and active props', () =
   expect(app).toThrowError(/Cannot specify both deprecated key props and new key props/);
 });
 
+test('Error if enableEncryption is false and encryption settings are provided', () => {
+  // Stack
+  const stack = new Stack();
+
+  const app = () => {
+    new SnsToSqs(stack, 'sns-to-sqs-stack', {
+      enableEncryptionWithCustomerManagedKey: false,
+      encryptionKeyProps: {}
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError("Error - if enableEncryptionWithCustomerManagedKey is false, submitting encryptionKey or encryptionKeyProps is invalid\n");
+});
+
 test('test CreateRequiredKeys for no arguments', () => {
   const stack = new Stack();
   stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", false);

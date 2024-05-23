@@ -49,7 +49,7 @@
                         ]
                       ]
                     },
-                    "topicName": "testTopic.fifo"
+                    "topicName": "snssqsdeployFIFOQueue-TestTopic-E42F11A6.fifo"
                   }
                 },
                 "constructInfo": {
@@ -111,17 +111,6 @@
                               }
                             }
                           },
-                          "Effect": "Allow",
-                          "Principal": {
-                            "Service": "sns.amazonaws.com"
-                          },
-                          "Resource": "*"
-                        },
-                        {
-                          "Action": [
-                            "kms:Decrypt",
-                            "kms:GenerateDataKey*"
-                          ],
                           "Effect": "Allow",
                           "Principal": {
                             "Service": "sns.amazonaws.com"

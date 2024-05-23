@@ -47,8 +47,7 @@
                           ":alias/aws/sns"
                         ]
                       ]
-                    },
-                    "topicName": "testTopic"
+                    }
                   }
                 },
                 "constructInfo": {
@@ -101,8 +100,7 @@
                         {
                           "Action": [
                             "kms:Decrypt",
-                            "kms:GenerateDataKey",
-                            "kms:GenerateDataKey*"
+                            "kms:GenerateDataKey"
                           ],
                           "Effect": "Allow",
                           "Principal": {

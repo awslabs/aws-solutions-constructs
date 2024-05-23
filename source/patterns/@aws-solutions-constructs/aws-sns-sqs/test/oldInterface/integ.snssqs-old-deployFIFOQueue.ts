@@ -33,7 +33,6 @@ const topic = new sns.Topic(stack, 'TestTopic', {
   contentBasedDeduplication: true,
   displayName: 'Customer subscription topic',
   fifo: true,
-  topicName: 'testTopic',
   masterKey: snsManagedKey
 });
 

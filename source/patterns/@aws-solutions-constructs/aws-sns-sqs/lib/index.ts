@@ -14,7 +14,7 @@
 // Imports
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as sns from 'aws-cdk-lib/aws-sns';
-import * as iam from 'aws-cdk-lib/aws-iam';
+// import * as iam from 'aws-cdk-lib/aws-iam';
 import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
 import * as kms from 'aws-cdk-lib/aws-kms';
 // import * as iam from 'aws-cdk-lib/aws-iam';
@@ -211,14 +211,6 @@ export class SnsToSqs extends Construct {
     // Setup the SQS queue subscription to the SNS topic
     this.snsTopic.addSubscription(new subscriptions.SqsSubscription(this.sqsQueue, props.sqsSubscriptionProps));
 
-    // Grant SNS service access to the SQS queue encryption key
-    // TODO: Check that subscription doesn't already do this - needed only for old interface behavior?
-    if (this.sqsQueue.encryptionMasterKey) {
-      this.sqsQueue.encryptionMasterKey.grant(new iam.ServicePrincipal("sns.amazonaws.com"),
-        'kms:Decrypt',
-        'kms:GenerateDataKey*',
-      );
-    }
   }
 
   /*
@@ -247,8 +239,13 @@ export class SnsToSqs extends Construct {
     // First - confirm that only 1 interface is being used
     let useDeprecatedInterface: boolean = false;
     let useCurrentInterface: boolean = false;
-    if (props.enableEncryptionWithCustomerManagedKey || props.encryptionKey || props.encryptionKeyProps) {
+    if (props.enableEncryptionWithCustomerManagedKey || props.enableEncryptionWithCustomerManagedKey || props.encryptionKeyProps) {
       useDeprecatedInterface = true;
+      defaults.printWarning(
+        'The enableEncryptionWithCustomerManagedKey, enableEncryptionWithCustomerManagedKey and encryptionKeyProps props values for SnsToSqsProps ' +
+        'are deprecated. Consider moving to encryptQueueWithCmk, queueEncryptionKeyProps, existingQueueEncryptionKey, encryptTopicWithCmk, ' +
+        'topicEncryptionKeyProps and existingTopicEncryptionKey.'
+      );
     }
     if (props.encryptQueueWithCmk ||
       props.queueEncryptionKeyProps ||
@@ -375,6 +372,11 @@ export class SnsToSqs extends Construct {
 
     if ((props.encryptTopicWithCmk === false) && (props.existingTopicEncryptionKey)) {
       errorMessages += 'Error - if encryptTopicWithCmk is false, submitting existingTopicEncryptionKey is invalid\n';
+      errorFound = true;
+    }
+
+    if ((props.enableEncryptionWithCustomerManagedKey === false) && (props.encryptionKey || props.encryptionKeyProps)) {
+      errorMessages += 'Error - if enableEncryptionWithCustomerManagedKey is false, submitting encryptionKey or encryptionKeyProps is invalid\n';
       errorFound = true;
     }
 

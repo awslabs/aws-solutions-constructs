@@ -488,17 +488,6 @@
         "Service": "sns.amazonaws.com"
        },
        "Resource": "*"
-      },
-      {
-       "Action": [
-        "kms:Decrypt",
-        "kms:GenerateDataKey*"
-       ],
-       "Effect": "Allow",
-       "Principal": {
-        "Service": "sns.amazonaws.com"
-       },
-       "Resource": "*"
       }
      ],
      "Version": "2012-10-17"
