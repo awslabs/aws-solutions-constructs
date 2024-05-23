@@ -1,0 +1,60 @@
+"use strict";
+/**
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
+ *  with the License. A copy of the License is located at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  or in the 'license' file accompanying this file. This file is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES
+ *  OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions
+ *  and limitations under the License.
+ */
+Object.defineProperty(exports, "__esModule", { value: true });
+// Imports
+const aws_cdk_lib_1 = require("aws-cdk-lib");
+const lib_1 = require("../../lib");
+const iam = require("aws-cdk-lib/aws-iam");
+const sns = require("aws-cdk-lib/aws-sns");
+const sqs = require("aws-cdk-lib/aws-sqs");
+const kms = require("aws-cdk-lib/aws-kms");
+const core_1 = require("@aws-solutions-constructs/core");
+const integ_tests_alpha_1 = require("@aws-cdk/integ-tests-alpha");
+// Setup
+const app = new aws_cdk_lib_1.App();
+const stack = new aws_cdk_lib_1.Stack(app, core_1.generateIntegStackName(__filename));
+stack.templateOptions.description = 'Integration Test for aws-sns-sqs';
+stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", false);
+const sqsEncryptionKey = new kms.Key(stack, 'ImportedSQSEncryptionKey', {
+    enableKeyRotation: true,
+    removalPolicy: aws_cdk_lib_1.RemovalPolicy.DESTROY
+});
+const dlq = new sqs.Queue(stack, 'existing-dlq-obj', {
+    encryptionMasterKey: sqsEncryptionKey
+});
+// Definitions
+const props = {
+    sqsSubscriptionProps: {
+        rawMessageDelivery: true,
+        // To test this stack, when publishing the SNS message, add a message attribute:
+        // Type: string, Name: store, Value: (any value)
+        filterPolicy: {
+            store: sns.SubscriptionFilter.existsFilter(),
+        },
+        deadLetterQueue: dlq
+    }
+};
+const snsToSqsStack = new lib_1.SnsToSqs(stack, 'test-sns-sqs-stack', props);
+// Grant yourself permissions to use the Customer Managed KMS Key
+const policyStatement = new iam.PolicyStatement({
+    actions: ["kms:Encrypt", "kms:Decrypt"],
+    effect: iam.Effect.ALLOW,
+    principals: [new iam.AccountRootPrincipal()],
+    resources: ["*"]
+});
+snsToSqsStack.encryptionKey?.addToResourcePolicy(policyStatement);
+new integ_tests_alpha_1.IntegTest(stack, 'Integ', { testCases: [
+        stack
+    ] });
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW50ZWcuc25zc3FzLW9sZC1yYXdNZXNzYWdlRGVsaXZlcnkuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJpbnRlZy5zbnNzcXMtb2xkLXJhd01lc3NhZ2VEZWxpdmVyeS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBQUE7Ozs7Ozs7Ozs7O0dBV0c7O0FBRUgsVUFBVTtBQUNWLDZDQUF3RDtBQUN4RCxtQ0FBb0Q7QUFDcEQsMkNBQTJDO0FBQzNDLDJDQUEyQztBQUMzQywyQ0FBMkM7QUFDM0MsMkNBQTJDO0FBQzNDLHlEQUF3RTtBQUN4RSxrRUFBdUQ7QUFFdkQsUUFBUTtBQUNSLE1BQU0sR0FBRyxHQUFHLElBQUksaUJBQUcsRUFBRSxDQUFDO0FBQ3RCLE1BQU0sS0FBSyxHQUFHLElBQUksbUJBQUssQ0FBQyxHQUFHLEVBQUUsNkJBQXNCLENBQUMsVUFBVSxDQUFDLENBQUMsQ0FBQztBQUNqRSxLQUFLLENBQUMsZUFBZSxDQUFDLFdBQVcsR0FBRyxrQ0FBa0MsQ0FBQztBQUN2RSxLQUFLLENBQUMsSUFBSSxDQUFDLFVBQVUsQ0FBQyx1REFBdUQsRUFBRSxLQUFLLENBQUMsQ0FBQztBQUV0RixNQUFNLGdCQUFnQixHQUFHLElBQUksR0FBRyxDQUFDLEdBQUcsQ0FBQyxLQUFLLEVBQUUsMEJBQTBCLEVBQUU7SUFDdEUsaUJBQWlCLEVBQUUsSUFBSTtJQUN2QixhQUFhLEVBQUUsMkJBQWEsQ0FBQyxPQUFPO0NBQ3JDLENBQUMsQ0FBQztBQUNILE1BQU0sR0FBRyxHQUFHLElBQUksR0FBRyxDQUFDLEtBQUssQ0FBQyxLQUFLLEVBQUUsa0JBQWtCLEVBQUU7SUFDbkQsbUJBQW1CLEVBQUUsZ0JBQWdCO0NBQ3RDLENBQUMsQ0FBQztBQUVILGNBQWM7QUFDZCxNQUFNLEtBQUssR0FBa0I7SUFDM0Isb0JBQW9CLEVBQUU7UUFDcEIsa0JBQWtCLEVBQUUsSUFBSTtRQUN4QixnRkFBZ0Y7UUFDaEYsZ0RBQWdEO1FBQ2hELFlBQVksRUFBRTtZQUNaLEtBQUssRUFBRSxHQUFHLENBQUMsa0JBQWtCLENBQUMsWUFBWSxFQUFFO1NBQzdDO1FBQ0QsZUFBZSxFQUFFLEdBQUc7S0FDckI7Q0FDRixDQUFDO0FBRUYsTUFBTSxhQUFhLEdBQUcsSUFBSSxjQUFRLENBQUMsS0FBSyxFQUFFLG9CQUFvQixFQUFFLEtBQUssQ0FBQyxDQUFDO0FBRXZFLGlFQUFpRTtBQUNqRSxNQUFNLGVBQWUsR0FBRyxJQUFJLEdBQUcsQ0FBQyxlQUFlLENBQUM7SUFDOUMsT0FBTyxFQUFFLENBQUMsYUFBYSxFQUFFLGFBQWEsQ0FBQztJQUN2QyxNQUFNLEVBQUUsR0FBRyxDQUFDLE1BQU0sQ0FBQyxLQUFLO0lBQ3hCLFVBQVUsRUFBRSxDQUFDLElBQUksR0FBRyxDQUFDLG9CQUFvQixFQUFFLENBQUM7SUFDNUMsU0FBUyxFQUFFLENBQUMsR0FBRyxDQUFDO0NBQ2pCLENBQUMsQ0FBQztBQUVILGFBQWEsQ0FBQyxhQUFhLEVBQUUsbUJBQW1CLENBQUMsZUFBZSxDQUFDLENBQUM7QUFFbEUsSUFBSSw2QkFBUyxDQUFDLEtBQUssRUFBRSxPQUFPLEVBQUUsRUFBRSxTQUFTLEVBQUU7UUFDekMsS0FBSztLQUNOLEVBQUUsQ0FBQyxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiLyoqXG4gKiAgQ29weXJpZ2h0IEFtYXpvbi5jb20sIEluYy4gb3IgaXRzIGFmZmlsaWF0ZXMuIEFsbCBSaWdodHMgUmVzZXJ2ZWQuXG4gKlxuICogIExpY2Vuc2VkIHVuZGVyIHRoZSBBcGFjaGUgTGljZW5zZSwgVmVyc2lvbiAyLjAgKHRoZSBcIkxpY2Vuc2VcIikuIFlvdSBtYXkgbm90IHVzZSB0aGlzIGZpbGUgZXhjZXB0IGluIGNvbXBsaWFuY2VcbiAqICB3aXRoIHRoZSBMaWNlbnNlLiBBIGNvcHkgb2YgdGhlIExpY2Vuc2UgaXMgbG9jYXRlZCBhdFxuICpcbiAqICAgICAgaHR0cDovL3d3dy5hcGFjaGUub3JnL2xpY2Vuc2VzL0xJQ0VOU0UtMi4wXG4gKlxuICogIG9yIGluIHRoZSAnbGljZW5zZScgZmlsZSBhY2NvbXBhbnlpbmcgdGhpcyBmaWxlLiBUaGlzIGZpbGUgaXMgZGlzdHJpYnV0ZWQgb24gYW4gJ0FTIElTJyBCQVNJUywgV0lUSE9VVCBXQVJSQU5USUVTXG4gKiAgT1IgQ09ORElUSU9OUyBPRiBBTlkgS0lORCwgZXhwcmVzcyBvciBpbXBsaWVkLiBTZWUgdGhlIExpY2Vuc2UgZm9yIHRoZSBzcGVjaWZpYyBsYW5ndWFnZSBnb3Zlcm5pbmcgcGVybWlzc2lvbnNcbiAqICBhbmQgbGltaXRhdGlvbnMgdW5kZXIgdGhlIExpY2Vuc2UuXG4gKi9cblxuLy8gSW1wb3J0c1xuaW1wb3J0IHsgQXBwLCBSZW1vdmFsUG9saWN5LCBTdGFjayB9IGZyb20gXCJhd3MtY2RrLWxpYlwiO1xuaW1wb3J0IHsgU25zVG9TcXMsIFNuc1RvU3FzUHJvcHMgfSBmcm9tIFwiLi4vLi4vbGliXCI7XG5pbXBvcnQgKiBhcyBpYW0gZnJvbSAnYXdzLWNkay1saWIvYXdzLWlhbSc7XG5pbXBvcnQgKiBhcyBzbnMgZnJvbSAnYXdzLWNkay1saWIvYXdzLXNucyc7XG5pbXBvcnQgKiBhcyBzcXMgZnJvbSAnYXdzLWNkay1saWIvYXdzLXNxcyc7XG5pbXBvcnQgKiBhcyBrbXMgZnJvbSAnYXdzLWNkay1saWIvYXdzLWttcyc7XG5pbXBvcnQgeyBnZW5lcmF0ZUludGVnU3RhY2tOYW1lIH0gZnJvbSAnQGF3cy1zb2x1dGlvbnMtY29uc3RydWN0cy9jb3JlJztcbmltcG9ydCB7IEludGVnVGVzdCB9IGZyb20gJ0Bhd3MtY2RrL2ludGVnLXRlc3RzLWFscGhhJztcblxuLy8gU2V0dXBcbmNvbnN0IGFwcCA9IG5ldyBBcHAoKTtcbmNvbnN0IHN0YWNrID0gbmV3IFN0YWNrKGFwcCwgZ2VuZXJhdGVJbnRlZ1N0YWNrTmFtZShfX2ZpbGVuYW1lKSk7XG5zdGFjay50ZW1wbGF0ZU9wdGlvbnMuZGVzY3JpcHRpb24gPSAnSW50ZWdyYXRpb24gVGVzdCBmb3IgYXdzLXNucy1zcXMnO1xuc3RhY2subm9kZS5zZXRDb250ZXh0KFwiQGF3cy1jZGsvYXdzLXNucy1zdWJzY3JpcHRpb25zOnJlc3RyaWN0U3FzRGVzY3J5cHRpb25cIiwgZmFsc2UpO1xuXG5jb25zdCBzcXNFbmNyeXB0aW9uS2V5ID0gbmV3IGttcy5LZXkoc3RhY2ssICdJbXBvcnRlZFNRU0VuY3J5cHRpb25LZXknLCB7XG4gIGVuYWJsZUtleVJvdGF0aW9uOiB0cnVlLFxuICByZW1vdmFsUG9saWN5OiBSZW1vdmFsUG9saWN5LkRFU1RST1lcbn0pO1xuY29uc3QgZGxxID0gbmV3IHNxcy5RdWV1ZShzdGFjaywgJ2V4aXN0aW5nLWRscS1vYmonLCB7XG4gIGVuY3J5cHRpb25NYXN0ZXJLZXk6IHNxc0VuY3J5cHRpb25LZXlcbn0pO1xuXG4vLyBEZWZpbml0aW9uc1xuY29uc3QgcHJvcHM6IFNuc1RvU3FzUHJvcHMgPSB7XG4gIHNxc1N1YnNjcmlwdGlvblByb3BzOiB7XG4gICAgcmF3TWVzc2FnZURlbGl2ZXJ5OiB0cnVlLFxuICAgIC8vIFRvIHRlc3QgdGhpcyBzdGFjaywgd2hlbiBwdWJsaXNoaW5nIHRoZSBTTlMgbWVzc2FnZSwgYWRkIGEgbWVzc2FnZSBhdHRyaWJ1dGU6XG4gICAgLy8gVHlwZTogc3RyaW5nLCBOYW1lOiBzdG9yZSwgVmFsdWU6IChhbnkgdmFsdWUpXG4gICAgZmlsdGVyUG9saWN5OiB7XG4gICAgICBzdG9yZTogc25zLlN1YnNjcmlwdGlvbkZpbHRlci5leGlzdHNGaWx0ZXIoKSxcbiAgICB9LFxuICAgIGRlYWRMZXR0ZXJRdWV1ZTogZGxxXG4gIH1cbn07XG5cbmNvbnN0IHNuc1RvU3FzU3RhY2sgPSBuZXcgU25zVG9TcXMoc3RhY2ssICd0ZXN0LXNucy1zcXMtc3RhY2snLCBwcm9wcyk7XG5cbi8vIEdyYW50IHlvdXJzZWxmIHBlcm1pc3Npb25zIHRvIHVzZSB0aGUgQ3VzdG9tZXIgTWFuYWdlZCBLTVMgS2V5XG5jb25zdCBwb2xpY3lTdGF0ZW1lbnQgPSBuZXcgaWFtLlBvbGljeVN0YXRlbWVudCh7XG4gIGFjdGlvbnM6IFtcImttczpFbmNyeXB0XCIsIFwia21zOkRlY3J5cHRcIl0sXG4gIGVmZmVjdDogaWFtLkVmZmVjdC5BTExPVyxcbiAgcHJpbmNpcGFsczogW25ldyBpYW0uQWNjb3VudFJvb3RQcmluY2lwYWwoKV0sXG4gIHJlc291cmNlczogW1wiKlwiXVxufSk7XG5cbnNuc1RvU3FzU3RhY2suZW5jcnlwdGlvbktleT8uYWRkVG9SZXNvdXJjZVBvbGljeShwb2xpY3lTdGF0ZW1lbnQpO1xuXG5uZXcgSW50ZWdUZXN0KHN0YWNrLCAnSW50ZWcnLCB7IHRlc3RDYXNlczogW1xuICBzdGFja1xuXSB9KTtcbiJdfQ==

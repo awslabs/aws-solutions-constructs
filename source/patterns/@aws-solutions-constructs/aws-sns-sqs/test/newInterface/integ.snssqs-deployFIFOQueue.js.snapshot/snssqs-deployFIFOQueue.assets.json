@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "06865b0d4f7fa74adc4cf40cecf50506c2748ccf867a91bfa766c3bedc9d3fb3": {
+      "source": {
+        "path": "snssqs-deployFIFOQueue.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "06865b0d4f7fa74adc4cf40cecf50506c2748ccf867a91bfa766c3bedc9d3fb3.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
