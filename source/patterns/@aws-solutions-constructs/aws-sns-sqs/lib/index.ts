@@ -419,16 +419,8 @@ function DoWeNeedACmk(existingResource?: object, keyInResourceProps?: kms.IKey, 
   //   -The client did not explicitly turn off encryption by setting the flag to false.
   if (!existingResource &&
     !keyInResourceProps &&
-    CheckBooleanWithDefault(encryptionFlag, true)) {
+    defaults.CheckBooleanWithDefault(encryptionFlag, true)) {
     return true;
   }
   return false;
-}
-
-function CheckBooleanWithDefault(value: boolean | undefined, defaultValue: boolean): boolean {
-  if (value === undefined) {
-    return defaultValue;
-  } else {
-    return value;
-  }
 }
