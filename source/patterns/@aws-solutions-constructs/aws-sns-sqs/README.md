@@ -44,7 +44,8 @@ const policyStatement = new iam.PolicyStatement({
     resources: [ "*" ]
 });
 
-snsToSqsStack.encryptionKey?.addToResourcePolicy(policyStatement);
+snsToSqsStack.queueEncryptionKey?.addToResourcePolicy(policyStatement);
+snsToSqsStack.topicEncryptionKey?.addToResourcePolicy(policyStatement);
 ```
 
 Python
@@ -65,7 +66,8 @@ policy_statement = iam.PolicyStatement(
     resources=["*"]
 )
 
-construct_stack.encryption_key.add_to_resource_policy(policy_statement)
+construct_stack.queue_encryption_key.add_to_resource_policy(policy_statement)
+construct_stack.topic_encryption_key.add_to_resource_policy(policy_statement)
 ```
 
 Java
@@ -90,7 +92,8 @@ final PolicyStatement policyStatement = PolicyStatement.Builder.create()
         .resources(List.of("*"))
         .build();
 
-constructStack.getEncryptionKey().addToResourcePolicy(policyStatement);
+constructStack.getQueueEncryptionKey().addToResourcePolicy(policyStatement);
+constructStack.getTopicEncryptionKey().addToResourcePolicy(policyStatement);
 ```
 ## New Interface as of v2.58.0
 

@@ -64,7 +64,8 @@ const policyStatement = new iam.PolicyStatement({
   resources: ["*"]
 });
 
-snsToSqsStack.encryptionKey?.addToResourcePolicy(policyStatement);
+snsToSqsStack.queueEncryptionKey?.addToResourcePolicy(policyStatement);
+snsToSqsStack.topicEncryptionKey?.addToResourcePolicy(policyStatement);
 
 new IntegTest(stack, 'Integ', { testCases: [
   stack

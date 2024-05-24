@@ -113,7 +113,7 @@ export interface SnsToSqsProps {
    * setting this to false will always result in an error from the underlying CDK - we have still
    * included this property for consistency with topics and to be ready if the services one day support
    * this functionality.
-   * 
+   *
    * @default - false
    */
   readonly encryptQueueWithCmk?: boolean;
@@ -169,9 +169,9 @@ export interface ConstructKeys {
  */
 export class SnsToSqs extends Construct {
   public readonly snsTopic: sns.Topic;
-/*
- * @deprecated
- */
+  /*
+   * @deprecated
+   */
   public readonly encryptionKey?: kms.Key;
   public readonly queueEncryptionKey?: kms.Key;
   public readonly topicEncryptionKey?: kms.Key;
