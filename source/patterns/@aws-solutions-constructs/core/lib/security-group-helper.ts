@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,9 +11,13 @@
  *  and limitations under the License.
  */
 
-// import { countResources } from "@aws-cdk/assert";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import { Construct } from "@aws-cdk/core";
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import { Construct } from "constructs";
 import { addCfnSuppressRules } from './utils';
 
 export interface SecurityGroupRuleDefinition {
@@ -23,6 +27,9 @@ export interface SecurityGroupRuleDefinition {
   readonly remoteRule?: boolean
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildSecurityGroup(
   scope: Construct,
   name: string,
@@ -56,6 +63,9 @@ export function buildSecurityGroup(
   return newSecurityGroup;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CreateSelfReferencingSecurityGroup(scope: Construct, id: string, vpc: ec2.IVpc, cachePort: any) {
   const newCacheSG = new ec2.SecurityGroup(scope, `${id}-cachesg`, {
     vpc,

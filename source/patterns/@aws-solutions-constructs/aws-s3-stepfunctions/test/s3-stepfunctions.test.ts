@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,10 +12,10 @@
  */
 
 import { S3ToStepfunctions, S3ToStepfunctionsProps } from '../lib/index';
-import * as sfn from '@aws-cdk/aws-stepfunctions';
-import '@aws-cdk/assert/jest';
-import * as cdk from '@aws-cdk/core';
-import { Bucket } from '@aws-cdk/aws-s3';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
+import * as cdk from 'aws-cdk-lib';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
+import { Template } from 'aws-cdk-lib/assertions';
 
 function deployNewStateMachine(stack: cdk.Stack) {
 
@@ -57,7 +57,8 @@ test('override eventRuleProps', () => {
 
   new S3ToStepfunctions(stack, 'test-s3-stepfunctions', props);
 
-  expect(stack).toHaveResource('AWS::Events::Rule', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Events::Rule', {
     EventPattern: {
       "source": [
         "aws.s3"
@@ -97,17 +98,17 @@ test('check properties', () => {
 
   const construct: S3ToStepfunctions = deployNewStateMachine(stack);
 
-  expect(construct.stateMachine !== null);
-  expect(construct.s3Bucket !== null);
-  expect(construct.cloudwatchAlarms !== null);
-  expect(construct.stateMachineLogGroup !== null);
-  expect(construct.s3LoggingBucket !== null);
+  expect(construct.stateMachine).toBeDefined();
+  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.cloudwatchAlarms).toBeDefined();
+  expect(construct.stateMachineLogGroup).toBeDefined();
+  expect(construct.s3LoggingBucket).toBeDefined();
 });
 
 // --------------------------------------------------------------
 // Test bad call with existingBucket and bucketProps
 // --------------------------------------------------------------
-test("Test bad call with existingBucket and bucketProps", () => {
+test("Confirm that CheckS3Props is getting called", () => {
   // Stack
   const stack = new cdk.Stack();
 
@@ -152,9 +153,11 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
 
   new S3ToStepfunctions(stack, 'test-s3-stepfunctions', testProps);
 
-  expect(stack).toHaveResource("Custom::S3BucketNotifications", {});
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("Custom::S3BucketNotifications", {});
+  template.resourceCountIs("AWS::S3::Bucket", 2);
 
-  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
@@ -184,6 +187,7 @@ test('s3 bucket with no logging bucket', () => {
     logS3AccessLogs: false
   });
 
-  expect(stack).toHaveResource("Custom::S3BucketNotifications", {});
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("Custom::S3BucketNotifications", {});
   expect(construct.s3LoggingBucket).toEqual(undefined);
 });

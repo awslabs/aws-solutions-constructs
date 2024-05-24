@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import '@aws-cdk/assert/jest';
-import { Stack } from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as mediastore from '@aws-cdk/aws-mediastore';
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as origins from '@aws-cdk/aws-cloudfront-origins';
+import { Template } from 'aws-cdk-lib/assertions';
+import { Stack } from 'aws-cdk-lib';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as mediastore from 'aws-cdk-lib/aws-mediastore';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import { CloudFrontDistributionForMediaStore, CloudFrontOriginAccessIdentity } from '../lib/cloudfront-distribution-helper';
 
 test('CloudFront distribution for MediaStore with user provided log bucket', () => {
@@ -32,7 +32,8 @@ test('CloudFront distribution for MediaStore with user provided log bucket', () 
   };
 
   CloudFrontDistributionForMediaStore(stack, mediaStoreContainer, cfProps);
-  expect(stack).toHaveResourceLike('AWS::CloudFront::Distribution', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -138,7 +139,8 @@ test('CloudFront distribution for MediaStore with user provided origin request p
   };
 
   CloudFrontDistributionForMediaStore(stack, mediaStoreContainer, cfProps);
-  expect(stack).toHaveResourceLike('AWS::CloudFront::Distribution', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -217,7 +219,7 @@ test('CloudFront distribution for MediaStore with user provided origin request p
       ]
     }
   });
-  expect(stack).toHaveResourceLike('AWS::CloudFront::OriginRequestPolicy', {
+  template.hasResourceProperties('AWS::CloudFront::OriginRequestPolicy', {
     OriginRequestPolicyConfig: {
       CookiesConfig: {
         CookieBehavior: 'all'
@@ -242,12 +244,13 @@ test('CloudFront distribution for MediaStore with user provided custom headers w
   const cloudfrontOriginAccessIdentity = CloudFrontOriginAccessIdentity(stack);
   const cfProps = {
     customHeaders: {
-      'User-Agent': cloudfrontOriginAccessIdentity.originAccessIdentityName
+      'User-Agent': cloudfrontOriginAccessIdentity.originAccessIdentityId
     }
   };
 
   CloudFrontDistributionForMediaStore(stack, mediaStoreContainer, cfProps);
-  expect(stack).toHaveResourceLike('AWS::CloudFront::Distribution', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -334,7 +337,7 @@ test('CloudFront distribution for MediaStore with user provided custom headers w
       ]
     }
   });
-  expect(stack).toHaveResourceLike('AWS::CloudFront::CloudFrontOriginAccessIdentity', {
+  template.hasResourceProperties('AWS::CloudFront::CloudFrontOriginAccessIdentity', {
     CloudFrontOriginAccessIdentityConfig: {
       Comment: {
         'Fn::Join': [
@@ -363,7 +366,8 @@ test('CloudFront distribution without HTTP security headers for MediaStore', () 
   const mediaStoreContainer = new mediastore.CfnContainer(stack, 'MediaStoreContainer', mediaStoreContainerProps);
 
   CloudFrontDistributionForMediaStore(stack, mediaStoreContainer, {}, false);
-  expect(stack).toHaveResourceLike('AWS::CloudFront::Distribution', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -451,7 +455,8 @@ test('CloudFront distribution for MediaStore override params', () => {
   };
 
   CloudFrontDistributionForMediaStore(stack, mediaStoreContainer, cfProps);
-  expect(stack).toHaveResourceLike('AWS::CloudFront::Distribution', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -527,7 +532,8 @@ test('test override cloudfront with custom cloudfront function', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [

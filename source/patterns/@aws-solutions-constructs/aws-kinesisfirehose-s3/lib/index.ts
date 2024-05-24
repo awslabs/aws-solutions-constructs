@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,15 +11,15 @@
  *  and limitations under the License.
  */
 
-import * as kinesisfirehose from "@aws-cdk/aws-kinesisfirehose";
-import { Construct } from "@aws-cdk/core";
-import * as s3 from "@aws-cdk/aws-s3";
+import * as kinesisfirehose from "aws-cdk-lib/aws-kinesisfirehose";
+import { Construct } from "constructs";
+import * as s3 from "aws-cdk-lib/aws-s3";
 import * as defaults from "@aws-solutions-constructs/core";
-import * as iam from "@aws-cdk/aws-iam";
+import * as iam from "aws-cdk-lib/aws-iam";
 import { overrideProps, consolidateProps } from "@aws-solutions-constructs/core";
-import * as logs from "@aws-cdk/aws-logs";
-import * as cdk from "@aws-cdk/core";
-import * as kms from "@aws-cdk/aws-kms";
+import * as logs from "aws-cdk-lib/aws-logs";
+import * as cdk from "aws-cdk-lib";
+import * as kms from "aws-cdk-lib/aws-kms";
 
 /**
  * The properties for the KinesisFirehoseToS3 class.
@@ -89,7 +89,14 @@ export class KinesisFirehoseToS3 extends Construct {
    */
   constructor(scope: Construct, id: string, props: KinesisFirehoseToS3Props) {
     super(scope, id);
-    defaults.CheckProps(props);
+
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+
+    defaults.CheckS3Props(props);
+
+    const firehoseId = 'KinesisFirehose';
 
     let bucket: s3.IBucket;
 
@@ -101,11 +108,16 @@ export class KinesisFirehoseToS3 extends Construct {
         bucketProps;
 
       // Setup logging S3 Bucket
-      [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+      const buildS3BucketResponse = defaults.buildS3Bucket(this, {
         bucketProps,
         loggingBucketProps: props.loggingBucketProps,
         logS3AccessLogs: props.logS3AccessLogs,
       });
+      this.s3Bucket = buildS3BucketResponse.bucket;
+      // Commit fd5a4f1fe5bd4fb85265b895eec4c36349a8bf64 fixed the core routine,
+      // but changed this behavior. Forcing undefined to pass existing test, but we
+      // should clarify behavior for construct properties when existing values are passed in.
+      this.s3LoggingBucket = props.existingLoggingBucketObj ? undefined : buildS3BucketResponse.loggingBucket;
 
       bucket = this.s3Bucket;
     } else {
@@ -157,9 +169,14 @@ export class KinesisFirehoseToS3 extends Construct {
 
     const awsManagedKey: kms.IKey = kms.Alias.fromAliasName(
       scope,
-      "aws-managed-key",
+      `${id}aws-managed-key`,
       "alias/aws/s3"
     );
+
+    // We need a stream name to set an environment variable, as this is an L1 construct
+    // accessing the name as a token doesn't work for environment variable contents, so
+    // we take explicit control of the stream name (but will be overridden by a client provided name)
+    const deliveryStreamName = defaults.generateName(this, firehoseId);
 
     // Setup the default Kinesis Firehose props
     let defaultKinesisFirehoseProps: kinesisfirehose.CfnDeliveryStreamProps = defaults.DefaultCfnDeliveryStreamProps(
@@ -167,10 +184,11 @@ export class KinesisFirehoseToS3 extends Construct {
       this.kinesisFirehoseRole.roleArn,
       this.kinesisFirehoseLogGroup.logGroupName,
       cwLogStream.logStreamName,
-      awsManagedKey
+      awsManagedKey,
+      deliveryStreamName
     );
 
-    // if the client didn't explicity say it was a Kinesis client, then turn on encryption
+    // if the client didn't explicitly say it was a Kinesis client, then turn on encryption
     if (!props.kinesisFirehoseProps ||
       !props.kinesisFirehoseProps.deliveryStreamType ||
       props.kinesisFirehoseProps.deliveryStreamType !== 'KinesisStreamAsSource'
@@ -189,7 +207,7 @@ export class KinesisFirehoseToS3 extends Construct {
 
     this.kinesisFirehose = new kinesisfirehose.CfnDeliveryStream(
       this,
-      "KinesisFirehose",
+      firehoseId,
       kinesisFirehoseProps
     );
   }

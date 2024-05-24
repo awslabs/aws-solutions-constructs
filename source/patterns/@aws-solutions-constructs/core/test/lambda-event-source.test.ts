@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,11 +12,11 @@
  */
 
 import * as defaults from '../index';
-import { DynamoEventSourceProps, KinesisEventSourceProps, SqsDlq } from '@aws-cdk/aws-lambda-event-sources';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as s3 from '@aws-cdk/aws-s3';
-import '@aws-cdk/assert/jest';
-import { Duration, Stack } from '@aws-cdk/core';
+import { DynamoEventSourceProps, KinesisEventSourceProps, SqsDlq } from 'aws-cdk-lib/aws-lambda-event-sources';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import { Template } from 'aws-cdk-lib/assertions';
+import { Duration, Stack } from 'aws-cdk-lib';
 
 test('test DynamoEventSourceProps with defaults', () => {
   const stack = new Stack();
@@ -141,7 +141,7 @@ test('test sqsDlqQueueProps override', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "hello-world",
     VisibilityTimeout: 50
   });

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,27 +11,27 @@
  *  and limitations under the License.
  */
 
-import { ResourcePart } from '@aws-cdk/assert';
 import { CloudFrontToApiGateway } from "../lib";
-import * as cdk from "@aws-cdk/core";
-import * as s3 from "@aws-cdk/aws-s3";
+import * as cdk from "aws-cdk-lib";
+import * as s3 from "aws-cdk-lib/aws-s3";
 import * as defaults from '@aws-solutions-constructs/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import '@aws-cdk/assert/jest';
-
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import {Duration} from "aws-cdk-lib";
+import { Template } from 'aws-cdk-lib/assertions';
 function deploy(stack: cdk.Stack) {
+
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
 
   const func = defaults.deployLambdaFunction(stack, inProps);
 
-  const [_api] = defaults.RegionalLambdaRestApi(stack, func);
+  const regionalLambdaRestApiResponse = defaults.RegionalLambdaRestApi(stack, func);
 
   return new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
-    existingApiGatewayObj: _api
+    existingApiGatewayObj: regionalLambdaRestApiResponse.api
   });
 }
 
@@ -40,16 +40,17 @@ test('check getter methods', () => {
 
   const construct: CloudFrontToApiGateway = deploy(stack);
 
-  expect(construct.cloudFrontWebDistribution !== null);
-  expect(construct.apiGateway !== null);
-  expect(construct.cloudFrontFunction !== null);
-  expect(construct.cloudFrontLoggingBucket !== null);
+  expect(construct.cloudFrontWebDistribution).toBeDefined();
+  expect(construct.apiGateway).toBeDefined();
+  expect(construct.cloudFrontFunction).toBeDefined();
+  expect(construct.cloudFrontLoggingBucket).toBeDefined();
 });
 
 test('test cloudfront DomainName', () => {
   const stack = new cdk.Stack();
   deploy(stack);
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       Origins: [
         {
@@ -100,13 +101,14 @@ test('test cloudfront DomainName', () => {
         }
       ]
     }
-  }, ResourcePart.Properties);
+  });
 });
 
 test('test api gateway lambda service role', () => {
   const stack = new cdk.Stack();
   deploy(stack);
-  expect(stack).toHaveResource("AWS::IAM::Role", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::IAM::Role", {
     AssumeRolePolicyDocument: {
       Statement: [
         {
@@ -160,35 +162,38 @@ test('test api gateway lambda service role', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Cloudfront logging bucket with destroy removal policy and auto delete objects
-// --------------------------------------------------------------
-test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
+function createApi() {
   const stack = new cdk.Stack();
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
 
   const func = defaults.deployLambdaFunction(stack, inProps);
 
-  const [_api] = defaults.RegionalLambdaRestApi(stack, func);
+  const regionalLambdaRestApiResponse = defaults.RegionalLambdaRestApi(stack, func);
+  return {stack, api: regionalLambdaRestApiResponse.api};
+}
+
+test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
+  const {stack, api} = createApi();
 
   new CloudFrontToApiGateway(stack, 'cloudfront-apigateway', {
-    existingApiGatewayObj: _api,
+    existingApiGatewayObj: api,
     cloudFrontLoggingBucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true
     }
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
-    AccessControl: "LogDeliveryWrite"
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
+    OwnershipControls: { Rules: [ { ObjectOwnership: "ObjectWriter" } ] },
   });
 
-  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
@@ -201,26 +206,13 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
   });
 });
 
-// --------------------------------------------------------------
-// Cloudfront logging bucket error providing existing log bucket and logBucketProps
-// --------------------------------------------------------------
 test('Cloudfront logging bucket error when providing existing log bucket and logBucketProps', () => {
-  const stack = new cdk.Stack();
-
-  const inProps: lambda.FunctionProps = {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
-    handler: 'index.handler'
-  };
-
-  const func = defaults.deployLambdaFunction(stack, inProps);
-
-  const [_api] = defaults.RegionalLambdaRestApi(stack, func);
+  const {stack, api} = createApi();
 
   const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
 
   const app = () => { new CloudFrontToApiGateway(stack, 'cloudfront-apigateway', {
-    existingApiGatewayObj: _api,
+    existingApiGatewayObj: api,
     cloudFrontDistributionProps: {
       logBucket
     },
@@ -232,4 +224,68 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
   };
 
   expect(app).toThrowError();
+});
+
+test('Test the deployment with securityHeadersBehavior instead of HTTP security headers', () => {
+  // Initial setup
+  const {stack, api} = createApi();
+  const cloudFrontToS3 = new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
+    existingApiGatewayObj: api,
+    insertHttpSecurityHeaders: false,
+    responseHeadersPolicyProps: {
+      securityHeadersBehavior: {
+        strictTransportSecurity: {
+          accessControlMaxAge: Duration.seconds(63072),
+          includeSubdomains: true,
+          override: true,
+          preload: true
+        },
+        contentSecurityPolicy: {
+          contentSecurityPolicy: "upgrade-insecure-requests; default-src 'none';",
+          override: true
+        },
+      }
+    }
+  });
+
+  // Assertion
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::ResponseHeadersPolicy", {
+    ResponseHeadersPolicyConfig: {
+      SecurityHeadersConfig: {
+        ContentSecurityPolicy: {
+          ContentSecurityPolicy: "upgrade-insecure-requests; default-src 'none';",
+          Override: true
+        },
+        StrictTransportSecurity: {
+          AccessControlMaxAgeSec: 63072,
+          IncludeSubdomains: true,
+          Override: true,
+          Preload: true
+        }
+      }
+    }
+  });
+  expect(cloudFrontToS3.cloudFrontFunction).toEqual(undefined);
+});
+
+test("Confirm CheckCloudFrontProps is being called", () => {
+  const {stack, api} = createApi();
+
+  expect(() => {
+    new CloudFrontToApiGateway(stack, "test-cloudfront-apigateway", {
+      existingApiGatewayObj: api,
+      insertHttpSecurityHeaders: true,
+      responseHeadersPolicyProps: {
+        securityHeadersBehavior: {
+          strictTransportSecurity: {
+            accessControlMaxAge: Duration.seconds(63072),
+            includeSubdomains: true,
+            override: false,
+            preload: true
+          }
+        }
+      }
+    });
+  }).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
 });

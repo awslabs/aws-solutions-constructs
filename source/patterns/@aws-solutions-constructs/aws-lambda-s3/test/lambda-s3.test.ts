@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,24 +12,21 @@
  */
 
 // Imports
-import { Stack, RemovalPolicy } from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as s3 from "@aws-cdk/aws-s3";
-import { LambdaToS3 } from '../lib';
-import { CreateScrapBucket } from '@aws-solutions-constructs/core';
-import '@aws-cdk/assert/jest';
+import { Stack, RemovalPolicy } from "aws-cdk-lib";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as s3 from "aws-cdk-lib/aws-s3";
+import { LambdaToS3, LambdaToS3Props } from '../lib';
+import * as defaults from '@aws-solutions-constructs/core';
+import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Test the getter methods
-// --------------------------------------------------------------
 test('Test the properties', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   const pattern = new LambdaToS3(stack, 'lambda-to-s3-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -37,23 +34,20 @@ test('Test the properties', () => {
   });
     // Assertion 1
   const func = pattern.lambdaFunction;
-  expect(func !== null);
+  expect(func).toBeDefined();
   // Assertion 2
   const bucket = pattern.s3Bucket;
-  expect(bucket !== null);
-  expect(pattern.s3LoggingBucket !== null);
+  expect(bucket).toBeDefined();
+  expect(pattern.s3LoggingBucket).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test the bucketProps override
-// --------------------------------------------------------------
 test('Test the bucketProps override', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   new LambdaToS3(stack, 'lambda-to-s3-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -61,30 +55,29 @@ test('Test the bucketProps override', () => {
       websiteIndexDocument: 'index.main.html'
     }
   });
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     WebsiteConfiguration: {
       IndexDocument: 'index.main.html'
     }
   });
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC without vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   new LambdaToS3(stack, "lambda-to-s3-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -105,41 +98,39 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Gateway",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC w/vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   new LambdaToS3(stack, "lambda-to-s3-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
     vpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
-      cidr: "192.68.0.0/16",
+      ipAddresses: ec2.IpAddresses.cidr("192.68.0.0/16"),
     },
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -160,23 +151,20 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: "192.68.0.0/16",
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Gateway",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC", () => {
   // Stack
   const stack = new Stack();
@@ -186,14 +174,15 @@ test("Test minimal deployment with an existing VPC", () => {
   // Helper declaration
   new LambdaToS3(stack, "lambda-to-s3-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
     existingVpc: testVpc,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -214,23 +203,17 @@ test("Test minimal deployment with an existing VPC", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Gateway",
   });
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC and existing Lambda function not in a VPC
-//
-// buildLambdaFunction should throw an error if the Lambda function is not
-// attached to a VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC and existing Lambda function not in a VPC", () => {
   // Stack
   const stack = new Stack();
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -239,7 +222,8 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
   // Helper declaration
   const app = () => {
-    // Helper declaration
+    // buildLambdaFunction should throw an error if the Lambda function is not
+    // attached to a VPC
     new LambdaToS3(stack, "lambda-to-s3-stack", {
       existingLambdaObj: testLambdaFunction,
       existingVpc: testVpc,
@@ -251,45 +235,17 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingVpc and deployVpc
-// --------------------------------------------------------------
-test("Test bad call with existingVpc and deployVpc", () => {
-  // Stack
-  const stack = new Stack();
-
-  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
-
-  const app = () => {
-    // Helper declaration
-    new LambdaToS3(stack, "lambda-to-s3-stack", {
-      lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: "index.handler",
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      },
-      existingVpc: testVpc,
-      deployVpc: true,
-    });
-  };
-  // Assertion
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
-});
-
-// --------------------------------------------------------------
-// Test lambda function custom environment variable
-// --------------------------------------------------------------
 test('Test lambda function custom environment variable', () => {
   // Stack
   const stack = new Stack();
 
   // Helper declaration
-  const existingBucket = CreateScrapBucket(stack, {});
+  const existingBucket = defaults.CreateScrapBucket(stack, "scrapBucket");
   const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existingBucket.bucketName);
   new LambdaToS3(stack, 'lambda-to-s3-stack', {
     existingBucketObj: mybucket,
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -297,14 +253,15 @@ test('Test lambda function custom environment variable', () => {
   });
 
   // Assertion
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
-    Runtime: 'nodejs14.x',
+    Runtime: 'nodejs16.x',
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
         CUSTOM_BUCKET_NAME: {
-          Ref: 'existingScriptLocation845F3C51'
+          Ref: 'scrapBucketB11863B7'
         }
       }
     }
@@ -314,7 +271,7 @@ test('Test lambda function custom environment variable', () => {
 // --------------------------------------------------------------
 // Test bad call with existingBucket and bucketProps
 // --------------------------------------------------------------
-test("Test bad call with existingBucket and bucketProps", () => {
+test("Confirm that CheckS3Props is being called", () => {
   // Stack
   const stack = new Stack();
 
@@ -324,7 +281,7 @@ test("Test bad call with existingBucket and bucketProps", () => {
     // Helper declaration
     new LambdaToS3(stack, "bad-s3-args", {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
@@ -335,7 +292,7 @@ test("Test bad call with existingBucket and bucketProps", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
 test('Test that CheckProps() is flagging errors correctly', () => {
@@ -343,7 +300,7 @@ test('Test that CheckProps() is flagging errors correctly', () => {
   const stack = new Stack();
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -352,7 +309,7 @@ test('Test that CheckProps() is flagging errors correctly', () => {
     new LambdaToS3(stack, "lambda-to-s3-stack", {
       existingLambdaObj: testLambdaFunction,
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
@@ -366,16 +323,13 @@ test('Test that CheckProps() is flagging errors correctly', () => {
 
 });
 
-// --------------------------------------------------------------
-// s3 bucket with bucket, loggingBucket, and auto delete objects
-// --------------------------------------------------------------
 test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   const stack = new Stack();
 
   new LambdaToS3(stack, 'lambda-s3', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     bucketProps: {
@@ -387,11 +341,10 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
-    AccessControl: "LogDeliveryWrite"
-  });
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::S3::Bucket", 2);
 
-  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
@@ -404,16 +357,13 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   });
 });
 
-// --------------------------------------------------------------
-// s3 bucket with one content bucket and no logging bucket
-// --------------------------------------------------------------
 test('s3 bucket with one content bucket and no logging bucket', () => {
   const stack = new Stack();
 
   new LambdaToS3(stack, 'lambda-s3', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     bucketProps: {
@@ -422,7 +372,8 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
     logS3AccessLogs: false
   });
 
-  expect(stack).toCountResources("AWS::S3::Bucket", 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::S3::Bucket", 1);
 });
 
 test('Test bad bucket permission', () => {
@@ -431,7 +382,7 @@ test('Test bad bucket permission', () => {
   const props = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     bucketProps: {
@@ -446,4 +397,58 @@ test('Test bad bucket permission', () => {
   };
 
   expect(alb).toThrowError('Invalid bucket permission submitted - Reed');
+});
+
+test("Confirm that CheckVpcProps is being called", () => {
+  // Stack
+  const stack = new Stack();
+  const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
+    constructVpcProps: {
+      enableDnsHostnames: true,
+      enableDnsSupport: true,
+    },
+  });
+
+  const app = () => {
+    // Helper declaration
+    new LambdaToS3(stack, "bad-s3-args", {
+      lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_16_X,
+        handler: 'index.handler',
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      },
+      bucketProps: {
+        removalPolicy: RemovalPolicy.DESTROY
+      },
+      deployVpc: true,
+      existingVpc: vpc,
+    });
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: LambdaToS3Props = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new LambdaToS3(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

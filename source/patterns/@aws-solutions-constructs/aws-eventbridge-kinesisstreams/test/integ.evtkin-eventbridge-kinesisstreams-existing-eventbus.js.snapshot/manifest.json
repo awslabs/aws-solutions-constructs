@@ -1,0 +1,149 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "evtkineventbridgekinesisstreamsexistingeventbusIntegDefaultTestDeployAssertC61B47BC.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "evtkineventbridgekinesisstreamsexistingeventbusIntegDefaultTestDeployAssertC61B47BC.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "evtkineventbridgekinesisstreamsexistingeventbusIntegDefaultTestDeployAssertC61B47BC": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "evtkineventbridgekinesisstreamsexistingeventbusIntegDefaultTestDeployAssertC61B47BC.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "evtkineventbridgekinesisstreamsexistingeventbusIntegDefaultTestDeployAssertC61B47BC.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "evtkineventbridgekinesisstreamsexistingeventbusIntegDefaultTestDeployAssertC61B47BC.assets"
+      ],
+      "metadata": {
+        "/evtkin-eventbridge-kinesisstreams-existing-eventbus/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/evtkin-eventbridge-kinesisstreams-existing-eventbus/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "evtkin-eventbridge-kinesisstreams-existing-eventbus/Integ/DefaultTest/DeployAssert"
+    },
+    "evtkin-eventbridge-kinesisstreams-existing-eventbus.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "evtkin-eventbridge-kinesisstreams-existing-eventbus.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "evtkin-eventbridge-kinesisstreams-existing-eventbus": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "evtkin-eventbridge-kinesisstreams-existing-eventbus.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6d2c76ec2ea5352a5436180bc4a86d7941ae9605ad306d8b81d56276d312c764.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "evtkin-eventbridge-kinesisstreams-existing-eventbus.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "evtkin-eventbridge-kinesisstreams-existing-eventbus.assets"
+      ],
+      "metadata": {
+        "/evtkin-eventbridge-kinesisstreams-existing-eventbus/test-stream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "teststream04374A09"
+          }
+        ],
+        "/evtkin-eventbridge-kinesisstreams-existing-eventbus/existing-event-bus/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingeventbusA5B80487"
+          }
+        ],
+        "/evtkin-eventbridge-kinesisstreams-existing-eventbus/test-eventbridge-kinesis-stream-existing/eventsRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgekinesisstreamexistingeventsRoleDFC1450E"
+          }
+        ],
+        "/evtkin-eventbridge-kinesisstreams-existing-eventbus/test-eventbridge-kinesis-stream-existing/eventsRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgekinesisstreamexistingeventsRoleDefaultPolicyAEF2E56D"
+          }
+        ],
+        "/evtkin-eventbridge-kinesisstreams-existing-eventbus/test-eventbridge-kinesis-stream-existing/EventsRule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgekinesisstreamexistingEventsRuleEB7F3817"
+          }
+        ],
+        "/evtkin-eventbridge-kinesisstreams-existing-eventbus/test-eventbridge-kinesis-stream-existing/KinesisStreamGetRecordsIteratorAgeAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgekinesisstreamexistingKinesisStreamGetRecordsIteratorAgeAlarmA1800C3D"
+          }
+        ],
+        "/evtkin-eventbridge-kinesisstreams-existing-eventbus/test-eventbridge-kinesis-stream-existing/KinesisStreamReadProvisionedThroughputExceededAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgekinesisstreamexistingKinesisStreamReadProvisionedThroughputExceededAlarm078FEB59"
+          }
+        ],
+        "/evtkin-eventbridge-kinesisstreams-existing-eventbus/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/evtkin-eventbridge-kinesisstreams-existing-eventbus/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "evtkin-eventbridge-kinesisstreams-existing-eventbus"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

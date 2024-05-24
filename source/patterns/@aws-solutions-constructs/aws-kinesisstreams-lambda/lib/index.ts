@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,14 +12,14 @@
  */
 
 // Imports
-import * as lambda from '@aws-cdk/aws-lambda';
-import { KinesisEventSourceProps, KinesisEventSource } from '@aws-cdk/aws-lambda-event-sources';
-import * as kinesis from '@aws-cdk/aws-kinesis';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { KinesisEventSourceProps, KinesisEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import { Construct } from 'constructs';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 
 /**
  * The properties for the KinesisStreamsToLambda class.
@@ -94,7 +94,8 @@ export class KinesisStreamsToLambda extends Construct {
      */
     constructor(scope: Construct, id: string, props: KinesisStreamsToLambdaProps) {
       super(scope, id);
-      defaults.CheckProps(props);
+      defaults.CheckLambdaProps(props);
+      defaults.CheckKinesisStreamProps(props);
 
       // Setup the Kinesis Stream
       this.kinesisStream = defaults.buildKinesisStream(this, {

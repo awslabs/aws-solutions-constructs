@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,10 +11,10 @@
  *  and limitations under the License.
  */
 
-import { Stack } from '@aws-cdk/core';
-import * as cognito from '@aws-cdk/aws-cognito';
+import { Stack } from 'aws-cdk-lib';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as defaults from '../index';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 test('Test override for buildUserPool', () => {
   const stack = new Stack();
@@ -26,7 +26,8 @@ test('Test override for buildUserPool', () => {
 
   defaults.buildUserPool(stack, userpoolProps);
 
-  expect(stack).toHaveResource('AWS::Cognito::UserPool', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Cognito::UserPool', {
     UsernameAttributes: [
       "email",
       "phone_number"
@@ -50,7 +51,8 @@ test('Test override for buildUserPoolClient', () => {
 
   defaults.buildUserPoolClient(stack, userpool, userpoolclientProps);
 
-  expect(stack).toHaveResource('AWS::Cognito::UserPoolClient', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Cognito::UserPoolClient', {
     UserPoolId: {
       Ref: "CognitoUserPool53E37E69"
     },
@@ -70,7 +72,8 @@ test('Test override for buildIdentityPool', () => {
     allowUnauthenticatedIdentities: true
   });
 
-  expect(stack).toHaveResource('AWS::Cognito::IdentityPool', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Cognito::IdentityPool', {
     AllowUnauthenticatedIdentities: true,
     CognitoIdentityProviders: [
       {
@@ -89,7 +92,7 @@ test('Test override for buildIdentityPool', () => {
   });
 });
 
-test('Test setupCognitoForElasticSearch', () => {
+test('Test setupCognitoForSearchService', () => {
   const stack = new Stack();
 
   const userpool = defaults.buildUserPool(stack);
@@ -99,17 +102,18 @@ test('Test setupCognitoForElasticSearch', () => {
   });
   const identitypool = defaults.buildIdentityPool(stack, userpool, userpoolclient);
 
-  defaults.setupCognitoForElasticSearch(stack, 'test-domain', {
+  defaults.setupCognitoForSearchService(stack, 'test-domain', {
     userpool,
     userpoolclient,
     identitypool
   });
 
-  expect(stack).toHaveResource('AWS::Cognito::UserPoolDomain', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Cognito::UserPoolDomain', {
     Domain: "test-domain"
   });
 
-  expect(stack).toHaveResource('AWS::Cognito::IdentityPoolRoleAttachment', {
+  template.hasResourceProperties('AWS::Cognito::IdentityPoolRoleAttachment', {
     IdentityPoolId: {
       Ref: "CognitoIdentityPool"
     },
@@ -123,7 +127,7 @@ test('Test setupCognitoForElasticSearch', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::IAM::Role', {
+  template.hasResourceProperties('AWS::IAM::Role', {
     AssumeRolePolicyDocument: {
       Statement: [
         {

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,13 +11,13 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as iam from '@aws-cdk/aws-iam';
-import * as sagemaker from '@aws-cdk/aws-sagemaker';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as sagemaker from 'aws-cdk-lib/aws-sagemaker';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * @summary The properties for the LambdaToSagemakerEndpoint class
@@ -36,7 +36,7 @@ export interface LambdaToSagemakerEndpointProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * Existing SageMaker Enpoint object, providing both this and endpointProps will cause an error.
+   * Existing SageMaker Endpoint object, providing both this and endpointProps will cause an error.
    *
    * @default - None
    */
@@ -105,12 +105,11 @@ export class LambdaToSagemakerEndpoint extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToSagemakerEndpointProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckVpcProps(props);
+    defaults.CheckLambdaProps(props);
+    defaults.CheckSagemakerProps(props);
 
     if (props.deployVpc || props.existingVpc) {
-      if (props.deployVpc && props.existingVpc) {
-        throw new Error('More than 1 VPC specified in the properties');
-      }
 
       // create the VPC
       this.vpc = defaults.buildVpc(scope, {
@@ -130,13 +129,17 @@ export class LambdaToSagemakerEndpoint extends Construct {
     }
 
     // Build SageMaker Endpoint (inclduing SageMaker's Endpoint Configuration and Model)
-    [this.sagemakerEndpoint, this.sagemakerEndpointConfig, this.sagemakerModel] = defaults.BuildSagemakerEndpoint(
+    const buildSagemakerEndpointResponse = defaults.BuildSagemakerEndpoint(
       this,
+      id,
       {
         ...props,
         vpc: this.vpc,
       }
     );
+    this.sagemakerEndpoint = buildSagemakerEndpointResponse.endpoint;
+    this.sagemakerEndpointConfig = buildSagemakerEndpointResponse.endpointConfig;
+    this.sagemakerModel = buildSagemakerEndpointResponse.model;
 
     // Setup the Lambda function
     this.lambdaFunction = defaults.buildLambdaFunction(this, {

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,40 +11,50 @@
  *  and limitations under the License.
  */
 
-import { Stack } from '@aws-cdk/core';
-import * as iam from '@aws-cdk/aws-iam';
-import * as kms from '@aws-cdk/aws-kms';
-import * as ec2 from '@aws-cdk/aws-ec2';
+import { Stack } from 'aws-cdk-lib';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as kms from 'aws-cdk-lib/aws-kms';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as defaults from '../';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
+import { BuildSagemakerEndpoint } from '../lib/sagemaker-helper';
 
-// --------------------------------------------------------------
-// Test deployment with VPC
-// --------------------------------------------------------------
 test('Test deployment with VPC', () => {
   // Stack
   const stack = new Stack();
   const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
     assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
   });
-  let sagemaker;
-  let vpc;
-  let sg;
 
   // Build Sagemaker Notebook Instance
-  [sagemaker, vpc, sg] = defaults.buildSagemakerNotebook(stack, {
+  const buildSagemakerNotebookResponse = defaults.buildSagemakerNotebook(stack, 'test', {
     role: sagemakerRole,
   });
   // Assertion
-  expect(vpc?.privateSubnets.length).toEqual(2);
-  expect(vpc?.publicSubnets.length).toEqual(2);
-  expect(sagemaker.instanceType).toEqual('ml.t2.medium');
-  expect(sg).toBeInstanceOf(ec2.SecurityGroup);
+  expect(buildSagemakerNotebookResponse.vpc?.privateSubnets.length).toEqual(2);
+  expect(buildSagemakerNotebookResponse.vpc?.publicSubnets.length).toEqual(2);
+  expect(buildSagemakerNotebookResponse.notebook.instanceType).toEqual('ml.t2.medium');
+  expect(buildSagemakerNotebookResponse.securityGroup).toBeInstanceOf(ec2.SecurityGroup);
 });
 
-// --------------------------------------------------------------
-// Test deployment in existing VPC
-// --------------------------------------------------------------
+test('Test deployment without VPC', () => {
+  // Stack
+  const stack = new Stack();
+  const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
+    assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
+  });
+
+  // Build Sagemaker Notebook Instance
+  const buildSagemakerNotebookResponse = defaults.buildSagemakerNotebook(stack, 'test', {
+    role: sagemakerRole,
+    deployInsideVpc: false,
+  });
+  // Assertion
+  expect(buildSagemakerNotebookResponse.vpc).not.toBeDefined();
+  expect(buildSagemakerNotebookResponse.notebook).toBeDefined();
+  expect(buildSagemakerNotebookResponse.securityGroup).not.toBeDefined();
+});
+
 test('Test deployment w/ existing VPC', () => {
   // Stack
   const stack = new Stack();
@@ -52,7 +62,7 @@ test('Test deployment w/ existing VPC', () => {
     assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
   });
   // Build Sagemaker Notebook Instance
-  defaults.buildSagemakerNotebook(stack, {
+  const buildSagemakerNotebookResponse = defaults.buildSagemakerNotebook(stack, 'test', {
     role: sagemakerRole,
     deployInsideVpc: true,
     sagemakerNotebookProps: {
@@ -60,16 +70,39 @@ test('Test deployment w/ existing VPC', () => {
       securityGroupIds: ['sg-deadbeef'],
     },
   });
-  expect(stack).toHaveResource('AWS::SageMaker::NotebookInstance', {
+
+  expect(buildSagemakerNotebookResponse.notebook).toBeDefined();
+  expect(buildSagemakerNotebookResponse.vpc).not.toBeDefined();
+  expect(buildSagemakerNotebookResponse.securityGroup).not.toBeDefined();
+
+  Template.fromStack(stack).hasResourceProperties('AWS::SageMaker::NotebookInstance', {
     DirectInternetAccess: 'Disabled',
     SecurityGroupIds: ['sg-deadbeef'],
     SubnetId: 'subnet-deadbeef',
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment with override
-// --------------------------------------------------------------
+test('Test default values encrypt notebook', () => {
+  // Stack
+  const stack = new Stack();
+  const sagemakerRole = new iam.Role(stack, 'SagemakerRole', {
+    assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
+  });
+
+  // Build Sagemaker Notebook Instance
+  defaults.buildSagemakerNotebook(stack, 'test', {
+    role: sagemakerRole,
+    deployInsideVpc: false,
+  });
+  // Assertion
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SageMaker::NotebookInstance', {
+    KmsKeyId: {
+      Ref: "testKey2C00E5E5"
+    },
+  });
+});
+
 test('Test deployment w/ override', () => {
   // Stack
   const stack = new Stack();
@@ -78,14 +111,14 @@ test('Test deployment w/ override', () => {
   });
   const key = new kms.Key(stack, 'MyEncryptionKey');
   // Build Sagemaker Notebook Instance
-  defaults.buildSagemakerNotebook(stack, {
+  defaults.buildSagemakerNotebook(stack, 'test', {
     role: sagemakerRole,
     sagemakerNotebookProps: {
       instanceType: 'ml.c4.2xlarge',
       kmsKeyId: key.keyArn,
     },
   });
-  expect(stack).toHaveResource('AWS::SageMaker::NotebookInstance', {
+  Template.fromStack(stack).hasResourceProperties('AWS::SageMaker::NotebookInstance', {
     DirectInternetAccess: 'Disabled',
     InstanceType: 'ml.c4.2xlarge',
     KmsKeyId: {
@@ -94,9 +127,6 @@ test('Test deployment w/ override', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test exception
-// --------------------------------------------------------------
 test('Test exception', () => {
   // Stack
   const stack = new Stack();
@@ -106,7 +136,7 @@ test('Test exception', () => {
 
   expect(() => {
     // Build Sagemaker Notebook Instance
-    defaults.buildSagemakerNotebook(stack, {
+    defaults.buildSagemakerNotebook(stack, 'test', {
       role: sagemakerRole,
       deployInsideVpc: true,
       sagemakerNotebookProps: {
@@ -116,16 +146,13 @@ test('Test exception', () => {
   }).toThrowError();
 });
 
-// ---------------------------------------------------------------
-// Test exception for not providing primaryContainer in modelProps
-// ---------------------------------------------------------------
 test('Test exception for not providing primaryContainer in modelProps', () => {
   // Stack
   const stack = new Stack();
 
   const app = () => {
     // Build Sagemaker Inference Endpoint
-    defaults.BuildSagemakerEndpoint(stack, {
+    defaults.BuildSagemakerEndpoint(stack, 'test', {
       modelProps: {},
     });
   };
@@ -133,9 +160,6 @@ test('Test exception for not providing primaryContainer in modelProps', () => {
   expect(app).toThrowError();
 });
 
-// -------------------------------------------------------------------------
-// Test exception for not providing modelProps
-// -------------------------------------------------------------------------
 test('Test exception for not providing modelProps', () => {
   // Stack
   const stack = new Stack();
@@ -150,15 +174,12 @@ test('Test exception for not providing modelProps', () => {
 
   const app = () => {
     // Build Sagemaker Inference Endpoint
-    defaults.deploySagemakerEndpoint(stack, { vpc });
+    defaults.deploySagemakerEndpoint(stack, 'test',  { vpc });
   };
   // Assertion 1
   expect(app).toThrowError();
 });
 
-// -------------------------------------------------------------------------
-// Test exception for not providing modelProps or existingSagemkaerObj
-// -------------------------------------------------------------------------
 test('Test exception for not providing modelProps or existingSagemkaerObj', () => {
   // Stack
   const stack = new Stack();
@@ -173,15 +194,12 @@ test('Test exception for not providing modelProps or existingSagemkaerObj', () =
 
   const app = () => {
     // Build Sagemaker Inference Endpoint
-    defaults.BuildSagemakerEndpoint(stack, { vpc });
+    defaults.BuildSagemakerEndpoint(stack, 'test', { vpc });
   };
   // Assertion 1
   expect(app).toThrowError();
 });
 
-// -----------------------------------------------------------------------------------------
-// Test exception for not providing private or isolated subnets in an existing vpc
-// -----------------------------------------------------------------------------------------
 test('Test exception for not providing private or isolated subnets in an existing vpc', () => {
   // Stack
   const stack = new Stack();
@@ -207,7 +225,7 @@ test('Test exception for not providing private or isolated subnets in an existin
 
   const app = () => {
     // Build Sagemaker Inference Endpoint
-    defaults.deploySagemakerEndpoint(stack, {
+    defaults.deploySagemakerEndpoint(stack, 'test', {
       modelProps: {
         primaryContainer: {
           image: '<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest',
@@ -219,4 +237,35 @@ test('Test exception for not providing private or isolated subnets in an existin
   };
   // Assertion 1
   expect(app).toThrowError();
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test fail SageMaker endpoint check', () => {
+  const stack = new Stack();
+
+  // Build Sagemaker Inference Endpoint
+  const modelProps = {
+    primaryContainer: {
+      image: "<AccountId>.dkr.ecr.<region>.amazonaws.com/linear-learner:latest",
+      modelDataUrl: "s3://<bucket-name>/<prefix>/model.tar.gz",
+    },
+  };
+
+  const buildSagemakerEndpointResponse = BuildSagemakerEndpoint(stack, 'test', { modelProps });
+
+  const props: defaults.SagemakerProps = {
+    existingSagemakerEndpointObj: buildSagemakerEndpointResponse.endpoint,
+    endpointProps: {
+      endpointConfigName: 'placeholder'
+    }
+  };
+
+  const app = () => {
+    defaults.CheckSagemakerProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide endpointProps or existingSagemakerEndpointObj, but not both.\n');
 });

@@ -8,20 +8,18 @@
 
 The AWS Solutions Constructs library is an open-source extension of the AWS Cloud Development Kit (AWS CDK) that provides multi-service, well-architected patterns for quickly defining solutions in code to create predictable and repeatable infrastructure. The goal of AWS Solutions Constructs is to accelerate the experience for developers to build solutions of any size using pattern-based definitions for their architecture.
 
-The patterns defined in AWS Solutions Constructs are high level, multi-service abstractions of AWS CDK constructs that have default configurations based on well-architected best practices. The library is organized into logical modules using object-oriented techniques to create each architectural pattern model. 
+The patterns defined in AWS Solutions Constructs are high level, multi-service abstractions of AWS CDK constructs that have default configurations based on well-architected best practices. The library is organized into logical modules using object-oriented techniques to create each architectural pattern model.
 
-The CDK is available in the following languages:
+## CDK Versions
 
-* JavaScript, TypeScript (Node.js ≥ 10.13.0)
-* Python (Python ≥ 3.6)
-* Java (Java ≥ 8 and Maven ≥ 3.5.4)
+AWS Solutions Constructs and the AWS CDK are independent teams and have different release schedules. Each release of AWS Solutions Constructs is built against a specific version of the AWS CDK. The CHANGELOG.md file lists the CDK version associated with each AWS Solutions Constructs release. For instance, AWS Solutions Constructs v2.39.0 was built against AWS CDK v2.76.0. This means that to use AWS Solutions Constructs v2.39.0, your application must include AWS CDK v2.76.0 *or later*. You can continue to use the latest AWS CDK versions and upgrade the your AWS Solutions Constructs version when new releases become available.
 
 ## Modules
 
 The AWS Solutions Constructs library is organized into several modules. They are named like this:
 
 * __aws-xxx__: well architected pattern package for the indicated services. This package will contain constructs that contain multiple AWS CDK service modules to configure the given pattern.
-* __xxx__: packages that don't start "aws-" are core modules that are used to configure best practice defaults for services used within the pattern library.
+* __xxx__: packages that don't start "aws-" are core modules that are used to configure best practice defaults for services used within the pattern library. They are not intended to be accessed directly.
 
 ## Module Contents
 
@@ -38,15 +36,13 @@ The pattern's documentation page also lists the available methods to call and th
 
 This library includes a collection of functional use case implementations to demonstrate the usage of AWS Solutions Constructs architectural patterns. These can be used in the same way as architectural patterns, and can be conceptualized as an additional "higher-level" abstraction of those patterns. The following use cases are provided as functional examples:
 
+* __aws-custom-glue-etl__ - implements an example using the Kinesis Data Streams Glue Job construct. The application architecture uses a custom ETL job defined in AWS Glue that takes in data from Amazon Kinesis Data Streams to process and store it in the target datastore as defined by the ETL script (for this example an S3 bucket location).
+  * Use case pattern: https://github.com/awslabs/aws-solutions-constructs/tree/main/source/use_cases/aws-custom-glue-etl
 * __aws-s3-static-website__ - implements an Amazon CloudFront distribution, Amazon S3 bucket and AWS Lambda-based custom resource to copy the static website content for the Wild Rydes demo website (part of the aws-serverless-web-app implementation).
-  * Use case pattern: https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-s3-static-website
-* __aws-serverless-image-handler__ - implements an Amazon CloudFront distribution, an Amazon API Gateway REST API, an AWS Lambda function, and necessary permissions/logic to provision a functional image handler API for serving image content from  one or more Amazon S3 buckets within the deployment account.
-  * Use case pattern: https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-serverless-image-handler
-* __aws-serverless-web-app__ - implements a simple serverless web application that enables users to request unicorn rides from the Wild Rydes fleet. The application will present users with an HTML based user interface for indicating the location where they would like to be picked up and will interface on the backend with a RESTful web service to submit the request and dispatch a nearby unicorn. The application will also provide facilities for users to register with the service and log in before requesting rides.
-  * Use case pattern: https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-serverless-web-app
+  * Use case pattern: https://github.com/awslabs/aws-solutions-constructs/tree/main/source/use_cases/aws-s3-static-website
 * __aws-restaurant-management-demo__ - implements a complex, multi-stack architecture that models a restaurant management system. This use case will provision a stack for service/wait staff to open/close orders, a stack for kitchen staff to view/complete orders, and a stack for managers to perform various business functions. It will also provision a stack
 containing a central DynamoDB table for managing orders, as well as a Lambda layer for sharing common database access patterns.
-  * Use case pattern: https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-restaurant-management-demo
+  * Use case pattern: https://github.com/awslabs/aws-solutions-constructs/tree/main/source/use_cases/aws-restaurant-management-demo
 
 ***
-&copy; Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+&copy; Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.

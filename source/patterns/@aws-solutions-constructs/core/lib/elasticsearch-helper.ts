@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,66 +11,83 @@
  *  and limitations under the License.
  */
 
-import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
-import { CfnDomainOptions, DefaultCfnDomainProps } from './elasticsearch-defaults';
-import { consolidateProps, addCfnSuppressRules } from './utils';
-import * as iam from '@aws-cdk/aws-iam';
-import * as cdk from '@aws-cdk/core';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
-// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
 
-export function buildElasticSearch(scope: Construct, domainName: string,
-  options: CfnDomainOptions, cfnDomainProps?: elasticsearch.CfnDomainProps): [elasticsearch.CfnDomain, iam.Role] {
+import * as elasticsearch from 'aws-cdk-lib/aws-elasticsearch';
+import { DefaultCfnDomainProps } from './elasticsearch-defaults';
+import { retrievePrivateSubnetIds } from './vpc-helper';
+import { consolidateProps, addCfnSuppressRules } from './utils';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as cdk from 'aws-cdk-lib';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+// Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
+import { Construct } from 'constructs';
+
+const MaximumAzsInElasticsearchDomain = 3;
+
+export interface BuildElasticSearchProps {
+  readonly identitypool: cognito.CfnIdentityPool;
+  readonly userpool: cognito.UserPool;
+  readonly cognitoAuthorizedRoleARN: string;
+  readonly serviceRoleARN?: string;
+  readonly vpc?: ec2.IVpc;
+  readonly domainName: string;
+  readonly clientDomainProps?: elasticsearch.CfnDomainProps,
+  readonly securityGroupIds?: string[]
+}
+
+export interface BuildElasticSearchResponse {
+  readonly domain: elasticsearch.CfnDomain,
+  readonly role: iam.Role
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function buildElasticSearch(scope: Construct, props: BuildElasticSearchProps): BuildElasticSearchResponse {
+
+  let subnetIds: string[] = [];
+  const constructDrivenProps: any = {};
 
   // Setup the IAM Role & policy for ES to configure Cognito User pool and Identity pool
-  const cognitoKibanaConfigureRole = new iam.Role(scope, 'CognitoKibanaConfigureRole', {
-    assumedBy: new iam.ServicePrincipal('es.amazonaws.com')
-  });
+  const cognitoKibanaConfigureRole = createKibanaCognitoRole(scope, props.userpool, props.identitypool, props.domainName);
 
-  const cognitoKibanaConfigureRolePolicy = new iam.Policy(scope, 'CognitoKibanaConfigureRolePolicy', {
-    statements: [
-      new iam.PolicyStatement({
-        actions: [
-          "cognito-idp:DescribeUserPool",
-          "cognito-idp:CreateUserPoolClient",
-          "cognito-idp:DeleteUserPoolClient",
-          "cognito-idp:DescribeUserPoolClient",
-          "cognito-idp:AdminInitiateAuth",
-          "cognito-idp:AdminUserGlobalSignOut",
-          "cognito-idp:ListUserPoolClients",
-          "cognito-identity:DescribeIdentityPool",
-          "cognito-identity:UpdateIdentityPool",
-          "cognito-identity:SetIdentityPoolRoles",
-          "cognito-identity:GetIdentityPoolRoles",
-          "es:UpdateElasticsearchDomainConfig"
-        ],
-        resources: [
-          options.userpool.userPoolArn,
-          `arn:aws:cognito-identity:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:identitypool/${options.identitypool.ref}`,
-          `arn:aws:es:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:domain/${domainName}`
-        ]
-      }),
-      new iam.PolicyStatement({
-        actions: [
-          "iam:PassRole"
-        ],
-        conditions: {
-          StringLike: { 'iam:PassedToService': 'cognito-identity.amazonaws.com' }
-        },
-        resources: [
-          cognitoKibanaConfigureRole.roleArn
-        ]
-      })
-    ]
-  });
-  cognitoKibanaConfigureRolePolicy.attachToRole(cognitoKibanaConfigureRole);
+  if (props.vpc) {
+    subnetIds = retrievePrivateSubnetIds(props.vpc);
 
-  let _cfnDomainProps = DefaultCfnDomainProps(domainName, cognitoKibanaConfigureRole, options);
+    if (subnetIds.length > MaximumAzsInElasticsearchDomain) {
+      subnetIds = subnetIds.slice(0, MaximumAzsInElasticsearchDomain);
+    }
 
-  _cfnDomainProps = consolidateProps(_cfnDomainProps, cfnDomainProps);
+    constructDrivenProps.vpcOptions = {
+      subnetIds,
+      securityGroupIds: props.securityGroupIds
+    };
 
-  const esDomain = new elasticsearch.CfnDomain(scope, "ElasticsearchDomain", _cfnDomainProps);
+    // If the client did not submit a ClusterConfig, then we will create one
+    if (!props.clientDomainProps?.elasticsearchClusterConfig) {
+      constructDrivenProps.elasticsearchClusterConfig = createClusterConfiguration(subnetIds.length);
+    }
+  } else { // No VPC
+    // If the client did not submit a ClusterConfig, then we will create one based on the Region
+    if (!props.clientDomainProps?.elasticsearchClusterConfig) {
+      constructDrivenProps.elasticsearchClusterConfig = createClusterConfiguration(cdk.Stack.of(scope).availabilityZones.length);
+    }
+  }
+
+  const defaultCfnDomainProps = DefaultCfnDomainProps(props.domainName, cognitoKibanaConfigureRole, props);
+  const finalCfnDomainProps = consolidateProps(defaultCfnDomainProps, props.clientDomainProps, constructDrivenProps);
+
+  // tlsSecurityPolicy is set in DefaultCfnDomainProps() - it is the
+  // default behavior, but Sonarqube cannot follow the program flow to confirm this.
+  // This is confirmed by the 'Check that TLS 1.2 is the default' test in aws-lambda-elasticsearch
+  const esDomain = new elasticsearch.CfnDomain(scope, `ElasticsearchDomain`, finalCfnDomainProps); // NOSONAR
+
   addCfnSuppressRules(esDomain, [
     {
       id: "W28",
@@ -82,9 +99,12 @@ export function buildElasticSearch(scope: Construct, domainName: string,
     },
   ]);
 
-  return [esDomain, cognitoKibanaConfigureRole];
+  return { domain: esDomain, role: cognitoKibanaConfigureRole };
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildElasticSearchCWAlarms(scope: Construct): cloudwatch.Alarm[] {
   // Setup CW Alarms for ES
   const alarms: cloudwatch.Alarm[] = new Array();
@@ -216,4 +236,74 @@ export function buildElasticSearchCWAlarms(scope: Construct): cloudwatch.Alarm[]
   }));
 
   return alarms;
+}
+
+function createClusterConfiguration(numberOfAzs?: number): elasticsearch.CfnDomain.ElasticsearchClusterConfigProperty {
+  return {
+    dedicatedMasterEnabled: true,
+    dedicatedMasterCount: 3,
+    zoneAwarenessEnabled: true,
+    zoneAwarenessConfig: {
+      availabilityZoneCount: numberOfAzs
+    },
+    instanceCount: numberOfAzs,
+  };
+}
+
+function createKibanaCognitoRole(
+  scope: Construct,
+  userPool: cognito.UserPool,
+  identitypool: cognito.CfnIdentityPool,
+  domainName: string
+): iam.Role {
+  // Setup the IAM Role & policy for ES to configure Cognito User pool and Identity pool
+  const cognitoKibanaConfigureRole = new iam.Role(
+    scope,
+    "CognitoKibanaConfigureRole",
+    {
+      assumedBy: new iam.ServicePrincipal("es.amazonaws.com"),
+    }
+  );
+
+  const cognitoKibanaConfigureRolePolicy = new iam.Policy(
+    scope,
+    "CognitoKibanaConfigureRolePolicy",
+    {
+      statements: [
+        new iam.PolicyStatement({
+          actions: [
+            "cognito-idp:DescribeUserPool",
+            "cognito-idp:CreateUserPoolClient",
+            "cognito-idp:DeleteUserPoolClient",
+            "cognito-idp:DescribeUserPoolClient",
+            "cognito-idp:AdminInitiateAuth",
+            "cognito-idp:AdminUserGlobalSignOut",
+            "cognito-idp:ListUserPoolClients",
+            "cognito-identity:DescribeIdentityPool",
+            "cognito-identity:UpdateIdentityPool",
+            "cognito-identity:SetIdentityPoolRoles",
+            "cognito-identity:GetIdentityPoolRoles",
+            "es:UpdateElasticsearchDomainConfig",
+          ],
+          resources: [
+            userPool.userPoolArn,
+            `arn:${cdk.Aws.PARTITION}:cognito-identity:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:identitypool/${identitypool.ref}`,
+            `arn:${cdk.Aws.PARTITION}:es:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:domain/${domainName}`,
+          ],
+        }),
+        new iam.PolicyStatement({
+          actions: ["iam:PassRole"],
+          conditions: {
+            StringLike: {
+              "iam:PassedToService": "cognito-identity.amazonaws.com",
+            },
+          },
+          resources: [cognitoKibanaConfigureRole.roleArn],
+        }),
+      ],
+    }
+  );
+
+  cognitoKibanaConfigureRolePolicy.attachToRole(cognitoKibanaConfigureRole);
+  return cognitoKibanaConfigureRole;
 }

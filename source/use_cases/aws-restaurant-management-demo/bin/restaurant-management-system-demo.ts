@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -15,7 +15,7 @@
 
 // Imports
 import 'source-map-support/register';
-import * as cdk from '@aws-cdk/core';
+import { App } from 'aws-cdk-lib';
 import { ExistingResources } from '../lib/existing-resources';
 import { SharedStack } from '../lib/shared-stack';
 import { ServiceStaffStack } from '../lib/service-staff-stack';
@@ -23,7 +23,7 @@ import { KitchenStaffStack } from '../lib/kitchen-staff-stack';
 import { ManagerStack } from '../lib/manager-stack';
 
 // App
-const app = new cdk.App();
+const app = new App();
 
 // For more info on deploying multiple stacks in an app, go to:
 // https://docs.aws.amazon.com/cdk/latest/guide/stack_how_to_create_multiple_stacks.html

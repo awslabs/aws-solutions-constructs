@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,13 +11,13 @@
  *  and limitations under the License.
  */
 
-import { Stack } from "@aws-cdk/core";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as lambda from "@aws-cdk/aws-lambda";
+import { Stack } from "aws-cdk-lib";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as defaults from "../index";
-import "@aws-cdk/assert/jest";
-import { Duration } from "@aws-cdk/core";
-import * as iam from '@aws-cdk/aws-iam';
+import { Template } from 'aws-cdk-lib/assertions';
+import { Duration } from "aws-cdk-lib";
+import * as iam from 'aws-cdk-lib/aws-iam';
 
 test("test FunctionProps override code and runtime", () => {
   const stack = new Stack();
@@ -30,7 +30,7 @@ test("test FunctionProps override code and runtime", () => {
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
@@ -44,19 +44,19 @@ test("test FunctionProps override timeout", () => {
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     timeout: Duration.seconds(5),
   };
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
     },
-    Runtime: "nodejs14.x",
+    Runtime: "nodejs16.x",
     Timeout: 5,
   });
 });
@@ -66,18 +66,18 @@ test("test FunctionProps for environment variable when runtime = NODEJS", () => 
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
   };
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
     },
-    Runtime: "nodejs14.x",
+    Runtime: "nodejs16.x",
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
@@ -97,7 +97,7 @@ test("test FunctionProps when runtime = PYTHON", () => {
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  expect(stack).toHaveResource(
+  Template.fromStack(stack).hasResourceProperties(
     "AWS::Lambda::Function",
     {
       Handler: "index.handler",
@@ -117,7 +117,7 @@ test("test buildLambdaFunction with deploy = true", () => {
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
   };
 
@@ -125,12 +125,12 @@ test("test buildLambdaFunction with deploy = true", () => {
     lambdaFunctionProps: inProps,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
     },
-    Runtime: "nodejs14.x",
+    Runtime: "nodejs16.x",
   });
 });
 
@@ -139,7 +139,7 @@ test("test buildLambdaFunction with existing Lambda function (no VPC)", () => {
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
   };
 
@@ -164,7 +164,7 @@ test("test buildLambdaFunction with FunctionProps", () => {
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
@@ -195,7 +195,7 @@ test("test buildLambdaFunction with Tracing Disabled", () => {
 
   defaults.deployLambdaFunction(stack, inProps);
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Lambda::Function", {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
@@ -210,7 +210,7 @@ test("test buildLambdaFunction when Lambda properties includes a VPC", () => {
   const fakeVpc = new ec2.Vpc(stack, "vpc", {});
 
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     vpc: fakeVpc,
@@ -218,7 +218,7 @@ test("test buildLambdaFunction when Lambda properties includes a VPC", () => {
 
   defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
-  expect(stack).toHaveResource("AWS::IAM::Policy", {
+  Template.fromStack(stack).hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -249,13 +249,13 @@ test("Test for error if VPC in arguments AND in Lambda Function properties", () 
   const fakeVpc = new ec2.Vpc(stack, "vpc", {});
 
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     vpc: fakeVpc,
   };
 
-  const app = () =>  {
+  const app = () => {
     defaults.deployLambdaFunction(stack, lambdaFunctionProps, undefined, fakeVpc);
   };
 
@@ -267,7 +267,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   const stack = new Stack();
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -294,7 +294,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   const testVpc = new ec2.Vpc(stack, "test-vpc", {});
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     vpc: testVpc,
@@ -316,7 +316,7 @@ test("Test generating synthesized permission IDs", () => {
   const coreName = "TestInvokePermission";
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -345,7 +345,7 @@ test("Test invalid synthesized permission names", () => {
   const coreName = "TestInvokePermission";
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -366,25 +366,25 @@ test("Test invalid synthesized permission names", () => {
   expect(app).toThrowError();
 });
 
-test('Test environment variable for NodeJS 14.x', () => {
+test('Test environment variable for NodeJS 16.x', () => {
   // Stack
   const stack = new Stack();
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
 
   defaults.deployLambdaFunction(stack, inProps);
 
   // Assertion
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
     Role: {
       'Fn::GetAtt': ['LambdaFunctionServiceRole0C4CDE0B', 'Arn']
     },
-    Runtime: 'nodejs14.x',
+    Runtime: 'nodejs16.x',
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
@@ -398,7 +398,7 @@ test('Test minimum deployment with an existing VPC as a vpc parameter in deployL
   const stack = new Stack();
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
   const fakeVpc: ec2.Vpc = new ec2.Vpc(stack, 'vpc', {});
@@ -406,7 +406,7 @@ test('Test minimum deployment with an existing VPC as a vpc parameter in deployL
   defaults.deployLambdaFunction(stack, inProps, undefined, fakeVpc);
 
   // Assertion
-  expect(stack).toHaveResourceLike('AWS::Lambda::Function', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -426,4 +426,167 @@ test('Test minimum deployment with an existing VPC as a vpc parameter in deployL
       ]
     }
   });
+});
+
+test("Test retrieving lambda vpc security group ids", () => {
+  const stack = new Stack();
+
+  const vpc = defaults.getTestVpc(stack);
+  const securityGroup1 = new ec2.SecurityGroup(stack, 'SecurityGroup1', { vpc });
+  const securityGroup2 = new ec2.SecurityGroup(stack, 'SecurityGroup2', { vpc });
+
+  const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: "index.handler",
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    securityGroups: [securityGroup1, securityGroup2],
+    vpc
+  });
+
+  const securityGroups = defaults.getLambdaVpcSecurityGroupIds(testLambdaFunction);
+
+  expect(securityGroups).toContain(securityGroup1.securityGroupId);
+  expect(securityGroups).toContain(securityGroup2.securityGroupId);
+});
+
+test('test buildLambdaFunction with lambdaFunctionProps default id', () => {
+  const stack = new Stack();
+
+  defaults.buildLambdaFunction(stack, {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    }
+  });
+
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
+    Role: {
+      'Fn::GetAtt': ['LambdaFunctionServiceRole0C4CDE0B', 'Arn'],
+    },
+  });
+});
+
+test('test buildLambdaFunction with lambdaFunctionProps custom id', () => {
+  const stack = new Stack();
+
+  defaults.buildLambdaFunction(stack, {
+    lambdaFunctionProps: {
+      functionName: 'MyTestFunction',
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    }
+  });
+
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
+    Role: {
+      'Fn::GetAtt': ['MyTestFunctionServiceRole37517223', 'Arn'],
+    },
+  });
+});
+
+test('buildLambdaFunction uses constructId when specified', () => {
+  const stack = new Stack();
+
+  defaults.buildLambdaFunction(stack, {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    }
+  }, 'MyConstructId');
+
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
+    Role: {
+      'Fn::GetAtt': ['MyConstructIdServiceRole271C08FC', 'Arn'],
+    },
+  });
+});
+
+// specifying constructId takes precedence over functionName for setting the
+// underlying lambda function and iam role construct ids.
+test('buildLambdaFunction uses constructId when both constructId and functionName are specified', () => {
+  const stack = new Stack();
+
+  defaults.buildLambdaFunction(stack, {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      functionName: 'MyTestFunction',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    }
+  }, 'MyConstructId');
+
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
+    Role: {
+      'Fn::GetAtt': ['MyConstructIdServiceRole271C08FC', 'Arn'],
+    },
+  });
+});
+
+test('buildLambdaFunction uses functionName when constructId is not specified', () => {
+  const stack = new Stack();
+
+  defaults.buildLambdaFunction(stack, {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      functionName: 'MyTestFunction',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    }
+  });
+
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
+    Role: {
+      'Fn::GetAtt': ['MyTestFunctionServiceRole37517223', 'Arn'],
+    },
+  });
+});
+
+test('buildLambdaFunction uses default name when neither constructId or functionName is specified', () => {
+  const stack = new Stack();
+
+  defaults.buildLambdaFunction(stack, {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    }
+  });
+
+  Template.fromStack(stack).hasResourceProperties('AWS::Lambda::Function', {
+    Role: {
+      'Fn::GetAtt': ['LambdaFunctionServiceRole0C4CDE0B', 'Arn'],
+    },
+  });
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test("Test fail Lambda function check", () => {
+  const stack = new Stack();
+
+  const props: defaults.LambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: "index.handler",
+    },
+    existingLambdaObj: new lambda.Function(stack, "placeholder", {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: "index.handler",
+    }),
+  };
+
+  const app = () => {
+    defaults.CheckLambdaProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError(
+    "Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n"
+  );
 });

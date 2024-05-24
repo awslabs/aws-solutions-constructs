@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,15 +11,15 @@
  *  and limitations under the License.
  */
 
-import * as sfn from '@aws-cdk/aws-stepfunctions';
-import * as events from '@aws-cdk/aws-events';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
+import * as events from 'aws-cdk-lib/aws-events';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as iam from '@aws-cdk/aws-iam';
+import * as iam from 'aws-cdk-lib/aws-iam';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 import { overrideProps } from '@aws-solutions-constructs/core';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
-import * as logs from '@aws-cdk/aws-logs';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
+import * as logs from 'aws-cdk-lib/aws-logs';
 
 /**
  * @summary The properties for the EventbridgeToStepfunctions Construct
@@ -79,10 +79,12 @@ export class EventbridgeToStepfunctions extends Construct {
    */
   constructor(scope: Construct, id: string, props: EventbridgeToStepfunctionsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckEventBridgeProps(props);
 
-    [this.stateMachine, this.stateMachineLogGroup] = defaults.buildStateMachine(this, props.stateMachineProps,
+    const buildStateMachineResponse = defaults.buildStateMachine(this, props.stateMachineProps,
       props.logGroupProps);
+    this.stateMachine = buildStateMachineResponse.stateMachine;
+    this.stateMachineLogGroup = buildStateMachineResponse.logGroup;
 
     // Create an IAM role for Events to start the State Machine
     const eventsRole = new iam.Role(this, 'EventsRuleRole', {

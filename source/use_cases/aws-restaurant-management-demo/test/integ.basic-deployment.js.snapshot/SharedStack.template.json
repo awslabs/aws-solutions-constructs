@@ -1,0 +1,188 @@
+{
+ "Resources": {
+  "ordertable80C56090": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "id",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "gsi1pk",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "gsi1sk",
+      "AttributeType": "S"
+     }
+    ],
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "gsi1pk-gsi1sk-index",
+      "KeySchema": [
+       {
+        "AttributeName": "gsi1pk",
+        "KeyType": "HASH"
+       },
+       {
+        "AttributeName": "gsi1sk",
+        "KeyType": "RANGE"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      },
+      "ProvisionedThroughput": {
+       "ReadCapacityUnits": 5,
+       "WriteCapacityUnits": 5
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "id",
+      "KeyType": "HASH"
+     }
+    ],
+    "ProvisionedThroughput": {
+     "ReadCapacityUnits": 5,
+     "WriteCapacityUnits": 5
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "ordertableReadScalingTarget145F706F": {
+   "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
+   "Properties": {
+    "MaxCapacity": 50,
+    "MinCapacity": 1,
+    "ResourceId": {
+     "Fn::Join": [
+      "",
+      [
+       "table/",
+       {
+        "Ref": "ordertable80C56090"
+       }
+      ]
+     ]
+    },
+    "RoleARN": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":iam::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
+      ]
+     ]
+    },
+    "ScalableDimension": "dynamodb:table:ReadCapacityUnits",
+    "ServiceNamespace": "dynamodb"
+   }
+  },
+  "ordertableReadScalingTargetTracking6E5FE6D6": {
+   "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+   "Properties": {
+    "PolicyName": "SharedStackordertableReadScalingTargetTracking5EEE9186",
+    "PolicyType": "TargetTrackingScaling",
+    "ScalingTargetId": {
+     "Ref": "ordertableReadScalingTarget145F706F"
+    },
+    "TargetTrackingScalingPolicyConfiguration": {
+     "PredefinedMetricSpecification": {
+      "PredefinedMetricType": "DynamoDBReadCapacityUtilization"
+     },
+     "TargetValue": 50
+    }
+   }
+  },
+  "shareddbfunctionslayerA9CFEC5A": {
+   "Type": "AWS::Lambda::LayerVersion",
+   "Properties": {
+    "CompatibleRuntimes": [
+     "nodejs16.x"
+    ],
+    "Content": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "10564c98f41d5ddbd78ce6aa50e29a44184e170be4b504e0bdcdb341bf04f129.zip"
+    },
+    "Description": "Layer for common database access functions",
+    "LicenseInfo": "Apache-2.0"
+   }
+  }
+ },
+ "Outputs": {
+  "ExportsOutputFnGetAttordertable80C56090ArnFF5A50B5": {
+   "Value": {
+    "Fn::GetAtt": [
+     "ordertable80C56090",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "SharedStack:ExportsOutputFnGetAttordertable80C56090ArnFF5A50B5"
+   }
+  },
+  "ExportsOutputRefordertable80C5609084F626AD": {
+   "Value": {
+    "Ref": "ordertable80C56090"
+   },
+   "Export": {
+    "Name": "SharedStack:ExportsOutputRefordertable80C5609084F626AD"
+   }
+  },
+  "ExportsOutputRefshareddbfunctionslayerA9CFEC5A89EBE406": {
+   "Value": {
+    "Ref": "shareddbfunctionslayerA9CFEC5A"
+   },
+   "Export": {
+    "Name": "SharedStack:ExportsOutputRefshareddbfunctionslayerA9CFEC5A89EBE406"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

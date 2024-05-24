@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,23 +11,26 @@
  *  and limitations under the License.
  */
 
-import { ResourcePart } from '@aws-cdk/assert';
-import { Stack } from '@aws-cdk/core';
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as lambda from '@aws-cdk/aws-lambda';
-import { CloudFrontDistributionForS3 } from '../lib/cloudfront-distribution-helper';
+import { Template } from 'aws-cdk-lib/assertions';
+import { Stack } from 'aws-cdk-lib';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { createCloudFrontDistributionForS3 } from '../lib/cloudfront-distribution-helper';
 import { buildS3Bucket } from '../lib/s3-bucket-helper';
-import '@aws-cdk/assert/jest';
-import { Bucket } from '@aws-cdk/aws-s3';
-import * as origins from '@aws-cdk/aws-cloudfront-origins';
-import { LambdaEdgeEventType } from '@aws-cdk/aws-cloudfront';
-import * as acm from '@aws-cdk/aws-certificatemanager';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
+import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
+import { LambdaEdgeEventType } from 'aws-cdk-lib/aws-cloudfront';
+import * as acm from 'aws-cdk-lib/aws-certificatemanager';
+import * as defaults from '../';
 
 test('check bucket policy metadata', () => {
   const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
-  CloudFrontDistributionForS3(stack, sourceBucket);
-  expect(stack).toHaveResource('AWS::S3::BucketPolicy', {
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
+  createCloudFrontDistributionForS3(stack, 'sample-cf-distro', {
+    sourceBucket: buildS3BucketResponse.bucket
+  });
+  const template = Template.fromStack(stack);
+  template.hasResource('AWS::S3::BucketPolicy', {
     Metadata: {
       cfn_nag: {
         rules_to_suppress: [
@@ -38,33 +41,18 @@ test('check bucket policy metadata', () => {
         ]
       }
     }
-  }, ResourcePart.CompleteDefinition);
-});
-
-test('check bucket metadata', () => {
-  const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
-  CloudFrontDistributionForS3(stack, sourceBucket);
-  expect(stack).toHaveResource('AWS::S3::Bucket', {
-    Metadata: {
-      cfn_nag: {
-        rules_to_suppress: [
-          {
-            id: "W35",
-            reason: "This S3 bucket is used as the access logging bucket for CloudFront Distribution"
-          }
-        ]
-      }
-    }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 test('test cloudfront check bucket policy', () => {
   const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
-  CloudFrontDistributionForS3(stack, sourceBucket);
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
+  createCloudFrontDistributionForS3(stack, 'sample-cf-distro', {
+    sourceBucket: buildS3BucketResponse.bucket
+  });
 
-  expect(stack).toHaveResourceLike("AWS::S3::BucketPolicy", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::BucketPolicy", {
     PolicyDocument: {
       Statement: [
         {
@@ -100,32 +88,6 @@ test('test cloudfront check bucket policy', () => {
               ]
             }
           ]
-        },
-        {
-          Action: "s3:GetObject",
-          Effect: "Allow",
-          Principal: {
-            CanonicalUser: {
-              "Fn::GetAtt": [
-                "CloudFrontDistributionOrigin1S3Origin3D9CA0E9",
-                "S3CanonicalUserId"
-              ]
-            }
-          },
-          Resource: {
-            "Fn::Join": [
-              "",
-              [
-                {
-                  "Fn::GetAtt": [
-                    "S3Bucket07682993",
-                    "Arn"
-                  ]
-                },
-                "/*"
-              ]
-            ]
-          }
         }
       ],
       Version: "2012-10-17"
@@ -135,11 +97,16 @@ test('test cloudfront check bucket policy', () => {
 
 test('test cloudfront with no security headers ', () => {
   const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
 
-  CloudFrontDistributionForS3(stack, sourceBucket, {}, false);
+  createCloudFrontDistributionForS3(stack, 'sample-cf-distro', {
+    sourceBucket: buildS3BucketResponse.bucket,
+    cloudFrontDistributionProps: {},
+    httpSecurityHeaders: false
+  });
 
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
@@ -158,38 +125,14 @@ test('test cloudfront with no security headers ', () => {
             "RegionalDomainName"
           ]
         }
-      },
-      Origins: [
-        {
-          DomainName: {
-            "Fn::GetAtt": [
-              "S3Bucket07682993",
-              "RegionalDomainName"
-            ]
-          },
-          Id: "CloudFrontDistributionOrigin176EC3A12",
-          S3OriginConfig: {
-            OriginAccessIdentity: {
-              "Fn::Join": [
-                "",
-                [
-                  "origin-access-identity/cloudfront/",
-                  {
-                    Ref: "CloudFrontDistributionOrigin1S3Origin3D9CA0E9"
-                  }
-                ]
-              ]
-            }
-          }
-        }
-      ]
+      }
     }
   });
 });
 
 test('test cloudfront override cloudfront logging bucket ', () => {
   const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
   const logBucket = new Bucket(stack, 'loggingbucket');
 
   const myprops = {
@@ -197,9 +140,13 @@ test('test cloudfront override cloudfront logging bucket ', () => {
     logBucket
   };
 
-  CloudFrontDistributionForS3(stack, sourceBucket, myprops);
+  createCloudFrontDistributionForS3(stack, 'sample-cf-distro', {
+    sourceBucket: buildS3BucketResponse.bucket,
+    cloudFrontDistributionProps: myprops
+  });
 
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
@@ -229,50 +176,30 @@ test('test cloudfront override cloudfront logging bucket ', () => {
             "RegionalDomainName"
           ]
         }
-      },
-      Origins: [
-        {
-          DomainName: {
-            "Fn::GetAtt": [
-              "S3Bucket07682993",
-              "RegionalDomainName"
-            ]
-          },
-          Id: "CloudFrontDistributionOrigin176EC3A12",
-          S3OriginConfig: {
-            OriginAccessIdentity: {
-              "Fn::Join": [
-                "",
-                [
-                  "origin-access-identity/cloudfront/",
-                  {
-                    Ref: "CloudFrontDistributionOrigin1S3Origin3D9CA0E9"
-                  }
-                ]
-              ]
-            }
-          }
-        }
-      ]
+      }
     }
   });
 });
 
 test('test cloudfront override properties', () => {
   const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
   const props: cloudfront.DistributionProps = {
     defaultBehavior: {
-      origin: new origins.S3Origin(sourceBucket, { originPath: '/testPath' }),
+      origin: new origins.S3Origin(buildS3BucketResponse.bucket, { originPath: '/testPath' }),
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
       cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS
     },
   };
 
-  CloudFrontDistributionForS3(stack, sourceBucket, props);
+  createCloudFrontDistributionForS3(stack, 'sample-cf-distro', {
+    sourceBucket: buildS3BucketResponse.bucket,
+    cloudFrontDistributionProps: props
+  });
 
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -348,25 +275,29 @@ test('test cloudfront override properties', () => {
 
 test('test override cloudfront with custom cloudfront function', () => {
   const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
 
   // custom cloudfront function
   const cloudfrontFunction = new cloudfront.Function(stack, "MyFunction", {
     code: cloudfront.FunctionCode.fromInline("exports.handler = (event, context, callback) => {}")
   });
 
-  CloudFrontDistributionForS3(stack, sourceBucket, {
-    defaultBehavior: {
-      functionAssociations: [
-        {
-          eventType: cloudfront.FunctionEventType.VIEWER_RESPONSE,
-          function: cloudfrontFunction
-        }
-      ],
+  createCloudFrontDistributionForS3(stack, 'sample-cf-distro', {
+    sourceBucket: buildS3BucketResponse.bucket,
+    cloudFrontDistributionProps: {
+      defaultBehavior: {
+        functionAssociations: [
+          {
+            eventType: cloudfront.FunctionEventType.VIEWER_RESPONSE,
+            function: cloudfrontFunction
+          }
+        ],
+      }
     }
   });
 
-  expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
@@ -396,43 +327,19 @@ test('test override cloudfront with custom cloudfront function', () => {
             "RegionalDomainName"
           ]
         }
-      },
-      Origins: [
-        {
-          DomainName: {
-            "Fn::GetAtt": [
-              "S3Bucket07682993",
-              "RegionalDomainName"
-            ]
-          },
-          Id: "CloudFrontDistributionOrigin176EC3A12",
-          S3OriginConfig: {
-            OriginAccessIdentity: {
-              "Fn::Join": [
-                "",
-                [
-                  "origin-access-identity/cloudfront/",
-                  {
-                    Ref: "CloudFrontDistributionOrigin1S3Origin3D9CA0E9"
-                  }
-                ]
-              ]
-            }
-          }
-        }
-      ]
+      }
     }
   });
 });
 
 test('test override cloudfront replace custom lambda@edge', () => {
   const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
 
   // custom lambda@edg function
   const handler = new lambda.Function(stack, 'SomeHandler', {
     functionName: 'SomeHandler',
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -441,20 +348,24 @@ test('test override cloudfront replace custom lambda@edge', () => {
     lambda: handler,
   });
 
-  CloudFrontDistributionForS3(stack, sourceBucket, {
-    defaultBehavior: {
-      edgeLambdas: [
-        {
-          eventType: LambdaEdgeEventType.VIEWER_REQUEST,
-          includeBody: false,
-          functionVersion: handlerVersion,
-        }
-      ]
-    }
-  },
-  false);
+  createCloudFrontDistributionForS3(stack, 'sample-cf-distro', {
+    sourceBucket: buildS3BucketResponse.bucket,
+    cloudFrontDistributionProps: {
+      defaultBehavior: {
+        edgeLambdas: [
+          {
+            eventType: LambdaEdgeEventType.VIEWER_REQUEST,
+            includeBody: false,
+            functionVersion: handlerVersion,
+          }
+        ]
+      }
+    },
+    httpSecurityHeaders: false
+  });
 
-  expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
@@ -482,38 +393,14 @@ test('test override cloudfront replace custom lambda@edge', () => {
             "RegionalDomainName"
           ]
         }
-      },
-      Origins: [
-        {
-          DomainName: {
-            "Fn::GetAtt": [
-              "S3Bucket07682993",
-              "RegionalDomainName"
-            ]
-          },
-          Id: "CloudFrontDistributionOrigin176EC3A12",
-          S3OriginConfig: {
-            OriginAccessIdentity: {
-              "Fn::Join": [
-                "",
-                [
-                  "origin-access-identity/cloudfront/",
-                  {
-                    Ref: "CloudFrontDistributionOrigin1S3Origin3D9CA0E9"
-                  }
-                ]
-              ]
-            }
-          }
-        }
-      ]
+      }
     }
   });
 });
 
 test('test cloudfront override cloudfront custom domain names ', () => {
   const stack = new Stack();
-  const [sourceBucket] = buildS3Bucket(stack, {});
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
   const certificate = acm.Certificate.fromCertificateArn(stack, 'Cert', 'arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012');
 
   const myprops = {
@@ -521,13 +408,37 @@ test('test cloudfront override cloudfront custom domain names ', () => {
     certificate
   };
 
-  CloudFrontDistributionForS3(stack, sourceBucket, myprops);
+  createCloudFrontDistributionForS3(stack, 'sample-cf-distro', {
+    sourceBucket: buildS3BucketResponse.bucket,
+    cloudFrontDistributionProps: myprops
+  });
 
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       Aliases: [
         "mydomains"
       ],
     }
   });
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test CloudFront insertHttpHeaders bad props', () => {
+
+  const props: defaults.CloudFrontProps = {
+    insertHttpSecurityHeaders: true,
+    responseHeadersPolicyProps: {
+      securityHeadersBehavior: {}
+    }
+  };
+
+  const app = () => {
+    defaults.CheckCloudFrontProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
 });

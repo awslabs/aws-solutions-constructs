@@ -37,7 +37,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 const constructProps: IotToLambdaProps = {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   },
   iotTopicRuleProps: {
@@ -94,7 +94,7 @@ import software.amazon.awsconstructs.services.iotlambda.*;
 
 new IotToLambda(this, "test-iot-lambda-integration", new IotToLambdaProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_14_X)
+                .runtime(Runtime.NODEJS_16_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())
@@ -112,16 +112,16 @@ new IotToLambda(this, "test-iot-lambda-integration", new IotToLambdaProps.Builde
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-|existingLambdaObj?|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.|
-|lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.FunctionProps.html)|User provided props to override the default props for the Lambda function.|
-|iotTopicRuleProps?|[`iot.CfnTopicRuleProps`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iot.CfnTopicRuleProps.html)|User provided CfnTopicRuleProps to override the defaults|
+|existingLambdaObj?|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)|Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.|
+|lambdaFunctionProps?|[`lambda.FunctionProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html)|User provided props to override the default props for the Lambda function.|
+|iotTopicRuleProps?|[`iot.CfnTopicRuleProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iot.CfnTopicRuleProps.html)|User provided CfnTopicRuleProps to override the defaults|
 
 ## Pattern Properties
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
-|iotTopicRule|[`iot.CfnTopicRule`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-iot.CfnTopicRule.html)|Returns an instance of iot.CfnTopicRule created by the construct|
-|lambdaFunction|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-lambda.Function.html)|Returns an instance of lambda.Function created by the construct|
+|iotTopicRule|[`iot.CfnTopicRule`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iot.CfnTopicRule.html)|Returns an instance of iot.CfnTopicRule created by the construct|
+|lambdaFunction|[`lambda.Function`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html)|Returns an instance of lambda.Function created by the construct|
 
 ## Default settings
 
@@ -141,4 +141,4 @@ Out of the box implementation of the Construct without any override will set the
 ![Architecture Diagram](architecture.png)
 
 ***
-&copy; Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+&copy; Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.

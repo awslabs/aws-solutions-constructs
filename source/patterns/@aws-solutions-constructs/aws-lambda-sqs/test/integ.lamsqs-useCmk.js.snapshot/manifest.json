@@ -1,0 +1,170 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "lamsqsuseCmkIntegDefaultTestDeployAssertCF558D35.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamsqsuseCmkIntegDefaultTestDeployAssertCF558D35.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamsqsuseCmkIntegDefaultTestDeployAssertCF558D35": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamsqsuseCmkIntegDefaultTestDeployAssertCF558D35.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamsqsuseCmkIntegDefaultTestDeployAssertCF558D35.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamsqsuseCmkIntegDefaultTestDeployAssertCF558D35.assets"
+      ],
+      "metadata": {
+        "/lamsqs-useCmk/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamsqs-useCmk/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamsqs-useCmk/Integ/DefaultTest/DeployAssert"
+    },
+    "lamsqs-useCmk.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamsqs-useCmk.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamsqs-useCmk": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamsqs-useCmk.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9f15cd399d6f02627acbc8a7614442a9aae8dc8c3d422afbb7d29ae80c0a4cf0.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamsqs-useCmk.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamsqs-useCmk.assets"
+      ],
+      "metadata": {
+        "/lamsqs-useCmk/test-lambda-sqs/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqsLambdaFunctionServiceRoleC0430CA8"
+          }
+        ],
+        "/lamsqs-useCmk/test-lambda-sqs/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqsLambdaFunctionServiceRoleDefaultPolicyE3CAD09D"
+          }
+        ],
+        "/lamsqs-useCmk/test-lambda-sqs/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqsLambdaFunction28E890A1"
+          }
+        ],
+        "/lamsqs-useCmk/test-lambda-sqs/deadLetterQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqsdeadLetterQueueC34BC0BD"
+          }
+        ],
+        "/lamsqs-useCmk/test-lambda-sqs/deadLetterQueue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqsdeadLetterQueuePolicy270F1626"
+          }
+        ],
+        "/lamsqs-useCmk/test-lambda-sqs/'queueKey'/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqsqueueKey37A590CE"
+          }
+        ],
+        "/lamsqs-useCmk/test-lambda-sqs/queue": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "encryption: Automatically changed to QueueEncryption.KMS, was: QueueEncryption.KMS_MANAGED\nWhen encryptionMasterKey is provided, always set `encryption: QueueEncryption.KMS` [ack: @aws-cdk/aws-sqs:queueEncryptionChangedToKMS]"
+          }
+        ],
+        "/lamsqs-useCmk/test-lambda-sqs/queue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqsqueueDD178B7C"
+          }
+        ],
+        "/lamsqs-useCmk/test-lambda-sqs/queue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqsqueuePolicy3FC623C5"
+          }
+        ],
+        "/lamsqs-useCmk/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamsqs-useCmk/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testlambdasqsEncryptionKeyDAAFCB9F": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqsEncryptionKeyDAAFCB9F",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ]
+      },
+      "displayName": "lamsqs-useCmk"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

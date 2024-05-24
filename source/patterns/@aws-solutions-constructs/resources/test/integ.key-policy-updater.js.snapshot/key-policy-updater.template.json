@@ -1,0 +1,518 @@
+{
+ "Description": "Integration Test for Key Policy Updater Resource",
+ "Resources": {
+  "testkey9B36F12B": {
+   "Type": "AWS::KMS::Key",
+   "Properties": {
+    "EnableKeyRotation": true,
+    "KeyPolicy": {
+     "Statement": [
+      {
+       "Action": "kms:*",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "testbucketA976ABFD": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"
+       }
+      }
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W35",
+       "reason": "Test resource"
+      },
+      {
+       "id": "41",
+       "reason": "Test resource"
+      }
+     ]
+    }
+   }
+  },
+  "testbucketPolicy68299958": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "testbucketA976ABFD"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:GetObject",
+       "Effect": "Allow",
+       "Principal": {
+        "CanonicalUser": {
+         "Fn::GetAtt": [
+          "testdistOrigin1S3Origin7E994241",
+          "S3CanonicalUserId"
+         ]
+        }
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "testbucketA976ABFD",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "testdistOrigin1S3Origin7E994241": {
+   "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+   "Properties": {
+    "CloudFrontOriginAccessIdentityConfig": {
+     "Comment": "Identity for keypolicyupdatertestdistOrigin1D732FBD3"
+    }
+   }
+  },
+  "testdistE978BF1A": {
+   "Type": "AWS::CloudFront::Distribution",
+   "Properties": {
+    "DistributionConfig": {
+     "DefaultCacheBehavior": {
+      "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+      "Compress": true,
+      "TargetOriginId": "keypolicyupdatertestdistOrigin1D732FBD3",
+      "ViewerProtocolPolicy": "allow-all"
+     },
+     "Enabled": true,
+     "HttpVersion": "http2",
+     "IPV6Enabled": true,
+     "Origins": [
+      {
+       "DomainName": {
+        "Fn::GetAtt": [
+         "testbucketA976ABFD",
+         "RegionalDomainName"
+        ]
+       },
+       "Id": "keypolicyupdatertestdistOrigin1D732FBD3",
+       "S3OriginConfig": {
+        "OriginAccessIdentity": {
+         "Fn::Join": [
+          "",
+          [
+           "origin-access-identity/cloudfront/",
+           {
+            "Ref": "testdistOrigin1S3Origin7E994241"
+           }
+          ]
+         ]
+        }
+       }
+      }
+     ]
+    }
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W10",
+       "reason": "Test resource"
+      },
+      {
+       "id": "W70",
+       "reason": "Test resource"
+      }
+     ]
+    }
+   }
+  },
+  "LambdaFunctionServiceRole0C4CDE0B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":logs:",
+            {
+             "Ref": "AWS::Region"
+            },
+            ":",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":log-group:/aws/lambda/*"
+           ]
+          ]
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "LambdaFunctionServiceRolePolicy"
+     }
+    ]
+   }
+  },
+  "LambdaFunctionServiceRoleDefaultPolicy126C8897": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+    "Roles": [
+     {
+      "Ref": "LambdaFunctionServiceRole0C4CDE0B"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
+  "LambdaFunctionBF21E41F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "4a4b024f310aca2784b69bcb790e9ccaef785e9ad5d1b73624144f88c4465b4f.zip"
+    },
+    "Description": "Custom resource function that updates a provided key policy to allow CloudFront access.",
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaFunctionServiceRole0C4CDE0B",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+    "LambdaFunctionServiceRole0C4CDE0B"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+      },
+      {
+       "id": "W89",
+       "reason": "This is not a rule for the general case, just for specific use cases/industries"
+      },
+      {
+       "id": "W92",
+       "reason": "Impossible for us to define the correct concurrency for clients"
+      }
+     ]
+    }
+   }
+  },
+  "TestResourceCmkPolicy977FBAA4": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "kms:DescribeKey",
+        "kms:GetKeyPolicy",
+        "kms:PutKeyPolicy"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "testkey9B36F12B",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "TestResourceCmkPolicy977FBAA4",
+    "Roles": [
+     {
+      "Ref": "LambdaFunctionServiceRole0C4CDE0B"
+     }
+    ]
+   }
+  },
+  "KmsKeyPolicyUpdateProviderframeworkonEventServiceRoleD0164B97": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  "KmsKeyPolicyUpdateProviderframeworkonEventServiceRoleDefaultPolicyC8853973": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "lambda:InvokeFunction",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "LambdaFunctionBF21E41F",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "LambdaFunctionBF21E41F",
+             "Arn"
+            ]
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "KmsKeyPolicyUpdateProviderframeworkonEventServiceRoleDefaultPolicyC8853973",
+    "Roles": [
+     {
+      "Ref": "KmsKeyPolicyUpdateProviderframeworkonEventServiceRoleD0164B97"
+     }
+    ]
+   }
+  },
+  "KmsKeyPolicyUpdateProviderframeworkonEventEC76BE2C": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "3542be390685e0c8353d92ccb5796d343cd93ca946b6b0de798004206a199adc.zip"
+    },
+    "Description": "AWS CDK resource provider framework - onEvent (key-policy-updater/KmsKeyPolicyUpdateProvider)",
+    "Environment": {
+     "Variables": {
+      "USER_ON_EVENT_FUNCTION_ARN": {
+       "Fn::GetAtt": [
+        "LambdaFunctionBF21E41F",
+        "Arn"
+       ]
+      }
+     }
+    },
+    "Handler": "framework.onEvent",
+    "Role": {
+     "Fn::GetAtt": [
+      "KmsKeyPolicyUpdateProviderframeworkonEventServiceRoleD0164B97",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "KmsKeyPolicyUpdateProviderframeworkonEventServiceRoleDefaultPolicyC8853973",
+    "KmsKeyPolicyUpdateProviderframeworkonEventServiceRoleD0164B97"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "The CDK-provided lambda function that backs their Custom Resource Provider framework has an IAM role with the arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole Managed Policy attached, which grants permission to write to CloudWatch Logs"
+      },
+      {
+       "id": "W89",
+       "reason": "The CDK-provided lambda function that backs their Custom Resource Provider framework does not access VPC resources"
+      },
+      {
+       "id": "W92",
+       "reason": "The CDK-provided lambda function that backs their Custom Resource Provider framework does not define ReservedConcurrentExecutions"
+      }
+     ]
+    }
+   }
+  },
+  "KmsKeyPolicyUpdater": {
+   "Type": "Custom::KmsKeyPolicyUpdater",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "KmsKeyPolicyUpdateProviderframeworkonEventEC76BE2C",
+      "Arn"
+     ]
+    },
+    "KmsKeyId": {
+     "Ref": "testkey9B36F12B"
+    },
+    "CloudFrontDistributionId": {
+     "Ref": "testdistE978BF1A"
+    },
+    "AccountId": {
+     "Ref": "AWS::AccountId"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

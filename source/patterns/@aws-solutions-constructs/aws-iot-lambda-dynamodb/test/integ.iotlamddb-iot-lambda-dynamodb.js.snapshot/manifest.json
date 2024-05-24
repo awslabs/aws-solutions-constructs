@@ -1,0 +1,143 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "iotlamddbiotlambdadynamodbIntegDefaultTestDeployAssert78E90BBB.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "iotlamddbiotlambdadynamodbIntegDefaultTestDeployAssert78E90BBB.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "iotlamddbiotlambdadynamodbIntegDefaultTestDeployAssert78E90BBB": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "iotlamddbiotlambdadynamodbIntegDefaultTestDeployAssert78E90BBB.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "iotlamddbiotlambdadynamodbIntegDefaultTestDeployAssert78E90BBB.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "iotlamddbiotlambdadynamodbIntegDefaultTestDeployAssert78E90BBB.assets"
+      ],
+      "metadata": {
+        "/iotlamddb-iot-lambda-dynamodb/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/iotlamddb-iot-lambda-dynamodb/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "iotlamddb-iot-lambda-dynamodb/Integ/DefaultTest/DeployAssert"
+    },
+    "iotlamddb-iot-lambda-dynamodb.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "iotlamddb-iot-lambda-dynamodb.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "iotlamddb-iot-lambda-dynamodb": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "iotlamddb-iot-lambda-dynamodb.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b63e164fc0ad23ec3d78c5a3b2969e294f2a7cf690a59b1e28fbb0c1addcfaf0.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "iotlamddb-iot-lambda-dynamodb.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "iotlamddb-iot-lambda-dynamodb.assets"
+      ],
+      "metadata": {
+        "/iotlamddb-iot-lambda-dynamodb/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionServiceRole31915E05"
+          }
+        ],
+        "/iotlamddb-iot-lambda-dynamodb/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionServiceRoleDefaultPolicy2B35234F"
+          }
+        ],
+        "/iotlamddb-iot-lambda-dynamodb/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunction5165A7EE"
+          }
+        ],
+        "/iotlamddb-iot-lambda-dynamodb/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/AwsIotLambdaInvokePermission-1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionAwsIotLambdaInvokePermission13FCFED39"
+          }
+        ],
+        "/iotlamddb-iot-lambda-dynamodb/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/DynamoTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotlambdadynamodbstackLambdaToDynamoDBDynamoTableE17E5733"
+          }
+        ],
+        "/iotlamddb-iot-lambda-dynamodb/test-iot-lambda-dynamodb-stack/IotToLambda/IotTopic": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotlambdadynamodbstackIotToLambdaIotTopic74F5E3BB"
+          }
+        ],
+        "/iotlamddb-iot-lambda-dynamodb/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/iotlamddb-iot-lambda-dynamodb/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "iotlamddb-iot-lambda-dynamodb"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

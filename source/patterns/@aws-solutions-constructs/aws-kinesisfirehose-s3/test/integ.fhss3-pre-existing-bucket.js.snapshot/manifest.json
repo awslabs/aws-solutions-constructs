@@ -1,0 +1,185 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "fhss3preexistingbucketIntegDefaultTestDeployAssert84EBBD2B.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "fhss3preexistingbucketIntegDefaultTestDeployAssert84EBBD2B.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "fhss3preexistingbucketIntegDefaultTestDeployAssert84EBBD2B": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "fhss3preexistingbucketIntegDefaultTestDeployAssert84EBBD2B.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "fhss3preexistingbucketIntegDefaultTestDeployAssert84EBBD2B.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "fhss3preexistingbucketIntegDefaultTestDeployAssert84EBBD2B.assets"
+      ],
+      "metadata": {
+        "/fhss3-pre-existing-bucket/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/fhss3-pre-existing-bucket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "fhss3-pre-existing-bucket/Integ/DefaultTest/DeployAssert"
+    },
+    "fhss3-pre-existing-bucket.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "fhss3-pre-existing-bucket.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "fhss3-pre-existing-bucket": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "fhss3-pre-existing-bucket.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f2f08a030e3a0be6623389b5b47ab95bd6b3787ad47120c85a41def37f7411a9.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "fhss3-pre-existing-bucket.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "fhss3-pre-existing-bucket.assets"
+      ],
+      "metadata": {
+        "/fhss3-pre-existing-bucket/scrapBucketLog/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketLog7B53B25C"
+          }
+        ],
+        "/fhss3-pre-existing-bucket/scrapBucketLog/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketLogPolicy2972C573"
+          }
+        ],
+        "/fhss3-pre-existing-bucket/scrapBucketLog/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketLogAutoDeleteObjectsCustomResource307F3D47"
+          }
+        ],
+        "/fhss3-pre-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/fhss3-pre-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/fhss3-pre-existing-bucket/scrapBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketB11863B7"
+          }
+        ],
+        "/fhss3-pre-existing-bucket/scrapBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketPolicy189B0607"
+          }
+        ],
+        "/fhss3-pre-existing-bucket/scrapBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275"
+          }
+        ],
+        "/fhss3-pre-existing-bucket/test-firehose-s3-pre-existing-bucket-stack/firehose-log-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testfirehoses3preexistingbucketstackfirehoseloggroupC6AF6572"
+          }
+        ],
+        "/fhss3-pre-existing-bucket/test-firehose-s3-pre-existing-bucket-stack/firehose-log-group/firehose-log-stream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testfirehoses3preexistingbucketstackfirehoseloggroupfirehoselogstreamDCA77A8C"
+          }
+        ],
+        "/fhss3-pre-existing-bucket/test-firehose-s3-pre-existing-bucket-stack/KinesisFirehoseRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testfirehoses3preexistingbucketstackKinesisFirehoseRole84325204"
+          }
+        ],
+        "/fhss3-pre-existing-bucket/test-firehose-s3-pre-existing-bucket-stack/KinesisFirehosePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testfirehoses3preexistingbucketstackKinesisFirehosePolicy1A30B0A8"
+          }
+        ],
+        "/fhss3-pre-existing-bucket/test-firehose-s3-pre-existing-bucket-stack/KinesisFirehose": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testfirehoses3preexistingbucketstackKinesisFirehoseCBFE01D6"
+          }
+        ],
+        "/fhss3-pre-existing-bucket/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/fhss3-pre-existing-bucket/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "fhss3-pre-existing-bucket"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

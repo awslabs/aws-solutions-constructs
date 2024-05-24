@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,13 +11,14 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as iot from '@aws-cdk/aws-iot';
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as iot from 'aws-cdk-lib/aws-iot';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import { IotToLambda } from '@aws-solutions-constructs/aws-iot-lambda';
 import { LambdaToDynamoDB } from '@aws-solutions-constructs/aws-lambda-dynamodb';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 import * as defaults from '@aws-solutions-constructs/core';
 
 /**
@@ -54,13 +55,34 @@ export interface IotToLambdaToDynamoDBProps {
    *
    * @default - Read/write access is given to the Lambda function if no value is specified.
    */
-  readonly tablePermissions?: string
+  readonly tablePermissions?: string,
+  /**
+   * Optional Name for the Lambda function environment variable set to the name of the DynamoDB table.
+   *
+   * @default - DDB_TABLE_NAME
+   */
+  readonly tableEnvironmentVariableName?: string;
+  /**
+   * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
+   */
+  readonly existingVpc?: ec2.IVpc;
+  /**
+   * Properties to override default properties if deployVpc is true
+   */
+  readonly vpcProps?: ec2.VpcProps;
+  /**
+   * Whether to deploy a new VPC
+   *
+   * @default - false
+   */
+  readonly deployVpc?: boolean;
 }
 
 export class IotToLambdaToDynamoDB extends Construct {
   public readonly iotTopicRule: iot.CfnTopicRule;
   public readonly lambdaFunction: lambda.Function;
   public readonly dynamoTable: dynamodb.Table;
+  public readonly vpc?: ec2.IVpc;
 
   /**
    * @summary Constructs a new instance of the IotToLambdaToDynamoDB class.
@@ -72,7 +94,6 @@ export class IotToLambdaToDynamoDB extends Construct {
    */
   constructor(scope: Construct, id: string, props: IotToLambdaToDynamoDBProps) {
     super(scope, id);
-    defaults.CheckProps(props);
 
     // Other permissions for constructs are accepted as arrays, turning tablePermissions into
     // an array to use the same validation function.
@@ -80,17 +101,26 @@ export class IotToLambdaToDynamoDB extends Construct {
       defaults.CheckListValues(['All', 'Read', 'ReadWrite', 'Write'], [props.tablePermissions], 'table permission');
     }
 
-    // Setup the IotToLambda
-    const iotToLambda = new IotToLambda(this, 'IotToLambda', props);
-    this.iotTopicRule = iotToLambda.iotTopicRule;
-    this.lambdaFunction = iotToLambda.lambdaFunction;
-
     // Setup the LambdaToDynamoDB
     const lambdaToDynamoDB = new LambdaToDynamoDB(this, 'LambdaToDynamoDB', {
       tablePermissions: props.tablePermissions,
-      existingLambdaObj: this.lambdaFunction,
-      dynamoTableProps: props.dynamoTableProps
+      existingLambdaObj: props.existingLambdaObj,
+      lambdaFunctionProps: props.lambdaFunctionProps,
+      dynamoTableProps: props.dynamoTableProps,
+      tableEnvironmentVariableName: props.tableEnvironmentVariableName,
+      existingVpc: props.existingVpc,
+      deployVpc: props.deployVpc,
+      vpcProps: props.vpcProps,
     });
     this.dynamoTable = lambdaToDynamoDB.dynamoTable;
+    this.vpc = lambdaToDynamoDB.vpc;
+
+    // Setup the IotToLambda
+    const iotToLambda = new IotToLambda(this, 'IotToLambda', {
+      existingLambdaObj: lambdaToDynamoDB.lambdaFunction,
+      iotTopicRuleProps: props.iotTopicRuleProps
+    });
+    this.iotTopicRule = iotToLambda.iotTopicRule;
+    this.lambdaFunction = iotToLambda.lambdaFunction;
   }
 }

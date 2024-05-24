@@ -1,0 +1,302 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "wafaps-partial-arguments": {
+        "id": "wafaps-partial-arguments",
+        "path": "wafaps-partial-arguments",
+        "children": {
+          "new-graphql-api": {
+            "id": "new-graphql-api",
+            "path": "wafaps-partial-arguments/new-graphql-api",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::AppSync::GraphQLApi",
+              "aws:cdk:cloudformation:props": {
+                "authenticationType": "API_KEY",
+                "name": "api"
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_appsync.CfnGraphQLApi",
+              "version": "2.118.0"
+            }
+          },
+          "test-wafwebacl-appsync": {
+            "id": "test-wafwebacl-appsync",
+            "path": "wafaps-partial-arguments/test-wafwebacl-appsync",
+            "children": {
+              "test-wafwebacl-appsync-WebACL": {
+                "id": "test-wafwebacl-appsync-WebACL",
+                "path": "wafaps-partial-arguments/test-wafwebacl-appsync/test-wafwebacl-appsync-WebACL",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::WAFv2::WebACL",
+                  "aws:cdk:cloudformation:props": {
+                    "defaultAction": {
+                      "allow": {}
+                    },
+                    "name": "test-name-appsync",
+                    "rules": [
+                      {
+                        "name": "AWS-AWSManagedRulesBotControlRuleSet",
+                        "priority": 0,
+                        "overrideAction": {
+                          "none": {}
+                        },
+                        "statement": {
+                          "managedRuleGroupStatement": {
+                            "name": "AWSManagedRulesBotControlRuleSet",
+                            "vendorName": "AWS"
+                          }
+                        },
+                        "visibilityConfig": {
+                          "cloudWatchMetricsEnabled": true,
+                          "metricName": "AWSManagedRulesBotControlRuleSet",
+                          "sampledRequestsEnabled": true
+                        }
+                      },
+                      {
+                        "name": "AWS-AWSManagedRulesKnownBadInputsRuleSet",
+                        "priority": 1,
+                        "overrideAction": {
+                          "none": {}
+                        },
+                        "statement": {
+                          "managedRuleGroupStatement": {
+                            "name": "AWSManagedRulesKnownBadInputsRuleSet",
+                            "vendorName": "AWS"
+                          }
+                        },
+                        "visibilityConfig": {
+                          "cloudWatchMetricsEnabled": true,
+                          "metricName": "AWSManagedRulesKnownBadInputsRuleSet",
+                          "sampledRequestsEnabled": true
+                        }
+                      },
+                      {
+                        "name": "AWS-AWSManagedRulesCommonRuleSet",
+                        "priority": 2,
+                        "overrideAction": {
+                          "none": {}
+                        },
+                        "statement": {
+                          "managedRuleGroupStatement": {
+                            "name": "AWSManagedRulesCommonRuleSet",
+                            "vendorName": "AWS"
+                          }
+                        },
+                        "visibilityConfig": {
+                          "cloudWatchMetricsEnabled": true,
+                          "metricName": "AWSManagedRulesCommonRuleSet",
+                          "sampledRequestsEnabled": true
+                        }
+                      },
+                      {
+                        "name": "AWS-AWSManagedRulesAnonymousIpList",
+                        "priority": 3,
+                        "overrideAction": {
+                          "none": {}
+                        },
+                        "statement": {
+                          "managedRuleGroupStatement": {
+                            "name": "AWSManagedRulesAnonymousIpList",
+                            "vendorName": "AWS"
+                          }
+                        },
+                        "visibilityConfig": {
+                          "cloudWatchMetricsEnabled": true,
+                          "metricName": "AWSManagedRulesAnonymousIpList",
+                          "sampledRequestsEnabled": true
+                        }
+                      },
+                      {
+                        "name": "AWS-AWSManagedRulesAmazonIpReputationList",
+                        "priority": 4,
+                        "overrideAction": {
+                          "none": {}
+                        },
+                        "statement": {
+                          "managedRuleGroupStatement": {
+                            "name": "AWSManagedRulesAmazonIpReputationList",
+                            "vendorName": "AWS"
+                          }
+                        },
+                        "visibilityConfig": {
+                          "cloudWatchMetricsEnabled": true,
+                          "metricName": "AWSManagedRulesAmazonIpReputationList",
+                          "sampledRequestsEnabled": true
+                        }
+                      },
+                      {
+                        "name": "AWS-AWSManagedRulesAdminProtectionRuleSet",
+                        "priority": 5,
+                        "overrideAction": {
+                          "none": {}
+                        },
+                        "statement": {
+                          "managedRuleGroupStatement": {
+                            "name": "AWSManagedRulesAdminProtectionRuleSet",
+                            "vendorName": "AWS"
+                          }
+                        },
+                        "visibilityConfig": {
+                          "cloudWatchMetricsEnabled": true,
+                          "metricName": "AWSManagedRulesAdminProtectionRuleSet",
+                          "sampledRequestsEnabled": true
+                        }
+                      },
+                      {
+                        "name": "AWS-AWSManagedRulesSQLiRuleSet",
+                        "priority": 6,
+                        "overrideAction": {
+                          "none": {}
+                        },
+                        "statement": {
+                          "managedRuleGroupStatement": {
+                            "name": "AWSManagedRulesSQLiRuleSet",
+                            "vendorName": "AWS"
+                          }
+                        },
+                        "visibilityConfig": {
+                          "cloudWatchMetricsEnabled": true,
+                          "metricName": "AWSManagedRulesSQLiRuleSet",
+                          "sampledRequestsEnabled": true
+                        }
+                      }
+                    ],
+                    "scope": "REGIONAL",
+                    "visibilityConfig": {
+                      "cloudWatchMetricsEnabled": true,
+                      "metricName": "webACL",
+                      "sampledRequestsEnabled": true
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_wafv2.CfnWebACL",
+                  "version": "2.118.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-solutions-constructs/aws-wafwebacl-appsync.WafwebaclToAppsync",
+              "version": "2.50.0"
+            }
+          },
+          "test-wafwebacl-appsync-WebACLAssociation": {
+            "id": "test-wafwebacl-appsync-WebACLAssociation",
+            "path": "wafaps-partial-arguments/test-wafwebacl-appsync-WebACLAssociation",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::WAFv2::WebACLAssociation",
+              "aws:cdk:cloudformation:props": {
+                "resourceArn": {
+                  "Fn::GetAtt": [
+                    "newgraphqlapi",
+                    "Arn"
+                  ]
+                },
+                "webAclArn": {
+                  "Fn::GetAtt": [
+                    "testwafwebaclappsynctestwafwebaclappsyncWebACLA64C38D0",
+                    "Arn"
+                  ]
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_wafv2.CfnWebACLAssociation",
+              "version": "2.118.0"
+            }
+          },
+          "Integ": {
+            "id": "Integ",
+            "path": "wafaps-partial-arguments/Integ",
+            "children": {
+              "DefaultTest": {
+                "id": "DefaultTest",
+                "path": "wafaps-partial-arguments/Integ/DefaultTest",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "wafaps-partial-arguments/Integ/DefaultTest/Default",
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.0.0"
+                    }
+                  },
+                  "DeployAssert": {
+                    "id": "DeployAssert",
+                    "path": "wafaps-partial-arguments/Integ/DefaultTest/DeployAssert",
+                    "children": {
+                      "BootstrapVersion": {
+                        "id": "BootstrapVersion",
+                        "path": "wafaps-partial-arguments/Integ/DefaultTest/DeployAssert/BootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnParameter",
+                          "version": "2.118.0"
+                        }
+                      },
+                      "CheckBootstrapVersion": {
+                        "id": "CheckBootstrapVersion",
+                        "path": "wafaps-partial-arguments/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnRule",
+                          "version": "2.118.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Stack",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
+                  "version": "2.118.0-alpha.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
+              "version": "2.118.0-alpha.0"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "wafaps-partial-arguments/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.118.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "wafaps-partial-arguments/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.118.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.118.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.0.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.118.0"
+    }
+  }
+}

@@ -1,0 +1,269 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "opilamapiFromAssetWithCognitoAuthIntegDefaultTestDeployAssert6E95D513.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "opilamapiFromAssetWithCognitoAuthIntegDefaultTestDeployAssert6E95D513.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "opilamapiFromAssetWithCognitoAuthIntegDefaultTestDeployAssert6E95D513": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "opilamapiFromAssetWithCognitoAuthIntegDefaultTestDeployAssert6E95D513.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "opilamapiFromAssetWithCognitoAuthIntegDefaultTestDeployAssert6E95D513.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "opilamapiFromAssetWithCognitoAuthIntegDefaultTestDeployAssert6E95D513.assets"
+      ],
+      "metadata": {
+        "/opilam-apiFromAssetWithCognitoAuth/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "opilam-apiFromAssetWithCognitoAuth/Integ/DefaultTest/DeployAssert"
+    },
+    "opilam-apiFromAssetWithCognitoAuth.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "opilam-apiFromAssetWithCognitoAuth.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "opilam-apiFromAssetWithCognitoAuth": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "opilam-apiFromAssetWithCognitoAuth.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/502a5977676cce02e8641f8e8803c6407be000d04a9fd8256d43993f3e073035.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "opilam-apiFromAssetWithCognitoAuth.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "opilam-apiFromAssetWithCognitoAuth.assets"
+      ],
+      "metadata": {
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/MessagesHandlerApiFunction0ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0ServiceRoleB5DC63A9"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/MessagesHandlerApiFunction0ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0ServiceRoleDefaultPolicy4563083B"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/MessagesHandlerApiFunction0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0E78C5307"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/MessagesHandlerApiFunction0/PermitAPIGInvocation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0PermitAPIGInvocationB70BC520"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/PhotosHandlerApiFunction1ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaPhotosHandlerApiFunction1ServiceRoleA572C749"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/PhotosHandlerApiFunction1ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaPhotosHandlerApiFunction1ServiceRoleDefaultPolicy389AA3BA"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/PhotosHandlerApiFunction1/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaPhotosHandlerApiFunction1C42C52E8"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/PhotosHandlerApiFunction1/PermitAPIGInvocation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaPhotosHandlerApiFunction1PermitAPIGInvocationA20E40FB"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaLambdaFunctionServiceRoleACE09A85"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaLambdaFunctionServiceRoleDefaultPolicy90DFA0A8"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaLambdaFunctionC7227471"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaApiTemplateWriterPolicy5B3085E5"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventServiceRoleFEE201A1"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventServiceRoleDefaultPolicyB630DBDA"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventEF37D730"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaApiTemplateWriterCustomResource957D1BA4"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiAccessLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaApiAccessLogGroupE21284EC"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/SpecRestApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaSpecRestApi27C18064"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/SpecRestApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775d25e717744ab7d508aee3a1c3b7aa9b2"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/SpecRestApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaSpecRestApiDeploymentStageprodB962CBBB"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/SpecRestApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaSpecRestApiEndpointD1FA5E3A"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/SpecRestApi/UsagePlan/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaSpecRestApiUsagePlan44F6F5C6"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/LambdaRestApiCloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaLambdaRestApiCloudWatchRoleBC7E6D95"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/LambdaRestApiAccount": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaLambdaRestApiAccount71EC7DA6"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ],
+        "OpenApiGatewayToLambdaApiTemplateWriterLambdaRoleCBDA4014": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaApiTemplateWriterLambdaRoleCBDA4014",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "OpenApiGatewayToLambdaApiTemplateWriterLambdaRoleDefaultPolicy5136571F": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaApiTemplateWriterLambdaRoleDefaultPolicy5136571F",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ]
+      },
+      "displayName": "opilam-apiFromAssetWithCognitoAuth"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

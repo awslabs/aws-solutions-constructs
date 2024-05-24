@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,9 +11,17 @@
  *  and limitations under the License.
  */
 
-import * as cdk from '@aws-cdk/core';
-import * as mediastore from '@aws-cdk/aws-mediastore';
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
 
+import * as cdk from 'aws-cdk-lib';
+import * as mediastore from 'aws-cdk-lib/aws-mediastore';
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function MediaStoreContainerProps(): mediastore.CfnContainerProps {
   return {
     containerName: cdk.Aws.STACK_NAME,

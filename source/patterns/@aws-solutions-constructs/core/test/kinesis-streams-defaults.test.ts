@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,11 +11,11 @@
  *  and limitations under the License.
  */
 
-import { Stack, Duration } from '@aws-cdk/core';
-import * as kinesis from '@aws-cdk/aws-kinesis';
+import { Stack, Duration } from 'aws-cdk-lib';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 test('test kinesisstream override RetentionPeriodHours', () => {
   const stack = new Stack();
@@ -30,7 +30,7 @@ test('test kinesisstream override RetentionPeriodHours', () => {
 
   new kinesis.Stream(stack, 'KinesisStream', outProps);
 
-  expect(stack).toHaveResource("AWS::Kinesis::Stream", {
+  Template.fromStack(stack).hasResourceProperties("AWS::Kinesis::Stream", {
     RetentionPeriodHours: 48
   });
 });

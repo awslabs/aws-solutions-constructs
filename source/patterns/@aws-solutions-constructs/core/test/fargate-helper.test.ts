@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,24 +12,28 @@
  */
 
 import * as defaults from "..";
-import { Stack } from '@aws-cdk/core';
+import { Stack } from 'aws-cdk-lib';
 import { CreateFargateService } from "..";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as ecs from "@aws-cdk/aws-ecs";
-import * as ecr from "@aws-cdk/aws-ecr";
-import '@aws-cdk/assert/jest';
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as ecs from "aws-cdk-lib/aws-ecs";
+import * as ecr from "aws-cdk-lib/aws-ecr";
+import { Template } from 'aws-cdk-lib/assertions';
+import { expectNonexistence } from './test-helper';
 
 test('Test with all defaults', () => {
   const stack = new Stack();
 
   const testVpc = defaults.getTestVpc(stack);
-  CreateFargateService(stack,
-    'test',
-    testVpc,
-    undefined,
-    defaults.fakeEcrRepoArn);
+  const createFargateServiceResponse = CreateFargateService(stack, 'test', {
+    constructVpc: testVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn
+  });
 
-  expect(stack).toHaveResource("AWS::ECS::Service", {
+  expect(createFargateServiceResponse.containerDefinition).toBeDefined();
+  expect(createFargateServiceResponse.service).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     Cluster: {
       Ref: "testclusterDF8B0D19"
     },
@@ -66,7 +70,7 @@ test('Test with all defaults', () => {
       Ref: "testtaskdefF924AD58"
     }
   });
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Image: {
@@ -84,15 +88,15 @@ test('Test with all defaults', () => {
       }
     ],
   });
-  expect(stack).toHaveResourceLike("AWS::EC2::SecurityGroup", {
+  template.hasResourceProperties("AWS::EC2::SecurityGroup", {
     GroupDescription: 'Construct created security group'
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPCEndpoint", 3);
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.resourceCountIs("AWS::EC2::VPCEndpoint", 3);
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Gateway",
   });
 
@@ -102,13 +106,13 @@ test('Test with all defaults in isolated VPC', () => {
   const stack = new Stack();
 
   const testVpc = CreateIsolatedTestVpc(stack);
-  CreateFargateService(stack,
-    'test',
-    testVpc,
-    undefined,
-    defaults.fakeEcrRepoArn);
+  CreateFargateService(stack, 'test', {
+    constructVpc: testVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn
+  });
 
-  expect(stack).toHaveResource("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     Cluster: {
       Ref: "testclusterDF8B0D19"
     },
@@ -145,7 +149,7 @@ test('Test with all defaults in isolated VPC', () => {
       Ref: "testtaskdefF924AD58"
     }
   });
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Image: {
@@ -164,11 +168,11 @@ test('Test with all defaults in isolated VPC', () => {
     ],
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPCEndpoint", 3);
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.resourceCountIs("AWS::EC2::VPCEndpoint", 3);
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Gateway",
   });
 
@@ -178,19 +182,14 @@ test('Test with custom task definition', () => {
   const stack = new Stack();
 
   const testVpc = CreateIsolatedTestVpc(stack);
-  CreateFargateService(stack,
-    'test',
-    testVpc,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    {
+  CreateFargateService(stack, 'test', {
+    constructVpc: testVpc,
+    clientContainerDefinitionProps: {
       image: CreateImage(stack)
     }
-  );
+  });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  Template.fromStack(stack).hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Image: {
@@ -214,16 +213,16 @@ test('Test with custom container definition', () => {
   const stack = new Stack();
 
   const testVpc = CreateIsolatedTestVpc(stack);
-  CreateFargateService(stack,
-    'test',
-    testVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    { cpu: 256, memoryLimitMiB: 512  }
-  );
+  CreateFargateService(stack, 'test', {
+    constructVpc: testVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateTaskDefinitionProps: {
+      cpu: 256,
+      memoryLimitMiB: 512
+    }
+  });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  Template.fromStack(stack).hasResourceProperties("AWS::ECS::TaskDefinition", {
     Cpu: '256',
     Memory: '512'
   });
@@ -234,15 +233,15 @@ test('Test with custom cluster props', () => {
   const clusterName = 'test-value';
 
   const testVpc = CreateIsolatedTestVpc(stack);
-  CreateFargateService(stack,
-    'test',
-    testVpc,
-    { clusterName },
-    defaults.fakeEcrRepoArn,
-    undefined,
-  );
+  CreateFargateService(stack, 'test', {
+    constructVpc: testVpc,
+    clientClusterProps: {
+      clusterName
+    },
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+  });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Cluster", {
+  Template.fromStack(stack).hasResourceProperties("AWS::ECS::Cluster", {
     ClusterName: clusterName,
   });
 });
@@ -252,18 +251,15 @@ test('Test with custom Fargate Service props', () => {
   const serviceName = 'test-value';
 
   const testVpc = CreateIsolatedTestVpc(stack);
-  CreateFargateService(stack,
-    'test',
-    testVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName  }
-  );
+  CreateFargateService(stack, 'test', {
+    constructVpc: testVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  Template.fromStack(stack).hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName,
   });
 });
@@ -281,21 +277,17 @@ test('Test with custom security group', () => {
     description: groupDescription
   });
 
-  CreateFargateService(stack,
-    'test',
-    testVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { securityGroups: [ customSg ]  }
-  );
+  CreateFargateService(stack, 'test', {
+    constructVpc: testVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: { securityGroups: [ customSg ]  }
+  });
 
-  expect(stack).toHaveResource("AWS::EC2::SecurityGroup", {
+  Template.fromStack(stack).hasResourceProperties("AWS::EC2::SecurityGroup", {
     GroupDescription: groupDescription,
   });
-  expect(stack).not.toHaveResource("AWS::EC2::SecurityGroup", {
+
+  expectNonexistence(stack, "AWS::EC2::SecurityGroup", {
     GroupDescription: 'Construct created security group',
   });
 });
@@ -305,9 +297,9 @@ test('Test no image repo or image is an error', () => {
 
   const testVpc = CreateIsolatedTestVpc(stack);
   const app = () => {
-    CreateFargateService(stack,
-      'test',
-      testVpc);
+    CreateFargateService(stack, 'test', {
+      constructVpc: testVpc
+    });
   };
 
   expect(app).toThrowError(
@@ -351,7 +343,7 @@ test('Check providing vpc in the targetGroupsProps is an error', () => {
     defaults.CheckFargateProps(props);
   };
 
-  expect(app).toThrowError("Provide all VPC info at Construct level, not within targetGroupProps\n");
+  expect(app).toThrowError("Provide all VPC info at Construct level, not within clusterProps nor targetGroupProps\n");
 });
 
 test('Check providing taskDefinition in the fargateServiceProps is an error', () => {
@@ -388,7 +380,7 @@ test('Check providing vpc in clusterProps is an error', () => {
     defaults.CheckFargateProps(props);
   };
 
-  expect(app).toThrowError("All services in the construct use the construct VPC, you cannot specify a VPC in clusterProps\n");
+  expect(app).toThrowError("Provide all VPC info at Construct level, not within clusterProps nor targetGroupProps\n");
 });
 
 test('Check providing existing service without existing container and existing VPC is an error', () => {

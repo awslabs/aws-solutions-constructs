@@ -1,0 +1,233 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "lamopnnoargumentsIntegDefaultTestDeployAssert4290A592.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamopnnoargumentsIntegDefaultTestDeployAssert4290A592.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamopnnoargumentsIntegDefaultTestDeployAssert4290A592": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamopnnoargumentsIntegDefaultTestDeployAssert4290A592.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamopnnoargumentsIntegDefaultTestDeployAssert4290A592.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamopnnoargumentsIntegDefaultTestDeployAssert4290A592.assets"
+      ],
+      "metadata": {
+        "/lamopn-no-arguments/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamopn-no-arguments/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamopn-no-arguments/Integ/DefaultTest/DeployAssert"
+    },
+    "lamopn-no-arguments.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamopn-no-arguments.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamopn-no-arguments": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamopn-no-arguments.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/2235d70f906e02fb16b8671977edfcd6540291e1871151e800e5c29d95831eea.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamopn-no-arguments.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamopn-no-arguments.assets"
+      ],
+      "metadata": {
+        "/lamopn-no-arguments/test-lambda-opensearch/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchLambdaFunctionServiceRole4722AB8A"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchLambdaFunctionServiceRoleDefaultPolicy78C56359"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchLambdaFunction93FD38F7"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/CognitoUserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchCognitoUserPoolA09096F9"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/CognitoUserPoolClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchCognitoUserPoolClient39C21D94"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/CognitoIdentityPool": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchCognitoIdentityPool0B1FB311"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/UserPoolDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchUserPoolDomain98864920"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/CognitoAuthorizedRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchCognitoAuthorizedRole58A1ED44"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/IdentityPoolRoleMapping": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchIdentityPoolRoleMappingD8C765B1"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/CognitoDashboardConfigureRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchCognitoDashboardConfigureRole1F2B7B7A"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/CognitoDashboardConfigureRolePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchCognitoDashboardConfigureRolePolicyC9C6A6A2"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/OpenSearchDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchOpenSearchDomainF9CCC3D3"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/StatusRedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchStatusRedAlarm1627144D"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/StatusYellowAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchStatusYellowAlarm57139CF0"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/FreeStorageSpaceTooLowAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchFreeStorageSpaceTooLowAlarm6A5E1E96"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/IndexWritesBlockedTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchIndexWritesBlockedTooHighAlarmD2E041A3"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/AutomatedSnapshotFailureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchAutomatedSnapshotFailureTooHighAlarm9A4D0B1F"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/CPUUtilizationTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchCPUUtilizationTooHighAlarmC4850758"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/JVMMemoryPressureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchJVMMemoryPressureTooHighAlarmEFB09A7C"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/MasterCPUUtilizationTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchMasterCPUUtilizationTooHighAlarm124D5748"
+          }
+        ],
+        "/lamopn-no-arguments/test-lambda-opensearch/MasterJVMMemoryPressureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchMasterJVMMemoryPressureTooHighAlarmBC9524D3"
+          }
+        ],
+        "/lamopn-no-arguments/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamopn-no-arguments/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamopn-no-arguments"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

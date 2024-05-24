@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,19 +11,19 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
-import * as iam from '@aws-cdk/aws-iam';
-import { DynamoEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as elasticsearch from 'aws-cdk-lib/aws-elasticsearch';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import { DynamoEventSourceProps } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { DynamoDBStreamsToLambdaProps, DynamoDBStreamsToLambda } from '@aws-solutions-constructs/aws-dynamodbstreams-lambda';
 import { LambdaToElasticSearchAndKibanaProps, LambdaToElasticSearchAndKibana } from '@aws-solutions-constructs/aws-lambda-elasticsearch-kibana';
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
-import * as cognito from '@aws-cdk/aws-cognito';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as defaults from '@aws-solutions-constructs/core';
+import { Construct } from 'constructs';
 
 /**
  * @summary The properties for the DynamoDBStreamsToLambdaToElastciSearchAndKibana Construct
@@ -96,10 +96,28 @@ export interface DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps {
    * @default - Alarms are created
    */
   readonly createCloudWatchAlarms?: boolean
+  /**
+   * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
+   *
+   * @default - None
+   */
+  readonly existingVpc?: ec2.IVpc;
+  /**
+   * Properties to override default properties if deployVpc is true
+   *
+   * @default - DefaultIsolatedVpcProps() in vpc-defaults.ts
+   */
+  readonly vpcProps?: ec2.VpcProps;
+  /**
+   * Whether to deploy a new VPC
+   *
+   * @default - false
+   */
+  readonly deployVpc?: boolean;
 }
 
 export class DynamoDBStreamsToLambdaToElasticSearchAndKibana extends Construct {
-  private DynamoDBStreamsToLambda: DynamoDBStreamsToLambda;
+  private dynamoDBStreamsToLambda: DynamoDBStreamsToLambda;
   private lambdaToElasticSearchAndKibana: LambdaToElasticSearchAndKibana;
   public readonly lambdaFunction: lambda.Function;
   public readonly dynamoTableInterface: dynamodb.ITable;
@@ -110,6 +128,7 @@ export class DynamoDBStreamsToLambdaToElasticSearchAndKibana extends Construct {
   public readonly elasticsearchDomain: elasticsearch.CfnDomain;
   public readonly elasticsearchRole: iam.Role;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
+  public readonly vpc?: ec2.IVpc;
 
   /**
    * @summary Constructs a new instance of the LambdaToDynamoDB class.
@@ -120,39 +139,43 @@ export class DynamoDBStreamsToLambdaToElasticSearchAndKibana extends Construct {
    */
   constructor(scope: Construct, id: string, props: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    // CheckLambdaProps() is called by aws-lambda-elasticsearch
 
-    const _props1: DynamoDBStreamsToLambdaProps = {
+    const lambdaToElasticSearchProps: LambdaToElasticSearchAndKibanaProps = {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps,
+      domainName: props.domainName,
+      esDomainProps: props.esDomainProps,
+      cognitoDomainName: props.cognitoDomainName,
+      createCloudWatchAlarms: props.createCloudWatchAlarms,
+      existingVpc: props.existingVpc,
+      vpcProps: props.vpcProps,
+      deployVpc: props.deployVpc
+    };
+
+    this.lambdaToElasticSearchAndKibana = new LambdaToElasticSearchAndKibana(this, 'LambdaToElasticSearch', lambdaToElasticSearchProps);
+
+    this.lambdaFunction = this.lambdaToElasticSearchAndKibana.lambdaFunction;
+
+    const dbstreamsToLambdaProps: DynamoDBStreamsToLambdaProps = {
+      existingLambdaObj: this.lambdaFunction,
       dynamoEventSourceProps: props.dynamoEventSourceProps,
       dynamoTableProps: props.dynamoTableProps,
       existingTableInterface: props.existingTableInterface,
       deploySqsDlqQueue: props.deploySqsDlqQueue,
-      sqsDlqQueueProps: props.sqsDlqQueueProps
+      sqsDlqQueueProps: props.sqsDlqQueueProps,
     };
 
-    this.DynamoDBStreamsToLambda = new DynamoDBStreamsToLambda(this, 'DynamoDBStreamsToLambda', _props1);
+    this.dynamoDBStreamsToLambda = new DynamoDBStreamsToLambda(this, 'DynamoDBStreamsToLambda', dbstreamsToLambdaProps);
 
-    this.lambdaFunction = this.DynamoDBStreamsToLambda.lambdaFunction;
-
-    const _props2: LambdaToElasticSearchAndKibanaProps = {
-      existingLambdaObj: this.lambdaFunction,
-      domainName: props.domainName,
-      esDomainProps: props.esDomainProps,
-      cognitoDomainName: props.cognitoDomainName,
-      createCloudWatchAlarms: props.createCloudWatchAlarms
-    };
-
-    this.lambdaToElasticSearchAndKibana = new LambdaToElasticSearchAndKibana(this, 'LambdaToElasticSearch', _props2);
-
-    this.dynamoTable = this.DynamoDBStreamsToLambda.dynamoTable;
-    this.dynamoTableInterface = this.DynamoDBStreamsToLambda.dynamoTableInterface;
+    this.dynamoTable = this.dynamoDBStreamsToLambda.dynamoTable;
+    this.dynamoTableInterface = this.dynamoDBStreamsToLambda.dynamoTableInterface;
     this.userPool = this.lambdaToElasticSearchAndKibana.userPool;
     this.userPoolClient = this.lambdaToElasticSearchAndKibana.userPoolClient;
     this.identityPool = this.lambdaToElasticSearchAndKibana.identityPool;
     this.elasticsearchDomain = this.lambdaToElasticSearchAndKibana.elasticsearchDomain;
     this.elasticsearchRole = this.lambdaToElasticSearchAndKibana.elasticsearchRole;
     this.cloudwatchAlarms = this.lambdaToElasticSearchAndKibana.cloudwatchAlarms;
+    this.vpc = this.lambdaToElasticSearchAndKibana.vpc;
   }
 }

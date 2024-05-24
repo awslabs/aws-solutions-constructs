@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,8 +11,13 @@
  *  and limitations under the License.
  */
 
-import * as sagemaker from '@aws-cdk/aws-sagemaker';
-import * as ec2 from '@aws-cdk/aws-ec2';
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
+import * as sagemaker from 'aws-cdk-lib/aws-sagemaker';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { buildEncryptionKey } from './kms-helper';
 import {
   DefaultSagemakerNotebookProps,
@@ -20,15 +25,15 @@ import {
   DefaultSagemakerEndpointConfigProps,
   DefaultSagemakerEndpointProps,
 } from './sagemaker-defaults';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
 import { addCfnSuppressRules, consolidateProps } from './utils';
 import { buildVpc } from './vpc-helper';
-import * as iam from '@aws-cdk/aws-iam';
-import { Aws } from '@aws-cdk/core';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import { Aws } from 'aws-cdk-lib';
 import { DefaultPublicPrivateVpcProps } from './vpc-defaults';
 import { buildSecurityGroup } from './security-group-helper';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 export interface BuildSagemakerNotebookProps {
   /**
@@ -58,9 +63,9 @@ export interface BuildSagemakerNotebookProps {
   readonly role: iam.Role;
 }
 
-function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
+function addPermissions(role: iam.Role, props?: BuildSagemakerEndpointProps) {
   // Grant permissions to NoteBookInstance for creating and training the model
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       resources: [`arn:${Aws.PARTITION}:sagemaker:${Aws.REGION}:${Aws.ACCOUNT_ID}:*`],
       actions: [
@@ -81,7 +86,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   );
 
   // Grant CloudWatch Logging permissions
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:/aws/sagemaker/*`],
       actions: [
@@ -96,7 +101,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
 
   // To place the Sagemaker endpoint in a VPC
   if (props && props.vpc) {
-    _role.addToPolicy(
+    role.addToPolicy(
       new iam.PolicyStatement({
         resources: ['*'],
         actions: [
@@ -116,9 +121,9 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
     );
   }
 
-  // To create a Sagemaker model using Bring-Your-Own-Model (BYOM) algorith image
+  // To create a Sagemaker model using Bring-Your-Own-Model (BYOM) algorithm image
   // The image URL is specified in the modelProps
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       resources: [`arn:${cdk.Aws.PARTITION}:ecr:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:repository/*`],
       actions: [
@@ -132,7 +137,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   );
 
   // Add GetAuthorizationToken (it can not be bound to resources other than *)
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       resources: ['*'],
       actions: ['ecr:GetAuthorizationToken'],
@@ -145,7 +150,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
     const acceleratorType = (props.endpointConfigProps
       ?.productionVariants as sagemaker.CfnEndpointConfig.ProductionVariantProperty[])[0].acceleratorType;
     if (acceleratorType !== undefined) {
-      _role.addToPolicy(
+      role.addToPolicy(
         new iam.PolicyStatement({
           resources: ['*'],
           actions: ['elastic-inference:Connect'],
@@ -155,7 +160,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   }
 
   // add kms permissions
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       // the kmsKeyId in the endpointConfigProps can be any of the following formats:
       // Key ID: 1234abcd-12ab-34cd-56ef-1234567890ab
@@ -172,7 +177,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   );
 
   // Add S3 permissions to get Model artifact, put data capture files, etc.
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
       actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject', 's3:ListBucket'],
       resources: ['arn:aws:s3:::*'],
@@ -180,17 +185,17 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   );
 
   // Grant GetRole permissions to the Sagemaker service
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
-      resources: [_role.roleArn],
+      resources: [role.roleArn],
       actions: ['iam:GetRole'],
     })
   );
 
   // Grant PassRole permissions to the Sagemaker service
-  _role.addToPolicy(
+  role.addToPolicy(
     new iam.PolicyStatement({
-      resources: [_role.roleArn],
+      resources: [role.roleArn],
       actions: ['iam:PassRole'],
       conditions: {
         StringLike: { 'iam:PassedToService': 'sagemaker.amazonaws.com' },
@@ -201,7 +206,7 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   // Add CFN NAG uppress to allow for "Resource": "*" for ENI access in VPC,
   // ECR authorization token for custom model images, and elastic inference
   // Add CFN NAG for Complex Role because Sagmaker needs permissions to access several services
-  const roleDefaultPolicy = _role.node.tryFindChild('DefaultPolicy')?.node.findChild('Resource') as iam.CfnPolicy;
+  const roleDefaultPolicy = role.node.tryFindChild('DefaultPolicy')?.node.findChild('Resource') as iam.CfnPolicy;
   addCfnSuppressRules(roleDefaultPolicy, [
     {
       id: 'W12',
@@ -214,10 +219,20 @@ function addPermissions(_role: iam.Role, props?: BuildSagemakerEndpointProps) {
   ]);
 }
 
+export interface BuildSagemakerNotebookResponse {
+  readonly notebook: sagemaker.CfnNotebookInstance,
+  readonly vpc?: ec2.IVpc,
+  readonly securityGroup?: ec2.SecurityGroup
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildSagemakerNotebook(
   scope: Construct,
+  id: string,
   props: BuildSagemakerNotebookProps
-): [sagemaker.CfnNotebookInstance, ec2.IVpc?, ec2.SecurityGroup?] {
+): BuildSagemakerNotebookResponse {
   // Setup the notebook properties
   let sagemakerNotebookProps;
   let vpcInstance;
@@ -226,80 +241,92 @@ export function buildSagemakerNotebook(
   let subnetId: string;
 
   // Conditional Sagemaker Notebook creation
-  if (!props.existingNotebookObj) {
+  if (props.existingNotebookObj) {
+    return { notebook: props.existingNotebookObj };
+  }
+
+  if (CheckNotebookVpcProps(props)) {
+    throw new Error('Must define both sagemakerNotebookProps.subnetId and sagemakerNotebookProps.securityGroupIds');
+  }
+
+  addPermissions(props.role);
+
+  if (props.sagemakerNotebookProps?.kmsKeyId === undefined) {
+    kmsKeyId = buildEncryptionKey(scope,  id).keyId;
+  } else {
+    kmsKeyId = props.sagemakerNotebookProps.kmsKeyId;
+  }
+
+  if (props.deployInsideVpc === undefined || props.deployInsideVpc) {
     if (
-      (props.sagemakerNotebookProps?.subnetId && props.sagemakerNotebookProps?.securityGroupIds === undefined) ||
-      (props.sagemakerNotebookProps?.subnetId === undefined && props.sagemakerNotebookProps?.securityGroupIds)
+      props.sagemakerNotebookProps?.subnetId === undefined &&
+      props.sagemakerNotebookProps?.securityGroupIds === undefined
     ) {
-      throw new Error('Must define both sagemakerNotebookProps.subnetId and sagemakerNotebookProps.securityGroupIds');
-    }
+      vpcInstance = buildVpc(scope, {
+        defaultVpcProps: DefaultPublicPrivateVpcProps(),
+      });
+      securityGroup = buildSecurityGroup(
+        scope,
+        'SecurityGroup',
+        {
+          vpc: vpcInstance,
+          allowAllOutbound: false,
+        },
+        [],
+        [{ peer: ec2.Peer.anyIpv4(), connection: ec2.Port.tcp(443) }]
+      );
 
-    addPermissions(props.role);
+      subnetId = vpcInstance.privateSubnets[0].subnetId;
 
-    if (props.sagemakerNotebookProps?.kmsKeyId === undefined) {
-      kmsKeyId = buildEncryptionKey(scope).keyId;
+      sagemakerNotebookProps = DefaultSagemakerNotebookProps(props.role.roleArn, kmsKeyId, subnetId, [
+        securityGroup.securityGroupId,
+      ]);
     } else {
-      kmsKeyId = props.sagemakerNotebookProps.kmsKeyId;
-    }
-
-    if (props.deployInsideVpc === undefined || props.deployInsideVpc) {
-      if (
-        props.sagemakerNotebookProps?.subnetId === undefined &&
-        props.sagemakerNotebookProps?.securityGroupIds === undefined
-      ) {
-        vpcInstance = buildVpc(scope, {
-          defaultVpcProps: DefaultPublicPrivateVpcProps(),
-        });
-        securityGroup = buildSecurityGroup(
-          scope,
-          'SecurityGroup',
-          {
-            vpc: vpcInstance,
-            allowAllOutbound: false,
-          },
-          [],
-          [{ peer: ec2.Peer.anyIpv4(), connection: ec2.Port.tcp(443) }]
-        );
-
-        subnetId = vpcInstance.privateSubnets[0].subnetId;
-
-        sagemakerNotebookProps = DefaultSagemakerNotebookProps(props.role.roleArn, kmsKeyId, subnetId, [
-          securityGroup.securityGroupId,
-        ]);
-      } else {
-        sagemakerNotebookProps = DefaultSagemakerNotebookProps(
-          props.role.roleArn,
-          kmsKeyId,
-          props.sagemakerNotebookProps?.subnetId,
-          props.sagemakerNotebookProps?.securityGroupIds
-        );
-      }
-    } else {
-      sagemakerNotebookProps = DefaultSagemakerNotebookProps(props.role.roleArn, kmsKeyId);
-    }
-
-    sagemakerNotebookProps = consolidateProps(sagemakerNotebookProps, props.sagemakerNotebookProps);
-
-    // Create the notebook
-    const sagemakerInstance: sagemaker.CfnNotebookInstance = new sagemaker.CfnNotebookInstance(
-      scope,
-      'SagemakerNotebook',
-      sagemakerNotebookProps
-    );
-    if (vpcInstance) {
-      return [sagemakerInstance, vpcInstance, securityGroup];
-    } else {
-      return [sagemakerInstance];
+      sagemakerNotebookProps = DefaultSagemakerNotebookProps(
+        props.role.roleArn,
+        kmsKeyId,
+        props.sagemakerNotebookProps?.subnetId,
+        props.sagemakerNotebookProps?.securityGroupIds
+      );
     }
   } else {
-    // Return existing notebook object
-    return [props.existingNotebookObj];
+    sagemakerNotebookProps = DefaultSagemakerNotebookProps(props.role.roleArn, kmsKeyId);
   }
+
+  sagemakerNotebookProps = consolidateProps(sagemakerNotebookProps, props.sagemakerNotebookProps);
+
+  // Create the notebook
+  // NOSONAR: (typescript:S6319)
+  // keyID is created above in the if (props.sagemakerNotebookProps?.kmsKeyId === undefined)
+  // block. It is then passed to DefaultSagemakerNotebookProps()
+  // This behavior is validated in unit test
+  const sagemakerInstance: sagemaker.CfnNotebookInstance = new sagemaker.CfnNotebookInstance(
+    scope,
+    'SagemakerNotebook',
+    sagemakerNotebookProps // NOSONAR
+  );
+  if (vpcInstance) {
+    return { notebook: sagemakerInstance, vpc: vpcInstance, securityGroup };
+  } else {
+    return { notebook: sagemakerInstance };
+  }
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+function CheckNotebookVpcProps(props: BuildSagemakerNotebookProps): boolean {
+  if ((props.sagemakerNotebookProps?.subnetId && props.sagemakerNotebookProps?.securityGroupIds === undefined) ||
+    (props.sagemakerNotebookProps?.subnetId === undefined && props.sagemakerNotebookProps?.securityGroupIds)
+  ) {
+    return true;
+  }
+  return false;
 }
 
 export interface BuildSagemakerEndpointProps {
   /**
-   * Existing Sagemaker Enpoint object, if this is set then the modelProps, endpointConfigProps, and endpointProps are ignored
+   * Existing Sagemaker Endpoint object, if this is set then the modelProps, endpointConfigProps, and endpointProps are ignored
    *
    * @default - None
    */
@@ -330,28 +357,48 @@ export interface BuildSagemakerEndpointProps {
   readonly vpc?: ec2.IVpc;
 }
 
+export interface BuildSagemakerEndpointResponse {
+  readonly endpoint: sagemaker.CfnEndpoint,
+  readonly endpointConfig?: sagemaker.CfnEndpointConfig,
+  readonly model?: sagemaker.CfnModel
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function BuildSagemakerEndpoint(
   scope: Construct,
+  id: string,
   props: BuildSagemakerEndpointProps
-): [sagemaker.CfnEndpoint, sagemaker.CfnEndpointConfig?, sagemaker.CfnModel?] {
+): BuildSagemakerEndpointResponse {
   /** Conditional Sagemaker endpoint creation */
   if (!props.existingSagemakerEndpointObj) {
     if (props.modelProps) {
-      /** return [endpoint, endpointConfig, model] */
-      return deploySagemakerEndpoint(scope, props);
+      const deploySagemakerEndpointResponse = deploySagemakerEndpoint(scope, id, props);
+      return { ...deploySagemakerEndpointResponse };
     } else {
       throw Error('Either existingSagemakerEndpointObj or at least modelProps is required');
     }
   } else {
     /** Otherwise, return [endpoint] */
-    return [props.existingSagemakerEndpointObj];
+    return { endpoint: props.existingSagemakerEndpointObj };
   }
 }
 
+export interface DeploySagemakerEndpointResponse {
+  readonly endpoint: sagemaker.CfnEndpoint,
+  readonly endpointConfig?: sagemaker.CfnEndpointConfig,
+  readonly model?: sagemaker.CfnModel
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function deploySagemakerEndpoint(
   scope: Construct,
+  id: string,
   props: BuildSagemakerEndpointProps
-): [sagemaker.CfnEndpoint, sagemaker.CfnEndpointConfig?, sagemaker.CfnModel?] {
+): DeploySagemakerEndpointResponse {
   let model: sagemaker.CfnModel;
   let endpointConfig: sagemaker.CfnEndpointConfig;
   let endpoint: sagemaker.CfnEndpoint;
@@ -378,20 +425,23 @@ export function deploySagemakerEndpoint(
     // Create Sagemaker Model
     model = createSagemakerModel(scope, props.modelProps, sagemakerRole, props.vpc);
     // Create Sagemaker EndpointConfig
-    endpointConfig = createSagemakerEndpointConfig(scope, model.attrModelName, props.endpointConfigProps);
+    endpointConfig = createSagemakerEndpointConfig(scope, `${id}`, model.attrModelName, props.endpointConfigProps);
     // Add dependency on model
-    endpointConfig.addDependsOn(model);
+    endpointConfig.addDependency(model);
     // Create Sagemaker Endpoint
     endpoint = createSagemakerEndpoint(scope, endpointConfig.attrEndpointConfigName, props.endpointProps);
     // Add dependency on EndpointConfig
-    endpoint.addDependsOn(endpointConfig);
+    endpoint.addDependency(endpointConfig);
 
-    return [endpoint, endpointConfig, model];
+    return { endpoint, endpointConfig, model };
   } else {
     throw Error('You need to provide at least modelProps to create Sagemaker Endpoint');
   }
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function createSagemakerModel(
   scope: Construct,
   modelProps: sagemaker.CfnModelProps,
@@ -456,8 +506,12 @@ export function createSagemakerModel(
   }
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function createSagemakerEndpointConfig(
   scope: Construct,
+  id: string,
   modelName: string,
   endpointConfigProps?: sagemaker.CfnEndpointConfigProps
 ): sagemaker.CfnEndpointConfig {
@@ -469,7 +523,7 @@ export function createSagemakerEndpointConfig(
   if (endpointConfigProps && endpointConfigProps.kmsKeyId) {
     kmsKeyId = endpointConfigProps.kmsKeyId;
   } else {
-    kmsKeyId = buildEncryptionKey(scope).keyId;
+    kmsKeyId = buildEncryptionKey(scope, id).keyId;
   }
 
   // Overwrite default EndpointConfig properties
@@ -481,6 +535,9 @@ export function createSagemakerEndpointConfig(
   return endpointConfig;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function createSagemakerEndpoint(
   scope: Construct,
   endpointConfigName: string,
@@ -496,4 +553,23 @@ export function createSagemakerEndpoint(
   endpoint = new sagemaker.CfnEndpoint(scope, 'SagemakerEndpoint', finalEndpointProps);
 
   return endpoint;
+}
+
+export interface SagemakerProps {
+  readonly existingSagemakerEndpointObj?: sagemaker.CfnEndpoint,
+  readonly endpointProps?: sagemaker.CfnEndpointProps,
+}
+
+export function CheckSagemakerProps(propsObject: SagemakerProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingSagemakerEndpointObj && propsObject.endpointProps) {
+    errorMessages += 'Error - Either provide endpointProps or existingSagemakerEndpointObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }

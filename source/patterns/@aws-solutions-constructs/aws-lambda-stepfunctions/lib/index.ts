@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,14 +12,14 @@
  */
 
 // Imports
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as sfn from '@aws-cdk/aws-stepfunctions';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as logs from '@aws-cdk/aws-logs';
+import { Construct } from 'constructs';
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as logs from 'aws-cdk-lib/aws-logs';
 
 /**
  * @summary Properties for the LambdaToStepfunctions class.
@@ -97,13 +97,11 @@ export class LambdaToStepfunctions extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToStepfunctionsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckVpcProps(props);
+    defaults.CheckLambdaProps(props);
 
     // Setup vpc
     if (props.deployVpc || props.existingVpc) {
-      if (props.deployVpc && props.existingVpc) {
-        throw new Error("More than 1 VPC specified in the properties");
-      }
 
       this.vpc = defaults.buildVpc(scope, {
         defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
@@ -119,8 +117,10 @@ export class LambdaToStepfunctions extends Construct {
     }
 
     // Setup the state machine
-    [this.stateMachine, this.stateMachineLogGroup] = defaults.buildStateMachine(this, props.stateMachineProps,
+    const buildStateMachineResponse = defaults.buildStateMachine(this, props.stateMachineProps,
       props.logGroupProps);
+    this.stateMachine = buildStateMachineResponse.stateMachine;
+    this.stateMachineLogGroup = buildStateMachineResponse.logGroup;
 
     // Setup the Lambda function
     this.lambdaFunction = defaults.buildLambdaFunction(this, {

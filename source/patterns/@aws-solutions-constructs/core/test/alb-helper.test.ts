@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,13 +11,13 @@
  *  and limitations under the License.
  */
 
-import { Stack } from '@aws-cdk/core';
-import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
-import * as lambda from "@aws-cdk/aws-lambda";
+import { Stack } from 'aws-cdk-lib';
+import * as elb from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as defaults from '../index';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as ecs from '@aws-cdk/aws-ecs';
-import '@aws-cdk/assert/jest';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import { Template } from 'aws-cdk-lib/assertions';
 
 test('Test ObtainAlb with existing ALB', () => {
   const stack = new Stack();
@@ -32,8 +32,15 @@ test('Test ObtainAlb with existing ALB', () => {
     loadBalancerName: 'unique-name'
   });
 
-  defaults.ObtainAlb(stack, 'test', vpc, true, existingLoadBalancer);
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  defaults.ObtainAlb(stack, 'test', {
+    vpc,
+    publicApi: true,
+    existingLoadBalancerObj: existingLoadBalancer
+  });
+
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Name: "unique-name",
   });
 });
@@ -47,12 +54,19 @@ test('Test ObtainAlb for new ALB with provided props', () => {
     defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
   });
 
-  defaults.ObtainAlb(stack, 'test', vpc, true, undefined, {
-    loadBalancerName: 'new-loadbalancer',
+  defaults.ObtainAlb(stack, 'test', {
     vpc,
-    internetFacing: true
+    publicApi: true,
+    loadBalancerProps: {
+      loadBalancerName: 'new-loadbalancer',
+      vpc,
+      internetFacing: true
+    }
   });
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Name: "new-loadbalancer",
     Scheme: "internet-facing",
   });
@@ -67,8 +81,14 @@ test('Test ObtainAlb for new ALB with default props', () => {
     defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
   });
 
-  defaults.ObtainAlb(stack, 'test', vpc, false);
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  defaults.ObtainAlb(stack, 'test', {
+    vpc,
+    publicApi: false
+  });
+
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Scheme: "internal",
   });
 });
@@ -86,8 +106,18 @@ test('Test with custom logging bucket props', () => {
 
   const testName = 'test-name';
 
-  defaults.ObtainAlb(stack, 'test', vpc, false, undefined, undefined, true, { bucketName: testName });
-  expect(stack).toHaveResourceLike('AWS::S3::Bucket', {
+  defaults.ObtainAlb(stack, 'test', {
+    vpc,
+    publicApi: false,
+    logAccessLogs: true,
+    loggingBucketProps: {
+      bucketName: testName
+    }
+  });
+
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::S3::Bucket', {
     BucketName: testName
   });
 });
@@ -99,8 +129,15 @@ test('Test with no logging', () => {
     defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
   });
 
-  defaults.ObtainAlb(stack, 'test', vpc, false, undefined, undefined, false);
-  expect(stack).not.toHaveResourceLike('AWS::S3::Bucket', {});
+  defaults.ObtainAlb(stack, 'test', {
+    vpc,
+    publicApi: false,
+    logAccessLogs: false
+  });
+
+  const template = Template.fromStack(stack);
+
+  template.resourceCountIs('AWS::S3::Bucket', 0);
 });
 
 test('Test add single lambda target group with no customization', () => {
@@ -120,7 +157,9 @@ test('Test add single lambda target group with no customization', () => {
     testFunction,
   );
 
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     DefaultActions: [
       {
         TargetGroupArn: {
@@ -130,7 +169,7 @@ test('Test add single lambda target group with no customization', () => {
       }
     ],
   });
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::TargetGroup', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
     TargetType: "lambda",
   });
 
@@ -156,7 +195,9 @@ test('Test add single lambda target group with target group props', () => {
     { targetGroupName },
   );
 
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::TargetGroup', {
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
     TargetType: "lambda",
     Name: targetGroupName,
   });
@@ -197,8 +238,10 @@ test('Test add rule props for second lambda target group', () => {
     { targetGroupName },
   );
 
-  expect(stack).toCountResources('AWS::ElasticLoadBalancingV2::TargetGroup', 2);
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::ListenerRule', {
+  const template = Template.fromStack(stack);
+
+  template.resourceCountIs('AWS::ElasticLoadBalancingV2::TargetGroup', 2);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::ListenerRule', {
     Conditions: [
       {
         Field: "path-pattern",
@@ -235,7 +278,9 @@ test('Test add single fargate target with no customization', () => {
     }
   );
 
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     DefaultActions: [
       {
         TargetGroupArn: {
@@ -245,7 +290,7 @@ test('Test add single fargate target with no customization', () => {
       }
     ],
   });
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::TargetGroup', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
     TargetType: "ip",
   });
 
@@ -290,8 +335,10 @@ test('Test add two fargate targets with rules', () => {
     }
   );
 
-  expect(stack).toCountResources('AWS::ElasticLoadBalancingV2::TargetGroup', 2);
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::ListenerRule', {
+  const template = Template.fromStack(stack);
+
+  template.resourceCountIs('AWS::ElasticLoadBalancingV2::TargetGroup', 2);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::ListenerRule', {
     Conditions: [
       {
         Field: "path-pattern",
@@ -318,12 +365,14 @@ test('Test adding a listener with defaults', () => {
   //  Need to add a target because a listener is not allowed to exist without a target or action
   defaults.AddLambdaTarget(stack, 'dummy-target', listener, CreateTestFunction(stack, 'dummy-function'));
 
+  const template = Template.fromStack(stack);
+
   // This should create 2 listeners, HTTPS plus redirect of HTTP
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTPS',
   });
 
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP',
   });
 });
@@ -369,24 +418,12 @@ test('Test adding a HTTP listener', () => {
   //  Need to add a target because a listener is not allowed to exist without a target or action
   defaults.AddLambdaTarget(stack, 'dummy-target', listener, CreateTestFunction(stack, 'dummy-function'));
 
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
     Protocol: 'HTTP',
   });
-  expect(stack).toCountResources('AWS::ElasticLoadBalancingV2::Listener', 1);
-});
-
-test('Test sending custom logging bucket props', () => {
-  const stack = new Stack();
-
-  // Set up test framework independent of our code for unit testing
-  const testVpc = defaults.getTestVpc(stack);
-  const testAlb = CreateTestLoadBalancer(stack, testVpc);
-
-  const listener = defaults.AddListener(stack, 'test', testAlb, { protocol: 'HTTP' });
-
-  //  Need to add a target because a listener is not allowed to exist without a target or action
-  defaults.AddLambdaTarget(stack, 'dummy-target', listener, CreateTestFunction(stack, 'dummy-function'));
-
+  template.resourceCountIs('AWS::ElasticLoadBalancingV2::Listener', 1);
 });
 
 test('Test GetActiveListener with 0 listeners', () => {
@@ -512,6 +549,54 @@ test('Test sending listenerProps to existingListener error', () => {
   expect(app).toThrowError("This load balancer already has a listener, listenerProps may not be specified\n");
 });
 
+test('Test sending loadBalancerProps and existingLoadBalancerObj is an error', () => {
+  const stack = new Stack();
+
+  const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
+  });
+
+  const existingLoadBalancer = new elb.ApplicationLoadBalancer(stack, 'load-balancer', {
+    vpc,
+    internetFacing: true,
+    loadBalancerName: 'unique-name'
+  });
+
+  const props = {
+    vpc,
+    existingLoadBalancerObj: existingLoadBalancer,
+    loadBalancerProps: {
+      loadBalancerName: 'new-loadbalancer',
+      vpc,
+      internetFacing: true
+    }
+  };
+
+  const app = () => {
+    defaults.CheckAlbProps(props);
+  };
+
+  expect(app).toThrowError("Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n");
+});
+
+test('Test sending albLoggingBucketProps when logAlbAccessLogs is false is an error', () => {
+
+  const props = {
+    logAlbAccessLogs: false,
+    albLoggingBucketProps: {},
+    loadBalancerProps: {
+      loadBalancerName: 'new-loadbalancer',
+      internetFacing: true
+    }
+  };
+
+  const app = () => {
+    defaults.CheckAlbProps(props);
+  };
+
+  expect(app).toThrowError("Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n");
+});
+
 test('Test sending VPC in loadBalancerProps error', () => {
   const props = {
     loadBalancerProps: {
@@ -537,19 +622,19 @@ function CreateTestLoadBalancer(stack: Stack, vpc: ec2.IVpc): elb.ApplicationLoa
 function CreateTestFunction(stack: Stack, id: string): lambda.Function {
   return new lambda.Function(stack, id, {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
   });
 }
 
 function CreateTestFargateService(stack: Stack, id: string, vpc: ec2.IVpc): ecs.FargateService {
-  const [svc] = defaults.CreateFargateService(stack,
-    `${id}-fg-svc`,
-    vpc,
-    undefined,
-    'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo',
-    'latest');
-  return svc;
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, `${id}-fg-svc`, {
+    constructVpc: vpc,
+    clientClusterProps: undefined,
+    ecrRepositoryArn: 'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo',
+    ecrImageVersion: 'latest'
+  });
+  return createFargateServiceResponse.service;
 }
 
 function CreateTestListener(stack: Stack, id: string, alb: elb.ApplicationLoadBalancer) {

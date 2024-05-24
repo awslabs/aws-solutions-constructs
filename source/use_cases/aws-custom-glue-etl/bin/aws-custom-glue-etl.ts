@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -13,9 +13,9 @@
  *  and limitations under the License.
  */
 
-import * as cdk from '@aws-cdk/core';
+import { App } from 'aws-cdk-lib';
 import 'source-map-support/register';
 import { AwsCustomGlueEtlStack } from '../lib/aws-custom-glue-etl-stack';
 
-const app = new cdk.App();
+const app = new App();
 new AwsCustomGlueEtlStack(app, 'AwsCustomGlueEtlStack');

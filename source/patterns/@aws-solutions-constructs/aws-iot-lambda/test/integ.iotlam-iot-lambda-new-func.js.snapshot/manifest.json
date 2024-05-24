@@ -1,0 +1,137 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "iotlamiotlambdanewfuncIntegDefaultTestDeployAssert4A7D5BFD.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "iotlamiotlambdanewfuncIntegDefaultTestDeployAssert4A7D5BFD.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "iotlamiotlambdanewfuncIntegDefaultTestDeployAssert4A7D5BFD": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "iotlamiotlambdanewfuncIntegDefaultTestDeployAssert4A7D5BFD.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "iotlamiotlambdanewfuncIntegDefaultTestDeployAssert4A7D5BFD.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "iotlamiotlambdanewfuncIntegDefaultTestDeployAssert4A7D5BFD.assets"
+      ],
+      "metadata": {
+        "/iotlam-iot-lambda-new-func/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/iotlam-iot-lambda-new-func/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "iotlam-iot-lambda-new-func/Integ/DefaultTest/DeployAssert"
+    },
+    "iotlam-iot-lambda-new-func.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "iotlam-iot-lambda-new-func.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "iotlam-iot-lambda-new-func": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "iotlam-iot-lambda-new-func.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c2ccba8d5d7c1b78661a5a4761700d13f861b43a8b7500cd38e29245cf17c67c.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "iotlam-iot-lambda-new-func.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "iotlam-iot-lambda-new-func.assets"
+      ],
+      "metadata": {
+        "/iotlam-iot-lambda-new-func/test-iot-lambda-integration/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotlambdaintegrationLambdaFunctionServiceRole27C3EE41"
+          }
+        ],
+        "/iotlam-iot-lambda-new-func/test-iot-lambda-integration/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotlambdaintegrationLambdaFunctionServiceRoleDefaultPolicy0FB2AE4D"
+          }
+        ],
+        "/iotlam-iot-lambda-new-func/test-iot-lambda-integration/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotlambdaintegrationLambdaFunctionC5329DBA"
+          }
+        ],
+        "/iotlam-iot-lambda-new-func/test-iot-lambda-integration/LambdaFunction/AwsIotLambdaInvokePermission-1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotlambdaintegrationLambdaFunctionAwsIotLambdaInvokePermission184E45B6F"
+          }
+        ],
+        "/iotlam-iot-lambda-new-func/test-iot-lambda-integration/IotTopic": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotlambdaintegrationIotTopic18B6A735"
+          }
+        ],
+        "/iotlam-iot-lambda-new-func/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/iotlam-iot-lambda-new-func/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "iotlam-iot-lambda-new-func"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,9 +11,14 @@
  *  and limitations under the License.
  */
 
-import * as ec2 from "@aws-cdk/aws-ec2";
-import { CfnLogGroup } from "@aws-cdk/aws-logs";
-import { Construct } from "@aws-cdk/core";
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import { CfnLogGroup } from "aws-cdk-lib/aws-logs";
+import { Construct } from "constructs";
 import { buildSecurityGroup } from "./security-group-helper";
 import { consolidateProps, addCfnSuppressRules } from "./utils";
 
@@ -37,6 +42,9 @@ export interface BuildVpcProps {
   readonly constructVpcProps?: ec2.VpcProps;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildVpc(scope: Construct, props: BuildVpcProps): ec2.IVpc {
   if (props?.existingVpc) {
     return props?.existingVpc;
@@ -68,7 +76,10 @@ export enum ServiceEndpointTypes {
   SSM = "SSM",
   ECR_API = "ECR_API",
   ECR_DKR = "ECR_DKR",
-  EVENTS = "CLOUDWATCH_EVENTS"
+  EVENTS = "CLOUDWATCH_EVENTS",
+  KINESIS_FIREHOSE = "KINESIS_FIREHOSE",
+  KINESIS_STREAMS = "KINESIS_STREAMS",
+  KENDRA = "KENDRA"
 }
 
 enum EndpointTypes {
@@ -138,9 +149,27 @@ const endpointSettings: EndpointDefinition[] = [
     endpointName: ServiceEndpointTypes.EVENTS,
     endpointType: EndpointTypes.INTERFACE,
     endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.CLOUDWATCH_EVENTS
+  },
+  {
+    endpointName: ServiceEndpointTypes.KINESIS_FIREHOSE,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.KINESIS_FIREHOSE
+  },
+  {
+    endpointName: ServiceEndpointTypes.KINESIS_STREAMS,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.KINESIS_STREAMS
+  },
+  {
+    endpointName: ServiceEndpointTypes.KENDRA,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.KENDRA
   }
 ];
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function AddAwsServiceEndpoint(
   scope: Construct,
   vpc: ec2.IVpc,
@@ -165,7 +194,8 @@ export function AddAwsServiceEndpoint(
     AddInterfaceEndpoint(scope, vpc, service, interfaceTag);
   }
 
-  return;
+  // ESLint requires this return statement, so disabling SonarQube warning
+  return; // NOSONAR
 }
 
 function CheckIfEndpointAlreadyExists(vpc: ec2.IVpc, interfaceTag: ServiceEndpointTypes): boolean {
@@ -218,4 +248,46 @@ function AddGatewayEndpoint(vpc: ec2.IVpc, service: EndpointDefinition, interfac
   vpc.addGatewayEndpoint(interfaceTag, {
     service: service.endpointGatewayService as ec2.GatewayVpcEndpointAwsService,
   });
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function retrievePrivateSubnetIds(vpc: ec2.IVpc) {
+  let targetSubnetType;
+
+  if (vpc.isolatedSubnets.length) {
+    targetSubnetType = ec2.SubnetType.PRIVATE_ISOLATED;
+  } else if (vpc.privateSubnets.length) {
+    targetSubnetType = ec2.SubnetType.PRIVATE_WITH_EGRESS;
+  } else {
+    throw new Error('Error - No isolated or private subnets available in VPC');
+  }
+
+  const subnetSelector = {
+    onePerAz: true,
+    subnetType: targetSubnetType
+  };
+
+  return vpc.selectSubnets(subnetSelector).subnetIds;
+}
+
+export interface VpcPropsSet {
+  readonly existingVpc?: ec2.IVpc;
+  readonly vpcProps?: ec2.VpcProps;
+  readonly deployVpc?: boolean;
+}
+
+export function CheckVpcProps(propsObject: VpcPropsSet | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if ((propsObject.deployVpc || propsObject.vpcProps) && propsObject.existingVpc) {
+    errorMessages += 'Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }

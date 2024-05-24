@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,18 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
+import { Construct } from 'constructs';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { consolidateProps } from './utils';
-import { DynamoEventSourceProps, S3EventSourceProps, KinesisEventSourceProps, StreamEventSourceProps, SqsDlq } from '@aws-cdk/aws-lambda-event-sources';
-import * as s3 from '@aws-cdk/aws-s3';
-import { Construct, Duration } from '@aws-cdk/core';
-import * as sqs from '@aws-cdk/aws-sqs';
+import { DynamoEventSourceProps, S3EventSourceProps, KinesisEventSourceProps, StreamEventSourceProps, SqsDlq } from 'aws-cdk-lib/aws-lambda-event-sources';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import { Duration } from 'aws-cdk-lib';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 import { buildQueue } from './sqs-helper';
 
 export interface EventSourceProps {
@@ -25,6 +31,9 @@ export interface EventSourceProps {
   readonly sqsDlqQueueProps?: sqs.QueueProps
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function DynamoEventSourceProps(scope: Construct, _dynamoEventSourceProps?: EventSourceProps): DynamoEventSourceProps {
 
   const baseProps: DynamoEventSourceProps = {
@@ -38,12 +47,12 @@ export function DynamoEventSourceProps(scope: Construct, _dynamoEventSourceProps
 
   if (_dynamoEventSourceProps === undefined || _dynamoEventSourceProps?.deploySqsDlqQueue === undefined
     || _dynamoEventSourceProps.deploySqsDlqQueue) {
-    const [sqsQueue] = buildQueue(scope, 'SqsDlqQueue', {
+    const buildQueueResponse = buildQueue(scope, 'SqsDlqQueue', {
       queueProps: _dynamoEventSourceProps?.sqsDlqQueueProps
     });
 
     extraProps = {
-      onFailure: new SqsDlq(sqsQueue),
+      onFailure: new SqsDlq(buildQueueResponse.queue),
     };
   }
 
@@ -52,6 +61,9 @@ export function DynamoEventSourceProps(scope: Construct, _dynamoEventSourceProps
   return consolidateProps(defaultDynamoEventSourceProps, _dynamoEventSourceProps?.eventSourceProps);
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function S3EventSourceProps(_s3EventSourceProps?: S3EventSourceProps) {
 
   const defaultS3EventSourceProps: S3EventSourceProps = {
@@ -61,6 +73,9 @@ export function S3EventSourceProps(_s3EventSourceProps?: S3EventSourceProps) {
   return consolidateProps(defaultS3EventSourceProps, _s3EventSourceProps);
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function KinesisEventSourceProps(scope: Construct, _kinesisEventSourceProps?: EventSourceProps): KinesisEventSourceProps {
   const baseProps: KinesisEventSourceProps = {
     startingPosition: lambda.StartingPosition.TRIM_HORIZON,
@@ -73,12 +88,12 @@ export function KinesisEventSourceProps(scope: Construct, _kinesisEventSourcePro
 
   if (_kinesisEventSourceProps === undefined || _kinesisEventSourceProps?.deploySqsDlqQueue === undefined
     || _kinesisEventSourceProps.deploySqsDlqQueue) {
-    const [sqsQueue] = buildQueue(scope, 'SqsDlqQueue', {
+    const buildQueueResponse = buildQueue(scope, 'SqsDlqQueue', {
       queueProps: _kinesisEventSourceProps?.sqsDlqQueueProps
     });
 
     extraProps = {
-      onFailure: new SqsDlq(sqsQueue),
+      onFailure: new SqsDlq(buildQueueResponse.queue),
     };
   }
 

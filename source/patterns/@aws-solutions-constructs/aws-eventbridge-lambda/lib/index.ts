@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as events from '@aws-cdk/aws-events';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as events from 'aws-cdk-lib/aws-events';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as iam from '@aws-cdk/aws-iam';
+import * as iam from 'aws-cdk-lib/aws-iam';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 import { overrideProps } from '@aws-solutions-constructs/core';
 
 /**
@@ -69,7 +69,8 @@ export class EventbridgeToLambda extends Construct {
    */
   constructor(scope: Construct, id: string, props: EventbridgeToLambdaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckLambdaProps(props);
+    defaults.CheckEventBridgeProps(props);
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import { Stack } from '@aws-cdk/core';
-import * as kinesisfirehose from '@aws-cdk/aws-kinesisfirehose';
+import { Stack } from 'aws-cdk-lib';
+import * as kinesisfirehose from 'aws-cdk-lib/aws-kinesisfirehose';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
-import '@aws-cdk/assert/jest';
-import * as kms from '@aws-cdk/aws-kms';
+import { Template } from 'aws-cdk-lib/assertions';
+import * as kms from 'aws-cdk-lib/aws-kms';
 
 test('test kinesisanalytics override buffer conditions', () => {
   const stack = new Stack();
@@ -37,7 +37,7 @@ test('test kinesisanalytics override buffer conditions', () => {
 
   new kinesisfirehose.CfnDeliveryStream(stack, 'KinesisFirehose', outProps);
 
-  expect(stack).toHaveResource("AWS::KinesisFirehose::DeliveryStream", {
+  Template.fromStack(stack).hasResourceProperties("AWS::KinesisFirehose::DeliveryStream", {
     ExtendedS3DestinationConfiguration: {
       BucketARN: "bucket_arn",
       BufferingHints: {

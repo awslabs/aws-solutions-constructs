@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,19 +11,18 @@
  *  and limitations under the License.
  */
 
-import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
 import { LambdaToDynamoDB, LambdaToDynamoDBProps } from "../lib";
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
-import * as cdk from "@aws-cdk/core";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import '@aws-cdk/assert/jest';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
+import * as cdk from "aws-cdk-lib";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import { Template } from 'aws-cdk-lib/assertions';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
   };
@@ -59,7 +58,8 @@ test('check lambda function properties for deploy: true', () => {
 
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": [
@@ -67,7 +67,7 @@ test('check lambda function properties for deploy: true', () => {
         "Arn"
       ]
     },
-    Runtime: "nodejs14.x",
+    Runtime: "nodejs16.x",
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
@@ -84,7 +84,8 @@ test('check dynamo table properties for deploy: true', () => {
 
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::DynamoDB::Table', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     KeySchema: [
       {
         AttributeName: "id",
@@ -109,7 +110,8 @@ test('check lambda function role for deploy: true', () => {
 
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::IAM::Role', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Role', {
     AssumeRolePolicyDocument: {
       Statement: [
         {
@@ -168,7 +170,8 @@ test('check lambda function policy default table permissions', () => {
 
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::IAM::Policy', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {
@@ -218,7 +221,8 @@ test('check lambda function properties for deploy: false', () => {
 
   useExistingFunc(stack);
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": [
@@ -235,7 +239,8 @@ test('check lambda function role for existing function', () => {
 
   useExistingFunc(stack);
 
-  expect(stack).toHaveResource('AWS::IAM::Role', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Role', {
     AssumeRolePolicyDocument: {
       Statement: [
         {
@@ -270,8 +275,8 @@ test('check properties', () => {
 
   const construct: LambdaToDynamoDB = deployNewFunc(stack);
 
-  expect(construct.lambdaFunction !== null);
-  expect(construct.dynamoTable !== null);
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.dynamoTable).toBeDefined();
 });
 
 test('check exception for Missing existingObj from props', () => {
@@ -293,13 +298,14 @@ test('check for no prop', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     }
   };
   new LambdaToDynamoDB(stack, 'test-iot-lambda-stack', props);
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": [
@@ -307,7 +313,7 @@ test('check for no prop', () => {
         "Arn"
       ]
     },
-    Runtime: "nodejs14.x",
+    Runtime: "nodejs16.x",
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
@@ -325,7 +331,7 @@ test('check lambda function policy ReadOnly table permissions', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     tablePermissions: 'Read'
@@ -333,7 +339,8 @@ test('check lambda function policy ReadOnly table permissions', () => {
 
   new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
 
-  expectCDK(stack).to(haveResource('AWS::IAM::Policy', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {
@@ -371,7 +378,7 @@ test('check lambda function policy ReadOnly table permissions', () => {
       ],
       Version: "2012-10-17"
     }
-  }));
+  });
 
 });
 
@@ -381,7 +388,7 @@ test('check lambda function policy WriteOnly table permissions', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     tablePermissions: 'Write'
@@ -389,7 +396,8 @@ test('check lambda function policy WriteOnly table permissions', () => {
 
   new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
 
-  expectCDK(stack).to(haveResource('AWS::IAM::Policy', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {
@@ -424,7 +432,7 @@ test('check lambda function policy WriteOnly table permissions', () => {
       ],
       Version: "2012-10-17"
     }
-  }));
+  });
 
 });
 
@@ -434,7 +442,7 @@ test('check lambda function policy ReadWrite table permissions', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     tablePermissions: 'ReadWrite'
@@ -442,7 +450,8 @@ test('check lambda function policy ReadWrite table permissions', () => {
 
   new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
 
-  expectCDK(stack).to(haveResource('AWS::IAM::Policy', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {
@@ -484,7 +493,7 @@ test('check lambda function policy ReadWrite table permissions', () => {
       ],
       Version: "2012-10-17"
     }
-  }));
+  });
 
 });
 
@@ -494,7 +503,7 @@ test('check lambda function policy All table permissions', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     tablePermissions: 'All'
@@ -502,7 +511,8 @@ test('check lambda function policy All table permissions', () => {
 
   new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
 
-  expectCDK(stack).to(haveResource('AWS::IAM::Policy', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {
@@ -531,7 +541,7 @@ test('check lambda function policy All table permissions', () => {
       ],
       Version: "2012-10-17"
     }
-  }));
+  });
 
 });
 
@@ -540,7 +550,7 @@ test('check lambda function custom environment variable', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     tableEnvironmentVariableName: 'CUSTOM_DYNAMODB_TABLE'
@@ -548,9 +558,10 @@ test('check lambda function custom environment variable', () => {
 
   new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
 
-  expectCDK(stack).to(haveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
-    Runtime: 'nodejs14.x',
+    Runtime: 'nodejs16.x',
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
@@ -559,7 +570,7 @@ test('check lambda function custom environment variable', () => {
         }
       }
     }
-  }));
+  });
 });
 
 // --------------------------------------------------------------
@@ -571,14 +582,15 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Helper declaration
   new LambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -599,17 +611,17 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Gateway",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
 // --------------------------------------------------------------
@@ -621,19 +633,20 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Helper declaration
   new LambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
     vpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
-      cidr: "192.68.0.0/16",
+      ipAddresses: ec2.IpAddresses.cidr("192.68.0.0/16"),
     },
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -654,18 +667,18 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: "192.68.0.0/16",
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Gateway",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
 // --------------------------------------------------------------
@@ -680,14 +693,15 @@ test("Test minimal deployment with an existing VPC", () => {
   // Helper declaration
   new LambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
     existingVpc: testVpc,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -708,7 +722,7 @@ test("Test minimal deployment with an existing VPC", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Gateway",
   });
 });
@@ -724,7 +738,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   const stack = new cdk.Stack();
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lambda', {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -745,10 +759,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingVpc and deployVpc
-// --------------------------------------------------------------
-test("Test bad call with existingVpc and deployVpc", () => {
+test("Confirm CheckVpcProps is called", () => {
   // Stack
   const stack = new cdk.Stack();
 
@@ -758,7 +769,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
     // Helper declaration
     new LambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
@@ -767,7 +778,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Test bad table permission', () => {
@@ -776,7 +787,7 @@ test('Test bad table permission', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     tablePermissions: 'Reed',
@@ -788,4 +799,64 @@ test('Test bad table permission', () => {
 
   // Assertion
   expect(app).toThrowError(/Invalid table permission submitted - Reed/);
+});
+
+test('Test that CheckDynamoDBProps is getting called', () => {
+  const stack = new cdk.Stack();
+  const tableName = 'custom-table-name';
+
+  const existingTable = new dynamodb.Table(stack, 'MyTablet', {
+    tableName,
+    partitionKey: {
+      name: 'id',
+      type: dynamodb.AttributeType.STRING
+    }
+  });
+
+  const props: LambdaToDynamoDBProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler'
+    },
+    existingTableObj: existingTable,
+    dynamoTableProps: {
+      tableName,
+      partitionKey: {
+        name: 'id',
+        type: dynamodb.AttributeType.STRING
+      },
+    },
+  };
+
+  const app = () => {
+    new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', props);
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Error - Either provide existingTableObj or dynamoTableProps, but not both.\n/);
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: LambdaToDynamoDBProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new LambdaToDynamoDB(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

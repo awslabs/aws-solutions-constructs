@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -13,13 +13,13 @@
 
 // Imports
 import * as defaults from "@aws-solutions-constructs/core";
-import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
-import * as s3 from "@aws-cdk/aws-s3";
-import * as r53 from "@aws-cdk/aws-route53";
-import * as r53t from '@aws-cdk/aws-route53-targets';
+import * as elb from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import * as s3 from "aws-cdk-lib/aws-s3";
+import * as r53 from "aws-cdk-lib/aws-route53";
+import * as r53t from 'aws-cdk-lib/aws-route53-targets';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import * as ec2 from '@aws-cdk/aws-ec2';
+import { Construct } from 'constructs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 export interface Route53ToAlbProps {
   /**
@@ -82,8 +82,6 @@ export interface Route53ToAlbProps {
   /**
    * Whether to create a public or private API. This value has implications
    * for the VPC, the type of Hosted Zone and the Application Load Balancer
-   *
-   * @default - None
    */
   readonly publicApi: boolean
 }
@@ -105,17 +103,9 @@ export class Route53ToAlb extends Construct {
    */
   constructor(scope: Construct, id: string, props: Route53ToAlbProps) {
     super(scope, id);
-    defaults.CheckProps(props);
-
     // NOTE: We don't call CheckAlbProps() here, because this construct creates an ALB
     // with no listener or target, so some of those checks don't apply
-    if (props?.loadBalancerProps?.vpc) {
-      throw new Error('Specify any existing VPC at the construct level, not within loadBalancerProps.');
-    }
-
-    if (props.existingLoadBalancerObj && !props.existingVpc) {
-      throw new Error('An existing ALB already exists in a VPC, so that VPC must be passed to the construct in props.existingVpc');
-    }
+    this.PropsCustomCheck(props);
 
     if (props.existingHostedZoneInterface && !props.publicApi && !props.existingVpc) {
       throw new Error('An existing Private Hosted Zone already exists in a VPC, so that VPC must be passed to the construct in props.existingVpc');
@@ -148,23 +138,35 @@ export class Route53ToAlb extends Construct {
       }
     }
 
-    this.loadBalancer = defaults.ObtainAlb(
-      this,
-      id,
-      this.vpc,
-      props.publicApi,
-      props.existingLoadBalancerObj,
-      props.loadBalancerProps,
-      props.logAlbAccessLogs,
-      props.albLoggingBucketProps
-    );
+    this.loadBalancer = defaults.ObtainAlb(this, id, {
+      vpc: this.vpc,
+      publicApi: props.publicApi,
+      existingLoadBalancerObj: props.existingLoadBalancerObj,
+      loadBalancerProps: props.loadBalancerProps,
+      logAccessLogs: props.logAlbAccessLogs,
+      loggingBucketProps: props.albLoggingBucketProps
+    });
 
     // Add the ALB to the HostedZone as a target
     const hostedZoneTarget = new r53t.LoadBalancerTarget(this.loadBalancer);
 
-    new r53.ARecord(this, `${id}-alias`, {
+    const arecordId = `${id}-alias`;
+    const arecordProps: r53.ARecordProps = {
       target: { aliasTarget: hostedZoneTarget },
       zone: this.hostedZone
-    });
+    };
+
+    // Before turning off SonarQube for the line, reduce the line to it's minimum
+    new r53.ARecord(this, arecordId, arecordProps); // NOSONAR
+  }
+
+  private PropsCustomCheck(props: Route53ToAlbProps) {
+    if (props?.loadBalancerProps?.vpc) {
+      throw new Error('Specify any existing VPC at the construct level, not within loadBalancerProps.');
+    }
+
+    if (props.existingLoadBalancerObj && !props.existingVpc) {
+      throw new Error('An existing ALB already exists in a VPC, so that VPC must be passed to the construct in props.existingVpc');
+    }
   }
 }

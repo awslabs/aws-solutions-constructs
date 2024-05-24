@@ -1,0 +1,447 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "iotsqs-dead-letter-queue-off": {
+        "id": "iotsqs-dead-letter-queue-off",
+        "path": "iotsqs-dead-letter-queue-off",
+        "children": {
+          "test-iot-sqs-stack": {
+            "id": "test-iot-sqs-stack",
+            "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack",
+            "children": {
+              "'queueKey'": {
+                "id": "'queueKey'",
+                "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack/'queueKey'",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack/'queueKey'/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::KMS::Key",
+                      "aws:cdk:cloudformation:props": {
+                        "enableKeyRotation": true,
+                        "keyPolicy": {
+                          "Statement": [
+                            {
+                              "Action": "kms:*",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":iam::",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":root"
+                                    ]
+                                  ]
+                                }
+                              },
+                              "Resource": "*"
+                            },
+                            {
+                              "Action": [
+                                "kms:Decrypt",
+                                "kms:Encrypt"
+                              ],
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":iam::",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":root"
+                                    ]
+                                  ]
+                                }
+                              },
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_kms.CfnKey",
+                      "version": "2.135.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_kms.Key",
+                  "version": "2.135.0"
+                }
+              },
+              "queue": {
+                "id": "queue",
+                "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack/queue",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack/queue/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
+                      "aws:cdk:cloudformation:props": {
+                        "kmsMasterKeyId": {
+                          "Fn::GetAtt": [
+                            "testiotsqsstackqueueKey077AA61D",
+                            "Arn"
+                          ]
+                        },
+                        "queueName": "dlq-off-test-queue-name"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
+                      "version": "2.135.0"
+                    }
+                  },
+                  "Policy": {
+                    "id": "Policy",
+                    "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack/queue/Policy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack/queue/Policy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "sqs:AddPermission",
+                                    "sqs:DeleteMessage",
+                                    "sqs:GetQueueAttributes",
+                                    "sqs:ReceiveMessage",
+                                    "sqs:RemovePermission",
+                                    "sqs:SendMessage",
+                                    "sqs:SetQueueAttributes"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "AWS": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":iam::",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":root"
+                                        ]
+                                      ]
+                                    }
+                                  },
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "testiotsqsstackqueue3DEA94EF",
+                                      "Arn"
+                                    ]
+                                  },
+                                  "Sid": "QueueOwnerOnlyAccess"
+                                },
+                                {
+                                  "Action": "SQS:*",
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "testiotsqsstackqueue3DEA94EF",
+                                      "Arn"
+                                    ]
+                                  },
+                                  "Sid": "HttpsOnly"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "queues": [
+                              {
+                                "Ref": "testiotsqsstackqueue3DEA94EF"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
+                          "version": "2.135.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
+                      "version": "2.135.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.Queue",
+                  "version": "2.135.0"
+                }
+              },
+              "iot-actions-role": {
+                "id": "iot-actions-role",
+                "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack/iot-actions-role",
+                "children": {
+                  "Importiot-actions-role": {
+                    "id": "Importiot-actions-role",
+                    "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack/iot-actions-role/Importiot-actions-role",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.135.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack/iot-actions-role/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "iot.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.135.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack/iot-actions-role/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack/iot-actions-role/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "sqs:GetQueueAttributes",
+                                    "sqs:GetQueueUrl",
+                                    "sqs:SendMessage"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "testiotsqsstackqueue3DEA94EF",
+                                      "Arn"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": [
+                                    "kms:Decrypt",
+                                    "kms:Encrypt",
+                                    "kms:GenerateDataKey*",
+                                    "kms:ReEncrypt*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "testiotsqsstackqueueKey077AA61D",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "testiotsqsstackiotactionsroleDefaultPolicy02ED7F00",
+                            "roles": [
+                              {
+                                "Ref": "testiotsqsstackiotactionsrole5F8821AA"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.135.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.135.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.135.0"
+                }
+              },
+              "IotTopicRule": {
+                "id": "IotTopicRule",
+                "path": "iotsqs-dead-letter-queue-off/test-iot-sqs-stack/IotTopicRule",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IoT::TopicRule",
+                  "aws:cdk:cloudformation:props": {
+                    "topicRulePayload": {
+                      "ruleDisabled": false,
+                      "actions": [
+                        {
+                          "sqs": {
+                            "queueUrl": {
+                              "Ref": "testiotsqsstackqueue3DEA94EF"
+                            },
+                            "roleArn": {
+                              "Fn::GetAtt": [
+                                "testiotsqsstackiotactionsrole5F8821AA",
+                                "Arn"
+                              ]
+                            }
+                          }
+                        }
+                      ],
+                      "sql": "SELECT * FROM 'test/topic/#'",
+                      "description": "Processing messages from IoT devices or factory machines"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iot.CfnTopicRule",
+                  "version": "2.135.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-solutions-constructs/aws-iot-sqs.IotToSqs",
+              "version": "2.54.1"
+            }
+          },
+          "Integ": {
+            "id": "Integ",
+            "path": "iotsqs-dead-letter-queue-off/Integ",
+            "children": {
+              "DefaultTest": {
+                "id": "DefaultTest",
+                "path": "iotsqs-dead-letter-queue-off/Integ/DefaultTest",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "iotsqs-dead-letter-queue-off/Integ/DefaultTest/Default",
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.3.0"
+                    }
+                  },
+                  "DeployAssert": {
+                    "id": "DeployAssert",
+                    "path": "iotsqs-dead-letter-queue-off/Integ/DefaultTest/DeployAssert",
+                    "children": {
+                      "BootstrapVersion": {
+                        "id": "BootstrapVersion",
+                        "path": "iotsqs-dead-letter-queue-off/Integ/DefaultTest/DeployAssert/BootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnParameter",
+                          "version": "2.135.0"
+                        }
+                      },
+                      "CheckBootstrapVersion": {
+                        "id": "CheckBootstrapVersion",
+                        "path": "iotsqs-dead-letter-queue-off/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnRule",
+                          "version": "2.135.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Stack",
+                      "version": "2.135.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
+                  "version": "2.135.0-alpha.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
+              "version": "2.135.0-alpha.0"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "iotsqs-dead-letter-queue-off/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.135.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "iotsqs-dead-letter-queue-off/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.135.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.135.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.3.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.135.0"
+    }
+  }
+}

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,14 +12,14 @@
  */
 
 // Imports
-import * as glue from '@aws-cdk/aws-glue';
-import * as s3assets from '@aws-cdk/aws-s3-assets';
-import * as cdk from '@aws-cdk/core';
-import { CfnOutput } from '@aws-cdk/core';
+import * as glue from 'aws-cdk-lib/aws-glue';
+import * as s3assets from 'aws-cdk-lib/aws-s3-assets';
+import { Construct } from 'constructs';
+import { CfnOutput, Stack, StackProps } from 'aws-cdk-lib';
 import { KinesisstreamsToGluejob } from '@aws-solutions-constructs/aws-kinesisstreams-gluejob';
 
-export class AwsCustomGlueEtlStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+export class AwsCustomGlueEtlStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
     const fieldSchema: glue.CfnTable.ColumnProperty [] = [{

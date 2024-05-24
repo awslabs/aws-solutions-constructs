@@ -1,0 +1,179 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "lamsagexistingFunctionIntegDefaultTestDeployAssert0404EF66.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamsagexistingFunctionIntegDefaultTestDeployAssert0404EF66.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamsagexistingFunctionIntegDefaultTestDeployAssert0404EF66": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamsagexistingFunctionIntegDefaultTestDeployAssert0404EF66.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamsagexistingFunctionIntegDefaultTestDeployAssert0404EF66.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamsagexistingFunctionIntegDefaultTestDeployAssert0404EF66.assets"
+      ],
+      "metadata": {
+        "/lamsag-existingFunction/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamsag-existingFunction/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamsag-existingFunction/Integ/DefaultTest/DeployAssert"
+    },
+    "lamsag-existingFunction.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamsag-existingFunction.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamsag-existingFunction": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamsag-existingFunction.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/97ddc3e7bdd8bbc8186a37a98d66500c4e8c2280bdf6dd8e5a45f4dcba8e3f35.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamsag-existingFunction.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamsag-existingFunction.assets"
+      ],
+      "metadata": {
+        "/lamsag-existingFunction/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRole0C4CDE0B"
+          }
+        ],
+        "/lamsag-existingFunction/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRoleDefaultPolicy126C8897"
+          }
+        ],
+        "/lamsag-existingFunction/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionBF21E41F"
+          }
+        ],
+        "/lamsag-existingFunction/mappings": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "mappings"
+          }
+        ],
+        "/lamsag-existingFunction/test-lambda-sagemaker/SagemakerRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasagemakerSagemakerRoleD84546B8"
+          }
+        ],
+        "/lamsag-existingFunction/test-lambda-sagemaker/SagemakerRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasagemakerSagemakerRoleDefaultPolicy9909C0A0"
+          }
+        ],
+        "/lamsag-existingFunction/test-lambda-sagemaker/SagemakerModel": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasagemakerSagemakerModelEC3E4E39"
+          }
+        ],
+        "/lamsag-existingFunction/test-lambda-sagemaker/'test-lambda-sagemakerKey'/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasagemakertestlambdasagemakerKey5BF0746F"
+          }
+        ],
+        "/lamsag-existingFunction/test-lambda-sagemaker/SagemakerEndpointConfig": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasagemakerSagemakerEndpointConfig6BABA334",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_REPLACE"
+            ]
+          }
+        ],
+        "/lamsag-existingFunction/test-lambda-sagemaker/SagemakerEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasagemakerSagemakerEndpoint12803730"
+          }
+        ],
+        "/lamsag-existingFunction/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamsag-existingFunction/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testlambdasagemakerEncryptionKey2AACF9E0": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasagemakerEncryptionKey2AACF9E0",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ]
+      },
+      "displayName": "lamsag-existingFunction"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

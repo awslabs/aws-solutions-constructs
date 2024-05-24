@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,8 +11,16 @@
  *  and limitations under the License.
  */
 
-import * as events from '@aws-cdk/aws-events';
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
 
+import * as events from 'aws-cdk-lib/aws-events';
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function DefaultEventsRuleProps(_targets: events.IRuleTarget[], _eventBus?: events.IEventBus) {
   const defaultEventsRuleProps: events.RuleProps = {
     targets: _targets,

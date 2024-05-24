@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import * as events from '@aws-cdk/aws-events';
+import * as events from 'aws-cdk-lib/aws-events';
 import { EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps } from '../lib/index';
-import { Duration } from '@aws-cdk/core';
-import * as sfn from '@aws-cdk/aws-stepfunctions';
-import '@aws-cdk/assert/jest';
-import * as cdk from '@aws-cdk/core';
+import { Duration } from 'aws-cdk-lib';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
+import * as cdk from 'aws-cdk-lib';
+import { Template } from 'aws-cdk-lib/assertions';
 
 function deployNewStateMachine(stack: cdk.Stack) {
 
@@ -58,7 +58,8 @@ test('check events rule role policy permissions', () => {
 
   deployNewStateMachine(stack);
 
-  expect(stack).toHaveResource("AWS::IAM::Policy", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -79,7 +80,8 @@ test('check events rule properties', () => {
 
   deployNewStateMachine(stack);
 
-  expect(stack).toHaveResource('AWS::Events::Rule', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Events::Rule', {
     ScheduleExpression: "rate(5 minutes)",
     State: "ENABLED",
     Targets: [
@@ -104,10 +106,10 @@ test('check properties', () => {
 
   const construct: EventbridgeToStepfunctions = deployNewStateMachine(stack);
 
-  expect(construct.cloudwatchAlarms !== null);
-  expect(construct.stateMachine !== null);
-  expect(construct.eventsRule !== null);
-  expect(construct.stateMachineLogGroup !== null);
+  expect(construct.cloudwatchAlarms).toBeDefined();
+  expect(construct.stateMachine).toBeDefined();
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.stateMachineLogGroup).toBeDefined();
 });
 
 test('check properties with no CW Alarms', () => {
@@ -126,10 +128,10 @@ test('check properties with no CW Alarms', () => {
 
   const construct: EventbridgeToStepfunctions =  new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions', props);
 
-  expect(construct.cloudwatchAlarms === null);
-  expect(construct.stateMachine !== null);
-  expect(construct.eventsRule !== null);
-  expect(construct.stateMachineLogGroup !== null);
+  expect(construct.cloudwatchAlarms).not.toBeDefined();
+  expect(construct.stateMachine).toBeDefined();
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.stateMachineLogGroup).toBeDefined();
 });
 
 test('check eventbus property, snapshot & eventbus exists', () => {
@@ -137,17 +139,18 @@ test('check eventbus property, snapshot & eventbus exists', () => {
 
   const construct: EventbridgeToStepfunctions = deployNewStateMachineAndEventBus(stack);
 
-  expect(construct.cloudwatchAlarms !== null);
-  expect(construct.stateMachine !== null);
-  expect(construct.eventsRule !== null);
-  expect(construct.stateMachineLogGroup !== null);
-  expect(construct.eventBus !== null);
+  expect(construct.cloudwatchAlarms).toBeDefined();
+  expect(construct.stateMachine).toBeDefined();
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.stateMachineLogGroup).toBeDefined();
+  expect(construct.eventBus).toBeDefined();
 
   // Check whether eventbus exists
-  expect(stack).toHaveResource('AWS::Events::EventBus');
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Events::EventBus', 1);
 });
 
-test('check exception while passing existingEventBus & eventBusProps', () => {
+test('Confirm CheckEventBridgeProps is being called', () => {
   const stack = new cdk.Stack();
   const startState = new sfn.Pass(stack, 'StartState');
 
@@ -167,7 +170,7 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
   const app = () => {
     new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions', props);
   };
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });
 
 test('check custom event bus resource with props when deploy:true', () => {
@@ -189,7 +192,8 @@ test('check custom event bus resource with props when deploy:true', () => {
   };
   new EventbridgeToStepfunctions(stack, 'test-new-eventbridge-stepfunctions', props);
 
-  expect(stack).toHaveResource('AWS::Events::EventBus', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Events::EventBus', {
     Name: 'testcustomeventbus'
   });
 });

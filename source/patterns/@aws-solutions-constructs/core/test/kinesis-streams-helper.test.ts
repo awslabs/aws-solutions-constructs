@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,39 +12,32 @@
  */
 
 // Imports
-import { Stack, Duration } from "@aws-cdk/core";
+import { Stack, Duration } from "aws-cdk-lib";
 import * as defaults from '../';
-import * as kinesis from '@aws-cdk/aws-kinesis';
-import { ResourcePart } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
+import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Test minimal deployment with no properties
-// --------------------------------------------------------------
 test('Test minimal deployment with no properties', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   defaults.buildKinesisStream(stack, {});
 
-  expect(stack).toHaveResourceLike('AWS::Kinesis::Stream', {
+  Template.fromStack(stack).hasResource('AWS::Kinesis::Stream', {
     Type: "AWS::Kinesis::Stream",
     Properties: {
       StreamEncryption: {
         EncryptionType: "KMS"
       }
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ custom properties
-// --------------------------------------------------------------
 test('Test deployment w/ custom properties', () => {
   // Stack
   const stack = new Stack();
   // Helper setup
-  const encKey = defaults.buildEncryptionKey(stack);
+  const encKey = defaults.buildEncryptionKey(stack, 'key-test');
   // Helper declaration
   defaults.buildKinesisStream(stack, {
     kinesisStreamProps: {
@@ -54,18 +47,16 @@ test('Test deployment w/ custom properties', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::Kinesis::Stream', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Kinesis::Stream', {
     Name: 'myCustomKinesisStream'
   });
   // Assertion 3
-  expect(stack).toHaveResource('AWS::KMS::Key', {
+  template.hasResourceProperties('AWS::KMS::Key', {
     EnableKeyRotation: true
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing stream
-// --------------------------------------------------------------
 test('Test deployment w/ existing stream', () => {
   // Stack
   const stack = new Stack();
@@ -85,7 +76,7 @@ test('Test deployment w/ existing stream', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::Kinesis::Stream', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Kinesis::Stream', {
     ShardCount: 2,
     RetentionPeriodHours: 72
   });
@@ -97,4 +88,27 @@ test('Count Kinesis CW Alarms', () => {
   const cwList = defaults.buildKinesisStreamCWAlarms(stack);
 
   expect(cwList.length).toEqual(2);
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test fail Kinesis stream check', () => {
+  const stack = new Stack();
+
+  const stream = new kinesis.Stream(stack, 'placeholder', {
+
+  });
+
+  const props: defaults.KinesisStreamProps = {
+    existingStreamObj: stream,
+    kinesisStreamProps: {}
+  };
+
+  const app = () => {
+    defaults.CheckKinesisStreamProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });

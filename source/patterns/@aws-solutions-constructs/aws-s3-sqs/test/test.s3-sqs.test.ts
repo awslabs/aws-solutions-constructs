@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,17 +12,14 @@
  */
 
 // Imports
-import { Stack, RemovalPolicy } from "@aws-cdk/core";
+import { Stack, RemovalPolicy } from "aws-cdk-lib";
 import { S3ToSqs, S3ToSqsProps } from "../lib";
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as kms from '@aws-cdk/aws-kms';
-import * as s3 from '@aws-cdk/aws-s3';
-import '@aws-cdk/assert/jest';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as kms from 'aws-cdk-lib/aws-kms';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 
-// --------------------------------------------------------------
-// Test the getter methods
-// --------------------------------------------------------------
 test('Test getter methods', () => {
   // Initial Setup
   const stack = new Stack();
@@ -36,16 +33,13 @@ test('Test getter methods', () => {
   };
   const app = new S3ToSqs(stack, 'test-s3-sqs', props);
   // Assertion 1
-  expect(app.sqsQueue !== null);
+  expect(app.sqsQueue).toBeDefined();
   // Assertion 2
-  expect(app.deadLetterQueue !== null);
+  expect(app.deadLetterQueue).toBeDefined();
   // Assertion 3
-  expect(app.s3Bucket !== null);
+  expect(app.s3Bucket).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing queue
-// --------------------------------------------------------------
 test('Test deployment w/ existing queue', () => {
   // Stack
   const stack = new Stack();
@@ -59,7 +53,8 @@ test('Test deployment w/ existing queue', () => {
     existingQueueObj: queue
   });
   // Assertion 1
-  expect(stack).toHaveResource("Custom::S3BucketNotifications", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("Custom::S3BucketNotifications", {
     NotificationConfiguration: {
       QueueConfigurations: [
         {
@@ -76,20 +71,18 @@ test('Test deployment w/ existing queue', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing s3 Bucket
-// --------------------------------------------------------------
 test('Test deployment w/ existing Bucket', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
 
-  const [myBucket] = defaults.buildS3Bucket(stack, {});
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {});
   new S3ToSqs(stack, 'test-s3-sqs', {
-    existingBucketObj: myBucket
+    existingBucketObj: buildS3BucketResponse.bucket
   });
   // Assertion 1
-  expect(stack).toHaveResource("Custom::S3BucketNotifications", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("Custom::S3BucketNotifications", {
     NotificationConfiguration: {
       QueueConfigurations: [
         {
@@ -106,9 +99,6 @@ test('Test deployment w/ existing Bucket', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Pattern deployment w/ bucket block public access override
-// --------------------------------------------------------------
 test('Pattern deployment w/ bucket versioning turned off', () => {
   const stack = new Stack();
   const props: S3ToSqsProps = {
@@ -122,7 +112,8 @@ test('Pattern deployment w/ bucket versioning turned off', () => {
     }
   };
   new S3ToSqs(stack, 'test-s3-sqs', props);
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     PublicAccessBlockConfiguration: {
       BlockPublicAcls: false,
       BlockPublicPolicy: true,
@@ -132,9 +123,6 @@ test('Pattern deployment w/ bucket versioning turned off', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ specific s3 event types
-// --------------------------------------------------------------
 test('Test deployment w/ s3 event types and filters', () => {
   // Stack
   const stack = new Stack();
@@ -152,7 +140,8 @@ test('Test deployment w/ s3 event types and filters', () => {
   };
   new S3ToSqs(stack, 'test-s3-sqs', props);
   // Assertion 1
-  expect(stack).toHaveResource("Custom::S3BucketNotifications", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("Custom::S3BucketNotifications", {
     NotificationConfiguration: {
       QueueConfigurations: [
         {
@@ -183,9 +172,6 @@ test('Test deployment w/ s3 event types and filters', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ SSE encryption enabled using customer managed KMS CMK
-// --------------------------------------------------------------
 test('Test deployment w/ SSE encryption enabled using customer managed KMS CMK', () => {
   // Stack
   const stack = new Stack();
@@ -195,27 +181,25 @@ test('Test deployment w/ SSE encryption enabled using customer managed KMS CMK',
   });
 
   // Assertion 1
-  expect(stack).toHaveResource("Custom::S3BucketNotifications");
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("Custom::S3BucketNotifications", 1);
 
   // Assertion 2
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "tests3sqsEncryptionKeyFD4D5946",
+        "tests3sqsqueueKey27AABDC5",
         "Arn"
       ]
     }
   });
 
   // Assertion 3
-  expect(stack).toHaveResource('AWS::KMS::Key', {
+  template.hasResourceProperties('AWS::KMS::Key', {
     EnableKeyRotation: true
   });
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingBucket and bucketProps
-// --------------------------------------------------------------
 test("Test bad call with existingBucket and bucketProps", () => {
   // Stack
   const stack = new Stack();
@@ -235,9 +219,6 @@ test("Test bad call with existingBucket and bucketProps", () => {
   expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
-// --------------------------------------------------------------
-// s3 bucket with bucket, loggingBucket, and auto delete objects
-// --------------------------------------------------------------
 test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   const stack = new Stack();
 
@@ -251,11 +232,10 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
-    AccessControl: "LogDeliveryWrite"
-  });
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::S3::Bucket", 2);
 
-  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
@@ -268,9 +248,6 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   });
 });
 
-// --------------------------------------------------------------
-// s3 bucket with one content bucket and no logging bucket
-// --------------------------------------------------------------
 test('s3 bucket with one content bucket and no logging bucket', () => {
   const stack = new Stack();
 
@@ -281,5 +258,136 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
     logS3AccessLogs: false
   });
 
-  expect(stack).toCountResources("AWS::S3::Bucket", 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::S3::Bucket", 1);
+});
+
+test('Queue is encrypted with imported CMK when set on encryptionKey prop', () => {
+  const stack = new Stack();
+  const key = new kms.Key(stack, 'cmk');
+  new S3ToSqs(stack, 'test-s3-sqs', {
+    encryptionKey: key
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted with provided encryptionKeyProps', () => {
+  const stack = new Stack();
+  new S3ToSqs(stack, 'test-s3-sqs', {
+    encryptionKeyProps: {
+      alias: 'new-key-alias-from-props'
+    }
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "tests3sqsqueueKey27AABDC5",
+        "Arn"
+      ]
+    }
+  });
+
+  template.hasResourceProperties('AWS::KMS::Alias', {
+    AliasName: 'alias/new-key-alias-from-props',
+    TargetKeyId: {
+      "Fn::GetAtt": [
+        "tests3sqsqueueKey27AABDC5",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted with imported CMK when set on queueProps.encryptionMasterKey prop', () => {
+  const stack = new Stack();
+  const key = new kms.Key(stack, 'cmk');
+  new S3ToSqs(stack, 'test-s3-sqs', {
+    queueProps: {
+      encryptionMasterKey: key
+    }
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted by default with Customer-managed KMS key when no other encryption properties are set', () => {
+  const stack = new Stack();
+  new S3ToSqs(stack, 'test-s3-sqs', {
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "tests3sqsqueueKey27AABDC5",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Queue is encrypted with SQS-managed KMS Key when enable encryption flag is false', () => {
+  const stack = new Stack();
+  new S3ToSqs(stack, 'test-s3-sqs', {
+    enableEncryptionWithCustomerManagedKey: false
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
+    KmsMasterKeyId: "alias/aws/sqs"
+  });
+});
+
+test('Confirm CheckSqsProps is called', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const filter: s3.NotificationKeyFilter = { prefix: 'the/place', suffix: '*.mp3' };
+  const props: S3ToSqsProps = {
+    deployDeadLetterQueue: true,
+    maxReceiveCount: 0,
+    s3EventTypes: [s3.EventType.OBJECT_REMOVED],
+    s3EventFilters: [filter],
+    queueProps: {
+      removalPolicy: RemovalPolicy.DESTROY,
+    },
+    existingQueueObj: new sqs.Queue(stack, 'test', {})
+  };
+
+  const app = () => {
+    new S3ToSqs(stack, 'test-s3-sqs', props);
+  };
+  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
+});
+
+test('Confirm CheckS3Props is being called', () => {
+  const stack = new Stack();
+
+  const app = () => {
+    new S3ToSqs(stack, 'test-s3-sqs', {
+      bucketProps: {},
+      existingBucketObj: new s3.Bucket(stack, 'test-bucket', {}),
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Error - Either provide bucketProps or existingBucketObj, but not both.\n/);
 });

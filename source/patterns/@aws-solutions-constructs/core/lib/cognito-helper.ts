@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,13 +11,18 @@
  *  and limitations under the License.
  */
 
-import * as cognito from '@aws-cdk/aws-cognito';
-import * as iam from '@aws-cdk/aws-iam';
-import * as cdk from '@aws-cdk/core';
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
+import * as cognito from 'aws-cdk-lib/aws-cognito';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as cdk from 'aws-cdk-lib';
 import { addCfnSuppressRules, consolidateProps } from './utils';
 import { DefaultUserPoolProps, DefaultUserPoolClientProps, DefaultIdentityPoolProps } from './cognito-defaults';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 export interface CognitoOptions {
   readonly identitypool: cognito.CfnIdentityPool,
@@ -25,6 +30,9 @@ export interface CognitoOptions {
   readonly userpoolclient: cognito.UserPoolClient
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildUserPool(scope: Construct, userPoolProps?: cognito.UserPoolProps): cognito.UserPool {
   let cognitoUserPoolProps: cognito.UserPoolProps;
 
@@ -54,6 +62,9 @@ export function buildUserPool(scope: Construct, userPoolProps?: cognito.UserPool
   return userPool;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildUserPoolClient(scope: Construct, userPool: cognito.UserPool,
   cognitoUserPoolClientProps?: cognito.UserPoolClientProps): cognito.UserPoolClient {
 
@@ -64,6 +75,9 @@ export function buildUserPoolClient(scope: Construct, userPool: cognito.UserPool
   return new cognito.UserPoolClient(scope, 'CognitoUserPoolClient', userPoolClientProps);
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildIdentityPool(scope: Construct, userpool: cognito.UserPool, userpoolclient: cognito.UserPoolClient,
   identityPoolProps?: cognito.CfnIdentityPoolProps): cognito.CfnIdentityPool {
 
@@ -77,14 +91,17 @@ export function buildIdentityPool(scope: Construct, userpool: cognito.UserPool, 
   return idPool;
 }
 
-export function setupCognitoForElasticSearch(scope: Construct, domainName: string, options: CognitoOptions): iam.Role {
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function setupCognitoForSearchService(scope: Construct, domainName: string, options: CognitoOptions): iam.Role {
 
   // Create the domain for Cognito UserPool
   const userpooldomain = new cognito.CfnUserPoolDomain(scope, 'UserPoolDomain', {
     domain: domainName,
     userPoolId: options.userpool.userPoolId
   });
-  userpooldomain.addDependsOn(options.userpool.node.findChild('Resource') as cognito.CfnUserPool);
+  userpooldomain.addDependency(options.userpool.node.findChild('Resource') as cognito.CfnUserPool);
 
   // Setup the IAM Role for Cognito Authorized Users
   const cognitoPrincipal = new iam.FederatedPrincipal(
@@ -111,12 +128,33 @@ export function setupCognitoForElasticSearch(scope: Construct, domainName: strin
   });
 
   // Attach the IAM Role for Cognito Authorized Users
-  new cognito.CfnIdentityPoolRoleAttachment(scope, 'IdentityPoolRoleMapping', {
+  const props: cognito.CfnIdentityPoolRoleAttachmentProps = {
     identityPoolId: options.identitypool.ref,
     roles: {
       authenticated: cognitoAuthorizedRole.roleArn
     }
-  });
+  };
+
+  // Minimize code in a NOSONA line
+  new cognito.CfnIdentityPoolRoleAttachment(scope, 'IdentityPoolRoleMapping', props); // NOSONAR
 
   return cognitoAuthorizedRole;
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function buildCognitoForSearchService(scope: Construct, domainName: string):
+  [cognito.UserPool, cognito.UserPoolClient, cognito.CfnIdentityPool, iam.Role] {
+  const userPool = buildUserPool(scope);
+  const userPoolClient = buildUserPoolClient(scope, userPool);
+  const identityPool = buildIdentityPool(scope, userPool, userPoolClient);
+
+  const cognitoAuthorizedRole: iam.Role = setupCognitoForSearchService(scope, domainName, {
+    userpool: userPool,
+    identitypool: identityPool,
+    userpoolclient: userPoolClient
+  });
+
+  return [userPool, userPoolClient, identityPool, cognitoAuthorizedRole];
 }

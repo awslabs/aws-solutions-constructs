@@ -1,0 +1,197 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "s3lamnoargumentsIntegDefaultTestDeployAssert35992089.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "s3lamnoargumentsIntegDefaultTestDeployAssert35992089.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "s3lamnoargumentsIntegDefaultTestDeployAssert35992089": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "s3lamnoargumentsIntegDefaultTestDeployAssert35992089.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "s3lamnoargumentsIntegDefaultTestDeployAssert35992089.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "s3lamnoargumentsIntegDefaultTestDeployAssert35992089.assets"
+      ],
+      "metadata": {
+        "/s3lam-no-arguments/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/s3lam-no-arguments/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "s3lam-no-arguments/Integ/DefaultTest/DeployAssert"
+    },
+    "s3lam-no-arguments.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "s3lam-no-arguments.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "s3lam-no-arguments": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "s3lam-no-arguments.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5de7ac3696815edbf0b2d75b17f600e8afd7d7466c7d16ca0c217c1c862f9198.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "s3lam-no-arguments.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "s3lam-no-arguments.assets"
+      ],
+      "metadata": {
+        "/s3lam-no-arguments/test-s3-lambda/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3lambdaLambdaFunctionServiceRoleA74F4427"
+          }
+        ],
+        "/s3lam-no-arguments/test-s3-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3lambdaLambdaFunctionServiceRoleDefaultPolicyA7E71BD5"
+          }
+        ],
+        "/s3lam-no-arguments/test-s3-lambda/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3lambdaLambdaFunctionB56B7023"
+          }
+        ],
+        "/s3lam-no-arguments/test-s3-lambda/S3LoggingBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3lambdaS3LoggingBucket0C3BBFDC"
+          }
+        ],
+        "/s3lam-no-arguments/test-s3-lambda/S3LoggingBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3lambdaS3LoggingBucketPolicyC349F74C"
+          }
+        ],
+        "/s3lam-no-arguments/test-s3-lambda/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3lambdaS3LoggingBucketAutoDeleteObjectsCustomResource323E9779"
+          }
+        ],
+        "/s3lam-no-arguments/test-s3-lambda/S3Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3lambdaS3BucketBE7C1B8E"
+          }
+        ],
+        "/s3lam-no-arguments/test-s3-lambda/S3Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3lambdaS3BucketPolicyE0402ABD"
+          }
+        ],
+        "/s3lam-no-arguments/test-s3-lambda/S3Bucket/Notifications/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3lambdaS3BucketNotifications1943E9B3"
+          }
+        ],
+        "/s3lam-no-arguments/test-s3-lambda/S3Bucket/AllowBucketNotificationsTos3lamnoargumentstests3lambdaLambdaFunction7F4DB5A1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3lambdaS3BucketAllowBucketNotificationsTos3lamnoargumentstests3lambdaLambdaFunction7F4DB5A1D2077883"
+          }
+        ],
+        "/s3lam-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/s3lam-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/s3lam-no-arguments/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
+          }
+        ],
+        "/s3lam-no-arguments/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36"
+          }
+        ],
+        "/s3lam-no-arguments/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691"
+          }
+        ],
+        "/s3lam-no-arguments/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/s3lam-no-arguments/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "s3lam-no-arguments"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

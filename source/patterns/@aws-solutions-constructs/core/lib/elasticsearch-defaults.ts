@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,25 +11,27 @@
  *  and limitations under the License.
  */
 
-import * as elasticsearch from '@aws-cdk/aws-elasticsearch';
-import * as cognito from '@aws-cdk/aws-cognito';
-import * as iam from '@aws-cdk/aws-iam';
-import * as cdk from '@aws-cdk/core';
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
 
-export interface CfnDomainOptions {
-  readonly identitypool: cognito.CfnIdentityPool,
-  readonly userpool: cognito.UserPool,
-  readonly cognitoAuthorizedRoleARN: string,
-  readonly serviceRoleARN?: string
-}
+import * as elasticsearch from 'aws-cdk-lib/aws-elasticsearch';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as cdk from 'aws-cdk-lib';
+import { BuildElasticSearchProps } from './elasticsearch-helper';
 
-export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigureRole: iam.Role, options: CfnDomainOptions) {
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigureRole: iam.Role, props: BuildElasticSearchProps):
+  elasticsearch.CfnDomainProps {
   const roleARNs: iam.IPrincipal[] = [];
 
-  roleARNs.push(new iam.ArnPrincipal(options.cognitoAuthorizedRoleARN));
+  roleARNs.push(new iam.ArnPrincipal(props.cognitoAuthorizedRoleARN));
 
-  if (options.serviceRoleARN) {
-    roleARNs.push(new iam.ArnPrincipal(options.serviceRoleARN));
+  if (props.serviceRoleARN) {
+    roleARNs.push(new iam.ArnPrincipal(props.serviceRoleARN));
   }
 
   return {
@@ -41,15 +43,6 @@ export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigure
     nodeToNodeEncryptionOptions: {
       enabled: true
     },
-    elasticsearchClusterConfig: {
-      dedicatedMasterEnabled: true,
-      dedicatedMasterCount: 3,
-      instanceCount: 3,
-      zoneAwarenessEnabled: true,
-      zoneAwarenessConfig: {
-        availabilityZoneCount: 3
-      }
-    },
     snapshotOptions: {
       automatedSnapshotStartHour: 1
     },
@@ -59,9 +52,13 @@ export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigure
     },
     cognitoOptions: {
       enabled: true,
-      identityPoolId: options.identitypool.ref,
-      userPoolId: options.userpool.userPoolId,
+      identityPoolId: props.identitypool.ref,
+      userPoolId: props.userpool.userPoolId,
       roleArn: cognitoKibanaConfigureRole.roleArn
+    },
+    domainEndpointOptions: {
+      enforceHttps: true,
+      tlsSecurityPolicy: 'Policy-Min-TLS-1-2-2019-07',
     },
     accessPolicies: new iam.PolicyDocument({
       statements: [
@@ -71,7 +68,7 @@ export function DefaultCfnDomainProps(domainName: string, cognitoKibanaConfigure
             'es:ESHttp*'
           ],
           resources: [
-            `arn:aws:es:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:domain/${domainName}/*`
+            `arn:${cdk.Aws.PARTITION}:es:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:domain/${domainName}/*`
           ]
         })
       ]

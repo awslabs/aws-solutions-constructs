@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "30e4d148467efe329472921a8d7405abee032bdcdd485dad32070f29527be515": {
+      "source": {
+        "path": "apikin-apigateway-kinesis-overwrite.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "30e4d148467efe329472921a8d7405abee032bdcdd485dad32070f29527be515.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

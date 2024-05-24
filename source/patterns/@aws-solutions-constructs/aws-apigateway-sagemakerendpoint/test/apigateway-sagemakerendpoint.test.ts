@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,14 +12,11 @@
  */
 
 // Imports
-import { Stack, Aws } from '@aws-cdk/core';
+import { Stack, Aws } from 'aws-cdk-lib';
 import { ApiGatewayToSageMakerEndpoint } from '../lib';
-import * as iam from '@aws-cdk/aws-iam';
-import '@aws-cdk/assert/jest';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Test construct properties
-// --------------------------------------------------------------
 test('Test construct properties', () => {
   const stack = new Stack();
   const pattern = new ApiGatewayToSageMakerEndpoint(stack, 'api-gateway-sagemakerendpoint', {
@@ -28,15 +25,12 @@ test('Test construct properties', () => {
     requestMappingTemplate: 'my-request-vtl-template'
   });
 
-  expect(pattern.apiGateway !== null);
-  expect(pattern.apiGatewayRole !== null);
-  expect(pattern.apiGatewayCloudWatchRole !== null);
-  expect(pattern.apiGatewayLogGroup !== null);
+  expect(pattern.apiGateway).toBeDefined();
+  expect(pattern.apiGatewayRole).toBeDefined();
+  expect(pattern.apiGatewayCloudWatchRole).toBeDefined();
+  expect(pattern.apiGatewayLogGroup).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ overwritten properties
-// --------------------------------------------------------------
 test('Test deployment w/ overwritten properties', () => {
   const stack = new Stack();
 
@@ -74,7 +68,8 @@ test('Test deployment w/ overwritten properties', () => {
     responseMappingTemplate: 'my-response-vtl-template'
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Stage', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Stage', {
     MethodSettings: [
       {
         DataTraceEnabled: false,
@@ -91,11 +86,11 @@ test('Test deployment w/ overwritten properties', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Resource', {
+  template.hasResourceProperties('AWS::ApiGateway::Resource', {
     PathPart: 'my-resource'
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     Integration: {
       IntegrationResponses: [
         {
@@ -121,7 +116,30 @@ test('Test deployment w/ overwritten properties', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike('AWS::IAM::Role', {
+  template.hasResourceProperties('AWS::IAM::Role', {
     Description: 'existing role for SageMaker integration'
+  });
+});
+
+test('Construct accepts additional read request templates', () => {
+  const stack = new Stack();
+  new ApiGatewayToSageMakerEndpoint(stack, 'api-gateway-sagemaker-endpoint', {
+    endpointName: 'my-endpoint',
+    resourcePath: '{my_param}',
+    requestMappingTemplate: 'my-request-vtl-template',
+    additionalRequestTemplates: {
+      'text/plain': 'additional-request-template'
+    }
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
+    HttpMethod: 'GET',
+    Integration: {
+      RequestTemplates: {
+        'application/json': 'my-request-vtl-template',
+        'text/plain': 'additional-request-template'
+      }
+    }
   });
 });

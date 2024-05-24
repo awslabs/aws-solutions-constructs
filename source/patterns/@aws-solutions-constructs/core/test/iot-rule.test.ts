@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,11 +11,11 @@
  *  and limitations under the License.
  */
 
-import { Stack } from '@aws-cdk/core';
-import * as iot from '@aws-cdk/aws-iot';
+import { Stack } from 'aws-cdk-lib';
+import * as iot from 'aws-cdk-lib/aws-iot';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 test('test TopicRuleProps override sql and description', () => {
   const stack = new Stack();
@@ -41,7 +41,7 @@ test('test TopicRuleProps override sql and description', () => {
 
   new iot.CfnTopicRule(stack, 'IotTopic', outProps);
 
-  expect(stack).toHaveResource('AWS::IoT::TopicRule', {
+  Template.fromStack(stack).hasResourceProperties('AWS::IoT::TopicRule', {
     TopicRulePayload: {
       Actions: [
         {
@@ -80,7 +80,7 @@ test('test TopicRuleProps override actions', () => {
 
   new iot.CfnTopicRule(stack, 'IotTopic', outProps);
 
-  expect(stack).toHaveResource('AWS::IoT::TopicRule', {
+  Template.fromStack(stack).hasResourceProperties('AWS::IoT::TopicRule', {
     TopicRulePayload: {
       Actions: [
         {

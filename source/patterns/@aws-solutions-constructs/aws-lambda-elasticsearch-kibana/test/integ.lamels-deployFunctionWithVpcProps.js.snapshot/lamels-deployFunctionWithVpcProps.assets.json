@@ -1,0 +1,48 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "dd5711540f04e06aa955d7f4862fc04e8cdea464cb590dae91ed2976bb78098e": {
+      "source": {
+        "path": "asset.dd5711540f04e06aa955d7f4862fc04e8cdea464cb590dae91ed2976bb78098e",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-us-east-1": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
+          "objectKey": "dd5711540f04e06aa955d7f4862fc04e8cdea464cb590dae91ed2976bb78098e.zip",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
+        }
+      }
+    },
+    "35bbbc7b04b21f225891f139adf234188f348ebad5f4bbc2c06edf8aa3784c97": {
+      "source": {
+        "path": "asset.35bbbc7b04b21f225891f139adf234188f348ebad5f4bbc2c06edf8aa3784c97",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-us-east-1": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
+          "objectKey": "35bbbc7b04b21f225891f139adf234188f348ebad5f4bbc2c06edf8aa3784c97.zip",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
+        }
+      }
+    },
+    "46912325e78ca4d93023bd4220790158ebe8048ea009da38ed9348a6810ba9fa": {
+      "source": {
+        "path": "lamels-deployFunctionWithVpcProps.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-us-east-1": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
+          "objectKey": "46912325e78ca4d93023bd4220790158ebe8048ea009da38ed9348a6810ba9fa.json",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

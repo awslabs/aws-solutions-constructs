@@ -1,0 +1,239 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "s3stpcustomLoggingBucketIntegDefaultTestDeployAssert2EFDBF9D.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "s3stpcustomLoggingBucketIntegDefaultTestDeployAssert2EFDBF9D.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "s3stpcustomLoggingBucketIntegDefaultTestDeployAssert2EFDBF9D": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "s3stpcustomLoggingBucketIntegDefaultTestDeployAssert2EFDBF9D.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "s3stpcustomLoggingBucketIntegDefaultTestDeployAssert2EFDBF9D.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "s3stpcustomLoggingBucketIntegDefaultTestDeployAssert2EFDBF9D.assets"
+      ],
+      "metadata": {
+        "/s3stp-customLoggingBucket/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/s3stp-customLoggingBucket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "s3stp-customLoggingBucket/Integ/DefaultTest/DeployAssert"
+    },
+    "s3stp-customLoggingBucket.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "s3stp-customLoggingBucket.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "s3stp-customLoggingBucket": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "s3stp-customLoggingBucket.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3fbd357af76ea1ef3210238c23d9593e6fad3f92cda8a567f1c86c81fedee7de.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "s3stp-customLoggingBucket.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "s3stp-customLoggingBucket.assets"
+      ],
+      "metadata": {
+        "/s3stp-customLoggingBucket/test-s3-stepfunctions/S3LoggingBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3stepfunctionsS3LoggingBucketF7586A92"
+          }
+        ],
+        "/s3stp-customLoggingBucket/test-s3-stepfunctions/S3LoggingBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3stepfunctionsS3LoggingBucketPolicyA69F8114"
+          }
+        ],
+        "/s3stp-customLoggingBucket/test-s3-stepfunctions/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3stepfunctionsS3LoggingBucketAutoDeleteObjectsCustomResource7F12902B"
+          }
+        ],
+        "/s3stp-customLoggingBucket/test-s3-stepfunctions/S3Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3stepfunctionsS3Bucket2B08AD28"
+          }
+        ],
+        "/s3stp-customLoggingBucket/test-s3-stepfunctions/S3Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3stepfunctionsS3BucketPolicy816CD289"
+          }
+        ],
+        "/s3stp-customLoggingBucket/test-s3-stepfunctions/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3stepfunctionsS3BucketAutoDeleteObjectsCustomResource8EC73828"
+          }
+        ],
+        "/s3stp-customLoggingBucket/test-s3-stepfunctions/S3Bucket/Notifications/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3stepfunctionsS3BucketNotificationsDBB3D484"
+          }
+        ],
+        "/s3stp-customLoggingBucket/test-s3-stepfunctions/test-s3-stepfunctions-event-rule-step-function-construct/StateMachineLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructStateMachineLogGroupB4555776"
+          }
+        ],
+        "/s3stp-customLoggingBucket/test-s3-stepfunctions/test-s3-stepfunctions-event-rule-step-function-construct/StateMachine/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructStateMachineRoleEAF485A9"
+          }
+        ],
+        "/s3stp-customLoggingBucket/test-s3-stepfunctions/test-s3-stepfunctions-event-rule-step-function-construct/StateMachine/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructStateMachineRoleDefaultPolicy2A86AA4F"
+          }
+        ],
+        "/s3stp-customLoggingBucket/test-s3-stepfunctions/test-s3-stepfunctions-event-rule-step-function-construct/StateMachine/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructStateMachine67197269"
+          }
+        ],
+        "/s3stp-customLoggingBucket/test-s3-stepfunctions/test-s3-stepfunctions-event-rule-step-function-construct/EventsRuleRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructEventsRuleRoleE7CAD359"
+          }
+        ],
+        "/s3stp-customLoggingBucket/test-s3-stepfunctions/test-s3-stepfunctions-event-rule-step-function-construct/EventsRuleRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructEventsRuleRoleDefaultPolicy0353F447"
+          }
+        ],
+        "/s3stp-customLoggingBucket/test-s3-stepfunctions/test-s3-stepfunctions-event-rule-step-function-construct/EventsRule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructEventsRuleEF658568"
+          }
+        ],
+        "/s3stp-customLoggingBucket/test-s3-stepfunctions/test-s3-stepfunctions-event-rule-step-function-construct/ExecutionFailedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructExecutionFailedAlarm9C7AF57A"
+          }
+        ],
+        "/s3stp-customLoggingBucket/test-s3-stepfunctions/test-s3-stepfunctions-event-rule-step-function-construct/ExecutionThrottledAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructExecutionThrottledAlarm99D8FF54"
+          }
+        ],
+        "/s3stp-customLoggingBucket/test-s3-stepfunctions/test-s3-stepfunctions-event-rule-step-function-construct/ExecutionAbortedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3stepfunctionstests3stepfunctionseventrulestepfunctionconstructExecutionAbortedAlarm1689CFA6"
+          }
+        ],
+        "/s3stp-customLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/s3stp-customLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/s3stp-customLoggingBucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
+          }
+        ],
+        "/s3stp-customLoggingBucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36"
+          }
+        ],
+        "/s3stp-customLoggingBucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691"
+          }
+        ],
+        "/s3stp-customLoggingBucket/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/s3stp-customLoggingBucket/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "s3stp-customLoggingBucket"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

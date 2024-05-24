@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,16 +11,16 @@
  *  and limitations under the License.
  */
 
-import { Stack, RemovalPolicy } from "@aws-cdk/core";
-import * as cdk from "@aws-cdk/core";
-import * as kinesisanalytics from "@aws-cdk/aws-kinesisanalytics";
-import * as kinesisFirehose from "@aws-cdk/aws-kinesisfirehose";
-import * as iam from "@aws-cdk/aws-iam";
-import * as kms from "@aws-cdk/aws-kms";
-import * as logs from "@aws-cdk/aws-logs";
+import { Stack, RemovalPolicy } from "aws-cdk-lib";
+import * as cdk from "aws-cdk-lib";
+import * as kinesisanalytics from "aws-cdk-lib/aws-kinesisanalytics";
+import * as kinesisFirehose from "aws-cdk-lib/aws-kinesisfirehose";
+import * as iam from "aws-cdk-lib/aws-iam";
+import * as kms from "aws-cdk-lib/aws-kms";
+import * as logs from "aws-cdk-lib/aws-logs";
 import * as defaults from "../index";
 import { overrideProps } from "../lib/utils";
-import "@aws-cdk/assert/jest";
+import { Template } from 'aws-cdk-lib/assertions';
 
 test("test kinesisanalytics override inputProperty", () => {
   const stack = new Stack();
@@ -44,7 +44,7 @@ test("test kinesisanalytics override inputProperty", () => {
 
   new kinesisanalytics.CfnApplication(stack, "KinesisAnalytics", outProps);
 
-  expect(stack).toHaveResource("AWS::KinesisAnalytics::Application", {
+  Template.fromStack(stack).hasResourceProperties("AWS::KinesisAnalytics::Application", {
     Inputs: [
       {
         InputSchema: {
@@ -94,7 +94,7 @@ test("Test default implementation", () => {
 
   defaults.buildKinesisAnalyticsApp(stack, kinesisProps);
 
-  expect(stack).toHaveResourceLike("AWS::KinesisAnalytics::Application", {
+  Template.fromStack(stack).hasResourceProperties("AWS::KinesisAnalytics::Application", {
     Inputs: [{
       InputSchema: {
         RecordColumns: [{
@@ -123,7 +123,7 @@ function CreateFirehose(stack: Stack): kinesisFirehose.CfnDeliveryStream {
   // Creating the Firehose is kind of a big deal. FirehoseToS3 is not readily available here in core,
   // so this routine pretty much replicates it. If this function ceases to work correctly, look at
   // FirehoseToS3 and see if that changed.
-  const destinationBucket = defaults.CreateScrapBucket(stack, {
+  const destinationBucket = defaults.CreateScrapBucket(stack, "scrapBucket", {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true,
   });

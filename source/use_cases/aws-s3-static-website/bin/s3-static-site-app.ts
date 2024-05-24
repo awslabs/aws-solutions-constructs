@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -14,9 +14,9 @@
  */
 
 import 'source-map-support/register';
-import * as cdk from '@aws-cdk/core';
+import { App } from 'aws-cdk-lib';
 import { S3StaticWebsiteStack } from '../lib/s3-static-site-stack';
 
-const app = new cdk.App();
+const app = new App();
 const stack = new S3StaticWebsiteStack(app, 'S3StaticWebsiteStack');
 stack.templateOptions.description = 'Creates a static website using S3 for the Wild Rydes serverless web application workshop';

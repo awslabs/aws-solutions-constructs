@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "d27e8c86ae760badcf27b11bd209fb994a26a87798b5c9ac24b29169267b1694": {
+      "source": {
+        "path": "apiddb-custom-integration-responses.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "d27e8c86ae760badcf27b11bd209fb994a26a87798b5c9ac24b29169267b1694.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

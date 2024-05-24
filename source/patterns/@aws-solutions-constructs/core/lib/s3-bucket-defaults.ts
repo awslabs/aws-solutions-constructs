@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,10 +11,18 @@
  *  and limitations under the License.
  */
 
-import * as s3 from '@aws-cdk/aws-s3';
-import { RemovalPolicy } from '@aws-cdk/core';
-import { Bucket, BucketProps } from '@aws-cdk/aws-s3';
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
 
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import { RemovalPolicy } from 'aws-cdk-lib';
+import { Bucket, BucketProps } from 'aws-cdk-lib/aws-s3';
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function DefaultS3Props(loggingBucket?: Bucket, lifecycleRules?: s3.LifecycleRule[]): s3.BucketProps {
   return {
     encryption: s3.BucketEncryption.S3_MANAGED,
@@ -24,16 +32,6 @@ export function DefaultS3Props(loggingBucket?: Bucket, lifecycleRules?: s3.Lifec
     enforceSSL: true,
     ...((lifecycleRules !== undefined) && { lifecycleRules }),
     ...((loggingBucket !== undefined) && { serverAccessLogsBucket: loggingBucket })
-  } as BucketProps;
-}
-
-export function DefaultLoggingBucketProps(): s3.BucketProps {
-  return {
-    encryption: s3.BucketEncryption.S3_MANAGED,
-    versioned: true,
-    blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-    removalPolicy: RemovalPolicy.RETAIN,
-    enforceSSL: true,
   } as BucketProps;
 }
 

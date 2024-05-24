@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,14 +11,14 @@
  *  and limitations under the License.
  */
 
-import * as api from '@aws-cdk/aws-apigateway';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as cognito from '@aws-cdk/aws-cognito';
-import * as logs from '@aws-cdk/aws-logs';
-import * as iam from '@aws-cdk/aws-iam';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
+import * as logs from 'aws-cdk-lib/aws-logs';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * @summary The properties for the CognitoToApiGatewayToLambda Construct
@@ -81,7 +81,7 @@ export class CognitoToApiGatewayToLambda extends Construct {
    */
   constructor(scope: Construct, id: string, props: CognitoToApiGatewayToLambdaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckLambdaProps(props);
 
     // This Construct requires that the auth type be COGNITO regardless of what is specified in the props
     if (props.apiGatewayProps) {
@@ -98,15 +98,18 @@ export class CognitoToApiGatewayToLambda extends Construct {
     }
 
     if (props.apiGatewayProps && (typeof props.apiGatewayProps.proxy !== 'undefined') && (props.apiGatewayProps.proxy === false)) {
-      defaults.printWarning('For non-proxy API, addAuthorizers() method must be called after all the resources and methods for API are fuly defined. Not calling addAuthorizers() will result in API methods NOT protected by Cognito.');
+      defaults.printWarning('For non-proxy API, addAuthorizers() method must be called after all the resources and methods for API are fully defined. Not calling addAuthorizers() will result in API methods NOT protected by Cognito.');
     }
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
     });
-    [this.apiGateway, this.apiGatewayCloudWatchRole, this.apiGatewayLogGroup] =
-      defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
+    const globalLambdaRestApiResponse = defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
+    this.apiGateway = globalLambdaRestApiResponse.api;
+    this.apiGatewayCloudWatchRole = globalLambdaRestApiResponse.role;
+    this.apiGatewayLogGroup = globalLambdaRestApiResponse.group;
+
     this.userPool = defaults.buildUserPool(this, props.cognitoUserPoolProps);
     this.userPoolClient = defaults.buildUserPoolClient(this, this.userPool, props.cognitoUserPoolClientProps);
 

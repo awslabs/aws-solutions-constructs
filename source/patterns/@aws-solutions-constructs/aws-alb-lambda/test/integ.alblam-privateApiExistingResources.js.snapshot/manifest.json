@@ -1,0 +1,371 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "alblamprivateApiExistingResourcesIntegDefaultTestDeployAssertC865AE59.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "alblamprivateApiExistingResourcesIntegDefaultTestDeployAssertC865AE59.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "alblamprivateApiExistingResourcesIntegDefaultTestDeployAssertC865AE59": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "alblamprivateApiExistingResourcesIntegDefaultTestDeployAssertC865AE59.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "alblamprivateApiExistingResourcesIntegDefaultTestDeployAssertC865AE59.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "alblamprivateApiExistingResourcesIntegDefaultTestDeployAssertC865AE59.assets"
+      ],
+      "metadata": {
+        "/alblam-privateApiExistingResources/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "alblam-privateApiExistingResources/Integ/DefaultTest/DeployAssert"
+    },
+    "alblam-privateApiExistingResources.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "alblam-privateApiExistingResources.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "alblam-privateApiExistingResources": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/us-east-1",
+      "properties": {
+        "templateFile": "alblam-privateApiExistingResources.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/6d25fed1bcf5f575cbf8981292474df33b28f2c42ca40b0cf8e43b7e95ee25f8.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "alblam-privateApiExistingResources.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "alblam-privateApiExistingResources.assets"
+      ],
+      "metadata": {
+        "/alblam-privateApiExistingResources/Vpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Vpc8378EB38"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PublicSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1Subnet5C2D37C4"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PublicSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1RouteTable6C95E38E"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PublicSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1RouteTableAssociation97140677"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PublicSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1DefaultRoute3DA9E72A"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PublicSubnet1/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1EIPD7E02669"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PublicSubnet1/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1NATGateway4D7517AA"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PublicSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2Subnet691E08A3"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PublicSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2RouteTable94F7E489"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PublicSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2RouteTableAssociationDD5762D8"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PublicSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2DefaultRoute97F91067"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PublicSubnet2/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2EIP3C605A87"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PublicSubnet2/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2NATGateway9182C01D"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PrivateSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet1Subnet536B997A"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PrivateSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet1RouteTableB2C5B500"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PrivateSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet1RouteTableAssociation70C59FA6"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PrivateSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet1DefaultRouteBE02A9ED"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PrivateSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet2Subnet3788AAA1"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PrivateSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet2RouteTableA678073B"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PrivateSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet2RouteTableAssociationA89CAD56"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/PrivateSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet2DefaultRoute060D2087"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcIGWD7BA715C"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcVPCGWBF912B6E"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/FlowLog/IAMRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRole6A475D41"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/FlowLog/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogLogGroup7B5C56B9"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Vpc/FlowLog/FlowLog": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLog8FF33A73"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+          }
+        ],
+        "/alblam-privateApiExistingResources/lambda-sg/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdasg93781054"
+          }
+        ],
+        "/alblam-privateApiExistingResources/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRole0C4CDE0B"
+          }
+        ],
+        "/alblam-privateApiExistingResources/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRoleDefaultPolicy126C8897"
+          }
+        ],
+        "/alblam-privateApiExistingResources/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionBF21E41F"
+          }
+        ],
+        "/alblam-privateApiExistingResources/LambdaFunction/Invoke2UTWxhlfyqbT5FTn--5jvgbLgj+FfJwzswGk55DU1H--Y=": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionInvoke2UTWxhlfyqbT5FTn5jvgbLgjFfJwzswGk55DU1HYAD69E89D"
+          }
+        ],
+        "/alblam-privateApiExistingResources/existing-alb-alb/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingalbalb3A941601"
+          }
+        ],
+        "/alblam-privateApiExistingResources/existing-alb-alb/SecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingalbalbSecurityGroupC8DD2920"
+          }
+        ],
+        "/alblam-privateApiExistingResources/existing-alb/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingalb0F60CC48"
+          }
+        ],
+        "/alblam-privateApiExistingResources/existing-alb/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingalbPolicy6C7AF240"
+          }
+        ],
+        "/alblam-privateApiExistingResources/existing-alb/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingalbAutoDeleteObjectsCustomResource67152080"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/alblam-privateApiExistingResources/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/alblam-privateApiExistingResources/test-one/test-one-listener/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testonetestonelistener51CF582F"
+          }
+        ],
+        "/alblam-privateApiExistingResources/test-one/tg2-tg/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testonetg2tg6459EC7C"
+          }
+        ],
+        "/alblam-privateApiExistingResources/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/alblam-privateApiExistingResources/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "alblam-privateApiExistingResources"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

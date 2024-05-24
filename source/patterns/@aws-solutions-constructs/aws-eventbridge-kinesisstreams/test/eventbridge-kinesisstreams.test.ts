@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,15 +11,12 @@
  *  and limitations under the License.
  */
 
-import * as cdk from "@aws-cdk/core";
-import * as events from "@aws-cdk/aws-events";
-import * as kinesis from '@aws-cdk/aws-kinesis';
-import '@aws-cdk/assert/jest';
+import * as cdk from "aws-cdk-lib";
+import * as events from "aws-cdk-lib/aws-events";
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
+import { Template } from "aws-cdk-lib/assertions";
 import {EventbridgeToKinesisStreams, EventbridgeToKinesisStreamsProps} from '../lib';
 
-// --------------------------------------------------------------
-// Test snapshot match with default parameters
-// --------------------------------------------------------------
 function deployNewStack(stack: cdk.Stack) {
   const props: EventbridgeToKinesisStreamsProps = {
     eventRuleProps: {
@@ -30,28 +27,23 @@ function deployNewStack(stack: cdk.Stack) {
   return new EventbridgeToKinesisStreams(stack, 'test-eventbridge-kinesis-streams-default-parameters', props);
 }
 
-// --------------------------------------------------------------
-// Test properties
-// --------------------------------------------------------------
 test('Test properties', () => {
   const stack = new cdk.Stack();
   const construct: EventbridgeToKinesisStreams = deployNewStack(stack);
 
   // Assertions
-  expect(construct.eventsRule !== null);
-  expect(construct.kinesisStream !== null);
-  expect(construct.eventsRole !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.kinesisStream).toBeDefined();
+  expect(construct.eventsRole).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test default AWS managed encryption key property
-// --------------------------------------------------------------
 test('Test default AWS managed encryption key property', () => {
   const stack = new cdk.Stack();
   deployNewStack(stack);
 
   // Assertions
-  expect(stack).toHaveResource('AWS::Kinesis::Stream', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Kinesis::Stream', {
     StreamEncryption: {
       EncryptionType: "KMS",
       KeyId: "alias/aws/kinesis"
@@ -59,9 +51,6 @@ test('Test default AWS managed encryption key property', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test existing resources
-// --------------------------------------------------------------
 test('Test existing resources', () => {
   const stack = new cdk.Stack();
 
@@ -81,7 +70,8 @@ test('Test existing resources', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::Kinesis::Stream', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Kinesis::Stream', {
     Name: 'existing-stream',
     ShardCount: 5,
     RetentionPeriodHours: 48,
@@ -101,12 +91,13 @@ test('check eventbus property, snapshot & eventbus exists', () => {
   };
   const construct = new EventbridgeToKinesisStreams(stack, 'test-eventbridge-kinesis-streams-default-parameters', props);
 
-  expect(construct.eventsRule !== null);
-  expect(construct.kinesisStream !== null);
-  expect(construct.eventsRole !== null);
-  expect(construct.eventBus !== null);
+  expect(construct.eventsRule).toBeDefined();
+  expect(construct.kinesisStream).toBeDefined();
+  expect(construct.eventsRole).toBeDefined();
+  expect(construct.eventBus).toBeDefined();
   // Check whether eventbus exists
-  expect(stack).toHaveResource('AWS::Events::EventBus');
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Events::EventBus', 1);
 });
 
 test('check exception while passing existingEventBus & eventBusProps', () => {
@@ -125,7 +116,7 @@ test('check exception while passing existingEventBus & eventBusProps', () => {
   const app = () => {
     new EventbridgeToKinesisStreams(stack, 'test-eventbridge-kinesisstreams', props);
   };
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });
 
 test('check custom event bus resource with props when deploy:true', () => {
@@ -143,7 +134,27 @@ test('check custom event bus resource with props when deploy:true', () => {
   };
   new EventbridgeToKinesisStreams(stack, 'test-new-eventbridge-with-props-kinsesisstreams', props);
 
-  expect(stack).toHaveResource('AWS::Events::EventBus', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Events::EventBus', {
     Name: `testeventbus`
   });
+});
+
+test('Confirm that CheckKinesisStreamProps is called', () => {
+  const stack = new cdk.Stack();
+
+  const props: EventbridgeToKinesisStreamsProps = {
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+    existingStreamObj: new kinesis.Stream(stack, 'test', {}),
+    kinesisStreamProps: {}
+  };
+
+  const app = () => {
+    new EventbridgeToKinesisStreams(stack, 'test-eventbridge-kinesisstreams', props);
+  };
+  expect(app).toThrowError();
 });

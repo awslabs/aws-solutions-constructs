@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import * as api from '@aws-cdk/aws-apigateway';
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as s3 from '@aws-cdk/aws-s3';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * @summary The properties for the CloudFrontToApiGateway Construct
@@ -36,11 +36,25 @@ export interface CloudFrontToApiGatewayProps {
   readonly cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   /**
    * Optional user provided props to turn on/off the automatic injection of best practice HTTP
-   * security headers in all responses from cloudfront
+   * security headers in all responses from cloudfront.
+   * Turning this on will inject default headers and is mutually exclusive with passing custom security headers
+   * via the responseHeadersPolicyProps parameter.
    *
    * @default - true
    */
   readonly insertHttpSecurityHeaders?: boolean;
+  /**
+   * Optional user provided configuration that cloudfront applies to all http responses.
+   * Can be used to pass a custom ResponseSecurityHeadersBehavior, ResponseCustomHeadersBehavior or
+   * ResponseHeadersCorsBehavior to the cloudfront distribution.
+   *
+   * Passing a custom ResponseSecurityHeadersBehavior is mutually exclusive with turning on the default security headers
+   * via `insertHttpSecurityHeaders` prop. Will throw an error if both `insertHttpSecurityHeaders` is set to `true`
+   * and ResponseSecurityHeadersBehavior is passed.
+   *
+   * @default - undefined
+   */
+  readonly responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
   /**
    * Optional user provided props to override the default props for the CloudFront Logging Bucket.
    *
@@ -57,7 +71,7 @@ export class CloudFrontToApiGateway extends Construct {
 
   /**
    * @summary Constructs a new instance of the CloudFrontToApiGateway class.
-   * @param {cdk.App} scope - represents the scope for all the resources.
+   * @param {Construct} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
    * @param {CloudFrontToApiGatewayProps} props - user provided props for the construct
    * @since 0.8.0
@@ -65,12 +79,25 @@ export class CloudFrontToApiGateway extends Construct {
    */
   constructor(scope: Construct, id: string, props: CloudFrontToApiGatewayProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+
+    defaults.CheckCloudFrontProps(props);
 
     this.apiGateway = props.existingApiGatewayObj;
 
-    [this.cloudFrontWebDistribution, this.cloudFrontFunction, this.cloudFrontLoggingBucket] =
-      defaults.CloudFrontDistributionForApiGateway(this, props.existingApiGatewayObj,
-        props.cloudFrontDistributionProps, props.insertHttpSecurityHeaders, props.cloudFrontLoggingBucketProps);
+    const cloudFrontDistributionForApiGatewayResponse = defaults.CloudFrontDistributionForApiGateway(
+      this,
+      props.existingApiGatewayObj,
+      props.cloudFrontDistributionProps,
+      props.insertHttpSecurityHeaders,
+      props.cloudFrontLoggingBucketProps,
+      props.responseHeadersPolicyProps
+    );
+    this.cloudFrontWebDistribution = cloudFrontDistributionForApiGatewayResponse.distribution;
+    this.cloudFrontFunction = cloudFrontDistributionForApiGatewayResponse.cloudfrontFunction;
+    this.cloudFrontLoggingBucket = cloudFrontDistributionForApiGatewayResponse.loggingBucket;
   }
 }

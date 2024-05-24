@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,14 +11,15 @@
  *  and limitations under the License.
  */
 
-import * as sns from '@aws-cdk/aws-sns';
-import * as events from '@aws-cdk/aws-events';
-import * as kms from '@aws-cdk/aws-kms';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import * as events from 'aws-cdk-lib/aws-events';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as defaults from '@aws-solutions-constructs/core';
+import * as cdk from 'aws-cdk-lib';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 import { overrideProps } from '@aws-solutions-constructs/core';
-import { ServicePrincipal } from '@aws-cdk/aws-iam';
+import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 
 export interface EventbridgeToSnsProps {
     /**
@@ -52,22 +53,22 @@ export interface EventbridgeToSnsProps {
      */
     readonly existingTopicObj?: sns.Topic;
     /**
-     * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
-     * the encryptionKey property for this construct.
+     * If no key is provided, this flag determines whether the topic is encrypted with a new CMK or an AWS managed key.
+     * This flag is ignored if any of the following are defined: topicProps.masterKey, encryptionKey or encryptionKeyProps.
      *
-     * @default - true (encryption enabled, managed by this CDK app).
+     * @default - True if topicProps.masterKey, encryptionKey, and encryptionKeyProps are all undefined.
      */
     readonly enableEncryptionWithCustomerManagedKey?: boolean;
     /**
-     * An optional, imported encryption key to encrypt the SQS queue, and SNS Topic.
+     * An optional, imported encryption key to encrypt the SNS topic with.
      *
-     * @default - not specified.
+     * @default - None.
      */
     readonly encryptionKey?: kms.Key;
     /**
-     * Optional user-provided props to override the default props for the encryption key.
+     * Optional user provided properties to override the default properties for the KMS encryption key used to  encrypt the SNS topic with.
      *
-     * @default - Default props are used.
+     * @default - None
      */
     readonly encryptionKeyProps?: kms.KeyProps;
 }
@@ -87,7 +88,8 @@ export class EventbridgeToSns extends Construct {
      */
     constructor(scope: Construct, id: string, props: EventbridgeToSnsProps) {
       super(scope, id);
-      defaults.CheckProps(props);
+      defaults.CheckSnsProps(props);
+      defaults.CheckEventBridgeProps(props);
 
       let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
       if (props.enableEncryptionWithCustomerManagedKey === undefined ||
@@ -96,7 +98,7 @@ export class EventbridgeToSns extends Construct {
       }
 
       // Setup the sns topic.
-      [this.snsTopic, this.encryptionKey] = defaults.buildTopic(this, {
+      const buildTopicResponse = defaults.buildTopic(this, id, {
         existingTopicObj: props.existingTopicObj,
         topicProps: props.topicProps,
         enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
@@ -104,10 +106,24 @@ export class EventbridgeToSns extends Construct {
         encryptionKeyProps: props.encryptionKeyProps
       });
 
+      this.snsTopic = buildTopicResponse.topic;
+      this.encryptionKey = buildTopicResponse.key;
+
       // Setup the event rule target as sns topic.
+
+      // The CDK generally avoids resource names that are too long, but in this case the maximum SNS topic name is 256 characters and the maximum
+      // binding id is 64 characters, so a long SNS topic name (driven by Stack id, Construct id, etc.) breaks upon launch. Because of this, we take
+      // control of the physical name ourselves.
+      const maxBindingIdLength = 64;
+      const nameParts: string[] = [
+        cdk.Stack.of(scope).stackName, // Name of the stack
+        id,                            // Construct ID
+      ];
+      const generatedTopicName = defaults.generatePhysicalName("", nameParts, maxBindingIdLength);
+
       const topicEventTarget: events.IRuleTarget = {
         bind: () => ({
-          id: this.snsTopic.topicName,
+          id: generatedTopicName,
           arn: this.snsTopic.topicArn
         })
       };
@@ -130,10 +146,10 @@ export class EventbridgeToSns extends Construct {
 
       // Grant EventBridge service access to the SNS Topic encryption key
       this.encryptionKey?.grant(new ServicePrincipal('events.amazonaws.com'),
-          "kms:Decrypt",
-          "kms:Encrypt",
-          "kms:ReEncrypt*",
-          "kms:GenerateDataKey*"
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
       );
     }
 }

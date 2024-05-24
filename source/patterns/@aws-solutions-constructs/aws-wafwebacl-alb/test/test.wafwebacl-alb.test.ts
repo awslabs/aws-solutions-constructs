@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,12 +12,12 @@
  */
 
 // Imports
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
 import { WafwebaclToAlb } from "../lib";
-import * as waf from "@aws-cdk/aws-wafv2";
+import * as waf from "aws-cdk-lib/aws-wafv2";
 import * as defaults from '@aws-solutions-constructs/core';
-import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
-import '@aws-cdk/assert/jest';
+import * as elb from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import { Template } from 'aws-cdk-lib/assertions';
 
 function deployLoadBalancer(stack: cdk.Stack) {
   const myVpc = defaults.getTestVpc(stack);
@@ -38,10 +38,7 @@ function deployConstruct(stack: cdk.Stack, webaclProps?: waf.CfnWebACLProps, exi
   });
 }
 
-// --------------------------------------------------------------
-// Test error handling for existing WAF web ACL and user provided web ACL props
-// --------------------------------------------------------------
-test('Test error handling for existing WAF web ACL and user provider web ACL props', () => {
+test('Confirm CheckWafWebAclProps is called', () => {
   const stack = new cdk.Stack();
   const props: waf.CfnWebACLProps = {
     defaultAction: {
@@ -64,7 +61,7 @@ test('Test error handling for existing WAF web ACL and user provider web ACL pro
       existingWebaclObj: wafAcl,
       webaclProps: props
     });
-  }).toThrowError();
+  }).toThrowError('Error - Either provide existingWebaclObj or webaclProps, but not both.\n');
 });
 
 // --------------------------------------------------------------
@@ -74,10 +71,11 @@ test('Test default deployment', () => {
   const stack = new cdk.Stack();
   const construct = deployConstruct(stack);
 
-  expect(construct.webacl !== null);
-  expect(construct.loadBalancer !== null);
+  expect(construct.webacl).toBeDefined();
+  expect(construct.loadBalancer).toBeDefined();
 
-  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
     Rules: [
       {
         Name: "AWS-AWSManagedRulesBotControlRuleSet",
@@ -232,7 +230,8 @@ test('Test user provided acl props', () => {
 
   deployConstruct(stack, webaclProps);
 
-  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
     VisibilityConfig: {
       CloudWatchMetricsEnabled: false,
       MetricName: "webACL",
@@ -298,7 +297,8 @@ test('Test existing web ACL', () => {
 
   deployConstruct(stack, undefined, webacl);
 
-  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
     VisibilityConfig: {
       CloudWatchMetricsEnabled: true,
       MetricName: "webACL",
@@ -306,5 +306,5 @@ test('Test existing web ACL', () => {
     }
   });
 
-  expect(stack).toCountResources("AWS::WAFv2::WebACL", 1);
+  template.resourceCountIs("AWS::WAFv2::WebACL", 1);
 });

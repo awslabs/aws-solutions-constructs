@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,16 +11,20 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as iam from '@aws-cdk/aws-iam';
-import * as ec2 from "@aws-cdk/aws-ec2";
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { DefaultLambdaFunctionProps } from './lambda-defaults';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
 import { overrideProps, addCfnSuppressRules } from './utils';
 import { buildSecurityGroup } from "./security-group-helper";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import { IConstruct } from '@aws-cdk/core';
+import { Construct, IConstruct } from 'constructs';
 
 export interface BuildLambdaFunctionProps {
   /**
@@ -43,11 +47,17 @@ export interface BuildLambdaFunctionProps {
   readonly vpc?: ec2.IVpc;
 }
 
-export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunctionProps): lambda.Function {
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunctionProps, constructId?: string): lambda.Function {
   // Conditional lambda function creation
   if (!props.existingLambdaObj) {
     if (props.lambdaFunctionProps) {
-      return deployLambdaFunction(scope, props.lambdaFunctionProps, undefined, props.vpc);
+      // constructId may be specified by the calling code, but if not, fallback to the original behavior of using the
+      // function name as the construct id used when creating the underlying lambda function and iam role.
+      constructId = constructId ?? props.lambdaFunctionProps.functionName;
+      return deployLambdaFunction(scope, props.lambdaFunctionProps, constructId, props.vpc);
     } else {
       throw Error('Either existingLambdaObj or lambdaFunctionProps is required');
     }
@@ -57,7 +67,7 @@ export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunction
       if (props.lambdaFunctionProps?.securityGroups) {
         let ctr = 20;
         props.lambdaFunctionProps?.securityGroups.forEach(sg => {
-          // TODO: Discuss with someone why I can't get R/O access to VpcConfigSecurityGroupIds
+          // It appears we can't get R/O access to VpcConfigSecurityGroupIds, such access would make this cleaner
           levelOneFunction.addOverride(`Properties.VpcConfig.SecurityGroupIds.${ctr++}`, sg.securityGroupId);
         });
       }
@@ -69,13 +79,16 @@ export function buildLambdaFunction(scope: Construct, props: BuildLambdaFunction
   }
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function deployLambdaFunction(scope: Construct,
   lambdaFunctionProps: lambda.FunctionProps,
-  functionId?: string,
+  constructId?: string,
   vpc?: ec2.IVpc): lambda.Function {
 
-  const _functionId = functionId ? functionId : 'LambdaFunction';
-  const _functionRoleId = _functionId + 'ServiceRole';
+  const functionId = constructId ?? 'LambdaFunction';
+  const functionRoleId = functionId + 'ServiceRole';
 
   if (vpc && lambdaFunctionProps.vpc) {
     throw new Error(
@@ -84,7 +97,7 @@ export function deployLambdaFunction(scope: Construct,
   }
 
   // Setup the IAM Role for Lambda Service
-  const lambdaServiceRole = new iam.Role(scope, _functionRoleId, {
+  const lambdaServiceRole = new iam.Role(scope, functionRoleId, {
     assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
     inlinePolicies: {
       LambdaFunctionServiceRolePolicy: new iam.PolicyDocument({
@@ -100,7 +113,7 @@ export function deployLambdaFunction(scope: Construct,
     }
   });
 
-  // If this Lambda function is going to access resoures in a
+  // If this Lambda function is going to access resources in a
   // VPC, then it needs privileges to access an ENI in that VPC
   if (lambdaFunctionProps.vpc || vpc) {
     lambdaServiceRole.addToPolicy(new iam.PolicyStatement({
@@ -134,16 +147,14 @@ export function deployLambdaFunction(scope: Construct,
     );
 
     finalLambdaFunctionProps = overrideProps(finalLambdaFunctionProps, {
-      securityGroups: [ lambdaSecurityGroup ],
+      securityGroups: [lambdaSecurityGroup],
       vpc,
     }, true);
   }
 
-  const lambdafunction = new lambda.Function(scope, _functionId, finalLambdaFunctionProps);
+  const lambdafunction = new lambda.Function(scope, functionId, finalLambdaFunctionProps);
 
-  if (lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_14_X ||
-    lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_14_X ||
-    lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_14_X) {
+  if (lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_16_X) {
     lambdafunction.addEnvironment('AWS_NODEJS_CONNECTION_REUSE_ENABLED', '1', { removeInEdge: true });
   }
 
@@ -168,21 +179,27 @@ export function deployLambdaFunction(scope: Construct,
     // Find the X-Ray IAM Policy
     const cfnLambdafunctionDefPolicy = lambdafunction.role?.node.tryFindChild('DefaultPolicy')?.node.findChild('Resource') as iam.CfnPolicy;
 
-    // Add the CFN NAG suppress to allow for "Resource": "*" for AWS X-Ray
-    addCfnSuppressRules(cfnLambdafunctionDefPolicy, [
-      {
-        id: 'W12',
-        reason: `Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.`
-      }
-    ]);
+    if (cfnLambdafunctionDefPolicy) {
+      // Add the CFN NAG suppress to allow for "Resource": "*" for AWS X-Ray
+      addCfnSuppressRules(cfnLambdafunctionDefPolicy, [
+        {
+          id: 'W12',
+          reason: `Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.`
+        }
+      ]);
+    }
   }
 
   return lambdafunction;
 }
 
-// A wrapper above Function.addPermision that
-// prevents two different calls to addPermission using
-// the same construct id.
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
+ * A wrapper above Function.addPermission that
+ * prevents two different calls to addPermission using
+ * the same construct id.
+ */
 export function addPermission(targetFunction: lambda.Function, name: string, permission: lambda.Permission): any {
   targetFunction.addPermission(GetNextId(targetFunction.permissionsNode.children, name), permission);
 }
@@ -210,4 +227,34 @@ function GetNextId(children: IConstruct[], coreName: string): string {
   });
 
   return `${coreName}-${lastSuffix + 1}`;
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function getLambdaVpcSecurityGroupIds(lambdaFunction: lambda.Function): string[] {
+  const securityGroupIds: string[] = [];
+
+  lambdaFunction.connections.securityGroups.forEach(element => securityGroupIds.push(element.securityGroupId));
+
+  return securityGroupIds;
+}
+
+export interface LambdaProps {
+  readonly existingLambdaObj?: lambda.Function,
+  readonly lambdaFunctionProps?: lambda.FunctionProps,
+}
+
+export function CheckLambdaProps(propsObject: LambdaProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingLambdaObj && propsObject.lambdaFunctionProps) {
+    errorMessages += 'Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }

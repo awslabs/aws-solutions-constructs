@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,10 +11,9 @@
  *  and limitations under the License.
  */
 
-import {Stack} from '@aws-cdk/core';
+import {Stack} from 'aws-cdk-lib';
 import * as defaults from '../';
-import '@aws-cdk/assert/jest';
-import {ParameterType} from '@aws-cdk/aws-ssm';
+import { Template } from 'aws-cdk-lib/assertions';
 
 // --------------------------------------------------------------
 // Test minimal deployment with no properties
@@ -26,27 +25,7 @@ test('Test minimal deployment with required properties', () => {
   const parameterValue = "test-val";
   defaults.buildSsmStringParameter(stack, 'parameterName', {stringValue: parameterValue});
 
-  expect(stack).toHaveResourceLike('AWS::SSM::Parameter', {
-    Type: 'String',
-    Value: parameterValue
-  });
-});
-
-// --------------------------------------------------------------
-// Test minimal deployment overriding parameter type
-// --------------------------------------------------------------
-test('Test minimal deployment with required properties', () => {
-  // Stack
-  const stack = new Stack();
-  // Helper declaration
-  const parameterValue = "test-val";
-  defaults.buildSsmStringParameter(stack, 'parameterName',
-    {
-      stringValue: parameterValue,
-      type: ParameterType.STRING_LIST,
-    });
-
-  expect(stack).toHaveResourceLike('AWS::SSM::Parameter', {
+  Template.fromStack(stack).hasResourceProperties('AWS::SSM::Parameter', {
     Type: 'String',
     Value: parameterValue
   });

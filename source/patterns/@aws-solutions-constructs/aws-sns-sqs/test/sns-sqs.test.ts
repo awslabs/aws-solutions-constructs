@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,43 +12,42 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
+import { Stack, RemovalPolicy } from "aws-cdk-lib";
 import { SnsToSqs, SnsToSqsProps } from "../lib";
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as sns from '@aws-cdk/aws-sns';
-import * as kms from '@aws-cdk/aws-kms';
-import '@aws-cdk/assert/jest';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import * as kms from 'aws-cdk-lib/aws-kms';
+import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Pattern deployment with new Topic, new Queue and
-// default properties
-// --------------------------------------------------------------
 test('Pattern deployment w/ new Topic, new Queue and default props', () => {
   // Initial Setup
   const stack = new Stack();
   const props: SnsToSqsProps = {};
-  new SnsToSqs(stack, 'test-sns-sqs', props);
+  const testConstruct = new SnsToSqs(stack, 'test-sns-sqs', props);
 
+  expect(testConstruct.snsTopic).toBeDefined();
+  expect(testConstruct.encryptionKey).toBeDefined();
   // Assertion 2
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "EncryptionKey1B843E66",
+        "testsnssqsKey08A506C4",
         "Arn"
       ]
     }
   });
   // Assertion 3
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "EncryptionKey1B843E66",
+        "testsnssqsKey08A506C4",
         "Arn"
       ]
     }
   });
   // Assertion 4
-  expect(stack).toHaveResource("AWS::SNS::Subscription", {
+  template.hasResourceProperties("AWS::SNS::Subscription", {
     Protocol: "sqs",
     TopicArn: {
       Ref: "testsnssqsSnsTopic2CD0065B"
@@ -62,10 +61,6 @@ test('Pattern deployment w/ new Topic, new Queue and default props', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Pattern deployment with new Topic, new Queue, and
-// overridden properties
-// --------------------------------------------------------------
 test('Pattern deployment w/ new topic, new queue, and overridden props', () => {
   // Initial Setup
   const stack = new Stack();
@@ -86,29 +81,27 @@ test('Pattern deployment w/ new topic, new queue, and overridden props', () => {
   };
   new SnsToSqs(stack, 'test-sns-sqs', props);
   // Assertion 1
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     TopicName: "new-topic",
     KmsMasterKeyId: {
       "Fn::GetAtt": [
-        "EncryptionKey1B843E66",
+        "testsnssqsKey08A506C4",
         "Arn"
       ]
     }
   });
   // Assertion 2
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  template.hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "new-queue.fifo",
     FifoQueue: true
   });
   // Assertion 3
-  expect(stack).toHaveResource("AWS::KMS::Key", {
+  template.hasResourceProperties("AWS::KMS::Key", {
     EnableKeyRotation: false
   });
 });
 
-// --------------------------------------------------------------
-// Test the getter methods
-// --------------------------------------------------------------
 test('Test getter methods', () => {
   // Initial Setup
   const stack = new Stack();
@@ -119,18 +112,15 @@ test('Test getter methods', () => {
   };
   const app = new SnsToSqs(stack, 'test-sns-sqs', props);
   // Assertion 1
-  expect(app.snsTopic !== null);
+  expect(app.snsTopic).toBeDefined();
   // Assertion 2
-  expect(app.encryptionKey !== null);
+  expect(app.encryptionKey).toBeDefined();
   // Assertion 3
-  expect(app.sqsQueue !== null);
+  expect(app.sqsQueue).toBeDefined();
   // Assertion 4
-  expect(app.deadLetterQueue !== null);
+  expect(app.deadLetterQueue).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test deployment with existing queue, and topic
-// --------------------------------------------------------------
 test('Test deployment w/ existing queue, and topic', () => {
   // Stack
   const stack = new Stack();
@@ -146,20 +136,18 @@ test('Test deployment w/ existing queue, and topic', () => {
     existingQueueObj: queue
   });
   // Assertion 2
-  expect(app.snsTopic !== null);
+  expect(app.snsTopic).toBeDefined();
   // Assertion 3
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     TopicName: "existing-topic-obj"
   });
   // Assertion 4
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  template.hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "existing-queue-obj"
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment with imported encryption key
-// --------------------------------------------------------------
 test('Test deployment with imported encryption key', () => {
   // Stack
   const stack = new Stack();
@@ -173,11 +161,12 @@ test('Test deployment with imported encryption key', () => {
     encryptionKey: kmsKey
   });
   // Assertion 2
-  expect(stack).toHaveResource("AWS::KMS::Key", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::KMS::Key", {
     EnableKeyRotation: false
   });
   // Assertion 3
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "importedkey38675D68",
@@ -187,9 +176,6 @@ test('Test deployment with imported encryption key', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment with SNS managed KMS key
-// --------------------------------------------------------------
 test('Test deployment with SNS managed KMS key', () => {
   // Stack
   const stack = new Stack();
@@ -204,7 +190,8 @@ test('Test deployment with SNS managed KMS key', () => {
     enableEncryptionWithCustomerManagedKey: false
   });
   // Assertion 2
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::Join": [
         "",
@@ -227,7 +214,7 @@ test('Test deployment with SNS managed KMS key', () => {
     }
   });
   // Assertion 3
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  template.hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
         "snstosqsstackqueueKey743636E7",
@@ -237,9 +224,28 @@ test('Test deployment with SNS managed KMS key', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Pattern deployment with existing Topic and FIFO queues
-// --------------------------------------------------------------
+test('Test deployment with CMK encrypted SNS Topic', () => {
+  // Stack
+  const stack = new Stack();
+  const cmk = new kms.Key(stack, 'cmk');
+  // Helper declaration
+  new SnsToSqs(stack, 'sns-to-sqs-stack', {
+    topicProps: {
+      masterKey: cmk
+    }
+  });
+  // Assertion 1
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
 test('Pattern deployment w/ existing topic and FIFO queue', () => {
   // Initial Setup
   const stack = new Stack();
@@ -267,7 +273,8 @@ test('Pattern deployment w/ existing topic and FIFO queue', () => {
   new SnsToSqs(stack, 'test-sns-sqs', props);
 
   // Assertion 1
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     FifoQueue: true,
     RedrivePolicy: {
       deadLetterTargetArn: {
@@ -281,9 +288,6 @@ test('Pattern deployment w/ existing topic and FIFO queue', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Pattern deployment with existing Topic and Standard queues
-// --------------------------------------------------------------
 test('Pattern deployment w/ existing topic and Standard queue', () => {
   // Initial Setup
   const stack = new Stack();
@@ -310,7 +314,8 @@ test('Pattern deployment w/ existing topic and Standard queue', () => {
   new SnsToSqs(stack, 'test-sns-sqs', props);
 
   // Assertion 1
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
@@ -333,7 +338,8 @@ test('Check raw message delivery is true', () => {
   };
   new SnsToSqs(stack, 'test-sns-sqs', props);
 
-  expect(stack).toHaveResource("AWS::SNS::Subscription", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Subscription", {
     Protocol: "sqs",
     TopicArn: {
       Ref: "testsnssqsSnsTopic2CD0065B"
@@ -364,7 +370,8 @@ test('Check for filter policy', () => {
 
   new SnsToSqs(stack, 'test-sns-sqs', props);
 
-  expect(stack).toHaveResource("AWS::SNS::Subscription", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Subscription", {
     FilterPolicy: {
       color: [
         "red",
@@ -389,7 +396,8 @@ test('Check SNS dead letter queue', () => {
 
   new SnsToSqs(stack, 'test-sns-sqs', props);
 
-  expect(stack).toHaveResource("AWS::SNS::Subscription", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Subscription", {
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
@@ -399,4 +407,109 @@ test('Check SNS dead letter queue', () => {
       }
     }
   });
+});
+
+test('Construct uses topicProps.masterKey when specified', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const cmk = new kms.Key(stack, 'cmkfortopic');
+  const props: SnsToSqsProps = {
+    topicProps: {
+      masterKey: cmk
+    }
+  };
+
+  new SnsToSqs(stack, 'test-sns-sqs', props);
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmkfortopic0904647B",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Construct uses queueProps.encryptionMasterKey when specified', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const cmk = new kms.Key(stack, 'cmkforqueue');
+  const props: SnsToSqsProps = {
+    queueProps: {
+      encryptionMasterKey: cmk
+    }
+  };
+
+  new SnsToSqs(stack, 'test-sns-sqs', props);
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmkforqueue4E093476",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Construct does not override unencrypted topic when passed in existingTopicObj prop', () => {
+  const stack = new Stack();
+
+  const existingTopicObj = new sns.Topic(stack, 'Topic', {
+    topicName: 'existing-topic-name'
+  });
+
+  const props: SnsToSqsProps = {
+    existingTopicObj,
+  };
+
+  const testConstruct = new SnsToSqs(stack, 'test-sns-sqs', props);
+
+  expect(testConstruct.snsTopic).toBeDefined();
+  expect(testConstruct.encryptionKey).not.toBeDefined();
+});
+
+test('Confirm that CheckSnsProps is called', () => {
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  const topic = new sns.Topic(stack, "existing-topic-obj", {
+    topicName: 'existing-topic-obj'
+  });
+  const queue = new sqs.Queue(stack, 'existing-queue-obj', {
+    queueName: 'existing-queue-obj'
+  });
+
+  const app = () => {
+    new SnsToSqs(stack, 'sns-to-sqs-stack', {
+      existingTopicObj: topic,
+      topicProps: {
+        topicName: 'topic-name'
+      },
+      existingQueueObj: queue
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
+});
+
+test('Confirm that CheckSqsProps is called', () => {
+  // Stack
+  const stack = new Stack();
+
+  const app = () => {
+    new SnsToSqs(stack, 'sns-to-sqs-stack', {
+      queueProps: {
+        removalPolicy: RemovalPolicy.DESTROY,
+      },
+      existingQueueObj: new sqs.Queue(stack, 'test', {})
+    });
+  };
+
+  // Assertion
+  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });

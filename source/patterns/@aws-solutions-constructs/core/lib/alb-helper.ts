@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,44 +11,57 @@
  *  and limitations under the License.
  */
 
-import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
-import { Construct } from "@aws-cdk/core";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as s3 from "@aws-cdk/aws-s3";
-import * as ecs from "@aws-cdk/aws-ecs";
-import * as lambda from "@aws-cdk/aws-lambda";
-import { ApplicationProtocol, ListenerAction, } from "@aws-cdk/aws-elasticloadbalancingv2";
-import * as elbt from "@aws-cdk/aws-elasticloadbalancingv2-targets";
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
+import * as elb from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import { Construct } from "constructs";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as s3 from "aws-cdk-lib/aws-s3";
+import * as ecs from "aws-cdk-lib/aws-ecs";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import { ApplicationProtocol, ListenerAction, } from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import * as elbt from "aws-cdk-lib/aws-elasticloadbalancingv2-targets";
 import { printWarning, consolidateProps } from "./utils";
 import { DefaultListenerProps } from "./alb-defaults";
 import { createAlbLoggingBucket } from "./s3-bucket-helper";
-import { DefaultLoggingBucketProps } from "./s3-bucket-defaults";
+import { DefaultS3Props } from "./s3-bucket-defaults";
 
-//  Returns the correct ALB Load Balancer to use in this construct, either an existing
-//  one provided as an argument or create  new one otherwise.
+export interface ObtainAlbProps {
+  readonly vpc: ec2.IVpc,
+  readonly publicApi: boolean,
+  readonly existingLoadBalancerObj?: elb.ApplicationLoadBalancer,
+  readonly loadBalancerProps?: elb.ApplicationLoadBalancerProps | any,
+  readonly logAccessLogs?: boolean,
+  readonly loggingBucketProps?: s3.BucketProps
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
+ * Returns the correct ALB Load Balancer to use in this construct, either an existing
+ * one provided as an argument or create  new one otherwise.
+ */
 export function ObtainAlb(
   scope: Construct,
   id: string,
-  vpc: ec2.IVpc,
-  publicApi: boolean,
-  existingLoadBalancerObj?: elb.ApplicationLoadBalancer,
-  loadBalancerProps?: elb.ApplicationLoadBalancerProps | any,
-  logAccessLogs?: boolean,
-  loggingBucketProps?: s3.BucketProps
+  props: ObtainAlbProps
 ): elb.ApplicationLoadBalancer {
   let loadBalancer: elb.ApplicationLoadBalancer;
 
-  if (existingLoadBalancerObj) {
-    loadBalancer = existingLoadBalancerObj;
+  if (props.existingLoadBalancerObj) {
+    loadBalancer = props.existingLoadBalancerObj;
   } else {
-    const consolidatedProps = consolidateProps({}, loadBalancerProps, { vpc, internetFacing: publicApi });
+    const consolidatedProps = consolidateProps({}, props.loadBalancerProps, { vpc: props.vpc, internetFacing: props.publicApi });
     loadBalancer = new elb.ApplicationLoadBalancer(
       scope,
       `${id}-alb`,
       consolidatedProps
     );
-    if (logAccessLogs === undefined || logAccessLogs === true) {
-      const consolidatedLoggingBucketProps = consolidateProps(DefaultLoggingBucketProps(), loggingBucketProps);
+    if (props.logAccessLogs === undefined || props.logAccessLogs === true) {
+      const consolidatedLoggingBucketProps = consolidateProps(DefaultS3Props(), props.loggingBucketProps);
       const loggingBucket = createAlbLoggingBucket(scope, id, consolidatedLoggingBucketProps);
       loadBalancer.logAccessLogs(loggingBucket);
     }
@@ -56,6 +69,9 @@ export function ObtainAlb(
   return loadBalancer;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function AddListener(
   scope: Construct,
   id: string,
@@ -96,12 +112,15 @@ export function AddListener(
       protocol: "HTTPS",
     };
 
+    // NOSONAR: (typescript:S5332)
+    // This listener is explicitly created to redirect non TLS connections
+    // The lack of SSL/TLS is intentional
     const httpListener = new elb.ApplicationListener(
       scope,
       `${id}-redirect`,
       {
         loadBalancer,
-        protocol: ApplicationProtocol.HTTP,
+        protocol: ApplicationProtocol.HTTP, // NOSONAR
         defaultAction: ListenerAction.redirect(opt),
       }
     );
@@ -111,9 +130,13 @@ export function AddListener(
   return listener;
 }
 
-// Creates a Target Group for Lambda functions and adds the
-// provided functions as a target to that group. Then adds
-// the new Target Group to the provided Listener.
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
+ * Creates a Target Group for Lambda functions and adds the
+ * provided functions as a target to that group. Then adds
+ * the new Target Group to the provided Listener.
+ */
 export function AddLambdaTarget(
   scope: Construct,
   id: string,
@@ -140,6 +163,9 @@ export function AddLambdaTarget(
   return newTargetGroup;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function AddFargateTarget(
   scope: Construct,
   id: string,
@@ -165,9 +191,13 @@ export function AddFargateTarget(
   return newTargetGroup;
 }
 
-// Looks for the listener associated with Target Groups
-// If there is a single listener, this returns it whether it is HTTP or HTTPS
-// If there are 2 listeners, it finds the HTTPS listener (we assume the HTTP listener redirects to HTTPS)
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
+ * Looks for the listener associated with Target Groups
+ * If there is a single listener, this returns it whether it is HTTP or HTTPS
+ * If there are 2 listeners, it finds the HTTPS listener (we assume the HTTP listener redirects to HTTPS)
+ */
 export function GetActiveListener(listeners: elb.ApplicationListener[]): elb.ApplicationListener {
   let listener: elb.ApplicationListener;
 
@@ -182,21 +212,29 @@ export function GetActiveListener(listeners: elb.ApplicationListener[]): elb.App
   return listener;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CheckAlbProps(props: any) {
   let errorMessages = '';
   let errorFound = false;
+
+  if (props.loadBalancerProps && props.existingLoadBalancerObj) {
+    errorMessages += 'Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if ((props?.logAlbAccessLogs === false) && (props.albLoggingBucketProps)) {
+    errorMessages += 'Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n';
+    errorFound = true;
+  }
 
   if (props.listenerProps?.certificateArns) {
     errorMessages += "certificateArns is deprecated. Please supply certificates using props.listenerProps.certificates\n";
     errorFound = true;
   }
 
-  if (
-    ((props.existingLoadBalancerObj &&
-      props.existingLoadBalancerObj.listeners.length === 0) ||
-      !props.existingLoadBalancerObj) &&
-    !props.listenerProps
-  ) {
+  if (ValidateAddListenerProps(props)) {
     errorMessages += "When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP\n";
     errorFound = true;
   }
@@ -239,4 +277,15 @@ export function CheckAlbProps(props: any) {
   if (errorFound) {
     throw new Error(errorMessages);
   }
+
+}
+
+function ValidateAddListenerProps(props: any) {
+  if (((props.existingLoadBalancerObj &&
+    props.existingLoadBalancerObj.listeners.length === 0) ||
+    !props.existingLoadBalancerObj) &&
+  !props.listenerProps) {
+    return true;
+  }
+  return false;
 }

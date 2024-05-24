@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,8 +11,13 @@
  *  and limitations under the License.
  */
 
-import { SecretProps } from '@aws-cdk/aws-secretsmanager';
-import { RemovalPolicy } from '@aws-cdk/core';
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
+import { SecretProps } from 'aws-cdk-lib/aws-secretsmanager';
+import { RemovalPolicy } from 'aws-cdk-lib';
 
 const DefaultSecretProps: SecretProps = {
   removalPolicy: RemovalPolicy.RETAIN

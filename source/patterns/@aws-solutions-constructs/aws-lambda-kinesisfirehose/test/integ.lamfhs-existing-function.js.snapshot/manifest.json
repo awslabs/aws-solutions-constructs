@@ -1,0 +1,203 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "lamfhsexistingfunctionIntegDefaultTestDeployAssertF673254D.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamfhsexistingfunctionIntegDefaultTestDeployAssertF673254D.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamfhsexistingfunctionIntegDefaultTestDeployAssertF673254D": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamfhsexistingfunctionIntegDefaultTestDeployAssertF673254D.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamfhsexistingfunctionIntegDefaultTestDeployAssertF673254D.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamfhsexistingfunctionIntegDefaultTestDeployAssertF673254D.assets"
+      ],
+      "metadata": {
+        "/lamfhs-existing-function/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamfhs-existing-function/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamfhs-existing-function/Integ/DefaultTest/DeployAssert"
+    },
+    "lamfhs-existing-function.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamfhs-existing-function.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamfhs-existing-function": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamfhs-existing-function.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/542d5ad08c68012a5c78365a453a15420c6493d53a2eeba9297abd82cf2f99f2.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamfhs-existing-function.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamfhs-existing-function.assets"
+      ],
+      "metadata": {
+        "/lamfhs-existing-function/destination-firehose/S3LoggingBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseS3LoggingBucket19A32AC0"
+          }
+        ],
+        "/lamfhs-existing-function/destination-firehose/S3LoggingBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseS3LoggingBucketPolicyE4970A90"
+          }
+        ],
+        "/lamfhs-existing-function/destination-firehose/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseS3LoggingBucketAutoDeleteObjectsCustomResourceDE2506F2"
+          }
+        ],
+        "/lamfhs-existing-function/destination-firehose/S3Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseS3BucketEC05EE08"
+          }
+        ],
+        "/lamfhs-existing-function/destination-firehose/S3Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseS3BucketPolicy19ACA86F"
+          }
+        ],
+        "/lamfhs-existing-function/destination-firehose/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseS3BucketAutoDeleteObjectsCustomResource87C9D64B"
+          }
+        ],
+        "/lamfhs-existing-function/destination-firehose/firehose-log-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehosefirehoseloggroup874764AF"
+          }
+        ],
+        "/lamfhs-existing-function/destination-firehose/firehose-log-group/firehose-log-stream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehosefirehoseloggroupfirehoselogstreamC03C78F6"
+          }
+        ],
+        "/lamfhs-existing-function/destination-firehose/KinesisFirehoseRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseKinesisFirehoseRole5542AE95"
+          }
+        ],
+        "/lamfhs-existing-function/destination-firehose/KinesisFirehosePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseKinesisFirehosePolicyCEB14055"
+          }
+        ],
+        "/lamfhs-existing-function/destination-firehose/KinesisFirehose": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "destinationfirehoseKinesisFirehoseE8EB5D91"
+          }
+        ],
+        "/lamfhs-existing-function/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/lamfhs-existing-function/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/lamfhs-existing-function/existing-function/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingfunctionServiceRole90E818C0"
+          }
+        ],
+        "/lamfhs-existing-function/existing-function/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingfunctionServiceRoleDefaultPolicyFAFC8F2C"
+          }
+        ],
+        "/lamfhs-existing-function/existing-function/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingfunctionC3A89A38"
+          }
+        ],
+        "/lamfhs-existing-function/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamfhs-existing-function/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamfhs-existing-function"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

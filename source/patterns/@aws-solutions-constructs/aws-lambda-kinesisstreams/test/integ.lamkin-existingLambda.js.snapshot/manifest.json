@@ -1,0 +1,143 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "lamkinexistingLambdaIntegDefaultTestDeployAssertD62E9419.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamkinexistingLambdaIntegDefaultTestDeployAssertD62E9419.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamkinexistingLambdaIntegDefaultTestDeployAssertD62E9419": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamkinexistingLambdaIntegDefaultTestDeployAssertD62E9419.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamkinexistingLambdaIntegDefaultTestDeployAssertD62E9419.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamkinexistingLambdaIntegDefaultTestDeployAssertD62E9419.assets"
+      ],
+      "metadata": {
+        "/lamkin-existingLambda/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamkin-existingLambda/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamkin-existingLambda/Integ/DefaultTest/DeployAssert"
+    },
+    "lamkin-existingLambda.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamkin-existingLambda.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamkin-existingLambda": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamkin-existingLambda.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c56075a620b3283409ae705ebdbaf2a1135fd5f90519cb87e31a6b2f9eaf65c1.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamkin-existingLambda.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamkin-existingLambda.assets"
+      ],
+      "metadata": {
+        "/lamkin-existingLambda/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRole0C4CDE0B"
+          }
+        ],
+        "/lamkin-existingLambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRoleDefaultPolicy126C8897"
+          }
+        ],
+        "/lamkin-existingLambda/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionBF21E41F"
+          }
+        ],
+        "/lamkin-existingLambda/test-lambda-kinesisstreams/KinesisStream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdakinesisstreamsKinesisStream11A82116"
+          }
+        ],
+        "/lamkin-existingLambda/test-lambda-kinesisstreams/KinesisStreamGetRecordsIteratorAgeAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdakinesisstreamsKinesisStreamGetRecordsIteratorAgeAlarmC4A0FF00"
+          }
+        ],
+        "/lamkin-existingLambda/test-lambda-kinesisstreams/KinesisStreamReadProvisionedThroughputExceededAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdakinesisstreamsKinesisStreamReadProvisionedThroughputExceededAlarm9732E188"
+          }
+        ],
+        "/lamkin-existingLambda/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamkin-existingLambda/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamkin-existingLambda"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

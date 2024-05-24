@@ -1,0 +1,753 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "lamsag-existingFunction": {
+        "id": "lamsag-existingFunction",
+        "path": "lamsag-existingFunction",
+        "children": {
+          "LambdaFunctionServiceRole": {
+            "id": "LambdaFunctionServiceRole",
+            "path": "lamsag-existingFunction/LambdaFunctionServiceRole",
+            "children": {
+              "ImportLambdaFunctionServiceRole": {
+                "id": "ImportLambdaFunctionServiceRole",
+                "path": "lamsag-existingFunction/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.135.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "lamsag-existingFunction/LambdaFunctionServiceRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "lambda.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "policies": [
+                      {
+                        "policyName": "LambdaFunctionServiceRolePolicy",
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    "arn:",
+                                    {
+                                      "Ref": "AWS::Partition"
+                                    },
+                                    ":logs:",
+                                    {
+                                      "Ref": "AWS::Region"
+                                    },
+                                    ":",
+                                    {
+                                      "Ref": "AWS::AccountId"
+                                    },
+                                    ":log-group:/aws/lambda/*"
+                                  ]
+                                ]
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.135.0"
+                }
+              },
+              "DefaultPolicy": {
+                "id": "DefaultPolicy",
+                "path": "lamsag-existingFunction/LambdaFunctionServiceRole/DefaultPolicy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "lamsag-existingFunction/LambdaFunctionServiceRole/DefaultPolicy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "xray:PutTelemetryRecords",
+                                "xray:PutTraceSegments"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": "*"
+                            },
+                            {
+                              "Action": "sagemaker:InvokeEndpoint",
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Ref": "testlambdasagemakerSagemakerEndpoint12803730"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policyName": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+                        "roles": [
+                          {
+                            "Ref": "LambdaFunctionServiceRole0C4CDE0B"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                      "version": "2.135.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Policy",
+                  "version": "2.135.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_iam.Role",
+              "version": "2.135.0"
+            }
+          },
+          "LambdaFunction": {
+            "id": "LambdaFunction",
+            "path": "lamsag-existingFunction/LambdaFunction",
+            "children": {
+              "Code": {
+                "id": "Code",
+                "path": "lamsag-existingFunction/LambdaFunction/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "lamsag-existingFunction/LambdaFunction/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.135.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "lamsag-existingFunction/LambdaFunction/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.135.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.135.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "lamsag-existingFunction/LambdaFunction/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "d894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15.zip"
+                    },
+                    "environment": {
+                      "variables": {
+                        "SAGEMAKER_ENDPOINT_NAME": {
+                          "Fn::GetAtt": [
+                            "testlambdasagemakerSagemakerEndpoint12803730",
+                            "EndpointName"
+                          ]
+                        }
+                      }
+                    },
+                    "handler": "index.handler",
+                    "memorySize": 128,
+                    "role": {
+                      "Fn::GetAtt": [
+                        "LambdaFunctionServiceRole0C4CDE0B",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "python3.8",
+                    "timeout": 300,
+                    "tracingConfig": {
+                      "mode": "Active"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.135.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.135.0"
+            }
+          },
+          "mappings": {
+            "id": "mappings",
+            "path": "lamsag-existingFunction/mappings",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnMapping",
+              "version": "2.135.0"
+            }
+          },
+          "SampleAsset": {
+            "id": "SampleAsset",
+            "path": "lamsag-existingFunction/SampleAsset",
+            "children": {
+              "Stage": {
+                "id": "Stage",
+                "path": "lamsag-existingFunction/SampleAsset/Stage",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.AssetStaging",
+                  "version": "2.135.0"
+                }
+              },
+              "AssetBucket": {
+                "id": "AssetBucket",
+                "path": "lamsag-existingFunction/SampleAsset/AssetBucket",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                  "version": "2.135.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+              "version": "2.135.0"
+            }
+          },
+          "test-lambda-sagemaker": {
+            "id": "test-lambda-sagemaker",
+            "path": "lamsag-existingFunction/test-lambda-sagemaker",
+            "children": {
+              "SagemakerRole": {
+                "id": "SagemakerRole",
+                "path": "lamsag-existingFunction/test-lambda-sagemaker/SagemakerRole",
+                "children": {
+                  "ImportSagemakerRole": {
+                    "id": "ImportSagemakerRole",
+                    "path": "lamsag-existingFunction/test-lambda-sagemaker/SagemakerRole/ImportSagemakerRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.135.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "lamsag-existingFunction/test-lambda-sagemaker/SagemakerRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "sagemaker.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.135.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "lamsag-existingFunction/test-lambda-sagemaker/SagemakerRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "lamsag-existingFunction/test-lambda-sagemaker/SagemakerRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "sagemaker:CreateEndpoint",
+                                    "sagemaker:CreateEndpointConfig",
+                                    "sagemaker:CreateModel",
+                                    "sagemaker:CreateTrainingJob",
+                                    "sagemaker:DeleteEndpoint",
+                                    "sagemaker:DeleteEndpointConfig",
+                                    "sagemaker:DeleteModel",
+                                    "sagemaker:DescribeEndpoint",
+                                    "sagemaker:DescribeEndpointConfig",
+                                    "sagemaker:DescribeModel",
+                                    "sagemaker:DescribeTrainingJob",
+                                    "sagemaker:InvokeEndpoint"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:",
+                                        {
+                                          "Ref": "AWS::Partition"
+                                        },
+                                        ":sagemaker:",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        ":",
+                                        {
+                                          "Ref": "AWS::AccountId"
+                                        },
+                                        ":*"
+                                      ]
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": [
+                                    "logs:CreateLogGroup",
+                                    "logs:CreateLogStream",
+                                    "logs:DescribeLogStreams",
+                                    "logs:GetLogEvents",
+                                    "logs:PutLogEvents"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:",
+                                        {
+                                          "Ref": "AWS::Partition"
+                                        },
+                                        ":logs:",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        ":",
+                                        {
+                                          "Ref": "AWS::AccountId"
+                                        },
+                                        ":log-group:/aws/sagemaker/*"
+                                      ]
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": [
+                                    "ecr:BatchCheckLayerAvailability",
+                                    "ecr:BatchGetImage",
+                                    "ecr:DescribeImages",
+                                    "ecr:DescribeRepositories",
+                                    "ecr:GetDownloadUrlForLayer"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:",
+                                        {
+                                          "Ref": "AWS::Partition"
+                                        },
+                                        ":ecr:",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        ":",
+                                        {
+                                          "Ref": "AWS::AccountId"
+                                        },
+                                        ":repository/*"
+                                      ]
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": "ecr:GetAuthorizationToken",
+                                  "Effect": "Allow",
+                                  "Resource": "*"
+                                },
+                                {
+                                  "Action": [
+                                    "kms:Decrypt",
+                                    "kms:DescribeKey",
+                                    "kms:Encrypt",
+                                    "kms:GenerateDataKey*",
+                                    "kms:ReEncrypt*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":kms:",
+                                          {
+                                            "Ref": "AWS::Region"
+                                          },
+                                          ":",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":alias/*"
+                                        ]
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":kms:",
+                                          {
+                                            "Ref": "AWS::Region"
+                                          },
+                                          ":",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":key/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "s3:DeleteObject",
+                                    "s3:GetObject",
+                                    "s3:ListBucket",
+                                    "s3:PutObject"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": "arn:aws:s3:::*"
+                                },
+                                {
+                                  "Action": "iam:GetRole",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "testlambdasagemakerSagemakerRoleD84546B8",
+                                      "Arn"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": "iam:PassRole",
+                                  "Condition": {
+                                    "StringLike": {
+                                      "iam:PassedToService": "sagemaker.amazonaws.com"
+                                    }
+                                  },
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "testlambdasagemakerSagemakerRoleD84546B8",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "testlambdasagemakerSagemakerRoleDefaultPolicy9909C0A0",
+                            "roles": [
+                              {
+                                "Ref": "testlambdasagemakerSagemakerRoleD84546B8"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.135.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.135.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.135.0"
+                }
+              },
+              "SagemakerModel": {
+                "id": "SagemakerModel",
+                "path": "lamsag-existingFunction/test-lambda-sagemaker/SagemakerModel",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SageMaker::Model",
+                  "aws:cdk:cloudformation:props": {
+                    "executionRoleArn": {
+                      "Fn::GetAtt": [
+                        "testlambdasagemakerSagemakerRoleD84546B8",
+                        "Arn"
+                      ]
+                    },
+                    "primaryContainer": {
+                      "image": {
+                        "Fn::FindInMap": [
+                          "mappings",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "containerArn"
+                        ]
+                      },
+                      "modelDataUrl": {
+                        "Fn::Sub": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e4dc8c22c79add1b62eb2b2d313770cba3dc11a6a8f8e386dd8723853be0265d.gz"
+                      }
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sagemaker.CfnModel",
+                  "version": "2.135.0"
+                }
+              },
+              "'test-lambda-sagemakerKey'": {
+                "id": "'test-lambda-sagemakerKey'",
+                "path": "lamsag-existingFunction/test-lambda-sagemaker/'test-lambda-sagemakerKey'",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "lamsag-existingFunction/test-lambda-sagemaker/'test-lambda-sagemakerKey'/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::KMS::Key",
+                      "aws:cdk:cloudformation:props": {
+                        "enableKeyRotation": true,
+                        "keyPolicy": {
+                          "Statement": [
+                            {
+                              "Action": "kms:*",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":iam::",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":root"
+                                    ]
+                                  ]
+                                }
+                              },
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_kms.CfnKey",
+                      "version": "2.135.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_kms.Key",
+                  "version": "2.135.0"
+                }
+              },
+              "SagemakerEndpointConfig": {
+                "id": "SagemakerEndpointConfig",
+                "path": "lamsag-existingFunction/test-lambda-sagemaker/SagemakerEndpointConfig",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SageMaker::EndpointConfig",
+                  "aws:cdk:cloudformation:props": {
+                    "kmsKeyId": {
+                      "Ref": "testlambdasagemakertestlambdasagemakerKey5BF0746F"
+                    },
+                    "productionVariants": [
+                      {
+                        "modelName": {
+                          "Fn::GetAtt": [
+                            "testlambdasagemakerSagemakerModelEC3E4E39",
+                            "ModelName"
+                          ]
+                        },
+                        "initialInstanceCount": 1,
+                        "initialVariantWeight": 1,
+                        "instanceType": "ml.m4.xlarge",
+                        "variantName": "AllTraffic"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sagemaker.CfnEndpointConfig",
+                  "version": "2.135.0"
+                }
+              },
+              "SagemakerEndpoint": {
+                "id": "SagemakerEndpoint",
+                "path": "lamsag-existingFunction/test-lambda-sagemaker/SagemakerEndpoint",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SageMaker::Endpoint",
+                  "aws:cdk:cloudformation:props": {
+                    "endpointConfigName": {
+                      "Fn::GetAtt": [
+                        "testlambdasagemakerSagemakerEndpointConfig6BABA334",
+                        "EndpointConfigName"
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sagemaker.CfnEndpoint",
+                  "version": "2.135.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-solutions-constructs/aws-lambda-sagemakerendpoint.LambdaToSagemakerEndpoint",
+              "version": "2.54.1"
+            }
+          },
+          "Integ": {
+            "id": "Integ",
+            "path": "lamsag-existingFunction/Integ",
+            "children": {
+              "DefaultTest": {
+                "id": "DefaultTest",
+                "path": "lamsag-existingFunction/Integ/DefaultTest",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "lamsag-existingFunction/Integ/DefaultTest/Default",
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.3.0"
+                    }
+                  },
+                  "DeployAssert": {
+                    "id": "DeployAssert",
+                    "path": "lamsag-existingFunction/Integ/DefaultTest/DeployAssert",
+                    "children": {
+                      "BootstrapVersion": {
+                        "id": "BootstrapVersion",
+                        "path": "lamsag-existingFunction/Integ/DefaultTest/DeployAssert/BootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnParameter",
+                          "version": "2.135.0"
+                        }
+                      },
+                      "CheckBootstrapVersion": {
+                        "id": "CheckBootstrapVersion",
+                        "path": "lamsag-existingFunction/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnRule",
+                          "version": "2.135.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Stack",
+                      "version": "2.135.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
+                  "version": "2.135.0-alpha.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
+              "version": "2.135.0-alpha.0"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "lamsag-existingFunction/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.135.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "lamsag-existingFunction/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.135.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.135.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.3.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.135.0"
+    }
+  }
+}

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,9 +11,14 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import * as events from '@aws-cdk/aws-events';
+import { Construct } from 'constructs';
+import * as events from 'aws-cdk-lib/aws-events';
 
 export interface BuildEventBusProps {
   /**
@@ -30,6 +35,9 @@ export interface BuildEventBusProps {
   readonly eventBusProps?: events.EventBusProps;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildEventBus(scope: Construct, props: BuildEventBusProps): events.IEventBus | undefined {
   // Check whether existing EventBus is provided
   if (props.existingEventBusInterface) {
@@ -39,5 +47,25 @@ export function buildEventBus(scope: Construct, props: BuildEventBusProps): even
     const _eventBusName = props.eventBusProps.eventBusName || 'CustomEventBus';
     return new events.EventBus(scope, _eventBusName, props.eventBusProps);
   }
-  return;
+  // ESLint requires this return statement, so disabling SonarQube warning
+  return; // NOSONAR
+}
+
+export interface EventBridgeProps {
+  readonly existingEventBusInterface: events.IEventBus,
+  readonly eventBusProps: events.EventBusProps
+}
+
+export function CheckEventBridgeProps(propsObject: EventBridgeProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingEventBusInterface && propsObject.eventBusProps) {
+    errorMessages += 'Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,10 +12,9 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
+import { Stack } from "aws-cdk-lib";
 import * as defaults from '../';
-import { ResourcePart } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 // --------------------------------------------------------------
 // Test minimal deployment with no properties
@@ -24,14 +23,14 @@ test('Test minimal deployment with no properties', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  defaults.buildEncryptionKey(stack);
+  defaults.buildEncryptionKey(stack, 'key-test');
 
-  expect(stack).toHaveResourceLike('AWS::KMS::Key', {
+  Template.fromStack(stack).hasResource('AWS::KMS::Key', {
     Type: "AWS::KMS::Key",
     Properties: {
       EnableKeyRotation: true
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 // --------------------------------------------------------------
@@ -41,14 +40,14 @@ test('Test minimal deployment with custom properties', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  defaults.buildEncryptionKey(stack, {
+  defaults.buildEncryptionKey(stack, 'key-test', {
     enableKeyRotation: false
   });
 
-  expect(stack).toHaveResourceLike('AWS::KMS::Key', {
+  Template.fromStack(stack).hasResource('AWS::KMS::Key', {
     Type: "AWS::KMS::Key",
     Properties: {
       EnableKeyRotation: false
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });

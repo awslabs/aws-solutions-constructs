@@ -1,0 +1,515 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "snslam-no-arguments": {
+        "id": "snslam-no-arguments",
+        "path": "snslam-no-arguments",
+        "children": {
+          "test-sns-lambda": {
+            "id": "test-sns-lambda",
+            "path": "snslam-no-arguments/test-sns-lambda",
+            "children": {
+              "LambdaFunctionServiceRole": {
+                "id": "LambdaFunctionServiceRole",
+                "path": "snslam-no-arguments/test-sns-lambda/LambdaFunctionServiceRole",
+                "children": {
+                  "ImportLambdaFunctionServiceRole": {
+                    "id": "ImportLambdaFunctionServiceRole",
+                    "path": "snslam-no-arguments/test-sns-lambda/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.118.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "snslam-no-arguments/test-sns-lambda/LambdaFunctionServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policies": [
+                          {
+                            "policyName": "LambdaFunctionServiceRolePolicy",
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "logs:CreateLogGroup",
+                                    "logs:CreateLogStream",
+                                    "logs:PutLogEvents"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:",
+                                        {
+                                          "Ref": "AWS::Partition"
+                                        },
+                                        ":logs:",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        ":",
+                                        {
+                                          "Ref": "AWS::AccountId"
+                                        },
+                                        ":log-group:/aws/lambda/*"
+                                      ]
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.118.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "snslam-no-arguments/test-sns-lambda/LambdaFunctionServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "snslam-no-arguments/test-sns-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "xray:PutTelemetryRecords",
+                                    "xray:PutTraceSegments"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": "*"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "testsnslambdaLambdaFunctionServiceRoleDefaultPolicy3E6745ED",
+                            "roles": [
+                              {
+                                "Ref": "testsnslambdaLambdaFunctionServiceRole23794781"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.118.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.118.0"
+                }
+              },
+              "LambdaFunction": {
+                "id": "LambdaFunction",
+                "path": "snslam-no-arguments/test-sns-lambda/LambdaFunction",
+                "children": {
+                  "Code": {
+                    "id": "Code",
+                    "path": "snslam-no-arguments/test-sns-lambda/LambdaFunction/Code",
+                    "children": {
+                      "Stage": {
+                        "id": "Stage",
+                        "path": "snslam-no-arguments/test-sns-lambda/LambdaFunction/Code/Stage",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.AssetStaging",
+                          "version": "2.118.0"
+                        }
+                      },
+                      "AssetBucket": {
+                        "id": "AssetBucket",
+                        "path": "snslam-no-arguments/test-sns-lambda/LambdaFunction/Code/AssetBucket",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                          "version": "2.118.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                      "version": "2.118.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "snslam-no-arguments/test-sns-lambda/LambdaFunction/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                      "aws:cdk:cloudformation:props": {
+                        "code": {
+                          "s3Bucket": {
+                            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                          },
+                          "s3Key": "0c3255e93ffe7a906c7422e9f0e9cc4c7fd86ee996ee3bb302e2f134b38463c8.zip"
+                        },
+                        "environment": {
+                          "variables": {
+                            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+                          }
+                        },
+                        "handler": "index.handler",
+                        "role": {
+                          "Fn::GetAtt": [
+                            "testsnslambdaLambdaFunctionServiceRole23794781",
+                            "Arn"
+                          ]
+                        },
+                        "runtime": "nodejs16.x",
+                        "tracingConfig": {
+                          "mode": "Active"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                      "version": "2.118.0"
+                    }
+                  },
+                  "AllowInvoke:snslamnoargumentstestsnslambdaSnsTopicC2A35224": {
+                    "id": "AllowInvoke:snslamnoargumentstestsnslambdaSnsTopicC2A35224",
+                    "path": "snslam-no-arguments/test-sns-lambda/LambdaFunction/AllowInvoke:snslamnoargumentstestsnslambdaSnsTopicC2A35224",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                      "aws:cdk:cloudformation:props": {
+                        "action": "lambda:InvokeFunction",
+                        "functionName": {
+                          "Fn::GetAtt": [
+                            "testsnslambdaLambdaFunctionEE9A249B",
+                            "Arn"
+                          ]
+                        },
+                        "principal": "sns.amazonaws.com",
+                        "sourceArn": {
+                          "Ref": "testsnslambdaSnsTopic52CA159E"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                      "version": "2.118.0"
+                    }
+                  },
+                  "SnsTopic": {
+                    "id": "SnsTopic",
+                    "path": "snslam-no-arguments/test-sns-lambda/LambdaFunction/SnsTopic",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "snslam-no-arguments/test-sns-lambda/LambdaFunction/SnsTopic/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::SNS::Subscription",
+                          "aws:cdk:cloudformation:props": {
+                            "endpoint": {
+                              "Fn::GetAtt": [
+                                "testsnslambdaLambdaFunctionEE9A249B",
+                                "Arn"
+                              ]
+                            },
+                            "protocol": "lambda",
+                            "topicArn": {
+                              "Ref": "testsnslambdaSnsTopic52CA159E"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_sns.CfnSubscription",
+                          "version": "2.118.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sns.Subscription",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.Function",
+                  "version": "2.118.0"
+                }
+              },
+              "aws-managed-key": {
+                "id": "aws-managed-key",
+                "path": "snslam-no-arguments/test-sns-lambda/aws-managed-key",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.118.0"
+                }
+              },
+              "SnsTopic": {
+                "id": "SnsTopic",
+                "path": "snslam-no-arguments/test-sns-lambda/SnsTopic",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "snslam-no-arguments/test-sns-lambda/SnsTopic/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SNS::Topic",
+                      "aws:cdk:cloudformation:props": {
+                        "kmsMasterKeyId": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "arn:",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              ":kms:",
+                              {
+                                "Ref": "AWS::Region"
+                              },
+                              ":",
+                              {
+                                "Ref": "AWS::AccountId"
+                              },
+                              ":alias/aws/sns"
+                            ]
+                          ]
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sns.CfnTopic",
+                      "version": "2.118.0"
+                    }
+                  },
+                  "Policy": {
+                    "id": "Policy",
+                    "path": "snslam-no-arguments/test-sns-lambda/SnsTopic/Policy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "snslam-no-arguments/test-sns-lambda/SnsTopic/Policy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::SNS::TopicPolicy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "SNS:AddPermission",
+                                    "SNS:DeleteTopic",
+                                    "SNS:GetTopicAttributes",
+                                    "SNS:ListSubscriptionsByTopic",
+                                    "SNS:Publish",
+                                    "SNS:Receive",
+                                    "SNS:RemovePermission",
+                                    "SNS:SetTopicAttributes",
+                                    "SNS:Subscribe"
+                                  ],
+                                  "Condition": {
+                                    "StringEquals": {
+                                      "AWS:SourceOwner": {
+                                        "Ref": "AWS::AccountId"
+                                      }
+                                    }
+                                  },
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "AWS": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":iam::",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":root"
+                                        ]
+                                      ]
+                                    }
+                                  },
+                                  "Resource": {
+                                    "Ref": "testsnslambdaSnsTopic52CA159E"
+                                  },
+                                  "Sid": "TopicOwnerOnlyAccess"
+                                },
+                                {
+                                  "Action": [
+                                    "SNS:AddPermission",
+                                    "SNS:DeleteTopic",
+                                    "SNS:GetTopicAttributes",
+                                    "SNS:ListSubscriptionsByTopic",
+                                    "SNS:Publish",
+                                    "SNS:Receive",
+                                    "SNS:RemovePermission",
+                                    "SNS:SetTopicAttributes",
+                                    "SNS:Subscribe"
+                                  ],
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": {
+                                    "Ref": "testsnslambdaSnsTopic52CA159E"
+                                  },
+                                  "Sid": "HttpsOnly"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "topics": [
+                              {
+                                "Ref": "testsnslambdaSnsTopic52CA159E"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_sns.CfnTopicPolicy",
+                          "version": "2.118.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sns.TopicPolicy",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sns.Topic",
+                  "version": "2.118.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-solutions-constructs/aws-sns-lambda.SnsToLambda",
+              "version": "2.50.0"
+            }
+          },
+          "Integ": {
+            "id": "Integ",
+            "path": "snslam-no-arguments/Integ",
+            "children": {
+              "DefaultTest": {
+                "id": "DefaultTest",
+                "path": "snslam-no-arguments/Integ/DefaultTest",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "snslam-no-arguments/Integ/DefaultTest/Default",
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.0.0"
+                    }
+                  },
+                  "DeployAssert": {
+                    "id": "DeployAssert",
+                    "path": "snslam-no-arguments/Integ/DefaultTest/DeployAssert",
+                    "children": {
+                      "BootstrapVersion": {
+                        "id": "BootstrapVersion",
+                        "path": "snslam-no-arguments/Integ/DefaultTest/DeployAssert/BootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnParameter",
+                          "version": "2.118.0"
+                        }
+                      },
+                      "CheckBootstrapVersion": {
+                        "id": "CheckBootstrapVersion",
+                        "path": "snslam-no-arguments/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnRule",
+                          "version": "2.118.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Stack",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
+                  "version": "2.118.0-alpha.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
+              "version": "2.118.0-alpha.0"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "snslam-no-arguments/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.118.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "snslam-no-arguments/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.118.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.118.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.0.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.118.0"
+    }
+  }
+}

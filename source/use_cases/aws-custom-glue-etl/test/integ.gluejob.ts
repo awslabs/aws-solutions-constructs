@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,9 +11,14 @@
  *  and limitations under the License.
  */
 
-import { App } from "@aws-cdk/core";
+import { App } from "aws-cdk-lib";
 import { AwsCustomGlueEtlStack } from "../lib/aws-custom-glue-etl-stack";
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 const stack = new AwsCustomGlueEtlStack(app, 'IntegTestGlueJob');
 stack.templateOptions.description = 'Integration Test for sample application that uses aws-kineisstream-glue-job construct';
+
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

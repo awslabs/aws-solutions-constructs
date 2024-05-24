@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as ec2 from "@aws-cdk/aws-ec2";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * @summary The properties for the LambdaToDynamoDB Construct
@@ -90,7 +90,9 @@ export class LambdaToDynamoDB extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToDynamoDBProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckDynamoDBProps(props);
+    defaults.CheckVpcProps(props);
+    defaults.CheckLambdaProps(props);
 
     // Other permissions for constructs are accepted as arrays, turning tablePermissions into
     // an array to use the same validation function.
@@ -99,10 +101,6 @@ export class LambdaToDynamoDB extends Construct {
     }
 
     if (props.deployVpc || props.existingVpc) {
-      if (props.deployVpc && props.existingVpc) {
-        throw new Error("More than 1 VPC specified in the properties");
-      }
-
       this.vpc = defaults.buildVpc(scope, {
         defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
         existingVpc: props.existingVpc,
@@ -125,10 +123,11 @@ export class LambdaToDynamoDB extends Construct {
     // Since we are only invoking this function with an existing Table or tableProps,
     // (not a table interface), we know that the implementation will always return
     // a Table object and we can safely cast away the optional aspect of the type.
-    this.dynamoTable = defaults.buildDynamoDBTable(this, {
+    const buildDynamoDBTableResponse = defaults.buildDynamoDBTable(this, {
       dynamoTableProps: props.dynamoTableProps,
       existingTableObj: props.existingTableObj
-    })[1] as dynamodb.Table;
+    });
+    this.dynamoTable = buildDynamoDBTableResponse.tableObject!;
 
     // Configure environment variables
     const tableEnvironmentVariableName = props.tableEnvironmentVariableName || 'DDB_TABLE_NAME';

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,14 @@
  *  and limitations under the License.
  */
 
-import { Duration, Stack } from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as kms from '@aws-cdk/aws-kms';
+import { Duration, Stack } from 'aws-cdk-lib';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
+import { expectNonexistence } from "./test-helper";
+import { CreateScrapBucket } from './test-helper';
 
 test('test s3Bucket override versioningConfiguration', () => {
   const stack = new Stack();
@@ -29,7 +31,7 @@ test('test s3Bucket override versioningConfiguration', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new s3.Bucket(stack, 'test-s3-verioning', outProps);
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [
         {
@@ -60,7 +62,7 @@ test('test s3Bucket override bucketEncryption', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new s3.Bucket(stack, 'test-s3-encryption', outProps);
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [
         {
@@ -90,7 +92,7 @@ test('test s3Bucket override publicAccessBlockConfiguration', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new s3.Bucket(stack, 'test-s3-publicAccessBlock', outProps);
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     PublicAccessBlockConfiguration: {
       BlockPublicAcls: true,
       IgnorePublicAcls: true
@@ -111,7 +113,7 @@ test('test s3Bucket add lifecycleConfiguration', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new s3.Bucket(stack, 'test-s3-lifecycle', outProps);
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     LifecycleConfiguration: {
       Rules: [
         {
@@ -134,7 +136,7 @@ test('test s3Bucket override serverAccessLogsBucket', () => {
     bucketProps: myS3Props
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     LoggingConfiguration: {
       DestinationBucketName: {
         Ref: "MyS3LoggingBucket119BE896"
@@ -150,7 +152,7 @@ test('test createAlbLoggingBucket()', () => {
     bucketName: 'test-name'
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::Bucket", {
     BucketName: 'test-name'
   });
 });
@@ -164,7 +166,7 @@ test('Test bucket policy that only accepts SSL requests only', () => {
     }
   }, 'test-bucket');
 
-  expect(stack).toHaveResource("AWS::S3::BucketPolicy", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::BucketPolicy", {
     PolicyDocument: {
       Statement: [
         {
@@ -216,7 +218,7 @@ test('Test bucket policy that accepts any requests', () => {
     }
   }, 'test-bucket');
 
-  expect(stack).not.toHaveResource("AWS::S3::BucketPolicy", {
+  expectNonexistence(stack, "AWS::S3::BucketPolicy", {
     PolicyDocument: {
       Statement: [
         {
@@ -264,7 +266,7 @@ test('Test enforcing SSL when bucketProps is not provided', () => {
 
   defaults.buildS3Bucket(stack, {}, 'test-bucket');
 
-  expect(stack).toHaveResource("AWS::S3::BucketPolicy", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::BucketPolicy", {
     PolicyDocument: {
       Statement: [
         {
@@ -317,7 +319,7 @@ test('Test enforcing SSL when bucketProps is provided and enforceSSL is not set'
     }
   }, 'test-bucket');
 
-  expect(stack).toHaveResource("AWS::S3::BucketPolicy", {
+  Template.fromStack(stack).hasResourceProperties("AWS::S3::BucketPolicy", {
     PolicyDocument: {
       Statement: [
         {
@@ -358,4 +360,75 @@ test('Test enforcing SSL when bucketProps is provided and enforceSSL is not set'
       Version: "2012-10-17"
     }
   });
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test fail S3 check', () => {
+  const stack = new Stack();
+
+  const props: defaults.S3Props = {
+    existingBucketObj: CreateScrapBucket(stack, "scrapBucket"),
+    bucketProps: {},
+  };
+
+  const app = () => {
+    defaults.CheckS3Props(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+});
+
+test('Test fail existing log bucket and log bucket prop check', () => {
+  const stack = new Stack();
+
+  const props: defaults.S3Props = {
+    existingLoggingBucketObj: new s3.Bucket(stack, 'logging-bucket'),
+    loggingBucketProps: {
+      autoDeleteObjects: true
+    }
+  };
+
+  const app = () => {
+    defaults.CheckS3Props(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingLoggingBucketObj or loggingBucketProps, but not both.\n');
+});
+
+test('Test fail false logS3Accesslogs and loggingBucketProps check', () => {
+  const stack = new Stack();
+
+  const props: defaults.S3Props = {
+    existingLoggingBucketObj: new s3.Bucket(stack, 'logging-bucket'),
+    logS3AccessLogs: false
+  };
+
+  const app = () => {
+    defaults.CheckS3Props(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n');
+});
+
+test('Test fail existingBucketObj and loggingBucketProps check', () => {
+  const stack = new Stack();
+
+  const props: defaults.S3Props = {
+    existingBucketObj: new s3.Bucket(stack, 'temp-bucket'),
+    loggingBucketProps: {
+      autoDeleteObjects: true
+    }
+  };
+
+  const app = () => {
+    defaults.CheckS3Props(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is an error.\n');
 });

@@ -1,0 +1,155 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "sqslamexistingFunctionIntegDefaultTestDeployAssert2E8A6942.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "sqslamexistingFunctionIntegDefaultTestDeployAssert2E8A6942.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "sqslamexistingFunctionIntegDefaultTestDeployAssert2E8A6942": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "sqslamexistingFunctionIntegDefaultTestDeployAssert2E8A6942.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "sqslamexistingFunctionIntegDefaultTestDeployAssert2E8A6942.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "sqslamexistingFunctionIntegDefaultTestDeployAssert2E8A6942.assets"
+      ],
+      "metadata": {
+        "/sqslam-existingFunction/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/sqslam-existingFunction/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "sqslam-existingFunction/Integ/DefaultTest/DeployAssert"
+    },
+    "sqslam-existingFunction.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "sqslam-existingFunction.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "sqslam-existingFunction": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "sqslam-existingFunction.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/2264128e38d0f7b4f8d0b89e78010a7f10f746cada17d9313ee0747ccf68ff7a.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "sqslam-existingFunction.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "sqslam-existingFunction.assets"
+      ],
+      "metadata": {
+        "/sqslam-existingFunction/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRole0C4CDE0B"
+          }
+        ],
+        "/sqslam-existingFunction/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRoleDefaultPolicy126C8897"
+          }
+        ],
+        "/sqslam-existingFunction/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionBF21E41F"
+          }
+        ],
+        "/sqslam-existingFunction/LambdaFunction/SqsEventSource:sqslamexistingFunctiontestsqslambdaqueue16552447/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionSqsEventSourcesqslamexistingFunctiontestsqslambdaqueue1655244776FD943D"
+          }
+        ],
+        "/sqslam-existingFunction/test-sqs-lambda/deadLetterQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqslambdadeadLetterQueue85BDB0A3"
+          }
+        ],
+        "/sqslam-existingFunction/test-sqs-lambda/deadLetterQueue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqslambdadeadLetterQueuePolicy8C08D1A5"
+          }
+        ],
+        "/sqslam-existingFunction/test-sqs-lambda/queue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqslambdaqueue601203B8"
+          }
+        ],
+        "/sqslam-existingFunction/test-sqs-lambda/queue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqslambdaqueuePolicy29B871D4"
+          }
+        ],
+        "/sqslam-existingFunction/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/sqslam-existingFunction/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "sqslam-existingFunction"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

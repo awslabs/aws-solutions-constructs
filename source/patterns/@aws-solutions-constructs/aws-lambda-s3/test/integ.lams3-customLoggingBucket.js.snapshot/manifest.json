@@ -1,0 +1,167 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "lams3customLoggingBucketIntegDefaultTestDeployAssert3299F98C.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lams3customLoggingBucketIntegDefaultTestDeployAssert3299F98C.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lams3customLoggingBucketIntegDefaultTestDeployAssert3299F98C": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lams3customLoggingBucketIntegDefaultTestDeployAssert3299F98C.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lams3customLoggingBucketIntegDefaultTestDeployAssert3299F98C.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lams3customLoggingBucketIntegDefaultTestDeployAssert3299F98C.assets"
+      ],
+      "metadata": {
+        "/lams3-customLoggingBucket/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lams3-customLoggingBucket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lams3-customLoggingBucket/Integ/DefaultTest/DeployAssert"
+    },
+    "lams3-customLoggingBucket.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lams3-customLoggingBucket.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lams3-customLoggingBucket": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lams3-customLoggingBucket.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/858effa8d20d0b81dbb8abac8e009d866833c981a746e2c1916692c106060cf9.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lams3-customLoggingBucket.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lams3-customLoggingBucket.assets"
+      ],
+      "metadata": {
+        "/lams3-customLoggingBucket/test-lambda-s3/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdas3LambdaFunctionServiceRole72E20379"
+          }
+        ],
+        "/lams3-customLoggingBucket/test-lambda-s3/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdas3LambdaFunctionServiceRoleDefaultPolicyB6FC6493"
+          }
+        ],
+        "/lams3-customLoggingBucket/test-lambda-s3/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdas3LambdaFunction1B8788C9"
+          }
+        ],
+        "/lams3-customLoggingBucket/test-lambda-s3/S3LoggingBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdas3S3LoggingBucketD42FC73D"
+          }
+        ],
+        "/lams3-customLoggingBucket/test-lambda-s3/S3LoggingBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdas3S3LoggingBucketPolicyCEAFB213"
+          }
+        ],
+        "/lams3-customLoggingBucket/test-lambda-s3/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdas3S3LoggingBucketAutoDeleteObjectsCustomResource9AE70F3A"
+          }
+        ],
+        "/lams3-customLoggingBucket/test-lambda-s3/S3Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdas3S3Bucket179A52E6"
+          }
+        ],
+        "/lams3-customLoggingBucket/test-lambda-s3/S3Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdas3S3BucketPolicyE899B211"
+          }
+        ],
+        "/lams3-customLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/lams3-customLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/lams3-customLoggingBucket/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lams3-customLoggingBucket/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lams3-customLoggingBucket"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

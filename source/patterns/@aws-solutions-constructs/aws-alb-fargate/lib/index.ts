@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,14 +11,14 @@
  *  and limitations under the License.
  */
 
-import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as s3 from "@aws-cdk/aws-s3";
-import { Construct } from "@aws-cdk/core";
+import * as elb from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as s3 from "aws-cdk-lib/aws-s3";
+import { Construct } from "constructs";
 import * as defaults from "@aws-solutions-constructs/core";
-import * as ecs from "@aws-cdk/aws-ecs";
+import * as ecs from "aws-cdk-lib/aws-ecs";
 import { GetActiveListener } from "@aws-solutions-constructs/core";
-import { CfnListener, CfnTargetGroup } from "@aws-cdk/aws-elasticloadbalancingv2";
+import { CfnListener, CfnTargetGroup } from "aws-cdk-lib/aws-elasticloadbalancingv2";
 
 export interface AlbToFargateProps {
   /**
@@ -96,8 +96,6 @@ export interface AlbToFargateProps {
   readonly albLoggingBucketProps?: s3.BucketProps;
   /**
    * Whether the construct is deploying a private or public API. This has implications for the VPC and ALB.
-   *
-   * @default - none
    */
   readonly publicApi: boolean;
   /**
@@ -142,7 +140,7 @@ export interface AlbToFargateProps {
   /**
    * A Fargate Service already instantiated (probably by another Solutions Construct). If
    * this is specified, then no props defining a new service can be provided, including:
-   * ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps,
+   * ecrImageVersion, containerDefinitionProps, fargateTaskDefinitionProps,
    * ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface
    *
    * @default - none
@@ -166,9 +164,9 @@ export class AlbToFargate extends Construct {
 
   constructor(scope: Construct, id: string, props: AlbToFargateProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckAlbProps(props);
     defaults.CheckFargateProps(props);
+    defaults.CheckVpcProps(props);
 
     // Obtain VPC for construct (existing or created)
     this.vpc = defaults.buildVpc(scope, {
@@ -179,16 +177,14 @@ export class AlbToFargate extends Construct {
     });
 
     // Set up the ALB
-    this.loadBalancer = defaults.ObtainAlb(
-      scope,
-      `${id}-lb`,
-      this.vpc,
-      props.publicApi,
-      props.existingLoadBalancerObj,
-      props.loadBalancerProps,
-      props.logAlbAccessLogs,
-      props.albLoggingBucketProps
-    );
+    this.loadBalancer = defaults.ObtainAlb(scope, `${id}-lb`, {
+      vpc: this.vpc,
+      publicApi: props.publicApi,
+      existingLoadBalancerObj: props.existingLoadBalancerObj,
+      loadBalancerProps: props.loadBalancerProps,
+      logAccessLogs:  props.logAlbAccessLogs,
+      loggingBucketProps: props.albLoggingBucketProps
+    });
 
     const newListener: boolean = this.loadBalancer.listeners.length === 0;
 
@@ -209,17 +205,17 @@ export class AlbToFargate extends Construct {
       // CheckFargateProps confirms that the container is provided
       this.container = props.existingContainerDefinitionObject!;
     } else {
-      [this.service, this.container] = defaults.CreateFargateService(
-        scope,
-        id,
-        this.vpc,
-        props.clusterProps,
-        props.ecrRepositoryArn,
-        props.ecrImageVersion,
-        props.fargateTaskDefinitionProps,
-        props.containerDefinitionProps,
-        props.fargateServiceProps
-      );
+      const createFargateServiceResponse = defaults.CreateFargateService(scope, id, {
+        constructVpc: this.vpc,
+        clientClusterProps: props.clusterProps,
+        ecrRepositoryArn: props.ecrRepositoryArn,
+        ecrImageVersion: props.ecrImageVersion,
+        clientFargateTaskDefinitionProps: props.fargateTaskDefinitionProps,
+        clientContainerDefinitionProps: props.containerDefinitionProps,
+        clientFargateServiceProps: props.fargateServiceProps
+      });
+      this.service = createFargateServiceResponse.service;
+      this.container = createFargateServiceResponse.containerDefinition;
     }
     // Add the Fargate Service to the
     // to the ALB Listener we set up earlier
@@ -240,7 +236,7 @@ export class AlbToFargate extends Construct {
     if (newListener && this.listener) {
       const levelOneListener = this.listener.node.defaultChild as CfnListener;
       const cfnTargetGroup = newTargetGroup.node.defaultChild as CfnTargetGroup;
-      levelOneListener.addDependsOn(cfnTargetGroup);
+      levelOneListener.addDependency(cfnTargetGroup);
     }
 
   }

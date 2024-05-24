@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,19 +11,17 @@
  *  and limitations under the License.
  */
 
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as dynamodb from "@aws-cdk/aws-dynamodb";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from "@aws-cdk/core";
+import { Construct } from "constructs";
 import * as defaults from "@aws-solutions-constructs/core";
-import * as ecs from "@aws-cdk/aws-ecs";
+import * as ecs from "aws-cdk-lib/aws-ecs";
 
 export interface FargateToDynamoDBProps {
   /**
    * Whether the construct is deploying a private or public API. This has implications for the VPC deployed
    * by this construct.
-   *
-   * @default - none
    */
   readonly publicApi: boolean;
   /**
@@ -87,7 +85,7 @@ export interface FargateToDynamoDBProps {
   /**
    * A Fargate Service already instantiated (probably by another Solutions Construct). If
    * this is specified, then no props defining a new service can be provided, including:
-   * existingImageObject, ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps,
+   * existingImageObject, ecrImageVersion, containerDefinitionProps, fargateTaskDefinitionProps,
    * ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface. If this value
    * is provided, then existingContainerDefinitionObject must be provided as well.
    *
@@ -142,8 +140,9 @@ export class FargateToDynamoDB extends Construct {
 
   constructor(scope: Construct, id: string, props: FargateToDynamoDBProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
+    defaults.CheckDynamoDBProps(props);
+    defaults.CheckVpcProps(props);
 
     // Other permissions for constructs are accepted as arrays, turning tablePermissions into
     // an array to use the same validation function.
@@ -166,23 +165,25 @@ export class FargateToDynamoDB extends Construct {
       // CheckFargateProps confirms that the container is provided
       this.container = props.existingContainerDefinitionObject!;
     } else {
-      [this.service, this.container] = defaults.CreateFargateService(
-        scope,
-        id,
-        this.vpc,
-        props.clusterProps,
-        props.ecrRepositoryArn,
-        props.ecrImageVersion,
-        props.fargateTaskDefinitionProps,
-        props.containerDefinitionProps,
-        props.fargateServiceProps
-      );
+      const createFargateServiceResponse = defaults.CreateFargateService(scope, id, {
+        constructVpc: this.vpc,
+        clientClusterProps: props.clusterProps,
+        ecrRepositoryArn: props.ecrRepositoryArn,
+        ecrImageVersion: props.ecrImageVersion,
+        clientFargateTaskDefinitionProps: props.fargateTaskDefinitionProps,
+        clientContainerDefinitionProps: props.containerDefinitionProps,
+        clientFargateServiceProps: props.fargateServiceProps
+      });
+      this.service = createFargateServiceResponse.service;
+      this.container = createFargateServiceResponse.containerDefinition;
     }
 
-    [this.dynamoTableInterface, this.dynamoTable] = defaults.buildDynamoDBTable(this, {
+    const response = defaults.buildDynamoDBTable(this, {
       dynamoTableProps: props.dynamoTableProps,
       existingTableInterface: props.existingTableInterface
     });
+    this.dynamoTableInterface = response.tableInterface;
+    this.dynamoTable = response.tableObject;
 
     // Add the requested or default table permissions
     if (props.tablePermissions) {

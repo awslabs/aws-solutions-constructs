@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,11 @@
  *  and limitations under the License.
  */
 
-import { ResourcePart } from '@aws-cdk/assert';
-import { Stack } from '@aws-cdk/core';
-import '@aws-cdk/assert/jest';
-import * as logs from '@aws-cdk/aws-logs';
+import { Template } from 'aws-cdk-lib/assertions';
+import { Stack } from 'aws-cdk-lib';
+import * as logs from 'aws-cdk-lib/aws-logs';
 import { buildLogGroup } from '../lib/cloudwatch-log-group-helper';
-import * as kms from '@aws-cdk/aws-kms';
+import * as kms from 'aws-cdk-lib/aws-kms';
 
 test('override cw log group props with encryptionKey only', () => {
   const stack = new Stack();
@@ -27,7 +26,8 @@ test('override cw log group props with encryptionKey only', () => {
     encryptionKey: key
   });
 
-  expect(stack).toHaveResource('AWS::Logs::LogGroup', {
+  const template = Template.fromStack(stack);
+  template.hasResource('AWS::Logs::LogGroup', {
     Metadata: {
       cfn_nag: {
         rules_to_suppress: [
@@ -38,7 +38,7 @@ test('override cw log group props with encryptionKey only', () => {
         ]
       }
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 test('override cw log group props with retention period only', () => {
@@ -48,7 +48,8 @@ test('override cw log group props with retention period only', () => {
     retention: logs.RetentionDays.FIVE_DAYS
   });
 
-  expect(stack).toHaveResource('AWS::Logs::LogGroup', {
+  const template = Template.fromStack(stack);
+  template.hasResource('AWS::Logs::LogGroup', {
     Metadata: {
       cfn_nag: {
         rules_to_suppress: [
@@ -59,5 +60,5 @@ test('override cw log group props with retention period only', () => {
         ]
       }
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });

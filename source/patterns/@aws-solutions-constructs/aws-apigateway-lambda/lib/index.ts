@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,13 +12,13 @@
  */
 
 // Imports
-import * as api from '@aws-cdk/aws-apigateway';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as iam from '@aws-cdk/aws-iam';
-import * as logs from '@aws-cdk/aws-logs';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as logs from 'aws-cdk-lib/aws-logs';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * The properties for the ApiGatewayToLambda class.
@@ -69,7 +69,7 @@ export class ApiGatewayToLambda extends Construct {
    */
   constructor(scope: Construct, id: string, props: ApiGatewayToLambdaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckLambdaProps(props);
 
     // Setup the Lambda function
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
@@ -78,7 +78,9 @@ export class ApiGatewayToLambda extends Construct {
     });
 
     // Setup the API Gateway
-    [this.apiGateway, this.apiGatewayCloudWatchRole,
-      this.apiGatewayLogGroup] = defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
+    const globalRestApiResponse = defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
+    this.apiGateway = globalRestApiResponse.api;
+    this.apiGatewayCloudWatchRole = globalRestApiResponse.role;
+    this.apiGatewayLogGroup = globalRestApiResponse.group;
   }
 }

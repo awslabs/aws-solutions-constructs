@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,21 +11,27 @@
  *  and limitations under the License.
  */
 
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as cdk from '@aws-cdk/core';
-import * as api from '@aws-cdk/aws-apigateway';
-import * as mediastore from '@aws-cdk/aws-mediastore';
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as cdk from 'aws-cdk-lib';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import {
   DefaultCloudFrontWebDistributionForS3Props,
   DefaultCloudFrontWebDistributionForApiGatewayProps,
-  DefaultCloudFrontDisributionForMediaStoreProps
+  DefaultCloudFrontDistributionForMediaStoreProps
 } from './cloudfront-distribution-defaults';
-import { overrideProps, addCfnSuppressRules, consolidateProps } from './utils';
-import { createLoggingBucket } from './s3-bucket-helper';
+import { addCfnSuppressRules, consolidateProps, generatePhysicalName } from './utils';
+import { createCloudFrontLoggingBucket } from './s3-bucket-helper';
 import { DefaultS3Props } from './s3-bucket-defaults';
+import { S3OacOrigin } from './s3-oac-origin';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 // Override Cfn_Nag rule: Cloudfront TLS-1.2 rule (https://github.com/stelligent/cfn_nag/issues/384)
 function updateSecurityPolicy(cfDistribution: cloudfront.Distribution) {
@@ -50,60 +56,115 @@ function defaultCloudfrontFunction(scope: Construct): cloudfront.Function {
 
   return new cloudfront.Function(scope, "SetHttpSecurityHeaders", {
     functionName: functionId,
-    code: cloudfront.FunctionCode.fromInline("function handler(event) { var response = event.response; \
-      var headers = response.headers; \
-      headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'}; \
-      headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"}; \
-      headers['x-content-type-options'] = { value: 'nosniff'}; \
-      headers['x-frame-options'] = {value: 'DENY'}; \
-      headers['x-xss-protection'] = {value: '1; mode=block'}; \
-      return response; \
-    }")
+    code: cloudfront.FunctionCode.fromInline("function handler(event) { " +
+      "var response = event.response; " +
+      "var headers = response.headers; " +
+      "headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'}; " +
+      "headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"}; " +
+      "headers['x-content-type-options'] = { value: 'nosniff'}; headers['x-frame-options'] = {value: 'DENY'}; " +
+      "headers['x-xss-protection'] = {value: '1; mode=block'}; " +
+      "return response; }")
   });
 }
 
+export interface CloudFrontDistributionForApiGatewayResponse {
+  readonly distribution: cloudfront.Distribution,
+  readonly cloudfrontFunction?: cloudfront.Function,
+  readonly loggingBucket?: s3.Bucket
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CloudFrontDistributionForApiGateway(scope: Construct,
   apiEndPoint: api.RestApi,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   httpSecurityHeaders: boolean = true,
-  cloudFrontLoggingBucketProps?: s3.BucketProps
-): [cloudfront.Distribution, cloudfront.Function?, s3.Bucket?] {
+  cloudFrontLoggingBucketProps?: s3.BucketProps,
+  responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
+): CloudFrontDistributionForApiGatewayResponse {
 
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
   const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudFrontLoggingBucketProps);
 
-  const defaultprops = DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint, loggingBucket, httpSecurityHeaders, cloudfrontFunction);
+  const defaultprops = DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint,
+    loggingBucket,
+    httpSecurityHeaders,
+    cloudfrontFunction,
+    responseHeadersPolicyProps ? new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', responseHeadersPolicyProps) : undefined
+  );
 
   const cfprops = consolidateProps(defaultprops, cloudFrontDistributionProps);
   // Create the Cloudfront Distribution
   const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
 
-  return [cfDistribution, cloudfrontFunction, loggingBucket];
+  return { distribution: cfDistribution, cloudfrontFunction, loggingBucket};
 }
 
-export function CloudFrontDistributionForS3(scope: Construct,
-  sourceBucket: s3.IBucket,
-  cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
-  httpSecurityHeaders: boolean = true,
-  originPath?: string,
-  cloudFrontLoggingBucketProps?: s3.BucketProps): [cloudfront.Distribution,
-    cloudfront.Function?, s3.Bucket?] {
+export interface CreateCloudFrontDistributionForS3Props {
+  readonly sourceBucket: s3.IBucket,
+  readonly cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
+  readonly httpSecurityHeaders?: boolean,
+  readonly cloudFrontLoggingBucketProps?: s3.BucketProps,
+  readonly responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
+}
 
+export interface CreateCloudFrontDistributionForS3Response {
+  readonly distribution: cloudfront.Distribution,
+  readonly loggingBucket?: s3.Bucket,
+  readonly cloudfrontFunction?: cloudfront.Function,
+  readonly originAccessControl?: cloudfront.CfnOriginAccessControl,
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function createCloudFrontDistributionForS3(
+  scope: Construct,
+  id: string,
+  props: CreateCloudFrontDistributionForS3Props
+): CreateCloudFrontDistributionForS3Response {
+  const httpSecurityHeaders = props.httpSecurityHeaders ?? true;
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
-  const loggingBucket = getLoggingBucket(cloudFrontDistributionProps, scope, cloudFrontLoggingBucketProps);
+  const loggingBucket = getLoggingBucket(props.cloudFrontDistributionProps, scope, props.cloudFrontLoggingBucketProps);
 
-  const defaultprops = DefaultCloudFrontWebDistributionForS3Props(sourceBucket, loggingBucket, httpSecurityHeaders, originPath, cloudfrontFunction);
+  let originAccessControl;
+  let originProps = {};
 
-  const cfprops = consolidateProps(defaultprops, cloudFrontDistributionProps);
+  if (!props.sourceBucket.isWebsite) {
+    originAccessControl = new cloudfront.CfnOriginAccessControl(scope, 'CloudFrontOac', {
+      originAccessControlConfig: {
+        name: generatePhysicalName('aws-cloudfront-s3-', [id], 64),
+        originAccessControlOriginType: 's3',
+        signingBehavior: 'always',
+        signingProtocol: 'sigv4',
+        description: 'Origin access control provisioned by aws-cloudfront-s3'
+      }
+    });
+    originProps = { originAccessControl };
+  }
+
+  const origin = new S3OacOrigin(props.sourceBucket, originProps);
+
+  const defaultprops = DefaultCloudFrontWebDistributionForS3Props(origin,
+    loggingBucket,
+    httpSecurityHeaders,
+    cloudfrontFunction,
+    props.responseHeadersPolicyProps ?
+      new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', props.responseHeadersPolicyProps) :
+      undefined
+  );
+
+  const cfprops = consolidateProps(defaultprops, props.cloudFrontDistributionProps);
   // Create the Cloudfront Distribution
   const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
 
   // Extract the CfnBucketPolicy from the sourceBucket
-  const bucketPolicy = sourceBucket.policy as s3.BucketPolicy;
+  const bucketPolicy = props.sourceBucket.policy as s3.BucketPolicy;
   // the lack of a bucketPolicy means the bucket was imported from outside the stack so the lack of cfn_nag suppression is not an issue
   if (bucketPolicy) {
     addCfnSuppressRules(bucketPolicy, [
@@ -113,15 +174,26 @@ export function CloudFrontDistributionForS3(scope: Construct,
       }
     ]);
   }
-  return [cfDistribution, cloudfrontFunction, loggingBucket];
+  return { distribution: cfDistribution, cloudfrontFunction, loggingBucket, originAccessControl};
 }
 
+export interface CloudFrontDistributionForMediaStoreResponse {
+  readonly distribution: cloudfront.Distribution,
+  readonly loggingBucket?: s3.Bucket,
+  readonly requestPolicy: cloudfront.OriginRequestPolicy,
+  readonly cloudfrontFunction?: cloudfront.Function
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CloudFrontDistributionForMediaStore(scope: Construct,
   mediaStoreContainer: mediastore.CfnContainer,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   httpSecurityHeaders: boolean = true,
-  cloudFrontLoggingBucketProps?: s3.BucketProps): [cloudfront.Distribution,
-    s3.Bucket | undefined, cloudfront.OriginRequestPolicy, cloudfront.Function?] {
+  cloudFrontLoggingBucketProps?: s3.BucketProps,
+  responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
+): CloudFrontDistributionForMediaStoreResponse {
 
   let originRequestPolicy: cloudfront.OriginRequestPolicy;
 
@@ -157,13 +229,14 @@ export function CloudFrontDistributionForMediaStore(scope: Construct,
 
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
-  const defaultprops = DefaultCloudFrontDisributionForMediaStoreProps(
+  const defaultprops = DefaultCloudFrontDistributionForMediaStoreProps(
     mediaStoreContainer,
     loggingBucket,
     originRequestPolicy,
     httpSecurityHeaders,
     cloudFrontDistributionProps?.customHeaders,
-    cloudfrontFunction
+    cloudfrontFunction,
+    responseHeadersPolicyProps ? new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', responseHeadersPolicyProps) : undefined
   );
 
   let cfprops: cloudfront.DistributionProps;
@@ -174,9 +247,12 @@ export function CloudFrontDistributionForMediaStore(scope: Construct,
   const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
 
-  return [cfDistribution, loggingBucket, originRequestPolicy, cloudfrontFunction];
+  return { distribution: cfDistribution, loggingBucket, requestPolicy: originRequestPolicy, cloudfrontFunction };
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CloudFrontOriginAccessIdentity(scope: Construct, comment?: string) {
   return new cloudfront.OriginAccessIdentity(scope, 'CloudFrontOriginAccessIdentity', {
     comment: comment ? comment : `access-identity-${cdk.Aws.REGION}-${cdk.Aws.STACK_NAME}`
@@ -194,14 +270,42 @@ function getLoggingBucket(
     throw Error('Either cloudFrontDistributionProps.logBucket or cloudFrontLoggingBucketProps can be set.');
   }
 
-  return isLoggingDisabled
-    ? undefined
-    : userSuppliedLogBucket ?? createLoggingBucket(
+  let bucketResult: s3.Bucket | undefined;
+  if (isLoggingDisabled) {
+    bucketResult = undefined;
+  } else if (userSuppliedLogBucket) {
+    bucketResult = userSuppliedLogBucket;
+  } else {
+    bucketResult = createCloudFrontLoggingBucket(
       scope,
       'CloudfrontLoggingBucket',
-      cloudFrontLoggingBucketProps ? overrideProps(DefaultS3Props(), cloudFrontLoggingBucketProps) : DefaultS3Props());
+      consolidateProps(DefaultS3Props(), cloudFrontLoggingBucketProps, { objectOwnership: s3.ObjectOwnership.OBJECT_WRITER }));
+
+    const loggingBucketResource = bucketResult.node.findChild('Resource') as s3.CfnBucket;
+    loggingBucketResource.addPropertyOverride('AccessControl', 'LogDeliveryWrite');
+  }
+  return bucketResult;
 }
 
 function getCloudfrontFunction(httpSecurityHeaders: boolean, scope: Construct) {
   return httpSecurityHeaders ? defaultCloudfrontFunction(scope) : undefined;
+}
+
+export interface CloudFrontProps {
+  readonly insertHttpSecurityHeaders?: boolean;
+  readonly responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps;
+}
+
+export function CheckCloudFrontProps(propsObject: CloudFrontProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.insertHttpSecurityHeaders !== false && propsObject.responseHeadersPolicyProps?.securityHeadersBehavior) {
+    errorMessages += 'responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }

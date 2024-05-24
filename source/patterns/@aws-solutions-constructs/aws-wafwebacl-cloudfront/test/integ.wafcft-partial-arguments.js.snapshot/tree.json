@@ -1,0 +1,370 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "wafcft-partial-arguments": {
+        "id": "wafcft-partial-arguments",
+        "path": "wafcft-partial-arguments",
+        "children": {
+          "distro": {
+            "id": "distro",
+            "path": "wafcft-partial-arguments/distro",
+            "children": {
+              "Origin1": {
+                "id": "Origin1",
+                "path": "wafcft-partial-arguments/distro/Origin1",
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.0.0"
+                }
+              },
+              "OriginGroup1": {
+                "id": "OriginGroup1",
+                "path": "wafcft-partial-arguments/distro/OriginGroup1",
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.0.0"
+                }
+              },
+              "Origin2": {
+                "id": "Origin2",
+                "path": "wafcft-partial-arguments/distro/Origin2",
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.0.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "wafcft-partial-arguments/distro/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFront::Distribution",
+                  "aws:cdk:cloudformation:props": {
+                    "distributionConfig": {
+                      "enabled": true,
+                      "origins": [
+                        {
+                          "domainName": "www.example.com",
+                          "id": "wafcftpartialargumentsdistroOrigin1C84D3821",
+                          "customOriginConfig": {
+                            "originSslProtocols": [
+                              "TLSv1.2"
+                            ],
+                            "originProtocolPolicy": "https-only"
+                          }
+                        },
+                        {
+                          "domainName": "admin.example.com",
+                          "id": "wafcftpartialargumentsdistroOrigin240311680",
+                          "customOriginConfig": {
+                            "originSslProtocols": [
+                              "TLSv1.2"
+                            ],
+                            "originProtocolPolicy": "https-only"
+                          }
+                        }
+                      ],
+                      "originGroups": {
+                        "items": [
+                          {
+                            "failoverCriteria": {
+                              "statusCodes": {
+                                "items": [
+                                  404
+                                ],
+                                "quantity": 1
+                              }
+                            },
+                            "id": "wafcftpartialargumentsdistroOriginGroup12A48644F",
+                            "members": {
+                              "items": [
+                                {
+                                  "originId": "wafcftpartialargumentsdistroOrigin1C84D3821"
+                                },
+                                {
+                                  "originId": "wafcftpartialargumentsdistroOrigin240311680"
+                                }
+                              ],
+                              "quantity": 2
+                            }
+                          }
+                        ],
+                        "quantity": 1
+                      },
+                      "defaultCacheBehavior": {
+                        "pathPattern": "*",
+                        "targetOriginId": "wafcftpartialargumentsdistroOriginGroup12A48644F",
+                        "cachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+                        "compress": true,
+                        "viewerProtocolPolicy": "allow-all"
+                      },
+                      "httpVersion": "http2",
+                      "ipv6Enabled": true
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.CfnDistribution",
+                  "version": "2.118.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cloudfront.Distribution",
+              "version": "2.118.0"
+            }
+          },
+          "test-wafwebacl-cloudfront-s3": {
+            "id": "test-wafwebacl-cloudfront-s3",
+            "path": "wafcft-partial-arguments/test-wafwebacl-cloudfront-s3",
+            "children": {
+              "test-wafwebacl-cloudfront-s3-WebACL": {
+                "id": "test-wafwebacl-cloudfront-s3-WebACL",
+                "path": "wafcft-partial-arguments/test-wafwebacl-cloudfront-s3/test-wafwebacl-cloudfront-s3-WebACL",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::WAFv2::WebACL",
+                  "aws:cdk:cloudformation:props": {
+                    "defaultAction": {
+                      "allow": {}
+                    },
+                    "name": "test-name-cloudfront",
+                    "rules": [
+                      {
+                        "name": "AWS-AWSManagedRulesBotControlRuleSet",
+                        "priority": 0,
+                        "overrideAction": {
+                          "none": {}
+                        },
+                        "statement": {
+                          "managedRuleGroupStatement": {
+                            "name": "AWSManagedRulesBotControlRuleSet",
+                            "vendorName": "AWS"
+                          }
+                        },
+                        "visibilityConfig": {
+                          "cloudWatchMetricsEnabled": true,
+                          "metricName": "AWSManagedRulesBotControlRuleSet",
+                          "sampledRequestsEnabled": true
+                        }
+                      },
+                      {
+                        "name": "AWS-AWSManagedRulesKnownBadInputsRuleSet",
+                        "priority": 1,
+                        "overrideAction": {
+                          "none": {}
+                        },
+                        "statement": {
+                          "managedRuleGroupStatement": {
+                            "name": "AWSManagedRulesKnownBadInputsRuleSet",
+                            "vendorName": "AWS"
+                          }
+                        },
+                        "visibilityConfig": {
+                          "cloudWatchMetricsEnabled": true,
+                          "metricName": "AWSManagedRulesKnownBadInputsRuleSet",
+                          "sampledRequestsEnabled": true
+                        }
+                      },
+                      {
+                        "name": "AWS-AWSManagedRulesCommonRuleSet",
+                        "priority": 2,
+                        "overrideAction": {
+                          "none": {}
+                        },
+                        "statement": {
+                          "managedRuleGroupStatement": {
+                            "name": "AWSManagedRulesCommonRuleSet",
+                            "vendorName": "AWS"
+                          }
+                        },
+                        "visibilityConfig": {
+                          "cloudWatchMetricsEnabled": true,
+                          "metricName": "AWSManagedRulesCommonRuleSet",
+                          "sampledRequestsEnabled": true
+                        }
+                      },
+                      {
+                        "name": "AWS-AWSManagedRulesAnonymousIpList",
+                        "priority": 3,
+                        "overrideAction": {
+                          "none": {}
+                        },
+                        "statement": {
+                          "managedRuleGroupStatement": {
+                            "name": "AWSManagedRulesAnonymousIpList",
+                            "vendorName": "AWS"
+                          }
+                        },
+                        "visibilityConfig": {
+                          "cloudWatchMetricsEnabled": true,
+                          "metricName": "AWSManagedRulesAnonymousIpList",
+                          "sampledRequestsEnabled": true
+                        }
+                      },
+                      {
+                        "name": "AWS-AWSManagedRulesAmazonIpReputationList",
+                        "priority": 4,
+                        "overrideAction": {
+                          "none": {}
+                        },
+                        "statement": {
+                          "managedRuleGroupStatement": {
+                            "name": "AWSManagedRulesAmazonIpReputationList",
+                            "vendorName": "AWS"
+                          }
+                        },
+                        "visibilityConfig": {
+                          "cloudWatchMetricsEnabled": true,
+                          "metricName": "AWSManagedRulesAmazonIpReputationList",
+                          "sampledRequestsEnabled": true
+                        }
+                      },
+                      {
+                        "name": "AWS-AWSManagedRulesAdminProtectionRuleSet",
+                        "priority": 5,
+                        "overrideAction": {
+                          "none": {}
+                        },
+                        "statement": {
+                          "managedRuleGroupStatement": {
+                            "name": "AWSManagedRulesAdminProtectionRuleSet",
+                            "vendorName": "AWS"
+                          }
+                        },
+                        "visibilityConfig": {
+                          "cloudWatchMetricsEnabled": true,
+                          "metricName": "AWSManagedRulesAdminProtectionRuleSet",
+                          "sampledRequestsEnabled": true
+                        }
+                      },
+                      {
+                        "name": "AWS-AWSManagedRulesSQLiRuleSet",
+                        "priority": 6,
+                        "overrideAction": {
+                          "none": {}
+                        },
+                        "statement": {
+                          "managedRuleGroupStatement": {
+                            "name": "AWSManagedRulesSQLiRuleSet",
+                            "vendorName": "AWS"
+                          }
+                        },
+                        "visibilityConfig": {
+                          "cloudWatchMetricsEnabled": true,
+                          "metricName": "AWSManagedRulesSQLiRuleSet",
+                          "sampledRequestsEnabled": true
+                        }
+                      }
+                    ],
+                    "scope": "CLOUDFRONT",
+                    "visibilityConfig": {
+                      "cloudWatchMetricsEnabled": true,
+                      "metricName": "webACL",
+                      "sampledRequestsEnabled": true
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_wafv2.CfnWebACL",
+                  "version": "2.118.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-solutions-constructs/aws-wafwebacl-cloudfront.WafwebaclToCloudFront",
+              "version": "2.50.0"
+            }
+          },
+          "Integ": {
+            "id": "Integ",
+            "path": "wafcft-partial-arguments/Integ",
+            "children": {
+              "DefaultTest": {
+                "id": "DefaultTest",
+                "path": "wafcft-partial-arguments/Integ/DefaultTest",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "wafcft-partial-arguments/Integ/DefaultTest/Default",
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.0.0"
+                    }
+                  },
+                  "DeployAssert": {
+                    "id": "DeployAssert",
+                    "path": "wafcft-partial-arguments/Integ/DefaultTest/DeployAssert",
+                    "children": {
+                      "BootstrapVersion": {
+                        "id": "BootstrapVersion",
+                        "path": "wafcft-partial-arguments/Integ/DefaultTest/DeployAssert/BootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnParameter",
+                          "version": "2.118.0"
+                        }
+                      },
+                      "CheckBootstrapVersion": {
+                        "id": "CheckBootstrapVersion",
+                        "path": "wafcft-partial-arguments/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnRule",
+                          "version": "2.118.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Stack",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
+                  "version": "2.118.0-alpha.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
+              "version": "2.118.0-alpha.0"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "wafcft-partial-arguments/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.118.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "wafcft-partial-arguments/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.118.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.118.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.0.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.118.0"
+    }
+  }
+}

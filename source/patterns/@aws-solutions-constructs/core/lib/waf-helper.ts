@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,8 +11,13 @@
  *  and limitations under the License.
  */
 
-import { Construct } from "@aws-cdk/core";
-import * as waf from "@aws-cdk/aws-wafv2";
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
+import { Construct } from "constructs";
+import * as waf from "aws-cdk-lib/aws-wafv2";
 import { DefaultWafwebaclProps } from "./waf-defaults";
 import { consolidateProps } from './utils';
 
@@ -24,9 +29,12 @@ export interface BuildWebaclProps {
   /**
    * User provided props to override the default ACL props for WAF web ACL.
    */
-  readonly webaclProps?: waf.CfnWebACLProps;
+  readonly webaclProps?: waf.CfnWebACLProps | any;
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildWebacl(scope: Construct, webaclScope: string, props: BuildWebaclProps): waf.CfnWebACL {
   let webAcl;
 
@@ -41,4 +49,23 @@ export function buildWebacl(scope: Construct, webaclScope: string, props: BuildW
   }
 
   return webAcl;
+}
+
+export interface WafWebAclProps {
+  readonly existingWebaclObj: waf.CfnWebACL,
+  readonly webaclProps:	waf.CfnWebACLProps,
+}
+
+export function CheckWafWebAclProps(propsObject: WafWebAclProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingWebaclObj && propsObject.webaclProps) {
+    errorMessages += 'Error - Either provide existingWebaclObj or webaclProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }

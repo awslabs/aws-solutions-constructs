@@ -1,5 +1,7 @@
-lib/*.js
+lib/**/*.js
 test/*.js
 *.d.ts
 coverage
-test/lambda/index.js
+test/integ.*.js.snapshot/
+test/cdk-integ.out.integ.*.snapshot
+node_modules

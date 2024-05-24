@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,23 +11,20 @@
  *  and limitations under the License.
  */
 
-import { Stack } from '@aws-cdk/core';
-import * as waf from "@aws-cdk/aws-wafv2";
+import { Stack } from 'aws-cdk-lib';
+import * as waf from "aws-cdk-lib/aws-wafv2";
 import * as defaults from '..';
-import { SynthUtils } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import { buildWebacl } from '..';
 
-// --------------------------------------------------------------
-// Test construct with default props
-// --------------------------------------------------------------
 test('Test construct with default props', () => {
   // Stack
   const stack = new Stack();
   // Build WAF web ACL
   defaults.buildWebacl(stack, 'REGIONAL', {});
 
-  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
     Scope: "REGIONAL",
     VisibilityConfig: {
       CloudWatchMetricsEnabled: true,
@@ -164,13 +161,10 @@ test('Test construct with default props', () => {
     ]
   });
 
-  expect(SynthUtils.toCloudFormation(stack)).toCountResources('AWS::WAFv2::WebACL', 1);
-  expect(SynthUtils.toCloudFormation(stack)).toCountResources('AWS::WAFv2::WebACLAssociation', 0);
+  template.resourceCountIs('AWS::WAFv2::WebACL', 1);
+  template.resourceCountIs('AWS::WAFv2::WebACLAssociation', 0);
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ user provided custom properties
-// --------------------------------------------------------------
 test('Test deployment w/ user provided custom properties', () => {
   // Stack
   const stack = new Stack();
@@ -196,7 +190,7 @@ test('Test deployment w/ user provided custom properties', () => {
     webaclProps: props
   });
 
-  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
+  Template.fromStack(stack).hasResourceProperties("AWS::WAFv2::WebACL", {
     Scope: "CLOUDFRONT",
     VisibilityConfig: {
       CloudWatchMetricsEnabled: false,
@@ -244,9 +238,24 @@ test('Test deployment w/ user provided custom properties', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing WAF web ACL provided
-// --------------------------------------------------------------
+test('Test deployment w/ user provided partial custom properties', () => {
+  // Stack
+  const stack = new Stack();
+  const testName = 'test-name';
+  // Build WAF web ACL
+  const props = {
+    name: testName
+  };
+
+  defaults.buildWebacl(stack, 'CLOUDFRONT', {
+    webaclProps: props
+  });
+
+  Template.fromStack(stack).hasResourceProperties("AWS::WAFv2::WebACL", {
+    Name: testName
+  });
+});
+
 test('Test deployment w/ existing WAF web ACL provided', () => {
   // Stack
   const stack = new Stack();
@@ -257,4 +266,56 @@ test('Test deployment w/ existing WAF web ACL provided', () => {
   });
 
   expect(newWaf).toBe(testWaf);
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test WebACL bad props', () => {
+  const stack = new Stack();
+  const wafProps: waf.CfnWebACLProps = {
+    scope: 'CLOUDFRONT',
+    defaultAction: {
+      allow: {}
+    },
+    visibilityConfig: {
+      cloudWatchMetricsEnabled: false,
+      metricName: 'webACL',
+      sampledRequestsEnabled: true
+    },
+    rules: [
+      defaults.wrapManagedRuleSet("AWSManagedRulesCommonRuleSet", "AWS", 0),
+      defaults.wrapManagedRuleSet("AWSManagedRulesWordPressRuleSet", "AWS", 1),
+    ]
+  };
+
+  const wafPropsTwo: waf.CfnWebACLProps = {
+    scope: 'CLOUDFRONT',
+    defaultAction: {
+      allow: {}
+    },
+    visibilityConfig: {
+      cloudWatchMetricsEnabled: false,
+      metricName: 'webACL',
+      sampledRequestsEnabled: true
+    },
+    rules: [
+      defaults.wrapManagedRuleSet("AWSManagedRulesCommonRuleSet", "AWS", 0),
+      defaults.wrapManagedRuleSet("AWSManagedRulesWordPressRuleSet", "AWS", 1),
+    ]
+  };
+
+  const acl: waf.CfnWebACL = new waf.CfnWebACL(stack, 'test',  wafProps);
+
+  const props: defaults.WafWebAclProps = {
+    existingWebaclObj: acl,
+    webaclProps: wafPropsTwo,
+  };
+
+  const app = () => {
+    defaults.CheckWafWebAclProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingWebaclObj or webaclProps, but not both.\n');
 });

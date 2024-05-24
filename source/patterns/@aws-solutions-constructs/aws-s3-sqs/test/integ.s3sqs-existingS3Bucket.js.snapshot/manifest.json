@@ -1,0 +1,224 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "s3sqsexistingS3BucketIntegDefaultTestDeployAssertECBDD151.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "s3sqsexistingS3BucketIntegDefaultTestDeployAssertECBDD151.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "s3sqsexistingS3BucketIntegDefaultTestDeployAssertECBDD151": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "s3sqsexistingS3BucketIntegDefaultTestDeployAssertECBDD151.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "s3sqsexistingS3BucketIntegDefaultTestDeployAssertECBDD151.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "s3sqsexistingS3BucketIntegDefaultTestDeployAssertECBDD151.assets"
+      ],
+      "metadata": {
+        "/s3sqs-existingS3Bucket/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "s3sqs-existingS3Bucket/Integ/DefaultTest/DeployAssert"
+    },
+    "s3sqs-existingS3Bucket.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "s3sqs-existingS3Bucket.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "s3sqs-existingS3Bucket": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "s3sqs-existingS3Bucket.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f51c7d39b813692bf74ac7f2c310c7e4baec747909cdf92de9b0a3a350fd0b8b.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "s3sqs-existingS3Bucket.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "s3sqs-existingS3Bucket.assets"
+      ],
+      "metadata": {
+        "/s3sqs-existingS3Bucket/scrapBucketLog/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketLog7B53B25C"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/scrapBucketLog/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketLogPolicy2972C573"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/scrapBucketLog/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketLogAutoDeleteObjectsCustomResource307F3D47"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/scrapBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketB11863B7"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/scrapBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketPolicy189B0607"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/scrapBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/scrapBucket/Notifications/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketNotifications065035E3"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/test-s3-sqs/deadLetterQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3sqsdeadLetterQueueEABBC814"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/test-s3-sqs/deadLetterQueue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3sqsdeadLetterQueuePolicy35D7CFE3"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/test-s3-sqs/'queueKey'/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3sqsqueueKey27AABDC5"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/test-s3-sqs/queue": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "encryption: Automatically changed to QueueEncryption.KMS, was: QueueEncryption.KMS_MANAGED\nWhen encryptionMasterKey is provided, always set `encryption: QueueEncryption.KMS` [ack: @aws-cdk/aws-sqs:queueEncryptionChangedToKMS]"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/test-s3-sqs/queue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3sqsqueue810CCE19"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/test-s3-sqs/queue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3sqsqueuePolicyDDC0D745"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ],
+        "tests3sqsEncryptionKeyFD4D5946": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3sqsEncryptionKeyFD4D5946",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ]
+      },
+      "displayName": "s3sqs-existingS3Bucket"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

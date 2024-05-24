@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,33 +11,26 @@
  *  and limitations under the License.
  */
 
-import {RemovalPolicy, Stack} from '@aws-cdk/core';
+import {RemovalPolicy, Stack} from 'aws-cdk-lib';
 import * as defaults from '../';
-import {ResourcePart} from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 const DESCRIPTION = 'test secret description';
 const SECRET_NAME = 'test secret name';
 
-// --------------------------------------------------------------
-// Test minimal deployment with no properties
-// --------------------------------------------------------------
 test('Test minimal deployment with no properties', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   defaults.buildSecretsManagerSecret(stack, 'secret', {});
 
-  expect(stack).toHaveResourceLike('AWS::SecretsManager::Secret', {
+  Template.fromStack(stack).hasResource('AWS::SecretsManager::Secret', {
     Type: 'AWS::SecretsManager::Secret',
     UpdateReplacePolicy: 'Retain',
     DeletionPolicy: 'Retain'
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ custom properties
-// --------------------------------------------------------------
 test('Test deployment with custom properties', () => {
   // Stack
   const stack = new Stack();
@@ -48,7 +41,7 @@ test('Test deployment with custom properties', () => {
     removalPolicy: RemovalPolicy.DESTROY,
   });
   // Assertion 1
-  expect(stack).toHaveResourceLike('AWS::SecretsManager::Secret', {
+  Template.fromStack(stack).hasResource('AWS::SecretsManager::Secret', {
     Type: 'AWS::SecretsManager::Secret',
     UpdateReplacePolicy: 'Delete',
     DeletionPolicy: 'Delete',
@@ -56,5 +49,25 @@ test('Test deployment with custom properties', () => {
       Name: SECRET_NAME,
       Description: DESCRIPTION
     }
-  }, ResourcePart.CompleteDefinition);
+  });
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+
+test('Test fail Secret check', () => {
+  const stack = new Stack();
+
+  const props: defaults.SecretsManagerProps = {
+    secretProps: {},
+    existingSecretObj: defaults.buildSecretsManagerSecret(stack, 'secret', {}),
+  };
+
+  const app = () => {
+    defaults.CheckSecretsManagerProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide secretProps or existingSecretObj, but not both.\n');
 });

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,16 +12,14 @@
  */
 
 // Imports
-import '@aws-cdk/assert/jest';
-import { Stack, RemovalPolicy } from '@aws-cdk/core';
-import * as mediastore from '@aws-cdk/aws-mediastore';
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as s3 from '@aws-cdk/aws-s3';
+import {Stack, RemovalPolicy, Duration} from 'aws-cdk-lib';
+import * as mediastore from 'aws-cdk-lib/aws-mediastore';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import { CloudFrontToMediaStore } from '../lib';
+import * as cdk from "aws-cdk-lib";
+import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Test the default deployment pattern variables
-// --------------------------------------------------------------
 test('Test the default deployment pattern variables', () => {
   // Initial setup
   const stack = new Stack();
@@ -36,9 +34,6 @@ test('Test the default deployment pattern variables', () => {
   expect(cloudFrontToMediaStore.cloudFrontFunction).not.toEqual(undefined);
 });
 
-// --------------------------------------------------------------
-// Test the deployment without HTTP security headers
-// --------------------------------------------------------------
 test('Test the deployment without HTTP security headers', () => {
   // Initial setup
   const stack = new Stack();
@@ -47,7 +42,8 @@ test('Test the deployment without HTTP security headers', () => {
   });
 
   // Assertion
-  expect(stack).toHaveResourceLike('AWS::CloudFront::Distribution', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -126,9 +122,68 @@ test('Test the deployment without HTTP security headers', () => {
   expect(cloudFrontToMediaStore.cloudFrontFunction).toEqual(undefined);
 });
 
-// --------------------------------------------------------------
-// Test the deployment with existing MediaStore container
-// --------------------------------------------------------------
+test('Test the deployment with securityHeadersBehavior instead of HTTP security headers', () => {
+  // Initial setup
+  const stack = new Stack();
+  const cloudFrontToMediaStore = new CloudFrontToMediaStore(stack, 'test-cloudfront-mediastore', {
+    insertHttpSecurityHeaders: false,
+    responseHeadersPolicyProps: {
+      securityHeadersBehavior: {
+        strictTransportSecurity: {
+          accessControlMaxAge: Duration.seconds(63072),
+          includeSubdomains: true,
+          override: true,
+          preload: true
+        },
+        contentSecurityPolicy: {
+          contentSecurityPolicy: "upgrade-insecure-requests; default-src 'none';",
+          override: true
+        },
+      }
+    }
+  });
+
+  // Assertion
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::ResponseHeadersPolicy", {
+    ResponseHeadersPolicyConfig: {
+      SecurityHeadersConfig: {
+        ContentSecurityPolicy: {
+          ContentSecurityPolicy: "upgrade-insecure-requests; default-src 'none';",
+          Override: true
+        },
+        StrictTransportSecurity: {
+          AccessControlMaxAgeSec: 63072,
+          IncludeSubdomains: true,
+          Override: true,
+          Preload: true
+        }
+      }
+    }
+  });
+  expect(cloudFrontToMediaStore.cloudFrontFunction).toEqual(undefined);
+});
+
+test("Confirm CheckCloudFrontProps is being called", () => {
+  const stack = new cdk.Stack();
+
+  expect(() => {
+    new CloudFrontToMediaStore(stack, "test-cloudfront-mediastore", {
+      insertHttpSecurityHeaders: true,
+      responseHeadersPolicyProps: {
+        securityHeadersBehavior: {
+          strictTransportSecurity: {
+            accessControlMaxAge: Duration.seconds(63072),
+            includeSubdomains: true,
+            override: false,
+            preload: true
+          }
+        }
+      }
+    });
+  }).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
+});
+
 test('Test the deployment with existing MediaStore container', () => {
   // Initial setup
   const stack = new Stack();
@@ -140,7 +195,8 @@ test('Test the deployment with existing MediaStore container', () => {
   });
 
   // Assertion
-  expect(stack).toHaveResourceLike('AWS::CloudFront::Distribution', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -219,10 +275,10 @@ test('Test the deployment with existing MediaStore container', () => {
       ]
     }
   });
-  expect(stack).toHaveResourceLike('AWS::MediaStore::Container', {
+  template.hasResourceProperties('AWS::MediaStore::Container', {
     ContainerName: 'MyMediaStoreContainer'
   });
-  expect(stack).toHaveResourceLike('AWS::CloudFront::OriginRequestPolicy', {
+  template.hasResourceProperties('AWS::CloudFront::OriginRequestPolicy', {
     OriginRequestPolicyConfig: {
       Comment: 'Policy for Constructs CloudFrontDistributionForMediaStore',
       CookiesConfig: {
@@ -260,9 +316,6 @@ test('Test the deployment with existing MediaStore container', () => {
   expect(cloudFrontToMediaStore.cloudFrontOriginAccessIdentity).toEqual(undefined);
 });
 
-// --------------------------------------------------------------
-// Test the deployment with the user provided MediaStore properties
-// --------------------------------------------------------------
 test('Test the deployment with the user provided MediaStore properties', () => {
   // Initial setup
   const stack = new Stack();
@@ -279,7 +332,8 @@ test('Test the deployment with the user provided MediaStore properties', () => {
   });
 
   // Assertion
-  expect(stack).toHaveResourceLike('AWS::CloudFront::Distribution', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -358,7 +412,7 @@ test('Test the deployment with the user provided MediaStore properties', () => {
       ]
     }
   });
-  expect(stack).toHaveResourceLike('AWS::MediaStore::Container', {
+  template.hasResourceProperties('AWS::MediaStore::Container', {
     ContainerName: 'MyMediaStoreContainer',
     Policy: '{}',
     LifecyclePolicy: '{}',
@@ -367,7 +421,7 @@ test('Test the deployment with the user provided MediaStore properties', () => {
       ContainerLevelMetrics: 'DISABLED'
     }
   });
-  expect(stack).toHaveResourceLike('AWS::CloudFront::OriginRequestPolicy', {
+  template.hasResourceProperties('AWS::CloudFront::OriginRequestPolicy', {
     OriginRequestPolicyConfig: {
       Comment: 'Policy for Constructs CloudFrontDistributionForMediaStore',
       CookiesConfig: {
@@ -405,9 +459,6 @@ test('Test the deployment with the user provided MediaStore properties', () => {
   expect(cloudFrontToMediaStore.cloudFrontOriginAccessIdentity).toEqual(undefined);
 });
 
-// --------------------------------------------------------------
-// Test the deployment with the user provided CloudFront properties
-// --------------------------------------------------------------
 test('Test the deployment with the user provided CloudFront properties', () => {
   // Initial setup
   const stack = new Stack();
@@ -422,7 +473,8 @@ test('Test the deployment with the user provided CloudFront properties', () => {
   });
 
   // Assertion
-  expect(stack).toHaveResourceLike('AWS::CloudFront::Distribution', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -512,7 +564,7 @@ test('Test the deployment with the user provided CloudFront properties', () => {
       ]
     }
   });
-  expect(stack).toHaveResourceLike('AWS::MediaStore::Container', {
+  template.hasResourceProperties('AWS::MediaStore::Container', {
     AccessLoggingEnabled: true,
     ContainerName: {
       Ref: 'AWS::StackName'
@@ -527,7 +579,7 @@ test('Test the deployment with the user provided CloudFront properties', () => {
       }
     ]
   });
-  expect(stack).toHaveResourceLike('AWS::CloudFront::OriginRequestPolicy', {
+  template.hasResourceProperties('AWS::CloudFront::OriginRequestPolicy', {
     OriginRequestPolicyConfig: {
       Comment: 'Policy for Constructs CloudFrontDistributionForMediaStore',
       CookiesConfig: {
@@ -562,7 +614,7 @@ test('Test the deployment with the user provided CloudFront properties', () => {
       }
     }
   });
-  expect(stack).toHaveResourceLike('AWS::CloudFront::CloudFrontOriginAccessIdentity', {
+  template.hasResourceProperties('AWS::CloudFront::CloudFrontOriginAccessIdentity', {
     CloudFrontOriginAccessIdentityConfig: {
       Comment: {
         'Fn::Join': [
@@ -583,9 +635,6 @@ test('Test the deployment with the user provided CloudFront properties', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Cloudfront logging bucket with destroy removal policy and auto delete objects
-// --------------------------------------------------------------
 test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
   const stack = new Stack();
 
@@ -596,11 +645,12 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
     }
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
-    AccessControl: "LogDeliveryWrite"
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
+    OwnershipControls: { Rules: [ { ObjectOwnership: "ObjectWriter" } ] },
   });
 
-  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
@@ -613,9 +663,6 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
   });
 });
 
-// --------------------------------------------------------------
-// Cloudfront logging bucket error providing existing log bucket and logBucketProps
-// --------------------------------------------------------------
 test('Cloudfront logging bucket error when providing existing log bucket and logBucketProps', () => {
   const stack = new Stack();
   const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
@@ -632,4 +679,22 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
   };
 
   expect(app).toThrowError();
+});
+
+test('Confirm CheckMediaStoreProps is called', () => {
+  const stack = new Stack();
+
+  const mediaStoreContainer = new mediastore.CfnContainer(stack, 'MyMediaStoreContainer', {
+    containerName: 'MyMediaStoreContainer'
+  });
+  const props =  {
+    existingMediaStoreContainerObj: mediaStoreContainer,
+    mediaStoreContainerProps: { containerName: 'test' }
+  };
+
+  const app = () => {
+    new CloudFrontToMediaStore(stack, 'cloudfront-s3', props);
+  };
+
+  expect(app).toThrowError('Error - Either provide mediaStoreContainerProps or existingMediaStoreContainerObj, but not both.\n');
 });

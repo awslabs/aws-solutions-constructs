@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import * as s3 from '@aws-cdk/aws-s3';
-import * as iot from '@aws-cdk/aws-iot';
-import * as iam from '@aws-cdk/aws-iam';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as iot from 'aws-cdk-lib/aws-iot';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * @summary The properties for the IotToS3 class.
@@ -77,15 +77,22 @@ export class IotToS3 extends Construct {
    */
   constructor(scope: Construct, id: string, props: IotToS3Props) {
     super(scope, id);
-    defaults.CheckProps(props);
+
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+
+    defaults.CheckS3Props(props);
 
     // Setup S3 Bucket
     if (!props.existingBucketInterface) {
-      [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+      const buildS3BucketResponse = defaults.buildS3Bucket(this, {
         bucketProps: props.bucketProps,
         loggingBucketProps: props.loggingBucketProps,
         logS3AccessLogs: props.logS3AccessLogs
       });
+      this.s3Bucket = buildS3BucketResponse.bucket;
+      this.s3LoggingBucket = buildS3BucketResponse.loggingBucket;
       this.s3BucketInterface = this.s3Bucket;
     } else {
       this.s3BucketInterface = props.existingBucketInterface;

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,32 +12,34 @@
  */
 
 import { CloudFrontToApiGatewayToLambda, CloudFrontToApiGatewayToLambdaProps } from "../lib";
-import * as cdk from "@aws-cdk/core";
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as api from '@aws-cdk/aws-apigateway';
-import * as s3 from "@aws-cdk/aws-s3";
-import '@aws-cdk/assert/jest';
+import * as cdk from "aws-cdk-lib";
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as s3 from "aws-cdk-lib/aws-s3";
+import { Template } from 'aws-cdk-lib/assertions';
 
 function deployNewFunc(stack: cdk.Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
 
   return new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
+    apiGatewayProps: { defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE }},
     lambdaFunctionProps
   });
 }
 
 function useExistingFunc(stack: cdk.Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
 
   return new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
+    apiGatewayProps: { defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE }},
     existingLambdaObj: new lambda.Function(stack, 'MyExistingFunction', lambdaFunctionProps)
   });
 }
@@ -47,13 +49,13 @@ test('check properties', () => {
 
   const construct: CloudFrontToApiGatewayToLambda = deployNewFunc(stack);
 
-  expect(construct.cloudFrontWebDistribution !== null);
-  expect(construct.apiGateway !== null);
-  expect(construct.lambdaFunction !== null);
-  expect(construct.cloudFrontFunction !== null);
-  expect(construct.cloudFrontLoggingBucket !== null);
-  expect(construct.apiGatewayCloudWatchRole !== null);
-  expect(construct.apiGatewayLogGroup !== null);
+  expect(construct.cloudFrontWebDistribution).toBeDefined();
+  expect(construct.apiGateway).toBeDefined();
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.cloudFrontFunction).toBeDefined();
+  expect(construct.cloudFrontLoggingBucket).toBeDefined();
+  expect(construct.apiGatewayCloudWatchRole).toBeDefined();
+  expect(construct.apiGatewayLogGroup).toBeDefined();
 });
 
 test('check lambda function properties for deploy: true', () => {
@@ -61,7 +63,8 @@ test('check lambda function properties for deploy: true', () => {
 
   deployNewFunc(stack);
 
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: "index.handler",
     Role: {
       "Fn::GetAtt": [
@@ -69,7 +72,7 @@ test('check lambda function properties for deploy: true', () => {
         "Arn"
       ]
     },
-    Runtime: "nodejs14.x",
+    Runtime: "nodejs16.x",
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
@@ -83,7 +86,8 @@ test('check lambda function role for deploy: false', () => {
 
   useExistingFunc(stack);
 
-  expect(stack).toHaveResource('AWS::IAM::Role', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Role', {
     AssumeRolePolicyDocument: {
       Statement: [
         {
@@ -117,6 +121,7 @@ test('check exception for Missing existingObj from props', () => {
   const stack = new cdk.Stack();
 
   const props: CloudFrontToApiGatewayToLambdaProps = {
+    apiGatewayProps: { defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE }},
   };
 
   try {
@@ -130,6 +135,7 @@ test('check no prop', () => {
   const stack = new cdk.Stack();
 
   const props: CloudFrontToApiGatewayToLambdaProps = {
+    apiGatewayProps: { defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE }},
   };
 
   try {
@@ -144,7 +150,7 @@ test('override api gateway properties with existingLambdaObj', () => {
 
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   };
 
@@ -153,11 +159,13 @@ test('override api gateway properties with existingLambdaObj', () => {
   new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
     existingLambdaObj: fn,
     apiGatewayProps: {
+      defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE },
       description: "Override description"
     }
   });
 
-  expect(stack).toHaveResource('AWS::ApiGateway::RestApi',
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::RestApi',
     {
       Description: "Override description",
       EndpointConfiguration: {
@@ -175,10 +183,11 @@ test('override api gateway properties without existingLambdaObj', () => {
   new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     apiGatewayProps: {
+      defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE },
       endpointConfiguration: {
         types: [api.EndpointType.PRIVATE],
       },
@@ -186,7 +195,8 @@ test('override api gateway properties without existingLambdaObj', () => {
     }
   });
 
-  expect(stack).toHaveResource('AWS::ApiGateway::RestApi',
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::RestApi',
     {
       Description: "Override description",
       EndpointConfiguration: {
@@ -198,19 +208,17 @@ test('override api gateway properties without existingLambdaObj', () => {
     });
 });
 
-// --------------------------------------------------------------
-// Cloudfront logging bucket with destroy removal policy and auto delete objects
-// --------------------------------------------------------------
 test('Cloudfront logging bucket with destroy removal policy and auto delete objects', () => {
   const stack = new cdk.Stack();
 
   new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     apiGatewayProps: {
+      defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE },
       endpointConfiguration: {
         types: [api.EndpointType.PRIVATE],
       }
@@ -221,11 +229,12 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
     }
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
-    AccessControl: "LogDeliveryWrite"
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
+    OwnershipControls: { Rules: [ { ObjectOwnership: "ObjectWriter" } ] },
   });
 
-  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
@@ -238,9 +247,6 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
   });
 });
 
-// --------------------------------------------------------------
-// Cloudfront logging bucket error providing existing log bucket and logBucketProps
-// --------------------------------------------------------------
 test('Cloudfront logging bucket error when providing existing log bucket and logBucketProps', () => {
   const stack = new cdk.Stack();
   const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
@@ -248,7 +254,7 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
   const app = () => { new CloudFrontToApiGatewayToLambda(stack, 'cloudfront-s3', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     apiGatewayProps: {
@@ -267,4 +273,92 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
   };
 
   expect(app).toThrowError();
+});
+
+test('Confirm CheckLambdaProps is being called', () => {
+  const stack = new cdk.Stack();
+  const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
+    runtime: lambda.Runtime.NODEJS_18_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: CloudFrontToApiGatewayToLambdaProps = {
+    apiGatewayProps: { defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE }},
+    existingLambdaObj,
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    }
+  };
+
+  const app = () => {
+    new CloudFrontToApiGatewayToLambda(stack, 'cf-test-apigateway-lambda', props);
+  };
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});
+
+test("Confirm CheckCloudFrontProps is being called", () => {
+  const stack = new cdk.Stack();
+
+  expect(() => {
+    new CloudFrontToApiGatewayToLambda(stack, "test-cloudfront-apigateway-lambda", {
+      apiGatewayProps: { defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE }},
+      lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_18_X,
+        handler: 'index.handler',
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      },
+      insertHttpSecurityHeaders: true,
+      responseHeadersPolicyProps: {
+        securityHeadersBehavior: {
+          strictTransportSecurity: {
+            accessControlMaxAge: cdk.Duration.seconds(63072),
+            includeSubdomains: true,
+            override: false,
+            preload: true
+          }
+        }
+      }
+    });
+  }).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
+});
+
+test('confirm error thrown for AWS_IAM authorization', () => {
+  const stack = new cdk.Stack();
+  const lambdaFunctionProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler'
+  };
+
+  const props = {
+    apiGatewayProps: { defaultMethodOptions: { authorizationType: 'AWS_IAM' }},
+    lambdaFunctionProps
+  };
+
+  const app = () => {
+    new CloudFrontToApiGatewayToLambda(stack, 'test-one', props);
+  };
+  expect(app).toThrowError(/Amazon API Gateway Rest APIs integrated with Amazon CloudFront do not support AWS_IAM authorization/);
+});
+
+test('confirm error thrown for unspecified authorization', () => {
+  const stack = new cdk.Stack();
+  const lambdaFunctionProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler'
+  };
+
+  const props = {
+    apiGatewayProps: { },
+    lambdaFunctionProps
+  };
+
+  const app = () => {
+    new CloudFrontToApiGatewayToLambda(stack, 'test-one', props);
+  };
+  expect(app).toThrowError(/As of v2.48.0, an explicit authorization type is required for CloudFront\/API Gateway patterns/);
 });

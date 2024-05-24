@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,11 +12,11 @@
  */
 
 // Imports
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as cache from "@aws-cdk/aws-elasticache";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as cache from "aws-cdk-lib/aws-elasticache";
 import * as defaults from "../../core";
-import { Construct } from "@aws-cdk/core";
+import { Construct } from "constructs";
 import { obtainMemcachedCluster, getCachePort, CreateSelfReferencingSecurityGroup } from "../../core";
 
 const defaultEnvironmentVariableName = "CACHE_ENDPOINT";
@@ -92,7 +92,8 @@ export class LambdaToElasticachememcached extends Construct {
     props: LambdaToElasticachememcachedProps
   ) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckVpcProps(props);
+    defaults.CheckLambdaProps(props);
 
     if ((props.existingCache || props.existingLambdaObj) && (!props.existingVpc)) {
       throw Error('If providing an existing Cache or Lambda Function, you must also supply the associated existingVpc');

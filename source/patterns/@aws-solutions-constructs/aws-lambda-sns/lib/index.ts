@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,12 +12,13 @@
  */
 
 // Imports
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as sns from '@aws-cdk/aws-sns';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as kms from 'aws-cdk-lib/aws-kms';
+import * as sns from 'aws-cdk-lib/aws-sns';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import * as ec2 from "@aws-cdk/aws-ec2";
+import { Construct } from 'constructs';
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 
 /**
  * @summary The properties for the LambdaToSns class.
@@ -73,6 +74,25 @@ export interface LambdaToSnsProps {
    * @default - SNS_TOPIC_NAME
    */
   readonly topicNameEnvironmentVariableName?: string;
+  /**
+   * If no key is provided, this flag determines whether the SNS Topic is encrypted with a new CMK or an AWS managed key.
+   * This flag is ignored if any of the following are defined: topicProps.masterKey, encryptionKey or encryptionKeyProps.
+   *
+   * @default - False if topicProps.masterKey, encryptionKey, and encryptionKeyProps are all undefined.
+   */
+  readonly enableEncryptionWithCustomerManagedKey?: boolean;
+  /**
+   * An optional, imported encryption key to encrypt the SNS Topic with.
+   *
+   * @default - None
+   */
+  readonly encryptionKey?: kms.Key;
+  /**
+   * Optional user provided properties to override the default properties for the KMS encryption key used to encrypt the SNS Topic with.
+   *
+   * @default - None
+   */
+  readonly encryptionKeyProps?: kms.KeyProps;
 }
 
 /**
@@ -93,13 +113,11 @@ export class LambdaToSns extends Construct {
      */
     constructor(scope: Construct, id: string, props: LambdaToSnsProps) {
       super(scope, id);
-      defaults.CheckProps(props);
+      defaults.CheckSnsProps(props);
+      defaults.CheckVpcProps(props);
+      defaults.CheckLambdaProps(props);
 
       if (props.deployVpc || props.existingVpc) {
-        if (props.deployVpc && props.existingVpc) {
-          throw new Error("More than 1 VPC specified in the properties");
-        }
-
         this.vpc = defaults.buildVpc(scope, {
           defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
           existingVpc: props.existingVpc,
@@ -121,11 +139,15 @@ export class LambdaToSns extends Construct {
       });
 
       // Setup the SNS topic
-      [this.snsTopic] = defaults.buildTopic(this, {
+      const buildTopicResponse = defaults.buildTopic(this, id, {
         existingTopicObj: props.existingTopicObj,
-        topicProps: props.topicProps
+        topicProps: props.topicProps,
+        enableEncryptionWithCustomerManagedKey: props.enableEncryptionWithCustomerManagedKey,
+        encryptionKey: props.encryptionKey,
+        encryptionKeyProps: props.encryptionKeyProps
       });
 
+      this.snsTopic = buildTopicResponse.topic;
       // Configure environment variables
       const topicArnEnvironmentVariableName = props.topicArnEnvironmentVariableName || 'SNS_TOPIC_ARN';
       this.lambdaFunction.addEnvironment(topicArnEnvironmentVariableName, this.snsTopic.topicArn);

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,13 +11,22 @@
  *  and limitations under the License.
  */
 
-import { CfnDeliveryStreamProps } from '@aws-cdk/aws-kinesisfirehose';
-import { IKey } from '@aws-cdk/aws-kms';
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
 
+import { CfnDeliveryStreamProps } from 'aws-cdk-lib/aws-kinesisfirehose';
+import { IKey } from 'aws-cdk-lib/aws-kms';
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function DefaultCfnDeliveryStreamProps(_bucketArn: string, _roleArn: string,
-  _logGroupName: string, _logStreamName: string, _kms: IKey): CfnDeliveryStreamProps {
+  _logGroupName: string, _logStreamName: string, _kms: IKey, deliveryStreamName?: string): CfnDeliveryStreamProps {
 
   return {
+    deliveryStreamName,
     extendedS3DestinationConfiguration : {
       bucketArn: _bucketArn,
       bufferingHints: {

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,11 +12,11 @@
  */
 
 // Imports
-import * as waf from '@aws-cdk/aws-wafv2';
-import * as elbv2 from "@aws-cdk/aws-elasticloadbalancingv2";
+import * as waf from 'aws-cdk-lib/aws-wafv2';
+import * as elbv2 from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * @summary The properties for the WafwebaclToAlb class.
@@ -53,7 +53,8 @@ export class WafwebaclToAlb extends Construct {
    */
   constructor(scope: Construct, id: string, props: WafwebaclToAlbProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckWafWebAclProps(props);
+    // CheckAlbProps() not called because this only accepts and existing Load Balancer
 
     // Build the Web ACL
     this.webacl = defaults.buildWebacl(this, 'REGIONAL', {
@@ -61,11 +62,14 @@ export class WafwebaclToAlb extends Construct {
       webaclProps: props.webaclProps,
     });
 
-    // Setup the Web ACL Association
-    new waf.CfnWebACLAssociation(scope, `${id}-WebACLAssociation`, {
+    const aclProps: waf.CfnWebACLAssociationProps = {
       webAclArn: this.webacl.attrArn,
       resourceArn: props.existingLoadBalancerObj.loadBalancerArn
-    });
+    };
+
+    // Setup the Web ACL Association
+    // Before turning off SonarQube for the line, reduce the line to it's minimum
+    new waf.CfnWebACLAssociation(scope, `${id}-WebACLAssociation`, aclProps); // NOSONAR
 
     this.loadBalancer = props.existingLoadBalancerObj;
   }

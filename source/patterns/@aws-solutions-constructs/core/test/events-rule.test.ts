@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import { Stack } from '@aws-cdk/core';
-import * as events from '@aws-cdk/aws-events';
+import { Stack } from 'aws-cdk-lib';
+import * as events from 'aws-cdk-lib/aws-events';
 import * as defaults from '../index';
-import '@aws-cdk/assert/jest';
-import { Schedule } from '@aws-cdk/aws-events';
-import { Duration } from '@aws-cdk/core';
+import { Template } from 'aws-cdk-lib/assertions';
+import { Schedule } from 'aws-cdk-lib/aws-events';
+import { Duration } from 'aws-cdk-lib';
 import { overrideProps } from '../lib/utils';
 
 test('test EventsRuleProps override ruleName and description', () => {
@@ -38,7 +38,7 @@ test('test EventsRuleProps override ruleName and description', () => {
 
   new events.Rule(stack, 'Events', eventsRuleProps);
 
-  expect(stack).toHaveResource('AWS::Events::Rule', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Events::Rule', {
     Description: "hello world",
     Name: "test",
     ScheduleExpression: "rate(5 minutes)",
@@ -78,7 +78,7 @@ test('test EventsRuleProps add more event targets', () => {
 
   new events.Rule(stack, 'Events', eventsRuleProps);
 
-  expect(stack).toHaveResource('AWS::Events::Rule', {
+  Template.fromStack(stack).hasResourceProperties('AWS::Events::Rule', {
     ScheduleExpression: "rate(5 minutes)",
     State: "ENABLED",
     Targets: [

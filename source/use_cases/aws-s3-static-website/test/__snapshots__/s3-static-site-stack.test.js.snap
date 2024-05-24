@@ -21,29 +21,10 @@ Object {
     },
   },
   "Parameters": Object {
-    "AssetParameters2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503debArtifactHashA2BE913F": Object {
-      "Description": "Artifact hash for asset \\"2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503deb\\"",
-      "Type": "String",
-    },
-    "AssetParameters2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503debS3BucketC3836BD9": Object {
-      "Description": "S3 bucket for asset \\"2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503deb\\"",
-      "Type": "String",
-    },
-    "AssetParameters2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503debS3VersionKeyEDA18BF9": Object {
-      "Description": "S3 key for asset version \\"2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503deb\\"",
-      "Type": "String",
-    },
-    "AssetParameters543c7a94b144a6259669eaf884305607b7a9abe85c43e4bfe62f9190ace37916ArtifactHashB448546A": Object {
-      "Description": "Artifact hash for asset \\"543c7a94b144a6259669eaf884305607b7a9abe85c43e4bfe62f9190ace37916\\"",
-      "Type": "String",
-    },
-    "AssetParameters543c7a94b144a6259669eaf884305607b7a9abe85c43e4bfe62f9190ace37916S3BucketC05003CF": Object {
-      "Description": "S3 bucket for asset \\"543c7a94b144a6259669eaf884305607b7a9abe85c43e4bfe62f9190ace37916\\"",
-      "Type": "String",
-    },
-    "AssetParameters543c7a94b144a6259669eaf884305607b7a9abe85c43e4bfe62f9190ace37916S3VersionKeyA2C7BFCD": Object {
-      "Description": "S3 key for asset version \\"543c7a94b144a6259669eaf884305607b7a9abe85c43e4bfe62f9190ace37916\\"",
-      "Type": "String",
+    "BootstrapVersion": Object {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
     },
   },
   "Resources": Object {
@@ -455,41 +436,9 @@ Object {
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParameters543c7a94b144a6259669eaf884305607b7a9abe85c43e4bfe62f9190ace37916S3BucketC05003CF",
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                Object {
-                  "Fn::Select": Array [
-                    0,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameters543c7a94b144a6259669eaf884305607b7a9abe85c43e4bfe62f9190ace37916S3VersionKeyA2C7BFCD",
-                        },
-                      ],
-                    },
-                  ],
-                },
-                Object {
-                  "Fn::Select": Array [
-                    1,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameters543c7a94b144a6259669eaf884305607b7a9abe85c43e4bfe62f9190ace37916S3VersionKeyA2C7BFCD",
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            ],
-          },
+          "S3Key": "e8fea7e029780f03a78580d41b7ffbc4551d6e7d6caa190a451880191c166189.zip",
         },
         "Description": "AWS CDK resource provider framework - onEvent (S3StaticWebsiteStack/CustomResourceProvider)",
         "Environment": Object {
@@ -509,7 +458,7 @@ Object {
             "Arn",
           ],
         },
-        "Runtime": "nodejs12.x",
+        "Runtime": "nodejs14.x",
         "Timeout": 900,
       },
       "Type": "AWS::Lambda::Function",
@@ -595,41 +544,9 @@ Object {
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParameters2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503debS3BucketC3836BD9",
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                Object {
-                  "Fn::Select": Array [
-                    0,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameters2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503debS3VersionKeyEDA18BF9",
-                        },
-                      ],
-                    },
-                  ],
-                },
-                Object {
-                  "Fn::Select": Array [
-                    1,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameters2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503debS3VersionKeyEDA18BF9",
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            ],
-          },
+          "S3Key": "2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503deb.zip",
         },
         "Handler": "copy_s3_objects.on_event",
         "Role": Object {
@@ -753,6 +670,33 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+  },
+  "Rules": Object {
+    "CheckBootstrapVersion": Object {
+      "Assertions": Array [
+        Object {
+          "Assert": Object {
+            "Fn::Not": Array [
+              Object {
+                "Fn::Contains": Array [
+                  Array [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  Object {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
     },
   },
 }

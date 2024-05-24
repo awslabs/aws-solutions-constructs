@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,14 +11,19 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 // Imports
-import * as kinesis from '@aws-cdk/aws-kinesis';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import { DefaultStreamProps } from './kinesis-streams-defaults';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
 import { consolidateProps } from './utils';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 export interface BuildKinesisStreamProps {
   /**
@@ -36,6 +41,9 @@ export interface BuildKinesisStreamProps {
   readonly kinesisStreamProps?: kinesis.StreamProps
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildKinesisStream(scope: Construct, props: BuildKinesisStreamProps): kinesis.Stream {
 
   if (props.existingStreamObj) {
@@ -51,6 +59,9 @@ export function buildKinesisStream(scope: Construct, props: BuildKinesisStreamPr
   return new kinesis.Stream(scope, 'KinesisStream', kinesisStreamProps);
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildKinesisStreamCWAlarms(scope: Construct): cloudwatch.Alarm[] {
   // Setup CW Alarms for KinesisStream
   const alarms: cloudwatch.Alarm[] = new Array();
@@ -63,7 +74,7 @@ export function buildKinesisStreamCWAlarms(scope: Construct): cloudwatch.Alarm[]
       statistic: 'Maximum',
       period: cdk.Duration.minutes(5),
     }),
-    threshold: 43200, // 12 Hours (50% of 24 hours - default record retention period)
+    threshold: 43200000, // 43200000 Milliseconds = 12 Hours (50% of 24 hours - default record retention period)
     evaluationPeriods: 1,
     comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
     alarmDescription: 'Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.'
@@ -84,4 +95,23 @@ export function buildKinesisStreamCWAlarms(scope: Construct): cloudwatch.Alarm[]
   }));
 
   return alarms;
+}
+
+export interface KinesisStreamProps {
+  readonly existingStreamObj?: kinesis.Stream;
+  readonly kinesisStreamProps?: kinesis.StreamProps,
+}
+
+export function CheckKinesisStreamProps(propsObject: KinesisStreamProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingStreamObj && propsObject.kinesisStreamProps) {
+    errorMessages += 'Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }

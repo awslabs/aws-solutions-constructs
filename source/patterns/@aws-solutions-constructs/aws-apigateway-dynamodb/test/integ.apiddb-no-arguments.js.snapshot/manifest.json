@@ -1,0 +1,185 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "apiddbnoargumentsIntegDefaultTestDeployAssert79BAC49F.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "apiddbnoargumentsIntegDefaultTestDeployAssert79BAC49F.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "apiddbnoargumentsIntegDefaultTestDeployAssert79BAC49F": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "apiddbnoargumentsIntegDefaultTestDeployAssert79BAC49F.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "apiddbnoargumentsIntegDefaultTestDeployAssert79BAC49F.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "apiddbnoargumentsIntegDefaultTestDeployAssert79BAC49F.assets"
+      ],
+      "metadata": {
+        "/apiddb-no-arguments/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/apiddb-no-arguments/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "apiddb-no-arguments/Integ/DefaultTest/DeployAssert"
+    },
+    "apiddb-no-arguments.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "apiddb-no-arguments.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "apiddb-no-arguments": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "apiddb-no-arguments.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/05e942289990e9bc2166bab102c264b25cda534fe946873005597bcc53604623.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "apiddb-no-arguments.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "apiddb-no-arguments.assets"
+      ],
+      "metadata": {
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/DynamoTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaydynamodbdefaultDynamoTable0720D92C"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/ApiAccessLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaydynamodbdefaultApiAccessLogGroup0192183A"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaydynamodbdefaultRestApi9102FDF9"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F3818e0ad130f9a49152a4afbd35ada7b6"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaydynamodbdefaultRestApiDeploymentStageprod7834D304"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaydynamodbdefaultRestApiEndpointD5AD8DB9"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/Default/{id}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaydynamodbdefaultRestApiidFD6A9E91"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/Default/{id}/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaydynamodbdefaultRestApiidGET94B6F433"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/UsagePlan/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaydynamodbdefaultRestApiUsagePlanA266BB3D"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/LambdaRestApiCloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaydynamodbdefaultLambdaRestApiCloudWatchRoleEF1FBFD7"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/LambdaRestApiAccount": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaydynamodbdefaultLambdaRestApiAccountE6585EBB"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/api-gateway-role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaydynamodbdefaultapigatewayrole0CDF008A"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/api-gateway-role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaydynamodbdefaultapigatewayroleDefaultPolicyE0B5E59D"
+          }
+        ],
+        "/apiddb-no-arguments/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/apiddb-no-arguments/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "apiddb-no-arguments"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

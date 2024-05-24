@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import "@aws-cdk/assert/jest";
 import { GetDefaultCachePort, GetMemcachedDefaults } from "../lib/elasticache-defaults";
 
 test("Test GetDefaultCachePort()", () => {

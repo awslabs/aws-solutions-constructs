@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -13,10 +13,10 @@
 
 // Imports
 import * as defaults from "@aws-solutions-constructs/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as events from "@aws-cdk/aws-events";
-import { Construct } from "@aws-cdk/core";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as events from "aws-cdk-lib/aws-events";
+import { Construct } from "constructs";
 
 /**
  * @summary The properties for the LambdaToEventbridge class.
@@ -86,13 +86,11 @@ export class LambdaToEventbridge extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToEventbridgeProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckVpcProps(props);
+    defaults.CheckLambdaProps(props);
+    defaults.CheckEventBridgeProps(props);
 
     if (props.deployVpc || props.existingVpc) {
-      if (props.deployVpc && props.existingVpc) {
-        throw new Error("More than 1 VPC specified in the properties");
-      }
-
       this.vpc = defaults.buildVpc(scope, {
         defaultVpcProps: defaults.DefaultIsolatedVpcProps(),
         existingVpc: props.existingVpc,

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,15 +11,16 @@
  *  and limitations under the License.
  */
 
-import * as sfn from '@aws-cdk/aws-stepfunctions';
-import * as s3 from '@aws-cdk/aws-s3';
+import { Construct } from 'constructs';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
 import { EventbridgeToStepfunctions } from '@aws-solutions-constructs/aws-eventbridge-stepfunctions';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct, Stack } from '@aws-cdk/core';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
-import * as events from '@aws-cdk/aws-events';
-import * as logs from '@aws-cdk/aws-logs';
+import { Stack } from 'aws-cdk-lib';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
+import * as events from 'aws-cdk-lib/aws-events';
+import * as logs from 'aws-cdk-lib/aws-logs';
 
 /**
  * @summary The properties for the S3ToStepfunctions Construct
@@ -100,21 +101,29 @@ export class S3ToStepfunctions extends Construct {
    */
   constructor(scope: Construct, id: string, props: S3ToStepfunctionsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+
+    defaults.CheckS3Props(props);
 
     let bucket: s3.IBucket;
 
     if (props.deployCloudTrail !== undefined) {
-      defaults.printWarning("The deployCloudTrail prop has been deprecated since this construct no longer requires \
-      AWS CloudTrail to implement its functionality. This construct no longer creates a CloudTrail in your account.");
+      defaults.printWarning("The deployCloudTrail prop has been deprecated since this construct no longer requires " +
+      "AWS CloudTrail to implement its functionality. This construct no longer creates a CloudTrail in your account.");
     }
 
     if (!props.existingBucketObj) {
-      [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+      const buildS3BucketResponse = defaults.buildS3Bucket(this, {
         bucketProps: defaults.consolidateProps({}, props.bucketProps, { eventBridgeEnabled: true }),
         loggingBucketProps: props.loggingBucketProps,
         logS3AccessLogs: props.logS3AccessLogs
       });
+      this.s3Bucket = buildS3BucketResponse.bucket;
+      this.s3LoggingBucket = buildS3BucketResponse.loggingBucket;
+
       bucket = this.s3Bucket;
 
       // Suppress cfn-nag rules that generate warns for S3 bucket notification CDK resources

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,12 @@
  *  and limitations under the License.
  */
 
-import * as events from '@aws-cdk/aws-events';
-import * as kinesis from '@aws-cdk/aws-kinesis';
-import * as iam from '@aws-cdk/aws-iam';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import * as events from 'aws-cdk-lib/aws-events';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 import * as defaults from '@aws-solutions-constructs/core';
 import { overrideProps } from '@aws-solutions-constructs/core';
 
@@ -78,7 +78,8 @@ export class EventbridgeToKinesisStreams extends Construct {
      */
     constructor(scope: Construct, id: string, props: EventbridgeToKinesisStreamsProps) {
       super(scope, id);
-      defaults.CheckProps(props);
+      defaults.CheckEventBridgeProps(props);
+      defaults.CheckKinesisStreamProps(props);
 
       // Set up the Kinesis Stream
       this.kinesisStream = defaults.buildKinesisStream(this, {

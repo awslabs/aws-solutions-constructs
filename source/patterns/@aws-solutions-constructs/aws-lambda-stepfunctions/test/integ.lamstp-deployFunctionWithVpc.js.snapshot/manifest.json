@@ -1,0 +1,269 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "lamstpdeployFunctionWithVpcIntegDefaultTestDeployAssertAD49954F.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamstpdeployFunctionWithVpcIntegDefaultTestDeployAssertAD49954F.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamstpdeployFunctionWithVpcIntegDefaultTestDeployAssertAD49954F": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamstpdeployFunctionWithVpcIntegDefaultTestDeployAssertAD49954F.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamstpdeployFunctionWithVpcIntegDefaultTestDeployAssertAD49954F.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamstpdeployFunctionWithVpcIntegDefaultTestDeployAssertAD49954F.assets"
+      ],
+      "metadata": {
+        "/lamstp-deployFunctionWithVpc/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamstp-deployFunctionWithVpc/Integ/DefaultTest/DeployAssert"
+    },
+    "lamstp-deployFunctionWithVpc.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamstp-deployFunctionWithVpc.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamstp-deployFunctionWithVpc": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamstp-deployFunctionWithVpc.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d5ebf2f7a47385a850fa06c94f30e8d765a1817a8d83b2ddcfebfb4f94d19fb5.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamstp-deployFunctionWithVpc.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamstp-deployFunctionWithVpc.assets"
+      ],
+      "metadata": {
+        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/StateMachineLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsStateMachineLogGroupD3F22A89"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/StateMachine/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsStateMachineRoleAC728CE7"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/StateMachine/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsStateMachineRoleDefaultPolicyA0E50803"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/StateMachine/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsStateMachine807F0A77"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsLambdaFunctionServiceRoleA33E2E9C"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsLambdaFunctionServiceRoleDefaultPolicy9746E1BE"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ReplaceDefaultSecurityGroup-security-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsReplaceDefaultSecurityGroupsecuritygroup3E86407A"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsLambdaFunctionFC1F0FAE"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionFailedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsExecutionFailedAlarm41073C3F"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionThrottledAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsExecutionThrottledAlarm62EABDFD"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionAbortedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsExecutionAbortedAlarmC9CB5C2D"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/Vpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Vpc8378EB38"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/Vpc/isolatedSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1SubnetE62B1B9B"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/Vpc/isolatedSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1RouteTableE442650B"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/Vpc/isolatedSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1RouteTableAssociationD259E31A"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/Vpc/isolatedSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet2Subnet39217055"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/Vpc/isolatedSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet2RouteTable334F9764"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/Vpc/isolatedSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet2RouteTableAssociation25A4716F"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/Vpc/FlowLog/IAMRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRole6A475D41"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/Vpc/FlowLog/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogLogGroup7B5C56B9"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/Vpc/FlowLog/FlowLog": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLog8FF33A73"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/Vpc/STEP_FUNCTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcSTEPFUNCTIONS550F8CB6"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/lamstp-deployFunctionWithVpc-STEP_FUNCTIONS-security-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lamstpdeployFunctionWithVpcSTEPFUNCTIONSsecuritygroupC6950841"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamstp-deployFunctionWithVpc"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

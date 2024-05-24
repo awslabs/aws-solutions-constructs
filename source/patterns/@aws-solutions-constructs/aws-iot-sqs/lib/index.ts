@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,13 +11,13 @@
  *  and limitations under the License.
  */
 
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as iot from '@aws-cdk/aws-iot';
-import * as kms from '@aws-cdk/aws-kms';
-import * as iam from '@aws-cdk/aws-iam';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as iot from 'aws-cdk-lib/aws-iot';
+import * as kms from 'aws-cdk-lib/aws-kms';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * @summary The properties for the IotToSqs class.
@@ -64,27 +64,27 @@ export interface IotToSqsProps {
   readonly maxReceiveCount?: number;
 
   /**
-   * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
-   * the encryptionKey property for this construct.
+   * If no key is provided, this flag determines whether the queue is encrypted with a new CMK or an AWS managed key.
+   * This flag is ignored if any of the following are defined: queueProps.encryptionMasterKey, encryptionKey or encryptionKeyProps.
    *
-   * @default - true (encryption enabled, managed by this CDK app).
+   * @default - True if queueProps.encryptionMasterKey, encryptionKey, and encryptionKeyProps are all undefined.
    */
   readonly enableEncryptionWithCustomerManagedKey?: boolean;
 
   /**
-   * An optional, imported encryption key to encrypt the SQS queue, and SNS Topic.
+   * An optional, imported encryption key to encrypt the SQS Queue with.
    *
-   * @default - not specified.
+   * @default - None
    */
   readonly encryptionKey?: kms.Key;
 
   /**
-   * Optional user-provided props to override the default props for the encryption key.
+   * Optional user provided properties to override the default properties for the KMS encryption key used to encrypt the SQS Queue with.
    *
-   * @default - Default props are used.
+   * @default - None
    */
-  readonly encryptionKeyProps?: kms.KeyProps;
-}
+   readonly encryptionKeyProps?: kms.KeyProps;
+ }
 
 export class IotToSqs extends Construct {
   public readonly sqsQueue: sqs.Queue;
@@ -102,7 +102,7 @@ export class IotToSqs extends Construct {
    */
   constructor(scope: Construct, id: string, props: IotToSqsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckSqsProps(props);
 
     // Setup the dead letter queue, if applicable
     this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
@@ -119,7 +119,7 @@ export class IotToSqs extends Construct {
     }
 
     // Setup the queue
-    [this.sqsQueue, this.encryptionKey] = defaults.buildQueue(this, 'queue', {
+    const buildQueueResponse = defaults.buildQueue(this, 'queue', {
       existingQueueObj: props.existingQueueObj,
       queueProps: props.queueProps,
       deadLetterQueue: this.deadLetterQueue,
@@ -127,6 +127,8 @@ export class IotToSqs extends Construct {
       encryptionKey: props.encryptionKey,
       encryptionKeyProps: props.encryptionKeyProps
     });
+    this.sqsQueue = buildQueueResponse.queue;
+    this.encryptionKey = buildQueueResponse.key;
 
     if (this.sqsQueue.fifo) {
       throw new Error('The IoT SQS action doesn\'t support Amazon SQS FIFO (First-In-First-Out) queues');

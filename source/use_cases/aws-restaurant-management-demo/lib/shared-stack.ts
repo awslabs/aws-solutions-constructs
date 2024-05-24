@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,19 +12,20 @@
  */
 
 // Imports
-import * as cdk from '@aws-cdk/core';
-import * as ddb from '@aws-cdk/aws-dynamodb';
-import * as lambda from '@aws-cdk/aws-lambda';
+import { Stack, StackProps, RemovalPolicy } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as ddb from 'aws-cdk-lib/aws-dynamodb';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 // Stack
-export class SharedStack extends cdk.Stack {
+export class SharedStack extends Stack {
 
   // Public variables
   public readonly database: ddb.Table;
   public readonly layer: lambda.LayerVersion;
 
   // Constructor
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
     // Setup the database ----------------------------------------------------------------------------------------------
@@ -34,7 +35,7 @@ export class SharedStack extends cdk.Stack {
         type: ddb.AttributeType.STRING,
       },
       billingMode: ddb.BillingMode.PROVISIONED,
-      removalPolicy: cdk.RemovalPolicy.DESTROY
+      removalPolicy: RemovalPolicy.DESTROY
     });
 
     // Add autoscaling
@@ -63,7 +64,7 @@ export class SharedStack extends cdk.Stack {
     // Setup a Lambda layer for sharing database functions -------------------------------------------------------------
     this.layer = new lambda.LayerVersion(this, 'shared-db-functions-layer', {
       code: lambda.Code.fromAsset(`${__dirname}/lambda/layer`),
-      compatibleRuntimes: [ lambda.Runtime.NODEJS_14_X ],
+      compatibleRuntimes: [ lambda.Runtime.NODEJS_16_X ],
       license: 'Apache-2.0',
       description: 'Layer for common database access functions',
     });

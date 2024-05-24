@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,11 +12,11 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
+import { Stack } from "aws-cdk-lib";
 import { Route53ToAlb, Route53ToAlbProps } from '../lib';
-import * as r53 from '@aws-cdk/aws-route53';
-import * as elb from '@aws-cdk/aws-elasticloadbalancingv2';
-import '@aws-cdk/assert/jest';
+import * as r53 from 'aws-cdk-lib/aws-route53';
+import * as elb from 'aws-cdk-lib/aws-elasticloadbalancingv2';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 
 test('Test Public API, new VPC', () => {
@@ -36,17 +36,18 @@ test('Test Public API, new VPC', () => {
 
   new Route53ToAlb(stack, 'test-route53-alb', props);
 
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Scheme: 'internet-facing'
   });
 
-  expect(stack).toHaveResourceLike('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
     InstanceTenancy: "default",
   });
 
-  expect(stack).toHaveResourceLike('AWS::Route53::RecordSet', {
+  template.hasResourceProperties('AWS::Route53::RecordSet', {
     Name: 'www.example-test.com.',
     Type: 'A'
   });
@@ -74,17 +75,18 @@ test('Test Private API, existing VPC', () => {
 
   new Route53ToAlb(stack, 'test-route53-alb', props);
 
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Scheme: 'internal'
   });
 
-  expect(stack).toHaveResourceLike('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
     InstanceTenancy: "default",
   });
 
-  expect(stack).toHaveResourceLike('AWS::Route53::RecordSet', {
+  template.hasResourceProperties('AWS::Route53::RecordSet', {
     Name: 'www.example-test.com.',
     Type: 'A'
   });
@@ -106,17 +108,18 @@ test('Test Private API, new VPC', () => {
 
   new Route53ToAlb(stack, 'test-route53-alb', props);
 
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Scheme: 'internal'
   });
 
-  expect(stack).toHaveResourceLike('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
     InstanceTenancy: "default",
   });
 
-  expect(stack).toHaveResourceLike('AWS::Route53::RecordSet', {
+  template.hasResourceProperties('AWS::Route53::RecordSet', {
     Name: 'www.example-test.com.',
     Type: 'A'
   });
@@ -203,17 +206,18 @@ test('Test with privateHostedZoneProps', () => {
 
   new Route53ToAlb(stack, 'test-error', props);
 
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Scheme: 'internal'
   });
 
-  expect(stack).toHaveResourceLike('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
     InstanceTenancy: "default",
   });
 
-  expect(stack).toHaveResourceLike('AWS::Route53::RecordSet', {
+  template.hasResourceProperties('AWS::Route53::RecordSet', {
     Name: 'www.example-test.com.',
     Type: 'A'
   });
@@ -243,6 +247,7 @@ test('Check that passing an existing hosted Zone without passing an existingVPC 
 });
 
 test('Check that passing an existing Load Balancer without passing an existingVPC is an error', () => {
+  // This also confirms CheckAlbProps is properly working
   const stack = new Stack();
 
   const testExistingVpc = defaults.getTestVpc(stack);
@@ -263,7 +268,7 @@ test('Check that passing an existing Load Balancer without passing an existingVP
     new Route53ToAlb(stack, 'test-error', props);
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError("An existing ALB already exists in a VPC, so that VPC must be passed to the construct in props.existingVpc");
 
 });
 
@@ -341,18 +346,19 @@ test('Test providing loadBalancerProps', () => {
 
   new Route53ToAlb(stack, 'test-route53-alb', props);
 
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Scheme: 'internal',
     Name: 'find-this-name'
   });
 
-  expect(stack).toHaveResourceLike('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
     InstanceTenancy: "default",
   });
 
-  expect(stack).toHaveResourceLike('AWS::Route53::RecordSet', {
+  template.hasResourceProperties('AWS::Route53::RecordSet', {
     Name: 'www.example-test.com.',
     Type: 'A'
   });
@@ -384,18 +390,19 @@ test('Test providing an existingLoadBalancer', () => {
 
   new Route53ToAlb(stack, 'test-route53-alb', props);
 
-  expect(stack).toHaveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Scheme: 'internal',
     Name: 'find-this-name'
   });
 
-  expect(stack).toHaveResourceLike('AWS::EC2::VPC', {
+  template.hasResourceProperties('AWS::EC2::VPC', {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
     InstanceTenancy: "default",
   });
 
-  expect(stack).toHaveResourceLike('AWS::Route53::RecordSet', {
+  template.hasResourceProperties('AWS::Route53::RecordSet', {
     Name: 'www.example-test.com.',
     Type: 'A'
   });

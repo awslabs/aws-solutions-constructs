@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,13 @@
  *  and limitations under the License.
  */
 
-import '@aws-cdk/assert/jest';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as cdk from "@aws-cdk/core";
-import { FargateToStepfunctions } from "../lib";
-import * as stepfunctions from '@aws-cdk/aws-stepfunctions';
-import * as ecs from '@aws-cdk/aws-ecs';
+import * as cdk from "aws-cdk-lib";
+import { FargateToStepfunctions, FargateToStepfunctionsProps } from "../lib";
+import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import { Template } from 'aws-cdk-lib/assertions';
 
 const clusterName = "custom-cluster-name";
 const containerName = "custom-container-name";
@@ -44,7 +45,8 @@ test('Check for new service', () => {
 
   createFargateConstructWithNewResources(stack, publicApi);
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName,
     LaunchType: 'FARGATE',
     DesiredCount: 2,
@@ -62,25 +64,33 @@ test('Check for an existing service', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    { clusterName },
-    defaults.fakeEcrRepoArn,
-    undefined,
-    { family: familyName },
-    { containerName },
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    clientClusterProps: {
+      clusterName
+    },
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateTaskDefinitionProps: {
+      family: familyName
+    },
+    clientContainerDefinitionProps: {
+      containerName
+    },
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     stateMachineProps: testStateMachineProps(stack)
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName,
     LaunchType: 'FARGATE',
     DesiredCount: 2,
@@ -98,7 +108,8 @@ test('Check for IAM startExecution policy', () => {
 
   createFargateConstructWithNewResources(stack, publicApi);
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -126,14 +137,15 @@ test('Check for public/private VPC', () => {
 
   createFargateConstructWithNewResources(stack, publicApi);
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: testCidr
   });
 
-  expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::StepFunctions::StateMachine', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  template.hasResourceProperties('AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::StepFunctions::StateMachine', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('Check for isolated VPC', () => {
@@ -142,14 +154,15 @@ test('Check for isolated VPC', () => {
 
   createFargateConstructWithNewResources(stack, publicApi);
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: testCidr
   });
 
-  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::StepFunctions::StateMachine', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::StepFunctions::StateMachine', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('Check for an existing VPC', () => {
@@ -169,11 +182,12 @@ test('Check for an existing VPC', () => {
     stateMachineProps: testStateMachineProps(stack)
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: "172.168.0.0/16"
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  template.resourceCountIs("AWS::EC2::VPC", 1);
 });
 
 test('Check for custom ARN resource', () => {
@@ -184,7 +198,7 @@ test('Check for custom ARN resource', () => {
   new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: testCidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -193,7 +207,8 @@ test('Check for custom ARN resource', () => {
     stateMachineEnvironmentVariableName: customEnvName
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     Family: familyName,
     ContainerDefinitions: [
       {
@@ -238,7 +253,7 @@ test('Check for no cloudwatch creation', () => {
   const construct = new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: testCidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -248,7 +263,8 @@ test('Check for no cloudwatch creation', () => {
   });
 
   expect(construct.cloudwatchAlarms).not.toBeDefined();
-  expect(stack).not.toHaveResource("AWS::CloudWatch::Alarm", {
+
+  defaults.expectNonexistence(stack, "AWS::CloudWatch::Alarm", {
     ComparisonOperator: "GreaterThanOrEqualToThreshold",
     EvaluationPeriods: 1,
     AlarmDescription: "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
@@ -276,7 +292,7 @@ test('Check for custom log group props', () => {
   new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: testCidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -287,16 +303,41 @@ test('Check for custom log group props', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::Logs::LogGroup", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Logs::LogGroup", {
     LogGroupName: logGroupName
   });
+});
+
+test('Confirm that CheckVpcProps was called', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+
+  const props: FargateToStepfunctionsProps = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    stateMachineProps: testStateMachineProps(stack),
+    existingVpc: defaults.getTestVpc(stack),
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
+  };
+
+  const app = () => {
+    new FargateToStepfunctions(stack, 'test-construct', props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 function createFargateConstructWithNewResources(stack: cdk.Stack, publicApi: boolean) {
   return new FargateToStepfunctions(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: testCidr },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr(testCidr) },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },

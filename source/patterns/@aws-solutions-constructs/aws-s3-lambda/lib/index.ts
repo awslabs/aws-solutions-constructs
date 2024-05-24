@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,11 +11,12 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as s3 from '@aws-cdk/aws-s3';
-import { Construct, Stack } from '@aws-cdk/core';
+import { Construct } from 'constructs';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import { Stack } from 'aws-cdk-lib';
 import * as defaults from '@aws-solutions-constructs/core';
-import { S3EventSourceProps, S3EventSource } from '@aws-cdk/aws-lambda-event-sources';
+import { S3EventSourceProps, S3EventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import {addCfnNagS3BucketNotificationRulesToSuppress} from "@aws-solutions-constructs/core";
 
 /**
@@ -83,7 +84,13 @@ export class S3ToLambda extends Construct {
    */
   constructor(scope: Construct, id: string, props: S3ToLambdaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+
+    defaults.CheckS3Props(props);
+    defaults.CheckLambdaProps(props);
 
     let bucket: s3.Bucket;
 
@@ -93,11 +100,14 @@ export class S3ToLambda extends Construct {
     });
 
     if (!props.existingBucketObj) {
-      [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+      const buildS3BucketResponse  = defaults.buildS3Bucket(this, {
         bucketProps: props.bucketProps,
         loggingBucketProps: props.loggingBucketProps,
         logS3AccessLogs: props.logS3AccessLogs
       });
+      this.s3Bucket = buildS3BucketResponse.bucket;
+      this.s3LoggingBucket = buildS3BucketResponse.loggingBucket;
+
       bucket = this.s3Bucket;
     } else {
       bucket = props.existingBucketObj;

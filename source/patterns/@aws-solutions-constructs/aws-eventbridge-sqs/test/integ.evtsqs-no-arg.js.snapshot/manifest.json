@@ -1,0 +1,158 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "evtsqsnoargIntegDefaultTestDeployAssertB5DFB718.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "evtsqsnoargIntegDefaultTestDeployAssertB5DFB718.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "evtsqsnoargIntegDefaultTestDeployAssertB5DFB718": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "evtsqsnoargIntegDefaultTestDeployAssertB5DFB718.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "evtsqsnoargIntegDefaultTestDeployAssertB5DFB718.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "evtsqsnoargIntegDefaultTestDeployAssertB5DFB718.assets"
+      ],
+      "metadata": {
+        "/evtsqs-no-arg/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/evtsqs-no-arg/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "evtsqs-no-arg/Integ/DefaultTest/DeployAssert"
+    },
+    "evtsqs-no-arg.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "evtsqs-no-arg.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "evtsqs-no-arg": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "evtsqs-no-arg.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/125d06ce04c088a77421b180df3acc0add2a03f6403f8e8529d5eb31ed4508fb.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "evtsqs-no-arg.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "evtsqs-no-arg.assets"
+      ],
+      "metadata": {
+        "/evtsqs-no-arg/construct/deadLetterQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructdeadLetterQueueD87A77D4"
+          }
+        ],
+        "/evtsqs-no-arg/construct/deadLetterQueue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructdeadLetterQueuePolicyBA602BC6"
+          }
+        ],
+        "/evtsqs-no-arg/construct/'queueKey'/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructqueueKey0638E1FB"
+          }
+        ],
+        "/evtsqs-no-arg/construct/queue": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "encryption: Automatically changed to QueueEncryption.KMS, was: QueueEncryption.KMS_MANAGED\nWhen encryptionMasterKey is provided, always set `encryption: QueueEncryption.KMS` [ack: @aws-cdk/aws-sqs:queueEncryptionChangedToKMS]"
+          }
+        ],
+        "/evtsqs-no-arg/construct/queue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructqueue481DC1EC"
+          }
+        ],
+        "/evtsqs-no-arg/construct/queue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructqueuePolicy5B0256B1"
+          }
+        ],
+        "/evtsqs-no-arg/construct/EventsRule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructEventsRule43880ADB"
+          }
+        ],
+        "/evtsqs-no-arg/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/evtsqs-no-arg/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ],
+        "constructEncryptionKey9426451E": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructEncryptionKey9426451E",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ]
+      },
+      "displayName": "evtsqs-no-arg"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

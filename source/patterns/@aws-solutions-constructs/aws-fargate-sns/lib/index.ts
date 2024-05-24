@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,13 @@
  *  and limitations under the License.
  */
 
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as sns from "@aws-cdk/aws-sns";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as kms from 'aws-cdk-lib/aws-kms';
+import * as sns from "aws-cdk-lib/aws-sns";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from "@aws-cdk/core";
+import { Construct } from "constructs";
 import * as defaults from "@aws-solutions-constructs/core";
-import * as ecs from "@aws-cdk/aws-ecs";
+import * as ecs from "aws-cdk-lib/aws-ecs";
 
 export interface FargateToSnsProps {
   /**
@@ -41,8 +42,6 @@ export interface FargateToSnsProps {
   /**
    * Whether the construct is deploying a private or public API. This has implications for the VPC deployed
    * by this construct.
-   *
-   * @default - none
    */
   readonly publicApi: boolean;
   /**
@@ -87,7 +86,7 @@ export interface FargateToSnsProps {
   /**
    * A Fargate Service already instantiated (probably by another Solutions Construct). If
    * this is specified, then no props defining a new service can be provided, including:
-   * existingImageObject, ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps,
+   * existingImageObject, ecrImageVersion, containerDefinitionProps, fargateTaskDefinitionProps,
    * ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface. If this value
    * is provided, then existingContainerDefinitionObject must be provided as well.
    *
@@ -125,6 +124,25 @@ export interface FargateToSnsProps {
    * @default - None
    */
   readonly existingContainerDefinitionObject?: ecs.ContainerDefinition;
+  /**
+   * If no key is provided, this flag determines whether the SNS Topic is encrypted with a new CMK or an AWS managed key.
+   * This flag is ignored if any of the following are defined: topicProps.masterKey, encryptionKey or encryptionKeyProps.
+   *
+   * @default - False if topicProps.masterKey, encryptionKey, and encryptionKeyProps are all undefined.
+   */
+  readonly enableEncryptionWithCustomerManagedKey?: boolean;
+  /**
+   * An optional, imported encryption key to encrypt the SNS Topic with.
+   *
+   * @default - None
+   */
+  readonly encryptionKey?: kms.Key;
+  /**
+   * Optional user provided properties to override the default properties for the KMS encryption key used to  encrypt the SNS Topic with.
+   *
+   * @default - None
+   */
+  readonly encryptionKeyProps?: kms.KeyProps;
 }
 
 export class FargateToSns extends Construct {
@@ -135,8 +153,9 @@ export class FargateToSns extends Construct {
 
   constructor(scope: Construct, id: string, props: FargateToSnsProps) {
     super(scope, id);
-    defaults.CheckProps(props);
     defaults.CheckFargateProps(props);
+    defaults.CheckSnsProps(props);
+    defaults.CheckVpcProps(props);
 
     this.vpc = defaults.buildVpc(scope, {
       existingVpc: props.existingVpc,
@@ -152,25 +171,29 @@ export class FargateToSns extends Construct {
       // CheckFargateProps confirms that the container is provided
       this.container = props.existingContainerDefinitionObject!;
     } else {
-      [this.service, this.container] = defaults.CreateFargateService(
-        scope,
-        id,
-        this.vpc,
-        props.clusterProps,
-        props.ecrRepositoryArn,
-        props.ecrImageVersion,
-        props.fargateTaskDefinitionProps,
-        props.containerDefinitionProps,
-        props.fargateServiceProps
-      );
+      const createFargateServiceResponse = defaults.CreateFargateService(scope, id, {
+        constructVpc: this.vpc,
+        clientClusterProps: props.clusterProps,
+        ecrRepositoryArn: props.ecrRepositoryArn,
+        ecrImageVersion: props.ecrImageVersion,
+        clientFargateTaskDefinitionProps: props.fargateTaskDefinitionProps,
+        clientContainerDefinitionProps: props.containerDefinitionProps,
+        clientFargateServiceProps: props.fargateServiceProps
+      });
+      this.service = createFargateServiceResponse.service;
+      this.container = createFargateServiceResponse.containerDefinition;
     }
 
     // Setup the SNS topic
-    [this.snsTopic] = defaults.buildTopic(this, {
+    const buildTopicResponse = defaults.buildTopic(this, id, {
       existingTopicObj: props.existingTopicObject,
       topicProps: props.topicProps,
+      enableEncryptionWithCustomerManagedKey: props.enableEncryptionWithCustomerManagedKey,
+      encryptionKey: props.encryptionKey,
+      encryptionKeyProps: props.encryptionKeyProps
     });
 
+    this.snsTopic = buildTopicResponse.topic;
     this.snsTopic.grantPublish(this.service.taskDefinition.taskRole);
 
     const topicArnEnvironmentVariableName = props.topicArnEnvironmentVariableName || 'SNS_TOPIC_ARN';

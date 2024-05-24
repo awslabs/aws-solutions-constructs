@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,13 +12,13 @@
  */
 
 // Imports
-import * as api from '@aws-cdk/aws-apigateway';
-import * as cdk from '@aws-cdk/core';
-import * as iam from '@aws-cdk/aws-iam';
-import * as logs from '@aws-cdk/aws-logs';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as cdk from 'aws-cdk-lib';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as logs from 'aws-cdk-lib/aws-logs';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * The properties for the ApiGatewayIot class.
@@ -26,6 +26,7 @@ import { Construct } from '@aws-cdk/core';
 export interface ApiGatewayToIotProps {
   /**
    * The AWS IoT endpoint subdomain to integrate the API Gateway with (e.g ab123cdefghij4l-ats). Added as AWS Subdomain to the Integration Request.
+   * Note that this must reference the ATS endpoint to avoid SSL certificate trust issues.
    *
    * @default - None.
    */
@@ -81,7 +82,6 @@ export class ApiGatewayToIot extends Construct {
    */
   constructor(scope: Construct, id: string, props: ApiGatewayToIotProps) {
     super(scope, id);
-    defaults.CheckProps(props);
 
     // Assignment to local member variables to make these available to all member methods of the class.
     // (Split the string just in case user supplies fully qualified endpoint eg. ab123cdefghij4l-ats.iot.ap-south-1.amazonaws.com)
@@ -115,14 +115,14 @@ export class ApiGatewayToIot extends Construct {
             Action: [
               "iot:UpdateThingShadow"
             ],
-            Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:thing/*`,
+            Resource: `arn:${cdk.Aws.PARTITION}:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:thing/*`,
             Effect: "Allow"
           },
           {
             Action: [
               "iot:Publish"
             ],
-            Resource: `arn:aws:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:topic/*`,
+            Resource: `arn:${cdk.Aws.PARTITION}:iot:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:topic/*`,
             Effect: "Allow"
           }
         ]
@@ -143,8 +143,10 @@ export class ApiGatewayToIot extends Construct {
     }
 
     // Setup the API Gateway
-    [this.apiGateway, this.apiGatewayCloudWatchRole,
-      this.apiGatewayLogGroup] = defaults.GlobalRestApi(this, extraApiGwProps, props.logGroupProps);
+    const globalRestApiResponse = defaults.GlobalRestApi(this, extraApiGwProps, props.logGroupProps);
+    this.apiGateway = globalRestApiResponse.api;
+    this.apiGatewayCloudWatchRole = globalRestApiResponse.role;
+    this.apiGatewayLogGroup = globalRestApiResponse.logGroup;
 
     // Validate the Query Params
     const requestValidatorProps: api.RequestValidatorProps = {
@@ -201,7 +203,7 @@ export class ApiGatewayToIot extends Construct {
    * Adds a method to specified resource
    * @param resource API Gateway resource to which this method is added
    * @param resourcePath path of resource from root
-   * @param integReqParams request paramters for the Integration method
+   * @param integReqParams request parameters for the Integration method
    * @param methodReqParams request parameters at Method level
    */
   private addResourceMethod(resource: api.IResource, props: ApiGatewayToIotProps, resourcePath: string,
@@ -276,12 +278,12 @@ export class ApiGatewayToIot extends Construct {
     );
 
     if (props.apiGatewayCreateApiKey === true) {
-      // cfn Nag doesn't like having a HTTP Method with Authorization Set to None, supress the warning
+      // cfn Nag doesn't like having a HTTP Method with Authorization Set to None, suppress the warning
       defaults.addCfnSuppressRules(apiMethod, [
         {
           id: "W59",
           reason:
-            "When ApiKey is being created, we also set apikeyRequired to true, so techincally apiGateway still looks for apiKey even though user specified AuthorizationType to NONE",
+            "When ApiKey is being created, we also set apikeyRequired to true, so technically apiGateway still looks for apiKey even though user specified AuthorizationType to NONE",
         },
       ]);
     }

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,13 +11,14 @@
  *  and limitations under the License.
  */
 
-import * as cdk from '@aws-cdk/core';
+import { App } from 'aws-cdk-lib';
 import { ExistingResources } from '../lib/existing-resources';
-import { SynthUtils } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 test('ExistingResourcesStack', () => {
-  const app = new cdk.App();
+  const app = new App();
   const stack = new ExistingResources(app, `ExistingResourcesStack`);
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  const template = Template.fromStack(stack);
+
+  expect(template).toMatchSnapshot();
 });

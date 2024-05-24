@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,15 +11,14 @@
  *  and limitations under the License.
  */
 
-import * as kinesisfirehose from '@aws-cdk/aws-kinesisfirehose';
-import * as iot from '@aws-cdk/aws-iot';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as iam from '@aws-cdk/aws-iam';
-import * as logs from '@aws-cdk/aws-logs';
+import * as kinesisfirehose from 'aws-cdk-lib/aws-kinesisfirehose';
+import * as iot from 'aws-cdk-lib/aws-iot';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as logs from 'aws-cdk-lib/aws-logs';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 import * as defaults from '@aws-solutions-constructs/core';
-import { overrideProps } from '@aws-solutions-constructs/core';
 import { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
 
 /**
@@ -91,7 +90,10 @@ export class IotToKinesisFirehoseToS3 extends Construct {
    */
   constructor(scope: Construct, id: string, props: IotToKinesisFirehoseToS3Props) {
     super(scope, id);
-    defaults.CheckProps(props);
+
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
     const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
       kinesisFirehoseProps: props.kinesisFirehoseProps,
@@ -129,7 +131,7 @@ export class IotToKinesisFirehoseToS3 extends Construct {
         roleArn: this.iotActionsRole.roleArn
       }
     }]);
-    const iotTopicProps = overrideProps(defaultIotTopicProps, props.iotTopicRuleProps, true);
+    const iotTopicProps = defaults.overrideProps(defaultIotTopicProps, props.iotTopicRuleProps, true);
 
     // Create the IoT topic rule
     this.iotTopicRule = new iot.CfnTopicRule(this, 'IotTopic', iotTopicProps);

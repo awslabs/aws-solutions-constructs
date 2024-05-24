@@ -1,0 +1,228 @@
+{
+ "Resources": {
+  "testconstructtestconstructKey1FB48CCA": {
+   "Type": "AWS::KMS::Key",
+   "Properties": {
+    "EnableKeyRotation": true,
+    "KeyPolicy": {
+     "Statement": [
+      {
+       "Action": "kms:*",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey*",
+        "kms:ReEncrypt*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "events.amazonaws.com"
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
+  "testconstructSnsTopic44188529": {
+   "Type": "AWS::SNS::Topic",
+   "Properties": {
+    "KmsMasterKeyId": {
+     "Fn::GetAtt": [
+      "testconstructtestconstructKey1FB48CCA",
+      "Arn"
+     ]
+    }
+   }
+  },
+  "testconstructSnsTopicPolicy72FFD530": {
+   "Type": "AWS::SNS::TopicPolicy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "SNS:AddPermission",
+        "SNS:DeleteTopic",
+        "SNS:GetTopicAttributes",
+        "SNS:ListSubscriptionsByTopic",
+        "SNS:Publish",
+        "SNS:Receive",
+        "SNS:RemovePermission",
+        "SNS:SetTopicAttributes",
+        "SNS:Subscribe"
+       ],
+       "Condition": {
+        "StringEquals": {
+         "AWS:SourceOwner": {
+          "Ref": "AWS::AccountId"
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       },
+       "Resource": {
+        "Ref": "testconstructSnsTopic44188529"
+       },
+       "Sid": "TopicOwnerOnlyAccess"
+      },
+      {
+       "Action": [
+        "SNS:AddPermission",
+        "SNS:DeleteTopic",
+        "SNS:GetTopicAttributes",
+        "SNS:ListSubscriptionsByTopic",
+        "SNS:Publish",
+        "SNS:Receive",
+        "SNS:RemovePermission",
+        "SNS:SetTopicAttributes",
+        "SNS:Subscribe"
+       ],
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": {
+        "Ref": "testconstructSnsTopic44188529"
+       },
+       "Sid": "HttpsOnly"
+      },
+      {
+       "Action": "sns:Publish",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "events.amazonaws.com"
+       },
+       "Resource": {
+        "Ref": "testconstructSnsTopic44188529"
+       },
+       "Sid": "2"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Topics": [
+     {
+      "Ref": "testconstructSnsTopic44188529"
+     }
+    ]
+   }
+  },
+  "testconstructEventsRule145DBA20": {
+   "Type": "AWS::Events::Rule",
+   "Properties": {
+    "ScheduleExpression": "rate(5 minutes)",
+    "State": "ENABLED",
+    "Targets": [
+     {
+      "Arn": {
+       "Ref": "testconstructSnsTopic44188529"
+      },
+      "Id": {
+       "Fn::Join": [
+        "",
+        [
+         "evtsns-no-argtest-construct-",
+         {
+          "Fn::Select": [
+           2,
+           {
+            "Fn::Split": [
+             "/",
+             {
+              "Ref": "AWS::StackId"
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       ]
+      }
+     }
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

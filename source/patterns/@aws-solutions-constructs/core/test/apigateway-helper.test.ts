@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,17 +11,16 @@
  *  and limitations under the License.
  */
 
-import { ResourcePart } from '@aws-cdk/assert';
-import { Stack } from '@aws-cdk/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as api from '@aws-cdk/aws-apigateway';
-import * as iam from '@aws-cdk/aws-iam';
+import { Stack } from 'aws-cdk-lib';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '../index';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
 function deployRegionalApiGateway(stack: Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -32,9 +31,9 @@ function deployRegionalApiGateway(stack: Stack) {
 }
 
 function setupRestApi(stack: Stack, apiProps?: any): void {
-  const [restApi] = defaults.GlobalRestApi(stack, apiProps);
+  const globalRestApiResponse = defaults.GlobalRestApi(stack, apiProps);
   // Setup the API Gateway resource
-  const apiGatewayResource = restApi.root.addResource('api-gateway-resource');
+  const apiGatewayResource = globalRestApiResponse.api.root.addResource('api-gateway-resource');
   // Setup the API Gateway Integration
   const apiGatewayIntegration = new api.AwsIntegration({
     service: "sqs",
@@ -91,7 +90,7 @@ test('Test override for RegionalApiGateway', () => {
   const stack = new Stack();
 
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -103,7 +102,8 @@ test('Test override for RegionalApiGateway', () => {
     description: 'Hello World'
   });
 
-  expect(stack).toHaveResource('AWS::ApiGateway::RestApi', {
+  const template = Template.fromStack(stack);
+  template.hasResource('AWS::ApiGateway::RestApi', {
     Type: "AWS::ApiGateway::RestApi",
     Properties: {
       Description: "Hello World",
@@ -114,14 +114,14 @@ test('Test override for RegionalApiGateway', () => {
       },
       Name: "LambdaRestApi"
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 test('Test override for GlobalApiGateway', () => {
   const stack = new Stack();
 
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -133,7 +133,8 @@ test('Test override for GlobalApiGateway', () => {
     restApiName: "HelloWorld"
   });
 
-  expect(stack).toHaveResource('AWS::ApiGateway::RestApi', {
+  const template = Template.fromStack(stack);
+  template.hasResource('AWS::ApiGateway::RestApi', {
     Type: "AWS::ApiGateway::RestApi",
     Properties: {
       EndpointConfiguration: {
@@ -143,13 +144,13 @@ test('Test override for GlobalApiGateway', () => {
       },
       Name: "HelloWorld"
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 test('Test ApiGateway::Account resource for RegionalApiGateway', () => {
   const stack = new Stack();
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -158,7 +159,8 @@ test('Test ApiGateway::Account resource for RegionalApiGateway', () => {
 
   defaults.RegionalLambdaRestApi(stack, fn);
 
-  expect(stack).toHaveResource('AWS::ApiGateway::Account', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Account', {
     CloudWatchRoleArn: {
       "Fn::GetAtt": [
         "LambdaRestApiCloudWatchRoleF339D4E6",
@@ -171,7 +173,7 @@ test('Test ApiGateway::Account resource for RegionalApiGateway', () => {
 test('Test ApiGateway::Account resource for GlobalApiGateway', () => {
   const stack = new Stack();
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -180,7 +182,8 @@ test('Test ApiGateway::Account resource for GlobalApiGateway', () => {
 
   defaults.GlobalLambdaRestApi(stack, fn);
 
-  expect(stack).toHaveResource('AWS::ApiGateway::Account', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Account', {
     CloudWatchRoleArn: {
       "Fn::GetAtt": [
         "LambdaRestApiCloudWatchRoleF339D4E6",
@@ -196,7 +199,8 @@ test('Test default RestApi deployment w/ ApiGatewayProps', () => {
     restApiName: "customRestApi"
   });
 
-  expect(stack).toHaveResource('AWS::ApiGateway::RestApi', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::RestApi', {
     Name: "customRestApi"
   });
 });
@@ -207,19 +211,21 @@ test('Test default RestApi deployment w/ cloudWatchRole set to false', () => {
     cloudWatchRole: false
   });
 
-  expect(stack).not.toHaveResourceLike("AWS::ApiGateway::Account", {});
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::ApiGateway::Account", 0);
 });
 
 test('Test default RestApi deployment for Cloudwatch loggroup', () => {
   const stack = new Stack();
   deployRegionalApiGateway(stack);
 
-  expect(stack).toHaveResource('AWS::Logs::LogGroup', {
+  const template = Template.fromStack(stack);
+  template.hasResource('AWS::Logs::LogGroup', {
     UpdateReplacePolicy: "Retain",
     DeletionPolicy: "Retain"
-  }, ResourcePart.CompleteDefinition);
+  });
 
-  expect(stack).toHaveResource('AWS::ApiGateway::Stage', {
+  template.hasResourceProperties('AWS::ApiGateway::Stage', {
     AccessLogSetting: {
       DestinationArn: {
         "Fn::GetAtt": [
@@ -234,7 +240,7 @@ test('Test default RestApi deployment for Cloudwatch loggroup', () => {
 
 test('Test addMethodToApiResource with action', () => {
   const stack = new Stack();
-  const [restApi] = defaults.GlobalRestApi(stack);
+  const globalRestApiResponse = defaults.GlobalRestApi(stack);
 
   // Setup the API Gateway role
   const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
@@ -242,7 +248,7 @@ test('Test addMethodToApiResource with action', () => {
   });
 
   // Setup the API Gateway resource
-  const apiGatewayResource = restApi.root.addResource('api-gateway-resource');
+  const apiGatewayResource = globalRestApiResponse.api.root.addResource('api-gateway-resource');
   const getRequestTemplate = "{}";
 
   // Add Method
@@ -281,7 +287,7 @@ test('Test addMethodToApiResource with action', () => {
 
 test('Test default RestApi w/ request model and validator', () => {
   const stack = new Stack();
-  const [restApi] = defaults.GlobalRestApi(stack);
+  const globalRestApiResponse = defaults.GlobalRestApi(stack);
 
   // Setup the API Gateway role
   const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
@@ -289,9 +295,9 @@ test('Test default RestApi w/ request model and validator', () => {
   });
 
   // Setup the API Gateway resource
-  const apiGatewayResource = restApi.root.addResource('api-gateway-resource');
+  const apiGatewayResource = globalRestApiResponse.api.root.addResource('api-gateway-resource');
 
-  const validator = restApi.addRequestValidator('default-validator', {
+  const validator = globalRestApiResponse.api.addRequestValidator('default-validator', {
     requestValidatorName: 'default-validator',
     validateRequestBody: true
   });
@@ -308,12 +314,13 @@ test('Test default RestApi w/ request model and validator', () => {
     requestModel: { "application/json": api.Model.EMPTY_MODEL }
   });
 
-  expect(stack).toHaveResource('AWS::ApiGateway::RequestValidator', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::RequestValidator', {
     Name: "default-validator",
     ValidateRequestBody: true
   });
 
-  expect(stack).toHaveResourceLike('AWS::ApiGateway::Method', {
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
     RequestModels: { "application/json": "Empty" }
   });
 });
@@ -324,7 +331,7 @@ test('Test default RestApi w/ request model and validator', () => {
 test('Test for RegionalRestApiGateway', () => {
   const stack = new Stack();
 
-  const [regionalApi] = defaults.RegionalRestApi(stack, {
+  const regionalRestApiResponse = defaults.RegionalRestApi(stack, {
     restApiName: "HelloWorld-RegionalApi"
   });
   // Setup the API Gateway role
@@ -333,7 +340,7 @@ test('Test for RegionalRestApiGateway', () => {
   });
 
   // Setup the API Gateway resource
-  const apiGatewayResource = regionalApi.root.addResource('hello');
+  const apiGatewayResource = regionalRestApiResponse.api.root.addResource('hello');
 
   defaults.addProxyMethodToApiResource(
     {
@@ -345,7 +352,8 @@ test('Test for RegionalRestApiGateway', () => {
       requestTemplate: "$input.json('$')"
     });
 
-  expect(stack).toHaveResource('AWS::ApiGateway::RestApi', {
+  const template = Template.fromStack(stack);
+  template.hasResource('AWS::ApiGateway::RestApi', {
     Type: "AWS::ApiGateway::RestApi",
     Properties: {
       EndpointConfiguration: {
@@ -355,7 +363,7 @@ test('Test for RegionalRestApiGateway', () => {
       },
       Name: "HelloWorld-RegionalApi"
     }
-  }, ResourcePart.CompleteDefinition);
+  });
 });
 
 // -----------------------------------------------------------------------
@@ -378,7 +386,7 @@ test('Test for Exception while overriding restApiProps using endPointTypes', () 
 test('Test for Exception while overriding LambdaRestApiProps using endPointTypes', () => {
   const stack = new Stack();
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -401,7 +409,7 @@ test('Test for Exception while overriding LambdaRestApiProps using endPointTypes
 test('Test for Integration Request Props Override', () => {
   const stack = new Stack();
 
-  const [regionalApi] = defaults.RegionalRestApi(stack);
+  const regionalRestApiResponse = defaults.RegionalRestApi(stack);
 
   // Setup the API Gateway role
   const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
@@ -409,13 +417,13 @@ test('Test for Integration Request Props Override', () => {
   });
 
   // Setup the API Gateway resource
-  const apiGatewayResource = regionalApi.root.addResource('hello');
-  const integReqParams = {'integration.request.path.topic-level-1': "'method.request.path.topic-level-1'"};
+  const apiGatewayResource = regionalRestApiResponse.api.root.addResource('hello');
+  const integReqParams = { 'integration.request.path.topic-level-1': "'method.request.path.topic-level-1'" };
   const integResp: api.IntegrationResponse[] = [
     {
       statusCode: "200",
       selectionPattern: "2\\d{2}",
-      responseTemplates : {
+      responseTemplates: {
         "application/json": "$input.json('$')"
       }
     }];
@@ -439,7 +447,8 @@ test('Test for Integration Request Props Override', () => {
       awsIntegrationProps: integrationReqProps
     });
 
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "POST",
     AuthorizationType: "AWS_IAM",
     Integration: {
@@ -485,6 +494,12 @@ test('Test for Integration Request Props Override', () => {
         ResponseParameters: {
           "method.response.header.Content-Type": true
         }
+      },
+      {
+        StatusCode: "500",
+        ResponseParameters: {
+          "method.response.header.Content-Type": true
+        }
       }
     ]
   });
@@ -496,7 +511,7 @@ test('Test for Integration Request Props Override', () => {
 test('Test for Method Request Props Override', () => {
   const stack = new Stack();
 
-  const [globalApi] = defaults.GlobalRestApi(stack);
+  const globalRestApiResponse = defaults.GlobalRestApi(stack);
 
   // Setup the API Gateway role
   const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
@@ -504,8 +519,8 @@ test('Test for Method Request Props Override', () => {
   });
 
   // Setup the API Gateway resource
-  const apiGatewayResource = globalApi.root.addResource('hello');
-  const methodReqParams = {'method.request.path.topic-level-1': true};
+  const apiGatewayResource = globalRestApiResponse.api.root.addResource('hello');
+  const methodReqParams = { 'method.request.path.topic-level-1': true };
   const methodResp: api.MethodResponse[] = [
     {
       statusCode: "403"
@@ -526,7 +541,8 @@ test('Test for Method Request Props Override', () => {
       methodOptions: resourceMethodOptions
     });
 
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     HttpMethod: "POST",
     AuthorizationType: "AWS_IAM",
     Integration: {
@@ -584,7 +600,7 @@ test('Test for Method Request Props Override', () => {
 // -----------------------------------------------------------------------
 test('Test for ApiKey creation using restApiProps', () => {
   const stack = new Stack();
-  const [globalRestApi] = defaults.GlobalRestApi(stack, {
+  const globalRestApiResponse = defaults.GlobalRestApi(stack, {
     defaultMethodOptions: {
       apiKeyRequired: true
     }
@@ -596,7 +612,7 @@ test('Test for ApiKey creation using restApiProps', () => {
   });
 
   // Setup the API Gateway resource
-  const apiGatewayResource = globalRestApi.root.addResource('hello');
+  const apiGatewayResource = globalRestApiResponse.api.root.addResource('hello');
 
   defaults.addProxyMethodToApiResource(
     {
@@ -607,15 +623,16 @@ test('Test for ApiKey creation using restApiProps', () => {
       apiResource: apiGatewayResource,
       requestTemplate: "$input.json('$')"
     });
+  const template = Template.fromStack(stack);
   // Assertion to check for ApiKey
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     ApiKeyRequired: true
   });
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::ApiKey", {
+  template.hasResourceProperties("AWS::ApiGateway::ApiKey", {
     Enabled: true
   });
   // Assertion to check for UsagePlan Api Key Mapping
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::UsagePlanKey", {
+  template.hasResourceProperties("AWS::ApiGateway::UsagePlanKey", {
     KeyType: "API_KEY"
   });
 });
@@ -626,7 +643,7 @@ test('Test for ApiKey creation using restApiProps', () => {
 test('Test for ApiKey creation using lambdaApiProps', () => {
   const stack = new Stack();
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -639,15 +656,170 @@ test('Test for ApiKey creation using lambdaApiProps', () => {
     }
   });
 
+  const template = Template.fromStack(stack);
   // Assertion to check for ApiKey
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::Method", {
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
     ApiKeyRequired: true
   });
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::ApiKey", {
+  template.hasResourceProperties("AWS::ApiGateway::ApiKey", {
     Enabled: true
   });
   // Assertion to check for UsagePlan Api Key Mapping
-  expect(stack).toHaveResourceLike("AWS::ApiGateway::UsagePlanKey", {
+  template.hasResourceProperties("AWS::ApiGateway::UsagePlanKey", {
     KeyType: "API_KEY"
   });
+});
+
+test('Additional request templates can be specified on addMethodToApiResource method', () => {
+  const stack = new Stack();
+  const globalRestApiResponse = defaults.GlobalRestApi(stack);
+
+  // Setup the API Gateway role
+  const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+  });
+
+  // Setup the API Gateway resource
+  const apiGatewayResource = globalRestApiResponse.api.root.addResource('api-gateway-resource');
+  const requestTemplate = '{}';
+  const additionalRequestTemplates = {
+    'text/plain': 'additional-request-template'
+  };
+
+  // Add Method
+  defaults.addProxyMethodToApiResource({
+    action: "Query",
+    service: "dynamodb",
+    apiResource: apiGatewayResource,
+    apiGatewayRole,
+    apiMethod: "GET",
+    requestTemplate,
+    additionalRequestTemplates
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
+    HttpMethod: 'GET',
+    Integration: {
+      RequestTemplates: {
+        'application/json': `{}`,
+        'text/plain': 'additional-request-template'
+      }
+    }
+  });
+});
+
+test('Default integration responses are used on addMethodToApiResource method', () => {
+  const stack = new Stack();
+  const globalRestApiResponse = defaults.GlobalRestApi(stack);
+
+  // Setup the API Gateway role
+  const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+  });
+
+  // Setup the API Gateway resource
+  const apiGatewayResource = globalRestApiResponse.api.root.addResource('api-gateway-resource');
+
+  // Add Method
+  defaults.addProxyMethodToApiResource({
+    action: 'Query',
+    service: 'dynamodb',
+    apiResource: apiGatewayResource,
+    apiGatewayRole,
+    apiMethod: 'GET',
+    requestTemplate: '{}',
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
+    HttpMethod: 'GET',
+    Integration: {
+      IntegrationResponses: [
+        {
+          StatusCode: '200'
+        },
+        {
+          ResponseTemplates: {
+            'text/html': 'Error'
+          },
+          SelectionPattern: '500',
+          StatusCode: '500'
+        }
+      ]
+    }
+  });
+});
+
+test('Can override integration responses on addMethodToApiResource method', () => {
+  const stack = new Stack();
+  const globalRestApiResponse = defaults.GlobalRestApi(stack);
+
+  // Setup the API Gateway role
+  const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+  });
+
+  // Setup the API Gateway resource
+  const apiGatewayResource = globalRestApiResponse.api.root.addResource('api-gateway-resource');
+
+  // Add Method
+  defaults.addProxyMethodToApiResource({
+    action: 'Query',
+    service: 'dynamodb',
+    apiResource: apiGatewayResource,
+    apiGatewayRole,
+    apiMethod: 'GET',
+    requestTemplate: '{}',
+    integrationResponses: [
+      {
+        statusCode: "200",
+        responseTemplates: {
+          "text/html": "OK"
+        }
+      }
+    ]
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
+    HttpMethod: 'GET',
+    Integration: {
+      IntegrationResponses: [
+        {
+          ResponseTemplates: {
+            'text/html': 'OK'
+          },
+          StatusCode: '200'
+        }
+      ],
+    }
+  });
+});
+
+test('Specifying application/json content-type in additionalRequestTemplates property throws an error', () => {
+  const stack = new Stack();
+  const globalRestApiResponse = defaults.GlobalRestApi(stack);
+
+  const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+  });
+
+  const apiGatewayResource = globalRestApiResponse.api.root.addResource('api-gateway-resource');
+
+  const app = () => {
+    defaults.addProxyMethodToApiResource({
+      action: 'Query',
+      service: 'dynamodb',
+      apiResource: apiGatewayResource,
+      apiGatewayRole,
+      apiMethod: 'GET',
+      requestTemplate: '{}',
+      additionalRequestTemplates: {
+        'application/json': '{}'
+      }
+    });
+  };
+
+  expect(app).toThrowError('Request Template for the application/json content-type must be specified in the requestTemplate property and not in the additionalRequestTemplates property');
 });

@@ -22,31 +22,31 @@
     "test": "jest --coverage",
     "clean": "tsc -b --clean",
     "watch": "tsc -b -w",
-    "integ": "cdk-integ",
-    "integ-no-clean": "cdk-integ --no-clean",
-    "integ-assert": "cdk-integ-assert",
+    "integ": "integ-runner --update-on-failed",
+    "integ-no-clean": "integ-runner --update-on-failed --no-clean",
+    "integ-assert": "integ-runner",
     "build+lint+test": "npm run build && npm run lint && npm test && npm run integ-assert"
   },
   "dependencies": {
+    "@aws-cdk/integ-tests-alpha": "0.0.0-alpha.0",
     "@aws-solutions-constructs/aws-cloudfront-s3": "0.0.0",
-    "@aws-cdk/core": "0.0.0",
-    "@aws-cdk/aws-lambda": "0.0.0",
-    "@aws-cdk/aws-cloudfront": "0.0.0",
-    "@aws-cdk/aws-s3": "0.0.0",
-    "@aws-cdk/custom-resources": "0.0.0",
-    "@aws-cdk/aws-cloudformation": "0.0.0",
-    "@aws-cdk/aws-iam": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "source-map-support": "^0.5.16"
+    "source-map-support": "^0.5.16",
+    "constructs": "^10.0.0"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "0.0.0",
     "@types/jest": "^27.4.0",
-    "@types/node": "^10.3.0"
+    "@types/node": "^10.3.0",
+    "constructs": "^10.0.0",
+    "aws-cdk-lib": "0.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
       "js"
     ]
+  },
+  "peerDependencies": {
+    "constructs": "^10.0.0",
+    "aws-cdk-lib": "^0.0.0"
   }
 }

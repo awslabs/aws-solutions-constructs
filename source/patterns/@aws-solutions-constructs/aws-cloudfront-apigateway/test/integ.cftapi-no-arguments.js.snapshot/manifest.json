@@ -1,0 +1,269 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "cftapinoargumentsIntegDefaultTestDeployAssert86305603.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "cftapinoargumentsIntegDefaultTestDeployAssert86305603.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "cftapinoargumentsIntegDefaultTestDeployAssert86305603": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "cftapinoargumentsIntegDefaultTestDeployAssert86305603.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "cftapinoargumentsIntegDefaultTestDeployAssert86305603.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "cftapinoargumentsIntegDefaultTestDeployAssert86305603.assets"
+      ],
+      "metadata": {
+        "/cftapi-no-arguments/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/cftapi-no-arguments/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "cftapi-no-arguments/Integ/DefaultTest/DeployAssert"
+    },
+    "cftapi-no-arguments.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "cftapi-no-arguments.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "cftapi-no-arguments": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "cftapi-no-arguments.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ba8809b2efce45541d44d29a4a593c38adc0da7266255ddbae28ab660938c589.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "cftapi-no-arguments.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "cftapi-no-arguments.assets"
+      ],
+      "metadata": {
+        "/cftapi-no-arguments/cftapi-no-arguments-apiFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiFunctionServiceRole6D0B7CBA"
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-apiFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiFunctionFF0A9430"
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-api-authorizerAuthFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiauthorizerAuthFunctionServiceRole33BC576C"
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-api-authorizerAuthFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiauthorizerAuthFunction5A0061F7"
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-api-authorizerAuthFunction/cftapinoargumentscftapinoargumentsapiauthorizerCA624E68:Permissions": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiauthorizerAuthFunctioncftapinoargumentscftapinoargumentsapiauthorizerCA624E68Permissions3907BB66"
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-api-authorizer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiauthorizer4CAD6709"
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-apiApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiApiF33C30EC"
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-apiApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiApiDeployment65E83A27bed264180672ee2a8968ec6f7063db50"
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-apiApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiApiDeploymentStageprod006D7243"
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-apiApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiApiEndpointBBA93A2A"
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-apiApi/Default/{proxy+}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiApiproxy1C21A7B6"
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-apiApi/Default/{proxy+}/ANY/ApiPermission.cftapinoargumentscftapinoargumentsapiApiC6105EBE.ANY..{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiApiproxyANYApiPermissioncftapinoargumentscftapinoargumentsapiApiC6105EBEANYproxy7EB3E388"
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-apiApi/Default/{proxy+}/ANY/ApiPermission.Test.cftapinoargumentscftapinoargumentsapiApiC6105EBE.ANY..{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiApiproxyANYApiPermissionTestcftapinoargumentscftapinoargumentsapiApiC6105EBEANYproxyA27FB655"
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-apiApi/Default/{proxy+}/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiApiproxyANYDB439B85"
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-apiApi/Default/ANY/ApiPermission.cftapinoargumentscftapinoargumentsapiApiC6105EBE.ANY..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiApiANYApiPermissioncftapinoargumentscftapinoargumentsapiApiC6105EBEANY116F587E"
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-apiApi/Default/ANY/ApiPermission.Test.cftapinoargumentscftapinoargumentsapiApiC6105EBE.ANY..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiApiANYApiPermissionTestcftapinoargumentscftapinoargumentsapiApiC6105EBEANY3FBA5B10"
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-apiApi/Default/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiApiANY1E5CEE5C"
+          }
+        ],
+        "/cftapi-no-arguments/test-cloudfront-apigateway/SetHttpSecurityHeaders/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfrontapigatewaySetHttpSecurityHeadersD8DBA642"
+          }
+        ],
+        "/cftapi-no-arguments/test-cloudfront-apigateway/CloudfrontLoggingBucketAccessLog/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfrontapigatewayCloudfrontLoggingBucketAccessLog4D9DC9FB"
+          }
+        ],
+        "/cftapi-no-arguments/test-cloudfront-apigateway/CloudfrontLoggingBucketAccessLog/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfrontapigatewayCloudfrontLoggingBucketAccessLogPolicy1110B389"
+          }
+        ],
+        "/cftapi-no-arguments/test-cloudfront-apigateway/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfrontapigatewayCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResourceCAC0A05B"
+          }
+        ],
+        "/cftapi-no-arguments/test-cloudfront-apigateway/CloudfrontLoggingBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfrontapigatewayCloudfrontLoggingBucket9811F6E8"
+          }
+        ],
+        "/cftapi-no-arguments/test-cloudfront-apigateway/CloudfrontLoggingBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfrontapigatewayCloudfrontLoggingBucketPolicyAA14EB71"
+          }
+        ],
+        "/cftapi-no-arguments/test-cloudfront-apigateway/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfrontapigatewayCloudfrontLoggingBucketAutoDeleteObjectsCustomResourceEE183292"
+          }
+        ],
+        "/cftapi-no-arguments/test-cloudfront-apigateway/CloudFrontDistribution/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfrontapigatewayCloudFrontDistribution159820CC"
+          }
+        ],
+        "/cftapi-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/cftapi-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/cftapi-no-arguments/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/cftapi-no-arguments/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "cftapi-no-arguments"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

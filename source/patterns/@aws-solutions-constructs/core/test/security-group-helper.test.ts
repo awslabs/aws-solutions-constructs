@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,10 +11,10 @@
  *  and limitations under the License.
  */
 
-import { Stack } from "@aws-cdk/core";
+import { Stack } from "aws-cdk-lib";
 import * as defaults from "../";
-import "@aws-cdk/assert/jest";
-import * as ec2 from "@aws-cdk/aws-ec2";
+import { Template } from 'aws-cdk-lib/assertions';
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 
 // --------------------------------------------------------------
 // Test minimal deployment with no properties
@@ -37,7 +37,7 @@ test("Test minimal deployment with no properties", () => {
     []
   );
 
-  expect(stack).toHaveResource("AWS::EC2::SecurityGroup", {
+  Template.fromStack(stack).hasResourceProperties("AWS::EC2::SecurityGroup", {
     SecurityGroupEgress: [
       {
         CidrIp: "0.0.0.0/0",
@@ -66,7 +66,7 @@ test("Test deployment with ingress rules", () => {
     []
   );
 
-  expect(stack).toHaveResource("AWS::EC2::SecurityGroup", {
+  Template.fromStack(stack).hasResourceProperties("AWS::EC2::SecurityGroup", {
     SecurityGroupIngress: [
       {
         CidrIp: "1.1.1.1/16",
@@ -100,7 +100,7 @@ test("Test deployment with egress rule", () => {
     ]
   );
 
-  expect(stack).toHaveResource("AWS::EC2::SecurityGroup", {
+  Template.fromStack(stack).hasResourceProperties("AWS::EC2::SecurityGroup", {
     SecurityGroupEgress: [
       {
         CidrIp: "1.1.1.1/16",
@@ -135,7 +135,7 @@ test("Test self referencing security group", () => {
     testPort,
   );
 
-  expect(stack).toHaveResourceLike("AWS::EC2::SecurityGroupIngress", {
+  Template.fromStack(stack).hasResourceProperties("AWS::EC2::SecurityGroupIngress", {
     IpProtocol: "TCP",
     FromPort: testPort,
     ToPort: testPort,

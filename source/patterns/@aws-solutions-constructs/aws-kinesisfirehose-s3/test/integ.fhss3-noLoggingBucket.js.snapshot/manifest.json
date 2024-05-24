@@ -1,0 +1,149 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "fhss3noLoggingBucketIntegDefaultTestDeployAssert461787D6.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "fhss3noLoggingBucketIntegDefaultTestDeployAssert461787D6.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "fhss3noLoggingBucketIntegDefaultTestDeployAssert461787D6": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "fhss3noLoggingBucketIntegDefaultTestDeployAssert461787D6.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "fhss3noLoggingBucketIntegDefaultTestDeployAssert461787D6.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "fhss3noLoggingBucketIntegDefaultTestDeployAssert461787D6.assets"
+      ],
+      "metadata": {
+        "/fhss3-noLoggingBucket/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/fhss3-noLoggingBucket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "fhss3-noLoggingBucket/Integ/DefaultTest/DeployAssert"
+    },
+    "fhss3-noLoggingBucket.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "fhss3-noLoggingBucket.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "fhss3-noLoggingBucket": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "fhss3-noLoggingBucket.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ab6f53f6f03f4e3f8ea7c32cf35052c755c624b01c2e9b7c7ffa42b3ccd88f44.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "fhss3-noLoggingBucket.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "fhss3-noLoggingBucket.assets"
+      ],
+      "metadata": {
+        "/fhss3-noLoggingBucket/test-kinesisfirehose-s3/S3Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisfirehoses3S3BucketA8942735"
+          }
+        ],
+        "/fhss3-noLoggingBucket/test-kinesisfirehose-s3/S3Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisfirehoses3S3BucketPolicy506CD3DD"
+          }
+        ],
+        "/fhss3-noLoggingBucket/test-kinesisfirehose-s3/firehose-log-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisfirehoses3firehoseloggroup3D11FB0D"
+          }
+        ],
+        "/fhss3-noLoggingBucket/test-kinesisfirehose-s3/firehose-log-group/firehose-log-stream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisfirehoses3firehoseloggroupfirehoselogstream3C52AF00"
+          }
+        ],
+        "/fhss3-noLoggingBucket/test-kinesisfirehose-s3/KinesisFirehoseRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisfirehoses3KinesisFirehoseRoleB23C3E93"
+          }
+        ],
+        "/fhss3-noLoggingBucket/test-kinesisfirehose-s3/KinesisFirehosePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisfirehoses3KinesisFirehosePolicy148BE6A6"
+          }
+        ],
+        "/fhss3-noLoggingBucket/test-kinesisfirehose-s3/KinesisFirehose": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisfirehoses3KinesisFirehose92F73280"
+          }
+        ],
+        "/fhss3-noLoggingBucket/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/fhss3-noLoggingBucket/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "fhss3-noLoggingBucket"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

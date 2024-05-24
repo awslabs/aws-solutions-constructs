@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,14 +11,13 @@
  *  and limitations under the License.
  */
 
-import { expect as expectCDK, haveResource, ResourcePart } from '@aws-cdk/assert';
-import { Duration, Stack, RemovalPolicy } from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as s3n from '@aws-cdk/aws-s3-notifications';
-import * as sqs from '@aws-cdk/aws-sqs';
+import { Duration, Stack, RemovalPolicy } from 'aws-cdk-lib';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
 import * as defaults from '../index';
-import '@aws-cdk/assert/jest';
-import { Bucket, StorageClass } from '@aws-cdk/aws-s3';
+import { Template } from 'aws-cdk-lib/assertions';
+import { Bucket, StorageClass } from 'aws-cdk-lib/aws-s3';
+import { expectNonexistence } from "./test-helper";
 
 test('check exception for Missing existingBucketObj from props for deploy = false', () => {
   const stack = new Stack();
@@ -33,37 +32,49 @@ test('check exception for Missing existingBucketObj from props for deploy = fals
 test('s3 bucket with bucketId', () => {
   const stack = new Stack();
 
-  defaults.buildS3Bucket(stack, {}, 'my');
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {}, 'my');
 
-  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+  expect(buildS3BucketResponse.bucket).toBeDefined();
+  expect(buildS3BucketResponse.loggingBucket).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     LoggingConfiguration: {
       DestinationBucketName: {
         Ref: "myS3LoggingBucketDE461344"
       }
     },
-  }));
+  });
 });
 
 test('s3 bucket with bucketProps', () => {
   const stack = new Stack();
 
-  defaults.buildS3Bucket(stack, {
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {
     bucketProps: {
       bucketName: 'mybucket'
     }
   });
 
-  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+  expect(buildS3BucketResponse.bucket).toBeDefined();
+  expect(buildS3BucketResponse.loggingBucket).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     BucketName: "mybucket"
-  }));
+  });
 });
 
 test('s3 bucket with default props', () => {
   const stack = new Stack();
 
-  defaults.buildS3Bucket(stack, {});
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {});
 
-  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+  expect(buildS3BucketResponse.bucket).toBeDefined();
+  expect(buildS3BucketResponse.loggingBucket).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [
         {
@@ -82,13 +93,13 @@ test('s3 bucket with default props', () => {
     VersioningConfiguration: {
       Status: "Enabled"
     }
-  }));
+  });
 });
 
 test('s3 bucket with life cycle policy', () => {
   const stack = new Stack();
 
-  defaults.buildS3Bucket(stack, {
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {
     bucketProps: {
       lifecycleRules: [{
         expiration: Duration.days(365),
@@ -103,7 +114,11 @@ test('s3 bucket with life cycle policy', () => {
     }
   });
 
-  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+  expect(buildS3BucketResponse.bucket).toBeDefined();
+  expect(buildS3BucketResponse.loggingBucket).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     LifecycleConfiguration: {
       Rules: [
         {
@@ -122,7 +137,7 @@ test('s3 bucket with life cycle policy', () => {
         }
       ]
     }
-  }));
+  });
 });
 
 test('s3 bucket with access logging configured', () => {
@@ -131,68 +146,72 @@ test('s3 bucket with access logging configured', () => {
     serverAccessLogsBucket: new Bucket(stack, 'myaccesslogbucket', {})
   });
 
-  defaults.buildS3Bucket(stack, {
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {
     bucketProps: {
       serverAccessLogsBucket: mybucket
     }
   });
 
-  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+  expect(buildS3BucketResponse.bucket).toBeDefined();
+  // This value should be populated, entered Issue 907
+  // expect(response.loggingBucket).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     LoggingConfiguration: {
       DestinationBucketName: {
         Ref: "mybucket160F8132"
       }
     },
-  }));
+  });
 });
 
 test('Check S3 Bucket policy', () => {
   const stack = new Stack();
   defaults.buildS3Bucket(stack, {});
 
-  expectCDK(stack).to(
-    haveResource("AWS::S3::BucketPolicy", {
-      PolicyDocument: {
-        Statement: [
-          {
-            Action: "s3:*",
-            Condition: {
-              Bool: {
-                "aws:SecureTransport": "false",
-              },
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::BucketPolicy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: "s3:*",
+          Condition: {
+            Bool: {
+              "aws:SecureTransport": "false",
             },
-            Effect: "Deny",
-            Principal: {
-              AWS: "*"
+          },
+          Effect: "Deny",
+          Principal: {
+            AWS: "*"
+          },
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                "S3Bucket07682993",
+                "Arn"
+              ]
             },
-            Resource: [
-              {
-                "Fn::GetAtt": [
-                  "S3Bucket07682993",
-                  "Arn"
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "S3Bucket07682993",
+                      "Arn"
+                    ]
+                  },
+                  "/*"
                 ]
-              },
-              {
-                "Fn::Join": [
-                  "",
-                  [
-                    {
-                      "Fn::GetAtt": [
-                        "S3Bucket07682993",
-                        "Arn"
-                      ]
-                    },
-                    "/*"
-                  ]
-                ]
-              }
-            ]
-          }
-        ],
-        Version: "2012-10-17",
-      },
-    })
-  );
+              ]
+            }
+          ]
+        }
+      ],
+      Version: "2012-10-17",
+    },
+  });
 });
 
 test('s3 bucket with LoggingBucket and versioning turned off', () => {
@@ -201,7 +220,7 @@ test('s3 bucket with LoggingBucket and versioning turned off', () => {
     serverAccessLogsBucket: new Bucket(stack, 'myaccesslogbucket', {})
   });
 
-  defaults.buildS3Bucket(stack, {
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {
     bucketProps: {
       serverAccessLogsBucket: mybucket,
       serverAccessLogsPrefix: 'access-logs',
@@ -209,7 +228,12 @@ test('s3 bucket with LoggingBucket and versioning turned off', () => {
     }
   });
 
-  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+  expect(buildS3BucketResponse.bucket).toBeDefined();
+  // The line below fails, this appears to be a bug. Entered Issue 906
+  expect(buildS3BucketResponse.loggingBucket).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [
         {
@@ -231,20 +255,24 @@ test('s3 bucket with LoggingBucket and versioning turned off', () => {
       IgnorePublicAcls: true,
       RestrictPublicBuckets: true
     }
-  }));
+  });
 });
 
 test('s3 bucket versioning turned off', () => {
   const stack = new Stack();
 
-  defaults.buildS3Bucket(stack, {
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {
     bucketProps: {
       serverAccessLogsPrefix: 'access-logs',
       versioned: false
     }
   });
 
-  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+  expect(buildS3BucketResponse.bucket).toBeDefined();
+  expect(buildS3BucketResponse.loggingBucket).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [
         {
@@ -266,24 +294,28 @@ test('s3 bucket versioning turned off', () => {
       IgnorePublicAcls: true,
       RestrictPublicBuckets: true
     }
-  }));
+  });
 });
 
 test('s3 bucket with LoggingBucket and auto delete objects', () => {
   const stack = new Stack();
 
-  defaults.buildS3Bucket(stack, {
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {
     loggingBucketProps: {
       removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true
     }
   });
 
-  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
-    AccessControl: "LogDeliveryWrite"
-  }));
+  expect(buildS3BucketResponse.bucket).toBeDefined();
+  expect(buildS3BucketResponse.loggingBucket).toBeDefined();
 
-  expectCDK(stack).to(haveResource("Custom::S3AutoDeleteObjects", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::S3::Bucket", {
+    AccessControl: "LogDeliveryWrite"
+  });
+
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
@@ -293,19 +325,24 @@ test('s3 bucket with LoggingBucket and auto delete objects', () => {
     BucketName: {
       Ref: "S3LoggingBucket800A2B27"
     }
-  }));
+  });
 });
 
 test('s3 bucket versioning turned on', () => {
   const stack = new Stack();
 
-  defaults.buildS3Bucket(stack, {
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {
     bucketProps: {
       serverAccessLogsPrefix: 'access-logs',
     }
   });
 
-  expectCDK(stack).to(haveResource("AWS::S3::Bucket", {
+  expect(buildS3BucketResponse.bucket).toBeDefined();
+  expect(buildS3BucketResponse.loggingBucket).toBeDefined();
+
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties("AWS::S3::Bucket", {
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [
         {
@@ -343,19 +380,18 @@ test('s3 bucket versioning turned on', () => {
     VersioningConfiguration: {
       Status: "Enabled"
     }
-  }));
+  });
 });
 
 test('Suppress cfn-nag warning for s3 bucket notification', () => {
   const stack = new Stack();
-  let queue: sqs.Queue;
-  let bucket: s3.Bucket;
-  [bucket] = defaults.buildS3Bucket(stack, {});
-  [queue] = defaults.buildQueue(stack, "S3BucketNotificationQueue", {});
-  bucket.addEventNotification(s3.EventType.OBJECT_CREATED, new s3n.SqsDestination(queue));
+  const buildS3BucketResponse = defaults.buildS3Bucket(stack, {});
+  const buildQueueResponse = defaults.buildQueue(stack, "S3BucketNotificationQueue", {});
+  buildS3BucketResponse.bucket.addEventNotification(s3.EventType.OBJECT_CREATED, new s3n.SqsDestination(buildQueueResponse.queue));
   defaults.addCfnNagS3BucketNotificationRulesToSuppress(stack, "BucketNotificationsHandler050a0587b7544547bf325f094a3db834");
 
-  expectCDK(stack).to(haveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResource("AWS::Lambda::Function", {
     Metadata: {
       cfn_nag: {
         rules_to_suppress: [
@@ -374,9 +410,9 @@ test('Suppress cfn-nag warning for s3 bucket notification', () => {
         ]
       }
     }
-  }, ResourcePart.CompleteDefinition));
+  });
 
-  expectCDK(stack).to(haveResource("AWS::IAM::Policy", {
+  template.hasResource("AWS::IAM::Policy", {
     Metadata: {
       cfn_nag: {
         rules_to_suppress: [
@@ -387,7 +423,7 @@ test('Suppress cfn-nag warning for s3 bucket notification', () => {
         ]
       }
     }
-  }, ResourcePart.CompleteDefinition));
+  });
 });
 
 test('test s3Bucket removalPolicy override', () => {
@@ -399,12 +435,48 @@ test('test s3Bucket removalPolicy override', () => {
     },
   }, 'test-bucket');
 
-  expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
+  Template.fromStack(stack).hasResource("AWS::S3::Bucket", {
     Type: 'AWS::S3::Bucket',
     Properties: {
       AccessControl: "LogDeliveryWrite"
     },
     UpdateReplacePolicy: "Delete",
     DeletionPolicy: "Delete"
-  }, ResourcePart.CompleteDefinition);
+  });
+});
+
+test('s3 bucket with logging turned off', () => {
+  const stack = new Stack();
+
+  const respbuildS3BucketResponsense = defaults.buildS3Bucket(stack, {
+    logS3AccessLogs: false,
+  });
+
+  expect(respbuildS3BucketResponsense.bucket).toBeDefined();
+  expect(respbuildS3BucketResponsense.loggingBucket).not.toBeDefined();
+
+  expectNonexistence(stack, "AWS::S3::Bucket", {
+    LoggingConfiguration: {
+    }
+  });
+});
+
+test('Confirm Log Bucket lifecycle rules persist',  () => {
+  const stack = new Stack();
+
+  defaults.buildS3Bucket(stack, {
+    loggingBucketProps: {
+      lifecycleRules: [
+        {
+          expiration: Duration.days(365),
+        }],
+    }
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResource("AWS::S3::Bucket", {
+    Properties: {
+      LifecycleConfiguration: {}
+    }
+  });
 });

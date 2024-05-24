@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,17 +12,14 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import { LambdaToSsmstringparameter } from '../lib';
-import '@aws-cdk/assert/jest';
-import { StringParameter } from "@aws-cdk/aws-ssm";
+import { Stack } from "aws-cdk-lib";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import { LambdaToSsmstringparameter, LambdaToSsmstringparameterProps } from '../lib';
+import { Template } from 'aws-cdk-lib/assertions';
+import { StringParameter } from "aws-cdk-lib/aws-ssm";
 import * as defaults from "@aws-solutions-constructs/core";
 
-// --------------------------------------------------------------
-// Test lambda function custom environment variable
-// --------------------------------------------------------------
 test('Test lambda function custom environment variable', () => {
   // Stack
   const stack = new Stack();
@@ -30,7 +27,7 @@ test('Test lambda function custom environment variable', () => {
   // Helper declaration
   new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -42,9 +39,10 @@ test('Test lambda function custom environment variable', () => {
   });
 
   // Assertion
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
-    Runtime: 'nodejs14.x',
+    Runtime: 'nodejs16.x',
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
@@ -56,16 +54,13 @@ test('Test lambda function custom environment variable', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test the getter methods
-// --------------------------------------------------------------
 test('Test the properties', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   const pattern = new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -79,9 +74,6 @@ test('Test the properties', () => {
   expect(stringParam).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing String Parameter
-// --------------------------------------------------------------
 test('Test deployment w/ existing String Parameter', () => {
   // Stack
   const stack = new Stack();
@@ -89,14 +81,15 @@ test('Test deployment w/ existing String Parameter', () => {
   const existingStringParam = new StringParameter(stack, 'myNewStringParameter', {stringValue: "test-string-value" });
   const pattern = new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
     existingStringParameterObj: existingStringParam
   });
   // Assertion 1
-  expect(stack).toHaveResource("AWS::SSM::Parameter", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SSM::Parameter", {
     Type: "String",
     Value: "test-string-value"
   });
@@ -105,15 +98,12 @@ test('Test deployment w/ existing String Parameter', () => {
   expect(pattern.stringParameter).toBe(existingStringParam);
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing function
-// --------------------------------------------------------------
 test('Test deployment w/ existing function', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   const lambdaFunctionProps = {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -124,7 +114,8 @@ test('Test deployment w/ existing function', () => {
     stringParameterProps: { stringValue: "test-string-value" },
   });
   // Assertion 1
-  expect(stack).toHaveResource("AWS::SSM::Parameter", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SSM::Parameter", {
     Type: "String",
     Value: "test-string-value"
   });
@@ -132,16 +123,13 @@ test('Test deployment w/ existing function', () => {
   expect(pattern.lambdaFunction).toBe(existingFunction);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with write access to String Parameter.
-// --------------------------------------------------------------
 test('Test minimal deployment write access to String Parameter ', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -149,23 +137,21 @@ test('Test minimal deployment write access to String Parameter ', () => {
     stringParameterPermissions: 'ReadWrite'
   });
   // Assertion 1
-  expect(stack).toHaveResource("AWS::SSM::Parameter", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SSM::Parameter", {
     Type: "String",
     Value: "test-string-value"
   });
 
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC without vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -173,7 +159,8 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -194,29 +181,26 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC w/vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -224,12 +208,13 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     vpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
-      cidr: "192.68.0.0/16",
+      ipAddresses: ec2.IpAddresses.cidr("192.68.0.0/16"),
     },
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -250,23 +235,20 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: "192.68.0.0/16",
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC", () => {
   // Stack
   const stack = new Stack();
@@ -276,7 +258,7 @@ test("Test minimal deployment with an existing VPC", () => {
   // Helper declaration
   new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -284,7 +266,8 @@ test("Test minimal deployment with an existing VPC", () => {
     existingVpc: testVpc,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -305,23 +288,17 @@ test("Test minimal deployment with an existing VPC", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC and existing Lambda function not in a VPC
-//
-// buildLambdaFunction should throw an error if the Lambda function is not
-// attached to a VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC and existing Lambda function not in a VPC", () => {
   // Stack
   const stack = new Stack();
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -330,7 +307,8 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
   // Helper declaration
   const app = () => {
-    // Helper declaration
+    // buildLambdaFunction should throw an error if the Lambda function is not
+    // attached to a VPC
     new LambdaToSsmstringparameter(stack, "lambda-to-ssm-stack", {
       existingLambdaObj: testLambdaFunction,
       existingVpc: testVpc,
@@ -343,10 +321,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingVpc and deployVpc
-// --------------------------------------------------------------
-test("Test bad call with existingVpc and deployVpc", () => {
+test("Confirm that CheckVpcProps is called", () => {
   // Stack
   const stack = new Stack();
 
@@ -356,7 +331,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
     // Helper declaration
     new LambdaToSsmstringparameter(stack, "lambda-to-ssm-stack", {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
@@ -366,7 +341,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test("Test bad call with invalid string parameter permission", () => {
@@ -377,7 +352,7 @@ test("Test bad call with invalid string parameter permission", () => {
     // Helper declaration
     new LambdaToSsmstringparameter(stack, "lambda-to-ssm-stack", {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
@@ -388,4 +363,29 @@ test("Test bad call with invalid string parameter permission", () => {
   };
   // Assertion
   expect(app).toThrowError('Invalid String Parameter permission submitted - Reed');
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: LambdaToSsmstringparameterProps = {
+    stringParameterProps: { stringValue: "test-string-value" },
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new LambdaToSsmstringparameter(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

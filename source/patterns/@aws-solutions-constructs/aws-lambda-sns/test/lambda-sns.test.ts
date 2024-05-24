@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,24 +12,21 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as sns from "@aws-cdk/aws-sns";
-import * as ec2 from "@aws-cdk/aws-ec2";
+import { Stack } from "aws-cdk-lib";
+import * as kms from 'aws-cdk-lib/aws-kms';
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as sns from "aws-cdk-lib/aws-sns";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { LambdaToSns, LambdaToSnsProps } from '../lib';
-import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Test deployment with new Lambda function
-// --------------------------------------------------------------
 test('Test deployment with new Lambda function', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  new LambdaToSns(stack, 'lambda-to-sns-stack', {
+  const testConstruct = new LambdaToSns(stack, 'lambda-to-sns-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -38,7 +35,9 @@ test('Test deployment with new Lambda function', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
+  expect(testConstruct.snsTopic).toBeDefined();
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     Environment: {
       Variables: {
         LAMBDA_NAME: 'deployed-function',
@@ -54,7 +53,7 @@ test('Test deployment with new Lambda function', () => {
       }
     }
   });
-  expect(stack).toHaveResource("AWS::SNS::Topic", {
+  template.hasResourceProperties("AWS::SNS::Topic", {
     KmsMasterKeyId: {
       "Fn::Join": [
         "",
@@ -78,9 +77,6 @@ test('Test deployment with new Lambda function', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment with existing existingTopicObj
-// --------------------------------------------------------------
 test('Test deployment with existing existingTopicObj', () => {
   // Stack
   const stack = new Stack();
@@ -92,7 +88,7 @@ test('Test deployment with existing existingTopicObj', () => {
   // Helper declaration
   new LambdaToSns(stack, 'lambda-to-sns-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -102,21 +98,19 @@ test('Test deployment with existing existingTopicObj', () => {
     existingTopicObj: topic
   });
 
-  expectCDK(stack).to(haveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     TopicName: "custom-topic"
-  }));
+  });
 });
 
-// --------------------------------------------------------------
-// Test deployment with imported encryption key
-// --------------------------------------------------------------
 test('override topicProps', () => {
   const stack = new Stack();
 
   const props: LambdaToSnsProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     topicProps: {
@@ -126,21 +120,19 @@ test('override topicProps', () => {
 
   new LambdaToSns(stack, 'test-sns-lambda', props);
 
-  expectCDK(stack).to(haveResource("AWS::SNS::Topic", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
     TopicName: "custom-topic"
-  }));
+  });
 });
 
-// --------------------------------------------------------------
-// Test the getter methods
-// --------------------------------------------------------------
 test('Test the properties', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   const pattern = new LambdaToSns(stack, 'lambda-to-sns-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
@@ -153,23 +145,21 @@ test('Test the properties', () => {
   expect(topic).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC without vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   new LambdaToSns(stack, "lambda-to-sns-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -190,41 +180,39 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC w/vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   new LambdaToSns(stack, "lambda-to-sns-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
     vpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
-      cidr: "192.68.0.0/16",
+      ipAddresses: ec2.IpAddresses.cidr("192.68.0.0/16"),
     },
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -245,23 +233,20 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: "192.68.0.0/16",
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC", () => {
   // Stack
   const stack = new Stack();
@@ -271,14 +256,15 @@ test("Test minimal deployment with an existing VPC", () => {
   // Helper declaration
   new LambdaToSns(stack, "lambda-to-sns-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
     existingVpc: testVpc,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -299,23 +285,17 @@ test("Test minimal deployment with an existing VPC", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC and existing Lambda function not in a VPC
-//
-// buildLambdaFunction should throw an error if the Lambda function is not
-// attached to a VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC and existing Lambda function not in a VPC", () => {
   // Stack
   const stack = new Stack();
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -324,7 +304,8 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
   // Helper declaration
   const app = () => {
-    // Helper declaration
+    // buildLambdaFunction should throw an error if the Lambda function is not
+    // attached to a VPC
     new LambdaToSns(stack, "lambda-to-sns-stack", {
       existingLambdaObj: testLambdaFunction,
       existingVpc: testVpc,
@@ -336,34 +317,6 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
 
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingVpc and deployVpc
-// --------------------------------------------------------------
-test("Test bad call with existingVpc and deployVpc", () => {
-  // Stack
-  const stack = new Stack();
-
-  const testVpc = new ec2.Vpc(stack, "test-vpc", {});
-
-  const app = () => {
-    // Helper declaration
-    new LambdaToSns(stack, "lambda-to-sns-stack", {
-      lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
-        handler: "index.handler",
-        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      },
-      existingVpc: testVpc,
-      deployVpc: true,
-    });
-  };
-  // Assertion
-  expect(app).toThrowError();
-});
-
-// --------------------------------------------------------------
-// Test lambda function custom environment variable
-// --------------------------------------------------------------
 test('Test lambda function custom environment variable', () => {
   // Stack
   const stack = new Stack();
@@ -371,7 +324,7 @@ test('Test lambda function custom environment variable', () => {
   // Helper declaration
   new LambdaToSns(stack, 'lambda-to-sns-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -380,9 +333,10 @@ test('Test lambda function custom environment variable', () => {
   });
 
   // Assertion
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
-    Runtime: 'nodejs14.x',
+    Runtime: 'nodejs16.x',
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
@@ -398,4 +352,227 @@ test('Test lambda function custom environment variable', () => {
       }
     }
   });
+});
+
+test('Topic is encrypted with imported CMK when set on encryptionKey prop', () => {
+  const stack = new Stack();
+
+  const cmk = new kms.Key(stack, 'cmk');
+  new LambdaToSns(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+    encryptionKey: cmk
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop', () => {
+  const stack = new Stack();
+
+  const cmk = new kms.Key(stack, 'cmk');
+  new LambdaToSns(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+    topicProps: {
+      masterKey: cmk
+    }
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SNS::Topic", {
+    KmsMasterKeyId: {
+      "Fn::GetAtt": [
+        "cmk01DE03DA",
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Topic is encrypted with provided encryptionKeyProps', () => {
+  const stack = new Stack();
+
+  new LambdaToSns(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+    encryptionKeyProps: {
+      alias: 'new-key-alias-from-props'
+    }
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      'Fn::GetAtt': [
+        'testconstructtestconstructKey1FB48CCA',
+        'Arn'
+      ]
+    },
+  });
+
+  template.hasResourceProperties('AWS::KMS::Alias', {
+    AliasName: 'alias/new-key-alias-from-props',
+    TargetKeyId: {
+      'Fn::GetAtt': [
+        'testconstructtestconstructKey1FB48CCA',
+        'Arn'
+      ]
+    }
+  });
+});
+
+test('Topic is encrypted by default with AWS-managed KMS key when no other encryption properties are set', () => {
+  const stack = new Stack();
+
+  new LambdaToSns(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      "Fn::Join": [
+        "",
+        [
+          "arn:",
+          {
+            Ref: "AWS::Partition"
+          },
+          ":kms:",
+          {
+            Ref: "AWS::Region"
+          },
+          ":",
+          {
+            Ref: "AWS::AccountId"
+          },
+          ":alias/aws/sns"
+        ]
+      ]
+    }
+  });
+});
+
+test('Topic is encrypted with customer managed KMS Key when enable encryption flag is true', () => {
+  const stack = new Stack();
+
+  new LambdaToSns(stack, 'test-construct', {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      environment: {
+        LAMBDA_NAME: 'deployed-function'
+      }
+    },
+    enableEncryptionWithCustomerManagedKey: true
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SNS::Topic', {
+    KmsMasterKeyId: {
+      'Fn::GetAtt': [
+        'testconstructtestconstructKey1FB48CCA',
+        'Arn'
+      ]
+    },
+  });
+});
+
+test('Confirm CheckVpcProps is called', () => {
+  const stack = new Stack();
+
+  const app = () => {
+    new LambdaToSns(stack, 'test-construct', {
+      existingVpc: new ec2.Vpc(stack, "test-vpc", {}),
+      deployVpc: true
+    });
+  };
+
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});
+
+test('Test that CheckSnsProps is getting called', () => {
+  const stack = new Stack();
+
+  const topic = new sns.Topic(stack, 'MyTopic', {
+    topicName: "custom-topic"
+  });
+
+  const props: LambdaToSnsProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler'
+    },
+    existingTopicObj: topic,
+    topicProps: {
+      topicName: 'topic-name'
+    },
+  };
+
+  const app = () => {
+    new LambdaToSns(stack, 'test-lambda-dynamodb-stack', props);
+  };
+
+  // Assertion
+  expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: LambdaToSnsProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new LambdaToSns(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

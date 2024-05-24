@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,16 +11,21 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 // Imports
-import * as sqs from '@aws-cdk/aws-sqs';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as defaults from './sqs-defaults';
-import * as kms from '@aws-cdk/aws-kms';
-import { overrideProps } from './utils';
-import { AccountPrincipal, Effect, PolicyStatement, AnyPrincipal } from '@aws-cdk/aws-iam';
-import { Stack } from '@aws-cdk/core';
+import * as kms from 'aws-cdk-lib/aws-kms';
+import { overrideProps, printWarning } from './utils';
+import { AccountPrincipal, Effect, PolicyStatement, AnyPrincipal } from 'aws-cdk-lib/aws-iam';
+import { Stack } from 'aws-cdk-lib';
 import {buildEncryptionKey} from "./kms-helper";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 export interface BuildQueueProps {
     /**
@@ -28,41 +33,51 @@ export interface BuildQueueProps {
      *
      * @default - None.
      */
-    readonly existingQueueObj?: sqs.Queue,
+    readonly existingQueueObj?: sqs.Queue;
     /**
      * Optional user provided props to override the default props for the primary queue.
      *
      * @default - Default props are used.
      */
-    readonly queueProps?: sqs.QueueProps
+    readonly queueProps?: sqs.QueueProps;
     /**
      * Optional dead letter queue to pass bad requests to after the max receive count is reached.
      *
      * @default - Default props are used.
      */
-    readonly deadLetterQueue?: sqs.DeadLetterQueue
+    readonly deadLetterQueue?: sqs.DeadLetterQueue;
     /**
-     * Use a KMS Key, either managed by this CDK app, or imported. If importing an encryption key, it must be specified in
-     * the encryptionKey property for this construct.
+     * If no key is provided, this flag determines whether the queue is encrypted with a new CMK or an AWS managed key.
+     * This flag is ignored if any of the following are defined: queueProps.encryptionMasterKey, encryptionKey or encryptionKeyProps.
      *
-     * @default - false (encryption enabled with AWS Managed KMS Key).
+     * @default - False if queueProps.encryptionMasterKey, encryptionKey, and encryptionKeyProps are all undefined.
      */
-    readonly enableEncryptionWithCustomerManagedKey?: boolean
+    readonly enableEncryptionWithCustomerManagedKey?: boolean;
     /**
-     * An optional, imported encryption key to encrypt the SQS queue with.
+     * An optional, imported encryption key to encrypt the SQS Queue with.
      *
-     * @default - not specified.
+     * @default - None
      */
-    readonly encryptionKey?: kms.Key,
+    readonly encryptionKey?: kms.Key;
     /**
-     * Optional user-provided props to override the default props for the encryption key.
+     * Optional user provided properties to override the default properties for the KMS encryption key used to encrypt the SQS Queue with.
      *
-     * @default - Ignored if encryptionKey is provided
+     * @default - None
      */
-    readonly encryptionKeyProps?: kms.KeyProps
+     readonly encryptionKeyProps?: kms.KeyProps;
 }
 
-export function buildQueue(scope: Construct, id: string, props: BuildQueueProps): [sqs.Queue, kms.IKey?] {
+export interface BuildQueueResponse {
+  readonly queue: sqs.Queue,
+  readonly key?: kms.IKey
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function buildQueue(scope: Construct, id: string, props: BuildQueueProps): BuildQueueResponse {
+  CheckEncryptionWarnings(props);
+
   // If an existingQueueObj is not specified
   if (!props.existingQueueObj) {
     // Setup the queue
@@ -81,27 +96,42 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
       queueProps.deadLetterQueue = props.deadLetterQueue;
     }
 
-    // Set encryption properties
-    if (props.enableEncryptionWithCustomerManagedKey) {
-      // Use the imported Customer Managed KMS key
-      if (props.encryptionKey) {
-        queueProps.encryptionMasterKey = props.encryptionKey;
-      } else {
-        queueProps.encryptionMasterKey = buildEncryptionKey(scope, props.encryptionKeyProps);
-      }
+    // Set encryption properties.
+    // Note that defaults.DefaultQueueProps sets encryption to Server-side KMS encryption with a KMS key managed by SQS.
+    if (props.queueProps?.encryptionMasterKey) {
+      queueProps.encryptionMasterKey = props.queueProps?.encryptionMasterKey;
+    } else if (props.encryptionKey) {
+      queueProps.encryptionMasterKey = props.encryptionKey;
+    } else if (props.encryptionKeyProps || props.enableEncryptionWithCustomerManagedKey === true) {
+      queueProps.encryptionMasterKey = buildEncryptionKey(scope, id, props.encryptionKeyProps);
     }
-    const queue = new sqs.Queue(scope, id, queueProps);
+
+    // NOSONAR (typescript:S6330)
+    // encryption is set to QueueEncryption.KMS_MANAGED by default in DefaultQueueProps, but
+    // Sonarqube can't parse the code well enough to see this. Encryption is confirmed by
+    // the 'Test deployment without imported encryption key' unit test
+    const queue = new sqs.Queue(scope, id, queueProps); // NOSONAR
 
     applySecureQueuePolicy(queue);
 
     // Return the queue
-    return [queue, queue.encryptionMasterKey];
+    return { queue, key: queue.encryptionMasterKey };
   } else {
     // If an existingQueueObj is specified, return that object as the queue to be used
-    return [props.existingQueueObj];
+    return { queue: props.existingQueueObj };
   }
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+function CheckEncryptionWarnings(props: BuildQueueProps) {
+  if ((props.queueProps?.encryptionMasterKey || props.encryptionKey || props.encryptionKeyProps)
+  && props.enableEncryptionWithCustomerManagedKey === true) {
+    printWarning(`Ignoring enableEncryptionWithCustomerManagedKey because one of
+     queueProps.encryptionMasterKey, encryptionKey, or encryptionKeyProps was already specified`);
+  }
+}
 export interface BuildDeadLetterQueueProps {
   /**
    * Existing instance of SQS queue object, providing both this and queueProps will cause an error.
@@ -129,10 +159,13 @@ export interface BuildDeadLetterQueueProps {
   readonly maxReceiveCount?: number
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function buildDeadLetterQueue(scope: Construct, props: BuildDeadLetterQueueProps): sqs.DeadLetterQueue | undefined {
   if (!props.existingQueueObj && (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined)) {
     // Create the Dead Letter Queue
-    const [dlq] = buildQueue(scope, 'deadLetterQueue', {
+    const buildQueueResponse = buildQueue(scope, 'deadLetterQueue', {
       queueProps: props.deadLetterQueueProps
     });
 
@@ -141,13 +174,14 @@ export function buildDeadLetterQueue(scope: Construct, props: BuildDeadLetterQue
     // Setup the Dead Letter Queue interface
     const dlqInterface: sqs.DeadLetterQueue = {
       maxReceiveCount: mrc,
-      queue: dlq
+      queue: buildQueueResponse.queue
     };
 
     // Return the dead letter queue interface
     return dlqInterface;
   }
-  return;
+  // ESLint requires this return statement, so disabling SonarQube warning
+  return; // NOSONAR
 }
 
 function applySecureQueuePolicy(queue: sqs.Queue): void {
@@ -173,7 +207,7 @@ function applySecureQueuePolicy(queue: sqs.Queue): void {
     })
   );
 
-  // Apply Topic policy to enforce encryption of data in transit
+  // Apply queue policy to enforce encryption of data in transit
   queue.addToResourcePolicy(
     new PolicyStatement({
       sid: 'HttpsOnly',
@@ -193,4 +227,57 @@ function applySecureQueuePolicy(queue: sqs.Queue): void {
           }
     })
   );
+}
+
+export interface SqsProps {
+  readonly existingQueueObj?: sqs.Queue,
+  readonly queueProps?: sqs.QueueProps,
+  readonly deployDeadLetterQueue?: boolean,
+  readonly deadLetterQueueProps?: sqs.QueueProps,
+  readonly encryptionKey?: kms.Key,
+  readonly encryptionKeyProps?: kms.KeyProps
+}
+
+export function CheckSqsProps(propsObject: SqsProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (propsObject.existingQueueObj && propsObject.queueProps) {
+    errorMessages += 'Error - Either provide queueProps or existingQueueObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.queueProps?.encryptionMasterKey && propsObject.encryptionKey) {
+    errorMessages += 'Error - Either provide queueProps.encryptionMasterKey or encryptionKey, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.queueProps?.encryptionMasterKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide queueProps.encryptionMasterKey or encryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.encryptionKey && propsObject.encryptionKeyProps) {
+    errorMessages += 'Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if ((propsObject?.deployDeadLetterQueue === false) && propsObject.deadLetterQueueProps) {
+    errorMessages += 'Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n';
+    errorFound = true;
+  }
+
+  const isQueueFifo: boolean = propsObject?.queueProps?.fifo;
+  const isDeadLetterQueueFifo: boolean = propsObject?.deadLetterQueueProps?.fifo;
+  const deployDeadLetterQueue: boolean = propsObject.deployDeadLetterQueue || propsObject.deployDeadLetterQueue === undefined;
+
+  if (deployDeadLetterQueue && (isQueueFifo !== isDeadLetterQueueFifo)) {
+    errorMessages += 'Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+      'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }

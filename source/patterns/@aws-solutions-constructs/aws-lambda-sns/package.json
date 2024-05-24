@@ -22,9 +22,9 @@
     "test": "jest --coverage",
     "clean": "tsc -b --clean",
     "watch": "tsc -b -w",
-    "integ": "cdk-integ",
-    "integ-assert": "cdk-integ-assert",
-    "integ-no-clean": "cdk-integ --no-clean",
+    "integ": "integ-runner --update-on-failed",
+    "integ-assert": "integ-runner",
+    "integ-no-clean": "integ-runner --update-on-failed --no-clean",
     "jsii": "jsii",
     "jsii-pacmak": "jsii-pacmak",
     "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
@@ -53,18 +53,15 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/aws-lambda": "0.0.0",
-    "@aws-cdk/aws-sns": "0.0.0",
-    "@aws-cdk/aws-kms": "0.0.0",
-    "@aws-cdk/core": "0.0.0",
-    "@aws-cdk/aws-ec2": "0.0.0",
+    "@aws-cdk/integ-tests-alpha": "0.0.0-alpha.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "constructs": "^3.2.0"
+    "constructs": "^10.0.0"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "0.0.0",
     "@types/jest": "^27.4.0",
-    "@types/node": "^10.3.0"
+    "@types/node": "^10.3.0",
+    "constructs": "^10.0.0",
+    "aws-cdk-lib": "0.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -81,13 +78,9 @@
     ]
   },
   "peerDependencies": {
-    "@aws-cdk/aws-lambda": "0.0.0",
-    "@aws-cdk/aws-sns": "0.0.0",
-    "@aws-cdk/aws-kms": "0.0.0",
-    "@aws-cdk/aws-ec2": "0.0.0",
-    "@aws-cdk/core": "0.0.0",
     "@aws-solutions-constructs/core": "0.0.0",
-    "constructs": "^3.2.0"
+    "constructs": "^10.0.0",
+    "aws-cdk-lib": "^0.0.0"
   },
   "keywords": [
     "aws",

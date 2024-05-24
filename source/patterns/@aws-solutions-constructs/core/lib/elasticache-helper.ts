@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,9 +11,14 @@
  *  and limitations under the License.
  */
 
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as cache from "@aws-cdk/aws-elasticache";
-import { Construct } from "@aws-cdk/core";
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as cache from "aws-cdk-lib/aws-elasticache";
+import { Construct } from "constructs";
 import { GetDefaultCachePort, GetMemcachedDefaults } from './elasticache-defaults';
 import { consolidateProps } from './utils';
 
@@ -25,6 +30,9 @@ export interface ObtainMemcachedClusterProps {
   readonly vpc?: ec2.IVpc,
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function obtainMemcachedCluster(
   scope: Construct,
   id: string,
@@ -59,12 +67,15 @@ export function obtainMemcachedCluster(
       `${id}-cluster`,
       consolidatedProps
     );
-    newCache.addDependsOn(subnetGroup);
+    newCache.addDependency(subnetGroup);
     return newCache;
   }
 
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function createCacheSubnetGroup(
   construct: Construct,
   vpc: ec2.IVpc,
@@ -86,12 +97,15 @@ export function createCacheSubnetGroup(
   });
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function getCachePort(
   clientCacheProps?: cache.CfnCacheClusterProps | any,
   existingCache?: cache.CfnCacheCluster
 ): any {
   if (existingCache) {
-    return existingCache.attrConfigurationEndpointPort!;
+    return existingCache.attrConfigurationEndpointPort;
   } else if (clientCacheProps?.port) {
     return clientCacheProps.port;
   } else {

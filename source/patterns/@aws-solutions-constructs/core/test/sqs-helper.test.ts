@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,15 +12,30 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
-import * as sqs from '@aws-cdk/aws-sqs';
+import { Stack } from "aws-cdk-lib";
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as defaults from '../';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import { buildDeadLetterQueue, buildQueue } from "../lib/sqs-helper";
+import * as kms from 'aws-cdk-lib/aws-kms';
+import { expectKmsKeyAttachedToCorrectResource } from "../";
 
-// --------------------------------------------------------------
-// Test deployment w/ imported encryption key
-// --------------------------------------------------------------
+test('Test deployment w/ encryptionMasterKey set on queueProps', () => {
+  const stack = new Stack();
+
+  const cmk = new kms.Key(stack, 'EncryptionKey', {
+    description: 'kms-key-description'
+  });
+
+  defaults.buildQueue(stack, 'queue', {
+    queueProps: {
+      encryptionMasterKey: cmk
+    }
+  });
+
+  expectKmsKeyAttachedToCorrectResource(stack, 'AWS::SQS::Queue', 'kms-key-description');
+});
+
 test('Test deployment w/ imported encryption key', () => {
   // Stack
   const stack = new Stack();
@@ -30,20 +45,18 @@ test('Test deployment w/ imported encryption key', () => {
       queueName: 'existing-queue'
     },
     enableEncryptionWithCustomerManagedKey: true,
-    encryptionKey: defaults.buildEncryptionKey(stack)
+    encryptionKey: defaults.buildEncryptionKey(stack, 'key-test')
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "existing-queue"
   });
-  expect(stack).toHaveResource("AWS::KMS::Key", {
+  template.hasResourceProperties("AWS::KMS::Key", {
     EnableKeyRotation: true
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment without imported encryption key
-// --------------------------------------------------------------
 test('Test deployment without imported encryption key', () => {
   // Stack
   const stack = new Stack();
@@ -54,34 +67,32 @@ test('Test deployment without imported encryption key', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "existing-queue",
     KmsMasterKeyId: "alias/aws/sqs"
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ construct created encryption key
-// --------------------------------------------------------------
 test('Test deployment w/ construct created encryption key', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
-  const [queue, key] = defaults.buildQueue(stack, 'existing-queue', {
+  const buildQueueResponse = defaults.buildQueue(stack, 'existing-queue', {
     queueProps: {
       queueName: 'existing-queue'
     },
     enableEncryptionWithCustomerManagedKey: true,
   });
 
-  expect(stack).toHaveResource("AWS::SQS::Queue", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
     QueueName: "existing-queue"
   });
-  expect(stack).toHaveResource("AWS::KMS::Key", {
+  template.hasResourceProperties("AWS::KMS::Key", {
     EnableKeyRotation: true
   });
-  expect(queue).toBeDefined();
-  expect(key).toBeDefined();
+  expect(buildQueueResponse.queue).toBeDefined();
+  expect(buildQueueResponse.key).toBeDefined();
 });
 
 test('Test DLQ when existing Queue Provided', () => {
@@ -92,17 +103,17 @@ test('Test DLQ when existing Queue Provided', () => {
     existingQueueObj: existingQueue,
   };
 
-  const returnedQueueu = defaults.buildDeadLetterQueue(stack, buildDlqProps);
+  const returnedQueue = defaults.buildDeadLetterQueue(stack, buildDlqProps);
 
-  expect(returnedQueueu).toBeUndefined();
-  expect(stack).toCountResources("AWS::SQS::Queue", 1);
+  expect(returnedQueue).toBeUndefined();
+  Template.fromStack(stack).resourceCountIs("AWS::SQS::Queue", 1);
 });
 
 test('Test DLQ with all defaults', () => {
   const stack = new Stack();
 
   buildDeadLetterQueue(stack, {});
-  expect(stack).toHaveResourceLike("AWS::SQS::Queue", {
+  Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: "alias/aws/sqs"
   });
 });
@@ -116,7 +127,7 @@ test("Test DLQ with a provided properties", () => {
       queueName: testQueueName,
     },
   });
-  expect(stack).toHaveResourceLike("AWS::SQS::Queue", {
+  Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
     QueueName: testQueueName,
   });
   expect(returnedQueue).toBeDefined();
@@ -140,14 +151,15 @@ test('Test returning an existing Queue', () => {
     queueName: testQueueName
   });
 
-  const [returnedQueue] = defaults.buildQueue(stack, 'newQueue', {
+  const buildQueueResponse = defaults.buildQueue(stack, 'newQueue', {
     existingQueueObj: existingQueue
   });
 
-  expect(stack).toHaveResourceLike("AWS::SQS::Queue", {
+  Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
     QueueName: testQueueName,
   });
-  expect(existingQueue.queueName).toEqual(returnedQueue.queueName);
+  expect(existingQueue.queueName).toEqual(buildQueueResponse.queue.queueName);
+  expect(buildQueueResponse.key).not.toBeDefined();
 });
 
 test('Test creating a queue with a DLQ', () => {
@@ -155,26 +167,191 @@ test('Test creating a queue with a DLQ', () => {
 
   const dlqInterface = buildDeadLetterQueue(stack, {});
 
-  const [newQueue] = buildQueue(stack, 'new-queue', {
+  const buildQueueResponse = buildQueue(stack, 'new-queue', {
     deadLetterQueue: dlqInterface
   });
 
-  expect(stack).toCountResources("AWS::SQS::Queue", 2);
-  expect(newQueue).toBeDefined();
-  expect(newQueue.deadLetterQueue).toBeDefined();
+  Template.fromStack(stack).resourceCountIs("AWS::SQS::Queue", 2);
+  expect(buildQueueResponse.queue).toBeDefined();
+  expect(buildQueueResponse.queue.deadLetterQueue).toBeDefined();
 });
 
 test('Test creating a FIFO queue', () => {
   const stack = new Stack();
 
-  const [newFifoQueue] = buildQueue(stack, 'new-queue', {
+  const buildQueueResponse = buildQueue(stack, 'new-queue', {
     queueProps: {
       fifo: true
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::SQS::Queue", {
+  Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
     FifoQueue: true
   });
-  expect(newFifoQueue.fifo).toBe(true);
+  expect(buildQueueResponse.queue.fifo).toBe(true);
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+
+test("Test fail SQS Queue check", () => {
+  const stack = new Stack();
+
+  const props: defaults.SqsProps = {
+    queueProps: {},
+    existingQueueObj: new sqs.Queue(stack, 'placeholder', {}),
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide queueProps or existingQueueObj, but not both.\n');
+});
+
+test('Test fail SQS queue check when queueProps.encryptionMasterKey and encryptionKey are both specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.SqsProps = {
+    queueProps: {
+      encryptionMasterKey: new kms.Key(stack, 'key')
+    },
+    encryptionKey: new kms.Key(stack, 'otherkey')
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  expect(app).toThrowError('Error - Either provide queueProps.encryptionMasterKey or encryptionKey, but not both.\n');
+});
+
+test('Test fail SQS queue check when queueProps.encryptionMasterKey and encryptionKeyProps are both specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.SqsProps = {
+    encryptionKeyProps: {
+      description: 'key description'
+    },
+    queueProps: {
+      encryptionMasterKey: new kms.Key(stack, 'key')
+    }
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide queueProps.encryptionMasterKey or encryptionKeyProps, but not both.\n');
+});
+
+test('Test fail SQS check when both encryptionKey and encryptionKeyProps are specified', () => {
+  const stack = new Stack();
+
+  const props: defaults.SqsProps = {
+    encryptionKey: new kms.Key(stack, 'key'),
+    encryptionKeyProps: {
+      description: 'a description'
+    }
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  expect(app).toThrowError('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
+});
+
+test('Test fail Dead Letter Queue check', () => {
+
+  const props: defaults.SqsProps = {
+    deployDeadLetterQueue: false,
+    deadLetterQueueProps: {},
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n');
+});
+
+test('Test fail Dead Letter Queue check with queueProps fifo set to true and undefined deadLetterQueueProps', () => {
+
+  const props: defaults.SqsProps = {
+    queueProps: { fifo: true },
+    deadLetterQueueProps: {},
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+    'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
+});
+
+test('Test fail Dead Letter Queue check with queueProps fifo set to true and deadLetterQueueProps fifo set to false', () => {
+
+  const props: defaults.SqsProps = {
+    queueProps: { fifo: true },
+    deadLetterQueueProps: { fifo: false },
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+    'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
+});
+
+test('Test fail Dead Letter Queue check with queueProps fifo set to false and deadLetterQueueProps fifo set to true', () => {
+
+  const props: defaults.SqsProps = {
+    deadLetterQueueProps: { fifo: true },
+    queueProps: { fifo: false },
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+    'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
+});
+
+test('Test fail Dead Letter Queue check with deadLetterQueueProps fifo set to true', () => {
+
+  const props: defaults.SqsProps = {
+    deadLetterQueueProps: { fifo: true },
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+    'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
+});
+
+test('Test fail Dead Letter Queue check with queueProps fifo set to false', () => {
+
+  const props: defaults.SqsProps = {
+    queueProps: { fifo: false },
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+    'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
 });

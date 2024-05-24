@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "8b6ff301fc69838f6d089d44c1de29bc904b1e818d3c4279e841a349bb83e1be": {
+      "source": {
+        "path": "evtsns-new-bus.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "8b6ff301fc69838f6d089d44c1de29bc904b1e818d3c4279e841a349bb83e1be.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

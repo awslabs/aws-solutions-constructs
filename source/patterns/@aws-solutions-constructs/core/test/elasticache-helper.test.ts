@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,10 +11,10 @@
  *  and limitations under the License.
  */
 
-import "@aws-cdk/assert/jest";
+import { Template } from 'aws-cdk-lib/assertions';
 import { CreateTestCache, getTestVpc } from "./test-helper";
-import * as cdk from '@aws-cdk/core';
-import * as ec2 from '@aws-cdk/aws-ec2';
+import * as cdk from 'aws-cdk-lib';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { getCachePort, obtainMemcachedCluster } from "../lib/elasticache-helper";
 import { GetDefaultCachePort } from "../lib/elasticache-defaults";
 
@@ -49,7 +49,8 @@ test("Test create cache with no client props", () => {
     cachePort: 11111,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ElastiCache::CacheCluster", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ElastiCache::CacheCluster", {
     Port: 11111,
     AZMode: 'cross-az',
     Engine: 'memcached',
@@ -74,7 +75,8 @@ test("Test create cache with client props", () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::ElastiCache::CacheCluster", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ElastiCache::CacheCluster", {
     Port: 12321,
     AZMode: 'single-az',
     Engine: 'memcached',

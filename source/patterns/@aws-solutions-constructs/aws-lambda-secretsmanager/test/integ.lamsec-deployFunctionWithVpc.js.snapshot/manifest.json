@@ -1,0 +1,233 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "lamsecdeployFunctionWithVpcIntegDefaultTestDeployAssert66148FF5.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamsecdeployFunctionWithVpcIntegDefaultTestDeployAssert66148FF5.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamsecdeployFunctionWithVpcIntegDefaultTestDeployAssert66148FF5": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamsecdeployFunctionWithVpcIntegDefaultTestDeployAssert66148FF5.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamsecdeployFunctionWithVpcIntegDefaultTestDeployAssert66148FF5.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamsecdeployFunctionWithVpcIntegDefaultTestDeployAssert66148FF5.assets"
+      ],
+      "metadata": {
+        "/lamsec-deployFunctionWithVpc/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamsec-deployFunctionWithVpc/Integ/DefaultTest/DeployAssert"
+    },
+    "lamsec-deployFunctionWithVpc.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamsec-deployFunctionWithVpc.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamsec-deployFunctionWithVpc": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamsec-deployFunctionWithVpc.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3e96a03de5cfcdd400cf059642107c4e5d82255739abe948e6369bf756f2dae8.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamsec-deployFunctionWithVpc.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamsec-deployFunctionWithVpc.assets"
+      ],
+      "metadata": {
+        "/lamsec-deployFunctionWithVpc/test-lambda-secretsmanager/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasecretsmanagerLambdaFunctionServiceRole92CE007F"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/test-lambda-secretsmanager/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasecretsmanagerLambdaFunctionServiceRoleDefaultPolicyF24BF460"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/test-lambda-secretsmanager/ReplaceDefaultSecurityGroup-security-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasecretsmanagerReplaceDefaultSecurityGroupsecuritygroupF837FD37"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/test-lambda-secretsmanager/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasecretsmanagerLambdaFunction130E7301"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/test-lambda-secretsmanager/secret/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasecretsmanagersecret4C99E6BF"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/Vpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Vpc8378EB38"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/Vpc/isolatedSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1SubnetE62B1B9B"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/Vpc/isolatedSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1RouteTableE442650B"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/Vpc/isolatedSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet1RouteTableAssociationD259E31A"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/Vpc/isolatedSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet2Subnet39217055"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/Vpc/isolatedSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet2RouteTable334F9764"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/Vpc/isolatedSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcisolatedSubnet2RouteTableAssociation25A4716F"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/Vpc/FlowLog/IAMRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRole6A475D41"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/Vpc/FlowLog/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogLogGroup7B5C56B9"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/Vpc/FlowLog/FlowLog": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLog8FF33A73"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/Vpc/SECRETS_MANAGER/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcSECRETSMANAGERF52907C2"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/lamsec-deployFunctionWithVpc-SECRETS_MANAGER-security-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lamsecdeployFunctionWithVpcSECRETSMANAGERsecuritygroup98862008"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamsec-deployFunctionWithVpc/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamsec-deployFunctionWithVpc"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

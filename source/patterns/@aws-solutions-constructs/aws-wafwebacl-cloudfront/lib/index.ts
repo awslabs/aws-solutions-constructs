@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,11 +12,11 @@
  */
 
 // Imports
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as waf from '@aws-cdk/aws-wafv2';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as waf from 'aws-cdk-lib/aws-wafv2';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * @summary The properties for the WafwebaclToCloudFront class.
@@ -39,7 +39,7 @@ export interface WafwebaclToCloudFrontProps {
    *
    * @default - Default properties are used.
    */
-  readonly webaclProps?: waf.CfnWebACLProps,
+  readonly webaclProps?: waf.CfnWebACLProps | any,
 }
 
 /**
@@ -57,7 +57,11 @@ export class WafwebaclToCloudFront extends Construct {
    */
   constructor(scope: Construct, id: string, props: WafwebaclToCloudFrontProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckWafWebAclProps(props);
+
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
     // Build the Web ACL
     this.webacl = defaults.buildWebacl(this, 'CLOUDFRONT', {

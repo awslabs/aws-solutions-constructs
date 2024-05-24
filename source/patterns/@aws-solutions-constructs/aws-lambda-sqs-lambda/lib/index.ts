@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,15 +12,14 @@
  */
 
 // Imports
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as sqs from '@aws-cdk/aws-sqs';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 import { LambdaToSqs } from '@aws-solutions-constructs/aws-lambda-sqs';
 import { SqsToLambda } from '@aws-solutions-constructs/aws-sqs-lambda';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import { SqsEventSourceProps } from '@aws-cdk/aws-lambda-event-sources';
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as defaults from '@aws-solutions-constructs/core';
+import { Construct } from 'constructs';
+import { SqsEventSourceProps } from 'aws-cdk-lib/aws-lambda-event-sources';
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 
 /**
  * @summary The properties for the LambdaToSqsToLambda class.
@@ -131,7 +130,6 @@ export class LambdaToSqsToLambda extends Construct {
    */
   constructor(scope: Construct, id: string, props: LambdaToSqsToLambdaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
 
     // Setup the aws-lambda-sqs pattern
     const lambdaToSqs = new LambdaToSqs(this, 'lambda-to-sqs', {

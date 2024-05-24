@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -40,6 +40,7 @@ export * from './lib/secretsmanager-helper';
 export * from './lib/security-group-helper';
 export * from './lib/sns-defaults';
 export * from './lib/sns-helper';
+export * from './lib/s3-oac-origin';
 export * from './lib/sqs-defaults';
 export * from './lib/sqs-helper';
 export * from './lib/cloudfront-distribution-helper';
@@ -64,9 +65,11 @@ export * from './lib/glue-table-defaults';
 export * from './lib/glue-table-helper';
 export * from './lib/glue-database-defaults';
 export * from './lib/glue-database-helper';
-export * from './lib/input-validation';
 export * from './test/test-helper';
 export * from './lib/ssm-string-parameter-helper';
 export * from './lib/eventbridge-helper';
 export * from './lib/waf-defaults';
 export * from './lib/waf-helper';
+export * from './lib/opensearch-defaults';
+export * from './lib/opensearch-helper';
+export * from './lib/kendra-helper';

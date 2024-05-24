@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,14 +11,14 @@
  *  and limitations under the License.
  */
 
-import * as events from '@aws-cdk/aws-events';
-import * as kinesisfirehose from '@aws-cdk/aws-kinesisfirehose';
+import * as events from 'aws-cdk-lib/aws-events';
+import * as kinesisfirehose from 'aws-cdk-lib/aws-kinesisfirehose';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as iam from '@aws-cdk/aws-iam';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as logs from '@aws-cdk/aws-logs';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as logs from 'aws-cdk-lib/aws-logs';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 import { overrideProps } from '@aws-solutions-constructs/core';
 import { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
 
@@ -103,7 +103,13 @@ export class EventbridgeToKinesisFirehoseToS3 extends Construct {
    */
   constructor(scope: Construct, id: string, props: EventbridgeToKinesisFirehoseToS3Props) {
     super(scope, id);
-    defaults.CheckProps(props);
+
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+
+    defaults.CheckEventBridgeProps(props);
+    // CheckS3Props is called by internal aws-kinesisfirehose-s3 construct
 
     // Set up the Kinesis Firehose using KinesisFirehoseToS3 construct
     const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {

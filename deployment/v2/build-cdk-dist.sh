@@ -12,7 +12,7 @@ export NODE_OPTIONS="--max-old-space-size=4096 ${NODE_OPTIONS:-}"
 cd $deployment_dir/
 
 echo "------------------------------------------------------------------------------"
-echo "[Copy] CDK templates for all patterns into the deployment dir for CfnNagScan"
+echo "[Copy] integration test snapshots for all patterns into the deployment dir for CfnNagScan"
 echo "------------------------------------------------------------------------------"
 
 echo "mkdir -p $dist_dir"
@@ -23,22 +23,25 @@ for subdir in $source_dir/patterns/\@aws-solutions-constructs/* ; do
     cd $subdir/test
 
     echo "Checking integ CFN templates in $subdir/test"
-    cnt=`find . -name "*expected.json" -type f | wc -l`
+    cnt=`find . -name "*.template.json" -type f | wc -l`
     prefix=`basename $subdir`
     if [ "$prefix" != "core" ]
     then
       if [ "$cnt" -eq "0" ]
       then
-        echo "************** [ERROR] ************* Did not find any integ CFN templates in $subdir; please add atleast one by writing an integ test case and running cdk-integ command to generate the CFN template for it"
+        echo "************** [ERROR] ************* Did not find any integ tests in $subdir; please add at least one by writing an integ test case and running 'npm run integ' command to generate the snapshot for it"
         exit 1
       fi
     fi
 
     echo "Copying templates from $subdir/test"
-    for i in `find . -name "*expected.json" -type f`; do
+    for i in `find . -name "*.template.json" -type f`; do
       prefix=`basename $subdir`
       suffix=`basename $i`
-      cp $subdir/test/$i $dist_dir/$prefix-$suffix.template
+      # integ-runner creates additional json files we want to skip
+      if [[ $i != *"DeployAssert"* ]]; then
+        cp $subdir/test/$i $dist_dir/$prefix-$suffix.template
+      fi
     done
     cd $source_dir
   fi
@@ -83,7 +86,7 @@ echo "[Create] build.json file"
 echo "------------------------------------------------------------------------------"
 # Get commit hash from CodePipeline env variable CODEBUILD_RESOLVED_SOURCE_VERSION
 echo $deployment_dir
-version=$(node -p "require('$deployment_dir/get-version.js')")
+version=$(node -p "require('$deployment_dir/get-sc-version.js')")
 commit="${CODEBUILD_RESOLVED_SOURCE_VERSION:-}"
 
 cat > ${dist_dir}/build.json <<HERE
@@ -95,7 +98,7 @@ cat > ${dist_dir}/build.json <<HERE
 HERE
 
 # copy CHANGELOG.md to dist/ for github releases
-changelog_file=$deployment_dir/../../CHANGELOG.v2.md
+changelog_file=$deployment_dir/../../CHANGELOG.md
 cp ${changelog_file} ${dist_dir}/CHANGELOG.md
 
 echo "------------------------------------------------------------------------------"

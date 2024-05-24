@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,30 +12,27 @@
  */
 
 // Imports
-import { Stack } from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as ec2 from "@aws-cdk/aws-ec2";
+import { Stack } from "aws-cdk-lib";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as sqs from "aws-cdk-lib/aws-sqs";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as defaults from '@aws-solutions-constructs/core';
 import { LambdaToSqsToLambda, LambdaToSqsToLambdaProps } from '../lib';
-import { haveResourceLike } from '@aws-cdk/assert';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
-// --------------------------------------------------------------
-// Test minimal deployment
-// --------------------------------------------------------------
 test('Test minimal deployment', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -44,17 +41,18 @@ test('Test minimal deployment', () => {
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
   // Assertion 2: test for an producer function
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: 'producer-function'
   });
   // Assertion 3: test for a consumer function
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: 'consumer-function'
   });
-  // Assertion 4: test for a queue
-  expect(stack).toHaveResource('AWS::SQS::Queue');
+  // Assertion 4: test for a queue (queue and DLQ)
+  template.resourceCountIs('AWS::SQS::Queue', 2);
   // Assertion 5: test for send-message permissions (only) on the producer function
-  expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {
@@ -84,7 +82,7 @@ test('Test minimal deployment', () => {
     }
   });
   // Assertion 6: test for consume-message permissions (only) on the consumer function
-  expect(stack).toHaveResourceLike('AWS::IAM::Policy', {
+  template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
         {
@@ -117,16 +115,13 @@ test('Test minimal deployment', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing producer function
-// --------------------------------------------------------------
 test('Test deployment w/ existing producer function', () => {
   // Stack
   const stack = new Stack();
   // Define existing resources
   const existingProducerFn = defaults.buildLambdaFunction(stack, {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'existing-producer-function'
@@ -136,7 +131,7 @@ test('Test deployment w/ existing producer function', () => {
   const props: LambdaToSqsToLambdaProps = {
     existingProducerLambdaObj: existingProducerFn,
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'deployed-consumer-function'
@@ -145,25 +140,23 @@ test('Test deployment w/ existing producer function', () => {
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
   // Assertion 2: test for the existing producer function
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: 'existing-producer-function'
   });
   // Assertion 3: test for the deployed consumer function
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: 'deployed-consumer-function'
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing consumer function
-// --------------------------------------------------------------
 test('Test deployment w/ existing consumer function', () => {
   // Stack
   const stack = new Stack();
   // Define existing resources
   const existingConsumerFn = defaults.buildLambdaFunction(stack, {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'existing-consumer-function'
@@ -172,7 +165,7 @@ test('Test deployment w/ existing consumer function', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'deployed-producer-function'
@@ -182,23 +175,21 @@ test('Test deployment w/ existing consumer function', () => {
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
   // Assertion 2: test for the deployed producer function
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: 'deployed-producer-function'
   });
   // Assertion 3: test for the existing consumer function
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: 'existing-consumer-function'
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ existing queue
-// --------------------------------------------------------------
 test('Test deployment w/ existing queue', () => {
   // Stack
   const stack = new Stack();
   // Define existing resources
-  const [existingQueue] = defaults.buildQueue(stack, 'existing-queue', {
+  const buildQueueResponse = defaults.buildQueue(stack, 'existing-queue', {
     queueProps: {
       queueName: 'existing-queue'
     }
@@ -206,42 +197,40 @@ test('Test deployment w/ existing queue', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
     },
-    existingQueueObj: existingQueue
+    existingQueueObj: buildQueueResponse.queue
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
   // Assertion 2: test for the existing queue
-  expect(stack).toHaveResource('AWS::SQS::Queue', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::SQS::Queue', {
     QueueName: 'existing-queue'
   });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ DLQ explicitly disabled
-// --------------------------------------------------------------
 test('Test deployment w/ DLQ explicitly disabled', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`)
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`)
     },
@@ -250,28 +239,26 @@ test('Test deployment w/ DLQ explicitly disabled', () => {
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
   // Assertion 2: test for a non-existing DLQ
-  expect(!haveResourceLike('AWS::SQS::Queue', {
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::SQS::Queue', 1);
+  defaults.expectNonexistence(stack, 'AWS::SQS::Queue', {
     RedrivePolicy: {
-      deadLetterTargetArn: "a-target-arn"
     }
-  }));
+  });
 });
 
-// --------------------------------------------------------------
-// Test deployment w/ DLQ explicitly enabled and w/ MRC override
-// --------------------------------------------------------------
 test('Test deployment w/ DLQ explicitly enabled and w/ MRC override', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`)
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`)
     },
@@ -280,36 +267,34 @@ test('Test deployment w/ DLQ explicitly enabled and w/ MRC override', () => {
   };
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
+  const template = Template.fromStack(stack);
   // Assertion 2: test for an existing DLQ
-  expect(haveResourceLike('AWS::SQS::Queue', {
+  template.resourceCountIs('AWS::SQS::Queue', 2);
+  template.hasResourceProperties('AWS::SQS::Queue', {
     RedrivePolicy: {
-      deadLetterTargetArn: "a-target-arn"
     }
-  }));
+  });
   // Assertion 3: test for the overridden max receive count
-  expect(haveResourceLike('AWS::SQS::Queue', {
+  template.hasResourceProperties('AWS::SQS::Queue', {
     RedrivePolicy: {
       maxReceiveCount: 6
     }
-  }));
+  });
 });
 
-// --------------------------------------------------------------
-// Test overrides for producer and consumer functions
-// --------------------------------------------------------------
 test('Test overrides for producer and consumer functions', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -318,31 +303,29 @@ test('Test overrides for producer and consumer functions', () => {
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
   // Assertion 2: test for updated runtime on producer function
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
-    Runtime: "nodejs14.x"
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
+    Runtime: "nodejs16.x"
   });
   // Assertion 3: test for updated runtime on consumer function
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
-    Runtime: "nodejs14.x"
+  template.hasResourceProperties('AWS::Lambda::Function', {
+    Runtime: "nodejs16.x"
   });
 });
 
-// --------------------------------------------------------------
-// Test the public pattern props
-// --------------------------------------------------------------
 test('Test the public pattern props', () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -359,9 +342,6 @@ test('Test the public pattern props', () => {
   expect(pattern.consumerLambdaFunction).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test lambda function custom environment variable
-// --------------------------------------------------------------
 test('Test lambda function custom environment variable', () => {
   // Stack
   const stack = new Stack();
@@ -369,13 +349,13 @@ test('Test lambda function custom environment variable', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -385,7 +365,8 @@ test('Test lambda function custom environment variable', () => {
   new LambdaToSqsToLambda(stack, 'lambda-sqs-lambda', props);
 
   // Assertion
-  expect(stack).toHaveResource('AWS::Lambda::Function', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
     FunctionName: 'producer-function',
     Environment: {
       Variables: {
@@ -398,20 +379,17 @@ test('Test lambda function custom environment variable', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Pattern deployment w/ batch size
-// --------------------------------------------------------------
 test('Pattern deployment w/ batch size', () => {
   const stack = new Stack();
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -422,27 +400,25 @@ test('Pattern deployment w/ batch size', () => {
   };
   new LambdaToSqsToLambda(stack, 'test-lambda-sqs-lambda', props);
 
-  expect(stack).toHaveResource('AWS::Lambda::EventSourceMapping', {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::EventSourceMapping', {
     BatchSize: 5
   });
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC without vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   new LambdaToSqsToLambda(stack, "lambda-to-sqs-to-lambda-stack", {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -450,7 +426,8 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -471,35 +448,32 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment that deploys a VPC w/vpcProps
-// --------------------------------------------------------------
 test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Stack
   const stack = new Stack();
   // Helper declaration
   new LambdaToSqsToLambda(stack, "lambda-to-sqs-to-lambda-stack", {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -507,12 +481,13 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     vpcProps: {
       enableDnsHostnames: false,
       enableDnsSupport: false,
-      cidr: "192.68.0.0/16",
+      ipAddresses: ec2.IpAddresses.cidr("192.68.0.0/16"),
     },
     deployVpc: true,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -533,23 +508,20 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: "192.68.0.0/16",
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 
-  expect(stack).toCountResources("AWS::EC2::Subnet", 2);
-  expect(stack).toCountResources("AWS::EC2::InternetGateway", 0);
+  template.resourceCountIs("AWS::EC2::Subnet", 2);
+  template.resourceCountIs("AWS::EC2::InternetGateway", 0);
 });
 
-// --------------------------------------------------------------
-// Test minimal deployment with an existing VPC
-// --------------------------------------------------------------
 test("Test minimal deployment with an existing VPC", () => {
   // Stack
   const stack = new Stack();
@@ -559,13 +531,13 @@ test("Test minimal deployment with an existing VPC", () => {
   // Helper declaration
   new LambdaToSqsToLambda(stack, "lambda-to-sqs-to-lambda-stack", {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -573,7 +545,8 @@ test("Test minimal deployment with an existing VPC", () => {
     existingVpc: testVpc,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     VpcConfig: {
       SecurityGroupIds: [
         {
@@ -594,14 +567,11 @@ test("Test minimal deployment with an existing VPC", () => {
     },
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     VpcEndpointType: "Interface",
   });
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingVpc and deployVpc
-// --------------------------------------------------------------
 test("Test bad call with existingVpc and deployVpc", () => {
   // Stack
   const stack = new Stack();
@@ -612,13 +582,13 @@ test("Test bad call with existingVpc and deployVpc", () => {
     // Helper declaration
     new LambdaToSqsToLambda(stack, "lambda-to-sqs-to-lambda-stack", {
       producerLambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
         functionName: 'producer-function'
       },
       consumerLambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
         functionName: 'consumer-function'
@@ -629,4 +599,58 @@ test("Test bad call with existingVpc and deployVpc", () => {
   };
   // Assertion
   expect(app).toThrowError();
+});
+
+test('Confirm CheckSqsProps is being called', () => {
+  // NOTE: CheckSqsProps is called from both lambda-sqs and sqs-lambda internally
+  // Stack
+  const stack = new Stack();
+  // Helper declaration
+  const props: LambdaToSqsToLambdaProps = {
+    producerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    consumerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    },
+    queueProps: {},
+    existingQueueObj: new sqs.Queue(stack, 'test', {})
+  };
+
+  const app = () => {
+    new LambdaToSqsToLambda(stack, 'test-eventbridge-sqs', props);
+  };
+  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
+});
+
+test('Confirm CheckLambdaProps is being called', () => {
+  const stack = new Stack();
+  const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
+    runtime: lambda.Runtime.NODEJS_18_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: LambdaToSqsToLambdaProps = {
+    existingProducerLambdaObj: existingLambdaObj,
+    producerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    consumerLambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+  };
+
+  const app = () => {
+    new LambdaToSqsToLambda(stack, 'test-lambda-sqs-lambda', props);
+  };
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

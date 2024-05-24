@@ -1,0 +1,455 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "faropnnewresourcesIntegDefaultTestDeployAssert740558EF.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "faropnnewresourcesIntegDefaultTestDeployAssert740558EF.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "faropnnewresourcesIntegDefaultTestDeployAssert740558EF": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "faropnnewresourcesIntegDefaultTestDeployAssert740558EF.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "faropnnewresourcesIntegDefaultTestDeployAssert740558EF.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "faropnnewresourcesIntegDefaultTestDeployAssert740558EF.assets"
+      ],
+      "metadata": {
+        "/faropn-new-resources/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/faropn-new-resources/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "faropn-new-resources/Integ/DefaultTest/DeployAssert"
+    },
+    "faropn-new-resources.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "faropn-new-resources.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "faropn-new-resources": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/us-east-1",
+      "properties": {
+        "templateFile": "faropn-new-resources.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/52a4d923229e53283dd11c4dbe6cace69f060b2b5adb157df36357a7c653df51.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "faropn-new-resources.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "faropn-new-resources.assets"
+      ],
+      "metadata": {
+        "/faropn-new-resources/test-construct/CognitoUserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructCognitoUserPoolA4991355"
+          }
+        ],
+        "/faropn-new-resources/test-construct/CognitoUserPoolClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructCognitoUserPoolClient36ACF012"
+          }
+        ],
+        "/faropn-new-resources/test-construct/CognitoIdentityPool": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructCognitoIdentityPool51EFD08D"
+          }
+        ],
+        "/faropn-new-resources/test-construct/UserPoolDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructUserPoolDomain6B64F32F"
+          }
+        ],
+        "/faropn-new-resources/test-construct/CognitoAuthorizedRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructCognitoAuthorizedRole7BA83790"
+          }
+        ],
+        "/faropn-new-resources/test-construct/IdentityPoolRoleMapping": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructIdentityPoolRoleMapping1391CBDD"
+          }
+        ],
+        "/faropn-new-resources/test-construct/CognitoDashboardConfigureRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructCognitoDashboardConfigureRoleFA66EB70"
+          }
+        ],
+        "/faropn-new-resources/test-construct/CognitoDashboardConfigureRolePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructCognitoDashboardConfigureRolePolicy3EC6F1C4"
+          }
+        ],
+        "/faropn-new-resources/test-construct/OpenSearchDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructOpenSearchDomainD2A5B104"
+          }
+        ],
+        "/faropn-new-resources/test-construct/StatusRedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructStatusRedAlarmFBEA96DF"
+          }
+        ],
+        "/faropn-new-resources/test-construct/StatusYellowAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructStatusYellowAlarm3B8C3640"
+          }
+        ],
+        "/faropn-new-resources/test-construct/FreeStorageSpaceTooLowAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructFreeStorageSpaceTooLowAlarm08294658"
+          }
+        ],
+        "/faropn-new-resources/test-construct/IndexWritesBlockedTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructIndexWritesBlockedTooHighAlarm06094A18"
+          }
+        ],
+        "/faropn-new-resources/test-construct/AutomatedSnapshotFailureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructAutomatedSnapshotFailureTooHighAlarm29E550A3"
+          }
+        ],
+        "/faropn-new-resources/test-construct/CPUUtilizationTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructCPUUtilizationTooHighAlarmD32179B7"
+          }
+        ],
+        "/faropn-new-resources/test-construct/JVMMemoryPressureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructJVMMemoryPressureTooHighAlarmFD4175A0"
+          }
+        ],
+        "/faropn-new-resources/test-construct/MasterCPUUtilizationTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructMasterCPUUtilizationTooHighAlarmAA50D0A7"
+          }
+        ],
+        "/faropn-new-resources/test-construct/MasterJVMMemoryPressureTooHighAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructMasterJVMMemoryPressureTooHighAlarm5AE37D64"
+          }
+        ],
+        "/faropn-new-resources/Vpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Vpc8378EB38"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PublicSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1Subnet5C2D37C4"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PublicSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1RouteTable6C95E38E"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PublicSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1RouteTableAssociation97140677"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PublicSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1DefaultRoute3DA9E72A"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PublicSubnet1/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1EIPD7E02669"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PublicSubnet1/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet1NATGateway4D7517AA"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PublicSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2Subnet691E08A3"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PublicSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2RouteTable94F7E489"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PublicSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2RouteTableAssociationDD5762D8"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PublicSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2DefaultRoute97F91067"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PublicSubnet2/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2EIP3C605A87"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PublicSubnet2/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPublicSubnet2NATGateway9182C01D"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PrivateSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet1Subnet536B997A"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PrivateSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet1RouteTableB2C5B500"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PrivateSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet1RouteTableAssociation70C59FA6"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PrivateSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet1DefaultRouteBE02A9ED"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PrivateSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet2Subnet3788AAA1"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PrivateSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet2RouteTableA678073B"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PrivateSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet2RouteTableAssociationA89CAD56"
+          }
+        ],
+        "/faropn-new-resources/Vpc/PrivateSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcPrivateSubnet2DefaultRoute060D2087"
+          }
+        ],
+        "/faropn-new-resources/Vpc/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcIGWD7BA715C"
+          }
+        ],
+        "/faropn-new-resources/Vpc/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcVPCGWBF912B6E"
+          }
+        ],
+        "/faropn-new-resources/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
+          }
+        ],
+        "/faropn-new-resources/Vpc/FlowLog/IAMRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRole6A475D41"
+          }
+        ],
+        "/faropn-new-resources/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
+          }
+        ],
+        "/faropn-new-resources/Vpc/FlowLog/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLogLogGroup7B5C56B9"
+          }
+        ],
+        "/faropn-new-resources/Vpc/FlowLog/FlowLog": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcFlowLog8FF33A73"
+          }
+        ],
+        "/faropn-new-resources/Vpc/ECR_API/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcECRAPI9A3B6A2B"
+          }
+        ],
+        "/faropn-new-resources/Vpc/ECR_DKR/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcECRDKR604E039F"
+          }
+        ],
+        "/faropn-new-resources/Vpc/S3/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VpcS3A5408339"
+          }
+        ],
+        "/faropn-new-resources/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+          }
+        ],
+        "/faropn-new-resources/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+          }
+        ],
+        "/faropn-new-resources/faropn-new-resources-ECR_API-security-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "faropnnewresourcesECRAPIsecuritygroup518CB3F4"
+          }
+        ],
+        "/faropn-new-resources/faropn-new-resources-ECR_DKR-security-group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "faropnnewresourcesECRDKRsecuritygroup12106D60"
+          }
+        ],
+        "/faropn-new-resources/test-construct-cluster/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructcluster7B6231C5"
+          }
+        ],
+        "/faropn-new-resources/test-construct-taskdef/TaskRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructtaskdefTaskRoleC60414C4"
+          }
+        ],
+        "/faropn-new-resources/test-construct-taskdef/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructtaskdef8BD1F9E4"
+          }
+        ],
+        "/faropn-new-resources/test-construct-sg/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructsgA602AA29"
+          }
+        ],
+        "/faropn-new-resources/test-construct-service/Service": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testconstructserviceService13074A8F"
+          }
+        ],
+        "/faropn-new-resources/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/faropn-new-resources/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "faropn-new-resources"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

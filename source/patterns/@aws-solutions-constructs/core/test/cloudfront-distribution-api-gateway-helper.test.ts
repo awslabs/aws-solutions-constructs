@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,16 +11,16 @@
  *  and limitations under the License.
  */
 
-import { Stack } from '@aws-cdk/core';
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as api from '@aws-cdk/aws-apigateway';
-import * as lambda from '@aws-cdk/aws-lambda';
+import { Stack } from 'aws-cdk-lib';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '../index';
-import * as s3 from '@aws-cdk/aws-s3';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import { CloudFrontDistributionForApiGateway } from '../lib/cloudfront-distribution-helper';
-import '@aws-cdk/assert/jest';
-import * as origins from '@aws-cdk/aws-cloudfront-origins';
-import { LambdaEdgeEventType } from '@aws-cdk/aws-cloudfront';
+import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
+import { LambdaEdgeEventType } from 'aws-cdk-lib/aws-cloudfront';
+import { Template } from 'aws-cdk-lib/assertions';
 
 test('test cloudfront for Api Gateway with user provided logging bucket', () => {
   const stack = new Stack();
@@ -29,7 +29,7 @@ test('test cloudfront for Api Gateway with user provided logging bucket', () => 
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
-    runtime: lambda.Runtime.PYTHON_3_6,
+    runtime: lambda.Runtime.PYTHON_3_9,
     handler: 'index.handler'
   };
 
@@ -45,7 +45,8 @@ test('test cloudfront for Api Gateway with user provided logging bucket', () => 
   });
 
   CloudFrontDistributionForApiGateway(stack, _api, cfdProps);
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
@@ -147,7 +148,7 @@ test('test cloudfront for Api Gateway override properties', () => {
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
-    runtime: lambda.Runtime.PYTHON_3_6,
+    runtime: lambda.Runtime.PYTHON_3_9,
     handler: 'index.handler'
   };
 
@@ -169,7 +170,8 @@ test('test cloudfront for Api Gateway override properties', () => {
 
   CloudFrontDistributionForApiGateway(stack, _api, props);
 
-  expect(stack).toHaveResourceLike("AWS::CloudFront::Distribution", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         AllowedMethods: [
@@ -260,7 +262,7 @@ test('test override cloudfront add custom cloudfront function', () => {
 
   // APIG Lambda function
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -280,7 +282,8 @@ test('test override cloudfront add custom cloudfront function', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
@@ -386,7 +389,7 @@ test('test override cloudfront replace custom lambda@edge', () => {
   // custom lambda@edg function
   const handler = new lambda.Function(stack, 'SomeHandler', {
     functionName: 'SomeHandler',
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -397,7 +400,7 @@ test('test override cloudfront replace custom lambda@edge', () => {
 
   // APIG Lambda function
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -419,7 +422,8 @@ test('test override cloudfront replace custom lambda@edge', () => {
   },
   false);
 
-  expect(stack).toHaveResource("AWS::CloudFront::Distribution", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       DefaultCacheBehavior: {
         CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",

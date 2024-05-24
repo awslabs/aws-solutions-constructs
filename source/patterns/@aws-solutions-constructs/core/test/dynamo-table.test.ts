@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,11 @@
  *  and limitations under the License.
  */
 
-import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
-import { Stack } from '@aws-cdk/core';
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import { Stack } from 'aws-cdk-lib';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as defaults from '../index';
 import { overrideProps } from '../lib/utils';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import { getPartitionKeyNameFromTable } from '../lib/dynamodb-table-helper';
 
 test('test TableProps change billing mode', () => {
@@ -37,7 +36,8 @@ test('test TableProps change billing mode', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new dynamodb.Table(stack, 'test-dynamo-override', outProps);
 
-  expect(stack).toHaveResource("AWS::DynamoDB::Table", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::DynamoDB::Table", {
     KeySchema: [
       {
         AttributeName: "id",
@@ -79,7 +79,8 @@ test('test TableProps override add sort key', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new dynamodb.Table(stack, 'test-dynamo-override', outProps);
 
-  expect(stack).toHaveResource("AWS::DynamoDB::Table", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::DynamoDB::Table", {
     KeySchema: [
       {
         AttributeName: "id",
@@ -123,7 +124,8 @@ test('test TableWithStreamProps override stream view type', () => {
   const outProps = overrideProps(defaultProps, inProps);
   new dynamodb.Table(stack, 'test-dynamo-override', outProps);
 
-  expect(stack).toHaveResource("AWS::DynamoDB::Table", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::DynamoDB::Table", {
     KeySchema: [
       {
         AttributeName: "id",
@@ -159,50 +161,58 @@ test('test buildDynamoDBTable with existingTableObj', () => {
 
   const existingTableObj = new dynamodb.Table(stack, 'DynamoTable', tableProps);
 
-  defaults.buildDynamoDBTable(stack, {
+  const buildDynamoDBTableResponse = defaults.buildDynamoDBTable(stack, {
     existingTableObj
   });
 
-  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+  expect(buildDynamoDBTableResponse.tableInterface).toBeDefined();
+  expect(buildDynamoDBTableResponse.tableObject).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     KeySchema: [
       {
         AttributeName: "table_id",
         KeyType: "HASH"
       }
     ]
-  }));
+  });
 
-  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     ProvisionedThroughput: {
       ReadCapacityUnits: 5,
       WriteCapacityUnits: 5
     }
-  }));
+  });
 });
 
 test('test buildDynamoDBTable without any arguments', () => {
   const stack = new Stack();
 
-  defaults.buildDynamoDBTable(stack, {});
+  const buildDynamoDBTableResponse = defaults.buildDynamoDBTable(stack, {});
 
-  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+  expect(buildDynamoDBTableResponse.tableInterface).toBeDefined();
+  expect(buildDynamoDBTableResponse.tableObject).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     KeySchema: [
       {
         AttributeName: "id",
         KeyType: "HASH"
       }
     ]
-  }));
+  });
 
-  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     BillingMode: "PAY_PER_REQUEST"
-  }));
+  });
 
-  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     SSESpecification: {
       SSEEnabled: true
     }
-  }));
+  });
 });
 
 test('test buildDynamoDBTable with TableProps', () => {
@@ -216,25 +226,29 @@ test('test buildDynamoDBTable with TableProps', () => {
     }
   };
 
-  defaults.buildDynamoDBTable(stack, {
+  const buildDynamoDBTableResponse = defaults.buildDynamoDBTable(stack, {
     dynamoTableProps
   });
 
-  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+  expect(buildDynamoDBTableResponse.tableInterface).toBeDefined();
+  expect(buildDynamoDBTableResponse.tableObject).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     KeySchema: [
       {
         AttributeName: "table_id",
         KeyType: "HASH"
       }
     ]
-  }));
+  });
 
-  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     ProvisionedThroughput: {
       ReadCapacityUnits: 5,
       WriteCapacityUnits: 5
     }
-  }));
+  });
 });
 
 test('test buildDynamoDBTableWithStream with TableProps', () => {
@@ -248,55 +262,63 @@ test('test buildDynamoDBTableWithStream with TableProps', () => {
     stream: dynamodb.StreamViewType.NEW_IMAGE
   };
 
-  defaults.buildDynamoDBTableWithStream(stack, {
+  const response = defaults.buildDynamoDBTableWithStream(stack, {
     dynamoTableProps
   });
 
-  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+  expect(response.tableInterface).toBeDefined();
+  expect(response.tableObject).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     KeySchema: [
       {
         AttributeName: "table_id",
         KeyType: "HASH"
       }
     ]
-  }));
+  });
 
-  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     StreamSpecification: {
       StreamViewType: "NEW_IMAGE"
     }
-  }));
+  });
 });
 
 test('test buildDynamoDBTableWithStream without any arguments', () => {
   const stack = new Stack();
 
-  defaults.buildDynamoDBTableWithStream(stack, {});
+  const response = defaults.buildDynamoDBTableWithStream(stack, {});
 
-  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+  expect(response.tableInterface).toBeDefined();
+  expect(response.tableObject).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     KeySchema: [
       {
         AttributeName: "id",
         KeyType: "HASH"
       }
     ]
-  }));
+  });
 
-  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     BillingMode: "PAY_PER_REQUEST"
-  }));
+  });
 
-  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     SSESpecification: {
       SSEEnabled: true
     }
-  }));
+  });
 
-  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     StreamSpecification: {
       StreamViewType: "NEW_AND_OLD_IMAGES"
     }
-  }));
+  });
 });
 
 test('test buildDynamoDBTableWithStream with existingTableObj', () => {
@@ -312,24 +334,28 @@ test('test buildDynamoDBTableWithStream with existingTableObj', () => {
 
   const existingTableInterface = new dynamodb.Table(stack, 'DynamoTable', tableProps);
 
-  defaults.buildDynamoDBTableWithStream(stack, {
+  const response = defaults.buildDynamoDBTableWithStream(stack, {
     existingTableInterface
   });
 
-  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+  expect(response.tableInterface).toBeDefined();
+  expect(response.tableObject).not.toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     KeySchema: [
       {
         AttributeName: "table_id",
         KeyType: "HASH"
       }
     ]
-  }));
+  });
 
-  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     StreamSpecification: {
       StreamViewType: "NEW_IMAGE"
     }
-  }));
+  });
 });
 
 test('test buildDynamoDBTable with existingTableInterface', () => {
@@ -345,24 +371,28 @@ test('test buildDynamoDBTable with existingTableInterface', () => {
 
   const existingTableInterface = new dynamodb.Table(stack, 'DynamoTable', tableProps);
 
-  defaults.buildDynamoDBTable(stack, {
+  const buildDynamoDBTableResponse = defaults.buildDynamoDBTable(stack, {
     existingTableInterface
   });
 
-  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+  expect(buildDynamoDBTableResponse.tableInterface).toBeDefined();
+  expect(buildDynamoDBTableResponse.tableObject).not.toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     KeySchema: [
       {
         AttributeName: "table_id",
         KeyType: "HASH"
       }
     ]
-  }));
+  });
 
-  expectCDK(stack).to(haveResource('AWS::DynamoDB::Table', {
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
     StreamSpecification: {
       StreamViewType: "NEW_IMAGE"
     }
-  }));
+  });
 });
 
 test('test getPartitionKeyNameFromTable()', () => {
@@ -391,74 +421,37 @@ test('test getPartitionKeyNameFromTable()', () => {
   expect(testKeyName).toEqual(partitionKeyName);
 });
 
-test('Test providing both existingTableInterface and existingTableObj', () => {
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test('Test fail DynamoDB table check', () => {
   const stack = new Stack();
 
-  const tableProps: dynamodb.TableProps = {
-    partitionKey: {
-      name: 'table_id',
-      type: dynamodb.AttributeType.STRING
-    },
-    stream: dynamodb.StreamViewType.NEW_IMAGE
+  const props: defaults.DynamoDBProps = {
+    existingTableObj: new dynamodb.Table(stack, 'placeholder', defaults.DefaultTableProps),
+    dynamoTableProps: defaults.DefaultTableProps,
   };
 
-  const existingTableInterface = new dynamodb.Table(stack, 'DynamoTable', tableProps)
-  ;
-  const newProps = {
-    existingTableInterface,
-    existingTableObj: existingTableInterface
-  };
   const app = () => {
-    defaults.buildDynamoDBTable(stack, newProps);
+    defaults.CheckDynamoDBProps(props);
   };
 
-  expect(app).toThrowError('Error - Either provide existingTableInterface or existingTableObj, but not both.\n');
-});
-
-test('Test providing both existingTableInterface and dynamoTableProps', () => {
-  const stack = new Stack();
-
-  const dynamoTableProps: dynamodb.TableProps = {
-    partitionKey: {
-      name: 'table_id',
-      type: dynamodb.AttributeType.STRING
-    },
-    stream: dynamodb.StreamViewType.NEW_IMAGE
-  };
-
-  const existingTableInterface = new dynamodb.Table(stack, 'DynamoTable', dynamoTableProps)
-  ;
-  const newProps = {
-    existingTableInterface,
-    dynamoTableProps
-  };
-  const app = () => {
-    defaults.buildDynamoDBTable(stack, newProps);
-  };
-
-  expect(app).toThrowError('Error - Either provide existingTableInterface or dynamoTableProps, but not both.\n');
-});
-
-test('Test providing both existingTableObj and dynamoTableProps', () => {
-  const stack = new Stack();
-
-  const dynamoTableProps: dynamodb.TableProps = {
-    partitionKey: {
-      name: 'table_id',
-      type: dynamodb.AttributeType.STRING
-    },
-    stream: dynamodb.StreamViewType.NEW_IMAGE
-  };
-
-  const existingTableObj = new dynamodb.Table(stack, 'DynamoTable', dynamoTableProps)
-  ;
-  const newProps = {
-    existingTableObj,
-    dynamoTableProps
-  };
-  const app = () => {
-    defaults.buildDynamoDBTable(stack, newProps);
-  };
-
+  // Assertion
   expect(app).toThrowError('Error - Either provide existingTableObj or dynamoTableProps, but not both.\n');
+});
+
+test('Test fail DynamoDB table check (for interface AND obj)', () => {
+  const stack = new Stack();
+
+  const props: defaults.DynamoDBProps = {
+    existingTableInterface: new dynamodb.Table(stack, 'placeholder', defaults.DefaultTableProps),
+    existingTableObj: new dynamodb.Table(stack, 'placeholderobj', defaults.DefaultTableProps),
+  };
+
+  const app = () => {
+    defaults.CheckDynamoDBProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide existingTableInterface or existingTableObj, but not both.\n');
 });

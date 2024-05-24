@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,17 +12,17 @@
  */
 
 import { S3ToLambda, S3ToLambdaProps } from "../lib";
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as cdk from "@aws-cdk/core";
-import '@aws-cdk/assert/jest';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as cdk from "aws-cdk-lib";
+import { Template } from 'aws-cdk-lib/assertions';
 import { CreateScrapBucket } from '@aws-solutions-constructs/core';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: S3ToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     bucketProps: {
@@ -38,15 +38,12 @@ test('check properties', () => {
 
   const construct: S3ToLambda = deployNewFunc(stack);
 
-  expect(construct.lambdaFunction !== null);
-  expect(construct.s3Bucket !== null);
-  expect(construct.s3LoggingBucket !== null);
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.s3LoggingBucket).toBeDefined();
 });
 
-// --------------------------------------------------------------
-// Test bad call with existingBucket and bucketProps
-// --------------------------------------------------------------
-test("Test bad call with existingBucket and bucketProps", () => {
+test("Confirm CheckS3Props is being called", () => {
   // Stack
   const stack = new cdk.Stack();
 
@@ -55,6 +52,11 @@ test("Test bad call with existingBucket and bucketProps", () => {
   const app = () => {
     // Helper declaration
     new S3ToLambda(stack, "bad-s3-args", {
+      lambdaFunctionProps: {
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+        runtime: lambda.Runtime.NODEJS_16_X,
+        handler: 'index.handler'
+      },
       existingBucketObj: testBucket,
       bucketProps: {
         removalPolicy: cdk.RemovalPolicy.DESTROY
@@ -62,19 +64,16 @@ test("Test bad call with existingBucket and bucketProps", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
-// --------------------------------------------------------------
-// s3 bucket with bucket, loggingBucket, and auto delete objects
-// --------------------------------------------------------------
 test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   const stack = new cdk.Stack();
 
   new S3ToLambda(stack, 's3-lambda', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     bucketProps: {
@@ -86,11 +85,10 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::S3::Bucket", {
-    AccessControl: "LogDeliveryWrite"
-  });
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::S3::Bucket", 2);
 
-  expect(stack).toHaveResource("Custom::S3AutoDeleteObjects", {
+  template.hasResourceProperties("Custom::S3AutoDeleteObjects", {
     ServiceToken: {
       "Fn::GetAtt": [
         "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
@@ -103,16 +101,13 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   });
 });
 
-// --------------------------------------------------------------
-// s3 bucket with one content bucket and no logging bucket
-// --------------------------------------------------------------
 test('s3 bucket with one content bucket and no logging bucket', () => {
   const stack = new cdk.Stack();
 
   new S3ToLambda(stack, 's3-lambda', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     bucketProps: {
@@ -121,16 +116,17 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
     logS3AccessLogs: false
   });
 
-  expect(stack).toCountResources("AWS::S3::Bucket", 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::S3::Bucket", 1);
 });
 
 test('check properties with existing S3 bucket', () => {
   const stack = new cdk.Stack();
-  const existingBucket = CreateScrapBucket(stack, {});
+  const existingBucket = CreateScrapBucket(stack, "scrapBucket");
   const construct = new S3ToLambda(stack, 's3-lambda', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     existingBucketObj: existingBucket
@@ -139,4 +135,28 @@ test('check properties with existing S3 bucket', () => {
   expect(construct.s3Bucket).toEqual(undefined);
   expect(construct.s3BucketInterface).not.toEqual(undefined);
   expect(construct.s3LoggingBucket).toEqual(undefined);
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: S3ToLambdaProps = {
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new S3ToLambda(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

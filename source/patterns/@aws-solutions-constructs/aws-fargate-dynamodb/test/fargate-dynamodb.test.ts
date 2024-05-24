@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,13 @@
  *  and limitations under the License.
  */
 
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as cdk from "@aws-cdk/core";
-import { FargateToDynamoDB } from "../lib";
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
-import * as ecs from '@aws-cdk/aws-ecs';
+import * as cdk from "aws-cdk-lib";
+import { FargateToDynamoDB, FargateToDynamoDBProps } from "../lib";
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 test('New service/new table, public API, new VPC', () => {
   const stack = new cdk.Stack();
@@ -30,7 +31,7 @@ test('New service/new table, public API, new VPC', () => {
   const construct = new FargateToDynamoDB(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -45,13 +46,14 @@ test('New service/new table, public API, new VPC', () => {
     tablePermissions: 'ReadWrite'
   });
 
-  expect(construct.vpc !== null);
-  expect(construct.service !== null);
-  expect(construct.container !== null);
-  expect(construct.dynamoTable !== null);
-  expect(construct.dynamoTableInterface !== null);
+  expect(construct.vpc).toBeDefined();
+  expect(construct.service).toBeDefined();
+  expect(construct.container).toBeDefined();
+  expect(construct.dynamoTable).toBeDefined();
+  expect(construct.dynamoTableInterface).toBeDefined();
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName,
     LaunchType: 'FARGATE',
     DesiredCount: 2,
@@ -62,15 +64,15 @@ test('New service/new table, public API, new VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Cluster", {
+  template.hasResourceProperties("AWS::ECS::Cluster", {
     ClusterName: clusterName
   });
 
-  expect(stack).toHaveResourceLike("AWS::DynamoDB::Table", {
+  template.hasResourceProperties("AWS::DynamoDB::Table", {
     TableName: tableName
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -105,7 +107,7 @@ test('New service/new table, public API, new VPC', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     Family: familyName,
     ContainerDefinitions: [
       {
@@ -134,11 +136,11 @@ test('New service/new table, public API, new VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     ServiceName: {
       "Fn::Join": [
         "",
@@ -154,10 +156,10 @@ test('New service/new table, public API, new VPC', () => {
   });
 
   // Confirm we created a Public/Private VPC
-  expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::DynamoDB::Table', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  template.hasResourceProperties('AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::DynamoDB::Table', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('New service/new table, private API, new VPC', () => {
@@ -168,7 +170,7 @@ test('New service/new table, private API, new VPC', () => {
   new FargateToDynamoDB(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     dynamoTableProps: {
       tableName,
       partitionKey: {
@@ -179,7 +181,8 @@ test('New service/new table, private API, new VPC', () => {
     tablePermissions: 'Read',
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -189,15 +192,15 @@ test('New service/new table, private API, new VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::DynamoDB::Table", {
+  template.hasResourceProperties("AWS::DynamoDB::Table", {
     TableName: tableName,
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -228,7 +231,7 @@ test('New service/new table, private API, new VPC', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     ServiceName: {
       "Fn::Join": [
         "",
@@ -244,10 +247,10 @@ test('New service/new table, private API, new VPC', () => {
   });
 
   // Confirm we created an Isolated VPC
-  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::DynamoDB::Table', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::DynamoDB::Table', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('New service/existing table, private API, existing VPC', () => {
@@ -273,7 +276,8 @@ test('New service/existing table, private API, existing VPC', () => {
     tablePermissions: 'ALL'
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -283,14 +287,14 @@ test('New service/existing table, private API, existing VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::DynamoDB::Table", {
+  template.hasResourceProperties("AWS::DynamoDB::Table", {
     TableName: tableName
   });
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -312,7 +316,7 @@ test('New service/existing table, private API, existing VPC', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     ServiceName: {
       "Fn::Join": [
         "",
@@ -330,10 +334,10 @@ test('New service/existing table, private API, existing VPC', () => {
   expect(construct.dynamoTable == null);
 
   // Confirm we created an Isolated VPC
-  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
-  expect(stack).toCountResources('AWS::DynamoDB::Table', 1);
+  defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
+  template.resourceCountIs('AWS::DynamoDB::Table', 1);
 });
 
 test('Existing service/new table, public API, existing VPC', () => {
@@ -346,20 +350,18 @@ test('Existing service/new table, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   const construct = new FargateToDynamoDB(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     tableArnEnvironmentVariableName: customArn,
     tableEnvironmentVariableName: customName,
@@ -372,11 +374,12 @@ test('Existing service/new table, public API, existing VPC', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Environment: [
@@ -421,15 +424,15 @@ test('Existing service/new table, public API, existing VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::DynamoDB::Table", {
+  template.hasResourceProperties("AWS::DynamoDB::Table", {
     TableName: tableName
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -464,7 +467,7 @@ test('Existing service/new table, public API, existing VPC', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     ServiceName: {
       "Fn::Join": [
         "",
@@ -482,10 +485,10 @@ test('Existing service/new table, public API, existing VPC', () => {
   expect(construct.dynamoTable == null);
 
   // Confirm we created a Public/Private VPC
-  expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
-  expect(stack).toCountResources('AWS::DynamoDB::Table', 1);
+  template.hasResourceProperties('AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
+  template.resourceCountIs('AWS::DynamoDB::Table', 1);
 });
 
 test('Existing service/existing table, private API, existing VPC', () => {
@@ -496,15 +499,13 @@ test('Existing service/existing table, private API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   const existingTable = new dynamodb.Table(stack, 'MyTablet', {
     tableName,
@@ -516,18 +517,19 @@ test('Existing service/existing table, private API, existing VPC', () => {
 
   const construct = new FargateToDynamoDB(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     tablePermissions: 'Write',
     existingTableInterface: existingTable
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Environment: [
@@ -572,14 +574,14 @@ test('Existing service/existing table, private API, existing VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::DynamoDB::Table", {
+  template.hasResourceProperties("AWS::DynamoDB::Table", {
     TableName: tableName
   });
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -607,7 +609,7 @@ test('Existing service/existing table, private API, existing VPC', () => {
     }
   });
 
-  expect(stack).toHaveResource("AWS::EC2::VPCEndpoint", {
+  template.hasResourceProperties("AWS::EC2::VPCEndpoint", {
     ServiceName: {
       "Fn::Join": [
         "",
@@ -625,10 +627,10 @@ test('Existing service/existing table, private API, existing VPC', () => {
   expect(construct.dynamoTable == null);
 
   // Confirm we created an Isolated VPC
-  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
-  expect(stack).toCountResources('AWS::DynamoDB::Table', 1);
+  defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
+  template.resourceCountIs('AWS::DynamoDB::Table', 1);
 });
 
 test('test error invalid table permission', () => {
@@ -639,15 +641,13 @@ test('test error invalid table permission', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   const existingTable = new dynamodb.Table(stack, 'MyTablet', {
     tableName,
@@ -660,8 +660,8 @@ test('test error invalid table permission', () => {
   const app = () => {
     new FargateToDynamoDB(stack, 'test-construct', {
       publicApi,
-      existingFargateServiceObject: testService,
-      existingContainerDefinitionObject: testContainer,
+      existingFargateServiceObject: createFargateServiceResponse.service,
+      existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
       existingVpc,
       tablePermissions: 'reed',
       existingTableInterface: existingTable
@@ -669,4 +669,81 @@ test('test error invalid table permission', () => {
   };
 
   expect(app).toThrowError('Invalid tablePermission submitted - REED');
+});
+
+test('test that DDB input args are getting checked', () => {
+  const stack = new cdk.Stack();
+  const publicApi = false;
+  const serviceName = 'custom-name';
+  const tableName = 'custom-table-name';
+
+  const existingVpc = defaults.getTestVpc(stack, publicApi);
+
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
+
+  const existingTable = new dynamodb.Table(stack, 'MyTablet', {
+    tableName,
+    partitionKey: {
+      name: 'id',
+      type: dynamodb.AttributeType.STRING
+    }
+  });
+
+  const app = () => {
+    new FargateToDynamoDB(stack, 'test-construct', {
+      publicApi,
+      existingFargateServiceObject: createFargateServiceResponse.service,
+      existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
+      existingVpc,
+      existingTableInterface: existingTable,
+      dynamoTableProps: {
+        tableName,
+        partitionKey: {
+          name: 'id',
+          type: dynamodb.AttributeType.STRING
+        },
+      },
+    });
+  };
+
+  expect(app).toThrowError('Error - Either provide existingTableInterface or dynamoTableProps, but not both.\n');
+});
+
+test('Confirm that CheckVpcProps was called', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+  const clusterName = "custom-cluster-name";
+  const containerName = "custom-container-name";
+  const serviceName = "custom-service-name";
+  const familyName = "custom-family-name";
+
+  const props: FargateToDynamoDBProps = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    dynamoTableProps: {
+      tableName: 'fake-name',
+      partitionKey: {
+        name: 'id',
+        type: dynamodb.AttributeType.STRING
+      },
+    },
+    existingVpc: defaults.getTestVpc(stack),
+    vpcProps: {  },
+  };
+
+  const app = () => {
+    new FargateToDynamoDB(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });

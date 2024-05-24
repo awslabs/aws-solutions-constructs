@@ -1,0 +1,185 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "iotsqsusekmskeypropsIntegDefaultTestDeployAssert4B209F6F.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "iotsqsusekmskeypropsIntegDefaultTestDeployAssert4B209F6F.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "iotsqsusekmskeypropsIntegDefaultTestDeployAssert4B209F6F": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "iotsqsusekmskeypropsIntegDefaultTestDeployAssert4B209F6F.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "iotsqsusekmskeypropsIntegDefaultTestDeployAssert4B209F6F.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "iotsqsusekmskeypropsIntegDefaultTestDeployAssert4B209F6F.assets"
+      ],
+      "metadata": {
+        "/iotsqs-use-kms-key-props/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/iotsqs-use-kms-key-props/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "iotsqs-use-kms-key-props/Integ/DefaultTest/DeployAssert"
+    },
+    "iotsqs-use-kms-key-props.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "iotsqs-use-kms-key-props.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "iotsqs-use-kms-key-props": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "iotsqs-use-kms-key-props.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8a6a1dd419bec167f76681aa4737672b4e7552a26d67c990e512393bef3ac357.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "iotsqs-use-kms-key-props.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "iotsqs-use-kms-key-props.assets"
+      ],
+      "metadata": {
+        "/iotsqs-use-kms-key-props/test-iot-sqs-stack/deadLetterQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackdeadLetterQueueA417EB97"
+          }
+        ],
+        "/iotsqs-use-kms-key-props/test-iot-sqs-stack/deadLetterQueue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackdeadLetterQueuePolicyD0F4B7D3"
+          }
+        ],
+        "/iotsqs-use-kms-key-props/test-iot-sqs-stack/'queueKey'/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackqueueKey077AA61D"
+          }
+        ],
+        "/iotsqs-use-kms-key-props/test-iot-sqs-stack/'queueKey'/Alias/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackqueueKeyAliasB4280862"
+          }
+        ],
+        "/iotsqs-use-kms-key-props/test-iot-sqs-stack/queue": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "encryption: Automatically changed to QueueEncryption.KMS, was: QueueEncryption.KMS_MANAGED\nWhen encryptionMasterKey is provided, always set `encryption: QueueEncryption.KMS` [ack: @aws-cdk/aws-sqs:queueEncryptionChangedToKMS]"
+          }
+        ],
+        "/iotsqs-use-kms-key-props/test-iot-sqs-stack/queue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackqueue3DEA94EF"
+          }
+        ],
+        "/iotsqs-use-kms-key-props/test-iot-sqs-stack/queue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackqueuePolicy76FA6440"
+          }
+        ],
+        "/iotsqs-use-kms-key-props/test-iot-sqs-stack/iot-actions-role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackiotactionsrole5F8821AA"
+          }
+        ],
+        "/iotsqs-use-kms-key-props/test-iot-sqs-stack/iot-actions-role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackiotactionsroleDefaultPolicy02ED7F00"
+          }
+        ],
+        "/iotsqs-use-kms-key-props/test-iot-sqs-stack/IotTopicRule": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackIotTopicRule02F8F602"
+          }
+        ],
+        "/iotsqs-use-kms-key-props/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/iotsqs-use-kms-key-props/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testiotsqsstackEncryptionKeyAB09201B": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackEncryptionKeyAB09201B",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testiotsqsstackEncryptionKeyAlias45D0FE2E": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackEncryptionKeyAlias45D0FE2E",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ]
+      },
+      "displayName": "iotsqs-use-kms-key-props"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

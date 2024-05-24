@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -10,9 +10,14 @@
  *  OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions
  *  and limitations under the License.
  */
-
-import * as cdk from '@aws-cdk/core';
+import 'source-map-support/register';
+import { App } from 'aws-cdk-lib';
 import { S3StaticWebsiteStack } from '../lib/s3-static-site-stack';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
-const app = new cdk.App();
-new S3StaticWebsiteStack(app, 'StaticWebsiteStack');
+const app = new App();
+const stack = new S3StaticWebsiteStack(app, 'StaticWebsiteStack');
+
+new IntegTest(stack, 'Integ', { testCases: [
+  stack
+] });

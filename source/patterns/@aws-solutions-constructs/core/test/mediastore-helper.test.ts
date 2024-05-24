@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,10 +11,12 @@
  *  and limitations under the License.
  */
 
-import '@aws-cdk/assert/jest';
-import { Stack } from '@aws-cdk/core';
-import * as mediastore from '@aws-cdk/aws-mediastore';
+import { Template } from 'aws-cdk-lib/assertions';
+import { Stack } from 'aws-cdk-lib';
+import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import { MediaStoreContainer } from '../lib/mediastore-helper';
+import { MediaStoreContainerProps } from '../lib/mediastore-defaults';
+import * as defaults from '../';
 
 test('MediaStore container override params', () => {
   const stack = new Stack();
@@ -28,7 +30,7 @@ test('MediaStore container override params', () => {
   };
 
   MediaStoreContainer(stack, mediaStoreContainerProps);
-  expect(stack).toHaveResourceLike('AWS::MediaStore::Container', {
+  Template.fromStack(stack).hasResourceProperties('AWS::MediaStore::Container', {
     AccessLoggingEnabled: true,
     CorsPolicy: [
       {
@@ -46,4 +48,31 @@ test('MediaStore container override params', () => {
     LifecyclePolicy: '{}',
     ContainerName: 'TestContainer'
   });
+});
+
+// ---------------------------
+// Prop Tests
+// ---------------------------
+test("Test fail MediaStore container check", () => {
+  const stack = new Stack();
+
+  const mediaStoreContainer = new mediastore.CfnContainer(
+    stack,
+    "placeholder",
+    MediaStoreContainerProps()
+  );
+
+  const props: defaults.MediaStoreProps = {
+    mediaStoreContainerProps: MediaStoreContainerProps(),
+    existingMediaStoreContainerObj: mediaStoreContainer,
+  };
+
+  const app = () => {
+    defaults.CheckMediaStoreProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError(
+    "Error - Either provide mediaStoreContainerProps or existingMediaStoreContainerObj, but not both.\n"
+  );
 });

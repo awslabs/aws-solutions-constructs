@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,12 +11,13 @@
  *  and limitations under the License.
  */
 
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as cdk from "@aws-cdk/core";
-import { FargateToS3 } from "../lib";
-import * as s3 from '@aws-cdk/aws-s3';
-import * as ecs from '@aws-cdk/aws-ecs';
+import * as cdk from "aws-cdk-lib";
+import { FargateToS3, FargateToS3Props } from "../lib";
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 test('New service/new bucket, public API, new VPC', () => {
   // An environment with region is required to enable logging on an ALB
@@ -31,7 +32,7 @@ test('New service/new bucket, public API, new VPC', () => {
   const construct = new FargateToS3(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName },
     containerDefinitionProps: { containerName },
     fargateTaskDefinitionProps: { family: familyName },
@@ -41,13 +42,14 @@ test('New service/new bucket, public API, new VPC', () => {
     bucketPermissions: ['Delete', 'Read', 'Write']
   });
 
-  expect(construct.vpc !== null);
-  expect(construct.service !== null);
-  expect(construct.container !== null);
-  expect(construct.s3Bucket !== null);
-  expect(construct.s3BucketInterface !== null);
+  expect(construct.vpc).toBeDefined();
+  expect(construct.service).toBeDefined();
+  expect(construct.container).toBeDefined();
+  expect(construct.s3Bucket).toBeDefined();
+  expect(construct.s3BucketInterface).toBeDefined();
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -57,22 +59,22 @@ test('New service/new bucket, public API, new VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName
   });
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     Family: familyName
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Cluster", {
+  template.hasResourceProperties("AWS::ECS::Cluster", {
     ClusterName: clusterName
   });
 
-  expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
+  template.hasResourceProperties("AWS::S3::Bucket", {
     BucketName: bucketName
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -157,7 +159,7 @@ test('New service/new bucket, public API, new VPC', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Essential: true,
@@ -185,15 +187,15 @@ test('New service/new bucket, public API, new VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
 
   // Confirm we created a Public/Private VPC
-  expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::S3::Bucket', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  template.hasResourceProperties('AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::S3::Bucket', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('New service/new bucket, private API, new VPC', () => {
@@ -207,7 +209,7 @@ test('New service/new bucket, private API, new VPC', () => {
   new FargateToS3(stack, 'test-construct', {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     bucketProps: {
       bucketName
     },
@@ -217,7 +219,8 @@ test('New service/new bucket, private API, new VPC', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -227,7 +230,7 @@ test('New service/new bucket, private API, new VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
+  template.hasResourceProperties("AWS::S3::Bucket", {
     BucketName: bucketName,
     BucketEncryption: {
       ServerSideEncryptionConfiguration: [{
@@ -238,15 +241,15 @@ test('New service/new bucket, private API, new VPC', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
+  template.hasResourceProperties("AWS::S3::Bucket", {
     BucketName: loggingBucketName
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.0.0.0/16'
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -302,10 +305,10 @@ test('New service/new bucket, private API, new VPC', () => {
   });
 
   // Confirm we created an Isolated VPC
-  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::S3::Bucket', 2);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
+  defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::S3::Bucket', 2);
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
 
 test('Specify bad bucket permission', () => {
@@ -319,7 +322,7 @@ test('Specify bad bucket permission', () => {
   const props = {
     publicApi,
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
-    vpcProps: { cidr: '172.0.0.0/16' },
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     bucketProps: {
       bucketName
     },
@@ -357,7 +360,8 @@ test('New service/existing bucket, private API, existing VPC', () => {
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
     DeploymentConfiguration: {
@@ -367,14 +371,14 @@ test('New service/existing bucket, private API, existing VPC', () => {
     PlatformVersion: ecs.FargatePlatformVersion.LATEST,
   });
 
-  expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
+  template.hasResourceProperties("AWS::S3::Bucket", {
     BucketName: bucketName
   });
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -415,10 +419,10 @@ test('New service/existing bucket, private API, existing VPC', () => {
   });
 
   // Confirm we created an Isolated VPC
-  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
-  expect(stack).toCountResources('AWS::S3::Bucket', 1);
+  defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
+  template.resourceCountIs('AWS::S3::Bucket', 1);
 });
 
 test('Existing service/new bucket, public API, existing VPC', () => {
@@ -433,20 +437,18 @@ test('Existing service/new bucket, public API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   new FargateToS3(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     bucketArnEnvironmentVariableName: customArn,
     bucketEnvironmentVariableName: customName,
@@ -458,11 +460,12 @@ test('Existing service/new bucket, public API, existing VPC', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Environment: [
@@ -507,19 +510,19 @@ test('Existing service/new bucket, public API, existing VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
+  template.hasResourceProperties("AWS::S3::Bucket", {
     BucketName: bucketName
   });
 
-  expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
+  template.hasResourceProperties("AWS::S3::Bucket", {
     BucketName: loggingBucketName
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -560,10 +563,10 @@ test('Existing service/new bucket, public API, existing VPC', () => {
   });
 
   // Confirm we created a Public/Private VPC
-  expect(stack).toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
-  expect(stack).toCountResources('AWS::S3::Bucket', 2);
+  template.hasResourceProperties('AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
+  template.resourceCountIs('AWS::S3::Bucket', 2);
 });
 
 // Test existing service/existing bucket, private API, new VPC
@@ -576,15 +579,13 @@ test('Existing service/existing bucket, private API, existing VPC', () => {
 
   const existingVpc = defaults.getTestVpc(stack, publicApi);
 
-  const [testService, testContainer] = defaults.CreateFargateService(stack,
-    'test',
-    existingVpc,
-    undefined,
-    defaults.fakeEcrRepoArn,
-    undefined,
-    undefined,
-    undefined,
-    { serviceName });
+  const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
+    constructVpc: existingVpc,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clientFargateServiceProps: {
+      serviceName
+    }
+  });
 
   const existingBucket = new s3.Bucket(stack, 'MyBucket', {
     bucketName
@@ -592,18 +593,19 @@ test('Existing service/existing bucket, private API, existing VPC', () => {
 
   new FargateToS3(stack, 'test-construct', {
     publicApi,
-    existingFargateServiceObject: testService,
-    existingContainerDefinitionObject: testContainer,
+    existingFargateServiceObject: createFargateServiceResponse.service,
+    existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
     existingVpc,
     existingBucketObj: existingBucket,
     bucketPermissions: ['Write']
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::Service", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName,
   });
 
-  expect(stack).toHaveResourceLike("AWS::ECS::TaskDefinition", {
+  template.hasResourceProperties("AWS::ECS::TaskDefinition", {
     ContainerDefinitions: [
       {
         Environment: [
@@ -648,14 +650,14 @@ test('Existing service/existing bucket, private API, existing VPC', () => {
     ]
   });
 
-  expect(stack).toHaveResourceLike("AWS::S3::Bucket", {
+  template.hasResourceProperties("AWS::S3::Bucket", {
     BucketName: bucketName
   });
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: '172.168.0.0/16'
   });
 
-  expect(stack).toHaveResourceLike("AWS::IAM::Policy", {
+  template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
         {
@@ -693,8 +695,64 @@ test('Existing service/existing bucket, private API, existing VPC', () => {
   });
 
   // Confirm we created an Isolated VPC
-  expect(stack).not.toHaveResourceLike('AWS::EC2::InternetGateway', {});
-  expect(stack).toCountResources('AWS::EC2::VPC', 1);
-  expect(stack).toCountResources('AWS::ECS::Service', 1);
-  expect(stack).toCountResources('AWS::S3::Bucket', 1);
+  defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+  template.resourceCountIs('AWS::ECS::Service', 1);
+  template.resourceCountIs('AWS::S3::Bucket', 1);
+});
+
+test('New service/new bucket, public API, new VPC', () => {
+  // An environment with region is required to enable logging on an ALB
+  const stack = new cdk.Stack();
+  const publicApi = true;
+  const clusterName = "custom-cluster-name";
+  const containerName = "custom-container-name";
+  const serviceName = "custom-service-name";
+  const bucketName = "custom-bucket-name";
+  const familyName = "family-name";
+
+  const props = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    bucketProps: { bucketName },
+    existingBucketObj: new s3.Bucket(stack, 'test-bucket', {}),
+    logS3AccessLogs: false,
+    bucketPermissions: ['Delete', 'Read', 'Write']
+  };
+  const app = () => {
+    new FargateToS3(stack, 'test-one', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+});
+
+test('Confirm that CheckVpcProps was called', () => {
+  const stack = new cdk.Stack();
+  const publicApi = true;
+  const clusterName = "custom-cluster-name";
+  const containerName = "custom-container-name";
+  const serviceName = "custom-service-name";
+  const familyName = "custom-family-name";
+
+  const props: FargateToS3Props = {
+    publicApi,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    existingVpc: defaults.getTestVpc(stack),
+    vpcProps: {  },
+  };
+
+  const app = () => {
+    new FargateToS3(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });

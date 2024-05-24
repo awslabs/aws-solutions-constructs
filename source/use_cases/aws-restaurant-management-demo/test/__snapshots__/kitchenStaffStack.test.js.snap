@@ -31,29 +31,10 @@ Object {
     },
   },
   "Parameters": Object {
-    "AssetParameters70bd4fd4308c840ccf8c83659645c3bdca4d50fd6103f8c37f9a1eac8781c08aArtifactHashF06EE331": Object {
-      "Description": "Artifact hash for asset \\"70bd4fd4308c840ccf8c83659645c3bdca4d50fd6103f8c37f9a1eac8781c08a\\"",
-      "Type": "String",
-    },
-    "AssetParameters70bd4fd4308c840ccf8c83659645c3bdca4d50fd6103f8c37f9a1eac8781c08aS3Bucket757BF55F": Object {
-      "Description": "S3 bucket for asset \\"70bd4fd4308c840ccf8c83659645c3bdca4d50fd6103f8c37f9a1eac8781c08a\\"",
-      "Type": "String",
-    },
-    "AssetParameters70bd4fd4308c840ccf8c83659645c3bdca4d50fd6103f8c37f9a1eac8781c08aS3VersionKey35483A87": Object {
-      "Description": "S3 key for asset version \\"70bd4fd4308c840ccf8c83659645c3bdca4d50fd6103f8c37f9a1eac8781c08a\\"",
-      "Type": "String",
-    },
-    "AssetParameterse2a5b561be3a843c8fd1113f472938bb46cece6597ae4222db21547cb0bf48d6ArtifactHash19177DB6": Object {
-      "Description": "Artifact hash for asset \\"e2a5b561be3a843c8fd1113f472938bb46cece6597ae4222db21547cb0bf48d6\\"",
-      "Type": "String",
-    },
-    "AssetParameterse2a5b561be3a843c8fd1113f472938bb46cece6597ae4222db21547cb0bf48d6S3Bucket387AC028": Object {
-      "Description": "S3 bucket for asset \\"e2a5b561be3a843c8fd1113f472938bb46cece6597ae4222db21547cb0bf48d6\\"",
-      "Type": "String",
-    },
-    "AssetParameterse2a5b561be3a843c8fd1113f472938bb46cece6597ae4222db21547cb0bf48d6S3VersionKeyAE03533F": Object {
-      "Description": "S3 key for asset version \\"e2a5b561be3a843c8fd1113f472938bb46cece6597ae4222db21547cb0bf48d6\\"",
-      "Type": "String",
+    "BootstrapVersion": Object {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
     },
   },
   "Resources": Object {
@@ -83,45 +64,12 @@ Object {
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParameters70bd4fd4308c840ccf8c83659645c3bdca4d50fd6103f8c37f9a1eac8781c08aS3Bucket757BF55F",
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                Object {
-                  "Fn::Select": Array [
-                    0,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameters70bd4fd4308c840ccf8c83659645c3bdca4d50fd6103f8c37f9a1eac8781c08aS3VersionKey35483A87",
-                        },
-                      ],
-                    },
-                  ],
-                },
-                Object {
-                  "Fn::Select": Array [
-                    1,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameters70bd4fd4308c840ccf8c83659645c3bdca4d50fd6103f8c37f9a1eac8781c08aS3VersionKey35483A87",
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            ],
-          },
+          "S3Key": "346587a19365916b741034524422c072ee85b4b82a0e01fb28ef8dc62bdb9737.zip",
         },
         "Environment": Object {
           "Variables": Object {
-            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "DDB_TABLE_NAME": Object {
               "Fn::ImportValue": "SharedStack:ExportsOutputRefordertable80C5609084F626AD",
             },
@@ -134,7 +82,7 @@ Object {
             "Arn",
           ],
         },
-        "Runtime": "nodejs14.x",
+        "Runtime": "nodejs16.x",
         "Timeout": 15,
         "TracingConfig": Object {
           "Mode": "Active",
@@ -290,45 +238,12 @@ Object {
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParameterse2a5b561be3a843c8fd1113f472938bb46cece6597ae4222db21547cb0bf48d6S3Bucket387AC028",
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                Object {
-                  "Fn::Select": Array [
-                    0,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameterse2a5b561be3a843c8fd1113f472938bb46cece6597ae4222db21547cb0bf48d6S3VersionKeyAE03533F",
-                        },
-                      ],
-                    },
-                  ],
-                },
-                Object {
-                  "Fn::Select": Array [
-                    1,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameterse2a5b561be3a843c8fd1113f472938bb46cece6597ae4222db21547cb0bf48d6S3VersionKeyAE03533F",
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            ],
-          },
+          "S3Key": "3839faae79dc98cb27aae54e5c7f0c281592853e7fb0f04238098ad02a25952c.zip",
         },
         "Environment": Object {
           "Variables": Object {
-            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "DDB_TABLE_NAME": Object {
               "Fn::ImportValue": "SharedStack:ExportsOutputRefordertable80C5609084F626AD",
             },
@@ -341,7 +256,7 @@ Object {
             "Arn",
           ],
         },
-        "Runtime": "nodejs14.x",
+        "Runtime": "nodejs16.x",
         "Timeout": 15,
         "TracingConfig": Object {
           "Mode": "Active",
@@ -656,13 +571,13 @@ Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W45",
-              "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checkes for it in AWS::ApiGateway::Deployment resource",
+              "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checks for it in AWS::ApiGateway::Deployment resource",
             },
           ],
         },
       },
       "Properties": Object {
-        "Description": "Automatically created by the RestApi construct",
+        "Description": "Demo: Kitchen staff API",
         "RestApiId": Object {
           "Ref": "kitchenstaffapiLambdaRestApiF3F7D4FC",
         },
@@ -1022,6 +937,33 @@ Object {
         },
       },
       "Type": "AWS::ApiGateway::Resource",
+    },
+  },
+  "Rules": Object {
+    "CheckBootstrapVersion": Object {
+      "Assertions": Array [
+        Object {
+          "Assert": Object {
+            "Fn::Not": Array [
+              Object {
+                "Fn::Contains": Array [
+                  Array [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  Object {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
     },
   },
 }

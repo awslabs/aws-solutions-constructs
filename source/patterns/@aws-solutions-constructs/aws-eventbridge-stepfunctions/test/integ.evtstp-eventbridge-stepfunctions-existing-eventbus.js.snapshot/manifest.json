@@ -1,0 +1,191 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "evtstpeventbridgestepfunctionsexistingeventbusIntegDefaultTestDeployAssertE502913F.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "evtstpeventbridgestepfunctionsexistingeventbusIntegDefaultTestDeployAssertE502913F.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "evtstpeventbridgestepfunctionsexistingeventbusIntegDefaultTestDeployAssertE502913F": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "evtstpeventbridgestepfunctionsexistingeventbusIntegDefaultTestDeployAssertE502913F.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "evtstpeventbridgestepfunctionsexistingeventbusIntegDefaultTestDeployAssertE502913F.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "evtstpeventbridgestepfunctionsexistingeventbusIntegDefaultTestDeployAssertE502913F.assets"
+      ],
+      "metadata": {
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "evtstp-eventbridge-stepfunctions-existing-eventbus/Integ/DefaultTest/DeployAssert"
+    },
+    "evtstp-eventbridge-stepfunctions-existing-eventbus.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "evtstp-eventbridge-stepfunctions-existing-eventbus.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "evtstp-eventbridge-stepfunctions-existing-eventbus": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "evtstp-eventbridge-stepfunctions-existing-eventbus.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ad8ab564a1918f4dcd4f380744be433d1ddd07d98528aa35913bc98a4d2a0683.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "evtstp-eventbridge-stepfunctions-existing-eventbus.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "evtstp-eventbridge-stepfunctions-existing-eventbus.assets"
+      ],
+      "metadata": {
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRole0C4CDE0B"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRoleDefaultPolicy126C8897"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionBF21E41F"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/existing-event-bus/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingeventbusA5B80487"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/test-eventbridge-stepfunctions-new-eventbus-construct/StateMachineLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsneweventbusconstructStateMachineLogGroup6DC6AD59"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/test-eventbridge-stepfunctions-new-eventbus-construct/StateMachine/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsneweventbusconstructStateMachineRole88F30AE1"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/test-eventbridge-stepfunctions-new-eventbus-construct/StateMachine/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsneweventbusconstructStateMachineRoleDefaultPolicy24AE094F"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/test-eventbridge-stepfunctions-new-eventbus-construct/StateMachine/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsneweventbusconstructStateMachine5B0C5609"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/test-eventbridge-stepfunctions-new-eventbus-construct/EventsRuleRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsneweventbusconstructEventsRuleRoleA589CEFC"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/test-eventbridge-stepfunctions-new-eventbus-construct/EventsRuleRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsneweventbusconstructEventsRuleRoleDefaultPolicyDEB2E89C"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/test-eventbridge-stepfunctions-new-eventbus-construct/EventsRule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsneweventbusconstructEventsRule471B9F20"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/test-eventbridge-stepfunctions-new-eventbus-construct/ExecutionFailedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsneweventbusconstructExecutionFailedAlarmF5234856"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/test-eventbridge-stepfunctions-new-eventbus-construct/ExecutionThrottledAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsneweventbusconstructExecutionThrottledAlarm08AFD5C8"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/test-eventbridge-stepfunctions-new-eventbus-construct/ExecutionAbortedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsneweventbusconstructExecutionAbortedAlarmAA68F975"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-existing-eventbus/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "evtstp-eventbridge-stepfunctions-existing-eventbus"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,14 +12,14 @@
  */
 
 // Imports
-import * as api from '@aws-cdk/aws-apigateway';
-import * as route53 from "@aws-cdk/aws-route53";
-import * as targets from '@aws-cdk/aws-route53-targets';
-import * as ec2 from '@aws-cdk/aws-ec2';
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as route53 from "aws-cdk-lib/aws-route53";
+import * as targets from 'aws-cdk-lib/aws-route53-targets';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as certificatemanager from '@aws-cdk/aws-certificatemanager';
+import * as certificatemanager from 'aws-cdk-lib/aws-certificatemanager';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
+import { Construct } from 'constructs';
 
 /**
  * The properties for the Route53ToApiGateway class.
@@ -28,8 +28,6 @@ export interface Route53ToApiGatewayProps {
   /**
    * Whether to create a public or private API. This value has implications
    * for the VPC, the type of Hosted Zone and the Application Load Balancer
-   *
-   * @default - None
    */
   readonly publicApi: boolean
   /**
@@ -63,7 +61,7 @@ export interface Route53ToApiGatewayProps {
   /**
    * An existing AWS Certificate Manager certificate for your custom domain name.
    *
-   * @defualt - None
+   * @default - None
    */
   readonly existingCertificateInterface: certificatemanager.ICertificate;
 }
@@ -86,7 +84,6 @@ export class Route53ToApiGateway extends Construct {
    */
   constructor(scope: Construct, id: string, props: Route53ToApiGatewayProps) {
     super(scope, id);
-    defaults.CheckProps(props);
 
     this.certificate = props.existingCertificateInterface;
 
@@ -97,32 +94,12 @@ export class Route53ToApiGateway extends Construct {
     // Existing Public or Private Hosted Zone
     if (props.existingHostedZoneInterface) {
       this.hostedZone = props.existingHostedZoneInterface;
+      this.ExistingHostedZonePropCheck(props);
 
-      if (props.existingVpc) {
-        throw new Error('Cannot provide an existing VPC to an existing Private Hosted Zone.');
-      }
-      if (props.privateHostedZoneProps) {
-        throw new Error('Must provide either existingHostedZoneInterface or privateHostedZoneProps, but not both.');
-      }
     } else { // Creating a Private Hosted Zone
-      if (props.publicApi) {
-        throw new Error('Public APIs require an existingHostedZone be passed in the Props object.');
-      } else {
-        if (!props.privateHostedZoneProps) {
-          throw new Error('Must provide either existingHostedZoneInterface or privateHostedZoneProps.');
-        }
-        if (props.privateHostedZoneProps.vpc) {
-          throw new Error('All VPC specs must be provided at the Construct level in Route53ToApiGatewayProps.');
-        }
-        if (!props.privateHostedZoneProps.zoneName) {
-          throw new Error('Must supply zoneName for Private Hosted Zone Props.');
-        }
-        if ( !this.vpc ) {
-          throw new Error('Must specify an existingVPC for the Private Hosted Zone in the construct props.');
-        }
-        const manufacturedProps: route53.PrivateHostedZoneProps = defaults.overrideProps(props.privateHostedZoneProps, { vpc: this.vpc });
-        this.hostedZone = new route53.PrivateHostedZone(this, `${id}-zone`, manufacturedProps);
-      }
+      this.PrivateHostedZonePropsChecks(props);
+      const manufacturedProps: route53.PrivateHostedZoneProps = defaults.overrideProps(props.privateHostedZoneProps, { vpc: this.vpc });
+      this.hostedZone = new route53.PrivateHostedZone(this, `${id}-zone`, manufacturedProps);
     }
 
     // Convert IRestApi to RestApi
@@ -134,10 +111,39 @@ export class Route53ToApiGateway extends Construct {
       certificate: this.certificate
     });
 
-    // Create A Record in custom domain to route traffic to API Gateway
-    new route53.ARecord(this, 'CustomDomainAliasRecord', {
+    const arecordProps: route53.ARecordProps = {
       zone: this.hostedZone,
       target: route53.RecordTarget.fromAlias(new targets.ApiGateway(this.apiGateway))
-    });
+    };
+
+    // Create A Record in custom domain to route traffic to API Gateway
+    new route53.ARecord(this, 'CustomDomainAliasRecord', arecordProps); // NOSONAR
+  }
+
+  private ExistingHostedZonePropCheck(props: Route53ToApiGatewayProps) {
+    if (props.existingVpc) {
+      throw new Error('Cannot provide an existing VPC to an existing Private Hosted Zone.');
+    }
+    if (props.privateHostedZoneProps) {
+      throw new Error('Must provide either existingHostedZoneInterface or privateHostedZoneProps, but not both.');
+    }
+  }
+
+  private PrivateHostedZonePropsChecks(props: Route53ToApiGatewayProps) {
+    if (props.publicApi) {
+      throw new Error('Public APIs require an existingHostedZone be passed in the Props object.');
+    }
+    if (!props.privateHostedZoneProps) {
+      throw new Error('Must provide either existingHostedZoneInterface or privateHostedZoneProps.');
+    }
+    if (props.privateHostedZoneProps.vpc) {
+      throw new Error('All VPC specs must be provided at the Construct level in Route53ToApiGatewayProps.');
+    }
+    if (!props.privateHostedZoneProps.zoneName) {
+      throw new Error('Must supply zoneName for Private Hosted Zone Props.');
+    }
+    if (!this.vpc) {
+      throw new Error('Must specify an existingVPC for the Private Hosted Zone in the construct props.');
+    }
   }
 }

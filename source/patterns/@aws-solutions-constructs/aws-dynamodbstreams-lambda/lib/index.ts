@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,13 +11,13 @@
  *  and limitations under the License.
  */
 
-import * as lambda from '@aws-cdk/aws-lambda';
-import { DynamoEventSourceProps, DynamoEventSource } from '@aws-cdk/aws-lambda-event-sources';
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { DynamoEventSourceProps, DynamoEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import * as sqs from '@aws-cdk/aws-sqs';
+import { Construct } from 'constructs';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 /**
  * @summary The properties for the DynamoDBStreamsToLambda Construct
@@ -82,17 +82,19 @@ export class DynamoDBStreamsToLambda extends Construct {
    */
   constructor(scope: Construct, id: string, props: DynamoDBStreamsToLambdaProps) {
     super(scope, id);
-    defaults.CheckProps(props);
+    defaults.CheckLambdaProps(props);
 
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,
       lambdaFunctionProps: props.lambdaFunctionProps
     });
 
-    [this.dynamoTableInterface, this.dynamoTable] = defaults.buildDynamoDBTableWithStream(this, {
+    const buildDynamoDBTableWithStreamResponse = defaults.buildDynamoDBTableWithStream(this, {
       dynamoTableProps: props.dynamoTableProps,
       existingTableInterface: props.existingTableInterface
     });
+    this.dynamoTableInterface = buildDynamoDBTableWithStreamResponse.tableInterface;
+    this.dynamoTable = buildDynamoDBTableWithStreamResponse.tableObject;
 
     // Grant DynamoDB Stream read perimssion for lambda function
     this.dynamoTableInterface.grantStreamRead(this.lambdaFunction.grantPrincipal);

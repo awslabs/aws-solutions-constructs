@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,14 +12,14 @@
  */
 
 // Imports
-import * as cdk from "@aws-cdk/core";
+import * as cdk from "aws-cdk-lib";
 import { WafwebaclToApiGateway } from "../lib";
-import * as api from '@aws-cdk/aws-apigateway';
-import * as waf from "@aws-cdk/aws-wafv2";
+import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as waf from "aws-cdk-lib/aws-wafv2";
 import * as defaults from '@aws-solutions-constructs/core';
-import '@aws-cdk/assert/jest';
+import { Template } from 'aws-cdk-lib/assertions';
 
-function deployConstruct(stack: cdk.Stack, constructProps?: waf.CfnWebACLProps) {
+function deployConstruct(stack: cdk.Stack, constructProps?: waf.CfnWebACLProps | any) {
   const restApi = new api.RestApi(stack, 'test-api', {});
   restApi.root.addMethod('ANY');
 
@@ -30,10 +30,7 @@ function deployConstruct(stack: cdk.Stack, constructProps?: waf.CfnWebACLProps) 
   return new WafwebaclToApiGateway(stack, 'test-wafwebacl-apigateway', props);
 }
 
-// --------------------------------------------------------------
-// Test error handling for existing WAF web ACL and user provided web ACL props
-// --------------------------------------------------------------
-test('Test error handling for existing WAF web ACL and user provider web ACL props', () => {
+test('Confirm CheckWafWebAclProps is called', () => {
   const stack = new cdk.Stack();
   const props: waf.CfnWebACLProps = {
     defaultAction: {
@@ -56,20 +53,18 @@ test('Test error handling for existing WAF web ACL and user provider web ACL pro
       existingWebaclObj: wafAcl,
       webaclProps: props
     });
-  }).toThrowError();
+  }).toThrowError('Error - Either provide existingWebaclObj or webaclProps, but not both.\n');
 });
 
-// --------------------------------------------------------------
-// Test default deployment
-// --------------------------------------------------------------
 test('Test default deployment', () => {
   const stack = new cdk.Stack();
   const construct = deployConstruct(stack);
 
-  expect(construct.webacl !== null);
-  expect(construct.apiGateway !== null);
+  expect(construct.webacl).toBeDefined();
+  expect(construct.apiGateway).toBeDefined();
 
-  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
     Rules: [
       {
         Name: "AWS-AWSManagedRulesBotControlRuleSet",
@@ -201,9 +196,6 @@ test('Test default deployment', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test web acl with user provided acl props
-// --------------------------------------------------------------
 test('Test user provided acl props', () => {
   const stack = new cdk.Stack();
   const webaclProps: waf.CfnWebACLProps =  {
@@ -224,7 +216,8 @@ test('Test user provided acl props', () => {
 
   deployConstruct(stack, webaclProps);
 
-  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
     VisibilityConfig: {
       CloudWatchMetricsEnabled: false,
       MetricName: "webACL",
@@ -271,9 +264,21 @@ test('Test user provided acl props', () => {
   });
 });
 
-// --------------------------------------------------------------
-// Test existing web ACL
-// --------------------------------------------------------------
+test('Test user provided partial acl props', () => {
+  const stack = new cdk.Stack();
+  const testName = 'test-name';
+  const webaclProps =  {
+    name: testName
+  };
+
+  deployConstruct(stack, webaclProps);
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
+    Name: testName
+  });
+});
+
 test('Test existing web ACL', () => {
   const stack = new cdk.Stack();
   const webacl: waf.CfnWebACL =  new waf.CfnWebACL(stack, 'test-webacl', {
@@ -296,7 +301,8 @@ test('Test existing web ACL', () => {
     existingApiGatewayInterface: restApi
   });
 
-  expect(stack).toHaveResource("AWS::WAFv2::WebACL", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
     VisibilityConfig: {
       CloudWatchMetricsEnabled: true,
       MetricName: "webACL",
@@ -304,5 +310,5 @@ test('Test existing web ACL', () => {
     }
   });
 
-  expect(stack).toCountResources("AWS::WAFv2::WebACL", 1);
+  template.resourceCountIs("AWS::WAFv2::WebACL", 1);
 });

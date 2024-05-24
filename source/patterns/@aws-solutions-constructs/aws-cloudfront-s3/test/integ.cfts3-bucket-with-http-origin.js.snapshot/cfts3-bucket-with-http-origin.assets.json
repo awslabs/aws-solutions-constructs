@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "7784393b6c7ef1ab1f86b83e1f54bc2d17017a55d6bddd9c5a7b0dd2c18c1d2b": {
+      "source": {
+        "path": "cfts3-bucket-with-http-origin.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "7784393b6c7ef1ab1f86b83e1f54bc2d17017a55d6bddd9c5a7b0dd2c18c1d2b.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

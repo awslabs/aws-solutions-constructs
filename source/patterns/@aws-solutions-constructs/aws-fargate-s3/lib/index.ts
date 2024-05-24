@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,13 +11,13 @@
  *  and limitations under the License.
  */
 
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as s3 from "@aws-cdk/aws-s3";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as s3 from "aws-cdk-lib/aws-s3";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from "@aws-cdk/core";
+import { Construct } from "constructs";
 import * as defaults from "@aws-solutions-constructs/core";
-import * as ecs from "@aws-cdk/aws-ecs";
-import * as iam from "@aws-cdk/aws-iam";
+import * as ecs from "aws-cdk-lib/aws-ecs";
+import * as iam from "aws-cdk-lib/aws-iam";
 
 export interface FargateToS3Props {
   /**
@@ -42,8 +42,6 @@ export interface FargateToS3Props {
   /**
    * Whether the construct is deploying a private or public API. This has implications for the VPC deployed
    * by this construct.
-   *
-   * @default - none
    */
   readonly publicApi: boolean;
   /**
@@ -88,7 +86,7 @@ export interface FargateToS3Props {
   /**
    * A Fargate Service already instantiated (probably by another Solutions Construct). If
    * this is specified, then no props defining a new service can be provided, including:
-   * existingImageObject, ecrImageVersion, containerDefintionProps, fargateTaskDefinitionProps,
+   * existingImageObject, ecrImageVersion, containerDefinitionProps, fargateTaskDefinitionProps,
    * ecrRepositoryArn, fargateServiceProps, clusterProps, existingClusterInterface. If this value
    * is provided, then existingContainerDefinitionObject must be provided as well.
    *
@@ -158,8 +156,14 @@ export class FargateToS3 extends Construct {
 
   constructor(scope: Construct, id: string, props: FargateToS3Props) {
     super(scope, id);
-    defaults.CheckProps(props);
+
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+
     defaults.CheckFargateProps(props);
+    defaults.CheckS3Props(props);
+    defaults.CheckVpcProps(props);
 
     if (props.bucketPermissions) {
       defaults.CheckListValues(['Delete', 'Read', 'Write'], props.bucketPermissions, 'bucket permission');
@@ -179,28 +183,30 @@ export class FargateToS3 extends Construct {
       // CheckFargateProps confirms that the container is provided
       this.container = props.existingContainerDefinitionObject!;
     } else {
-      [this.service, this.container] = defaults.CreateFargateService(
-        scope,
-        id,
-        this.vpc,
-        props.clusterProps,
-        props.ecrRepositoryArn,
-        props.ecrImageVersion,
-        props.fargateTaskDefinitionProps,
-        props.containerDefinitionProps,
-        props.fargateServiceProps
-      );
+      const createFargateServiceResponse = defaults.CreateFargateService(scope, id, {
+        constructVpc: this.vpc,
+        clientClusterProps: props.clusterProps,
+        ecrRepositoryArn: props.ecrRepositoryArn,
+        ecrImageVersion: props.ecrImageVersion,
+        clientFargateTaskDefinitionProps: props.fargateTaskDefinitionProps,
+        clientContainerDefinitionProps: props.containerDefinitionProps,
+        clientFargateServiceProps: props.fargateServiceProps
+      });
+      this.service = createFargateServiceResponse.service;
+      this.container = createFargateServiceResponse.containerDefinition;
     }
 
     // Setup the S3 Bucket
     let bucket: s3.IBucket;
 
     if (!props.existingBucketObj) {
-      [this.s3Bucket, this.s3LoggingBucket] = defaults.buildS3Bucket(this, {
+      const buildS3BucketResponse = defaults.buildS3Bucket(this, {
         bucketProps: props.bucketProps,
         loggingBucketProps: props.loggingBucketProps,
         logS3AccessLogs: props.logS3AccessLogs
       });
+      this.s3Bucket = buildS3BucketResponse.bucket;
+      this.s3LoggingBucket = buildS3BucketResponse.loggingBucket;
       bucket = this.s3Bucket;
     } else {
       bucket = props.existingBucketObj;
@@ -234,10 +240,14 @@ export class FargateToS3 extends Construct {
     }
 
     // Add environment variables
-    const bucketArnEnvironmentVariableName = props.bucketArnEnvironmentVariableName || 'S3_BUCKET_ARN';
+    const bucketArnEnvironmentVariableName = this.SetStringWithDefault(props.bucketArnEnvironmentVariableName, 'S3_BUCKET_ARN');
     this.container.addEnvironment(bucketArnEnvironmentVariableName, this.s3BucketInterface.bucketArn);
-    const bucketEnvironmentVariableName = props.bucketEnvironmentVariableName || 'S3_BUCKET_NAME';
+    const bucketEnvironmentVariableName = this.SetStringWithDefault(props.bucketEnvironmentVariableName, 'S3_BUCKET_NAME');
     this.container.addEnvironment(bucketEnvironmentVariableName, this.s3BucketInterface.bucketName);
 
+  }
+
+  private SetStringWithDefault(value: string | undefined, defaultValue: string) {
+    return value || defaultValue;
   }
 }

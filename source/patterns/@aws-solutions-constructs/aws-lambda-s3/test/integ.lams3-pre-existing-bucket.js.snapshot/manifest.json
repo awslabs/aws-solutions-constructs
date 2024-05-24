@@ -1,0 +1,173 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "lams3preexistingbucketIntegDefaultTestDeployAssert46B8061C.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lams3preexistingbucketIntegDefaultTestDeployAssert46B8061C.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lams3preexistingbucketIntegDefaultTestDeployAssert46B8061C": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lams3preexistingbucketIntegDefaultTestDeployAssert46B8061C.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lams3preexistingbucketIntegDefaultTestDeployAssert46B8061C.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lams3preexistingbucketIntegDefaultTestDeployAssert46B8061C.assets"
+      ],
+      "metadata": {
+        "/lams3-pre-existing-bucket/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lams3-pre-existing-bucket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lams3-pre-existing-bucket/Integ/DefaultTest/DeployAssert"
+    },
+    "lams3-pre-existing-bucket.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lams3-pre-existing-bucket.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lams3-pre-existing-bucket": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lams3-pre-existing-bucket.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/01acd519a5baa389d9a30f99738fcdde97f25fef9906b9c4b06367014e9b28a8.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lams3-pre-existing-bucket.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lams3-pre-existing-bucket.assets"
+      ],
+      "metadata": {
+        "/lams3-pre-existing-bucket/scrapBucketLog/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketLog7B53B25C"
+          }
+        ],
+        "/lams3-pre-existing-bucket/scrapBucketLog/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketLogPolicy2972C573"
+          }
+        ],
+        "/lams3-pre-existing-bucket/scrapBucketLog/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketLogAutoDeleteObjectsCustomResource307F3D47"
+          }
+        ],
+        "/lams3-pre-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/lams3-pre-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/lams3-pre-existing-bucket/scrapBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketB11863B7"
+          }
+        ],
+        "/lams3-pre-existing-bucket/scrapBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketPolicy189B0607"
+          }
+        ],
+        "/lams3-pre-existing-bucket/scrapBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275"
+          }
+        ],
+        "/lams3-pre-existing-bucket/test-lambda-s3-pre-existing-bucket/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdas3preexistingbucketLambdaFunctionServiceRole9AC7CED0"
+          }
+        ],
+        "/lams3-pre-existing-bucket/test-lambda-s3-pre-existing-bucket/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdas3preexistingbucketLambdaFunctionServiceRoleDefaultPolicy1B2212F1"
+          }
+        ],
+        "/lams3-pre-existing-bucket/test-lambda-s3-pre-existing-bucket/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdas3preexistingbucketLambdaFunctionA56FB2C7"
+          }
+        ],
+        "/lams3-pre-existing-bucket/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lams3-pre-existing-bucket/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lams3-pre-existing-bucket"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

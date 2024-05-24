@@ -1,0 +1,641 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger": {
+        "id": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger",
+        "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger",
+        "children": {
+          "test-construct": {
+            "id": "test-construct",
+            "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/test-construct",
+            "children": {
+              "EncryptionKey": {
+                "id": "EncryptionKey",
+                "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/test-construct/EncryptionKey",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/test-construct/EncryptionKey/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::KMS::Key",
+                      "aws:cdk:cloudformation:props": {
+                        "enableKeyRotation": true,
+                        "keyPolicy": {
+                          "Statement": [
+                            {
+                              "Action": "kms:*",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":iam::",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":root"
+                                    ]
+                                  ]
+                                }
+                              },
+                              "Resource": "*"
+                            },
+                            {
+                              "Action": [
+                                "kms:Decrypt",
+                                "kms:Encrypt",
+                                "kms:GenerateDataKey*",
+                                "kms:ReEncrypt*"
+                              ],
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "events.amazonaws.com"
+                              },
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_kms.CfnKey",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_kms.Key",
+                  "version": "2.118.0"
+                }
+              },
+              "SnsTopic": {
+                "id": "SnsTopic",
+                "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/test-construct/SnsTopic",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/test-construct/SnsTopic/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SNS::Topic",
+                      "aws:cdk:cloudformation:props": {
+                        "kmsMasterKeyId": {
+                          "Fn::GetAtt": [
+                            "testconstructEncryptionKey6153B053",
+                            "Arn"
+                          ]
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sns.CfnTopic",
+                      "version": "2.118.0"
+                    }
+                  },
+                  "Policy": {
+                    "id": "Policy",
+                    "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/test-construct/SnsTopic/Policy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/test-construct/SnsTopic/Policy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::SNS::TopicPolicy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "SNS:AddPermission",
+                                    "SNS:DeleteTopic",
+                                    "SNS:GetTopicAttributes",
+                                    "SNS:ListSubscriptionsByTopic",
+                                    "SNS:Publish",
+                                    "SNS:Receive",
+                                    "SNS:RemovePermission",
+                                    "SNS:SetTopicAttributes",
+                                    "SNS:Subscribe"
+                                  ],
+                                  "Condition": {
+                                    "StringEquals": {
+                                      "AWS:SourceOwner": {
+                                        "Ref": "AWS::AccountId"
+                                      }
+                                    }
+                                  },
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "AWS": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":iam::",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":root"
+                                        ]
+                                      ]
+                                    }
+                                  },
+                                  "Resource": {
+                                    "Ref": "testconstructSnsTopic44188529"
+                                  },
+                                  "Sid": "TopicOwnerOnlyAccess"
+                                },
+                                {
+                                  "Action": [
+                                    "SNS:AddPermission",
+                                    "SNS:DeleteTopic",
+                                    "SNS:GetTopicAttributes",
+                                    "SNS:ListSubscriptionsByTopic",
+                                    "SNS:Publish",
+                                    "SNS:Receive",
+                                    "SNS:RemovePermission",
+                                    "SNS:SetTopicAttributes",
+                                    "SNS:Subscribe"
+                                  ],
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": {
+                                    "Ref": "testconstructSnsTopic44188529"
+                                  },
+                                  "Sid": "HttpsOnly"
+                                },
+                                {
+                                  "Action": "sns:Publish",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "events.amazonaws.com"
+                                  },
+                                  "Resource": {
+                                    "Ref": "testconstructSnsTopic44188529"
+                                  },
+                                  "Sid": "2"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "topics": [
+                              {
+                                "Ref": "testconstructSnsTopic44188529"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_sns.CfnTopicPolicy",
+                          "version": "2.118.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sns.TopicPolicy",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sns.Topic",
+                  "version": "2.118.0"
+                }
+              },
+              "EventsRule": {
+                "id": "EventsRule",
+                "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/test-construct/EventsRule",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/test-construct/EventsRule/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Events::Rule",
+                      "aws:cdk:cloudformation:props": {
+                        "scheduleExpression": "rate(1 minute)",
+                        "state": "ENABLED",
+                        "targets": [
+                          {
+                            "id": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "evtsnslongstatest-construct-",
+                                  {
+                                    "Fn::Select": [
+                                      2,
+                                      {
+                                        "Fn::Split": [
+                                          "/",
+                                          {
+                                            "Ref": "AWS::StackId"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              ]
+                            },
+                            "arn": {
+                              "Ref": "testconstructSnsTopic44188529"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_events.CfnRule",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_events.Rule",
+                  "version": "2.118.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-solutions-constructs/aws-eventbridge-sns.EventbridgeToSns",
+              "version": "2.50.0"
+            }
+          },
+          "second-construct": {
+            "id": "second-construct",
+            "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/second-construct",
+            "children": {
+              "EncryptionKey": {
+                "id": "EncryptionKey",
+                "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/second-construct/EncryptionKey",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/second-construct/EncryptionKey/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::KMS::Key",
+                      "aws:cdk:cloudformation:props": {
+                        "enableKeyRotation": true,
+                        "keyPolicy": {
+                          "Statement": [
+                            {
+                              "Action": "kms:*",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":iam::",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":root"
+                                    ]
+                                  ]
+                                }
+                              },
+                              "Resource": "*"
+                            },
+                            {
+                              "Action": [
+                                "kms:Decrypt",
+                                "kms:Encrypt",
+                                "kms:GenerateDataKey*",
+                                "kms:ReEncrypt*"
+                              ],
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "events.amazonaws.com"
+                              },
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_kms.CfnKey",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_kms.Key",
+                  "version": "2.118.0"
+                }
+              },
+              "SnsTopic": {
+                "id": "SnsTopic",
+                "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/second-construct/SnsTopic",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/second-construct/SnsTopic/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SNS::Topic",
+                      "aws:cdk:cloudformation:props": {
+                        "kmsMasterKeyId": {
+                          "Fn::GetAtt": [
+                            "secondconstructEncryptionKey6A63A25A",
+                            "Arn"
+                          ]
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sns.CfnTopic",
+                      "version": "2.118.0"
+                    }
+                  },
+                  "Policy": {
+                    "id": "Policy",
+                    "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/second-construct/SnsTopic/Policy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/second-construct/SnsTopic/Policy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::SNS::TopicPolicy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "SNS:AddPermission",
+                                    "SNS:DeleteTopic",
+                                    "SNS:GetTopicAttributes",
+                                    "SNS:ListSubscriptionsByTopic",
+                                    "SNS:Publish",
+                                    "SNS:Receive",
+                                    "SNS:RemovePermission",
+                                    "SNS:SetTopicAttributes",
+                                    "SNS:Subscribe"
+                                  ],
+                                  "Condition": {
+                                    "StringEquals": {
+                                      "AWS:SourceOwner": {
+                                        "Ref": "AWS::AccountId"
+                                      }
+                                    }
+                                  },
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "AWS": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":iam::",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":root"
+                                        ]
+                                      ]
+                                    }
+                                  },
+                                  "Resource": {
+                                    "Ref": "secondconstructSnsTopicCE75056B"
+                                  },
+                                  "Sid": "TopicOwnerOnlyAccess"
+                                },
+                                {
+                                  "Action": [
+                                    "SNS:AddPermission",
+                                    "SNS:DeleteTopic",
+                                    "SNS:GetTopicAttributes",
+                                    "SNS:ListSubscriptionsByTopic",
+                                    "SNS:Publish",
+                                    "SNS:Receive",
+                                    "SNS:RemovePermission",
+                                    "SNS:SetTopicAttributes",
+                                    "SNS:Subscribe"
+                                  ],
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": {
+                                    "Ref": "secondconstructSnsTopicCE75056B"
+                                  },
+                                  "Sid": "HttpsOnly"
+                                },
+                                {
+                                  "Action": "sns:Publish",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "events.amazonaws.com"
+                                  },
+                                  "Resource": {
+                                    "Ref": "secondconstructSnsTopicCE75056B"
+                                  },
+                                  "Sid": "2"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "topics": [
+                              {
+                                "Ref": "secondconstructSnsTopicCE75056B"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_sns.CfnTopicPolicy",
+                          "version": "2.118.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sns.TopicPolicy",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sns.Topic",
+                  "version": "2.118.0"
+                }
+              },
+              "EventsRule": {
+                "id": "EventsRule",
+                "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/second-construct/EventsRule",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/second-construct/EventsRule/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Events::Rule",
+                      "aws:cdk:cloudformation:props": {
+                        "scheduleExpression": "rate(1 minute)",
+                        "state": "ENABLED",
+                        "targets": [
+                          {
+                            "id": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "evtsnslongstacond-construct-",
+                                  {
+                                    "Fn::Select": [
+                                      2,
+                                      {
+                                        "Fn::Split": [
+                                          "/",
+                                          {
+                                            "Ref": "AWS::StackId"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              ]
+                            },
+                            "arn": {
+                              "Ref": "secondconstructSnsTopicCE75056B"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_events.CfnRule",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_events.Rule",
+                  "version": "2.118.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-solutions-constructs/aws-eventbridge-sns.EventbridgeToSns",
+              "version": "2.50.0"
+            }
+          },
+          "Integ": {
+            "id": "Integ",
+            "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/Integ",
+            "children": {
+              "DefaultTest": {
+                "id": "DefaultTest",
+                "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/Integ/DefaultTest",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/Integ/DefaultTest/Default",
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.0.0"
+                    }
+                  },
+                  "DeployAssert": {
+                    "id": "DeployAssert",
+                    "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/Integ/DefaultTest/DeployAssert",
+                    "children": {
+                      "BootstrapVersion": {
+                        "id": "BootstrapVersion",
+                        "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/Integ/DefaultTest/DeployAssert/BootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnParameter",
+                          "version": "2.118.0"
+                        }
+                      },
+                      "CheckBootstrapVersion": {
+                        "id": "CheckBootstrapVersion",
+                        "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnRule",
+                          "version": "2.118.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Stack",
+                      "version": "2.118.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
+                  "version": "2.118.0-alpha.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
+              "version": "2.118.0-alpha.0"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.118.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "evtsns-long-stack-nameThisIsTheLongestNameForAStackItMustBeGreaterThanSixtyFourCharactersLongAndThisShouldJustAboutDoItNoItMustBeABitLonger/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.118.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.118.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.0.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.118.0"
+    }
+  }
+}

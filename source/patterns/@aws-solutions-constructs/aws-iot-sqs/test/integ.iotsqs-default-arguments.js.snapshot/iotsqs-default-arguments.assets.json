@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "902a33b7ce4ddb47244fc7d63c8934696e4d761ce3cc13b277bc4bcc25498473": {
+      "source": {
+        "path": "iotsqs-default-arguments.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "902a33b7ce4ddb47244fc7d63c8934696e4d761ce3cc13b277bc4bcc25498473.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

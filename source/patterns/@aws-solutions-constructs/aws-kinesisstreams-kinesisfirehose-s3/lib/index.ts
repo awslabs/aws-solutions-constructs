@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,17 +11,17 @@
  *  and limitations under the License.
  */
 
-import * as kinesisfirehose from '@aws-cdk/aws-kinesisfirehose';
+import * as kinesisfirehose from 'aws-cdk-lib/aws-kinesisfirehose';
 import * as kdfToS3 from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
-import { Construct } from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
+import { Construct } from 'constructs';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as iam from '@aws-cdk/aws-iam';
-import * as kinesis from '@aws-cdk/aws-kinesis';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as kinesis from 'aws-cdk-lib/aws-kinesis';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 import { overrideProps } from '@aws-solutions-constructs/core';
-import * as logs from '@aws-cdk/aws-logs';
+import * as logs from 'aws-cdk-lib/aws-logs';
 
 /**
  * The properties for the KinesisStreamsToKinesisFirehoseToS3 class.
@@ -112,7 +112,13 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
    */
   constructor(scope: Construct, id: string, props: KinesisStreamsToKinesisFirehoseToS3Props) {
     super(scope, id);
-    defaults.CheckProps(props);
+
+    // All our tests are based upon this behavior being on, so we're setting
+    // context here rather than assuming the client will set it
+    this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+
+    defaults.CheckKinesisStreamProps(props);
+    // CheckS3Props() is called by the internal aws-kinesisfirehose-s3 construct
 
     // Setup the Kinesis Stream
     this.kinesisStream = defaults.buildKinesisStream(this, {
@@ -137,7 +143,7 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
       }
     });
 
-    // This Construct requires that the deliveryStreamType be overriden regardless of what is specified in the user props
+    // This Construct requires that the deliveryStreamType be overridden regardless of what is specified in the user props
     if (props.kinesisFirehoseProps) {
       if (props.kinesisFirehoseProps.deliveryStreamType !== undefined) {
         defaults.printWarning('Overriding deliveryStreamType type to be KinesisStreamAsSource');

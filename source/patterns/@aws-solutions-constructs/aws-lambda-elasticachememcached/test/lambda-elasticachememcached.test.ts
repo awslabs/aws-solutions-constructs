@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -12,15 +12,12 @@
  */
 
 // Imports
-// import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
-// import { LambdaToElasticachememcached, LambdaToElasticachememcachedProps } from "../lib";
-// import * as lambda from '@aws-cdk/aws-lambda';
-// import * as cdk from "@aws-cdk/core";
-import "@aws-cdk/assert/jest";
 import * as defaults from "@aws-solutions-constructs/core";
-import * as cdk from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import { LambdaToElasticachememcached } from "../lib";
+import * as cdk from "aws-cdk-lib";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import { LambdaToElasticachememcached, LambdaToElasticachememcachedProps } from "../lib";
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import { Template } from "aws-cdk-lib/assertions";
 
 const testPort = 12321;
 const testFunctionName = "something-unique";
@@ -34,12 +31,13 @@ test("When provided a VPC, does not create a second VPC", () => {
     existingVpc,
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: ".handler",
     },
   });
 
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::EC2::VPC", 1);
 });
 
 test("When provided an existingCache, does not create a second cache", () => {
@@ -53,13 +51,14 @@ test("When provided an existingCache, does not create a second cache", () => {
     existingCache,
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: ".handler",
     },
   });
 
-  expect(stack).toCountResources("AWS::ElastiCache::CacheCluster", 1);
-  expect(stack).toHaveResourceLike("AWS::ElastiCache::CacheCluster", {
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::ElastiCache::CacheCluster", 1);
+  template.hasResourceProperties("AWS::ElastiCache::CacheCluster", {
     Port: testPort,
   });
 });
@@ -70,7 +69,7 @@ test("When provided an existingFunction, does not create a second function", () 
   const existingVpc = defaults.getTestVpc(stack);
   const existingFunction = new lambda.Function(stack, "test-function", {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: ".handler",
     vpc: existingVpc,
     functionName: testFunctionName,
@@ -81,8 +80,9 @@ test("When provided an existingFunction, does not create a second function", () 
     existingLambdaObj: existingFunction,
   });
 
-  expect(stack).toCountResources("AWS::Lambda::Function", 1);
-  expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::Lambda::Function", 1);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     FunctionName: testFunctionName,
   });
 });
@@ -95,13 +95,14 @@ test("Test custom environment variable name", () => {
   new LambdaToElasticachememcached(stack, "test-construct", {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: ".handler",
     },
     cacheEndpointEnvironmentVariableName: testEnvironmentVariableName,
   });
 
-  expect(stack).toHaveResource("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
@@ -136,13 +137,14 @@ test("Test setting custom function properties", () => {
   new LambdaToElasticachememcached(stack, "test-cache", {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: ".handler",
       functionName: testFunctionName,
     },
   });
 
-  expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
     FunctionName: testFunctionName,
   });
 });
@@ -153,7 +155,7 @@ test("Test setting custom cache properties", () => {
   new LambdaToElasticachememcached(stack, "test-cache", {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: ".handler",
     },
     cacheProps: {
@@ -161,7 +163,8 @@ test("Test setting custom cache properties", () => {
     },
   });
 
-  expect(stack).toHaveResourceLike("AWS::ElastiCache::CacheCluster", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ElastiCache::CacheCluster", {
     ClusterName: testClusterName,
   });
 });
@@ -172,15 +175,16 @@ test("Test setting custom VPC properties", () => {
   new LambdaToElasticachememcached(stack, "test-cache", {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: ".handler",
     },
     vpcProps: {
-      cidr: testCidrBlock,
+      ipAddresses: ec2.IpAddresses.cidr(testCidrBlock),
     },
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::VPC", {
     CidrBlock: testCidrBlock,
   });
 });
@@ -190,16 +194,17 @@ test("Test all default values", () => {
   new LambdaToElasticachememcached(stack, "test-cache", {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: ".handler",
     },
   });
 
-  expect(stack).toCountResources("AWS::Lambda::Function", 1);
-  expect(stack).toCountResources("AWS::ElastiCache::CacheCluster", 1);
-  expect(stack).toCountResources("AWS::EC2::VPC", 1);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::Lambda::Function", 1);
+  template.resourceCountIs("AWS::ElastiCache::CacheCluster", 1);
+  template.resourceCountIs("AWS::EC2::VPC", 1);
 
-  expect(stack).toHaveResourceLike("AWS::Lambda::Function", {
+  template.hasResourceProperties("AWS::Lambda::Function", {
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
@@ -226,11 +231,11 @@ test("Test all default values", () => {
       },
     },
     Handler: ".handler",
-    Runtime: "nodejs14.x",
+    Runtime: "nodejs16.x",
   });
 
   // All values taken from elasticache-defaults.ts
-  expect(stack).toHaveResourceLike("AWS::ElastiCache::CacheCluster", {
+  template.hasResourceProperties("AWS::ElastiCache::CacheCluster", {
     CacheNodeType: "cache.t3.medium",
     Engine: "memcached",
     NumCacheNodes: 2,
@@ -238,7 +243,7 @@ test("Test all default values", () => {
     AZMode: "cross-az",
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::VPC", {
+  template.hasResourceProperties("AWS::EC2::VPC", {
     EnableDnsHostnames: true,
     EnableDnsSupport: true,
   });
@@ -250,7 +255,7 @@ test('Test for the proper self referencing security group', () => {
   new LambdaToElasticachememcached(stack, "test-cache", {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: ".handler",
     },
     cacheProps: {
@@ -258,7 +263,8 @@ test('Test for the proper self referencing security group', () => {
     }
   });
 
-  expect(stack).toHaveResourceLike("AWS::EC2::SecurityGroupIngress", {
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::EC2::SecurityGroupIngress", {
     IpProtocol: "TCP",
     FromPort: 22223,
     ToPort: 22223,
@@ -276,7 +282,7 @@ test('Test for the proper self referencing security group', () => {
     },
   });
 });
-// test('', () => {});
+
 test("Test error from existingCache and no VPC", () => {
   const stack = new cdk.Stack();
 
@@ -288,7 +294,7 @@ test("Test error from existingCache and no VPC", () => {
       existingCache,
       lambdaFunctionProps: {
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         handler: ".handler",
       },
     });
@@ -305,7 +311,7 @@ test("Test error from existing function and no VPC", () => {
   const existingVpc = defaults.getTestVpc(stack);
   const existingFunction = new lambda.Function(stack, "test-function", {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_14_X,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: ".handler",
     vpc: existingVpc,
   });
@@ -336,7 +342,7 @@ test("Test error from existingCache and cacheProps", () => {
       },
       lambdaFunctionProps: {
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         handler: ".handler",
       },
     });
@@ -356,11 +362,60 @@ test("Test error from trying to launch Redis", () => {
       },
       lambdaFunctionProps: {
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_14_X,
+        runtime: lambda.Runtime.NODEJS_16_X,
         handler: ".handler",
       },
     });
   };
 
   expect(app).toThrowError("This construct can only launch memcached clusters");
+});
+
+test("Test error from existingCache and no VPC", () => {
+  const stack = new cdk.Stack();
+
+  const vpc = defaults.getTestVpc(stack);
+
+  const app = () => {
+    new LambdaToElasticachememcached(stack, "testStack", {
+      lambdaFunctionProps: {
+        code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+        runtime: lambda.Runtime.NODEJS_16_X,
+        handler: ".handler",
+      },
+      vpcProps: {},
+      existingVpc: vpc
+    });
+  };
+
+  expect(app).toThrowError(
+    'Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n'
+  );
+});
+
+test('Confirm call to CheckLambdaProps', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const testVpc = defaults.getTestVpc(stack);
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: lambda.Runtime.NODEJS_16_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    vpc: testVpc,
+  });
+
+  const props: LambdaToElasticachememcachedProps = {
+    existingVpc: testVpc,
+    lambdaFunctionProps: {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    },
+    existingLambdaObj: lambdaFunction,
+  };
+  const app = () => {
+    new LambdaToElasticachememcached(stack, 'test-construct', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

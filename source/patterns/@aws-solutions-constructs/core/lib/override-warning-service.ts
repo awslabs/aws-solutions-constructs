@@ -1,5 +1,5 @@
 /**
- *  Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,10 +11,17 @@
  *  and limitations under the License.
  */
 
+/*
+ *  The functions found here in the core library are for internal use and can be changed
+ *  or removed outside of a major release. We recommend against calling them directly from client code.
+ */
+
 import * as deepdiff from 'deep-diff';
 import { printWarning } from './utils';
 
 /**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Emits a warning to the console when a prescriptive default value is overridden by the user.
  * @param {object} defaultProps the prescriptive defaults for the pattern.
  * @param {object} userProps the properties provided by the user, to be compared against the defaultProps.
@@ -44,9 +51,12 @@ export function flagOverriddenDefaults(defaultProps: object, userProps: object) 
  * 'Argument to Intrinsic must be a plain value object', so such props are excluded from the diff check.
  */
 function _prefilter(_path: any[], _key: string): boolean {
-  const prefilters = ['maxRecordAge', 'expiration', 'transitionAfter', 'destination', 'timeout', 'period'];
+  const prefilters = ['maxRecordAge', 'expiration', 'transitionAfter', 'destination', 'timeout', 'period', 'node'];
 
   if (prefilters.indexOf(_key) >= 0) {
+    if (_key !== 'node') {
+      printWarning(`Possible override of ${_key} value.`);
+    }
     return true;
   }
   return false;
@@ -76,7 +86,7 @@ function findOverrides(defaultProps: object, userProps: object) {
 function formatOverridePath(path: string | string[]) {
   return (path !== undefined && path.length > 1) ? path.toString()
     .replace(/,/g, '][')
-    .replace(/\]{1}/, '')
+    .replace(/\]/, '')
     .replace(/$/, ']') : path;
 }
 

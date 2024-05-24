@@ -1,0 +1,161 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "kinlamnoargumentsIntegDefaultTestDeployAssertE5672C42.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "kinlamnoargumentsIntegDefaultTestDeployAssertE5672C42.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "kinlamnoargumentsIntegDefaultTestDeployAssertE5672C42": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "kinlamnoargumentsIntegDefaultTestDeployAssertE5672C42.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "kinlamnoargumentsIntegDefaultTestDeployAssertE5672C42.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "kinlamnoargumentsIntegDefaultTestDeployAssertE5672C42.assets"
+      ],
+      "metadata": {
+        "/kinlam-no-arguments/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/kinlam-no-arguments/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "kinlam-no-arguments/Integ/DefaultTest/DeployAssert"
+    },
+    "kinlam-no-arguments.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "kinlam-no-arguments.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "kinlam-no-arguments": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "kinlam-no-arguments.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/41c19f89d09dd3b53b8ab155f7016c8e1096f4e060b7c39dcce68eb513bb8366.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "kinlam-no-arguments.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "kinlam-no-arguments.assets"
+      ],
+      "metadata": {
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/KinesisStream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaKinesisStream374D6D56"
+          }
+        ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaLambdaFunctionServiceRoleAD98836E"
+          }
+        ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaLambdaFunctionServiceRoleDefaultPolicy4929C676"
+          }
+        ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaLambdaFunctionB9A91CA7"
+          }
+        ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunction/KinesisEventSource:kinlamnoargumentstestkinesisstreamslambdaKinesisStreamB15C5952/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaLambdaFunctionKinesisEventSourcekinlamnoargumentstestkinesisstreamslambdaKinesisStreamB15C5952638E81E3"
+          }
+        ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/SqsDlqQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaSqsDlqQueue5971C9BA"
+          }
+        ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/SqsDlqQueue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaSqsDlqQueuePolicy670A2EC7"
+          }
+        ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/KinesisStreamGetRecordsIteratorAgeAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaKinesisStreamGetRecordsIteratorAgeAlarmFB74C363"
+          }
+        ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/KinesisStreamReadProvisionedThroughputExceededAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaKinesisStreamReadProvisionedThroughputExceededAlarm5ABF4346"
+          }
+        ],
+        "/kinlam-no-arguments/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/kinlam-no-arguments/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "kinlam-no-arguments"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

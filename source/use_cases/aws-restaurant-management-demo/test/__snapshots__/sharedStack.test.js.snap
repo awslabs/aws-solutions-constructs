@@ -3,17 +3,10 @@
 exports[`test-shared-stack 1`] = `
 Object {
   "Parameters": Object {
-    "AssetParameters2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9ArtifactHash1A6D75D8": Object {
-      "Description": "Artifact hash for asset \\"2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9\\"",
-      "Type": "String",
-    },
-    "AssetParameters2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9S3Bucket7C16E5DF": Object {
-      "Description": "S3 bucket for asset \\"2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9\\"",
-      "Type": "String",
-    },
-    "AssetParameters2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9S3VersionKeyEA7A0324": Object {
-      "Description": "S3 key for asset version \\"2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9\\"",
-      "Type": "String",
+    "BootstrapVersion": Object {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
     },
   },
   "Resources": Object {
@@ -93,7 +86,11 @@ Object {
               Object {
                 "Ref": "AWS::Partition",
               },
-              ":iam::ACCOUNT_NUMBER_HERE:role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable",
+              ":iam::",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable",
             ],
           ],
         },
@@ -121,50 +118,45 @@ Object {
     "shareddbfunctionslayerA9CFEC5A": Object {
       "Properties": Object {
         "CompatibleRuntimes": Array [
-          "nodejs14.x",
+          "nodejs16.x",
         ],
         "Content": Object {
           "S3Bucket": Object {
-            "Ref": "AssetParameters2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9S3Bucket7C16E5DF",
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-us-east-1",
           },
-          "S3Key": Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                Object {
-                  "Fn::Select": Array [
-                    0,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameters2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9S3VersionKeyEA7A0324",
-                        },
-                      ],
-                    },
-                  ],
-                },
-                Object {
-                  "Fn::Select": Array [
-                    1,
-                    Object {
-                      "Fn::Split": Array [
-                        "||",
-                        Object {
-                          "Ref": "AssetParameters2cde1830f2ad369a1330b9dd603fe0b939ec6d81fbe00f66ffb45945750d9da9S3VersionKeyEA7A0324",
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            ],
-          },
+          "S3Key": "10564c98f41d5ddbd78ce6aa50e29a44184e170be4b504e0bdcdb341bf04f129.zip",
         },
         "Description": "Layer for common database access functions",
         "LicenseInfo": "Apache-2.0",
       },
       "Type": "AWS::Lambda::LayerVersion",
+    },
+  },
+  "Rules": Object {
+    "CheckBootstrapVersion": Object {
+      "Assertions": Array [
+        Object {
+          "Assert": Object {
+            "Fn::Not": Array [
+              Object {
+                "Fn::Contains": Array [
+                  Array [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  Object {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
     },
   },
 }
