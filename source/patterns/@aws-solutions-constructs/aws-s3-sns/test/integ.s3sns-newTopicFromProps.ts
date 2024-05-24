@@ -30,7 +30,7 @@ new S3ToSns(stack, 'test-s3-sns', {
     autoDeleteObjects: true,
   },
   topicProps: {
-    topicName: 'new-topic-from-props'
+    displayName: 'new-topic-from-props'
   }
 });
 

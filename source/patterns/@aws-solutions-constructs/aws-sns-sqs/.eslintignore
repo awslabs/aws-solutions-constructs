@@ -1,7 +1,15 @@
 lib/*.js
 test/*.js
+test/oldInterface/*.js
+test/newInterface/*.js
 *.d.ts
 coverage
 test/integ.*.js.snapshot/
 test/cdk-integ.out.integ.*.snapshot
 test/lambda/index.js
+test/oldInterface/integ.*.js.snapshot/
+test/oldInterface/cdk-integ.out.integ.*.snapshot
+test/oldInterface/lambda/index.js
+test/newInterface/integ.*.js.snapshot/
+test/newInterface/cdk-integ.out.integ.*.snapshot
+test/newInterface/lambda/index.js
