@@ -14,10 +14,8 @@
 // Imports
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as sns from 'aws-cdk-lib/aws-sns';
-// import * as iam from 'aws-cdk-lib/aws-iam';
 import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
 import * as kms from 'aws-cdk-lib/aws-kms';
-// import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
@@ -82,7 +80,8 @@ export interface SnsToSqsProps {
    */
   readonly enableEncryptionWithCustomerManagedKey?: boolean;
   /**
-   * An optional, imported encryption key to encrypt the SQS Queue and SNS Topic with.
+   * An optional, imported encryption key to encrypt the SQS Queue and SNS Topic with. We recommend
+   * you migrate your code to use  queueEncryptionKey and topicEncryptionKey in place of this prop value.
    *
    * @default - None
    *
@@ -90,7 +89,9 @@ export interface SnsToSqsProps {
    */
   readonly encryptionKey?: kms.Key;
   /**
-   * Optional user-provided props to override the default props for the encryption key.
+   * Optional user provided properties to override the default properties for the KMS encryption key used to
+   * encrypt the SQS topic and queue with. We recommend you migrate your code to use queueEncryptionKeyProps
+   * and topicEncryptionKeyProps in place of this prop value.
    *
    * @default - None
    *
@@ -103,30 +104,51 @@ export interface SnsToSqsProps {
    * @default - Default props are used.
    */
   readonly sqsSubscriptionProps?: subscriptions.SqsSubscriptionProps;
-
+  /**
+   * Whether to encrypt the Queue with a customer managed KMS key (CMK). This is the default
+   * behavior, and this property defaults to true - if it is explicitly set to false then the
+   * Queue is encrypted with an Amazon managed KMS key. For a completely unencrypted Queue (not recommended),
+   * create the Queue separately from the construct and pass it in using the existingQueueObject.
+   * Since SNS subscriptions do not currently support SQS queues with AWS managed encryption keys,
+   * setting this to false will always result in an error from the underlying CDK - we have still
+   * included this property for consistency with topics and to be ready if the services one day support
+   * this functionality.
+   * 
+   * @default - false
+   */
   readonly encryptQueueWithCmk?: boolean;
   /**
-   * An optional, imported encryption key to encrypt the SQS Queue and SNS Topic with.
+   * An optional CMK that will be used by the construct to encrypt the new SQS queue.
    *
    * @default - None
    */
   readonly existingQueueEncryptionKey?: kms.Key;
   /**
-   * Optional user-provided props to override the default props for the encryption key.
+   * An optional subset of key properties to override the default properties used by constructs (`enableKeyRotation: true`).
+   * These properties will be used in constructing the CMK used to encrypt the SQS queue.
    *
    * @default - None
    */
   readonly queueEncryptionKeyProps?: kms.KeyProps;
-
+  /**
+   * Whether to encrypt the Topic with a customer managed KMS key (CMK). This is the
+   * default behavior, and this property defaults to true - if it is explicitly set
+   * to false then the Topic is encrypted with an Amazon managed KMS key. For a completely unencrypted
+   * Topic (not recommended), create the Topic separately from the construct and pass it in using the existingTopicObject.
+   *
+   * @default - false
+   */
   readonly encryptTopicWithCmk?: boolean;
   /**
-   * An optional, imported encryption key to encrypt the SQS Queue and SNS Topic with.
+   * An optional CMK that will be used by the construct to encrypt the new SNS Topic.
    *
    * @default - None
    */
   readonly existingTopicEncryptionKey?: kms.Key;
   /**
-   * Optional user-provided props to override the default props for the encryption key.
+   * An optional subset of key properties to override the default properties used by constructs
+   * (`enableKeyRotation: true`). These properties will be used in constructing the CMK used to
+   * encrypt the SNS topic.
    *
    * @default - None
    */
@@ -147,6 +169,9 @@ export interface ConstructKeys {
  */
 export class SnsToSqs extends Construct {
   public readonly snsTopic: sns.Topic;
+/*
+ * @deprecated
+ */
   public readonly encryptionKey?: kms.Key;
   public readonly queueEncryptionKey?: kms.Key;
   public readonly topicEncryptionKey?: kms.Key;
