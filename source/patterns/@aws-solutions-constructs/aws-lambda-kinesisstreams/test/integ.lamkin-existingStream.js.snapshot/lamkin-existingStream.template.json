@@ -11,7 +11,9 @@
     "StreamModeDetails": {
      "StreamMode": "ON_DEMAND"
     }
-   }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testlambdakinesisstreamsLambdaFunctionServiceRole95206CF3": {
    "Type": "AWS::IAM::Role",

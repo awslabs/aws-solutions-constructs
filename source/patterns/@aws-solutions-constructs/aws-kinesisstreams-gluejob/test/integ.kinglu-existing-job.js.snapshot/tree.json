@@ -39,13 +39,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_s3.Bucket",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "JobRole": {
@@ -57,7 +57,7 @@
                 "path": "kinglu-existing-job/JobRole/ImportJobRole",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.Resource",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "Resource": {
@@ -82,13 +82,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_iam.Role",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "ExistingJob": {
@@ -117,7 +117,7 @@
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_glue.CfnJob",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "test-kinesisstreams-lambda": {
@@ -144,13 +144,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_kinesis.CfnStream",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_kinesis.Stream",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "ExistingRole": {
@@ -158,7 +158,7 @@
                 "path": "kinglu-existing-job/test-kinesisstreams-lambda/ExistingRole",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.Resource",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "KinesisStreamGetRecordsIteratorAgeAlarm": {
@@ -183,13 +183,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "KinesisStreamReadProvisionedThroughputExceededAlarm": {
@@ -214,19 +214,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-kinesisstreams-gluejob.KinesisstreamsToGluejob",
-              "version": "2.50.0"
+              "version": "2.57.0"
             }
           },
           "GlueDatabase": {
@@ -245,7 +245,7 @@
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_glue.CfnDatabase",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "GlueTable": {
@@ -325,7 +325,7 @@
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_glue.CfnTable",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "test-kinesisstreams-lambdaGlueJobPolicy": {
@@ -514,13 +514,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_iam.Policy",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "Integ": {
@@ -536,7 +536,7 @@
                     "path": "kinglu-existing-job/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
-                      "version": "10.0.0"
+                      "version": "10.3.0"
                     }
                   },
                   "DeployAssert": {
@@ -548,7 +548,7 @@
                         "path": "kinglu-existing-job/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -556,25 +556,25 @@
                         "path": "kinglu-existing-job/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.118.0-alpha.0"
+                  "version": "2.143.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.118.0-alpha.0"
+              "version": "2.143.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -582,7 +582,7 @@
             "path": "kinglu-existing-job/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -590,13 +590,13 @@
             "path": "kinglu-existing-job/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.118.0"
+          "version": "2.143.0"
         }
       },
       "Tree": {
@@ -604,13 +604,13 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.0.0"
+          "version": "10.3.0"
         }
       }
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.118.0"
+      "version": "2.143.0"
     }
   }
 }

@@ -10,7 +10,9 @@
      "EncryptionType": "KMS",
      "KeyId": "alias/aws/kinesis"
     }
-   }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testiotkinesisstreamsIotActionsRoleAE74F764": {
    "Type": "AWS::IAM::Role",

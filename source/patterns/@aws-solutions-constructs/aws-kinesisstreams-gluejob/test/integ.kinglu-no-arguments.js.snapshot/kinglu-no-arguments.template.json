@@ -10,7 +10,9 @@
      "EncryptionType": "KMS",
      "KeyId": "alias/aws/kinesis"
     }
-   }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testkinesisstreamslambdaGlueSecurityConfig3568178F": {
    "Type": "AWS::Glue::SecurityConfiguration",
