@@ -50,7 +50,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "Policy": {
@@ -184,13 +184,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "AutoDeleteObjectsCustomResource": {
@@ -202,19 +202,19 @@
                         "path": "farfhs-fargateServiceFromProps/destination-firehose/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CustomResource",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.Bucket",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "S3Bucket": {
@@ -273,7 +273,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "Policy": {
@@ -371,13 +371,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "AutoDeleteObjectsCustomResource": {
@@ -389,19 +389,19 @@
                         "path": "farfhs-fargateServiceFromProps/destination-firehose/S3Bucket/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CustomResource",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.Bucket",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "firehose-log-group": {
@@ -417,7 +417,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "firehose-log-stream": {
@@ -437,19 +437,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_logs.CfnLogStream",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.LogStream",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "KinesisFirehoseRole": {
@@ -461,7 +461,7 @@
                     "path": "farfhs-fargateServiceFromProps/destination-firehose/KinesisFirehoseRole/ImportKinesisFirehoseRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "Resource": {
@@ -486,13 +486,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "KinesisFirehosePolicy": {
@@ -584,13 +584,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Policy",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "KinesisFirehose": {
@@ -659,13 +659,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_kinesisfirehose.CfnDeliveryStream",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-kinesisfirehose-s3.KinesisFirehoseToS3",
-              "version": "2.51.0"
+              "version": "2.57.0"
             }
           },
           "Custom::S3AutoDeleteObjectsCustomResourceProvider": {
@@ -677,7 +677,7 @@
                 "path": "farfhs-fargateServiceFromProps/Custom::S3AutoDeleteObjectsCustomResourceProvider/Staging",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "Role": {
@@ -685,7 +685,7 @@
                 "path": "farfhs-fargateServiceFromProps/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "Handler": {
@@ -693,13 +693,13 @@
                 "path": "farfhs-fargateServiceFromProps/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResourceProviderBase",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "destination-firehoseaws-managed-key": {
@@ -707,7 +707,7 @@
             "path": "farfhs-fargateServiceFromProps/destination-firehoseaws-managed-key",
             "constructInfo": {
               "fqn": "aws-cdk-lib.Resource",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "test-fargate-kinesisstreams": {
@@ -715,7 +715,7 @@
             "path": "farfhs-fargateServiceFromProps/test-fargate-kinesisstreams",
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-fargate-kinesisfirehose.FargateToKinesisFirehose",
-              "version": "2.51.0"
+              "version": "2.57.0"
             }
           },
           "Vpc": {
@@ -742,7 +742,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.CfnVPC",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "PublicSubnet1": {
@@ -786,7 +786,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "Acl": {
@@ -794,7 +794,7 @@
                     "path": "farfhs-fargateServiceFromProps/Vpc/PublicSubnet1/Acl",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "RouteTable": {
@@ -816,7 +816,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "RouteTableAssociation": {
@@ -835,7 +835,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "DefaultRoute": {
@@ -855,7 +855,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "EIP": {
@@ -875,7 +875,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnEIP",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "NATGateway": {
@@ -903,13 +903,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnNatGateway",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.PublicSubnet",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "PublicSubnet2": {
@@ -953,7 +953,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "Acl": {
@@ -961,7 +961,7 @@
                     "path": "farfhs-fargateServiceFromProps/Vpc/PublicSubnet2/Acl",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "RouteTable": {
@@ -983,7 +983,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "RouteTableAssociation": {
@@ -1002,7 +1002,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "DefaultRoute": {
@@ -1022,7 +1022,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "EIP": {
@@ -1042,7 +1042,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnEIP",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "NATGateway": {
@@ -1070,13 +1070,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnNatGateway",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.PublicSubnet",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "PrivateSubnet1": {
@@ -1120,7 +1120,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "Acl": {
@@ -1128,7 +1128,7 @@
                     "path": "farfhs-fargateServiceFromProps/Vpc/PrivateSubnet1/Acl",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "RouteTable": {
@@ -1150,7 +1150,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "RouteTableAssociation": {
@@ -1169,7 +1169,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "DefaultRoute": {
@@ -1189,13 +1189,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "PrivateSubnet2": {
@@ -1239,7 +1239,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "Acl": {
@@ -1247,7 +1247,7 @@
                     "path": "farfhs-fargateServiceFromProps/Vpc/PrivateSubnet2/Acl",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "RouteTable": {
@@ -1269,7 +1269,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "RouteTableAssociation": {
@@ -1288,7 +1288,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "DefaultRoute": {
@@ -1308,13 +1308,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "IGW": {
@@ -1333,7 +1333,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.CfnInternetGateway",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "VPCGW": {
@@ -1352,7 +1352,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.CfnVPCGatewayAttachment",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "RestrictDefaultSecurityGroupCustomResource": {
@@ -1364,13 +1364,13 @@
                     "path": "farfhs-fargateServiceFromProps/Vpc/RestrictDefaultSecurityGroupCustomResource/Default",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnResource",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CustomResource",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "FlowLog": {
@@ -1386,7 +1386,7 @@
                         "path": "farfhs-fargateServiceFromProps/Vpc/FlowLog/IAMRole/ImportIAMRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       },
                       "Resource": {
@@ -1417,7 +1417,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -1469,19 +1469,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                              "version": "2.118.0"
+                              "version": "2.143.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Policy",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Role",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "LogGroup": {
@@ -1505,13 +1505,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "FlowLog": {
@@ -1545,13 +1545,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnFlowLog",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.FlowLog",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "KINESIS_FIREHOSE": {
@@ -1601,13 +1601,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnVPCEndpoint",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.InterfaceVpcEndpoint",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "ECR_API": {
@@ -1657,13 +1657,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnVPCEndpoint",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.InterfaceVpcEndpoint",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "ECR_DKR": {
@@ -1713,13 +1713,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnVPCEndpoint",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.InterfaceVpcEndpoint",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "S3": {
@@ -1766,19 +1766,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnVPCEndpoint",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.GatewayVpcEndpoint",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_ec2.Vpc",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "Custom::VpcRestrictDefaultSGCustomResourceProvider": {
@@ -1790,7 +1790,7 @@
                 "path": "farfhs-fargateServiceFromProps/Custom::VpcRestrictDefaultSGCustomResourceProvider/Staging",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "Role": {
@@ -1798,7 +1798,7 @@
                 "path": "farfhs-fargateServiceFromProps/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "Handler": {
@@ -1806,13 +1806,13 @@
                 "path": "farfhs-fargateServiceFromProps/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResourceProviderBase",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "farfhs-fargateServiceFromProps-KINESIS_FIREHOSE-security-group": {
@@ -1868,13 +1868,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "farfhs-fargateServiceFromProps-ECR_API-security-group": {
@@ -1930,13 +1930,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "farfhs-fargateServiceFromProps-ECR_DKR-security-group": {
@@ -1992,13 +1992,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "test-fargate-kinesisstreams-cluster": {
@@ -2014,13 +2014,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ecs.CfnCluster",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_ecs.Cluster",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "test-fargate-kinesisstreams-taskdef": {
@@ -2036,7 +2036,7 @@
                     "path": "farfhs-fargateServiceFromProps/test-fargate-kinesisstreams-taskdef/TaskRole/ImportTaskRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "Resource": {
@@ -2061,7 +2061,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -2104,19 +2104,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "Resource": {
@@ -2162,7 +2162,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ecs.CfnTaskDefinition",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "test-fargate-kinesisstreams-container": {
@@ -2170,13 +2170,13 @@
                 "path": "farfhs-fargateServiceFromProps/test-fargate-kinesisstreams-taskdef/test-fargate-kinesisstreams-container",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ecs.ContainerDefinition",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_ecs.FargateTaskDefinition",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "test-fargate-kinesisstreams-sg": {
@@ -2204,13 +2204,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "test-fargate-kinesisstreams-service": {
@@ -2228,12 +2228,7 @@
                     },
                     "deploymentConfiguration": {
                       "maximumPercent": 150,
-                      "minimumHealthyPercent": 75,
-                      "alarms": {
-                        "alarmNames": [],
-                        "enable": false,
-                        "rollback": false
-                      }
+                      "minimumHealthyPercent": 75
                     },
                     "desiredCount": 7,
                     "enableEcsManagedTags": false,
@@ -2268,13 +2263,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ecs.CfnService",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_ecs.FargateService",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "Integ": {
@@ -2302,7 +2297,7 @@
                         "path": "farfhs-fargateServiceFromProps/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -2310,25 +2305,25 @@
                         "path": "farfhs-fargateServiceFromProps/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.118.0-alpha.0"
+                  "version": "2.143.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.118.0-alpha.0"
+              "version": "2.143.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -2336,7 +2331,7 @@
             "path": "farfhs-fargateServiceFromProps/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -2344,13 +2339,13 @@
             "path": "farfhs-fargateServiceFromProps/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.118.0"
+          "version": "2.143.0"
         }
       },
       "Tree": {
@@ -2364,7 +2359,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.118.0"
+      "version": "2.143.0"
     }
   }
 }

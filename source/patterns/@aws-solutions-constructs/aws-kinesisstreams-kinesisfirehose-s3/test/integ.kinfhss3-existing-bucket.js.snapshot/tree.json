@@ -40,7 +40,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "Policy": {
@@ -174,13 +174,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "AutoDeleteObjectsCustomResource": {
@@ -192,19 +192,19 @@
                     "path": "kinfhss3-existing-bucket/scrapBucketLog/AutoDeleteObjectsCustomResource/Default",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnResource",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CustomResource",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_s3.Bucket",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "Custom::S3AutoDeleteObjectsCustomResourceProvider": {
@@ -216,7 +216,7 @@
                 "path": "kinfhss3-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Staging",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "Role": {
@@ -224,7 +224,7 @@
                 "path": "kinfhss3-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "Handler": {
@@ -232,13 +232,13 @@
                 "path": "kinfhss3-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResourceProviderBase",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "scrapBucket": {
@@ -278,7 +278,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "Policy": {
@@ -376,13 +376,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "AutoDeleteObjectsCustomResource": {
@@ -394,19 +394,19 @@
                     "path": "kinfhss3-existing-bucket/scrapBucket/AutoDeleteObjectsCustomResource/Default",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnResource",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CustomResource",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_s3.Bucket",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "mybucket": {
@@ -414,7 +414,7 @@
             "path": "kinfhss3-existing-bucket/mybucket",
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "test-existing-bucket-firehose-s3-stack": {
@@ -441,13 +441,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_kinesis.CfnStream",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_kinesis.Stream",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "KinesisFirehoseToS3": {
@@ -467,7 +467,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       },
                       "firehose-log-stream": {
@@ -487,19 +487,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_logs.CfnLogStream",
-                              "version": "2.118.0"
+                              "version": "2.143.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_logs.LogStream",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "KinesisFirehoseRole": {
@@ -511,7 +511,7 @@
                         "path": "kinfhss3-existing-bucket/test-existing-bucket-firehose-s3-stack/KinesisFirehoseToS3/KinesisFirehoseRole/ImportKinesisFirehoseRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       },
                       "Resource": {
@@ -536,13 +536,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Role",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "KinesisFirehosePolicy": {
@@ -645,13 +645,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "KinesisFirehose": {
@@ -741,13 +741,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_kinesisfirehose.CfnDeliveryStream",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-solutions-constructs/aws-kinesisfirehose-s3.KinesisFirehoseToS3",
-                  "version": "2.50.0"
+                  "version": "2.57.0"
                 }
               },
               "KinesisFirehoseToS3aws-managed-key": {
@@ -755,7 +755,7 @@
                 "path": "kinfhss3-existing-bucket/test-existing-bucket-firehose-s3-stack/KinesisFirehoseToS3aws-managed-key",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.Resource",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "KinesisStreamGetRecordsIteratorAgeAlarm": {
@@ -780,13 +780,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "KinesisStreamReadProvisionedThroughputExceededAlarm": {
@@ -811,19 +811,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-kinesisstreams-kinesisfirehose-s3.KinesisStreamsToKinesisFirehoseToS3",
-              "version": "2.50.0"
+              "version": "2.57.0"
             }
           },
           "KinesisStreamsRole": {
@@ -835,7 +835,7 @@
                 "path": "kinfhss3-existing-bucket/KinesisStreamsRole/ImportKinesisStreamsRole",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.Resource",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "Resource": {
@@ -885,13 +885,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_iam.Role",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "Integ": {
@@ -907,7 +907,7 @@
                     "path": "kinfhss3-existing-bucket/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
-                      "version": "10.0.0"
+                      "version": "10.3.0"
                     }
                   },
                   "DeployAssert": {
@@ -919,7 +919,7 @@
                         "path": "kinfhss3-existing-bucket/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -927,25 +927,25 @@
                         "path": "kinfhss3-existing-bucket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.118.0-alpha.0"
+                  "version": "2.143.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.118.0-alpha.0"
+              "version": "2.143.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -953,7 +953,7 @@
             "path": "kinfhss3-existing-bucket/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -961,13 +961,13 @@
             "path": "kinfhss3-existing-bucket/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.118.0"
+          "version": "2.143.0"
         }
       },
       "Tree": {
@@ -975,13 +975,13 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.0.0"
+          "version": "10.3.0"
         }
       }
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.118.0"
+      "version": "2.143.0"
     }
   }
 }

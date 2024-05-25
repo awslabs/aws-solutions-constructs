@@ -165,7 +165,9 @@
     "StreamModeDetails": {
      "StreamMode": "ON_DEMAND"
     }
-   }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testlambdakinesisstreamsKinesisStreamGetRecordsIteratorAgeAlarmC4A0FF00": {
    "Type": "AWS::CloudWatch::Alarm",
