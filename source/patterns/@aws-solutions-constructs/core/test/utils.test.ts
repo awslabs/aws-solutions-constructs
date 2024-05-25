@@ -303,3 +303,25 @@ test('ConsolidateProps does not generate warnings for construct props overrides'
   expect(warn).toBeCalledTimes(1);
 
 });
+
+test('CheckBooleanWithDefault', () => {
+  let response;
+
+  response = defaults.CheckBooleanWithDefault(undefined, true);
+  expect(response).toBe(true);
+
+  response = defaults.CheckBooleanWithDefault(undefined, false);
+  expect(response).toBe(false);
+
+  response = defaults.CheckBooleanWithDefault(true, true);
+  expect(response).toBe(true);
+
+  response = defaults.CheckBooleanWithDefault(true, false);
+  expect(response).toBe(true);
+
+  response = defaults.CheckBooleanWithDefault(false, true);
+  expect(response).toBe(false);
+
+  response = defaults.CheckBooleanWithDefault(false, false);
+  expect(response).toBe(false);
+});

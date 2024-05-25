@@ -1,7 +1,7 @@
 {
   "version": "36.0.0",
   "files": {
-    "9e1d3c9bb3fed355ee4478e1cda5b53d3e17006f7309a644f55002432eef8200": {
+    "c14b34758225ce4be398520fd270b22f2255c42773296b4366e5fd8c330f5a77": {
       "source": {
         "path": "iotkin-existing-kinesisstream.template.json",
         "packaging": "file"
@@ -9,7 +9,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "9e1d3c9bb3fed355ee4478e1cda5b53d3e17006f7309a644f55002432eef8200.json",
+          "objectKey": "c14b34758225ce4be398520fd270b22f2255c42773296b4366e5fd8c330f5a77.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

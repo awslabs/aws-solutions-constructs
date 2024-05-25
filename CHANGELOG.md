@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.58.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.57.0...v2.58.0) (2024-05-25)
+
+Built on CDK v2.143.0
+
+### Bug Fixes
+
+* **aws-sns-sqs:** fix circular dependency error in aws-sns-sqs ([#1122](https://github.com/awslabs/aws-solutions-constructs/issues/1122)) ([2366272](https://github.com/awslabs/aws-solutions-constructs/commit/23662723b477baf43787979cb9c8b809ceba6dfe))
+
 ## [2.57.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.56.0...v2.57.0) (2024-05-06)
 
 Built on CDK v2.138.0

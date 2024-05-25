@@ -180,7 +180,9 @@
      "EncryptionType": "KMS",
      "KeyId": "alias/aws/kinesis"
     }
-   }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testkslambdaSqsDlqQueueDE67EC6C": {
    "Type": "AWS::SQS::Queue",

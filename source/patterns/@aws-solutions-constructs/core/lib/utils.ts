@@ -274,3 +274,11 @@ export function CheckListValues(allowedPermissions: string[], submittedValues: s
     }
   });
 }
+
+export function CheckBooleanWithDefault(value: boolean | undefined, defaultValue: boolean): boolean {
+  if (value === undefined) {
+    return defaultValue;
+  } else {
+    return value;
+  }
+}
