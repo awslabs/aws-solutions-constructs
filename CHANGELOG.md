@@ -2,7 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [2.58.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.58.0...v2.58.1) (2024-05-28)
+## [2.58.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.58.0...v2.58.1) (2024-05-28)
+
+Built on CDK v2.143.0
+
+No library changes - testing changes in our CI/CD process
 
 ## [2.58.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.57.0...v2.58.0) (2024-05-25)
 
