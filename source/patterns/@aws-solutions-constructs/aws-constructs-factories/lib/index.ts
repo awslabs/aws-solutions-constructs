@@ -38,7 +38,7 @@ export interface StateMachineFactoryProps {
   readonly stateMachineProps: sfn.StateMachineProps,
   /**
    * An existing LogGroup to which the new state machine will write log entries.
-   * 
+   *
    * Default: none, the construct will create a new log group.
    */
   readonly logGroupProps?: logs.LogGroupProps
