@@ -26,8 +26,8 @@
 This AWS Solutions Construct exposes the same code used to create our underlying resources as factories, so clients can create individual resources that are well-architected.
 There are factories to create:
 
-[Amazon S3 buckets](https://docs.aws.amazon.com/solutions/latest/constructs/aws-constructs-factories.html#s3-buckets)
-[AWS Step Functions state machines](https://docs.aws.amazon.com/solutions/latest/constructs/aws-constructs-factories.html#step-functions-state-machines)
+[Amazon S3 buckets](https://docs.aws.amazon.com/solutions/latest/constructs/aws-constructs-factories.html#s3-buckets) - Create a well architected S3 bucket (e.g. - includes an access logging bucket)
+[AWS Step Functions state machines](https://docs.aws.amazon.com/solutions/latest/constructs/aws-constructs-factories.html#step-functions-state-machines) - Create a well architected Step Functions state machine and log group (e.g. log group has /aws/vendedlogs/ name prefix to avoid resource policy issues)
 
 ## S3 Buckets
 
@@ -122,7 +122,7 @@ Out of the box implementation of the Construct without any override will set the
 
 ## Step Functions State Machines
 
-Create fully well-architected Step Functions state machine with Log Group. The Log Group name includes the vendedlogs prefix. Here
+Create fully well-architected Step Functions state machine with log group. The log group name includes the vendedlogs prefix. Here
 but is unique to the stack, avoiding naming collions between instances. is a minimal deployable pattern definition:
 
 Typescript
@@ -132,54 +132,37 @@ import { ConstructsFactories } from "../../lib";
 import { generateIntegStackName, CreateTestStateMachineDefinitionBody } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
-const taskOne = new sftasks.EvaluateExpression(this, 'placeholder', {
+const placeholderTask = new sftasks.EvaluateExpression(this, 'placeholder', {
   expression: '$.argOne + $.argTwo'
 });
-
-const startState = sfn.DefinitionBody.fromChainable(taskOne);
 
 const factories = new ConstructsFactories(this, 'minimalImplementation');
 
 factories.stateMachineFactory('testsm', {
   stateMachineProps: {
-    definitionBody: CreateTestStateMachineDefinitionBody(stack, 'test')
+    definitionBody: sfn.DefinitionBody.fromChainable(placeholderTask)
   }
 });
 ```
 
 Python
 ``` python
-from aws_cdk import (
-    Stack,
-)
-from constructs import Construct
 
-from aws_solutions_constructs import (
-    aws_constructs_factories as cf
-)
+# Pending
 
-factories = cf.ConstructsFactories(self, 'MyFactories')
-factories.s3_bucket_factory('GoodBucket')
 ```
 
 Java
 ``` java
-import software.constructs.Construct;
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
 
-import software.amazon.awsconstructs.services.constructsfactories.ConstructsFactories;
-import software.amazon.awsconstructs.services.constructsfactories.S3BucketFactoryProps;
+// Pending
 
-final ConstructsFactories factories = new ConstructsFactories(this, "MyFactories");
-factories.s3BucketFactory("GoodBucket", 
-  new S3BucketFactoryProps.Builder().build());
 ```
 
-# S3BucketFactory Function Signature
+# stateMachineFactory Function Signature
 
 ``` typescript
-s3BucketFactory(id: string, props: S3BucketFactoryProps): S3BucketFactoryResponse
+stateMachineFactory(id: string, props: StateMachineFactoryProps): StateMachineFactoryResponse
 ```
 
 # StateMachineFactoryProps
@@ -202,7 +185,6 @@ Out of the box implementation of the Construct without any override will set the
 
 * An AWS Step Functions State Machine
   * Configured to log to the new log group at LogLevel.ERROR
-  * IAM Role created to allow any action in the state machine definition (TODO: confirm this)
 * Amazon CloudWatch Logs Log Group
   * Log name is prefaced with /aws/vendedlogs/ to avoid resource policy [issues](https://docs.aws.amazon.com/step-functions/latest/dg/cw-logs.html#cloudwatch-iam-policy). The Log Group name is still created to be unique to the stack to avoid name collisions. 
 
