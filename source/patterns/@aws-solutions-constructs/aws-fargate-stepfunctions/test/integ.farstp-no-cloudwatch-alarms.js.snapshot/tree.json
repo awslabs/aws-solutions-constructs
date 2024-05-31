@@ -1072,14 +1072,6 @@
               "version": "2.143.0"
             }
           },
-          "StartState": {
-            "id": "StartState",
-            "path": "farstp-no-cloudwatch-alarms/StartState",
-            "constructInfo": {
-              "fqn": "aws-cdk-lib.aws_stepfunctions.Pass",
-              "version": "2.143.0"
-            }
-          },
           "farstp-no-cloudwatch-alarms-ECR_API-security-group": {
             "id": "farstp-no-cloudwatch-alarms-ECR_API-security-group",
             "path": "farstp-no-cloudwatch-alarms/farstp-no-cloudwatch-alarms-ECR_API-security-group",
@@ -1468,6 +1460,105 @@
               "version": "2.143.0"
             }
           },
+          "lambdafarstp-test": {
+            "id": "lambdafarstp-test",
+            "path": "farstp-no-cloudwatch-alarms/lambdafarstp-test",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "farstp-no-cloudwatch-alarms/lambdafarstp-test/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "farstp-no-cloudwatch-alarms/lambdafarstp-test/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.143.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "farstp-no-cloudwatch-alarms/lambdafarstp-test/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.143.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.143.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "farstp-no-cloudwatch-alarms/lambdafarstp-test/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "zipFile": "exports.handler = async (event) => console.log(event)"
+                    },
+                    "handler": "index.handler",
+                    "role": {
+                      "Fn::GetAtt": [
+                        "lambdafarstptestServiceRole3635EEF7",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs20.x"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.143.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.143.0"
+            }
+          },
+          "taskfarstp-test": {
+            "id": "taskfarstp-test",
+            "path": "farstp-no-cloudwatch-alarms/taskfarstp-test",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_stepfunctions_tasks.LambdaInvoke",
+              "version": "2.143.0"
+            }
+          },
           "test-construct": {
             "id": "test-construct",
             "path": "farstp-no-cloudwatch-alarms/test-construct",
@@ -1570,6 +1661,32 @@
                                 "policyDocument": {
                                   "Statement": [
                                     {
+                                      "Action": "lambda:InvokeFunction",
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "lambdafarstptest04DC4058",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::GetAtt": [
+                                                  "lambdafarstptest04DC4058",
+                                                  "Arn"
+                                                ]
+                                              },
+                                              ":*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
                                       "Action": [
                                         "logs:CreateLogDelivery",
                                         "logs:DeleteLogDelivery",
@@ -1617,7 +1734,25 @@
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::StepFunctions::StateMachine",
                       "aws:cdk:cloudformation:props": {
-                        "definitionString": "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"End\":true}}}",
+                        "definitionString": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "{\"StartAt\":\"taskfarstp-test\",\"States\":{\"taskfarstp-test\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ClientExecutionTimeoutException\",\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
+                              {
+                                "Fn::GetAtt": [
+                                  "lambdafarstptest04DC4058",
+                                  "Arn"
+                                ]
+                              },
+                              "\",\"Payload.$\":\"$\"}}}}"
+                            ]
+                          ]
+                        },
                         "loggingConfiguration": {
                           "destinations": [
                             {
@@ -1655,7 +1790,7 @@
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-fargate-stepfunctions.FargateToStepfunctions",
-              "version": "2.57.0"
+              "version": "2.58.1"
             }
           },
           "farstp-no-cloudwatch-alarms-STEP_FUNCTIONS-security-group": {

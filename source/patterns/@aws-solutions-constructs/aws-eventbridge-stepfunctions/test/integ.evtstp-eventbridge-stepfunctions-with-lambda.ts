@@ -18,6 +18,7 @@ import { Duration } from 'aws-cdk-lib';
 import * as tasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import * as events from 'aws-cdk-lib/aws-events';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import { deployLambdaFunction } from '@aws-solutions-constructs/core';
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
@@ -40,7 +41,7 @@ startState.next(submitJob);
 
 const props: EventbridgeToStepfunctionsProps = {
   stateMachineProps: {
-    definition: startState,
+    definitionBody: sfn.DefinitionBody.fromChainable(startState),
     timeout: Duration.minutes(5)
   },
   eventRuleProps: {

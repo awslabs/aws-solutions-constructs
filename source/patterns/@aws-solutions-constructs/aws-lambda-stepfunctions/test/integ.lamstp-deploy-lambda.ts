@@ -18,6 +18,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as sftasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { generateIntegStackName, deployLambdaFunction } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 
 // Setup the app and stack
 const app = new App();
@@ -45,7 +46,7 @@ const props: LambdaToStepfunctionsProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   },
   stateMachineProps: {
-    definition: startState
+    definitionBody: sfn.DefinitionBody.fromChainable(startState)
   },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY,

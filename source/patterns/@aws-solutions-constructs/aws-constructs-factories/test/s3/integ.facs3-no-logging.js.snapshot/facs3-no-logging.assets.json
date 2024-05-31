@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "23dbcd10d45309f94f648003a2115c8b94f390195e05964a3633c389b31a54f5": {
+      "source": {
+        "path": "facs3-no-logging.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "23dbcd10d45309f94f648003a2115c8b94f390195e05964a3633c389b31a54f5.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

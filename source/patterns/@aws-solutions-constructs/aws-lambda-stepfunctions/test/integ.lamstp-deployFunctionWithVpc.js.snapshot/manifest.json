@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d5ebf2f7a47385a850fa06c94f30e8d765a1817a8d83b2ddcfebfb4f94d19fb5.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9650c1674fff5a8038d93bcc24723dca47b0e377a12fb0d0b8411369cbdf5422.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,6 +82,18 @@
         "lamstp-deployFunctionWithVpc.assets"
       ],
       "metadata": {
+        "/lamstp-deployFunctionWithVpc/lambdalamstp-test/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdalamstptestServiceRole0A4789FB"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/lambdalamstp-test/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdalamstptestA7F4D461"
+          }
+        ],
         "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/StateMachineLogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",

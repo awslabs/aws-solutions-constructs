@@ -24,8 +24,12 @@
 
 ## Overview
 This AWS Solutions Construct exposes the same code used to create our underlying resources as factories, so clients can create individual resources that are well-architected.
+There are factories to create:
 
-### S3 Buckets
+[Amazon S3 buckets](https://docs.aws.amazon.com/solutions/latest/constructs/aws-constructs-factories.html#s3-buckets) - Create a well architected S3 bucket (e.g. - includes an access logging bucket)
+[AWS Step Functions state machines](https://docs.aws.amazon.com/solutions/latest/constructs/aws-constructs-factories.html#step-functions-state-machines) - Create a well architected Step Functions state machine and log group (e.g. log group has /aws/vendedlogs/ name prefix to avoid resource policy issues)
+
+## S3 Buckets
 
 Create fully well-architected S3 buckets with as little as one function call. Here is a minimal deployable pattern definition:
 
@@ -69,13 +73,13 @@ factories.s3BucketFactory("GoodBucket",
   new S3BucketFactoryProps.Builder().build());
 ```
 
-## S3BucketFactory Function Signature
+# S3BucketFactory Function Signature
 
 ``` typescript
 s3BucketFactory(id: string, props: S3BucketFactoryProps): S3BucketFactoryResponse
 ```
 
-## S3BucketFactoryProps
+# S3BucketFactoryProps
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
@@ -83,14 +87,14 @@ s3BucketFactory(id: string, props: S3BucketFactoryProps): S3BucketFactoryRespons
 |logS3AccessLogs?|`boolean`|Whether to turn on Access Logging for the S3 bucket. Creates an S3 bucket with associated storage costs for the logs. Enabling Access Logging is a best practice. default - true|
 |loggingBucketProps?|[`s3.BucketProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html)|Optional user provided props to override the default props for the S3 Logging Bucket.|
 
-## S3BucketFactoryResponse
+# S3BucketFactoryResponse
 
 | **Name**     | **Type**        | **Description** |
 |:-------------|:----------------|-----------------|
 |s3Bucket|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html)|The s3.Bucket created by the factory. |
 |s3LoggingBucket?|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html)|The s3.Bucket created by the construct as the logging bucket for the primary bucket. If the logS3AccessLogs property is false, this value will be undefined.|
 
-## Default settings
+# Default settings
 
 Out of the box implementation of the Construct without any override will set the following defaults:
 
@@ -113,8 +117,79 @@ Out of the box implementation of the Construct without any override will set the
   * Bucket policy granting PutObject privileges to the S3 logging service, from the content bucket in the content bucket account.
   * cfn_nag suppression of access logging finding (not logging access to the access log bucket)
 
-## Architecture
+# Architecture
 ![Architecture Diagram](architecture.png)
+
+## Step Functions State Machines
+
+Create fully well-architected Step Functions state machine with log group. The log group name includes the vendedlogs prefix. Here
+but is unique to the stack, avoiding naming collions between instances. is a minimal deployable pattern definition:
+
+Typescript
+``` typescript
+import { App, Stack } from "aws-cdk-lib";
+import { ConstructsFactories } from "../../lib";
+import { generateIntegStackName, CreateTestStateMachineDefinitionBody } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
+
+const placeholderTask = new sftasks.EvaluateExpression(this, 'placeholder', {
+  expression: '$.argOne + $.argTwo'
+});
+
+const factories = new ConstructsFactories(this, 'minimalImplementation');
+
+factories.stateMachineFactory('testsm', {
+  stateMachineProps: {
+    definitionBody: sfn.DefinitionBody.fromChainable(placeholderTask)
+  }
+});
+```
+
+Python
+``` python
+
+# Pending
+
+```
+
+Java
+``` java
+
+// Pending
+
+```
+
+# stateMachineFactory Function Signature
+
+``` typescript
+stateMachineFactory(id: string, props: StateMachineFactoryProps): StateMachineFactoryResponse
+```
+
+# StateMachineFactoryProps
+
+| **Name**     | **Type**        | **Description** |
+|:-------------|:----------------|-----------------|
+|stateMachineProps|[`sfn.StateMachineProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachineProps.html)|The CDK properties that define the state machine. This property is required and must include a definitionBody or definition (definition is deprecated)|
+|logGroup?|[]`logs.LogGroup`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroup.html)|An existing LogGroup to which the new state machine will write log entries. Default: none, the construct will create a new log group.|
+
+# StateMachineFactoryResponse
+
+| **Name**     | **Type**        | **Description** |
+|:-------------|:----------------|-----------------|
+|stateMachineProps|[`sfn.StateMachineProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachineProps.html)||
+|logGroup|[]`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)||
+
+# Default settings
+
+Out of the box implementation of the Construct without any override will set the following defaults:
+
+* An AWS Step Functions State Machine
+  * Configured to log to the new log group at LogLevel.ERROR
+* Amazon CloudWatch Logs Log Group
+  * Log name is prefaced with /aws/vendedlogs/ to avoid resource policy [issues](https://docs.aws.amazon.com/step-functions/latest/dg/cw-logs.html#cloudwatch-iam-policy). The Log Group name is still created to be unique to the stack to avoid name collisions. 
+
+# Architecture
+![Architecture Diagram](sf-architecture.png)
 
 ***
 &copy; Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.

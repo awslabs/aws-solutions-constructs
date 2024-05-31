@@ -168,7 +168,7 @@ export class FargateToStepfunctions extends Construct {
       this.container = createFargateServiceResponse.containerDefinition;
     }
 
-    const buildStateMachineResponse = defaults.buildStateMachine(this, props.stateMachineProps,
+    const buildStateMachineResponse = defaults.buildStateMachine(this, defaults.idPlaceholder, props.stateMachineProps,
       props.logGroupProps);
     this.stateMachine = buildStateMachineResponse.stateMachine;
     this.stateMachineLogGroup = buildStateMachineResponse.logGroup;

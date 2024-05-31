@@ -8,12 +8,103 @@
         "id": "lamstp-deployFunctionWithVpc",
         "path": "lamstp-deployFunctionWithVpc",
         "children": {
-          "StartState": {
-            "id": "StartState",
-            "path": "lamstp-deployFunctionWithVpc/StartState",
+          "lambdalamstp-test": {
+            "id": "lambdalamstp-test",
+            "path": "lamstp-deployFunctionWithVpc/lambdalamstp-test",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "lamstp-deployFunctionWithVpc/lambdalamstp-test/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "lamstp-deployFunctionWithVpc/lambdalamstp-test/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.143.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "lamstp-deployFunctionWithVpc/lambdalamstp-test/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.143.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.143.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "lamstp-deployFunctionWithVpc/lambdalamstp-test/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "zipFile": "exports.handler = async (event) => console.log(event)"
+                    },
+                    "handler": "index.handler",
+                    "role": {
+                      "Fn::GetAtt": [
+                        "lambdalamstptestServiceRole0A4789FB",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs20.x"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.143.0"
+                }
+              }
+            },
             "constructInfo": {
-              "fqn": "aws-cdk-lib.aws_stepfunctions.Pass",
-              "version": "2.127.0"
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.143.0"
+            }
+          },
+          "tasklamstp-test": {
+            "id": "tasklamstp-test",
+            "path": "lamstp-deployFunctionWithVpc/tasklamstp-test",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_stepfunctions_tasks.LambdaInvoke",
+              "version": "2.143.0"
             }
           },
           "test-lambda-stepfunctions": {
@@ -55,13 +146,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               },
               "StateMachine": {
@@ -77,7 +168,7 @@
                         "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/StateMachine/Role/ImportRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.127.0"
+                          "version": "2.143.0"
                         }
                       },
                       "Resource": {
@@ -102,7 +193,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                          "version": "2.127.0"
+                          "version": "2.143.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -117,6 +208,32 @@
                               "aws:cdk:cloudformation:props": {
                                 "policyDocument": {
                                   "Statement": [
+                                    {
+                                      "Action": "lambda:InvokeFunction",
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "lambdalamstptestA7F4D461",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::GetAtt": [
+                                                  "lambdalamstptestA7F4D461",
+                                                  "Arn"
+                                                ]
+                                              },
+                                              ":*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    },
                                     {
                                       "Action": [
                                         "logs:CreateLogDelivery",
@@ -144,19 +261,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                              "version": "2.127.0"
+                              "version": "2.143.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Policy",
-                          "version": "2.127.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Role",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   },
                   "Resource": {
@@ -165,7 +282,25 @@
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::StepFunctions::StateMachine",
                       "aws:cdk:cloudformation:props": {
-                        "definitionString": "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"End\":true}}}",
+                        "definitionString": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "{\"StartAt\":\"tasklamstp-test\",\"States\":{\"tasklamstp-test\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ClientExecutionTimeoutException\",\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
+                              {
+                                "Fn::GetAtt": [
+                                  "lambdalamstptestA7F4D461",
+                                  "Arn"
+                                ]
+                              },
+                              "\",\"Payload.$\":\"$\"}}}}"
+                            ]
+                          ]
+                        },
                         "loggingConfiguration": {
                           "destinations": [
                             {
@@ -191,13 +326,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_stepfunctions.CfnStateMachine",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_stepfunctions.StateMachine",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               },
               "LambdaFunctionServiceRole": {
@@ -209,7 +344,7 @@
                     "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   },
                   "Resource": {
@@ -272,7 +407,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -320,19 +455,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.127.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               },
               "ReplaceDefaultSecurityGroup-security-group": {
@@ -360,13 +495,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               },
               "LambdaFunction": {
@@ -382,7 +517,7 @@
                         "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/LambdaFunction/Code/Stage",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.AssetStaging",
-                          "version": "2.127.0"
+                          "version": "2.143.0"
                         }
                       },
                       "AssetBucket": {
@@ -390,13 +525,13 @@
                         "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/LambdaFunction/Code/AssetBucket",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                          "version": "2.127.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   },
                   "Resource": {
@@ -451,13 +586,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.Function",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               },
               "ExecutionFailedAlarm": {
@@ -490,13 +625,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               },
               "ExecutionThrottledAlarm": {
@@ -529,13 +664,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               },
               "ExecutionAbortedAlarm": {
@@ -568,19 +703,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-lambda-stepfunctions.LambdaToStepfunctions",
-              "version": "2.53.0"
+              "version": "2.58.1"
             }
           },
           "Vpc": {
@@ -607,7 +742,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.CfnVPC",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               },
               "isolatedSubnet1": {
@@ -651,7 +786,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   },
                   "Acl": {
@@ -659,7 +794,7 @@
                     "path": "lamstp-deployFunctionWithVpc/Vpc/isolatedSubnet1/Acl",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   },
                   "RouteTable": {
@@ -681,7 +816,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   },
                   "RouteTableAssociation": {
@@ -700,13 +835,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               },
               "isolatedSubnet2": {
@@ -750,7 +885,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   },
                   "Acl": {
@@ -758,7 +893,7 @@
                     "path": "lamstp-deployFunctionWithVpc/Vpc/isolatedSubnet2/Acl",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   },
                   "RouteTable": {
@@ -780,7 +915,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   },
                   "RouteTableAssociation": {
@@ -799,13 +934,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               },
               "RestrictDefaultSecurityGroupCustomResource": {
@@ -817,13 +952,13 @@
                     "path": "lamstp-deployFunctionWithVpc/Vpc/RestrictDefaultSecurityGroupCustomResource/Default",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnResource",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CustomResource",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               },
               "FlowLog": {
@@ -839,7 +974,7 @@
                         "path": "lamstp-deployFunctionWithVpc/Vpc/FlowLog/IAMRole/ImportIAMRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.127.0"
+                          "version": "2.143.0"
                         }
                       },
                       "Resource": {
@@ -870,7 +1005,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                          "version": "2.127.0"
+                          "version": "2.143.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -922,19 +1057,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                              "version": "2.127.0"
+                              "version": "2.143.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Policy",
-                          "version": "2.127.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Role",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   },
                   "LogGroup": {
@@ -958,13 +1093,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                          "version": "2.127.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   },
                   "FlowLog": {
@@ -998,13 +1133,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnFlowLog",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.FlowLog",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               },
               "STEP_FUNCTIONS": {
@@ -1054,19 +1189,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnVPCEndpoint",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.InterfaceVpcEndpoint",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_ec2.Vpc",
-              "version": "2.127.0"
+              "version": "2.143.0"
             }
           },
           "Custom::VpcRestrictDefaultSGCustomResourceProvider": {
@@ -1078,7 +1213,7 @@
                 "path": "lamstp-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Staging",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               },
               "Role": {
@@ -1086,7 +1221,7 @@
                 "path": "lamstp-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               },
               "Handler": {
@@ -1094,13 +1229,13 @@
                 "path": "lamstp-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResourceProviderBase",
-              "version": "2.127.0"
+              "version": "2.143.0"
             }
           },
           "lamstp-deployFunctionWithVpc-STEP_FUNCTIONS-security-group": {
@@ -1156,13 +1291,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
-                  "version": "2.127.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
-              "version": "2.127.0"
+              "version": "2.143.0"
             }
           },
           "Integ": {
@@ -1190,7 +1325,7 @@
                         "path": "lamstp-deployFunctionWithVpc/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.127.0"
+                          "version": "2.143.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -1198,25 +1333,25 @@
                         "path": "lamstp-deployFunctionWithVpc/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.127.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.127.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.127.0-alpha.0"
+                  "version": "2.143.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.127.0-alpha.0"
+              "version": "2.143.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -1224,7 +1359,7 @@
             "path": "lamstp-deployFunctionWithVpc/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.127.0"
+              "version": "2.143.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -1232,13 +1367,13 @@
             "path": "lamstp-deployFunctionWithVpc/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.127.0"
+              "version": "2.143.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.127.0"
+          "version": "2.143.0"
         }
       },
       "Tree": {
@@ -1252,7 +1387,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.127.0"
+      "version": "2.143.0"
     }
   }
 }
