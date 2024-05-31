@@ -189,7 +189,7 @@ Out of the box implementation of the Construct without any override will set the
   * Log name is prefaced with /aws/vendedlogs/ to avoid resource policy [issues](https://docs.aws.amazon.com/step-functions/latest/dg/cw-logs.html#cloudwatch-iam-policy). The Log Group name is still created to be unique to the stack to avoid name collisions. 
 
 # Architecture
-![Architecture Diagram](architecture.png)
+![Architecture Diagram](sf-architecture.png)
 
 ***
 &copy; Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
