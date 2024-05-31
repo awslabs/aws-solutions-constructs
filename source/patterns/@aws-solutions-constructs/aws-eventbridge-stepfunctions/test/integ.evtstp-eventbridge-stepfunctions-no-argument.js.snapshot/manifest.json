@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/855ceec37ff0e29ed678adfaea9f9c7a7f128481581123820dae1d975c0a0fd1.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e247a3e43ff95fa65be1fbf0484777cd637f19f7c705c4d27e0571061ea3042b.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,6 +82,18 @@
         "evtstp-eventbridge-stepfunctions-no-argument.assets"
       ],
       "metadata": {
+        "/evtstp-eventbridge-stepfunctions-no-argument/lambdaevtstp-test/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdaevtstptestServiceRole57CC5BE7"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-no-argument/lambdaevtstp-test/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdaevtstptest4DAE33D9"
+          }
+        ],
         "/evtstp-eventbridge-stepfunctions-no-argument/test-eventbridge-stepfunctions-construct/StateMachineLogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",

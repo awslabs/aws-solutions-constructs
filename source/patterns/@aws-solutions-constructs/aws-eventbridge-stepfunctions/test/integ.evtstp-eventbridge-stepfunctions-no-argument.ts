@@ -15,19 +15,17 @@
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps } from "../lib";
 import { Duration } from 'aws-cdk-lib';
-import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import * as events from 'aws-cdk-lib/aws-events';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
+import * as defaults from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const startState = new stepfunctions.Pass(stack, 'StartState');
-
 const props: EventbridgeToStepfunctionsProps = {
   stateMachineProps: {
-    definition: startState
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'evtstp-test')
   },
   eventRuleProps: {
     schedule: events.Schedule.rate(Duration.minutes(5))

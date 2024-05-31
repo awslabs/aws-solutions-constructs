@@ -31,13 +31,27 @@ export interface S3BucketFactoryResponse {
 }
 
 export interface StateMachineFactoryProps {
+  /**
+   * The CDK properties that define the state machine. This property is required and
+   * must include a definitionBody or definition (definition is deprecated)
+   */
   readonly stateMachineProps: sfn.StateMachineProps,
+  /**
+   * An existing LogGroup to which the new state machine will write log entries.
+   */
   readonly logGroupProps?: logs.LogGroupProps
 }
 
 // Create a response specifically for the interface to avoid coupling client with internal implementation
 export interface StateMachineFactoryResponse {
+  /**
+   * The state machine created by the factory (the state machine role is
+   * available as a property on this resource)
+   */
   readonly stateMachine: sfn.StateMachine,
+  /**
+   * The log group that will receive log messages from the state maching
+   */
   readonly logGroup: logs.ILogGroup
 }
 

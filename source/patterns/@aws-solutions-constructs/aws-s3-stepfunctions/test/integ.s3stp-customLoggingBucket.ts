@@ -15,7 +15,7 @@
 import { App, Stack, RemovalPolicy, Duration } from "aws-cdk-lib";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import { S3ToStepfunctions } from "../lib";
-import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
+import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
@@ -24,11 +24,9 @@ const app = new App();
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const startState = new stepfunctions.Pass(stack, 'StartState');
-
 new S3ToStepfunctions(stack, 'test-s3-stepfunctions', {
   stateMachineProps: {
-    definition: startState
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 's3stp-test')
   },
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,

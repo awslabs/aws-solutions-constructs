@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/29aa502e48be8438bcd313500970c47029dbc49600b82b3c1e79fadd2ee0673d.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/62b3ead9d584ed8289a627befd3bc6df08f4f249d98ca16ece6a242d035d7310.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -334,6 +334,18 @@
             "data": "testserviceService2730C249"
           }
         ],
+        "/farstp-new-resources/lambdafarstp-test/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdafarstptestServiceRole3635EEF7"
+          }
+        ],
+        "/farstp-new-resources/lambdafarstp-test/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdafarstptest04DC4058"
+          }
+        ],
         "/farstp-new-resources/test-construct/StateMachineLogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -392,6 +404,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "lambdas3stptestServiceRoleF17BB6C7": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdas3stptestServiceRoleF17BB6C7",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "lambdas3stptest9FBDC6CE": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdas3stptest9FBDC6CE",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

@@ -15,17 +15,14 @@
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { LambdaToStepfunctions, LambdaToStepfunctionsProps } from "../lib";
 import * as lambda from "aws-cdk-lib/aws-lambda";
-import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
+import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = "Integration Test for aws-lambda-stepfunctions";
-
-// Create a start state for the state machine
-const startState = new stepfunctions.Pass(stack, 'StartState');
 
 // Definitions
 const props: LambdaToStepfunctionsProps = {
@@ -35,7 +32,7 @@ const props: LambdaToStepfunctionsProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   },
   stateMachineProps: {
-    definition: startState
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'lamstp-test')
   },
   deployVpc: true,
   logGroupProps: {

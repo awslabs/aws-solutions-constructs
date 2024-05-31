@@ -348,7 +348,9 @@ function createFargateConstructWithNewResources(stack: cdk.Stack, publicApi: boo
 
 function testStateMachineProps(stack: cdk.Stack, userProps?: stepfunctions.StateMachineProps):
   stepfunctions.StateMachineProps {
-  const defaultTestProp = { definition: new stepfunctions.Pass(stack, 'StartState') };
+  const defaultTestProp = {
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'farstp-test')
+  };
 
   return defaults.consolidateProps(defaultTestProp, userProps);
 }

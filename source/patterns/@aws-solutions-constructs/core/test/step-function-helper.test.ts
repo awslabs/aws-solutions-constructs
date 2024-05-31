@@ -25,11 +25,10 @@ import { Template } from 'aws-cdk-lib/assertions';
 test('Test deployment w/ custom properties', () => {
   // Stack
   const stack = new Stack();
-  // State Machine definition
-  const startState = new sfn.Pass(stack, 'StartState');
+
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
-    definition: startState,
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
     stateMachineName: 'myStateMachine'
   });
   // Assertion
@@ -45,15 +44,13 @@ test('Test deployment w/ custom properties', () => {
 test('Test deployment w/ logging enabled', () => {
   // Stack
   const stack = new Stack();
-  // State Machine definition
-  const startState = new sfn.Pass(stack, 'StartState');
   // Log group
   // const logGroup = new LogGroup(stack, 'myLogGroup', defaults.buildLogGroup(stack));
   const logGroup = buildLogGroup(stack, 'StateMachineLogGroup');
 
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
-    definition: startState,
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
     logs: {
       destination: logGroup,
       level: sfn.LogLevel.FATAL
@@ -85,11 +82,9 @@ test('Test deployment w/ logging enabled', () => {
 test('Check default Cloudwatch permissions', () => {
   // Stack
   const stack = new Stack();
-  // State Machine definition
-  const startState = new sfn.Pass(stack, 'StartState');
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
-    definition: startState
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test')
   });
   // Assertion
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
@@ -97,6 +92,7 @@ test('Check default Cloudwatch permissions', () => {
   template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
+        {}, // represents permission to invoke the test lambda function
         {
           Action: [
             "logs:CreateLogDelivery",
@@ -258,11 +254,9 @@ test('Check State Machine IAM Policy with S3 API call in State Machine Definitio
 test('Count State Machine CW Alarms', () => {
   // Stack
   const stack = new Stack();
-  // State Machine definition
-  const startState = new sfn.Pass(stack, 'StartState');
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
-    definition: startState
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test')
   });
   const cwList = defaults.buildStepFunctionCWAlarms(stack, buildStateMachineResponse.stateMachine);
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
@@ -275,8 +269,6 @@ test('Test deployment with custom role', () => {
 
   // Stack
   const stack = new Stack();
-  // State Machine definition
-  const startState = new sfn.Pass(stack, 'StartState');
 
   const customRole = new iam.Role(stack, 'custom-role', {
     assumedBy: new iam.ServicePrincipal('states.amazonaws.com'),
@@ -293,29 +285,29 @@ test('Test deployment with custom role', () => {
 
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
-    definition: startState,
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
     role: customRole
   });
 
   // Assertion
   const template = Template.fromStack(stack);
-  template.resourceCountIs("AWS::IAM::Role", 1);
+  template.resourceCountIs("AWS::IAM::Role", 2);
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
 
-  template.hasResourceProperties("AWS::IAM::Role", {
-    Description: descriptionText
-  });
+  // Confirm the correct role is assigned to the State Machine
+  const stateMachine = template.findResources("AWS::StepFunctions::StateMachine");
+  const roleArn = stateMachine.StateMachine2E01A3A5.Properties.RoleArn;
+  expect(roleArn["Fn::GetAtt"]).toBeDefined();
+  expect(roleArn["Fn::GetAtt"][0]).toEqual('customrole2E09B301');
 });
 
 test('Confirm format of name', () => {
   // Stack
   const stack = new Stack(undefined, 'teststack');
-  // State Machine definition
-  const startState = new sfn.Pass(stack, 'StartState');
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
     stateMachineName: 'myStateMachine',
-    definition: startState,
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
   });
   // Assertion
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
@@ -337,17 +329,14 @@ test('Confirm format of name', () => {
 test('Confirm format of name with ID provided', () => {
   // Stack
   const stack = new Stack(undefined, 'teststack');
-  // State Machine definition
-  const startState = new sfn.Pass(stack, 'StartState');
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, 'zxz', {
-    definition: startState,
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
   });
   // Assertion
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
 
   const template = Template.fromStack(stack);
-  defaults.printWarning(`*****************${JSON.stringify(template)}`);
   template.hasResourceProperties("AWS::StepFunctions::StateMachine", {});
 
   // Perform some fancy stuff to examine the specifics of the LogGroupName
@@ -363,22 +352,18 @@ test('Confirm format of name with ID provided', () => {
 test('multiple state machines', () => {
   // Stack
   const stack = new Stack(undefined, 'teststack');
-  // State Machine definition
-  const startState = new sfn.Pass(stack, 'StartState');
-  const startStateTwo = new sfn.Pass(stack, 'StartStateTwo');
-  const startStateThree = new sfn.Pass(stack, 'StartStateThree');
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, 'one', {
     stateMachineName: 'myStateMachine',
-    definition: startState,
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'smOne'),
   });
   const buildStateMachineResponseTwo = defaults.buildStateMachine(stack, 'two', {
     stateMachineName: 'myStateMachine',
-    definition: startStateTwo,
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'smTwo'),
   });
   const buildStateMachineResponseThree = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
     stateMachineName: 'myStateMachine',
-    definition: startStateThree,
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'smThree'),
   });
   // Assertion
   expect(buildStateMachineResponse.stateMachine).toBeDefined();

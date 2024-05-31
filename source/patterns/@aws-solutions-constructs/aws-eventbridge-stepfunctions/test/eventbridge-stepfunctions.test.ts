@@ -14,17 +14,15 @@
 import * as events from 'aws-cdk-lib/aws-events';
 import { EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps } from '../lib/index';
 import { Duration } from 'aws-cdk-lib';
-import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import * as cdk from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
+import * as defaults from '@aws-solutions-constructs/core';
 
 function deployNewStateMachine(stack: cdk.Stack) {
 
-  const startState = new sfn.Pass(stack, 'StartState');
-
   const props: EventbridgeToStepfunctionsProps = {
     stateMachineProps: {
-      definition: startState
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
     },
     eventRuleProps: {
       schedule: events.Schedule.rate(Duration.minutes(5))
@@ -36,11 +34,9 @@ function deployNewStateMachine(stack: cdk.Stack) {
 
 function deployNewStateMachineAndEventBus(stack: cdk.Stack) {
 
-  const startState = new sfn.Pass(stack, 'StartState');
-
   const props: EventbridgeToStepfunctionsProps = {
     stateMachineProps: {
-      definition: startState
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
     },
     eventRuleProps: {
       eventPattern: {
@@ -114,11 +110,9 @@ test('check properties', () => {
 
 test('check properties with no CW Alarms', () => {
   const stack = new cdk.Stack();
-  const startState = new sfn.Pass(stack, 'StartState');
-
   const props: EventbridgeToStepfunctionsProps = {
     stateMachineProps: {
-      definition: startState
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
     },
     eventRuleProps: {
       schedule: events.Schedule.rate(Duration.minutes(5))
@@ -152,11 +146,9 @@ test('check eventbus property, snapshot & eventbus exists', () => {
 
 test('Confirm CheckEventBridgeProps is being called', () => {
   const stack = new cdk.Stack();
-  const startState = new sfn.Pass(stack, 'StartState');
-
   const props: EventbridgeToStepfunctionsProps = {
     stateMachineProps: {
-      definition: startState
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
     },
     eventRuleProps: {
       eventPattern: {
@@ -175,11 +167,9 @@ test('Confirm CheckEventBridgeProps is being called', () => {
 
 test('check custom event bus resource with props when deploy:true', () => {
   const stack = new cdk.Stack();
-  const startState = new sfn.Pass(stack, 'StartState');
-
   const props: EventbridgeToStepfunctionsProps = {
     stateMachineProps: {
-      definition: startState
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
     },
     eventBusProps: {
       eventBusName: 'testcustomeventbus'
