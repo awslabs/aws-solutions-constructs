@@ -127,13 +127,24 @@ but is unique to the stack, avoiding naming collions between instances. is a min
 
 Typescript
 ``` typescript
-import { Construct } from 'constructs';
-import { Stack, StackProps } from 'aws-cdk-lib';
-import { ConstructsFactories } from '@aws-solutions-constructs/aws-constructs-factories';
+import { App, Stack } from "aws-cdk-lib";
+import { ConstructsFactories } from "../../lib";
+import { generateIntegStackName, CreateTestStateMachineDefinitionBody } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
-const factories = new ConstructsFactories(this, 'MyFactories');
+const taskOne = new sftasks.EvaluateExpression(this, 'placeholder', {
+  expression: '$.argOne + $.argTwo'
+});
 
-factories.s3BucketFactory('GoodBucket', {});
+const startState = sfn.DefinitionBody.fromChainable(taskOne);
+
+const factories = new ConstructsFactories(this, 'minimalImplementation');
+
+factories.stateMachineFactory('testsm', {
+  stateMachineProps: {
+    definitionBody: CreateTestStateMachineDefinitionBody(stack, 'test')
+  }
+});
 ```
 
 Python

@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f69c4e5ac0bc0d404acf427c2aaf88fd325f02808d13e1739ff6c2f6f335b826.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c7ecd4e8eaccb1e7f7416826559ce7fa1c58bb3a5fb8298e571ac6695d1d50b7.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -106,16 +106,16 @@
             "data": "targetStateMachinetestsm59897C57"
           }
         ],
-        "/facstp-defaults/Eval41256dc5445742738ed917bc818694e5/ServiceRole/Resource": [
+        "/facstp-defaults/lambdatest/ServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "Eval41256dc5445742738ed917bc818694e5ServiceRoleA1AB6027"
+            "data": "lambdatestServiceRoleF3BDB8FC"
           }
         ],
-        "/facstp-defaults/Eval41256dc5445742738ed917bc818694e5/Resource": [
+        "/facstp-defaults/lambdatest/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "Eval41256dc5445742738ed917bc818694e54EB1134F"
+            "data": "lambdatest8B679D7F"
           }
         ],
         "/facstp-defaults/BootstrapVersion": [
@@ -128,6 +128,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "Eval41256dc5445742738ed917bc818694e5ServiceRoleA1AB6027": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Eval41256dc5445742738ed917bc818694e5ServiceRoleA1AB6027",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "Eval41256dc5445742738ed917bc818694e54EB1134F": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Eval41256dc5445742738ed917bc818694e54EB1134F",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

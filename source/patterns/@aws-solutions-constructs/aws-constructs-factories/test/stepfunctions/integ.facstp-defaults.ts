@@ -14,10 +14,8 @@
 /// !cdk-integ *
 import { App, Stack } from "aws-cdk-lib";
 import { ConstructsFactories } from "../../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, CreateTestStateMachineDefinitionBody } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
-import * as sftasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
-import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 
 const app = new App();
 
@@ -25,15 +23,10 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
 const factories = new ConstructsFactories(stack, 'target');
-const taskOne = new sftasks.EvaluateExpression(stack, 'simpleTask', {
-  expression: '$.a + $.b'
-});
-
-const startState = sfn.DefinitionBody.fromChainable(taskOne);
 
 factories.stateMachineFactory('testsm', {
   stateMachineProps: {
-    definitionBody: startState,
+    definitionBody: CreateTestStateMachineDefinitionBody(stack, 'test')
   }
 });
 
