@@ -48,7 +48,25 @@
    },
    "DependsOn": [
     "lambdas3stptestServiceRoleF17BB6C7"
-   ]
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W89",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W92",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      }
+     ]
+    }
+   }
   },
   "tests3stepfunctionsconstructS3LoggingBucket706AEC25": {
    "Type": "AWS::S3::Bucket",
@@ -804,6 +822,18 @@
       {
        "id": "W92",
        "reason": "CDK generated custom resource"
+      },
+      {
+       "id": "W58",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W89",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W92",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
       }
      ]
     }
@@ -906,6 +936,18 @@
       {
        "id": "W92",
        "reason": "Impossible for us to define the correct concurrency for clients"
+      },
+      {
+       "id": "W58",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W89",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W92",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
       }
      ]
     }

@@ -762,6 +762,18 @@
       {
        "id": "W92",
        "reason": "CDK generated custom resource"
+      },
+      {
+       "id": "W58",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W89",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W92",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
       }
      ]
     }
@@ -1088,7 +1100,25 @@
    },
    "DependsOn": [
     "lambdafarstptestServiceRole3635EEF7"
-   ]
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W89",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W92",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      }
+     ]
+    }
+   }
   },
   "testconstructStateMachineLogGroup2EB4F48B": {
    "Type": "AWS::Logs::LogGroup",

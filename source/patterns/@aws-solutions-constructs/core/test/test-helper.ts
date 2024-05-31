@@ -129,6 +129,8 @@ export function CreateTestStateMachineDefinitionBody(scope: Construct, id: strin
     lambdaFunction: smStep,
   });
 
+  SuppressCfnNagLambdaWarnings(Stack.of(scope));
+
   return sfn.DefinitionBody.fromChainable(task);
 }
 
