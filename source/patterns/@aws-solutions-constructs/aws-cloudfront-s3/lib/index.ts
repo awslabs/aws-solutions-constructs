@@ -26,18 +26,6 @@ import { Construct } from 'constructs';
  */
 export interface CloudFrontToS3Props {
   /**
-   * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
-   *
-   * @default - None
-   */
-  readonly existingBucketObj?: s3.IBucket,
-  /**
-   * Optional user provided props to override the default props for the S3 Bucket.
-   *
-   * @default - Default props are used
-   */
-  readonly bucketProps?: s3.BucketProps,
-  /**
    * Optional user provided props to override the default props
    *
    * @default - Default props are used
@@ -72,24 +60,86 @@ export interface CloudFrontToS3Props {
    */
   readonly originPath?: string,
   /**
-   * Optional user provided props to override the default props for the S3 Logging Bucket.
-   *
-   * @default - Default props are used
-   */
-  readonly loggingBucketProps?: s3.BucketProps
-  /**
-   * Optional user provided props to override the default props for the CloudFront Logging Bucket.
-   *
-   * @default - Default props are used
-   */
-  readonly cloudFrontLoggingBucketProps?: s3.BucketProps
-  /**
    * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
    * Enabling Access Logging is a best practice.
    *
    * @default - true
    */
-  readonly logS3AccessLogs?: boolean;
+
+  // =====================
+  // S3 Content Bucket
+  // =====================
+  /**
+   * Existing instance of S3 Content Bucket object, providing both this and `bucketProps` will cause an error.
+   *
+   * @default - None
+   */
+  readonly existingBucketObj?: s3.IBucket,
+  /**
+   * Optional user provided props to override the default props for the S3 Content Bucket.
+   *
+   * @default - Default props are used
+   */
+  readonly bucketProps?: s3.BucketProps,
+
+  // =====================
+  // S3 Content Bucket Access Logs Bucket
+  // =====================
+  /**
+   * Optional - Whether to maintain access logs for the S3 Content bucket
+   *
+   * @default - true
+   */
+  readonly logS3AccessLogs?: boolean,
+  /**
+   * Optional user provided props to override the default props for the S3 Content Bucket Access Log Bucket.
+   *
+   * @default - Default props are used
+   */
+  readonly loggingBucketProps?: s3.BucketProps,
+  /**
+   * Optional - existing instance of bucket to hold access logs for Content bucket, providing both this and `loggingBucketProps`
+   * will cause an error.
+   */
+  readonly existingLoggingBucket?: s3.IBucket,
+
+  // =====================
+  // CloudFront Log Bucket
+  // =====================
+  /**
+   * Optional user provided props to override the default props for the CloudFront Log Bucket.
+   *
+   * @default - Default props are used
+   */
+  readonly cloudFrontLoggingBucketProps?: s3.BucketProps,
+  /**
+   * Existing instance of bucket to hold CloudFront logs, providing both this and `cloudFrontLoggingBucketProps`
+   * will cause an error.
+   */
+  readonly existingCloudFrontLoggingBucket?: s3.IBucket,
+
+  // =====================
+  // CloudFront Logs Bucket Access Log Bucket
+  // =====================
+  /**
+   * Optional - Whether to maintain access logs for the CloudFront Logging bucket. Specifying false for this
+   * while providing info about the log bucket will cause an error.
+   *
+   * @default - true
+   */
+  readonly logCloudFrontAccessLog?: boolean,
+  /**
+   * Optional user provided props to override the default props for the CloudFront Log Bucket Access Log bucket.
+   * Providing both this and `existingcloudFrontLoggingBucketAccessLogBucket` will cause an error
+   *
+   * @default - Default props are used
+   */
+  readonly cloudFrontLoggingBucketAccessLogBucketProps?: s3.BucketProps,
+  /**
+   * Existing instance of bucket to hold CloudFront logs, providing both this and `cloudFrontLoggingBucketProps`
+   * will cause an error.
+   */
+  readonly existingcloudFrontLoggingBucketAccessLogBucket?: s3.IBucket,
 }
 
 export class CloudFrontToS3 extends Construct {
