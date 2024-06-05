@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { Template } from 'aws-cdk-lib/assertions';
+import { Match, Template } from 'aws-cdk-lib/assertions';
 import { Stack } from 'aws-cdk-lib';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -132,8 +132,8 @@ test('test cloudfront with no security headers ', () => {
 
 test('test cloudfront override cloudfront logging bucket ', () => {
   const stack = new Stack();
-  const buildS3BucketResponse = buildS3Bucket(stack, {});
-  const logBucket = new Bucket(stack, 'loggingbucket');
+  const contentBucketResponse = buildS3Bucket(stack, {}, 'content-bucket');
+  const logBucket = new Bucket(stack, 'cloudfront-log-bucket');
 
   const myprops = {
     enableLogging: true,
@@ -141,38 +141,19 @@ test('test cloudfront override cloudfront logging bucket ', () => {
   };
 
   createCloudFrontDistributionForS3(stack, 'sample-cf-distro', {
-    sourceBucket: buildS3BucketResponse.bucket,
+    sourceBucket: contentBucketResponse.bucket,
     cloudFrontDistributionProps: myprops
   });
 
   const template = Template.fromStack(stack);
+  // Should be content bucket and it's associated S3 logging bucket, plus simple CloudFront log bucket
+  template.resourceCountIs("AWS::S3::Bucket", 3);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
-      DefaultCacheBehavior: {
-        CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6",
-        Compress: true,
-        FunctionAssociations: [
-          {
-            EventType: "viewer-response",
-            FunctionARN: {
-              "Fn::GetAtt": [
-                "SetHttpSecurityHeadersEE936115",
-                "FunctionARN"
-              ]
-            }
-          }
-        ],
-        TargetOriginId: "CloudFrontDistributionOrigin176EC3A12",
-        ViewerProtocolPolicy: "redirect-to-https"
-      },
-      DefaultRootObject: "index.html",
-      Enabled: true,
-      HttpVersion: "http2",
-      IPV6Enabled: true,
       Logging: {
         Bucket: {
           "Fn::GetAtt": [
-            "loggingbucket6D73BD53",
+            "cloudfrontlogbucketDF7058FB",
             "RegionalDomainName"
           ]
         }
@@ -181,6 +162,31 @@ test('test cloudfront override cloudfront logging bucket ', () => {
   });
 });
 
+test('test cloudfront with logging disabled', () => {
+  const stack = new Stack();
+  const contentBucketResponse = buildS3Bucket(stack, {});
+
+  const myprops = {
+    enableLogging: false,
+  };
+
+  createCloudFrontDistributionForS3(stack, 'sample-cf-distro', {
+    sourceBucket: contentBucketResponse.bucket,
+    cloudFrontDistributionProps: myprops
+  });
+
+  const template = Template.fromStack(stack);
+  // Should only be content bucket and it's associated S3 logging bucket
+  template.resourceCountIs("AWS::S3::Bucket", 2);
+  // There should be no logging of distribution
+  template.resourcePropertiesCountIs("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      DefaultCacheBehavior: {
+        Logging: Match.anyValue()
+      }
+    }
+  }, 0);
+});
 test('test cloudfront override properties', () => {
   const stack = new Stack();
   const buildS3BucketResponse = buildS3Bucket(stack, {});

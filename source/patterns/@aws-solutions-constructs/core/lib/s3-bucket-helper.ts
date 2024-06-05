@@ -85,12 +85,23 @@ export function createS3AccessLoggingBucket(scope: Construct,
   return loggingBucket;
 }
 
+// export interface createCloudFrontLoggingBucketResponse {
+//   readonly logBucket: s3.Bucket,
+//   readonly s3AccessLogBucket?: s3.Bucket
+// }
+
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function createCloudFrontLoggingBucket(scope: Construct,
   bucketId: string,
-  loggingBucketProps: s3.BucketProps): s3.Bucket {
+  loggingBucketProps: s3.BucketProps,
+  s3AccessLogBucketProps?: s3.BucketProps): s3.Bucket {
+
+  // TODO: 1 - accept optional parameters for configuring S3 Access Log bucket
+  // TODO: 2 - utilize those paramters instead of combinedBucketProps
+  // TODO: 3 - change this to return a response that exposes both buckets
+  // TODO: 4 - Do we allow  turning off logging here?
 
   // Introduce the default props since we can't be certain the caller used them and
   // they are important best practices
@@ -98,7 +109,9 @@ export function createCloudFrontLoggingBucket(scope: Construct,
 
   if (!loggingBucketProps.serverAccessLogsBucket) {
     // Create bucket and add to props
-    const accessLogBucket: s3.Bucket = new s3.Bucket(scope, `${bucketId}AccessLog`, combinedBucketProps); // NOSONAR
+    const combinedS3LogBucketProps = consolidateProps(DefaultS3Props(), s3AccessLogBucketProps);
+
+    const accessLogBucket: s3.Bucket = new s3.Bucket(scope, `${bucketId}AccessLog`, combinedS3LogBucketProps); // NOSONAR
     combinedBucketProps = overrideProps(combinedBucketProps, { serverAccessLogsBucket: accessLogBucket });
 
     addCfnSuppressRules(accessLogBucket, [
