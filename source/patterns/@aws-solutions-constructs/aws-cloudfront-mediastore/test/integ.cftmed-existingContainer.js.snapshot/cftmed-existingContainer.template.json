@@ -19,31 +19,18 @@
       }
      ]
     },
-    "OwnershipControls": {
-     "Rules": [
-      {
-       "ObjectOwnership": "ObjectWriter"
-      }
-     ]
-    },
     "PublicAccessBlockConfiguration": {
      "BlockPublicAcls": true,
      "BlockPublicPolicy": true,
      "IgnorePublicAcls": true,
      "RestrictPublicBuckets": true
     },
-    "Tags": [
-     {
-      "Key": "aws-cdk:auto-delete-objects",
-      "Value": "true"
-     }
-    ],
     "VersioningConfiguration": {
      "Status": "Enabled"
     }
    },
-   "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
    "Metadata": {
     "cfn_nag": {
      "rules_to_suppress": [
@@ -73,45 +60,6 @@
        "Effect": "Deny",
        "Principal": {
         "AWS": "*"
-       },
-       "Resource": [
-        {
-         "Fn::GetAtt": [
-          "testcloudfrontmediastoreCloudfrontLoggingBucketAccessLog907A8116",
-          "Arn"
-         ]
-        },
-        {
-         "Fn::Join": [
-          "",
-          [
-           {
-            "Fn::GetAtt": [
-             "testcloudfrontmediastoreCloudfrontLoggingBucketAccessLog907A8116",
-             "Arn"
-            ]
-           },
-           "/*"
-          ]
-         ]
-        }
-       ]
-      },
-      {
-       "Action": [
-        "s3:DeleteObject*",
-        "s3:GetBucket*",
-        "s3:List*",
-        "s3:PutBucketPolicy"
-       ],
-       "Effect": "Allow",
-       "Principal": {
-        "AWS": {
-         "Fn::GetAtt": [
-          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-          "Arn"
-         ]
-        }
        },
        "Resource": [
         {
@@ -176,25 +124,6 @@
      "Version": "2012-10-17"
     }
    }
-  },
-  "testcloudfrontmediastoreCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResourceAE9C7ABE": {
-   "Type": "Custom::S3AutoDeleteObjects",
-   "Properties": {
-    "ServiceToken": {
-     "Fn::GetAtt": [
-      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-      "Arn"
-     ]
-    },
-    "BucketName": {
-     "Ref": "testcloudfrontmediastoreCloudfrontLoggingBucketAccessLog907A8116"
-    }
-   },
-   "DependsOn": [
-    "testcloudfrontmediastoreCloudfrontLoggingBucketAccessLogPolicy7B05AE89"
-   ],
-   "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete"
   },
   "testcloudfrontmediastoreCloudfrontLoggingBucketA3A51E6A": {
    "Type": "AWS::S3::Bucket",
@@ -519,7 +448,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "b7f33614a69548d6bafe224d751a7ef238cde19097415e553fe8b63a4c8fd8a6.zip"
+     "S3Key": "2eb6a831b107939f63cfebf68e6316e1a40f79fc99cae0fee9b333bac8d29bc4.zip"
     },
     "Timeout": 900,
     "MemorySize": 128,
@@ -537,7 +466,7 @@
       [
        "Lambda function for auto-deleting objects in ",
        {
-        "Ref": "testcloudfrontmediastoreCloudfrontLoggingBucketAccessLog907A8116"
+        "Ref": "testcloudfrontmediastoreCloudfrontLoggingBucketA3A51E6A"
        },
        " S3 bucket."
       ]

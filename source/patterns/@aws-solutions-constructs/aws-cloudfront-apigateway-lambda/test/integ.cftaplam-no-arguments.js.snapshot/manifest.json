@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/54d554b9acf32426c251daa651e7f3b38cb60a72446784dbf2246d6d86717326.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/590eb76d74281a48edf9608c952776de7c3f63fa04fab3ad56cb1d6b1bbf9e7f.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -232,12 +232,6 @@
             "data": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogPolicy521355D8"
           }
         ],
-        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResource2395E2A2"
-          }
-        ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -284,6 +278,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResource2395E2A2": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResource2395E2A2",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

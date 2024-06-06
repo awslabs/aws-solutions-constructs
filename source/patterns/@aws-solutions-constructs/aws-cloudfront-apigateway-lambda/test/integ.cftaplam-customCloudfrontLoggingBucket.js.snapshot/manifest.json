@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/115afb006da2f317e27c09ceedffdfa599e5c46663ba58f3a681d855d5fc0f68.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/409f1d92c2c828db7a452f09ace3220bed11bfd0fd84d40d16ae10977ba25d19.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -232,12 +232,6 @@
             "data": "cfapigwlambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogPolicyC05E1C71"
           }
         ],
-        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "cfapigwlambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResource296BC002"
-          }
-        ],
         "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -284,6 +278,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "cfapigwlambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResource296BC002": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResource296BC002",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

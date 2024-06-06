@@ -30,6 +30,10 @@ const existingBucketObj = buildS3Bucket(stack, {
     encryption: BucketEncryption.S3_MANAGED,
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true
+  },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
   }
 }, 'existing-s3-bucket-encrypted-with-s3-managed-key').bucket;
 
