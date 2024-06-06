@@ -40,6 +40,8 @@ test('construct defaults set properties correctly', () => {
   expect(construct.s3Bucket).toBeDefined();
   expect(construct.s3LoggingBucket).toBeDefined();
   expect(construct.s3BucketInterface).toBeDefined();
+  expect(construct.cloudFrontLoggingBucketAccessLogBucket).toBeDefined();
+  expect(construct.originAccessControl).toBeDefined();
 });
 
 test('check s3Bucket default encryption', () => {
@@ -816,24 +818,76 @@ test('cloudFrontLoggingBucketAccessLogBucketProps are used correctly', () => {
 
   new CloudFrontToS3(stack, 'cloudfront-s3', {
     cloudFrontLoggingBucketAccessLogBucketProps: {
-      websiteErrorDocument: 'placeholder'
+      websiteErrorDocument: 'placeholder',
+      websiteIndexDocument: 'placeholde-two'
+    }
+  });
+
+  const template = Template.fromStack(stack);
+
+  // Content Bucket, Content Bucket S3 Access Log Bucket, CloudFront Log Bucket, CloudFront Log Bucket S3 Access Log Bucket
+  template.resourceCountIs("AWS::S3::Bucket", 4);
+  template.hasResourceProperties("AWS::S3::Bucket", {
+    WebsiteConfiguration: {
+      ErrorDocument: 'placeholder',
+      IndexDocument: 'placeholde-two'
+    }
+  });
+
+});
+test('If existing CloudFront Log bucket S3 Access Logging bucket is provided, it is used correctly', () => {
+  const stack = new cdk.Stack();
+  const testName = 'cf-log-s3-log';
+  const cfLogS3AccessLogBucket = new s3.Bucket(stack, 'cf-log-s3-access-log-bucket', {
+    bucketName: testName
+  });
+
+  new CloudFrontToS3(stack, 'cloudfront-s3', {
+    cloudFrontLoggingBucketProps: {
+      serverAccessLogsBucket: cfLogS3AccessLogBucket
     }
   });
 
   const template = Template.fromStack(stack);
   defaults.printWarning(`*************${JSON.stringify(template)}`);
+
   // Content Bucket, Content Bucket S3 Access Log Bucket, CloudFront Log Bucket, CloudFront Log Bucket S3 Access Log Bucket
   template.resourceCountIs("AWS::S3::Bucket", 4);
+
   template.hasResourceProperties("AWS::S3::Bucket", {
-    WebSiteConfiguration: {
-      ErrorDocument: 'placeholder'
+    BucketName: testName
+  });
+
+  template.hasResourceProperties("AWS::S3::Bucket", {
+    LoggingConfiguration: {
+      DestinationBucketName: {
+        Ref: "cflogs3accesslogbucketDE374C27"
+      }
     }
   });
 
 });
-// test('No new CloudFrontLoggingBucketAccessLogBucket is created if existingcloudFrontLoggingBucketAccessLogBucket is supplied', () => {
-// });
-// test('existingcloudFrontLoggingBucketAccessLogBucket is supplied is integrated into architecture correctly', () => {
-// });
-// test('cloudFrontLoggingBucketAccessLogBucket property is set correctly', () => {
-// });
+
+test('cloudFrontLoggingBucketAccessLogBucket property is set correctly', () => {
+  const stack = new cdk.Stack();
+
+  const construct = new CloudFrontToS3(stack, 'cloudfront-s3', {
+    cloudFrontLoggingBucketAccessLogBucketProps: {
+      websiteErrorDocument: 'placeholder',
+      websiteIndexDocument: 'placeholde-two'
+    }
+  });
+
+  const template = Template.fromStack(stack);
+
+  // Content Bucket, Content Bucket S3 Access Log Bucket, CloudFront Log Bucket, CloudFront Log Bucket S3 Access Log Bucket
+  template.resourceCountIs("AWS::S3::Bucket", 4);
+  template.hasResourceProperties("AWS::S3::Bucket", {
+    WebsiteConfiguration: {
+      ErrorDocument: 'placeholder',
+      IndexDocument: 'placeholde-two'
+    }
+  });
+  expect(construct.cloudFrontLoggingBucketAccessLogBucket).toBeDefined();
+  expect(construct.cloudFrontLoggingBucketAccessLogBucket!.bucketName).toBeDefined();
+});

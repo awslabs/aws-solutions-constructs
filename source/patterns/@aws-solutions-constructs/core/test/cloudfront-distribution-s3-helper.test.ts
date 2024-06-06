@@ -166,13 +166,13 @@ test('test cloudfront with logging disabled', () => {
   const stack = new Stack();
   const contentBucketResponse = buildS3Bucket(stack, {});
 
-  const myprops = {
+  const cfDistroProps = {
     enableLogging: false,
   };
 
   createCloudFrontDistributionForS3(stack, 'sample-cf-distro', {
     sourceBucket: contentBucketResponse.bucket,
-    cloudFrontDistributionProps: myprops
+    cloudFrontDistributionProps: cfDistroProps
   });
 
   const template = Template.fromStack(stack);
@@ -426,6 +426,37 @@ test('test cloudfront override cloudfront custom domain names ', () => {
         "mydomains"
       ],
     }
+  });
+});
+
+test('Are cloudfront log bucket access log bucket properties used', () => {
+  const stack = new Stack();
+  const contentBucketResponse = buildS3Bucket(stack, {});
+  const testName = 'random-name-avcb';
+
+  const response = createCloudFrontDistributionForS3(stack, 'sample-cf-distro', {
+    sourceBucket: contentBucketResponse.bucket,
+    cloudFrontLoggingBucketS3AccessLogBucketProps: { bucketName: testName }
+  });
+
+  expect(response.loggingBucket).toBeDefined();
+  expect(response.loggingBucketS3AccesssLogBucket).toBeDefined();
+
+  const template = Template.fromStack(stack);
+
+  // Content Bucket, Content Bucket Access Log, CloudFront Log, CloudFront Log Access Log
+  template.resourceCountIs("AWS::S3::Bucket", 4);
+
+  template.hasResourceProperties("AWS::S3::Bucket", {
+    BucketName: testName
+  });
+
+  template.hasResourceProperties("AWS::S3::Bucket", {
+    LoggingConfiguration: {
+      DestinationBucketName: {
+        Ref: "CloudfrontLoggingBucketAccessLogAC47A543"
+      }
+    },
   });
 });
 

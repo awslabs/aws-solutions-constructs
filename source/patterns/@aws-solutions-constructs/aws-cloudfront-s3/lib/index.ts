@@ -97,13 +97,6 @@ export interface CloudFrontToS3Props {
    * @default - Default props are used
    */
   readonly loggingBucketProps?: s3.BucketProps,
-  /**
-   * Provide an existing Access Log bucket in bucketProps: serverAccessLogsBucket
-   *
-   * Optional - existing instance of bucket to hold access logs for Content bucket, providing both this and `loggingBucketProps`
-   * will cause an error.
-   */
-  // readonly existingLoggingBucket?: s3.IBucket,
 
   // =====================
   // CloudFront Log Bucket
@@ -114,13 +107,6 @@ export interface CloudFrontToS3Props {
    * @default - Default props are used
    */
   readonly cloudFrontLoggingBucketProps?: s3.BucketProps,
-  /**
-   * Provide an existing CloudFront log bucket in the logBucket prop in cloudFrontDistributionProps
-   *
-   * Existing instance of bucket to hold CloudFront logs, providing both this and `cloudFrontLoggingBucketProps`
-   * will cause an error.
-   */
-  // readonly existingCloudFrontLoggingBucket?: s3.IBucket,
 
   // =====================
   // CloudFront Logs Bucket Access Log Bucket
@@ -139,13 +125,6 @@ export interface CloudFrontToS3Props {
    * @default - Default props are used
    */
   readonly cloudFrontLoggingBucketAccessLogBucketProps?: s3.BucketProps,
-  /**
-   * Provide this via the serverAccessLogBucket prop in cloudFrontLoggingBucketProps
-   *
-   * Existing instance of bucket to hold CloudFront logs, providing both this and `cloudFrontLoggingBucketProps`
-   * will cause an error.
-   */
-  //  readonly existingcloudFrontLoggingBucketAccessLogBucket?: s3.IBucket,
 }
 
 export class CloudFrontToS3 extends Construct {
@@ -200,13 +179,15 @@ export class CloudFrontToS3 extends Construct {
       cloudFrontDistributionProps: props.cloudFrontDistributionProps,
       httpSecurityHeaders: props.insertHttpSecurityHeaders,
       cloudFrontLoggingBucketProps: props.cloudFrontLoggingBucketProps,
-      responseHeadersPolicyProps: props.responseHeadersPolicyProps
+      responseHeadersPolicyProps: props.responseHeadersPolicyProps,
+      cloudFrontLoggingBucketS3AccessLogBucketProps: props.cloudFrontLoggingBucketAccessLogBucketProps
     };
     const cloudFrontDistributionForS3Response = defaults.createCloudFrontDistributionForS3(this, id, cloudFrontDistributionForS3Props);
     this.cloudFrontWebDistribution = cloudFrontDistributionForS3Response.distribution;
     this.cloudFrontFunction = cloudFrontDistributionForS3Response.cloudfrontFunction;
     this.cloudFrontLoggingBucket = cloudFrontDistributionForS3Response.loggingBucket;
     this.originAccessControl = cloudFrontDistributionForS3Response.originAccessControl;
+    this.cloudFrontLoggingBucketAccessLogBucket = cloudFrontDistributionForS3Response.loggingBucketS3AccesssLogBucket;
 
     // Attach the OriginAccessControl to the CloudFront Distribution, and remove the OriginAccessIdentity
     const l1CloudFrontDistribution = this.cloudFrontWebDistribution.node.defaultChild as cloudfront.CfnDistribution;

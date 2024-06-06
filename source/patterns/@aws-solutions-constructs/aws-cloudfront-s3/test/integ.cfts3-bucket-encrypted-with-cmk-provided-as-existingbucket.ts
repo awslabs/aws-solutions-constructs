@@ -33,12 +33,22 @@ const encryptionKey = new aws_kms.Key(stack, 'cmkKey', {
 const existingBucketObj = buildS3Bucket(stack, {
   bucketProps: {
     encryption: BucketEncryption.KMS,
-    encryptionKey
-  }
+    encryptionKey,
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
 }, 'existing-s3-bucket-encrypted-with-cmk').bucket;
 
 const props: CloudFrontToS3Props = {
   existingBucketObj,
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
+  cloudFrontLoggingBucketAccessLogBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
   insertHttpSecurityHeaders: false
 };
 
