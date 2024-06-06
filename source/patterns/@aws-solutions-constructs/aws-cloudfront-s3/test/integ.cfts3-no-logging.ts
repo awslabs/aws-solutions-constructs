@@ -43,6 +43,16 @@ defaults.addCfnSuppressRules(construct.cloudFrontWebDistribution, [
     reason: 'Test case only' },
 ]);
 
+defaults.addCfnSuppressRules(construct.s3Bucket!, [
+  { id: 'W35',
+    reason: 'Test case only' },
+]);
+
+defaults.addCfnSuppressRules(construct.cloudFrontWebDistribution, [
+  { id: 'W35',
+    reason: 'Test case only' },
+]);
+
 defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [

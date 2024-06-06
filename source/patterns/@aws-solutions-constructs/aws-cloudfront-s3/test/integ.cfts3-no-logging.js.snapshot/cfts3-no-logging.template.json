@@ -43,7 +43,17 @@
     }
    },
    "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete"
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W35",
+       "reason": "Test case only"
+      }
+     ]
+    }
+   }
   },
   "testcloudfronts3S3BucketPolicy250F1F61": {
    "Type": "AWS::S3::BucketPolicy",
@@ -300,6 +310,10 @@
       },
       {
        "id": "W10",
+       "reason": "Test case only"
+      },
+      {
+       "id": "W35",
        "reason": "Test case only"
       }
      ]
