@@ -16,7 +16,6 @@ import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { CloudFrontToS3 } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
-import * as s3 from "aws-cdk-lib/aws-s3";
 import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
@@ -39,11 +38,9 @@ const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
   }
 });
 
-const s3Bucket = construct.s3Bucket as s3.Bucket;
-
-defaults.addCfnSuppressRules(s3Bucket, [
-  { id: 'W35',
-    reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
+defaults.addCfnSuppressRules(construct.cloudFrontWebDistribution, [
+  { id: 'W10',
+    reason: 'Test case only' },
 ]);
 
 defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');

@@ -37,6 +37,10 @@ const existingBucketObj = buildS3Bucket(stack, {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true
   },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  }
 }, 'existing-s3-bucket-encrypted-with-cmk').bucket;
 
 const props: CloudFrontToS3Props = {

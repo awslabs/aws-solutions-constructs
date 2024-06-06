@@ -849,7 +849,6 @@ test('If existing CloudFront Log bucket S3 Access Logging bucket is provided, it
   });
 
   const template = Template.fromStack(stack);
-  defaults.printWarning(`*************${JSON.stringify(template)}`);
 
   // Content Bucket, Content Bucket S3 Access Log Bucket, CloudFront Log Bucket, CloudFront Log Bucket S3 Access Log Bucket
   template.resourceCountIs("AWS::S3::Bucket", 4);
