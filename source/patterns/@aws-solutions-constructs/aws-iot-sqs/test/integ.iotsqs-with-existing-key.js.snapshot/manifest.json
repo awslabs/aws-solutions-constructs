@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fad634acec977d356a2c8bc163fc40c7072fc6f611258a39284c982d476ab93b.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1619b9a336ccd1ee851cb4923c8bafaefc78681da01fed94508ea4e8f448290.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -94,16 +94,16 @@
             "data": "existingkeyAliasE18FEC67"
           }
         ],
-        "/iotsqs-with-existing-key/test-iot-sqs-stack/deadLetterQueue/Resource": [
+        "/iotsqs-with-existing-key/test-iot-sqs-stack/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testiotsqsstackdeadLetterQueueA417EB97"
+            "data": "testiotsqsstackqueuedlq8FBD6728"
           }
         ],
-        "/iotsqs-with-existing-key/test-iot-sqs-stack/deadLetterQueue/Policy/Resource": [
+        "/iotsqs-with-existing-key/test-iot-sqs-stack/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testiotsqsstackdeadLetterQueuePolicyD0F4B7D3"
+            "data": "testiotsqsstackqueuedlqPolicyC72D7226"
           }
         ],
         "/iotsqs-with-existing-key/test-iot-sqs-stack/queue": [
@@ -152,6 +152,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testiotsqsstackdeadLetterQueueA417EB97": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackdeadLetterQueueA417EB97",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testiotsqsstackdeadLetterQueuePolicyD0F4B7D3": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackdeadLetterQueuePolicyD0F4B7D3",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

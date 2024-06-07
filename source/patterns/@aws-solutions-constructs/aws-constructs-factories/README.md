@@ -191,5 +191,93 @@ Out of the box implementation of the Construct without any override will set the
 # Architecture
 ![Architecture Diagram](sf-architecture.png)
 
+## SQS Queues
+
+Create SQS queues complete with DLQs and KMS CMKs with one function call. Here is a minimal deployable pattern definition:
+
+Typescript
+``` typescript
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { ConstructsFactories } from '@aws-solutions-constructs/aws-constructs-factories';
+
+const factories = new ConstructsFactories(this, 'MyFactories');
+
+factories.s3BucketFactory('GoodBucket', {});
+```
+
+Python
+``` python
+from aws_cdk import (
+    Stack,
+)
+from constructs import Construct
+
+from aws_solutions_constructs import (
+    aws_constructs_factories as cf
+)
+
+factories = cf.ConstructsFactories(self, 'MyFactories')
+factories.s3_bucket_factory('GoodBucket')
+```
+
+Java
+``` java
+import software.constructs.Construct;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+
+import software.amazon.awsconstructs.services.constructsfactories.ConstructsFactories;
+import software.amazon.awsconstructs.services.constructsfactories.S3BucketFactoryProps;
+
+final ConstructsFactories factories = new ConstructsFactories(this, "MyFactories");
+factories.s3BucketFactory("GoodBucket", 
+  new S3BucketFactoryProps.Builder().build());
+```
+
+# SqsQueueFactory Function Signature
+
+``` typescript
+SqsQueueFactory(id: string, props: SqsQueueFactoryProps): SqsQueueFactoryResponse
+```
+
+# SqsQueueFactoryProps
+
+| **Name**     | **Type**        | **Description** |
+|:-------------|:----------------|-----------------|
+|queueProps?|sqs.QueueProps|Optional user provided props to override the default props for the primary queue.|
+|enableEncryptionWithCustomerManagedKey?|boolean|If no key is provided, this flag determines whether the queue is encrypted with a new CMK or an AWS managed key. This flag is ignored if any of the following are defined: queueProps.encryptionMasterKey, encryptionKey or encryptionKeyProps. default - False if queueProps.encryptionMasterKey, encryptionKey, and encryptionKeyProps are all undefined.|
+|encryptionKey?|kms.Key|An optional, imported encryption key to encrypt the SQS Queue with. Default - none|
+|encryptionKeyProps?|kms.KeyProps|Optional user provided properties to override the default properties for the KMS encryption key used to encrypt the SQS Queue with. @default - None|
+|deployDeadLetterQueue?|boolean|Whether to deploy a secondary queue to be used as a dead letter queue.|
+|deadLetterQueueProps?|sqs.QueueProps|Optional user provided properties for the dead letter queue|
+|maxReceiveCount?|number|The number of times a message can be unsuccessfully dequeued before being moved to the dead letter queue. default - [code](https://github.com/awslabs/aws-solutions-constructs/blob/8b30791902e09db2f7c49410a03d5d95ccc2ef51/source/patterns/%40aws-solutions-constructs/core/lib/sqs-defaults.ts#L32)|
+
+# SqsQueueFactoryResponse
+
+| **Name**     | **Type**        | **Description** |
+|:-------------|:----------------|-----------------|
+|queue|sqs.Queue|The queue created by the factory.|
+|key|kms.IKey|The key used to encrypt the queue, if the queue was configured to use a CMK|
+|deadLetterQueue?|sqs.DeadLetterQueue|The dead letter queue associated with the queue created by the factory|
+
+# Default settings
+
+Out of the box implementation of the Construct without any override will set the following defaults:
+
+* An SQS queue
+  * Encrypted by default with KMS managed key by default, can be KMS CMK if flag is set
+  * Only queue owner can perform operations by default (your IAM policies can override)
+  * Enforced encryption for data in transit
+  * DLQ configured
+* An SQS dead letter queue
+  * Receives messages not processable in maxReceiveCount attempts
+  * Encrypted with KMS managed key
+  * Enforced encryption for data in transit
+
+# Architecture
+![Architecture Diagram](sqs-architecture.png)
+
+
 ***
 &copy; Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.

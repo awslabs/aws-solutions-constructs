@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/107e9567a603895b0c4e143f045840917210e0e0ab439bc036b902a2d09d2352.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/83604724a91cd95158c08fc1524a38cdf8f152494277175673ce492443ef8927.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,18 +82,6 @@
         "snssqs-allow-two-instances.assets"
       ],
       "metadata": {
-        "/snssqs-allow-two-instances/test-sns-sqs-stack/deadLetterQueue/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsnssqsstackdeadLetterQueue83D183F2"
-          }
-        ],
-        "/snssqs-allow-two-instances/test-sns-sqs-stack/deadLetterQueue/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsnssqsstackdeadLetterQueuePolicy388F06A8"
-          }
-        ],
         "/snssqs-allow-two-instances/test-sns-sqs-stack/SnsTopic/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -104,6 +92,18 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testsnssqsstackSnsTopicPolicyBD0740CC"
+          }
+        ],
+        "/snssqs-allow-two-instances/test-sns-sqs-stack/queue-dlq/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstackqueuedlq0BD0C2B9"
+          }
+        ],
+        "/snssqs-allow-two-instances/test-sns-sqs-stack/queue-dlq/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstackqueuedlqPolicy3BB4A79B"
           }
         ],
         "/snssqs-allow-two-instances/test-sns-sqs-stack/queue": [
@@ -142,18 +142,6 @@
             "data": "testsnssqsstackqueueKey4F05EC55"
           }
         ],
-        "/snssqs-allow-two-instances/test-sns-sqs-stack-two/deadLetterQueue/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsnssqsstacktwodeadLetterQueueE2CAC509"
-          }
-        ],
-        "/snssqs-allow-two-instances/test-sns-sqs-stack-two/deadLetterQueue/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsnssqsstacktwodeadLetterQueuePolicyDC6FD645"
-          }
-        ],
         "/snssqs-allow-two-instances/test-sns-sqs-stack-two/SnsTopic/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -164,6 +152,18 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testsnssqsstacktwoSnsTopicPolicy70FF6492"
+          }
+        ],
+        "/snssqs-allow-two-instances/test-sns-sqs-stack-two/queue-dlq/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstacktwoqueuedlqA27CF8DA"
+          }
+        ],
+        "/snssqs-allow-two-instances/test-sns-sqs-stack-two/queue-dlq/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstacktwoqueuedlqPolicyC15C0D6F"
           }
         ],
         "/snssqs-allow-two-instances/test-sns-sqs-stack-two/queue": [
@@ -212,6 +212,42 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testsnssqsstackdeadLetterQueue83D183F2": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstackdeadLetterQueue83D183F2",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testsnssqsstackdeadLetterQueuePolicy388F06A8": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstackdeadLetterQueuePolicy388F06A8",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testsnssqsstacktwodeadLetterQueueE2CAC509": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstacktwodeadLetterQueueE2CAC509",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testsnssqsstacktwodeadLetterQueuePolicyDC6FD645": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstacktwodeadLetterQueuePolicyDC6FD645",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

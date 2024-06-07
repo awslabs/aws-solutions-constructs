@@ -104,7 +104,7 @@ test('Test DLQ when existing Queue Provided', () => {
     existingQueueObj: existingQueue,
   };
 
-  const returnedQueue = defaults.buildDeadLetterQueue(stack, buildDlqProps);
+  const returnedQueue = defaults.buildDeadLetterQueue(stack, 'testdlq', buildDlqProps);
 
   expect(returnedQueue).toBeUndefined();
   Template.fromStack(stack).resourceCountIs("AWS::SQS::Queue", 1);
@@ -113,7 +113,7 @@ test('Test DLQ when existing Queue Provided', () => {
 test('Test DLQ with all defaults', () => {
   const stack = new Stack();
 
-  buildDeadLetterQueue(stack, {});
+  buildDeadLetterQueue(stack, 'testdlq', {});
   Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: "alias/aws/sqs"
   });
@@ -123,7 +123,7 @@ test("Test DLQ with a provided properties", () => {
   const stack = new Stack();
   const testQueueName = "test-unique252";
 
-  const returnedQueue = buildDeadLetterQueue(stack, {
+  const returnedQueue = buildDeadLetterQueue(stack, 'testdlq', {
     deadLetterQueueProps: {
       queueName: testQueueName,
     },
@@ -138,7 +138,7 @@ test('Test DLQ with a provided maxReceiveCount', () => {
   const stack = new Stack();
   const testMaxReceiveCount = 31;
 
-  const dlqInterface = buildDeadLetterQueue(stack, {
+  const dlqInterface = buildDeadLetterQueue(stack, 'testdlq', {
     maxReceiveCount: testMaxReceiveCount
   });
   expect(dlqInterface?.maxReceiveCount).toEqual(testMaxReceiveCount);

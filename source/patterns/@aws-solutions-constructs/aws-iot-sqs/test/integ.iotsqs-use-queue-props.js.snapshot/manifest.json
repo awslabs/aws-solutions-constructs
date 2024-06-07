@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/7fdd1d3c2f19ccc39f555cfef1bca298d0ceb465581088bbf4d4f649184c8268.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/7093db8fbd617f2358d33b02025104feec38ac412e546c35f0817cb078c037b6.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,16 +82,16 @@
         "iotsqs-use-queue-props.assets"
       ],
       "metadata": {
-        "/iotsqs-use-queue-props/test-iot-sqs-stack/deadLetterQueue/Resource": [
+        "/iotsqs-use-queue-props/test-iot-sqs-stack/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testiotsqsstackdeadLetterQueueA417EB97"
+            "data": "testiotsqsstackqueuedlq8FBD6728"
           }
         ],
-        "/iotsqs-use-queue-props/test-iot-sqs-stack/deadLetterQueue/Policy/Resource": [
+        "/iotsqs-use-queue-props/test-iot-sqs-stack/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testiotsqsstackdeadLetterQueuePolicyD0F4B7D3"
+            "data": "testiotsqsstackqueuedlqPolicyC72D7226"
           }
         ],
         "/iotsqs-use-queue-props/test-iot-sqs-stack/'queueKey'/Resource": [
@@ -148,10 +148,19 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testiotsqsstackEncryptionKeyAB09201B": [
+        "testiotsqsstackdeadLetterQueueA417EB97": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testiotsqsstackEncryptionKeyAB09201B",
+            "data": "testiotsqsstackdeadLetterQueueA417EB97",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testiotsqsstackdeadLetterQueuePolicyD0F4B7D3": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackdeadLetterQueuePolicyD0F4B7D3",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

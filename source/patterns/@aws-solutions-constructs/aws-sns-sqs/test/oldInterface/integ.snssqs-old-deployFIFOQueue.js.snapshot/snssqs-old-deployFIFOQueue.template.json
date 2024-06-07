@@ -113,7 +113,7 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "testsnssqsdeadLetterQueue8DACC0A1": {
+  "testsnssqsqueuedlq3331312B": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
     "FifoQueue": true,
@@ -127,7 +127,7 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "testsnssqsdeadLetterQueuePolicyAB8A9883": {
+  "testsnssqsqueuedlqPolicy63646E47": {
    "Type": "AWS::SQS::QueuePolicy",
    "Properties": {
     "PolicyDocument": {
@@ -163,7 +163,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testsnssqsdeadLetterQueue8DACC0A1",
+         "testsnssqsqueuedlq3331312B",
          "Arn"
         ]
        },
@@ -182,7 +182,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testsnssqsdeadLetterQueue8DACC0A1",
+         "testsnssqsqueuedlq3331312B",
          "Arn"
         ]
        },
@@ -193,7 +193,7 @@
     },
     "Queues": [
      {
-      "Ref": "testsnssqsdeadLetterQueue8DACC0A1"
+      "Ref": "testsnssqsqueuedlq3331312B"
      }
     ]
    }
@@ -211,7 +211,7 @@
     "RedrivePolicy": {
      "deadLetterTargetArn": {
       "Fn::GetAtt": [
-       "testsnssqsdeadLetterQueue8DACC0A1",
+       "testsnssqsqueuedlq3331312B",
        "Arn"
       ]
      },

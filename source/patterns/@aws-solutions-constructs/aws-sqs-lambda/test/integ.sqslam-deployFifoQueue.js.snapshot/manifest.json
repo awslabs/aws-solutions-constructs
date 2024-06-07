@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/817e41a3726a1aef06fd47096bfb783eb137669c1bbb377f2b45af210d5d98fb.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e47c20b30441b9b71ed887814b909fda83cd60f42a9103fd43d75f13ea29307c.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -106,16 +106,16 @@
             "data": "testsqslambdafifoLambdaFunctionSqsEventSourcesqslamdeployFifoQueuetestsqslambdafifoqueue471FB9167780560F"
           }
         ],
-        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/deadLetterQueue/Resource": [
+        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testsqslambdafifodeadLetterQueue99A41920"
+            "data": "testsqslambdafifoqueuedlq8882EE1A"
           }
         ],
-        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/deadLetterQueue/Policy/Resource": [
+        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testsqslambdafifodeadLetterQueuePolicy32FA63A7"
+            "data": "testsqslambdafifoqueuedlqPolicyA43EDF2E"
           }
         ],
         "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/queue/Resource": [
@@ -140,6 +140,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testsqslambdafifodeadLetterQueue99A41920": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqslambdafifodeadLetterQueue99A41920",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testsqslambdafifodeadLetterQueuePolicy32FA63A7": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqslambdafifodeadLetterQueuePolicy32FA63A7",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

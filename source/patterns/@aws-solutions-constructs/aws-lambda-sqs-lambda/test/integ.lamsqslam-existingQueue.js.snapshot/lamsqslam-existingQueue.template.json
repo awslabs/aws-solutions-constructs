@@ -1,7 +1,7 @@
 {
  "Description": "Integration Test for aws-lambda-sqs-lambda",
  "Resources": {
-  "deadLetterQueue3F848E28": {
+  "existingsqsqueuedlq6DF9E3FB": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
     "KmsMasterKeyId": "alias/aws/sqs"
@@ -9,7 +9,7 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "deadLetterQueuePolicy14A9D269": {
+  "existingsqsqueuedlqPolicy18BA3A28": {
    "Type": "AWS::SQS::QueuePolicy",
    "Properties": {
     "PolicyDocument": {
@@ -45,7 +45,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "deadLetterQueue3F848E28",
+         "existingsqsqueuedlq6DF9E3FB",
          "Arn"
         ]
        },
@@ -64,7 +64,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "deadLetterQueue3F848E28",
+         "existingsqsqueuedlq6DF9E3FB",
          "Arn"
         ]
        },
@@ -75,7 +75,7 @@
     },
     "Queues": [
      {
-      "Ref": "deadLetterQueue3F848E28"
+      "Ref": "existingsqsqueuedlq6DF9E3FB"
      }
     ]
    }
@@ -87,7 +87,7 @@
     "RedrivePolicy": {
      "deadLetterTargetArn": {
       "Fn::GetAtt": [
-       "deadLetterQueue3F848E28",
+       "existingsqsqueuedlq6DF9E3FB",
        "Arn"
       ]
      },

@@ -8,13 +8,13 @@
         "id": "lamsqslam-existingQueue",
         "path": "lamsqslam-existingQueue",
         "children": {
-          "deadLetterQueue": {
-            "id": "deadLetterQueue",
-            "path": "lamsqslam-existingQueue/deadLetterQueue",
+          "existing-sqs-queue-dlq": {
+            "id": "existing-sqs-queue-dlq",
+            "path": "lamsqslam-existingQueue/existing-sqs-queue-dlq",
             "children": {
               "Resource": {
                 "id": "Resource",
-                "path": "lamsqslam-existingQueue/deadLetterQueue/Resource",
+                "path": "lamsqslam-existingQueue/existing-sqs-queue-dlq/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
                   "aws:cdk:cloudformation:props": {
@@ -28,11 +28,11 @@
               },
               "Policy": {
                 "id": "Policy",
-                "path": "lamsqslam-existingQueue/deadLetterQueue/Policy",
+                "path": "lamsqslam-existingQueue/existing-sqs-queue-dlq/Policy",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "lamsqslam-existingQueue/deadLetterQueue/Policy/Resource",
+                    "path": "lamsqslam-existingQueue/existing-sqs-queue-dlq/Policy/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
                       "aws:cdk:cloudformation:props": {
@@ -69,7 +69,7 @@
                               },
                               "Resource": {
                                 "Fn::GetAtt": [
-                                  "deadLetterQueue3F848E28",
+                                  "existingsqsqueuedlq6DF9E3FB",
                                   "Arn"
                                 ]
                               },
@@ -88,7 +88,7 @@
                               },
                               "Resource": {
                                 "Fn::GetAtt": [
-                                  "deadLetterQueue3F848E28",
+                                  "existingsqsqueuedlq6DF9E3FB",
                                   "Arn"
                                 ]
                               },
@@ -99,7 +99,7 @@
                         },
                         "queues": [
                           {
-                            "Ref": "deadLetterQueue3F848E28"
+                            "Ref": "existingsqsqueuedlq6DF9E3FB"
                           }
                         ]
                       }
@@ -135,7 +135,7 @@
                     "redrivePolicy": {
                       "deadLetterTargetArn": {
                         "Fn::GetAtt": [
-                          "deadLetterQueue3F848E28",
+                          "existingsqsqueuedlq6DF9E3FB",
                           "Arn"
                         ]
                       },

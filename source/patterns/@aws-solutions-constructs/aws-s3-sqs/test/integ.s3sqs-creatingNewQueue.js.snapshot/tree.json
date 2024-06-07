@@ -298,13 +298,13 @@
                   "version": "2.143.0"
                 }
               },
-              "deadLetterQueue": {
-                "id": "deadLetterQueue",
-                "path": "s3sqs-creatingNewQueue/test-s3-sqs/deadLetterQueue",
+              "queue-dlq": {
+                "id": "queue-dlq",
+                "path": "s3sqs-creatingNewQueue/test-s3-sqs/queue-dlq",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "s3sqs-creatingNewQueue/test-s3-sqs/deadLetterQueue/Resource",
+                    "path": "s3sqs-creatingNewQueue/test-s3-sqs/queue-dlq/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
                       "aws:cdk:cloudformation:props": {
@@ -319,11 +319,11 @@
                   },
                   "Policy": {
                     "id": "Policy",
-                    "path": "s3sqs-creatingNewQueue/test-s3-sqs/deadLetterQueue/Policy",
+                    "path": "s3sqs-creatingNewQueue/test-s3-sqs/queue-dlq/Policy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "s3sqs-creatingNewQueue/test-s3-sqs/deadLetterQueue/Policy/Resource",
+                        "path": "s3sqs-creatingNewQueue/test-s3-sqs/queue-dlq/Policy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
                           "aws:cdk:cloudformation:props": {
@@ -360,7 +360,7 @@
                                   },
                                   "Resource": {
                                     "Fn::GetAtt": [
-                                      "tests3sqsdeadLetterQueueEABBC814",
+                                      "tests3sqsqueuedlq9DE05351",
                                       "Arn"
                                     ]
                                   },
@@ -379,7 +379,7 @@
                                   },
                                   "Resource": {
                                     "Fn::GetAtt": [
-                                      "tests3sqsdeadLetterQueueEABBC814",
+                                      "tests3sqsqueuedlq9DE05351",
                                       "Arn"
                                     ]
                                   },
@@ -390,7 +390,7 @@
                             },
                             "queues": [
                               {
-                                "Ref": "tests3sqsdeadLetterQueueEABBC814"
+                                "Ref": "tests3sqsqueuedlq9DE05351"
                               }
                             ]
                           }
@@ -432,7 +432,7 @@
                         "redrivePolicy": {
                           "deadLetterTargetArn": {
                             "Fn::GetAtt": [
-                              "tests3sqsdeadLetterQueueEABBC814",
+                              "tests3sqsqueuedlq9DE05351",
                               "Arn"
                             ]
                           },
@@ -570,7 +570,7 @@
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-s3-sqs.S3ToSqs",
-              "version": "2.57.0"
+              "version": "2.58.1"
             }
           },
           "Custom::S3AutoDeleteObjectsCustomResourceProvider": {

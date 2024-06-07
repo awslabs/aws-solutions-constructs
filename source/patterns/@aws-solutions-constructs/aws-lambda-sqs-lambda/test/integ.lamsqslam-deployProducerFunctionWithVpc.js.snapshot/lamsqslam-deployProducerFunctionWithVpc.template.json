@@ -211,7 +211,7 @@
     }
    }
   },
-  "testlambdasqslambdatosqsdeadLetterQueue0FF744BB": {
+  "testlambdasqslambdatosqsqueuedlqC154C220": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
     "KmsMasterKeyId": "alias/aws/sqs"
@@ -219,7 +219,7 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "testlambdasqslambdatosqsdeadLetterQueuePolicy4A3E49B3": {
+  "testlambdasqslambdatosqsqueuedlqPolicy74C45781": {
    "Type": "AWS::SQS::QueuePolicy",
    "Properties": {
     "PolicyDocument": {
@@ -255,7 +255,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testlambdasqslambdatosqsdeadLetterQueue0FF744BB",
+         "testlambdasqslambdatosqsqueuedlqC154C220",
          "Arn"
         ]
        },
@@ -274,7 +274,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testlambdasqslambdatosqsdeadLetterQueue0FF744BB",
+         "testlambdasqslambdatosqsqueuedlqC154C220",
          "Arn"
         ]
        },
@@ -285,7 +285,7 @@
     },
     "Queues": [
      {
-      "Ref": "testlambdasqslambdatosqsdeadLetterQueue0FF744BB"
+      "Ref": "testlambdasqslambdatosqsqueuedlqC154C220"
      }
     ]
    }
@@ -297,7 +297,7 @@
     "RedrivePolicy": {
      "deadLetterTargetArn": {
       "Fn::GetAtt": [
-       "testlambdasqslambdatosqsdeadLetterQueue0FF744BB",
+       "testlambdasqslambdatosqsqueuedlqC154C220",
        "Arn"
       ]
      },
@@ -982,7 +982,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "dd5711540f04e06aa955d7f4862fc04e8cdea464cb590dae91ed2976bb78098e.zip"
+     "S3Key": "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a.zip"
     },
     "Timeout": 900,
     "MemorySize": 128,

@@ -40,12 +40,6 @@ export interface BuildQueueProps {
      * @default - Default props are used.
      */
     readonly queueProps?: sqs.QueueProps;
-    // /**
-    //  * Optional dead letter queue to pass bad requests to after the max receive count is reached.
-    //  *
-    //  * @default - Default props are used.
-    //  */
-    // readonly deadLetterQueue?: sqs.DeadLetterQueue;
     /**
      * If no key is provided, this flag determines whether the queue is encrypted with a new CMK or an AWS managed key.
      * This flag is ignored if any of the following are defined: queueProps.encryptionMasterKey, encryptionKey or encryptionKeyProps.
@@ -68,7 +62,7 @@ export interface BuildQueueProps {
     /**
      * Whether to deploy a secondary queue to be used as a dead letter queue.
      *
-     * @default - required field.
+     * @default - true
      */
     readonly deployDeadLetterQueue?: boolean,
     /**
@@ -99,7 +93,7 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
   let deadLetterQueue: sqs.DeadLetterQueue | undefined;
 
   if (CheckBooleanWithDefault( props.deployDeadLetterQueue, true)) {
-    deadLetterQueue = buildDeadLetterQueue(scope, {
+    deadLetterQueue = buildDeadLetterQueue(scope, id, {
       existingQueueObj: props.existingQueueObj,
       deployDeadLetterQueue: props.deployDeadLetterQueue,
       deadLetterQueueProps: props.deadLetterQueueProps,
@@ -191,10 +185,10 @@ export interface BuildDeadLetterQueueProps {
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function buildDeadLetterQueue(scope: Construct, props: BuildDeadLetterQueueProps): sqs.DeadLetterQueue | undefined {
+export function buildDeadLetterQueue(scope: Construct, id: string, props: BuildDeadLetterQueueProps): sqs.DeadLetterQueue | undefined {
   if (!props.existingQueueObj && CheckBooleanWithDefault(props.deployDeadLetterQueue, true)) {
     // Create the Dead Letter Queue
-    const buildQueueResponse = buildQueue(scope, 'deadLetterQueue', {
+    const buildQueueResponse = buildQueue(scope, `${id}-dlq`, {
       queueProps: props.deadLetterQueueProps,
       deployDeadLetterQueue: false  // don't deploy a DLQ for the DLG!
     });

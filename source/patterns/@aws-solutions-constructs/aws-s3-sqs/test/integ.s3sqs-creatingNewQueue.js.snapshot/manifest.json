@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/2f9326706bd605ff043a8fa83a2c7b59aeed537c9410c4b5479ed97e6868a1b8.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b6940f8ece4c08398760c9dbca263ff4858a04ea4fdf6bf55771a6611f013321.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -112,16 +112,16 @@
             "data": "tests3sqsS3BucketNotifications32539247"
           }
         ],
-        "/s3sqs-creatingNewQueue/test-s3-sqs/deadLetterQueue/Resource": [
+        "/s3sqs-creatingNewQueue/test-s3-sqs/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "tests3sqsdeadLetterQueueEABBC814"
+            "data": "tests3sqsqueuedlq9DE05351"
           }
         ],
-        "/s3sqs-creatingNewQueue/test-s3-sqs/deadLetterQueue/Policy/Resource": [
+        "/s3sqs-creatingNewQueue/test-s3-sqs/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "tests3sqsdeadLetterQueuePolicy35D7CFE3"
+            "data": "tests3sqsqueuedlqPolicy8D717400"
           }
         ],
         "/s3sqs-creatingNewQueue/test-s3-sqs/queue": [
@@ -182,6 +182,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "tests3sqsdeadLetterQueueEABBC814": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3sqsdeadLetterQueueEABBC814",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "tests3sqsdeadLetterQueuePolicy35D7CFE3": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3sqsdeadLetterQueuePolicy35D7CFE3",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

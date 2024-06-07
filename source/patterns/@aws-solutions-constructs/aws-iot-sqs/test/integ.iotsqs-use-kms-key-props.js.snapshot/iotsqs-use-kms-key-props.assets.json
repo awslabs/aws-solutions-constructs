@@ -1,7 +1,7 @@
 {
   "version": "36.0.0",
   "files": {
-    "8a6a1dd419bec167f76681aa4737672b4e7552a26d67c990e512393bef3ac357": {
+    "7b512274a926da65b556a03be0cd8f07759bb4298ae14116e7f9375dc42abe2c": {
       "source": {
         "path": "iotsqs-use-kms-key-props.template.json",
         "packaging": "file"
@@ -9,7 +9,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "8a6a1dd419bec167f76681aa4737672b4e7552a26d67c990e512393bef3ac357.json",
+          "objectKey": "7b512274a926da65b556a03be0cd8f07759bb4298ae14116e7f9375dc42abe2c.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

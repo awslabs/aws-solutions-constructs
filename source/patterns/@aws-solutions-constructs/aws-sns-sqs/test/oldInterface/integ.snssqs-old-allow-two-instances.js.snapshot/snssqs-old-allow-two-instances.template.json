@@ -1,85 +1,6 @@
 {
  "Description": "Integration Test for aws-sns-sqs",
  "Resources": {
-  "testsnssqsstackdeadLetterQueue83D183F2": {
-   "Type": "AWS::SQS::Queue",
-   "Properties": {
-    "KmsMasterKeyId": "alias/aws/sqs"
-   },
-   "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete"
-  },
-  "testsnssqsstackdeadLetterQueuePolicy388F06A8": {
-   "Type": "AWS::SQS::QueuePolicy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "sqs:AddPermission",
-        "sqs:DeleteMessage",
-        "sqs:GetQueueAttributes",
-        "sqs:ReceiveMessage",
-        "sqs:RemovePermission",
-        "sqs:SendMessage",
-        "sqs:SetQueueAttributes"
-       ],
-       "Effect": "Allow",
-       "Principal": {
-        "AWS": {
-         "Fn::Join": [
-          "",
-          [
-           "arn:",
-           {
-            "Ref": "AWS::Partition"
-           },
-           ":iam::",
-           {
-            "Ref": "AWS::AccountId"
-           },
-           ":root"
-          ]
-         ]
-        }
-       },
-       "Resource": {
-        "Fn::GetAtt": [
-         "testsnssqsstackdeadLetterQueue83D183F2",
-         "Arn"
-        ]
-       },
-       "Sid": "QueueOwnerOnlyAccess"
-      },
-      {
-       "Action": "SQS:*",
-       "Condition": {
-        "Bool": {
-         "aws:SecureTransport": "false"
-        }
-       },
-       "Effect": "Deny",
-       "Principal": {
-        "AWS": "*"
-       },
-       "Resource": {
-        "Fn::GetAtt": [
-         "testsnssqsstackdeadLetterQueue83D183F2",
-         "Arn"
-        ]
-       },
-       "Sid": "HttpsOnly"
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "Queues": [
-     {
-      "Ref": "testsnssqsstackdeadLetterQueue83D183F2"
-     }
-    ]
-   }
-  },
   "testsnssqsstackSnsTopic92693DD8": {
    "Type": "AWS::SNS::Topic",
    "Properties": {
@@ -175,6 +96,85 @@
     ]
    }
   },
+  "testsnssqsstackqueuedlq0BD0C2B9": {
+   "Type": "AWS::SQS::Queue",
+   "Properties": {
+    "KmsMasterKeyId": "alias/aws/sqs"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "testsnssqsstackqueuedlqPolicy3BB4A79B": {
+   "Type": "AWS::SQS::QueuePolicy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "sqs:AddPermission",
+        "sqs:DeleteMessage",
+        "sqs:GetQueueAttributes",
+        "sqs:ReceiveMessage",
+        "sqs:RemovePermission",
+        "sqs:SendMessage",
+        "sqs:SetQueueAttributes"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       },
+       "Resource": {
+        "Fn::GetAtt": [
+         "testsnssqsstackqueuedlq0BD0C2B9",
+         "Arn"
+        ]
+       },
+       "Sid": "QueueOwnerOnlyAccess"
+      },
+      {
+       "Action": "SQS:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": {
+        "Fn::GetAtt": [
+         "testsnssqsstackqueuedlq0BD0C2B9",
+         "Arn"
+        ]
+       },
+       "Sid": "HttpsOnly"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Queues": [
+     {
+      "Ref": "testsnssqsstackqueuedlq0BD0C2B9"
+     }
+    ]
+   }
+  },
   "testsnssqsstackqueue908D8D48": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
@@ -187,7 +187,7 @@
     "RedrivePolicy": {
      "deadLetterTargetArn": {
       "Fn::GetAtt": [
-       "testsnssqsstackdeadLetterQueue83D183F2",
+       "testsnssqsstackqueuedlq0BD0C2B9",
        "Arn"
       ]
      },
@@ -379,85 +379,6 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "testsnssqsstacktwodeadLetterQueueE2CAC509": {
-   "Type": "AWS::SQS::Queue",
-   "Properties": {
-    "KmsMasterKeyId": "alias/aws/sqs"
-   },
-   "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete"
-  },
-  "testsnssqsstacktwodeadLetterQueuePolicyDC6FD645": {
-   "Type": "AWS::SQS::QueuePolicy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "sqs:AddPermission",
-        "sqs:DeleteMessage",
-        "sqs:GetQueueAttributes",
-        "sqs:ReceiveMessage",
-        "sqs:RemovePermission",
-        "sqs:SendMessage",
-        "sqs:SetQueueAttributes"
-       ],
-       "Effect": "Allow",
-       "Principal": {
-        "AWS": {
-         "Fn::Join": [
-          "",
-          [
-           "arn:",
-           {
-            "Ref": "AWS::Partition"
-           },
-           ":iam::",
-           {
-            "Ref": "AWS::AccountId"
-           },
-           ":root"
-          ]
-         ]
-        }
-       },
-       "Resource": {
-        "Fn::GetAtt": [
-         "testsnssqsstacktwodeadLetterQueueE2CAC509",
-         "Arn"
-        ]
-       },
-       "Sid": "QueueOwnerOnlyAccess"
-      },
-      {
-       "Action": "SQS:*",
-       "Condition": {
-        "Bool": {
-         "aws:SecureTransport": "false"
-        }
-       },
-       "Effect": "Deny",
-       "Principal": {
-        "AWS": "*"
-       },
-       "Resource": {
-        "Fn::GetAtt": [
-         "testsnssqsstacktwodeadLetterQueueE2CAC509",
-         "Arn"
-        ]
-       },
-       "Sid": "HttpsOnly"
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "Queues": [
-     {
-      "Ref": "testsnssqsstacktwodeadLetterQueueE2CAC509"
-     }
-    ]
-   }
-  },
   "testsnssqsstacktwoSnsTopicA8E12211": {
    "Type": "AWS::SNS::Topic",
    "Properties": {
@@ -553,6 +474,85 @@
     ]
    }
   },
+  "testsnssqsstacktwoqueuedlqA27CF8DA": {
+   "Type": "AWS::SQS::Queue",
+   "Properties": {
+    "KmsMasterKeyId": "alias/aws/sqs"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "testsnssqsstacktwoqueuedlqPolicyC15C0D6F": {
+   "Type": "AWS::SQS::QueuePolicy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "sqs:AddPermission",
+        "sqs:DeleteMessage",
+        "sqs:GetQueueAttributes",
+        "sqs:ReceiveMessage",
+        "sqs:RemovePermission",
+        "sqs:SendMessage",
+        "sqs:SetQueueAttributes"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       },
+       "Resource": {
+        "Fn::GetAtt": [
+         "testsnssqsstacktwoqueuedlqA27CF8DA",
+         "Arn"
+        ]
+       },
+       "Sid": "QueueOwnerOnlyAccess"
+      },
+      {
+       "Action": "SQS:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": {
+        "Fn::GetAtt": [
+         "testsnssqsstacktwoqueuedlqA27CF8DA",
+         "Arn"
+        ]
+       },
+       "Sid": "HttpsOnly"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Queues": [
+     {
+      "Ref": "testsnssqsstacktwoqueuedlqA27CF8DA"
+     }
+    ]
+   }
+  },
   "testsnssqsstacktwoqueue1D59436B": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
@@ -565,7 +565,7 @@
     "RedrivePolicy": {
      "deadLetterTargetArn": {
       "Fn::GetAtt": [
-       "testsnssqsstacktwodeadLetterQueueE2CAC509",
+       "testsnssqsstacktwoqueuedlqA27CF8DA",
        "Arn"
       ]
      },
