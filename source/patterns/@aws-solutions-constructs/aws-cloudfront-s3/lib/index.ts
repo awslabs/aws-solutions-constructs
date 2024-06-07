@@ -59,12 +59,6 @@ export interface CloudFrontToS3Props {
    * @default = '/'
    */
   readonly originPath?: string,
-  /**
-   * Whether to turn on Access Logs for the S3 bucket with the associated storage costs.
-   * Enabling Access Logging is a best practice.
-   *
-   * @default - true
-   */
 
   // =====================
   // S3 Content Bucket
