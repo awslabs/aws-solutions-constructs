@@ -85,23 +85,37 @@ export function createS3AccessLoggingBucket(scope: Construct,
   return loggingBucket;
 }
 
+export interface CreateCloudFrontLoggingBucketRequest {
+  readonly loggingBucketProps: s3.BucketProps,
+  readonly s3AccessLogBucketProps?: s3.BucketProps
+}
+
+export interface CreateCloudFrontLoggingBucketResponse {
+  readonly logBucket: s3.Bucket,
+  readonly s3AccessLogBucket?: s3.Bucket
+}
+
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function createCloudFrontLoggingBucket(scope: Construct,
   bucketId: string,
-  loggingBucketProps: s3.BucketProps): s3.Bucket {
+  props: CreateCloudFrontLoggingBucketRequest): CreateCloudFrontLoggingBucketResponse {
+
+  let cloudFrontLogAccessLogBucket: s3.Bucket | undefined;
 
   // Introduce the default props since we can't be certain the caller used them and
   // they are important best practices
-  let combinedBucketProps = consolidateProps(DefaultS3Props(), loggingBucketProps);
+  let combinedBucketProps = consolidateProps(DefaultS3Props(), props.loggingBucketProps);
 
-  if (!loggingBucketProps.serverAccessLogsBucket) {
+  if (!props.loggingBucketProps.serverAccessLogsBucket) {
     // Create bucket and add to props
-    const accessLogBucket: s3.Bucket = new s3.Bucket(scope, `${bucketId}AccessLog`, combinedBucketProps); // NOSONAR
-    combinedBucketProps = overrideProps(combinedBucketProps, { serverAccessLogsBucket: accessLogBucket });
+    const combinedS3LogBucketProps = consolidateProps(DefaultS3Props(), props.s3AccessLogBucketProps);
 
-    addCfnSuppressRules(accessLogBucket, [
+    cloudFrontLogAccessLogBucket = new s3.Bucket(scope, `${bucketId}AccessLog`, combinedS3LogBucketProps); // NOSONAR
+    combinedBucketProps = overrideProps(combinedBucketProps, { serverAccessLogsBucket: cloudFrontLogAccessLogBucket });
+
+    addCfnSuppressRules(cloudFrontLogAccessLogBucket, [
       {
         id: 'W35',
         reason: "This S3 bucket is used as the access logging bucket for another bucket"
@@ -124,7 +138,10 @@ export function createCloudFrontLoggingBucket(scope: Construct,
   // Verified by unit test 's3 bucket with default props'
   const cloudfrontLogBucket: s3.Bucket = new s3.Bucket(scope, bucketId, combinedBucketProps); // NOSONAR
 
-  return cloudfrontLogBucket;
+  return {
+    logBucket: cloudfrontLogBucket,
+    s3AccessLogBucket: cloudFrontLogAccessLogBucket
+  };
 }
 
 /**

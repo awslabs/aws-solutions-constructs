@@ -36,6 +36,10 @@ new CloudFrontToS3(stack, 'test-cloudfront-s3', {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true
   },
+  cloudFrontLoggingBucketAccessLogBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
 });
 
 suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
