@@ -8,6 +8,119 @@
         "id": "s3sqs-existingQueue",
         "path": "s3sqs-existingQueue",
         "children": {
+          "deadLetterQueue": {
+            "id": "deadLetterQueue",
+            "path": "s3sqs-existingQueue/deadLetterQueue",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "s3sqs-existingQueue/deadLetterQueue/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
+                  "aws:cdk:cloudformation:props": {
+                    "kmsMasterKeyId": "alias/aws/sqs"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
+                  "version": "2.143.0"
+                }
+              },
+              "Policy": {
+                "id": "Policy",
+                "path": "s3sqs-existingQueue/deadLetterQueue/Policy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "s3sqs-existingQueue/deadLetterQueue/Policy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "sqs:AddPermission",
+                                "sqs:DeleteMessage",
+                                "sqs:GetQueueAttributes",
+                                "sqs:ReceiveMessage",
+                                "sqs:RemovePermission",
+                                "sqs:SendMessage",
+                                "sqs:SetQueueAttributes"
+                              ],
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":iam::",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":root"
+                                    ]
+                                  ]
+                                }
+                              },
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "deadLetterQueue3F848E28",
+                                  "Arn"
+                                ]
+                              },
+                              "Sid": "QueueOwnerOnlyAccess"
+                            },
+                            {
+                              "Action": "SQS:*",
+                              "Condition": {
+                                "Bool": {
+                                  "aws:SecureTransport": "false"
+                                }
+                              },
+                              "Effect": "Deny",
+                              "Principal": {
+                                "AWS": "*"
+                              },
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "deadLetterQueue3F848E28",
+                                  "Arn"
+                                ]
+                              },
+                              "Sid": "HttpsOnly"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "queues": [
+                          {
+                            "Ref": "deadLetterQueue3F848E28"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
+                      "version": "2.143.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
+                  "version": "2.143.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_sqs.Queue",
+              "version": "2.143.0"
+            }
+          },
           "'test-existing-queueKey'": {
             "id": "'test-existing-queueKey'",
             "path": "s3sqs-existingQueue/'test-existing-queueKey'",
@@ -109,6 +222,15 @@
                         "testexistingqueueKey84D97AF0",
                         "Arn"
                       ]
+                    },
+                    "redrivePolicy": {
+                      "deadLetterTargetArn": {
+                        "Fn::GetAtt": [
+                          "deadLetterQueue3F848E28",
+                          "Arn"
+                        ]
+                      },
+                      "maxReceiveCount": 15
                     }
                   }
                 },
@@ -446,7 +568,7 @@
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-s3-sqs.S3ToSqs",
-              "version": "2.57.0"
+              "version": "2.58.1"
             }
           },
           "Custom::S3AutoDeleteObjectsCustomResourceProvider": {

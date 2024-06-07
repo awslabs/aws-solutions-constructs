@@ -104,14 +104,6 @@ export class IotToSqs extends Construct {
     super(scope, id);
     defaults.CheckSqsProps(props);
 
-    // Setup the dead letter queue, if applicable
-    this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
-      existingQueueObj: props.existingQueueObj,
-      deployDeadLetterQueue: props.deployDeadLetterQueue,
-      deadLetterQueueProps: props.deadLetterQueueProps,
-      maxReceiveCount: props.maxReceiveCount
-    });
-
     // Default to `true` if `enableEncryptionWithCustomerManagedKey` is undefined
     let enableEncryptionWithCustomerManagedKey = props.enableEncryptionWithCustomerManagedKey;
     if (enableEncryptionWithCustomerManagedKey === undefined) {
@@ -122,13 +114,16 @@ export class IotToSqs extends Construct {
     const buildQueueResponse = defaults.buildQueue(this, 'queue', {
       existingQueueObj: props.existingQueueObj,
       queueProps: props.queueProps,
-      deadLetterQueue: this.deadLetterQueue,
+      deployDeadLetterQueue: props.deployDeadLetterQueue,
+      deadLetterQueueProps: props.deadLetterQueueProps,
+      maxReceiveCount: props.maxReceiveCount,
       enableEncryptionWithCustomerManagedKey,
       encryptionKey: props.encryptionKey,
       encryptionKeyProps: props.encryptionKeyProps
     });
     this.sqsQueue = buildQueueResponse.queue;
     this.encryptionKey = buildQueueResponse.key;
+    this.deadLetterQueue = buildQueueResponse.dlq;
 
     if (this.sqsQueue.fifo) {
       throw new Error('The IoT SQS action doesn\'t support Amazon SQS FIFO (First-In-First-Out) queues');

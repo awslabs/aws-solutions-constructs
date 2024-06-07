@@ -93,6 +93,7 @@ test('Test deployment w/ construct created encryption key', () => {
   });
   expect(buildQueueResponse.queue).toBeDefined();
   expect(buildQueueResponse.key).toBeDefined();
+  expect(buildQueueResponse.dlq).toBeDefined();
 });
 
 test('Test DLQ when existing Queue Provided', () => {
@@ -165,10 +166,7 @@ test('Test returning an existing Queue', () => {
 test('Test creating a queue with a DLQ', () => {
   const stack = new Stack();
 
-  const dlqInterface = buildDeadLetterQueue(stack, {});
-
   const buildQueueResponse = buildQueue(stack, 'new-queue', {
-    deadLetterQueue: dlqInterface
   });
 
   Template.fromStack(stack).resourceCountIs("AWS::SQS::Queue", 2);
@@ -191,6 +189,49 @@ test('Test creating a FIFO queue', () => {
   expect(buildQueueResponse.queue.fifo).toBe(true);
 });
 
+test('Test fail Dead Letter Queue check', () => {
+
+  const props: defaults.SqsProps = {
+    deployDeadLetterQueue: false,
+    deadLetterQueueProps: {},
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n');
+});
+
+test('Test explicitly turn off DLQ', () => {
+  const stack = new Stack();
+
+  const buildQueueResponse = buildQueue(stack, 'new-queue', {
+    deployDeadLetterQueue: false,
+  });
+
+  expect(buildQueueResponse.dlq).toBeUndefined();
+
+  Template.fromStack(stack).resourceCountIs("AWS::SQS::Queue", 1);
+});
+
+test('Test using DLQ properties', () => {
+  const testName = 'some-name-ttttt';
+  const stack = new Stack();
+
+  buildQueue(stack, 'new-queue', {
+    deadLetterQueueProps: {
+      queueName: testName
+    },
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
+    QueueName: testName
+  });
+  template.resourceCountIs("AWS::SQS::Queue", 2);
+});
 // ---------------------------
 // Prop Tests
 // ---------------------------

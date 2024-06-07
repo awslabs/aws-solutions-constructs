@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/76531133ad5774fbda49403e1c3f4df5e2134190061b3d1d444575259a54bb43.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe585359992a523436370f183aa6d44e121f02b70dd6882fdfb1ed3869032eae.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,6 +82,18 @@
         "apisqs-existing-queue.assets"
       ],
       "metadata": {
+        "/apisqs-existing-queue/deadLetterQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "deadLetterQueue3F848E28"
+          }
+        ],
+        "/apisqs-existing-queue/deadLetterQueue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "deadLetterQueuePolicy14A9D269"
+          }
+        ],
         "/apisqs-existing-queue/existing-queue/Resource": [
           {
             "type": "aws:cdk:logicalId",
