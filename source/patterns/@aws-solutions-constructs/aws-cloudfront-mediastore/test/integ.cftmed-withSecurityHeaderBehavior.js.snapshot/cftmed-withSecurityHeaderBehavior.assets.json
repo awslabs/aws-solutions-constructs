@@ -1,7 +1,7 @@
 {
   "version": "36.0.0",
   "files": {
-    "b30738166f4083ce714c7dd3fc2fc44f3cfadb8035ef2cb153c5d1bbfd7a2aab": {
+    "2104edeb6a886462b93baba0bfaf38f0a90ed1ea3221b6746ec20dcc4acc8bdf": {
       "source": {
         "path": "cftmed-withSecurityHeaderBehavior.template.json",
         "packaging": "file"
@@ -9,7 +9,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "b30738166f4083ce714c7dd3fc2fc44f3cfadb8035ef2cb153c5d1bbfd7a2aab.json",
+          "objectKey": "2104edeb6a886462b93baba0bfaf38f0a90ed1ea3221b6746ec20dcc4acc8bdf.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

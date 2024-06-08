@@ -423,26 +423,6 @@
       }
      ]
     },
-    "LifecycleConfiguration": {
-     "Rules": [
-      {
-       "Status": "Enabled",
-       "Transitions": [
-        {
-         "StorageClass": "GLACIER",
-         "TransitionInDays": 7
-        }
-       ]
-      }
-     ]
-    },
-    "OwnershipControls": {
-     "Rules": [
-      {
-       "ObjectOwnership": "ObjectWriter"
-      }
-     ]
-    },
     "PublicAccessBlockConfiguration": {
      "BlockPublicAcls": true,
      "BlockPublicPolicy": true,
@@ -902,7 +882,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "b7f33614a69548d6bafe224d751a7ef238cde19097415e553fe8b63a4c8fd8a6.zip"
+     "S3Key": "2eb6a831b107939f63cfebf68e6316e1a40f79fc99cae0fee9b333bac8d29bc4.zip"
     },
     "Timeout": 900,
     "MemorySize": 128,

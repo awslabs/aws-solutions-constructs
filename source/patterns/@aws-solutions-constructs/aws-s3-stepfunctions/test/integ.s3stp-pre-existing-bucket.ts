@@ -14,7 +14,6 @@
 /// !cdk-integ *
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { S3ToStepfunctions, S3ToStepfunctionsProps } from "../lib";
-import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import * as defaults from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
@@ -26,12 +25,10 @@ const existingBucket = defaults.CreateScrapBucket(stack, "scrapBucket", {
   eventBridgeEnabled: true
 });
 
-const startState = new stepfunctions.Pass(stack, 'StartState');
-
 const props: S3ToStepfunctionsProps = {
   existingBucketObj: existingBucket,
   stateMachineProps: {
-    definition: startState
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 's3stp-test')
   },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY,

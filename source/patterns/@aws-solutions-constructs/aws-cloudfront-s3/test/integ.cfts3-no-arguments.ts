@@ -37,6 +37,10 @@ const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true
   },
+  cloudFrontLoggingBucketAccessLogBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
 });
 
 const s3Bucket = construct.s3Bucket as s3.Bucket;

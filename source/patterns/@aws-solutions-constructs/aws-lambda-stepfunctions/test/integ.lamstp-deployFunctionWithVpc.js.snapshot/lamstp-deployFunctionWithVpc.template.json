@@ -1,6 +1,74 @@
 {
  "Description": "Integration Test for aws-lambda-stepfunctions",
  "Resources": {
+  "lambdalamstptestServiceRole0A4789FB": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  "lambdalamstptestA7F4D461": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "ZipFile": "exports.handler = async (event) => console.log(event)"
+    },
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "lambdalamstptestServiceRole0A4789FB",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x"
+   },
+   "DependsOn": [
+    "lambdalamstptestServiceRole0A4789FB"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W89",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W92",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      }
+     ]
+    }
+   }
+  },
   "testlambdastepfunctionsStateMachineLogGroupD3F22A89": {
    "Type": "AWS::Logs::LogGroup",
    "Properties": {
@@ -66,6 +134,32 @@
     "PolicyDocument": {
      "Statement": [
       {
+       "Action": "lambda:InvokeFunction",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "lambdalamstptestA7F4D461",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "lambdalamstptestA7F4D461",
+             "Arn"
+            ]
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
        "Action": [
         "logs:CreateLogDelivery",
         "logs:DeleteLogDelivery",
@@ -103,7 +197,25 @@
   "testlambdastepfunctionsStateMachine807F0A77": {
    "Type": "AWS::StepFunctions::StateMachine",
    "Properties": {
-    "DefinitionString": "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"End\":true}}}",
+    "DefinitionString": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"StartAt\":\"tasklamstp-test\",\"States\":{\"tasklamstp-test\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ClientExecutionTimeoutException\",\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
+       {
+        "Fn::GetAtt": [
+         "lambdalamstptestA7F4D461",
+         "Arn"
+        ]
+       },
+       "\",\"Payload.$\":\"$\"}}}}"
+      ]
+     ]
+    },
     "LoggingConfiguration": {
      "Destinations": [
       {
@@ -330,6 +442,18 @@
       {
        "id": "W92",
        "reason": "Impossible for us to define the correct concurrency for clients"
+      },
+      {
+       "id": "W58",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W89",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W92",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
       }
      ]
     }
@@ -776,7 +900,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "dd5711540f04e06aa955d7f4862fc04e8cdea464cb590dae91ed2976bb78098e.zip"
+     "S3Key": "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a.zip"
     },
     "Timeout": 900,
     "MemorySize": 128,
@@ -807,6 +931,18 @@
       {
        "id": "W92",
        "reason": "CDK generated custom resource"
+      },
+      {
+       "id": "W58",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W89",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W92",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
       }
      ]
     }

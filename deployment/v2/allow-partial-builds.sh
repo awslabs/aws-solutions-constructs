@@ -37,6 +37,7 @@ then
   echo 'Error - You must run this script from the aws-solutions-constructs folder.'
   echo
 else
+  npm install -g aws-cdk
   ./deployment/v2/align-version.sh
   cd source
   export PATH=$(npm bin):$PATH
