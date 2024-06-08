@@ -15,6 +15,8 @@
 import { Construct } from 'constructs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -57,6 +59,59 @@ export interface StateMachineFactoryResponse {
   readonly logGroup: logs.ILogGroup
 }
 
+export interface SqsQueueFactoryProps {
+  /**
+   * Optional user provided props to override the default props for the primary queue.
+   *
+   * @default - Default props are used.
+   */
+  readonly queueProps?: sqs.QueueProps;
+  /**
+   * If no key is provided, this flag determines whether the queue is encrypted with a new CMK or an AWS managed key.
+   * This flag is ignored if any of the following are defined: queueProps.encryptionMasterKey, encryptionKey or encryptionKeyProps.
+   *
+   * @default - False if queueProps.encryptionMasterKey, encryptionKey, and encryptionKeyProps are all undefined.
+   */
+  readonly enableEncryptionWithCustomerManagedKey?: boolean;
+  /**
+   * An optional, imported encryption key to encrypt the SQS Queue with.
+   *
+   * @default - None
+   */
+  readonly encryptionKey?: kms.Key;
+  /**
+   * Optional user provided properties to override the default properties for the KMS encryption key used to encrypt the SQS Queue with.
+   *
+   * @default - None
+   */
+   readonly encryptionKeyProps?: kms.KeyProps;
+  /**
+   * Whether to deploy a secondary queue to be used as a dead letter queue.
+   *
+   * @default - true
+   */
+  readonly deployDeadLetterQueue?: boolean,
+  /**
+   * Optional user provided properties for the dead letter queue
+   *
+   * @default - Default props are used
+   */
+  readonly deadLetterQueueProps?: sqs.QueueProps,
+  /**
+   * The number of times a message can be unsuccessfully dequeued before being moved to the dead letter queue.
+   *
+   * @default - Default props are used
+   */
+  readonly maxReceiveCount?: number
+}
+
+export interface SqsQueueFactoryResponse {
+  // TODO: Document these
+  readonly queue: sqs.Queue,
+  readonly key?: kms.IKey,
+  readonly deadLetterQueue?: sqs.DeadLetterQueue,
+}
+
 export class ConstructsFactories extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
@@ -84,6 +139,28 @@ export class ConstructsFactories extends Construct {
     return {
       stateMachine: buildStateMachineResponse.stateMachine,
       logGroup: buildStateMachineResponse.logGroup
+    };
+  }
+
+  public sqsQueueFactory(id: string, props: SqsQueueFactoryProps): SqsQueueFactoryResponse {
+    // TODO: confirm we check for maxReceiveCount
+    // TODO: confirm we didn't mess anything up with change
+    defaults.CheckSqsProps(props);
+
+    const buildQueueResponse = defaults.buildQueue(this, id, {
+      queueProps: props.queueProps,
+      enableEncryptionWithCustomerManagedKey: props.enableEncryptionWithCustomerManagedKey,
+      encryptionKey: props.encryptionKey,
+      encryptionKeyProps: props.encryptionKeyProps,
+      deployDeadLetterQueue: props.deployDeadLetterQueue,
+      deadLetterQueueProps: props.deadLetterQueueProps,
+      maxReceiveCount: defaults.defaultMaxReceiveCount,
+    });
+
+    return {
+      queue: buildQueueResponse.queue,
+      key: buildQueueResponse.key,
+      deadLetterQueue: buildQueueResponse.dlq,
     };
   }
 

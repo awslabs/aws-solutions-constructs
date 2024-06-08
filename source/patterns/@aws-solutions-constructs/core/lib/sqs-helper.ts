@@ -293,7 +293,7 @@ export function CheckSqsProps(propsObject: SqsProps | any) {
 
   const isQueueFifo: boolean = propsObject?.queueProps?.fifo;
   const isDeadLetterQueueFifo: boolean = propsObject?.deadLetterQueueProps?.fifo;
-  const deployDeadLetterQueue: boolean = propsObject.deployDeadLetterQueue || propsObject.deployDeadLetterQueue === undefined;
+  const deployDeadLetterQueue: boolean = CheckBooleanWithDefault(propsObject.deployDeadLetterQueue, true);
 
   if (deployDeadLetterQueue && (isQueueFifo !== isDeadLetterQueueFifo)) {
     errorMessages += 'Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
