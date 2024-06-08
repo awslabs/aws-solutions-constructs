@@ -4,11 +4,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.59.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.58.1...v2.59.0) (2024-06-08)
 
+Built on CDK v2.143.0
 
 ### Features
 
 * **aws-constructs-factories:** add state machine factory ([#1128](https://github.com/awslabs/aws-solutions-constructs/issues/1128)) ([d82342c](https://github.com/awslabs/aws-solutions-constructs/commit/d82342c99c1b5ec77a015c96620bc99b0650346f))
-
 
 ### Bug Fixes
 
