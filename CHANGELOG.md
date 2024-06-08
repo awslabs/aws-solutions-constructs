@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.59.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.58.1...v2.59.0) (2024-06-08)
+
+
+### Features
+
+* **aws-constructs-factories:** add state machine factory ([#1128](https://github.com/awslabs/aws-solutions-constructs/issues/1128)) ([d82342c](https://github.com/awslabs/aws-solutions-constructs/commit/d82342c99c1b5ec77a015c96620bc99b0650346f))
+
+
+### Bug Fixes
+
+* **aws-s3-cloudfront:** address handling and definition of peripheral buckets ([#1129](https://github.com/awslabs/aws-solutions-constructs/issues/1129)) ([8b30791](https://github.com/awslabs/aws-solutions-constructs/commit/8b30791902e09db2f7c49410a03d5d95ccc2ef51))
+
 ## [2.58.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.58.0...v2.58.1) (2024-05-28)
 
 Built on CDK v2.143.0
