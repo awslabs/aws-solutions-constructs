@@ -203,36 +203,17 @@ import { ConstructsFactories } from '@aws-solutions-constructs/aws-constructs-fa
 
 const factories = new ConstructsFactories(this, 'MyFactories');
 
-factories.s3BucketFactory('GoodBucket', {});
+factories.sqsQueueFacgory('GoodQueue', {});
 ```
 
 Python
 ``` python
-from aws_cdk import (
-    Stack,
-)
-from constructs import Construct
-
-from aws_solutions_constructs import (
-    aws_constructs_factories as cf
-)
-
-factories = cf.ConstructsFactories(self, 'MyFactories')
-factories.s3_bucket_factory('GoodBucket')
+Pending
 ```
 
 Java
 ``` java
-import software.constructs.Construct;
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
-
-import software.amazon.awsconstructs.services.constructsfactories.ConstructsFactories;
-import software.amazon.awsconstructs.services.constructsfactories.S3BucketFactoryProps;
-
-final ConstructsFactories factories = new ConstructsFactories(this, "MyFactories");
-factories.s3BucketFactory("GoodBucket", 
-  new S3BucketFactoryProps.Builder().build());
+Pendiong
 ```
 
 # SqsQueueFactory Function Signature
