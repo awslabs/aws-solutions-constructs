@@ -89,7 +89,7 @@ export interface BuildQueueResponse {
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function buildQueue(scope: Construct, id: string, props: BuildQueueProps): BuildQueueResponse {
-  CheckEncryptionWarnings(props);
+  CheckBuidQueueProps(props);
   let deadLetterQueue: sqs.DeadLetterQueue | undefined;
 
   if (CheckBooleanWithDefault( props.deployDeadLetterQueue, true)) {
@@ -148,13 +148,26 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-function CheckEncryptionWarnings(props: BuildQueueProps) {
+function CheckBuidQueueProps(props: BuildQueueProps) {
   if ((props.queueProps?.encryptionMasterKey || props.encryptionKey || props.encryptionKeyProps)
   && props.enableEncryptionWithCustomerManagedKey !== true) {
     printWarning(`Ignoring enableEncryptionWithCustomerManagedKey because one of
      queueProps.encryptionMasterKey, encryptionKey, or encryptionKeyProps was already specified`);
   }
+
+  let errorMessages = '';
+  let errorFound = false;
+
+  if ((props.deployDeadLetterQueue === false) && props.maxReceiveCount) {
+    errorMessages += 'Error - MaxReceiveCount cannot be set if deployDeadLetterQueue is false.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }
+
 export interface BuildDeadLetterQueueProps {
   /**
    * Existing instance of SQS queue object, providing both this and queueProps will cause an error.

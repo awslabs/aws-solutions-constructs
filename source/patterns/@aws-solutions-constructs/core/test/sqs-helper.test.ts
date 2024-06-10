@@ -396,3 +396,18 @@ test('Test fail Dead Letter Queue check with queueProps fifo set to false', () =
   expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
     'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
 });
+
+test('Test fail maxReceiveCount with no dlq', () => {
+
+  const stack = new Stack();
+
+  const app = () => {
+    // Helper declaration
+    defaults.buildQueue(stack, 'bad-props', {
+      deployDeadLetterQueue: false,
+      maxReceiveCount: 9
+    });
+  };
+
+  expect(app).toThrowError(/Error - MaxReceiveCount cannot be set if deployDeadLetterQueue is false.\n/);
+});

@@ -120,11 +120,11 @@ export class ConstructsFactories extends Construct {
   public s3BucketFactory(id: string, props: S3BucketFactoryProps): S3BucketFactoryResponse {
     defaults.CheckS3Props(props);
 
-    const propsArg: defaults.BuildS3BucketProps = props ? {
+    const propsArg: defaults.BuildS3BucketProps = {
       bucketProps: props.bucketProps,
       loggingBucketProps: props.loggingBucketProps,
       logS3AccessLogs: props.logS3AccessLogs,
-    } : {};
+    };
 
     const buildS3BucketResponse = defaults.buildS3Bucket(this, propsArg, id);
 
@@ -143,8 +143,6 @@ export class ConstructsFactories extends Construct {
   }
 
   public sqsQueueFactory(id: string, props: SqsQueueFactoryProps): SqsQueueFactoryResponse {
-    // TODO: confirm we check for maxReceiveCount
-    // TODO: confirm we didn't mess anything up with change
     defaults.CheckSqsProps(props);
 
     const buildQueueResponse = defaults.buildQueue(this, id, {
