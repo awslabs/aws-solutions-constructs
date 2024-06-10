@@ -18,6 +18,7 @@
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::KMS::Key",
                   "aws:cdk:cloudformation:props": {
+                    "enableKeyRotation": true,
                     "keyPolicy": {
                       "Statement": [
                         {

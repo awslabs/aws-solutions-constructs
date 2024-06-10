@@ -24,7 +24,8 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
 const existingKey = new kms.Key(stack, 'test-key', {
-  removalPolicy: RemovalPolicy.DESTROY
+  removalPolicy: RemovalPolicy.DESTROY,
+  enableKeyRotation: true
 });
 const factories = new ConstructsFactories(stack, 'target');
 

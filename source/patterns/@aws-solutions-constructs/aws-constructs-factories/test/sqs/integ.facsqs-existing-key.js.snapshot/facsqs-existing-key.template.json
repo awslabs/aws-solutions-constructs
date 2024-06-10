@@ -3,6 +3,7 @@
   "testkey784D0285": {
    "Type": "AWS::KMS::Key",
    "Properties": {
+    "EnableKeyRotation": true,
     "KeyPolicy": {
      "Statement": [
       {
