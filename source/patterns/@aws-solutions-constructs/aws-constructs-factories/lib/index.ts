@@ -152,7 +152,7 @@ export class ConstructsFactories extends Construct {
       encryptionKeyProps: props.encryptionKeyProps,
       deployDeadLetterQueue: props.deployDeadLetterQueue,
       deadLetterQueueProps: props.deadLetterQueueProps,
-      maxReceiveCount: defaults.defaultMaxReceiveCount,
+      maxReceiveCount: props.maxReceiveCount,
     });
 
     return {
