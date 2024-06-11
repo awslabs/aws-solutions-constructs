@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.60.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.59.0...v2.60.0) (2024-06-11)
+
+
+### Features
+
+* **aws-constructs-factories:** add a factory for sqs queues ([#1131](https://github.com/awslabs/aws-solutions-constructs/issues/1131)) ([b35b9b8](https://github.com/awslabs/aws-solutions-constructs/commit/b35b9b86dcbda1d90dceac1cc539be816defe288))
+
 ## [2.59.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.58.1...v2.59.0) (2024-06-08)
 
 Built on CDK v2.143.0
