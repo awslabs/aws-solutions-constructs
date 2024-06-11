@@ -169,7 +169,7 @@
     }
    }
   },
-  "testsqslambdafifodeadLetterQueue99A41920": {
+  "testsqslambdafifoqueuedlq8882EE1A": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
     "FifoQueue": true,
@@ -179,7 +179,7 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "testsqslambdafifodeadLetterQueuePolicy32FA63A7": {
+  "testsqslambdafifoqueuedlqPolicyA43EDF2E": {
    "Type": "AWS::SQS::QueuePolicy",
    "Properties": {
     "PolicyDocument": {
@@ -215,7 +215,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testsqslambdafifodeadLetterQueue99A41920",
+         "testsqslambdafifoqueuedlq8882EE1A",
          "Arn"
         ]
        },
@@ -234,7 +234,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testsqslambdafifodeadLetterQueue99A41920",
+         "testsqslambdafifoqueuedlq8882EE1A",
          "Arn"
         ]
        },
@@ -245,7 +245,7 @@
     },
     "Queues": [
      {
-      "Ref": "testsqslambdafifodeadLetterQueue99A41920"
+      "Ref": "testsqslambdafifoqueuedlq8882EE1A"
      }
     ]
    }
@@ -259,7 +259,7 @@
     "RedrivePolicy": {
      "deadLetterTargetArn": {
       "Fn::GetAtt": [
-       "testsqslambdafifodeadLetterQueue99A41920",
+       "testsqslambdafifoqueuedlq8882EE1A",
        "Arn"
       ]
      },

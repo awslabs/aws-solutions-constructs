@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d5adccb4971808326f9035de4ff5c6730dd87255a5c85344cda24a57fa51b76a.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/07fedda458833e7a63ae2f63d0ca42ae1b74f7167db4a2f899f9c8bba7459a81.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -88,18 +88,6 @@
             "data": "ImportedSQSEncryptionKey29533C9A"
           }
         ],
-        "/snssqs-old-sns-managed-kms-key/test-sns-sqs/deadLetterQueue/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsnssqsdeadLetterQueue8DACC0A1"
-          }
-        ],
-        "/snssqs-old-sns-managed-kms-key/test-sns-sqs/deadLetterQueue/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsnssqsdeadLetterQueuePolicyAB8A9883"
-          }
-        ],
         "/snssqs-old-sns-managed-kms-key/test-sns-sqs/SnsTopic/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -110,6 +98,18 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testsnssqsSnsTopicPolicy604079F2"
+          }
+        ],
+        "/snssqs-old-sns-managed-kms-key/test-sns-sqs/queue-dlq/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsqueuedlq3331312B"
+          }
+        ],
+        "/snssqs-old-sns-managed-kms-key/test-sns-sqs/queue-dlq/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsqueuedlqPolicy63646E47"
           }
         ],
         "/snssqs-old-sns-managed-kms-key/test-sns-sqs/queue": [
@@ -146,6 +146,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testsnssqsdeadLetterQueue8DACC0A1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsdeadLetterQueue8DACC0A1",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testsnssqsdeadLetterQueuePolicyAB8A9883": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsdeadLetterQueuePolicyAB8A9883",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

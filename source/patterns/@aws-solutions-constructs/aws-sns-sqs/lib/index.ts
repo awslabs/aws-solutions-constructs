@@ -192,14 +192,6 @@ export class SnsToSqs extends Construct {
     defaults.CheckSqsProps(props);
     this.uniquePropChecks(props);
 
-    // Setup the dead letter queue, if applicable
-    this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
-      existingQueueObj: props.existingQueueObj,
-      deployDeadLetterQueue: props.deployDeadLetterQueue,
-      deadLetterQueueProps: props.deadLetterQueueProps,
-      maxReceiveCount: props.maxReceiveCount
-    });
-
     const activeKeys = SnsToSqs.createRequiredKeys(scope, id, props);
     if (!activeKeys.useDeprecatedInterface) {
       this.queueEncryptionKey = activeKeys.queueKey;
@@ -227,11 +219,14 @@ export class SnsToSqs extends Construct {
     const buildQueueResponse = defaults.buildQueue(this, 'queue', {
       existingQueueObj: props.existingQueueObj,
       queueProps: props.queueProps,
-      deadLetterQueue: this.deadLetterQueue,
+      deployDeadLetterQueue: props.deployDeadLetterQueue,
+      deadLetterQueueProps: props.deadLetterQueueProps,
+      maxReceiveCount: props.maxReceiveCount,
       enableEncryptionWithCustomerManagedKey: activeKeys.encryptQueueWithCmk,
       encryptionKey: activeKeys.queueKey,
     });
     this.sqsQueue = buildQueueResponse.queue;
+    this.deadLetterQueue = buildQueueResponse.dlq;
 
     // Setup the SQS queue subscription to the SNS topic
     this.snsTopic.addSubscription(new subscriptions.SqsSubscription(this.sqsQueue, props.sqsSubscriptionProps));

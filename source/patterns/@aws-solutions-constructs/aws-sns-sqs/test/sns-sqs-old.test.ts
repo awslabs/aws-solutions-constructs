@@ -275,7 +275,7 @@ test('Pattern deployment w/ existing topic and FIFO queue', () => {
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
-          "testsnssqsdeadLetterQueue8DACC0A1",
+          "testsnssqsqueuedlq3331312B",
           "Arn"
         ]
       },
@@ -319,7 +319,7 @@ test('Pattern deployment w/ existing topic and Standard queue', () => {
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
-          "testsnssqsdeadLetterQueue8DACC0A1",
+          "testsnssqsqueuedlq3331312B",
           "Arn"
         ]
       },

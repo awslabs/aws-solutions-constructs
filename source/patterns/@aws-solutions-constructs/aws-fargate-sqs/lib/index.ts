@@ -213,24 +213,19 @@ export class FargateToSqs extends Construct {
       this.container = createFargateServiceResponse.containerDefinition;
     }
 
-    // Setup the dead letter queue, if applicable
-    this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
-      existingQueueObj: props.existingQueueObj,
-      deployDeadLetterQueue: props.deployDeadLetterQueue,
-      deadLetterQueueProps: props.deadLetterQueueProps,
-      maxReceiveCount: props.maxReceiveCount
-    });
-
     // Setup the SQS Queue
     const buildQueueResponse = defaults.buildQueue(this, `${id}-queue`, {
       queueProps: props.queueProps,
-      deadLetterQueue: this.deadLetterQueue,
+      deployDeadLetterQueue: props.deployDeadLetterQueue,
+      deadLetterQueueProps: props.deadLetterQueueProps,
+      maxReceiveCount: props.maxReceiveCount,
       existingQueueObj: props.existingQueueObj,
       enableEncryptionWithCustomerManagedKey: props.enableEncryptionWithCustomerManagedKey,
       encryptionKey: props.encryptionKey,
       encryptionKeyProps: props.encryptionKeyProps
     });
     this.sqsQueue = buildQueueResponse.queue;
+    this.deadLetterQueue = buildQueueResponse.dlq;
 
     // Enable message send and receive permissions for Fargate service by default
     if (props.queuePermissions) {

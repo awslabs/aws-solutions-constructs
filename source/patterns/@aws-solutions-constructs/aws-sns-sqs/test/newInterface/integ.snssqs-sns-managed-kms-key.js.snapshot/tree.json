@@ -13,7 +13,7 @@
             "path": "snssqs-sns-managed-kms-key/sns-managed-key",
             "constructInfo": {
               "fqn": "aws-cdk-lib.Resource",
-              "version": "2.138.0"
+              "version": "2.143.0"
             }
           },
           "ImportedSQSEncryptionKey": {
@@ -77,132 +77,19 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_kms.CfnKey",
-                  "version": "2.138.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_kms.Key",
-              "version": "2.138.0"
+              "version": "2.143.0"
             }
           },
           "test-sns-sqs": {
             "id": "test-sns-sqs",
             "path": "snssqs-sns-managed-kms-key/test-sns-sqs",
             "children": {
-              "deadLetterQueue": {
-                "id": "deadLetterQueue",
-                "path": "snssqs-sns-managed-kms-key/test-sns-sqs/deadLetterQueue",
-                "children": {
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "snssqs-sns-managed-kms-key/test-sns-sqs/deadLetterQueue/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
-                      "aws:cdk:cloudformation:props": {
-                        "kmsMasterKeyId": "alias/aws/sqs"
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
-                      "version": "2.138.0"
-                    }
-                  },
-                  "Policy": {
-                    "id": "Policy",
-                    "path": "snssqs-sns-managed-kms-key/test-sns-sqs/deadLetterQueue/Policy",
-                    "children": {
-                      "Resource": {
-                        "id": "Resource",
-                        "path": "snssqs-sns-managed-kms-key/test-sns-sqs/deadLetterQueue/Policy/Resource",
-                        "attributes": {
-                          "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
-                          "aws:cdk:cloudformation:props": {
-                            "policyDocument": {
-                              "Statement": [
-                                {
-                                  "Action": [
-                                    "sqs:AddPermission",
-                                    "sqs:DeleteMessage",
-                                    "sqs:GetQueueAttributes",
-                                    "sqs:ReceiveMessage",
-                                    "sqs:RemovePermission",
-                                    "sqs:SendMessage",
-                                    "sqs:SetQueueAttributes"
-                                  ],
-                                  "Effect": "Allow",
-                                  "Principal": {
-                                    "AWS": {
-                                      "Fn::Join": [
-                                        "",
-                                        [
-                                          "arn:",
-                                          {
-                                            "Ref": "AWS::Partition"
-                                          },
-                                          ":iam::",
-                                          {
-                                            "Ref": "AWS::AccountId"
-                                          },
-                                          ":root"
-                                        ]
-                                      ]
-                                    }
-                                  },
-                                  "Resource": {
-                                    "Fn::GetAtt": [
-                                      "testsnssqsdeadLetterQueue8DACC0A1",
-                                      "Arn"
-                                    ]
-                                  },
-                                  "Sid": "QueueOwnerOnlyAccess"
-                                },
-                                {
-                                  "Action": "SQS:*",
-                                  "Condition": {
-                                    "Bool": {
-                                      "aws:SecureTransport": "false"
-                                    }
-                                  },
-                                  "Effect": "Deny",
-                                  "Principal": {
-                                    "AWS": "*"
-                                  },
-                                  "Resource": {
-                                    "Fn::GetAtt": [
-                                      "testsnssqsdeadLetterQueue8DACC0A1",
-                                      "Arn"
-                                    ]
-                                  },
-                                  "Sid": "HttpsOnly"
-                                }
-                              ],
-                              "Version": "2012-10-17"
-                            },
-                            "queues": [
-                              {
-                                "Ref": "testsnssqsdeadLetterQueue8DACC0A1"
-                              }
-                            ]
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
-                          "version": "2.138.0"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
-                      "version": "2.138.0"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_sqs.Queue",
-                  "version": "2.138.0"
-                }
-              },
               "SnsTopic": {
                 "id": "SnsTopic",
                 "path": "snssqs-sns-managed-kms-key/test-sns-sqs/SnsTopic",
@@ -237,7 +124,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sns.CfnTopic",
-                      "version": "2.138.0"
+                      "version": "2.143.0"
                     }
                   },
                   "Policy": {
@@ -333,19 +220,132 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_sns.CfnTopicPolicy",
-                          "version": "2.138.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sns.TopicPolicy",
-                      "version": "2.138.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_sns.Topic",
-                  "version": "2.138.0"
+                  "version": "2.143.0"
+                }
+              },
+              "queue-dlq": {
+                "id": "queue-dlq",
+                "path": "snssqs-sns-managed-kms-key/test-sns-sqs/queue-dlq",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "snssqs-sns-managed-kms-key/test-sns-sqs/queue-dlq/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
+                      "aws:cdk:cloudformation:props": {
+                        "kmsMasterKeyId": "alias/aws/sqs"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
+                      "version": "2.143.0"
+                    }
+                  },
+                  "Policy": {
+                    "id": "Policy",
+                    "path": "snssqs-sns-managed-kms-key/test-sns-sqs/queue-dlq/Policy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "snssqs-sns-managed-kms-key/test-sns-sqs/queue-dlq/Policy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "sqs:AddPermission",
+                                    "sqs:DeleteMessage",
+                                    "sqs:GetQueueAttributes",
+                                    "sqs:ReceiveMessage",
+                                    "sqs:RemovePermission",
+                                    "sqs:SendMessage",
+                                    "sqs:SetQueueAttributes"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "AWS": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":iam::",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":root"
+                                        ]
+                                      ]
+                                    }
+                                  },
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "testsnssqsqueuedlq3331312B",
+                                      "Arn"
+                                    ]
+                                  },
+                                  "Sid": "QueueOwnerOnlyAccess"
+                                },
+                                {
+                                  "Action": "SQS:*",
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "testsnssqsqueuedlq3331312B",
+                                      "Arn"
+                                    ]
+                                  },
+                                  "Sid": "HttpsOnly"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "queues": [
+                              {
+                                "Ref": "testsnssqsqueuedlq3331312B"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
+                          "version": "2.143.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
+                      "version": "2.143.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.Queue",
+                  "version": "2.143.0"
                 }
               },
               "queue": {
@@ -367,7 +367,7 @@
                         "redrivePolicy": {
                           "deadLetterTargetArn": {
                             "Fn::GetAtt": [
-                              "testsnssqsdeadLetterQueue8DACC0A1",
+                              "testsnssqsqueuedlq3331312B",
                               "Arn"
                             ]
                           },
@@ -377,7 +377,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
-                      "version": "2.138.0"
+                      "version": "2.143.0"
                     }
                   },
                   "Policy": {
@@ -480,13 +480,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
-                          "version": "2.138.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
-                      "version": "2.138.0"
+                      "version": "2.143.0"
                     }
                   },
                   "snssqssnsmanagedkmskeytestsnssqsSnsTopicA513C580": {
@@ -513,25 +513,25 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_sns.CfnSubscription",
-                          "version": "2.138.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sns.Subscription",
-                      "version": "2.138.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_sqs.Queue",
-                  "version": "2.138.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-sns-sqs.SnsToSqs",
-              "version": "2.57.0"
+              "version": "2.58.1"
             }
           },
           "Integ": {
@@ -559,7 +559,7 @@
                         "path": "snssqs-sns-managed-kms-key/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.138.0"
+                          "version": "2.143.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -567,25 +567,25 @@
                         "path": "snssqs-sns-managed-kms-key/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.138.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.138.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.138.0-alpha.0"
+                  "version": "2.143.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.138.0-alpha.0"
+              "version": "2.143.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -593,7 +593,7 @@
             "path": "snssqs-sns-managed-kms-key/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.138.0"
+              "version": "2.143.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -601,13 +601,13 @@
             "path": "snssqs-sns-managed-kms-key/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.138.0"
+              "version": "2.143.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.138.0"
+          "version": "2.143.0"
         }
       },
       "Tree": {
@@ -621,7 +621,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.138.0"
+      "version": "2.143.0"
     }
   }
 }

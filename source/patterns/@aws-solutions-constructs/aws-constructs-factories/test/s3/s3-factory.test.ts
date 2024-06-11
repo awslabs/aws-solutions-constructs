@@ -14,7 +14,7 @@
 import { Stack } from 'aws-cdk-lib';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Template } from 'aws-cdk-lib/assertions';
-import { ConstructsFactories, /* S3BucketFactoryProps, S3BucketFactoryResponse */ } from "../../lib";
+import { ConstructsFactories } from "../../lib";
 
 test('All defaults', () => {
   const stack = new Stack();

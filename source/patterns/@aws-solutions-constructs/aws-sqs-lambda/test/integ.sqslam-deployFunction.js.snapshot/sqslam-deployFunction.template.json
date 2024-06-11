@@ -169,7 +169,7 @@
     }
    }
   },
-  "testsqslambdadeadLetterQueue85BDB0A3": {
+  "testsqslambdaqueuedlq3A0F89AC": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
     "KmsMasterKeyId": "alias/aws/sqs"
@@ -177,7 +177,7 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "testsqslambdadeadLetterQueuePolicy8C08D1A5": {
+  "testsqslambdaqueuedlqPolicy2BF8AE48": {
    "Type": "AWS::SQS::QueuePolicy",
    "Properties": {
     "PolicyDocument": {
@@ -213,7 +213,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testsqslambdadeadLetterQueue85BDB0A3",
+         "testsqslambdaqueuedlq3A0F89AC",
          "Arn"
         ]
        },
@@ -232,7 +232,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testsqslambdadeadLetterQueue85BDB0A3",
+         "testsqslambdaqueuedlq3A0F89AC",
          "Arn"
         ]
        },
@@ -243,7 +243,7 @@
     },
     "Queues": [
      {
-      "Ref": "testsqslambdadeadLetterQueue85BDB0A3"
+      "Ref": "testsqslambdaqueuedlq3A0F89AC"
      }
     ]
    }
@@ -255,7 +255,7 @@
     "RedrivePolicy": {
      "deadLetterTargetArn": {
       "Fn::GetAtt": [
-       "testsqslambdadeadLetterQueue85BDB0A3",
+       "testsqslambdaqueuedlq3A0F89AC",
        "Arn"
       ]
      },

@@ -167,24 +167,20 @@ export class S3ToSqs extends Construct {
 
       this.s3BucketInterface = bucket;
 
-      // Setup the dead letter queue, if applicable
-      this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
-        existingQueueObj: props.existingQueueObj,
-        deployDeadLetterQueue: props.deployDeadLetterQueue,
-        deadLetterQueueProps: props.deadLetterQueueProps,
-        maxReceiveCount: props.maxReceiveCount
-      });
       // Setup the queue
       const buildQueueResponse = defaults.buildQueue(this, 'queue', {
         existingQueueObj: props.existingQueueObj,
         queueProps: props.queueProps,
-        deadLetterQueue: this.deadLetterQueue,
+        deployDeadLetterQueue: props.deployDeadLetterQueue,
+        deadLetterQueueProps: props.deadLetterQueueProps,
+        maxReceiveCount: props.maxReceiveCount,
         enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
         encryptionKey: props.encryptionKey,
         encryptionKeyProps: props.encryptionKeyProps
       });
       this.sqsQueue = buildQueueResponse.queue;
       this.encryptionKey = buildQueueResponse.key;
+      this.deadLetterQueue = buildQueueResponse.dlq;
 
       // Setup the S3 bucket event types
       let s3EventTypes;
