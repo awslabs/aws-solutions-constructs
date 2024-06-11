@@ -1,7 +1,7 @@
 {
   "version": "36.0.0",
   "files": {
-    "04aeb99162ec3f877aa7c0f25cfcf2f42b78e9bde20a5bc4412a0e4bdf8a057e": {
+    "b5c1005a415c6b80d8325e95a6e2874c2ac3739a1c5a720472b1ad20af277ba7": {
       "source": {
         "path": "snssqs-old-allow-two-instances.template.json",
         "packaging": "file"
@@ -9,7 +9,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "04aeb99162ec3f877aa7c0f25cfcf2f42b78e9bde20a5bc4412a0e4bdf8a057e.json",
+          "objectKey": "b5c1005a415c6b80d8325e95a6e2874c2ac3739a1c5a720472b1ad20af277ba7.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

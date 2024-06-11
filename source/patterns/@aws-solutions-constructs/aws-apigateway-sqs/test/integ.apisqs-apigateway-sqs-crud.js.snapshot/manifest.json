@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6b25c8a51786cca4d3db60bef0ea078a6873ba0aa67fe15fa0863889b5b90323.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f6c5d696f795705ebf54d3bae4567ce2383408a6175c7eab9cf2ba4151929f9a.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,16 +82,16 @@
         "apisqs-apigateway-sqs-crud.assets"
       ],
       "metadata": {
-        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/deadLetterQueue/Resource": [
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsdeadLetterQueueAA4F6060"
+            "data": "testapigatewaysqsqueuedlq8A515F77"
           }
         ],
-        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/deadLetterQueue/Policy/Resource": [
+        "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsdeadLetterQueuePolicy3CC9D87F"
+            "data": "testapigatewaysqsqueuedlqPolicyB341351F"
           }
         ],
         "/apisqs-apigateway-sqs-crud/test-api-gateway-sqs/queue/Resource": [
@@ -200,6 +200,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testapigatewaysqsdeadLetterQueueAA4F6060": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsdeadLetterQueueAA4F6060",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testapigatewaysqsdeadLetterQueuePolicy3CC9D87F": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsdeadLetterQueuePolicy3CC9D87F",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

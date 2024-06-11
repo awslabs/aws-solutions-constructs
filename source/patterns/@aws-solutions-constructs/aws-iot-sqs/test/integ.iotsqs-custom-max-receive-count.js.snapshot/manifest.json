@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/635160d7f438f753892dc505324ac39805452322466b3d65aef0bfabc328e592.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f471a2a24e0d5a61cf5448b11513e25a9a7db319560a7ef05044bef02ace82cd.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,16 +82,16 @@
         "iotsqs-custom-max-receive-count.assets"
       ],
       "metadata": {
-        "/iotsqs-custom-max-receive-count/test-iot-sqs-stack/deadLetterQueue/Resource": [
+        "/iotsqs-custom-max-receive-count/test-iot-sqs-stack/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testiotsqsstackdeadLetterQueueA417EB97"
+            "data": "testiotsqsstackqueuedlq8FBD6728"
           }
         ],
-        "/iotsqs-custom-max-receive-count/test-iot-sqs-stack/deadLetterQueue/Policy/Resource": [
+        "/iotsqs-custom-max-receive-count/test-iot-sqs-stack/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testiotsqsstackdeadLetterQueuePolicyD0F4B7D3"
+            "data": "testiotsqsstackqueuedlqPolicyC72D7226"
           }
         ],
         "/iotsqs-custom-max-receive-count/test-iot-sqs-stack/'queueKey'/Resource": [
@@ -148,10 +148,19 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testiotsqsstackEncryptionKeyAB09201B": [
+        "testiotsqsstackdeadLetterQueueA417EB97": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testiotsqsstackEncryptionKeyAB09201B",
+            "data": "testiotsqsstackdeadLetterQueueA417EB97",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testiotsqsstackdeadLetterQueuePolicyD0F4B7D3": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotsqsstackdeadLetterQueuePolicyD0F4B7D3",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

@@ -1,7 +1,7 @@
 {
  "Description": "Integration Test for aws-apigateway-sqs",
  "Resources": {
-  "testapigatewaysqsdeadLetterQueueAA4F6060": {
+  "testapigatewaysqsqueuedlq8A515F77": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
     "KmsMasterKeyId": "alias/aws/sqs"
@@ -9,7 +9,7 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "testapigatewaysqsdeadLetterQueuePolicy3CC9D87F": {
+  "testapigatewaysqsqueuedlqPolicyB341351F": {
    "Type": "AWS::SQS::QueuePolicy",
    "Properties": {
     "PolicyDocument": {
@@ -45,7 +45,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testapigatewaysqsdeadLetterQueueAA4F6060",
+         "testapigatewaysqsqueuedlq8A515F77",
          "Arn"
         ]
        },
@@ -64,7 +64,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testapigatewaysqsdeadLetterQueueAA4F6060",
+         "testapigatewaysqsqueuedlq8A515F77",
          "Arn"
         ]
        },
@@ -75,7 +75,7 @@
     },
     "Queues": [
      {
-      "Ref": "testapigatewaysqsdeadLetterQueueAA4F6060"
+      "Ref": "testapigatewaysqsqueuedlq8A515F77"
      }
     ]
    }
@@ -87,7 +87,7 @@
     "RedrivePolicy": {
      "deadLetterTargetArn": {
       "Fn::GetAtt": [
-       "testapigatewaysqsdeadLetterQueueAA4F6060",
+       "testapigatewaysqsqueuedlq8A515F77",
        "Arn"
       ]
      },

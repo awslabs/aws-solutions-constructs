@@ -211,24 +211,19 @@ export class ApiGatewayToSqs extends Construct {
       `'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'`);
     }
 
-    // Setup the dead letter queue, if applicable
-    this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
-      existingQueueObj: props.existingQueueObj,
-      deployDeadLetterQueue: props.deployDeadLetterQueue,
-      deadLetterQueueProps: props.deadLetterQueueProps,
-      maxReceiveCount: props.maxReceiveCount
-    });
-
     // Setup the queue
     const buildQueueResponse = defaults.buildQueue(this, 'queue', {
       existingQueueObj: props.existingQueueObj,
       queueProps: props.queueProps,
-      deadLetterQueue: this.deadLetterQueue,
+      deployDeadLetterQueue: props.deployDeadLetterQueue,
+      deadLetterQueueProps: props.deadLetterQueueProps,
+      maxReceiveCount: props.maxReceiveCount,
       enableEncryptionWithCustomerManagedKey: props.enableEncryptionWithCustomerManagedKey,
       encryptionKey: props.encryptionKey,
       encryptionKeyProps: props.encryptionKeyProps
     });
     this.sqsQueue = buildQueueResponse.queue;
+    this.deadLetterQueue = buildQueueResponse.dlq;
 
     // Setup the API Gateway
     const globalRestApiResponse = defaults.GlobalRestApi(this, props.apiGatewayProps, props.logGroupProps);

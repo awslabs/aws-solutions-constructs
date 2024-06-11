@@ -1,7 +1,7 @@
 {
   "version": "36.0.0",
   "files": {
-    "76531133ad5774fbda49403e1c3f4df5e2134190061b3d1d444575259a54bb43": {
+    "d44b164202233347ce33264df3426521e00773a9c7d1b30652d517fd119f55b0": {
       "source": {
         "path": "apisqs-existing-queue.template.json",
         "packaging": "file"
@@ -9,7 +9,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "76531133ad5774fbda49403e1c3f4df5e2134190061b3d1d444575259a54bb43.json",
+          "objectKey": "d44b164202233347ce33264df3426521e00773a9c7d1b30652d517fd119f55b0.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

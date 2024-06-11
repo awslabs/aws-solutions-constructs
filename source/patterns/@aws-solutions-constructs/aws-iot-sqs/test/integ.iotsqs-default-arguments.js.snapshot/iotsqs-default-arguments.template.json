@@ -1,7 +1,7 @@
 {
  "Description": "Integration Test for aws-iot-sqs",
  "Resources": {
-  "testiotsqsstackdeadLetterQueueA417EB97": {
+  "testiotsqsstackqueuedlq8FBD6728": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
     "KmsMasterKeyId": "alias/aws/sqs"
@@ -9,7 +9,7 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "testiotsqsstackdeadLetterQueuePolicyD0F4B7D3": {
+  "testiotsqsstackqueuedlqPolicyC72D7226": {
    "Type": "AWS::SQS::QueuePolicy",
    "Properties": {
     "PolicyDocument": {
@@ -45,7 +45,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testiotsqsstackdeadLetterQueueA417EB97",
+         "testiotsqsstackqueuedlq8FBD6728",
          "Arn"
         ]
        },
@@ -64,7 +64,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testiotsqsstackdeadLetterQueueA417EB97",
+         "testiotsqsstackqueuedlq8FBD6728",
          "Arn"
         ]
        },
@@ -75,7 +75,7 @@
     },
     "Queues": [
      {
-      "Ref": "testiotsqsstackdeadLetterQueueA417EB97"
+      "Ref": "testiotsqsstackqueuedlq8FBD6728"
      }
     ]
    }
@@ -154,7 +154,7 @@
     "RedrivePolicy": {
      "deadLetterTargetArn": {
       "Fn::GetAtt": [
-       "testiotsqsstackdeadLetterQueueA417EB97",
+       "testiotsqsstackqueuedlq8FBD6728",
        "Arn"
       ]
      },

@@ -93,6 +93,7 @@ test('Test deployment w/ construct created encryption key', () => {
   });
   expect(buildQueueResponse.queue).toBeDefined();
   expect(buildQueueResponse.key).toBeDefined();
+  expect(buildQueueResponse.dlq).toBeDefined();
 });
 
 test('Test DLQ when existing Queue Provided', () => {
@@ -103,7 +104,7 @@ test('Test DLQ when existing Queue Provided', () => {
     existingQueueObj: existingQueue,
   };
 
-  const returnedQueue = defaults.buildDeadLetterQueue(stack, buildDlqProps);
+  const returnedQueue = defaults.buildDeadLetterQueue(stack, 'testdlq', buildDlqProps);
 
   expect(returnedQueue).toBeUndefined();
   Template.fromStack(stack).resourceCountIs("AWS::SQS::Queue", 1);
@@ -112,7 +113,7 @@ test('Test DLQ when existing Queue Provided', () => {
 test('Test DLQ with all defaults', () => {
   const stack = new Stack();
 
-  buildDeadLetterQueue(stack, {});
+  buildDeadLetterQueue(stack, 'testdlq', {});
   Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
     KmsMasterKeyId: "alias/aws/sqs"
   });
@@ -122,7 +123,7 @@ test("Test DLQ with a provided properties", () => {
   const stack = new Stack();
   const testQueueName = "test-unique252";
 
-  const returnedQueue = buildDeadLetterQueue(stack, {
+  const returnedQueue = buildDeadLetterQueue(stack, 'testdlq', {
     deadLetterQueueProps: {
       queueName: testQueueName,
     },
@@ -137,7 +138,7 @@ test('Test DLQ with a provided maxReceiveCount', () => {
   const stack = new Stack();
   const testMaxReceiveCount = 31;
 
-  const dlqInterface = buildDeadLetterQueue(stack, {
+  const dlqInterface = buildDeadLetterQueue(stack, 'testdlq', {
     maxReceiveCount: testMaxReceiveCount
   });
   expect(dlqInterface?.maxReceiveCount).toEqual(testMaxReceiveCount);
@@ -165,10 +166,7 @@ test('Test returning an existing Queue', () => {
 test('Test creating a queue with a DLQ', () => {
   const stack = new Stack();
 
-  const dlqInterface = buildDeadLetterQueue(stack, {});
-
   const buildQueueResponse = buildQueue(stack, 'new-queue', {
-    deadLetterQueue: dlqInterface
   });
 
   Template.fromStack(stack).resourceCountIs("AWS::SQS::Queue", 2);
@@ -191,6 +189,49 @@ test('Test creating a FIFO queue', () => {
   expect(buildQueueResponse.queue.fifo).toBe(true);
 });
 
+test('Test fail Dead Letter Queue check', () => {
+
+  const props: defaults.SqsProps = {
+    deployDeadLetterQueue: false,
+    deadLetterQueueProps: {},
+  };
+
+  const app = () => {
+    defaults.CheckSqsProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n');
+});
+
+test('Test explicitly turn off DLQ', () => {
+  const stack = new Stack();
+
+  const buildQueueResponse = buildQueue(stack, 'new-queue', {
+    deployDeadLetterQueue: false,
+  });
+
+  expect(buildQueueResponse.dlq).toBeUndefined();
+
+  Template.fromStack(stack).resourceCountIs("AWS::SQS::Queue", 1);
+});
+
+test('Test using DLQ properties', () => {
+  const testName = 'some-name-ttttt';
+  const stack = new Stack();
+
+  buildQueue(stack, 'new-queue', {
+    deadLetterQueueProps: {
+      queueName: testName
+    },
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
+    QueueName: testName
+  });
+  template.resourceCountIs("AWS::SQS::Queue", 2);
+});
 // ---------------------------
 // Prop Tests
 // ---------------------------
@@ -354,4 +395,19 @@ test('Test fail Dead Letter Queue check with queueProps fifo set to false', () =
 
   expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
     'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
+});
+
+test('Test fail maxReceiveCount with no dlq', () => {
+
+  const stack = new Stack();
+
+  const app = () => {
+    // Helper declaration
+    defaults.buildQueue(stack, 'bad-props', {
+      deployDeadLetterQueue: false,
+      maxReceiveCount: 9
+    });
+  };
+
+  expect(app).toThrowError(/Error - MaxReceiveCount cannot be set if deployDeadLetterQueue is false.\n/);
 });

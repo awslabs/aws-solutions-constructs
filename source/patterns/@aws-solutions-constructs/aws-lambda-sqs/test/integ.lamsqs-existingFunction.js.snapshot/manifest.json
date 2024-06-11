@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/135f37c72563748a31cb16ec9650b29c80f5f3edf168fec3b5fdf190a8a28e5e.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c7071c16a950c0484e903b83cfa1cf03a07685b3dee30d9ced2e5352991494cc.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -100,16 +100,16 @@
             "data": "LambdaFunctionBF21E41F"
           }
         ],
-        "/lamsqs-existingFunction/test-lambda-sqs/deadLetterQueue/Resource": [
+        "/lamsqs-existingFunction/test-lambda-sqs/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasqsdeadLetterQueueC34BC0BD"
+            "data": "testlambdasqsqueuedlq0AFE8CA9"
           }
         ],
-        "/lamsqs-existingFunction/test-lambda-sqs/deadLetterQueue/Policy/Resource": [
+        "/lamsqs-existingFunction/test-lambda-sqs/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasqsdeadLetterQueuePolicy270F1626"
+            "data": "testlambdasqsqueuedlqPolicy2AF7238E"
           }
         ],
         "/lamsqs-existingFunction/test-lambda-sqs/queue/Resource": [
@@ -134,6 +134,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testlambdasqsdeadLetterQueueC34BC0BD": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqsdeadLetterQueueC34BC0BD",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testlambdasqsdeadLetterQueuePolicy270F1626": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqsdeadLetterQueuePolicy270F1626",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

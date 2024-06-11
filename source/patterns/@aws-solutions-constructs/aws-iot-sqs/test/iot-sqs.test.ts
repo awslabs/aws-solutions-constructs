@@ -135,7 +135,7 @@ test('Pattern deployment with queue and dead letter queue props', () => {
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
-          "testiotsqsdeadLetterQueue66A04E81",
+          "testiotsqsqueuedlqEFBBF989",
           "Arn",
         ],
       },
@@ -212,7 +212,7 @@ test('Pattern deployment with custom maxReceiveCount', () => {
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
-          "testiotsqsdeadLetterQueue66A04E81",
+          "testiotsqsqueuedlqEFBBF989",
           "Arn",
         ],
       },

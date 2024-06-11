@@ -57,7 +57,7 @@ test('check the sqs queue properties', () => {
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
-          "testeventbridgesqsdeadLetterQueueF5B377E2",
+          "testeventbridgesqsqueuedlq29C7739E",
           "Arn"
         ]
       },
@@ -95,7 +95,7 @@ test('check the sqs queue properties with existing KMS key', () => {
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
-          "testeventbridgesqsdeadLetterQueueF5B377E2",
+          "testeventbridgesqsqueuedlq29C7739E",
           "Arn"
         ]
       },
@@ -238,7 +238,7 @@ test('check if the dead letter queue policy is setup', () => {
           },
           Resource:  {
             "Fn::GetAtt": [
-              "testeventbridgesqsdeadLetterQueueF5B377E2",
+              "testeventbridgesqsqueuedlq29C7739E",
               "Arn",
             ],
           },
@@ -257,7 +257,7 @@ test('check if the dead letter queue policy is setup', () => {
           },
           Resource:  {
             "Fn::GetAtt": [
-              "testeventbridgesqsdeadLetterQueueF5B377E2",
+              "testeventbridgesqsqueuedlq29C7739E",
               "Arn",
             ],
           },
@@ -268,7 +268,7 @@ test('check if the dead letter queue policy is setup', () => {
     },
     Queues: [
       {
-        Ref: "testeventbridgesqsdeadLetterQueueF5B377E2",
+        Ref: "testeventbridgesqsqueuedlq29C7739E",
       },
     ]
   });

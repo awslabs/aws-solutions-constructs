@@ -119,14 +119,6 @@ export class EventbridgeToSqs extends Construct {
     defaults.CheckSqsProps(props);
     defaults.CheckEventBridgeProps(props);
 
-    // Setup the dead letter queue, if applicable
-    this.deadLetterQueue = defaults.buildDeadLetterQueue(this, {
-      existingQueueObj: props.existingQueueObj,
-      deployDeadLetterQueue: props.deployDeadLetterQueue,
-      deadLetterQueueProps: props.deadLetterQueueProps,
-      maxReceiveCount: props.maxReceiveCount
-    });
-
     let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
     if (props.enableEncryptionWithCustomerManagedKey === undefined ||
       props.enableEncryptionWithCustomerManagedKey === true) {
@@ -137,13 +129,16 @@ export class EventbridgeToSqs extends Construct {
     const buildQueueResponse = defaults.buildQueue(this, 'queue', {
       existingQueueObj: props.existingQueueObj,
       queueProps: props.queueProps,
-      deadLetterQueue: this.deadLetterQueue,
+      deployDeadLetterQueue: props.deployDeadLetterQueue,
+      deadLetterQueueProps: props.deadLetterQueueProps,
+      maxReceiveCount: props.maxReceiveCount,
       enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
       encryptionKey: props.encryptionKey,
       encryptionKeyProps: props.encryptionKeyProps
     });
     this.sqsQueue = buildQueueResponse.queue;
     this.encryptionKey = buildQueueResponse.key;
+    this.deadLetterQueue = buildQueueResponse.dlq;
 
     const sqsEventTarget: events.IRuleTarget = {
       bind: () => ({
