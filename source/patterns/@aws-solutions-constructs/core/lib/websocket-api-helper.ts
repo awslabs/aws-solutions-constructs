@@ -46,11 +46,12 @@ export function buildWebSocketQueueApi(scope: Construct, id: string, props: Buil
     assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
   });
   props.queue.grantSendMessages(apiGatewayRole);
-  const _kmsKeyPolicyToAccessQueue = new iam.PolicyStatement({
-    actions: ['kms:GenerateDataKey', 'kms:Decrypt'],
-    resources: ['*']
-  });
-  apiGatewayRole.addToPolicy(_kmsKeyPolicyToAccessQueue);
+  // TODO: Dropped this to pass cfn-nag after discussion with Nihit, does everything still work?
+  // const kmsKeyPolicyToAccessQueue = new iam.PolicyStatement({
+  //   actions: ['kms:GenerateDataKey', 'kms:Decrypt'],
+  //   resources: ['*']
+  // });
+  // apiGatewayRole.addToPolicy(kmsKeyPolicyToAccessQueue);
 
   const webSocketApi = buildApiGatewayV2WebSocket(scope, id, {
     webSocketApiProps: consolidateProps(

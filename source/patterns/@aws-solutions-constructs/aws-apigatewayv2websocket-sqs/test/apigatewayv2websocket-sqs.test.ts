@@ -128,11 +128,6 @@ describe('When instantiating the ApiGatewayV2WebSocketToSqs construct with WebSo
             }
           },
           {
-            Action: ['kms:GenerateDataKey', 'kms:Decrypt'],
-            Effect: 'Allow',
-            Resource: '*'
-          },
-          {
             Action: [
               'logs:CreateLogGroup',
               'logs:CreateLogStream',

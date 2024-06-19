@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/de986eaff1647d2fb31692f3887c9bddb6d04e85fb59da3d4bd9a7d8600edcec.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/53ab4f7cdf9d0803cd5fffabcefb86d306ca5f30ec9294cb13002b7181e9b6e5.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -127,10 +127,7 @@
         "/wssqs-existing-web-socket/TestWebSocket/$connect-Route/ConnectIntegration-Permission": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "TestWebSocketconnectRouteConnectIntegrationPermissionB20E5F78",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_REPLACE"
-            ]
+            "data": "TestWebSocketconnectRouteConnectIntegrationPermissionB20E5F78"
           }
         ],
         "/wssqs-existing-web-socket/TestWebSocket/$connect-Route/ConnectIntegration/Resource": [
@@ -148,10 +145,7 @@
         "/wssqs-existing-web-socket/TestWebSocket/$disconnect-Route/DisconnectIntegration-Permission": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "TestWebSocketdisconnectRouteDisconnectIntegrationPermissionE56CE9E3",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_REPLACE"
-            ]
+            "data": "TestWebSocketdisconnectRouteDisconnectIntegrationPermissionE56CE9E3"
           }
         ],
         "/wssqs-existing-web-socket/TestWebSocket/$disconnect-Route/DisconnectIntegration/Resource": [
@@ -224,42 +218,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "mockConnectFunctionServiceRole1F0378F3": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "mockConnectFunctionServiceRole1F0378F3",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "mockConnectFunctionD7943357": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "mockConnectFunctionD7943357",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "mockDisconnectFunctionServiceRole78BA4C6C": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "mockDisconnectFunctionServiceRole78BA4C6C",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "mockDisconnectFunction61BF2F1C": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "mockDisconnectFunction61BF2F1C",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },

@@ -671,14 +671,6 @@
       },
       {
        "Action": [
-        "kms:Decrypt",
-        "kms:GenerateDataKey"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      },
-      {
-       "Action": [
         "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:DescribeLogGroups",
