@@ -18,6 +18,7 @@ import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { WebSocketLambdaIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations";
+import * as defaults from '@aws-solutions-constructs/core';
 
 const COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME = lambda.Runtime.NODEJS_20_X;
 
@@ -26,17 +27,17 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-apigateway-sqs';
 
-const mockConnectLambda = new lambda.Function(stack, 'mockConnectFunction', {
+const mockConnectLambda = defaults.deployLambdaFunction(stack, {
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   runtime: COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
   handler: 'connect.handler'
-});
+}, 'connect');
 
-const mockDisconnectLambda = new lambda.Function(stack, 'mockDisconnectFunction', {
+const mockDisconnectLambda = defaults.deployLambdaFunction(stack, {
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   runtime: COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
   handler: 'disconnect.handler'
-});
+}, 'disconnect');
 
 new ApiGatewayV2WebSocketToSqs(stack, 'ApiGatewayV2WebSocketToSqs', {
   webSocketApiProps: {

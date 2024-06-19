@@ -8,74 +8,140 @@
         "id": "wssqs-route-lambdas",
         "path": "wssqs-route-lambdas",
         "children": {
-          "mockConnectFunction": {
-            "id": "mockConnectFunction",
-            "path": "wssqs-route-lambdas/mockConnectFunction",
+          "connectServiceRole": {
+            "id": "connectServiceRole",
+            "path": "wssqs-route-lambdas/connectServiceRole",
             "children": {
-              "ServiceRole": {
-                "id": "ServiceRole",
-                "path": "wssqs-route-lambdas/mockConnectFunction/ServiceRole",
-                "children": {
-                  "ImportServiceRole": {
-                    "id": "ImportServiceRole",
-                    "path": "wssqs-route-lambdas/mockConnectFunction/ServiceRole/ImportServiceRole",
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.145.0"
-                    }
-                  },
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "wssqs-route-lambdas/mockConnectFunction/ServiceRole/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
-                      "aws:cdk:cloudformation:props": {
-                        "assumeRolePolicyDocument": {
+              "ImportconnectServiceRole": {
+                "id": "ImportconnectServiceRole",
+                "path": "wssqs-route-lambdas/connectServiceRole/ImportconnectServiceRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.145.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "wssqs-route-lambdas/connectServiceRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "lambda.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "policies": [
+                      {
+                        "policyName": "LambdaFunctionServiceRolePolicy",
+                        "policyDocument": {
                           "Statement": [
                             {
-                              "Action": "sts:AssumeRole",
+                              "Action": [
+                                "logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents"
+                              ],
                               "Effect": "Allow",
-                              "Principal": {
-                                "Service": "lambda.amazonaws.com"
+                              "Resource": {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    "arn:",
+                                    {
+                                      "Ref": "AWS::Partition"
+                                    },
+                                    ":logs:",
+                                    {
+                                      "Ref": "AWS::Region"
+                                    },
+                                    ":",
+                                    {
+                                      "Ref": "AWS::AccountId"
+                                    },
+                                    ":log-group:/aws/lambda/*"
+                                  ]
+                                ]
                               }
                             }
                           ],
                           "Version": "2012-10-17"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.145.0"
+                }
+              },
+              "DefaultPolicy": {
+                "id": "DefaultPolicy",
+                "path": "wssqs-route-lambdas/connectServiceRole/DefaultPolicy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "wssqs-route-lambdas/connectServiceRole/DefaultPolicy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "xray:PutTelemetryRecords",
+                                "xray:PutTraceSegments"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
                         },
-                        "managedPolicyArns": [
+                        "policyName": "connectServiceRoleDefaultPolicyCE4B3DE0",
+                        "roles": [
                           {
-                            "Fn::Join": [
-                              "",
-                              [
-                                "arn:",
-                                {
-                                  "Ref": "AWS::Partition"
-                                },
-                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-                              ]
-                            ]
+                            "Ref": "connectServiceRoleD6E70EFD"
                           }
                         ]
                       }
                     },
                     "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
                       "version": "2.145.0"
                     }
                   }
                 },
                 "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "fqn": "aws-cdk-lib.aws_iam.Policy",
                   "version": "2.145.0"
                 }
-              },
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_iam.Role",
+              "version": "2.145.0"
+            }
+          },
+          "connect": {
+            "id": "connect",
+            "path": "wssqs-route-lambdas/connect",
+            "children": {
               "Code": {
                 "id": "Code",
-                "path": "wssqs-route-lambdas/mockConnectFunction/Code",
+                "path": "wssqs-route-lambdas/connect/Code",
                 "children": {
                   "Stage": {
                     "id": "Stage",
-                    "path": "wssqs-route-lambdas/mockConnectFunction/Code/Stage",
+                    "path": "wssqs-route-lambdas/connect/Code/Stage",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.AssetStaging",
                       "version": "2.145.0"
@@ -83,7 +149,7 @@
                   },
                   "AssetBucket": {
                     "id": "AssetBucket",
-                    "path": "wssqs-route-lambdas/mockConnectFunction/Code/AssetBucket",
+                    "path": "wssqs-route-lambdas/connect/Code/AssetBucket",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketBase",
                       "version": "2.145.0"
@@ -97,7 +163,7 @@
               },
               "Resource": {
                 "id": "Resource",
-                "path": "wssqs-route-lambdas/mockConnectFunction/Resource",
+                "path": "wssqs-route-lambdas/connect/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
                   "aws:cdk:cloudformation:props": {
@@ -110,11 +176,14 @@
                     "handler": "connect.handler",
                     "role": {
                       "Fn::GetAtt": [
-                        "mockConnectFunctionServiceRole1F0378F3",
+                        "connectServiceRoleD6E70EFD",
                         "Arn"
                       ]
                     },
-                    "runtime": "nodejs20.x"
+                    "runtime": "nodejs20.x",
+                    "tracingConfig": {
+                      "mode": "Active"
+                    }
                   }
                 },
                 "constructInfo": {
@@ -128,74 +197,140 @@
               "version": "2.145.0"
             }
           },
-          "mockDisconnectFunction": {
-            "id": "mockDisconnectFunction",
-            "path": "wssqs-route-lambdas/mockDisconnectFunction",
+          "disconnectServiceRole": {
+            "id": "disconnectServiceRole",
+            "path": "wssqs-route-lambdas/disconnectServiceRole",
             "children": {
-              "ServiceRole": {
-                "id": "ServiceRole",
-                "path": "wssqs-route-lambdas/mockDisconnectFunction/ServiceRole",
-                "children": {
-                  "ImportServiceRole": {
-                    "id": "ImportServiceRole",
-                    "path": "wssqs-route-lambdas/mockDisconnectFunction/ServiceRole/ImportServiceRole",
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.145.0"
-                    }
-                  },
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "wssqs-route-lambdas/mockDisconnectFunction/ServiceRole/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
-                      "aws:cdk:cloudformation:props": {
-                        "assumeRolePolicyDocument": {
+              "ImportdisconnectServiceRole": {
+                "id": "ImportdisconnectServiceRole",
+                "path": "wssqs-route-lambdas/disconnectServiceRole/ImportdisconnectServiceRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.145.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "wssqs-route-lambdas/disconnectServiceRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "lambda.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "policies": [
+                      {
+                        "policyName": "LambdaFunctionServiceRolePolicy",
+                        "policyDocument": {
                           "Statement": [
                             {
-                              "Action": "sts:AssumeRole",
+                              "Action": [
+                                "logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents"
+                              ],
                               "Effect": "Allow",
-                              "Principal": {
-                                "Service": "lambda.amazonaws.com"
+                              "Resource": {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    "arn:",
+                                    {
+                                      "Ref": "AWS::Partition"
+                                    },
+                                    ":logs:",
+                                    {
+                                      "Ref": "AWS::Region"
+                                    },
+                                    ":",
+                                    {
+                                      "Ref": "AWS::AccountId"
+                                    },
+                                    ":log-group:/aws/lambda/*"
+                                  ]
+                                ]
                               }
                             }
                           ],
                           "Version": "2012-10-17"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.145.0"
+                }
+              },
+              "DefaultPolicy": {
+                "id": "DefaultPolicy",
+                "path": "wssqs-route-lambdas/disconnectServiceRole/DefaultPolicy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "wssqs-route-lambdas/disconnectServiceRole/DefaultPolicy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "xray:PutTelemetryRecords",
+                                "xray:PutTraceSegments"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
                         },
-                        "managedPolicyArns": [
+                        "policyName": "disconnectServiceRoleDefaultPolicyD85178B8",
+                        "roles": [
                           {
-                            "Fn::Join": [
-                              "",
-                              [
-                                "arn:",
-                                {
-                                  "Ref": "AWS::Partition"
-                                },
-                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-                              ]
-                            ]
+                            "Ref": "disconnectServiceRole0B1E33D9"
                           }
                         ]
                       }
                     },
                     "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
                       "version": "2.145.0"
                     }
                   }
                 },
                 "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "fqn": "aws-cdk-lib.aws_iam.Policy",
                   "version": "2.145.0"
                 }
-              },
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_iam.Role",
+              "version": "2.145.0"
+            }
+          },
+          "disconnect": {
+            "id": "disconnect",
+            "path": "wssqs-route-lambdas/disconnect",
+            "children": {
               "Code": {
                 "id": "Code",
-                "path": "wssqs-route-lambdas/mockDisconnectFunction/Code",
+                "path": "wssqs-route-lambdas/disconnect/Code",
                 "children": {
                   "Stage": {
                     "id": "Stage",
-                    "path": "wssqs-route-lambdas/mockDisconnectFunction/Code/Stage",
+                    "path": "wssqs-route-lambdas/disconnect/Code/Stage",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.AssetStaging",
                       "version": "2.145.0"
@@ -203,7 +338,7 @@
                   },
                   "AssetBucket": {
                     "id": "AssetBucket",
-                    "path": "wssqs-route-lambdas/mockDisconnectFunction/Code/AssetBucket",
+                    "path": "wssqs-route-lambdas/disconnect/Code/AssetBucket",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketBase",
                       "version": "2.145.0"
@@ -217,7 +352,7 @@
               },
               "Resource": {
                 "id": "Resource",
-                "path": "wssqs-route-lambdas/mockDisconnectFunction/Resource",
+                "path": "wssqs-route-lambdas/disconnect/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
                   "aws:cdk:cloudformation:props": {
@@ -230,11 +365,14 @@
                     "handler": "disconnect.handler",
                     "role": {
                       "Fn::GetAtt": [
-                        "mockDisconnectFunctionServiceRole78BA4C6C",
+                        "disconnectServiceRole0B1E33D9",
                         "Arn"
                       ]
                     },
-                    "runtime": "nodejs20.x"
+                    "runtime": "nodejs20.x",
+                    "tracingConfig": {
+                      "mode": "Active"
+                    }
                   }
                 },
                 "constructInfo": {
@@ -647,7 +785,7 @@
                             "action": "lambda:InvokeFunction",
                             "functionName": {
                               "Fn::GetAtt": [
-                                "mockConnectFunctionD7943357",
+                                "connectEB2081F1",
                                 "Arn"
                               ]
                             },
@@ -712,7 +850,7 @@
                                       ":lambda:path/2015-03-31/functions/",
                                       {
                                         "Fn::GetAtt": [
-                                          "mockConnectFunctionD7943357",
+                                          "connectEB2081F1",
                                           "Arn"
                                         ]
                                       },
@@ -781,7 +919,7 @@
                             "action": "lambda:InvokeFunction",
                             "functionName": {
                               "Fn::GetAtt": [
-                                "mockDisconnectFunction61BF2F1C",
+                                "disconnect829B70D0",
                                 "Arn"
                               ]
                             },
@@ -846,7 +984,7 @@
                                       ":lambda:path/2015-03-31/functions/",
                                       {
                                         "Fn::GetAtt": [
-                                          "mockDisconnectFunction61BF2F1C",
+                                          "disconnect829B70D0",
                                           "Arn"
                                         ]
                                       },
