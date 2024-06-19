@@ -1,0 +1,62 @@
+/**
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
+ *  with the License. A copy of the License is located at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  or in the 'license' file accompanying this file. This file is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES
+ *  OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions
+ *  and limitations under the License.
+ */
+
+// Imports
+import { App, Stack } from "aws-cdk-lib";
+import { ApiGatewayV2WebSocketToSqs } from "../lib";
+import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { IntegTest } from '@aws-cdk/integ-tests-alpha';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { WebSocketLambdaIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations";
+import { WebSocketIamAuthorizer } from 'aws-cdk-lib/aws-apigatewayv2-authorizers';
+import * as apigwv2 from 'aws-cdk-lib/aws-apigatewayv2';
+
+const COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME = lambda.Runtime.NODEJS_20_X;
+
+// Setup
+const app = new App();
+const stack = new Stack(app, generateIntegStackName(__filename));
+stack.templateOptions.description = 'Integration Test for aws-apigateway-sqs';
+
+const mockConnectLambda = new lambda.Function(stack, 'mockConnectFunction', {
+  code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  runtime: COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+  handler: 'connect.handler'
+});
+
+const mockDisconnectLambda = new lambda.Function(stack, 'mockDisconnectFunction', {
+  code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  runtime: COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+  handler: 'disconnect.handler'
+});
+
+new ApiGatewayV2WebSocketToSqs(stack, 'ApiGatewayV2WebSocketToSqs', {
+  existingWebSocketApi: new apigwv2.WebSocketApi(stack, 'TestWebSocket', {
+    apiName: 'TestWebSocket',
+    description: 'Test WebSocket',
+    connectRouteOptions: {
+      integration: new WebSocketLambdaIntegration('ConnectIntegration', mockConnectLambda),
+      authorizer: new WebSocketIamAuthorizer()
+    },
+    disconnectRouteOptions: {
+      integration: new WebSocketLambdaIntegration('DisconnectIntegration', mockDisconnectLambda)
+    }
+  })
+});
+
+// Synth
+new IntegTest(stack, 'Integ', {
+  testCases: [
+    stack
+  ]
+});
