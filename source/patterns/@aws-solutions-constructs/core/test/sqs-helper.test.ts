@@ -411,3 +411,39 @@ test('Test fail maxReceiveCount with no dlq', () => {
 
   expect(app).toThrowError(/Error - MaxReceiveCount cannot be set if deployDeadLetterQueue is false.\n/);
 });
+
+test('Test that queue construct properties have priority', () => {
+  const stack = new Stack();
+  const propName = 'not-this';
+  const constructPropName = 'but-this';
+
+  buildQueue(stack, 'testqueue', {
+    queueProps: {
+      queueName: propName
+    },
+    constructQueueProps: {
+      queueName: constructPropName
+    }
+  });
+  Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
+    QueueName: constructPropName
+  });
+});
+
+test('Test that dlg construct properties have priority', () => {
+  const stack = new Stack();
+  const propName = 'not-this';
+  const constructPropName = 'but-this';
+
+  buildDeadLetterQueue(stack, 'testqueue', {
+    deadLetterQueueProps: {
+      queueName: propName
+    },
+    constructDeadLetterQueueProps: {
+      queueName: constructPropName
+    }
+  });
+  Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
+    QueueName: constructPropName
+  });
+});

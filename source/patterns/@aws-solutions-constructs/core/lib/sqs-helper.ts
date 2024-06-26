@@ -20,7 +20,7 @@
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as defaults from './sqs-defaults';
 import * as kms from 'aws-cdk-lib/aws-kms';
-import { CheckBooleanWithDefault, overrideProps, printWarning } from './utils';
+import { CheckBooleanWithDefault, consolidateProps, printWarning,  overrideProps } from './utils';
 import { AccountPrincipal, Effect, PolicyStatement, AnyPrincipal } from 'aws-cdk-lib/aws-iam';
 import { Stack } from 'aws-cdk-lib';
 import {buildEncryptionKey} from "./kms-helper";
@@ -40,6 +40,12 @@ export interface BuildQueueProps {
      * @default - Default props are used.
      */
     readonly queueProps?: sqs.QueueProps;
+    /**
+     * Optional props required by the construct that overide both the default and client supplied values
+     *
+     * @default - none
+     */
+    readonly constructQueueProps?: sqs.QueueProps;
     /**
      * If no key is provided, this flag determines whether the queue is encrypted with a new CMK or an AWS managed key.
      * This flag is ignored if any of the following are defined: queueProps.encryptionMasterKey, encryptionKey or encryptionKeyProps.
@@ -72,6 +78,12 @@ export interface BuildQueueProps {
      */
     readonly deadLetterQueueProps?: sqs.QueueProps,
     /**
+     * Optional props required by the construct that overide both the default and client supplied values
+     *
+     * @default - none
+     */
+    readonly constructDeadLetterQueueProps?: sqs.QueueProps,
+    /**
      * The number of times a message can be unsuccessfully dequeued before being moved to the dead letter queue.
      *
      * @default - Default props are used
@@ -97,6 +109,7 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
       existingQueueObj: props.existingQueueObj,
       deployDeadLetterQueue: props.deployDeadLetterQueue,
       deadLetterQueueProps: props.deadLetterQueueProps,
+      constructDeadLetterQueueProps: props.constructDeadLetterQueueProps,
       maxReceiveCount: props.maxReceiveCount
     });
   }
@@ -112,6 +125,9 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
     } else {
       // If no property overrides, deploy using the default configuration
       queueProps = defaults.DefaultQueueProps();
+    }
+    if (props.constructQueueProps) {
+      queueProps = overrideProps(queueProps, props.constructQueueProps);
     }
 
     // Determine whether a DLQ property should be added
@@ -188,6 +204,12 @@ export interface BuildDeadLetterQueueProps {
    */
   readonly deadLetterQueueProps?: sqs.QueueProps,
   /**
+   * Optional Props that override default and client props
+   *
+   * @default - Default props are used
+   */
+  readonly constructDeadLetterQueueProps?: sqs.QueueProps,
+  /**
    * The number of times a message can be unsuccessfully dequeued before being moved to the dead letter queue.
    *
    * @default - Default props are used
@@ -202,7 +224,7 @@ export function buildDeadLetterQueue(scope: Construct, id: string, props: BuildD
   if (!props.existingQueueObj && CheckBooleanWithDefault(props.deployDeadLetterQueue, true)) {
     // Create the Dead Letter Queue
     const buildQueueResponse = buildQueue(scope, `${id}-dlq`, {
-      queueProps: props.deadLetterQueueProps,
+      queueProps: consolidateProps({}, props.deadLetterQueueProps, props.constructDeadLetterQueueProps),
       deployDeadLetterQueue: false  // don't deploy a DLQ for the DLG!
     });
 
