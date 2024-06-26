@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/502a5977676cce02e8641f8e8803c6407be000d04a9fd8256d43993f3e073035.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5f1e2b55fe3b645f68f58a07c7a39cabcaa22d63d77aca32c28f9ea241929f88.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -236,24 +236,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "OpenApiGatewayToLambdaApiTemplateWriterLambdaRoleCBDA4014": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaApiTemplateWriterLambdaRoleCBDA4014",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "OpenApiGatewayToLambdaApiTemplateWriterLambdaRoleDefaultPolicy5136571F": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaApiTemplateWriterLambdaRoleDefaultPolicy5136571F",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },

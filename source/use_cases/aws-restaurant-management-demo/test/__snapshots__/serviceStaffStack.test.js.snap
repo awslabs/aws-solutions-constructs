@@ -66,7 +66,7 @@ Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "f7e78725db82a6bcdfb3881f27ecf9760863196f64e16042f3eb567f522d9449.zip",
+          "S3Key": "fbf7fbd1e8bee59f8d06e9062d0b1d2b842afe0aac7618c99930897decfb4399.zip",
         },
         "Environment": Object {
           "Variables": Object {
@@ -82,7 +82,7 @@ Object {
             "Arn",
           ],
         },
-        "Runtime": "nodejs16.x",
+        "Runtime": "nodejs20.x",
         "Timeout": 15,
         "TracingConfig": Object {
           "Mode": "Active",
@@ -256,7 +256,7 @@ Object {
             "Arn",
           ],
         },
-        "Runtime": "nodejs16.x",
+        "Runtime": "nodejs20.x",
         "Timeout": 15,
         "TracingConfig": Object {
           "Mode": "Active",

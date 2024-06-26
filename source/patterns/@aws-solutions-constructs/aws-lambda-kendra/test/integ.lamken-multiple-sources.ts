@@ -53,7 +53,7 @@ const webCrawlerSource = {
 new LambdaToKendra(stack, 'minimal-arguments', {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
   },
   kendraDataSourcesProps: [{
