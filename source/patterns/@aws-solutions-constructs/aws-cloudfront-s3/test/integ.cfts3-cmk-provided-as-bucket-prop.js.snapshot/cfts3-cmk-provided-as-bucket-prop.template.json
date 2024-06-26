@@ -882,6 +882,11 @@
      "S3Key": "4a4b024f310aca2784b69bcb790e9ccaef785e9ad5d1b73624144f88c4465b4f.zip"
     },
     "Description": "Custom resource function that updates a provided key policy to allow CloudFront access.",
+    "Environment": {
+     "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
+    },
     "Handler": "index.handler",
     "Role": {
      "Fn::GetAtt": [
@@ -889,7 +894,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs18.x",
+    "Runtime": "nodejs20.x",
     "TracingConfig": {
      "Mode": "Active"
     }

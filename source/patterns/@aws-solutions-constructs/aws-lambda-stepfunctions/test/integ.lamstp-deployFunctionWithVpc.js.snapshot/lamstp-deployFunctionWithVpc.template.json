@@ -387,6 +387,7 @@
     },
     "Environment": {
      "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
       "STATE_MACHINE_ARN": {
        "Ref": "testlambdastepfunctionsStateMachine807F0A77"
       }

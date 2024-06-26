@@ -31,7 +31,7 @@ test("When provided a VPC, does not create a second VPC", () => {
     existingVpc,
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: ".handler",
     },
   });
@@ -51,7 +51,7 @@ test("When provided an existingCache, does not create a second cache", () => {
     existingCache,
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: ".handler",
     },
   });
@@ -69,7 +69,7 @@ test("When provided an existingFunction, does not create a second function", () 
   const existingVpc = defaults.getTestVpc(stack);
   const existingFunction = new lambda.Function(stack, "test-function", {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: ".handler",
     vpc: existingVpc,
     functionName: testFunctionName,
@@ -95,7 +95,7 @@ test("Test custom environment variable name", () => {
   new LambdaToElasticachememcached(stack, "test-construct", {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: ".handler",
     },
     cacheEndpointEnvironmentVariableName: testEnvironmentVariableName,
@@ -137,7 +137,7 @@ test("Test setting custom function properties", () => {
   new LambdaToElasticachememcached(stack, "test-cache", {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: ".handler",
       functionName: testFunctionName,
     },
@@ -155,7 +155,7 @@ test("Test setting custom cache properties", () => {
   new LambdaToElasticachememcached(stack, "test-cache", {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: ".handler",
     },
     cacheProps: {
@@ -175,7 +175,7 @@ test("Test setting custom VPC properties", () => {
   new LambdaToElasticachememcached(stack, "test-cache", {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: ".handler",
     },
     vpcProps: {
@@ -194,7 +194,7 @@ test("Test all default values", () => {
   new LambdaToElasticachememcached(stack, "test-cache", {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: ".handler",
     },
   });
@@ -231,7 +231,7 @@ test("Test all default values", () => {
       },
     },
     Handler: ".handler",
-    Runtime: "nodejs16.x",
+    Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
   });
 
   // All values taken from elasticache-defaults.ts
@@ -255,7 +255,7 @@ test('Test for the proper self referencing security group', () => {
   new LambdaToElasticachememcached(stack, "test-cache", {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: ".handler",
     },
     cacheProps: {
@@ -294,7 +294,7 @@ test("Test error from existingCache and no VPC", () => {
       existingCache,
       lambdaFunctionProps: {
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: ".handler",
       },
     });
@@ -311,7 +311,7 @@ test("Test error from existing function and no VPC", () => {
   const existingVpc = defaults.getTestVpc(stack);
   const existingFunction = new lambda.Function(stack, "test-function", {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: ".handler",
     vpc: existingVpc,
   });
@@ -342,7 +342,7 @@ test("Test error from existingCache and cacheProps", () => {
       },
       lambdaFunctionProps: {
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: ".handler",
       },
     });
@@ -362,7 +362,7 @@ test("Test error from trying to launch Redis", () => {
       },
       lambdaFunctionProps: {
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: ".handler",
       },
     });
@@ -380,7 +380,7 @@ test("Test error from existingCache and no VPC", () => {
     new LambdaToElasticachememcached(stack, "testStack", {
       lambdaFunctionProps: {
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: ".handler",
       },
       vpcProps: {},
@@ -398,7 +398,7 @@ test('Confirm call to CheckLambdaProps', () => {
   const stack = new cdk.Stack();
   const testVpc = defaults.getTestVpc(stack);
   const lambdaFunction = new lambda.Function(stack, 'a-function', {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     vpc: testVpc,
@@ -407,7 +407,7 @@ test('Confirm call to CheckLambdaProps', () => {
   const props: LambdaToElasticachememcachedProps = {
     existingVpc: testVpc,
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },

@@ -27,7 +27,7 @@ test('Test lambda function custom environment variable', () => {
   // Helper declaration
   new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -42,7 +42,7 @@ test('Test lambda function custom environment variable', () => {
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
-    Runtime: 'nodejs16.x',
+    Runtime:  defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
@@ -60,7 +60,7 @@ test('Test the properties', () => {
   // Helper declaration
   const pattern = new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -81,7 +81,7 @@ test('Test deployment w/ existing String Parameter', () => {
   const existingStringParam = new StringParameter(stack, 'myNewStringParameter', {stringValue: "test-string-value" });
   const pattern = new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -103,7 +103,7 @@ test('Test deployment w/ existing function', () => {
   const stack = new Stack();
   // Helper declaration
   const lambdaFunctionProps = {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -129,7 +129,7 @@ test('Test minimal deployment write access to String Parameter ', () => {
   // Helper declaration
   new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -151,7 +151,7 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Helper declaration
   new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -200,7 +200,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Helper declaration
   new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -258,7 +258,7 @@ test("Test minimal deployment with an existing VPC", () => {
   // Helper declaration
   new LambdaToSsmstringparameter(stack, 'lambda-to-ssm-stack', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -298,7 +298,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   const stack = new Stack();
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -331,7 +331,7 @@ test("Confirm that CheckVpcProps is called", () => {
     // Helper declaration
     new LambdaToSsmstringparameter(stack, "lambda-to-ssm-stack", {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
@@ -352,7 +352,7 @@ test("Test bad call with invalid string parameter permission", () => {
     // Helper declaration
     new LambdaToSsmstringparameter(stack, "lambda-to-ssm-stack", {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
@@ -369,7 +369,7 @@ test('Confirm call to CheckLambdaProps', () => {
   // Initial Setup
   const stack = new Stack();
   const lambdaFunction = new lambda.Function(stack, 'a-function', {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -377,7 +377,7 @@ test('Confirm call to CheckLambdaProps', () => {
   const props: LambdaToSsmstringparameterProps = {
     stringParameterProps: { stringValue: "test-string-value" },
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },

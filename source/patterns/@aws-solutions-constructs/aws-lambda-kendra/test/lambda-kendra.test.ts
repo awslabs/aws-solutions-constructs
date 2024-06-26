@@ -27,7 +27,7 @@ test('Launch with minimal code and check  structure', () => {
   const lambdaProps: lambda.FunctionProps = {
     functionName: testFunctionName,
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -273,7 +273,7 @@ test('Check pattern properties on minimal launch', () => {
 
   const lambdaProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -303,7 +303,7 @@ test('Launch with VPC', () => {
 
   const lambdaProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -425,7 +425,7 @@ test('Launch with existing lambda', () => {
 
   const existingFunction = new lambda.Function(stack, 'existing-function', {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     timeout: cdk.Duration.seconds(testTimeout),
     functionName: testFunctionName
@@ -449,7 +449,7 @@ test('Confirm error with data source with no bucket name', () => {
 
   const lambdaProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -476,7 +476,7 @@ test('Launch with existing vpc', () => {
 
   const lambdaProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -510,7 +510,7 @@ test('Launch with Read/Write permissions on kendra index', () => {
 
   const lambdaProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -602,7 +602,7 @@ test('Launch with Write permissions on kendra index', () => {
 
   const lambdaProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -667,7 +667,7 @@ test('Launch with Read permissions on kendra index', () => {
 
   const lambdaProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -725,7 +725,7 @@ test('Launch with SubmitFeedback permissions on kendra index', () => {
 
   const lambdaProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -776,7 +776,7 @@ test('Launch with existing kendra index', () => {
 
   const lambdaProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -821,7 +821,7 @@ test('Launch with S3 data source with overridden defaults', () => {
 
   const lambdaProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -861,7 +861,7 @@ test('Launch with S3 data source and unsupported data source', () => {
 
   const lambdaProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -917,7 +917,7 @@ test('Launch with multiple S3 data sources', () => {
 
   const lambdaProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -973,7 +973,7 @@ test('Test with custom environment variable name', () => {
 
   const lambdaProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -1021,7 +1021,7 @@ test('Confirm CheckVpcProps is being called', () => {
   const lambdaProps: lambda.FunctionProps = {
     functionName: testFunctionName,
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -1051,7 +1051,7 @@ test('Confirm call to CheckLambdaProps', () => {
   // Initial Setup
   const stack = new cdk.Stack();
   const lambdaFunction = new lambda.Function(stack, 'a-function', {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -1067,7 +1067,7 @@ test('Confirm call to CheckLambdaProps', () => {
     }
     ],
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },

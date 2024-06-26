@@ -27,7 +27,7 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 const destination = GetTestFirehoseDestination(stack, 'destination-firehose');
 
 const existingFunction = new lambda.Function(stack, 'existing-function', {
-  runtime: lambda.Runtime.NODEJS_18_X,
+  runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
   handler: "index.handler",
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
 });

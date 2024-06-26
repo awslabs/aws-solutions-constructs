@@ -16,12 +16,13 @@ import * as events from 'aws-cdk-lib/aws-events';
 import { EventbridgeToLambdaProps, EventbridgeToLambda } from '../lib/index';
 import { Template } from 'aws-cdk-lib/assertions';
 import * as cdk from 'aws-cdk-lib';
+import * as defaults from '@aws-solutions-constructs/core';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: EventbridgeToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     eventRuleProps: {
@@ -36,7 +37,7 @@ function deployNewEventBus(stack: cdk.Stack) {
   const props: EventbridgeToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     eventBusProps: { eventBusName: 'test' },
@@ -63,7 +64,7 @@ test('check lambda function properties for deploy: true', () => {
         "Arn"
       ]
     },
-    Runtime: "nodejs16.x",
+    Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
@@ -223,7 +224,7 @@ test('check custom event bus resource with props when deploy:true', () => {
   const props: EventbridgeToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     eventBusProps: {
@@ -247,14 +248,14 @@ test('Confirm call to CheckLambdaProps', () => {
   // Initial Setup
   const stack = new cdk.Stack();
   const lambdaFunction = new lambda.Function(stack, 'a-function', {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
 
   const props: EventbridgeToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -278,7 +279,7 @@ test('Confirm CheckEventBridgeProps is being called', () => {
   const props: EventbridgeToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     eventRuleProps: {

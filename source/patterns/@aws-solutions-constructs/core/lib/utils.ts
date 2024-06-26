@@ -21,7 +21,11 @@ import { flagOverriddenDefaults } from './override-warning-service';
 import * as log from 'npmlog';
 import * as crypto from 'crypto';
 import * as cdk from 'aws-cdk-lib';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { Construct } from "constructs";
+
+export const COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME = lambda.Runtime.NODEJS_20_X;
+export const COMMERCIAL_REGION_LAMBDA_NODE_STRING = "nodejs20.x";
 
 function isObject(val: object) {
   return val != null && typeof val === 'object'

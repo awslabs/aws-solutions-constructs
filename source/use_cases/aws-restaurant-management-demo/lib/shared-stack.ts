@@ -16,6 +16,7 @@ import { Stack, StackProps, RemovalPolicy } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as ddb from 'aws-cdk-lib/aws-dynamodb';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as cfg from './config';
 
 // Stack
 export class SharedStack extends Stack {
@@ -64,7 +65,7 @@ export class SharedStack extends Stack {
     // Setup a Lambda layer for sharing database functions -------------------------------------------------------------
     this.layer = new lambda.LayerVersion(this, 'shared-db-functions-layer', {
       code: lambda.Code.fromAsset(`${__dirname}/lambda/layer`),
-      compatibleRuntimes: [ lambda.Runtime.NODEJS_16_X ],
+      compatibleRuntimes: [ cfg.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME ],
       license: 'Apache-2.0',
       description: 'Layer for common database access functions',
     });

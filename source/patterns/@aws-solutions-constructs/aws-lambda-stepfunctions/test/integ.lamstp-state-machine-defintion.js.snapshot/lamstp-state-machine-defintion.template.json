@@ -95,6 +95,11 @@
     "Code": {
      "ZipFile": "exports.handler = async (event) => { console.log(\"First Function\");}"
     },
+    "Environment": {
+     "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
+    },
     "Handler": "index.handler",
     "Role": {
      "Fn::GetAtt": [
@@ -224,6 +229,11 @@
    "Properties": {
     "Code": {
      "ZipFile": "exports.handler = async (event) => { console.log(\"Second Function\");}"
+    },
+    "Environment": {
+     "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
     },
     "Handler": "index.handler",
     "Role": {
@@ -574,6 +584,7 @@
     },
     "Environment": {
      "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
       "STATE_MACHINE_ARN": {
        "Ref": "testlambdastepfunctionsconstructStateMachineE1526513"
       }
