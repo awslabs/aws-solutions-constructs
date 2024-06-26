@@ -19,7 +19,6 @@ import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as defaults from "@aws-solutions-constructs/core";
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -35,7 +34,7 @@ const existingStreamObj = new kinesis.Stream(stack, 'test-stream', {
 new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_18_X,
     handler: 'index.handler'
   },
   existingStreamObj

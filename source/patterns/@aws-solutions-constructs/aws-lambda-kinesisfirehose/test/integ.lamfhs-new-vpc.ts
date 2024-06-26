@@ -29,7 +29,7 @@ const destination = GetTestFirehoseDestination(stack, 'destination-firehose');
 
 new LambdaToKinesisFirehose(stack, 'test-construct', {
   lambdaFunctionProps: {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_18_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   },

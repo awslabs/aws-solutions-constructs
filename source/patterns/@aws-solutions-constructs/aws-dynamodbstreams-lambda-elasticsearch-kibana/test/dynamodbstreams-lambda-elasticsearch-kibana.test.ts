@@ -30,7 +30,7 @@ function deployNewFunc(stack: cdk.Stack) {
 function getDefaultTestLambdaProps(): lambda.FunctionProps {
   return {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
   };
 }
@@ -249,7 +249,7 @@ test('Confirm CheckVpcProps is being called', () => {
 test('Confirm CheckLambdaProps is being called', () => {
   const stack = new cdk.Stack();
   const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_18_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -258,7 +258,7 @@ test('Confirm CheckLambdaProps is being called', () => {
     domainName: 'test-name',
     existingLambdaObj,
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_18_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     }

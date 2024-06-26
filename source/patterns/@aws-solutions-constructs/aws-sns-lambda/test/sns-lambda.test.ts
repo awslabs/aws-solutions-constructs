@@ -17,13 +17,12 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as cdk from "aws-cdk-lib";
 import { Template } from 'aws-cdk-lib/assertions';
-import * as defaults from '@aws-solutions-constructs/core';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
   };
@@ -46,7 +45,7 @@ test('override topicProps', () => {
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     topicProps: {
@@ -72,7 +71,7 @@ test('provide existingTopicObj', () => {
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     existingTopicObj: topic
@@ -92,7 +91,7 @@ test('Topic is encrypted with imported CMK when set on encryptionKey prop', () =
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     encryptionKey: cmk
@@ -117,7 +116,7 @@ test('Topic is encrypted with imported CMK when set on topicProps.masterKey prop
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     topicProps: {
@@ -144,7 +143,7 @@ test('Topic is encrypted with provided encryptionKeyProps', () => {
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     encryptionKeyProps: {
@@ -181,7 +180,7 @@ test('Topic is encrypted by default with AWS-managed KMS key when no other encry
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
   };
@@ -219,7 +218,7 @@ test('Topic is encrypted with customer managed KMS Key when enable encryption fl
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     enableEncryptionWithCustomerManagedKey: true
@@ -248,7 +247,7 @@ test('Confirm CheckSnsProps is getting called', () => {
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     existingTopicObj: topic,
@@ -269,14 +268,14 @@ test('Confirm call to CheckLambdaProps', () => {
   // Initial Setup
   const stack = new cdk.Stack();
   const lambdaFunction = new lambda.Function(stack, 'a-function', {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
 
   const props: SnsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },

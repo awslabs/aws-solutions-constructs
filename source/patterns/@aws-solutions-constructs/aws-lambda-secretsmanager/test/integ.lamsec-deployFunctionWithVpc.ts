@@ -17,9 +17,8 @@ import { LambdaToSecretsmanagerProps, LambdaToSecretsmanager } from '../lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
-import * as defaults from '@aws-solutions-constructs/core';
 
-// import * as defaults from '@aws-solutions-constructs/core';
+// Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = "Integration Test for aws-lambda-secretsmanager";
@@ -27,7 +26,7 @@ stack.templateOptions.description = "Integration Test for aws-lambda-secretsmana
 // Definitions
 const props: LambdaToSecretsmanagerProps = {
   lambdaFunctionProps: {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   },

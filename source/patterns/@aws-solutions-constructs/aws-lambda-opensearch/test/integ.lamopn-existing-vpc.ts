@@ -34,7 +34,7 @@ const vpc = defaults.getTestVpc(stack);
 
 const lambdaProps: lambda.FunctionProps = {
   code: lambda.Code.fromAsset(`lambda`),
-  runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+  runtime: lambda.Runtime.NODEJS_16_X,
   handler: 'index.handler',
 };
 

@@ -18,14 +18,13 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import { Template } from 'aws-cdk-lib/assertions';
 import * as kms from 'aws-cdk-lib/aws-kms';
-import * as defaults from '@aws-solutions-constructs/core';
 
 test('Pattern deployment w/ new Lambda function and overridden props', () => {
   // Initial Setup
   const stack = new Stack();
   const props: SqsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -58,7 +57,7 @@ test('Test getter methods', () => {
   const stack = new Stack();
   const props: SqsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -111,7 +110,7 @@ test('Pattern deployment w/ batch size', () => {
   const stack = new Stack();
   const props: SqsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -133,7 +132,7 @@ test('Queue is encrypted with imported CMK when set on encryptionKey prop', () =
   const cmk = new kms.Key(stack, 'cmk');
   new SqsToLambda(stack, 'test-construct', {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -160,7 +159,7 @@ test('Queue is encrypted with imported CMK when set on queueProps.encryptionMast
   const cmk = new kms.Key(stack, 'cmk');
   new SqsToLambda(stack, 'test-construct', {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -188,7 +187,7 @@ test('Queue is encrypted with provided encryptionKeyProps', () => {
 
   new SqsToLambda(stack, 'test-construct', {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -226,7 +225,7 @@ test('Queue is encrypted by default with SQS-managed KMS key when no other encry
 
   new SqsToLambda(stack, 'test-construct', {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -246,7 +245,7 @@ test('Queue is encrypted with customer managed KMS Key when enable encryption fl
 
   new SqsToLambda(stack, 'test-construct', {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -272,7 +271,7 @@ test('Confirm CheckSqsProps is called', () => {
   const stack = new Stack();
   const props: SqsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -292,14 +291,14 @@ test('Confirm call to CheckLambdaProps', () => {
   // Initial Setup
   const stack = new Stack();
   const lambdaFunction = new lambda.Function(stack, 'a-function', {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
 
   const props: SqsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },

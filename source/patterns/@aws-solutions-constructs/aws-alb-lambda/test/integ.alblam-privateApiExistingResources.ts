@@ -38,7 +38,7 @@ const testSg = new SecurityGroup(stack, 'lambda-sg', { vpc: myVpc, allowAllOutbo
 const lambdaFunction = defaults.buildLambdaFunction(stack, {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     vpc: myVpc,
     securityGroups: [ testSg ]

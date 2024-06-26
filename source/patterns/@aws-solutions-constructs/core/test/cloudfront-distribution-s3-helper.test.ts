@@ -345,7 +345,7 @@ test('test override cloudfront replace custom lambda@edge', () => {
   // custom lambda@edg function
   const handler = new lambda.Function(stack, 'SomeHandler', {
     functionName: 'SomeHandler',
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });

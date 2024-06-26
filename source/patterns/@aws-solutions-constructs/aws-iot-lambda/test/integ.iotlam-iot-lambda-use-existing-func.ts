@@ -24,7 +24,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
 const lambdaFunctionProps = {
-  runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+  runtime: lambda.Runtime.NODEJS_16_X,
   handler: 'index.handler',
   code: lambda.Code.fromAsset(`${__dirname}/lambda`)
 };

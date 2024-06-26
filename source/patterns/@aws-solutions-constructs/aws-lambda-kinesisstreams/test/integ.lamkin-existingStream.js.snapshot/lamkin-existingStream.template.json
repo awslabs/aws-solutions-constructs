@@ -129,7 +129,6 @@
     },
     "Environment": {
      "Variables": {
-      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
       "KINESIS_DATASTREAM_NAME": {
        "Ref": "teststream04374A09"
       }
@@ -142,7 +141,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs20.x",
+    "Runtime": "nodejs18.x",
     "TracingConfig": {
      "Mode": "Active"
     }

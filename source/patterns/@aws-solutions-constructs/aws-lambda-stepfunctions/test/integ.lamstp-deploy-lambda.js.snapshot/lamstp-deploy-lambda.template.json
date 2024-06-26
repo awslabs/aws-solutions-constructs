@@ -100,8 +100,7 @@
     },
     "Environment": {
      "Variables": {
-      "LAMBDA_NAME": "existing-function",
-      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+      "LAMBDA_NAME": "existing-function"
      }
     },
     "Handler": "index.handler",
@@ -422,7 +421,6 @@
     },
     "Environment": {
      "Variables": {
-      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
       "STATE_MACHINE_ARN": {
        "Ref": "testlambdastepfunctionsconstructStateMachineE1526513"
       }

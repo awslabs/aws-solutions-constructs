@@ -26,7 +26,7 @@ stack.templateOptions.description = 'Integration Test for aws-lambda-ssmstringpa
 
 // Definitions
 const lambdaFunctionProps = {
-  runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+  runtime: lambda.Runtime.NODEJS_16_X,
   handler: 'index.handler',
   code: lambda.Code.fromAsset(`${__dirname}/lambda`)
 };

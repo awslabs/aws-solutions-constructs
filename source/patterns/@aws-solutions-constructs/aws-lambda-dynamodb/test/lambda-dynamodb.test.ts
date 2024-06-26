@@ -17,13 +17,12 @@ import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as cdk from "aws-cdk-lib";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { Template } from 'aws-cdk-lib/assertions';
-import * as defaults from '@aws-solutions-constructs/core';
 
 function deployNewFunc(stack: cdk.Stack) {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
   };
@@ -68,7 +67,7 @@ test('check lambda function properties for deploy: true', () => {
         "Arn"
       ]
     },
-    Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
+    Runtime: "nodejs16.x",
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
@@ -299,7 +298,7 @@ test('check for no prop', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     }
   };
@@ -314,7 +313,7 @@ test('check for no prop', () => {
         "Arn"
       ]
     },
-    Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
+    Runtime: "nodejs16.x",
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
@@ -332,7 +331,7 @@ test('check lambda function policy ReadOnly table permissions', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     tablePermissions: 'Read'
@@ -389,7 +388,7 @@ test('check lambda function policy WriteOnly table permissions', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     tablePermissions: 'Write'
@@ -443,7 +442,7 @@ test('check lambda function policy ReadWrite table permissions', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     tablePermissions: 'ReadWrite'
@@ -504,7 +503,7 @@ test('check lambda function policy All table permissions', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     tablePermissions: 'All'
@@ -551,7 +550,7 @@ test('check lambda function custom environment variable', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     tableEnvironmentVariableName: 'CUSTOM_DYNAMODB_TABLE'
@@ -562,7 +561,7 @@ test('check lambda function custom environment variable', () => {
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
-    Runtime:  defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
+    Runtime: 'nodejs16.x',
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
@@ -583,7 +582,7 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Helper declaration
   new LambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -634,7 +633,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Helper declaration
   new LambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -694,7 +693,7 @@ test("Test minimal deployment with an existing VPC", () => {
   // Helper declaration
   new LambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -739,7 +738,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   const stack = new cdk.Stack();
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lambda', {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -770,7 +769,7 @@ test("Confirm CheckVpcProps is called", () => {
     // Helper declaration
     new LambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
       lambdaFunctionProps: {
-        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+        runtime: lambda.Runtime.NODEJS_16_X,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
@@ -788,7 +787,7 @@ test('Test bad table permission', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     tablePermissions: 'Reed',
@@ -817,7 +816,7 @@ test('Test that CheckDynamoDBProps is getting called', () => {
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler'
     },
     existingTableObj: existingTable,
@@ -842,14 +841,14 @@ test('Confirm call to CheckLambdaProps', () => {
   // Initial Setup
   const stack = new cdk.Stack();
   const lambdaFunction = new lambda.Function(stack, 'a-function', {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
 
   const props: LambdaToDynamoDBProps = {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },

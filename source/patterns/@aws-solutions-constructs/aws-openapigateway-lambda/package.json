@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-openapigateway-lambda",
-  "version": "2.60.0",
+  "version": "0.0.0",
   "description": "CDK constructs for defining an interaction between an OpenAPI-defined API Gateway and one or more Lambda functions.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -53,9 +53,9 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/integ-tests-alpha": "2.145.0-alpha.0",
-    "@aws-solutions-constructs/core": "2.60.0",
-    "@aws-solutions-constructs/resources": "2.60.0",
+    "@aws-cdk/integ-tests-alpha": "0.0.0-alpha.0",
+    "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-solutions-constructs/resources": "0.0.0",
     "constructs": "^10.0.0"
   },
   "devDependencies": {
@@ -64,7 +64,7 @@
     "@aws-sdk/client-s3": "^3.0.0",
     "@types/aws-lambda": "^8.0.0",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "2.145.0"
+    "aws-cdk-lib": "0.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -81,10 +81,10 @@
     ]
   },
   "peerDependencies": {
-    "@aws-solutions-constructs/core": "2.60.0",
-    "@aws-solutions-constructs/resources": "2.60.0",
+    "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-solutions-constructs/resources": "0.0.0",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "^2.145.0"
+    "aws-cdk-lib": "^0.0.0"
   },
   "keywords": [
     "aws",

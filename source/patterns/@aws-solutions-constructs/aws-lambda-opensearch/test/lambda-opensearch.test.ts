@@ -30,7 +30,7 @@ function deployLambdaToOpenSearch(stack: cdk.Stack) {
 function getDefaultTestLambdaProps(): lambda.FunctionProps {
   return {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
   };
 }
@@ -94,7 +94,7 @@ test('Check for an existing Lambda object', () => {
   const existingLambdaObj = defaults.buildLambdaFunction(stack, {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       functionName: 'test-function'
     }
@@ -127,7 +127,7 @@ test('Check Lambda function custom environment variable', () => {
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
-    Runtime:  defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
+    Runtime: 'nodejs16.x',
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
@@ -630,7 +630,7 @@ test('Confirm call to CheckLambdaProps', () => {
   // Initial Setup
   const stack = new cdk.Stack();
   const lambdaFunction = new lambda.Function(stack, 'a-function', {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -638,7 +638,7 @@ test('Confirm call to CheckLambdaProps', () => {
   const props: LambdaToOpenSearchProps = {
     openSearchDomainName: 'name',
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },

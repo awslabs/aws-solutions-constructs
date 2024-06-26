@@ -18,7 +18,6 @@ import { CfnResource, RemovalPolicy, Stack, Aspects, IAspect, Aws, Fn } from "aw
 import { buildVpc } from '../lib/vpc-helper';
 import { DefaultPublicPrivateVpcProps, DefaultIsolatedVpcProps } from '../lib/vpc-defaults';
 import { overrideProps, addCfnSuppressRules } from "../lib/utils";
-import * as defaults from '../index';
 import { createCacheSubnetGroup } from "../lib/elasticache-helper";
 import * as path from 'path';
 import * as cache from 'aws-cdk-lib/aws-elasticache';
@@ -227,7 +226,7 @@ class CfnNagLambdaAspect implements IAspect {
 export function CreateTestApi(stack: Stack, id: string): api.LambdaRestApi {
   const lambdaFunction = new lambda.Function(stack, `${id}Function`, {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: ".handler",
   });
   addCfnSuppressRules(lambdaFunction, [{ id: "W58", reason: "Test Resource" }]);
@@ -264,7 +263,7 @@ export function CreateTestApi(stack: Stack, id: string): api.LambdaRestApi {
 export function CreateApiAuthorizer(stack: Stack, id: string): api.IAuthorizer {
   const authFn = new lambda.Function(stack, `${id}AuthFunction`, {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: ".handler",
   });
   addCfnSuppressRules(authFn, [{ id: "W58", reason: "Test Resource" }]);

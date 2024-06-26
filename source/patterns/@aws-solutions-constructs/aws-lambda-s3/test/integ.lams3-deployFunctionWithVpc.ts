@@ -17,18 +17,18 @@ import { LambdaToS3, LambdaToS3Props } from "../lib";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
-import * as s3 from "aws-cdk-lib/aws-s3";
-import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = "Integration Test for aws-lambda-s3";
+import * as s3 from "aws-cdk-lib/aws-s3";
+import * as defaults from '@aws-solutions-constructs/core';
 
 // Definitions
 const props: LambdaToS3Props = {
   lambdaFunctionProps: {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   },

@@ -27,7 +27,7 @@ stack.templateOptions.description = "Integration Test for aws-lambda-stepfunctio
 // Definitions
 const props: LambdaToStepfunctionsProps = {
   lambdaFunctionProps: {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_20_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   },

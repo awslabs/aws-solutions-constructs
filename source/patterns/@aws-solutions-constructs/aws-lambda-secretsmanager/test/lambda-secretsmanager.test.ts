@@ -26,7 +26,7 @@ test('Test the properties', () => {
   // Helper declaration
   const pattern = new LambdaToSecretsmanager(stack, 'lambda-to-secretsmanager-stack', {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -47,7 +47,7 @@ test('Test deployment w/ existing secret', () => {
   const existingSecret = new secrets.Secret(stack, 'secret', {});
   const pattern = new LambdaToSecretsmanager(stack, 'lambda-to-secretsmanager-stack', {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -67,7 +67,7 @@ test('Test deployment w/ existing function', () => {
   const stack = new Stack();
   // Helper declaration
   const lambdaFunctionProps = {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -92,7 +92,7 @@ test('Test minimal deployment write access to Secret', () => {
   // Helper declaration
   new LambdaToSecretsmanager(stack, 'lambda-to-secretsmanager-stack', {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -113,7 +113,7 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Helper declaration
   new LambdaToSecretsmanager(stack, "lambda-to-secretsmanager-stack", {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -162,7 +162,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Helper declaration
   new LambdaToSecretsmanager(stack, "lambda-to-secretsmanager-stack", {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -220,7 +220,7 @@ test("Test minimal deployment with an existing VPC", () => {
   // Helper declaration
   new LambdaToSecretsmanager(stack, "lambda-to-secretsmanager-stack", {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -260,7 +260,7 @@ test("Check error when existing lambda function is not in VPC and construct is i
   const stack = new Stack();
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -293,7 +293,7 @@ test("Confirm CheckVpcProps is called", () => {
     // Helper declaration
     new LambdaToSecretsmanager(stack, "lambda-to-secretsmanager-stack", {
       lambdaFunctionProps: {
-        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+        runtime: lambda.Runtime.NODEJS_16_X,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
@@ -313,7 +313,7 @@ test('Test lambda function custom environment variable', () => {
   // Helper declaration
   new LambdaToSecretsmanager(stack, 'lambda-to-secretsmanager-stack', {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -328,7 +328,7 @@ test('Test lambda function custom environment variable', () => {
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
-    Runtime:  defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
+    Runtime: 'nodejs16.x',
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
@@ -351,7 +351,7 @@ test('Test overriding secretProps to pass a customer provided CMK', () => {
   // Helper declaration
   new LambdaToSecretsmanager(stack, 'lambda-to-secretsmanager-stack', {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       environment: {
@@ -367,7 +367,7 @@ test('Test overriding secretProps to pass a customer provided CMK', () => {
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
-    Runtime:  defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
+    Runtime: 'nodejs16.x',
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
@@ -400,14 +400,14 @@ test('Confirm call to CheckLambdaProps', () => {
   // Initial Setup
   const stack = new Stack();
   const lambdaFunction = new lambda.Function(stack, 'a-function', {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
 
   const props: LambdaToSecretsmanagerProps = {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -426,7 +426,7 @@ test('Confirm call to CheckSecretsManagerProps', () => {
 
   const props: LambdaToSecretsmanagerProps = {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },

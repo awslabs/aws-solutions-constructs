@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-lambda-sqs-lambda",
-  "version": "2.60.0",
+  "version": "0.0.0",
   "description": "CDK construct that provisions (1) an AWS Lambda function that is configured to send messages to a queue; (2) an Amazon SQS queue; and (3) an AWS Lambda function configured to consume messages from the queue.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -53,17 +53,17 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/integ-tests-alpha": "2.145.0-alpha.0",
-    "@aws-solutions-constructs/core": "2.60.0",
-    "@aws-solutions-constructs/aws-lambda-sqs": "2.60.0",
-    "@aws-solutions-constructs/aws-sqs-lambda": "2.60.0",
+    "@aws-cdk/integ-tests-alpha": "0.0.0-alpha.0",
+    "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-solutions-constructs/aws-lambda-sqs": "0.0.0",
+    "@aws-solutions-constructs/aws-sqs-lambda": "0.0.0",
     "constructs": "^10.0.0"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
     "@types/node": "^10.3.0",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "2.145.0"
+    "aws-cdk-lib": "0.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -80,11 +80,11 @@
     ]
   },
   "peerDependencies": {
-    "@aws-solutions-constructs/core": "2.60.0",
-    "@aws-solutions-constructs/aws-lambda-sqs": "2.60.0",
-    "@aws-solutions-constructs/aws-sqs-lambda": "2.60.0",
+    "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-solutions-constructs/aws-lambda-sqs": "0.0.0",
+    "@aws-solutions-constructs/aws-sqs-lambda": "0.0.0",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "^2.145.0"
+    "aws-cdk-lib": "^0.0.0"
   },
   "keywords": [
     "aws",

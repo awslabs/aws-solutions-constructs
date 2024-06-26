@@ -21,7 +21,7 @@
                     "path": "wafapi-existing-waf-to-multiple-gateways/testOneFunction/ServiceRole/ImportServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   },
                   "Resource": {
@@ -60,13 +60,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "Code": {
@@ -78,7 +78,7 @@
                     "path": "wafapi-existing-waf-to-multiple-gateways/testOneFunction/Code/Stage",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.AssetStaging",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   },
                   "AssetBucket": {
@@ -86,13 +86,13 @@
                     "path": "wafapi-existing-waf-to-multiple-gateways/testOneFunction/Code/AssetBucket",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "Resource": {
@@ -114,18 +114,18 @@
                         "Arn"
                       ]
                     },
-                    "runtime": "nodejs20.x"
+                    "runtime": "nodejs16.x"
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_lambda.Function",
-              "version": "2.145.0"
+              "version": "2.118.0"
             }
           },
           "testOne-authorizerAuthFunction": {
@@ -141,7 +141,7 @@
                     "path": "wafapi-existing-waf-to-multiple-gateways/testOne-authorizerAuthFunction/ServiceRole/ImportServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   },
                   "Resource": {
@@ -180,13 +180,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "Code": {
@@ -198,7 +198,7 @@
                     "path": "wafapi-existing-waf-to-multiple-gateways/testOne-authorizerAuthFunction/Code/Stage",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.AssetStaging",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   },
                   "AssetBucket": {
@@ -206,13 +206,13 @@
                     "path": "wafapi-existing-waf-to-multiple-gateways/testOne-authorizerAuthFunction/Code/AssetBucket",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "Resource": {
@@ -234,12 +234,12 @@
                         "Arn"
                       ]
                     },
-                    "runtime": "nodejs20.x"
+                    "runtime": "nodejs16.x"
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "wafapiexistingwaftomultiplegatewaystestOneauthorizer7F4D0710:Permissions": {
@@ -287,13 +287,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_lambda.Function",
-              "version": "2.145.0"
+              "version": "2.118.0"
             }
           },
           "testOne-authorizer": {
@@ -366,13 +366,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigateway.CfnAuthorizer",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_apigateway.RequestAuthorizer",
-              "version": "2.145.0"
+              "version": "2.118.0"
             }
           },
           "testOneApi": {
@@ -390,7 +390,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigateway.CfnRestApi",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "Deployment": {
@@ -411,13 +411,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.CfnDeployment",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigateway.Deployment",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "DeploymentStage.prod": {
@@ -441,13 +441,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.CfnStage",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigateway.Stage",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "Endpoint": {
@@ -455,7 +455,7 @@
                 "path": "wafapi-existing-waf-to-multiple-gateways/testOneApi/Endpoint",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnOutput",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "Default": {
@@ -486,7 +486,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
-                          "version": "2.145.0"
+                          "version": "2.118.0"
                         }
                       },
                       "ANY": {
@@ -539,7 +539,7 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                              "version": "2.145.0"
+                              "version": "2.118.0"
                             }
                           },
                           "ApiPermission.Test.wafapiexistingwaftomultiplegatewaystestOneApiB9044B59.ANY..{proxy+}": {
@@ -584,7 +584,7 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                              "version": "2.145.0"
+                              "version": "2.118.0"
                             }
                           },
                           "Resource": {
@@ -635,19 +635,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
-                              "version": "2.145.0"
+                              "version": "2.118.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_apigateway.Method",
-                          "version": "2.145.0"
+                          "version": "2.118.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.ProxyResource",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   },
                   "ANY": {
@@ -700,7 +700,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                          "version": "2.145.0"
+                          "version": "2.118.0"
                         }
                       },
                       "ApiPermission.Test.wafapiexistingwaftomultiplegatewaystestOneApiB9044B59.ANY..": {
@@ -745,7 +745,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                          "version": "2.145.0"
+                          "version": "2.118.0"
                         }
                       },
                       "Resource": {
@@ -799,25 +799,25 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
-                          "version": "2.145.0"
+                          "version": "2.118.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.Method",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigateway.ResourceBase",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_apigateway.LambdaRestApi",
-              "version": "2.145.0"
+              "version": "2.118.0"
             }
           },
           "testTwoFunction": {
@@ -833,7 +833,7 @@
                     "path": "wafapi-existing-waf-to-multiple-gateways/testTwoFunction/ServiceRole/ImportServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   },
                   "Resource": {
@@ -872,13 +872,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "Code": {
@@ -890,7 +890,7 @@
                     "path": "wafapi-existing-waf-to-multiple-gateways/testTwoFunction/Code/Stage",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.AssetStaging",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   },
                   "AssetBucket": {
@@ -898,13 +898,13 @@
                     "path": "wafapi-existing-waf-to-multiple-gateways/testTwoFunction/Code/AssetBucket",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "Resource": {
@@ -926,18 +926,18 @@
                         "Arn"
                       ]
                     },
-                    "runtime": "nodejs20.x"
+                    "runtime": "nodejs16.x"
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_lambda.Function",
-              "version": "2.145.0"
+              "version": "2.118.0"
             }
           },
           "testTwo-authorizerAuthFunction": {
@@ -953,7 +953,7 @@
                     "path": "wafapi-existing-waf-to-multiple-gateways/testTwo-authorizerAuthFunction/ServiceRole/ImportServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   },
                   "Resource": {
@@ -992,13 +992,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "Code": {
@@ -1010,7 +1010,7 @@
                     "path": "wafapi-existing-waf-to-multiple-gateways/testTwo-authorizerAuthFunction/Code/Stage",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.AssetStaging",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   },
                   "AssetBucket": {
@@ -1018,13 +1018,13 @@
                     "path": "wafapi-existing-waf-to-multiple-gateways/testTwo-authorizerAuthFunction/Code/AssetBucket",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "Resource": {
@@ -1046,12 +1046,12 @@
                         "Arn"
                       ]
                     },
-                    "runtime": "nodejs20.x"
+                    "runtime": "nodejs16.x"
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "wafapiexistingwaftomultiplegatewaystestTwoauthorizer9B2C525E:Permissions": {
@@ -1099,13 +1099,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_lambda.Function",
-              "version": "2.145.0"
+              "version": "2.118.0"
             }
           },
           "testTwo-authorizer": {
@@ -1178,13 +1178,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigateway.CfnAuthorizer",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_apigateway.RequestAuthorizer",
-              "version": "2.145.0"
+              "version": "2.118.0"
             }
           },
           "testTwoApi": {
@@ -1202,7 +1202,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigateway.CfnRestApi",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "Deployment": {
@@ -1223,13 +1223,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.CfnDeployment",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigateway.Deployment",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "DeploymentStage.prod": {
@@ -1253,13 +1253,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.CfnStage",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigateway.Stage",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "Endpoint": {
@@ -1267,7 +1267,7 @@
                 "path": "wafapi-existing-waf-to-multiple-gateways/testTwoApi/Endpoint",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnOutput",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               },
               "Default": {
@@ -1298,7 +1298,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
-                          "version": "2.145.0"
+                          "version": "2.118.0"
                         }
                       },
                       "ANY": {
@@ -1351,7 +1351,7 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                              "version": "2.145.0"
+                              "version": "2.118.0"
                             }
                           },
                           "ApiPermission.Test.wafapiexistingwaftomultiplegatewaystestTwoApi3F5A8986.ANY..{proxy+}": {
@@ -1396,7 +1396,7 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                              "version": "2.145.0"
+                              "version": "2.118.0"
                             }
                           },
                           "Resource": {
@@ -1447,19 +1447,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
-                              "version": "2.145.0"
+                              "version": "2.118.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_apigateway.Method",
-                          "version": "2.145.0"
+                          "version": "2.118.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.ProxyResource",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   },
                   "ANY": {
@@ -1512,7 +1512,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                          "version": "2.145.0"
+                          "version": "2.118.0"
                         }
                       },
                       "ApiPermission.Test.wafapiexistingwaftomultiplegatewaystestTwoApi3F5A8986.ANY..": {
@@ -1557,7 +1557,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                          "version": "2.145.0"
+                          "version": "2.118.0"
                         }
                       },
                       "Resource": {
@@ -1611,25 +1611,25 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
-                          "version": "2.145.0"
+                          "version": "2.118.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.Method",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigateway.ResourceBase",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_apigateway.LambdaRestApi",
-              "version": "2.145.0"
+              "version": "2.118.0"
             }
           },
           "first-construct": {
@@ -1783,13 +1783,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_wafv2.CfnWebACL",
-                  "version": "2.145.0"
+                  "version": "2.118.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-wafwebacl-apigateway.WafwebaclToApiGateway",
-              "version": "2.60.0"
+              "version": "2.50.0"
             }
           },
           "first-construct-WebACLAssociation": {
@@ -1831,7 +1831,7 @@
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_wafv2.CfnWebACLAssociation",
-              "version": "2.145.0"
+              "version": "2.118.0"
             }
           },
           "second-construct": {
@@ -1839,7 +1839,7 @@
             "path": "wafapi-existing-waf-to-multiple-gateways/second-construct",
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-wafwebacl-apigateway.WafwebaclToApiGateway",
-              "version": "2.60.0"
+              "version": "2.50.0"
             }
           },
           "second-construct-WebACLAssociation": {
@@ -1881,7 +1881,7 @@
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_wafv2.CfnWebACLAssociation",
-              "version": "2.145.0"
+              "version": "2.118.0"
             }
           },
           "Integ": {
@@ -1897,7 +1897,7 @@
                     "path": "wafapi-existing-waf-to-multiple-gateways/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
-                      "version": "10.3.0"
+                      "version": "10.0.0"
                     }
                   },
                   "DeployAssert": {
@@ -1909,7 +1909,7 @@
                         "path": "wafapi-existing-waf-to-multiple-gateways/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.145.0"
+                          "version": "2.118.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -1917,25 +1917,25 @@
                         "path": "wafapi-existing-waf-to-multiple-gateways/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.145.0"
+                          "version": "2.118.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.145.0"
+                      "version": "2.118.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.145.0-alpha.0"
+                  "version": "2.118.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.145.0-alpha.0"
+              "version": "2.118.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -1943,7 +1943,7 @@
             "path": "wafapi-existing-waf-to-multiple-gateways/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.145.0"
+              "version": "2.118.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -1951,13 +1951,13 @@
             "path": "wafapi-existing-waf-to-multiple-gateways/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.145.0"
+              "version": "2.118.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.145.0"
+          "version": "2.118.0"
         }
       },
       "Tree": {
@@ -1965,13 +1965,13 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.3.0"
+          "version": "10.0.0"
         }
       }
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.145.0"
+      "version": "2.118.0"
     }
   }
 }

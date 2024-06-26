@@ -622,7 +622,7 @@ function CreateTestLoadBalancer(stack: Stack, vpc: ec2.IVpc): elb.ApplicationLoa
 function CreateTestFunction(stack: Stack, id: string): lambda.Function {
   return new lambda.Function(stack, id, {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
   });
 }

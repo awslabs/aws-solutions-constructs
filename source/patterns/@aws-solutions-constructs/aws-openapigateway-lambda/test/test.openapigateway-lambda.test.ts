@@ -20,7 +20,6 @@ import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import * as path from 'path';
 import { Template } from "aws-cdk-lib/assertions";
 import { CreateScrapBucket } from "@aws-solutions-constructs/core";
-import * as defaults from '@aws-solutions-constructs/core';
 
 test('Simple deployment works', () => {
   const stack = new Stack();
@@ -35,7 +34,7 @@ test('Simple deployment works', () => {
       {
         id: 'MessagesHandler',
         lambdaFunctionProps: {
-          runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+          runtime: lambda.Runtime.NODEJS_18_X,
           handler: 'index.handler',
           code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
         }
@@ -64,7 +63,7 @@ test('API Definition can be specified from Asset', () => {
       {
         id: 'MessagesHandler',
         lambdaFunctionProps: {
-          runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+          runtime: lambda.Runtime.NODEJS_18_X,
           handler: 'index.handler',
           code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
         }
@@ -89,7 +88,7 @@ test('API Definition can be specified from S3 Bucket and Key', () => {
       {
         id: 'MessagesHandler',
         lambdaFunctionProps: {
-          runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+          runtime: lambda.Runtime.NODEJS_18_X,
           handler: 'index.handler',
           code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
         }
@@ -117,7 +116,7 @@ test('Throws error when both api definition asset and s3 object are specified', 
         {
           id: 'MessagesHandler',
           lambdaFunctionProps: {
-            runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+            runtime: lambda.Runtime.NODEJS_18_X,
             handler: 'index.handler',
             code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
           }
@@ -141,14 +140,14 @@ test('Multiple Lambda Functions can be specified', () => {
       {
         id: 'MessagesHandler',
         lambdaFunctionProps: {
-          runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+          runtime: lambda.Runtime.NODEJS_18_X,
           handler: 'index.handler',
           code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
         }
       }, {
         id: 'PhotosHandler',
         lambdaFunctionProps: {
-          runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+          runtime: lambda.Runtime.NODEJS_18_X,
           handler: 'index.handler',
           code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),
         }
@@ -168,7 +167,7 @@ test('Existing lambda function can be specified', () => {
   });
 
   const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_18_X,
     handler: 'index.handler',
     functionName: 'ExistingLambdaFunction',
     code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
@@ -183,7 +182,7 @@ test('Existing lambda function can be specified', () => {
       }, {
         id: 'PhotosHandler',
         lambdaFunctionProps: {
-          runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+          runtime: lambda.Runtime.NODEJS_18_X,
           handler: 'index.handler',
           functionName: 'NewLambdaFunction',
           code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),
@@ -233,7 +232,7 @@ test('Throws error when no api definition is specified', () => {
         {
           id: 'MessagesHandler',
           lambdaFunctionProps: {
-            runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+            runtime: lambda.Runtime.NODEJS_18_X,
             handler: 'index.handler',
             code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
           }
@@ -334,7 +333,7 @@ test('Two Constructs create APIs with different names', () => {
       {
         id: 'MessagesHandler',
         lambdaFunctionProps: {
-          runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+          runtime: lambda.Runtime.NODEJS_18_X,
           handler: 'index.handler',
           code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
         }
@@ -352,7 +351,7 @@ test('Two Constructs create APIs with different names', () => {
       {
         id: 'MessagesHandler',
         lambdaFunctionProps: {
-          runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+          runtime: lambda.Runtime.NODEJS_18_X,
           handler: 'index.handler',
           code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
         }
@@ -424,7 +423,7 @@ test('Confirm API definition uri is added to function name', () => {
       {
         id: 'MessagesHandler',
         lambdaFunctionProps: {
-          runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+          runtime: lambda.Runtime.NODEJS_18_X,
           handler: 'index.handler',
           code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
         }
@@ -443,7 +442,7 @@ test('Confirm API definition uri is added to function name', () => {
 test('Confirm  that providing both lambdaFunction and functionProps is an error', () => {
   const stack = new Stack();
   const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_18_X,
     handler: 'index.handler',
     functionName: 'ExistingLambdaFunction',
     code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
@@ -459,7 +458,7 @@ test('Confirm  that providing both lambdaFunction and functionProps is an error'
       {
         id: 'MessagesHandler',
         lambdaFunctionProps: {
-          runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+          runtime: lambda.Runtime.NODEJS_18_X,
           handler: 'index.handler',
           code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
         },

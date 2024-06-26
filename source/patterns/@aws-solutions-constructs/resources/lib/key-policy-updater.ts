@@ -22,7 +22,6 @@ import { Distribution } from "aws-cdk-lib/aws-cloudfront";
 import { addCfnSuppressRulesForCustomResourceProvider } from "./utils";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
-import * as defaults from '@aws-solutions-constructs/core';
 
 export interface CreateKeyPolicyUpdaterResponse {
   readonly lambdaFunction: lambda.Function;
@@ -44,7 +43,7 @@ export function createKeyPolicyUpdaterCustomResource(
 
   const lambdaFunction = buildLambdaFunction(scope, {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_18_X,
       handler: 'index.handler',
       description: 'Custom resource function that updates a provided key policy to allow CloudFront access.',
       timeout: props.timeout,

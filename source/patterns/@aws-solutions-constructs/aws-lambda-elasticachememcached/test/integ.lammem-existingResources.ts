@@ -18,7 +18,6 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 // import * as ec2 from '@aws-cdk/aws-ec2';
 import { generateIntegStackName, getTestVpc, CreateTestCache, addCfnSuppressRules, buildSecurityGroup, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
-import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -30,7 +29,7 @@ const testVpc = getTestVpc(stack, false);
 const testSG = buildSecurityGroup(stack, 'test-sg', { vpc: testVpc }, [], []);
 
 const testFunction = new lambda.Function(stack, 'test-function', {
-  runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+  runtime: lambda.Runtime.NODEJS_16_X,
   handler: 'index.handler',
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   vpc: testVpc,

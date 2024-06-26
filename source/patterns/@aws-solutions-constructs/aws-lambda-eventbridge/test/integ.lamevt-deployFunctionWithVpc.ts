@@ -17,7 +17,6 @@ import { LambdaToEventbridge, LambdaToEventbridgeProps } from "../lib";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
-import * as defaults from "@aws-solutions-constructs/core";
 
 // Setup
 const app = new App();
@@ -27,7 +26,7 @@ stack.templateOptions.description = "Integration Test for aws-lambda-eventbridge
 // Definitions
 const props: LambdaToEventbridgeProps = {
   lambdaFunctionProps: {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   },

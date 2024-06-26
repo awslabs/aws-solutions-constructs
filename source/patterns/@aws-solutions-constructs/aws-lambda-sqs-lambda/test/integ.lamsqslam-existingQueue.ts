@@ -29,13 +29,13 @@ const buildQueueResponse = defaults.buildQueue(stack, 'existing-sqs-queue', {});
 
 const props: LambdaToSqsToLambdaProps = {
   producerLambdaFunctionProps: {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`)
   },
   existingQueueObj: buildQueueResponse.queue,
   consumerLambdaFunctionProps: {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`)
   }

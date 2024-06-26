@@ -19,7 +19,6 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
-import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -43,7 +42,7 @@ const lambdaRole = new iam.Role(stack, 'test-role', {
 });
 
 const lambdaFn = new lambda.Function(stack, 'test-fn', {
-  runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+  runtime: lambda.Runtime.NODEJS_16_X,
   handler: 'index.handler',
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   role: lambdaRole,

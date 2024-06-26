@@ -30,7 +30,7 @@ const testBucket = defaults.CreateScrapBucket(stack, "scrapBucket");
 new LambdaToKendra(stack, 'minimal-arguments', {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`lambda`),
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_18_X,
     handler: 'index.handler',
   },
   kendraDataSourcesProps: [{

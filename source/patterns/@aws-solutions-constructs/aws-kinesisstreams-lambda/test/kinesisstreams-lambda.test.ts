@@ -17,14 +17,13 @@ import { KinesisStreamsToLambda, KinesisStreamsToLambdaProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import { Template } from 'aws-cdk-lib/assertions';
-import * as defaults from '@aws-solutions-constructs/core';
 
 test('Test properties', () => {
   // Initial Setup
   const stack = new Stack();
   const props: KinesisStreamsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     }
@@ -43,7 +42,7 @@ test('Test existing resources', () => {
   const stack = new Stack();
 
   const fn = new lambda.Function(stack, 'test-fn', {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   });
@@ -70,7 +69,7 @@ test('Test existing resources', () => {
 
   template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
-    Runtime:  defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
+    Runtime: 'nodejs16.x',
   });
 });
 
@@ -78,7 +77,7 @@ test('test sqsDlqQueueProps override', () => {
   const stack = new Stack();
   const props: KinesisStreamsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -101,7 +100,7 @@ test('Test properties with no CW Alarms', () => {
   const stack = new Stack();
   const props: KinesisStreamsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -120,14 +119,14 @@ test('Confirm call to CheckLambdaProps', () => {
   // Initial Setup
   const stack = new Stack();
   const lambdaFunction = new lambda.Function(stack, 'a-function', {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
 
   const props: KinesisStreamsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -146,7 +145,7 @@ test('Confirm call to CheckKinesisStreamProps', () => {
 
   const props: KinesisStreamsToLambdaProps = {
     lambdaFunctionProps: {
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },

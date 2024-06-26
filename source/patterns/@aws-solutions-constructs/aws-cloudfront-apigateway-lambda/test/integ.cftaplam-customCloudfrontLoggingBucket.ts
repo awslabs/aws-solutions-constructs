@@ -19,7 +19,6 @@ import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings, CreateApiAuthorizer } from '@aws-solutions-constructs/core';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
-import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -35,7 +34,7 @@ new CloudFrontToApiGatewayToLambda(stack, 'cf-apigw-lambda', {
   },
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_16_X,
     handler: 'index.handler'
   },
   cloudFrontLoggingBucketProps: {

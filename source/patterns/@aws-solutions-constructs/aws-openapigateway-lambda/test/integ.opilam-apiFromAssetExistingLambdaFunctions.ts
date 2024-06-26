@@ -29,7 +29,7 @@ const apiDefinitionAsset = new Asset(stack, 'ApiDefinitionAsset', {
 
 const messagesLambda = defaults.buildLambdaFunction(stack, {
   lambdaFunctionProps: {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_18_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
   }
@@ -38,7 +38,7 @@ const messagesLambda = defaults.buildLambdaFunction(stack, {
 const photosLambda = defaults.buildLambdaFunction(stack, {
   lambdaFunctionProps: {
     functionName: 'PhotosLambdaTestFromAsset',
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    runtime: lambda.Runtime.NODEJS_18_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),
   }
