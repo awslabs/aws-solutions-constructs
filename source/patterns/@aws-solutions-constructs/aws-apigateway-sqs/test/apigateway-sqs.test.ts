@@ -69,7 +69,7 @@ test('Test properties', () => {
     deployDeadLetterQueue: true,
     maxReceiveCount: 3
   });
-    // Assertion 1
+  // Assertion 1
   expect(pattern.apiGateway).toBeDefined();
   // Assertion 2
   expect(pattern.sqsQueue).toBeDefined();
@@ -160,6 +160,45 @@ test('Test deployment for override ApiGateway deleteRequestTemplate', () => {
         "application/json": "Action=HelloWorld"
       }
     }
+  });
+});
+
+test('Test deployment for override ApiGateway createRequestPath', () => {
+  const stack = new Stack();
+
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    createRequestPath: "testPath",
+    allowCreateOperation: true
+  });
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Resource', {
+    PathPart: "testPath"
+  });
+});
+
+test('Test deployment for override ApiGateway getRequestPath', () => {
+  const stack = new Stack();
+
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    readRequestPath: "testPath",
+    allowReadOperation: true
+  });
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Resource', {
+    PathPart: "testPath"
+  });
+});
+
+test('Test deployment for for override ApiGateway deleteRequestTemplate', () => {
+  const stack = new Stack();
+
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    allowDeleteOperation: true,
+    deleteRequestPath: "testPath"
+  });
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Resource', {
+    PathPart: "testPath"
   });
 });
 
