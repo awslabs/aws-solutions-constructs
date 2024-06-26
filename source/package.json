@@ -1,6 +1,6 @@
 {
   "name": "aws-solutions-constructs",
-  "version": "0.0.0",
+  "version": "2.60.0",
   "description": "AWS Solutions Constructs Library",
   "repository": {
     "type": "git",
@@ -14,7 +14,7 @@
   },
   "private": true,
   "dependencies": {
-    "@aws-cdk/integ-tests-alpha": "0.0.0-alpha.0",
+    "@aws-cdk/integ-tests-alpha": "2.145.0-alpha.0",
     "@typescript-eslint/eslint-plugin": "^2.14.0",
     "@typescript-eslint/parser": "^2.14.0",
     "eslint": "^6.8.0",
@@ -34,7 +34,7 @@
   "devDependencies": {
     "lerna": "^3.22.1",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "0.0.0"
+    "aws-cdk-lib": "2.145.0"
   },
   "workspaces": {
     "packages": [
@@ -60,6 +60,6 @@
   },
   "peerDependencies": {
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "^0.0.0"
+    "aws-cdk-lib": "^2.145.0"
   }
 }

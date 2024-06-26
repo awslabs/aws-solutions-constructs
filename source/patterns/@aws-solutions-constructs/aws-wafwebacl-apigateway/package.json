@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-wafwebacl-apigateway",
-  "version": "0.0.0",
+  "version": "2.60.0",
   "description": "CDK constructs for defining an AWS web WAF connected to Amazon API Gateway REST API.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -53,15 +53,15 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/integ-tests-alpha": "0.0.0-alpha.0",
-    "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-cdk/integ-tests-alpha": "2.145.0-alpha.0",
+    "@aws-solutions-constructs/core": "2.60.0",
     "constructs": "^10.0.0"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
     "@types/node": "^10.3.0",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "0.0.0"
+    "aws-cdk-lib": "2.145.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -78,9 +78,9 @@
     ]
   },
   "peerDependencies": {
-    "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-solutions-constructs/core": "2.60.0",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "^0.0.0"
+    "aws-cdk-lib": "^2.145.0"
   },
   "keywords": [
     "aws",

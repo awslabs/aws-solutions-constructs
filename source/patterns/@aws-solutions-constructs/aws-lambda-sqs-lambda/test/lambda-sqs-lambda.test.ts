@@ -26,13 +26,13 @@ test('Test minimal deployment', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -121,7 +121,7 @@ test('Test deployment w/ existing producer function', () => {
   // Define existing resources
   const existingProducerFn = defaults.buildLambdaFunction(stack, {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'existing-producer-function'
@@ -131,7 +131,7 @@ test('Test deployment w/ existing producer function', () => {
   const props: LambdaToSqsToLambdaProps = {
     existingProducerLambdaObj: existingProducerFn,
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'deployed-consumer-function'
@@ -156,7 +156,7 @@ test('Test deployment w/ existing consumer function', () => {
   // Define existing resources
   const existingConsumerFn = defaults.buildLambdaFunction(stack, {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'existing-consumer-function'
@@ -165,7 +165,7 @@ test('Test deployment w/ existing consumer function', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'deployed-producer-function'
@@ -197,13 +197,13 @@ test('Test deployment w/ existing queue', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -225,12 +225,12 @@ test('Test deployment w/ DLQ explicitly disabled', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`)
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`)
     },
@@ -253,12 +253,12 @@ test('Test deployment w/ DLQ explicitly enabled and w/ MRC override', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`)
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`)
     },
@@ -288,13 +288,13 @@ test('Test overrides for producer and consumer functions', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -305,11 +305,11 @@ test('Test overrides for producer and consumer functions', () => {
   // Assertion 2: test for updated runtime on producer function
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::Lambda::Function', {
-    Runtime: "nodejs16.x"
+    Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING
   });
   // Assertion 3: test for updated runtime on consumer function
   template.hasResourceProperties('AWS::Lambda::Function', {
-    Runtime: "nodejs16.x"
+    Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING
   });
 });
 
@@ -319,13 +319,13 @@ test('Test the public pattern props', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -349,13 +349,13 @@ test('Test lambda function custom environment variable', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -383,13 +383,13 @@ test('Pattern deployment w/ batch size', () => {
   const stack = new Stack();
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -412,13 +412,13 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Helper declaration
   new LambdaToSqsToLambda(stack, "lambda-to-sqs-to-lambda-stack", {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -467,13 +467,13 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Helper declaration
   new LambdaToSqsToLambda(stack, "lambda-to-sqs-to-lambda-stack", {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -531,13 +531,13 @@ test("Test minimal deployment with an existing VPC", () => {
   // Helper declaration
   new LambdaToSqsToLambda(stack, "lambda-to-sqs-to-lambda-stack", {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
       functionName: 'producer-function'
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
       functionName: 'consumer-function'
@@ -582,13 +582,13 @@ test("Test bad call with existingVpc and deployVpc", () => {
     // Helper declaration
     new LambdaToSqsToLambda(stack, "lambda-to-sqs-to-lambda-stack", {
       producerLambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`),
         functionName: 'producer-function'
       },
       consumerLambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`),
         functionName: 'consumer-function'
@@ -608,12 +608,12 @@ test('Confirm CheckSqsProps is being called', () => {
   // Helper declaration
   const props: LambdaToSqsToLambdaProps = {
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`)
     },
@@ -630,7 +630,7 @@ test('Confirm CheckSqsProps is being called', () => {
 test('Confirm CheckLambdaProps is being called', () => {
   const stack = new Stack();
   const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -638,12 +638,12 @@ test('Confirm CheckLambdaProps is being called', () => {
   const props: LambdaToSqsToLambdaProps = {
     existingProducerLambdaObj: existingLambdaObj,
     producerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
     consumerLambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },

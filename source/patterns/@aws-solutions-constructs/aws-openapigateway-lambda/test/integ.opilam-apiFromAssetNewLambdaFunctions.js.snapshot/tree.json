@@ -17,7 +17,7 @@
                 "path": "opilam-apiFromAssetNewLambdaFunctions/ApiDefinitionAsset/Stage",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.138.0"
+                  "version": "2.145.0"
                 }
               },
               "AssetBucket": {
@@ -25,13 +25,13 @@
                 "path": "opilam-apiFromAssetNewLambdaFunctions/ApiDefinitionAsset/AssetBucket",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                  "version": "2.138.0"
+                  "version": "2.145.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-              "version": "2.138.0"
+              "version": "2.145.0"
             }
           },
           "OpenApiGatewayToLambda": {
@@ -47,7 +47,7 @@
                     "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/MessagesHandlerApiFunction0ServiceRole/ImportMessagesHandlerApiFunction0ServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "Resource": {
@@ -110,7 +110,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -146,19 +146,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.138.0"
+                          "version": "2.145.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.138.0"
+                  "version": "2.145.0"
                 }
               },
               "MessagesHandlerApiFunction0": {
@@ -174,7 +174,7 @@
                         "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/MessagesHandlerApiFunction0/Code/Stage",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.AssetStaging",
-                          "version": "2.138.0"
+                          "version": "2.145.0"
                         }
                       },
                       "AssetBucket": {
@@ -182,13 +182,13 @@
                         "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/MessagesHandlerApiFunction0/Code/AssetBucket",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                          "version": "2.138.0"
+                          "version": "2.145.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "Resource": {
@@ -203,6 +203,11 @@
                           },
                           "s3Key": "8ce85d10dcd7b8e6d43ffd909827afc76802ad40fcd7908886ff825cbe8e15df.zip"
                         },
+                        "environment": {
+                          "variables": {
+                            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+                          }
+                        },
                         "handler": "index.handler",
                         "role": {
                           "Fn::GetAtt": [
@@ -210,7 +215,7 @@
                             "Arn"
                           ]
                         },
-                        "runtime": "nodejs18.x",
+                        "runtime": "nodejs20.x",
                         "tracingConfig": {
                           "mode": "Active"
                         }
@@ -218,7 +223,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "PermitAPIGInvocation": {
@@ -263,13 +268,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.Function",
-                  "version": "2.138.0"
+                  "version": "2.145.0"
                 }
               },
               "PhotosHandlerApiFunction1ServiceRole": {
@@ -281,7 +286,7 @@
                     "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/PhotosHandlerApiFunction1ServiceRole/ImportPhotosHandlerApiFunction1ServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "Resource": {
@@ -344,7 +349,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -380,19 +385,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.138.0"
+                          "version": "2.145.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.138.0"
+                  "version": "2.145.0"
                 }
               },
               "PhotosHandlerApiFunction1": {
@@ -408,7 +413,7 @@
                         "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/PhotosHandlerApiFunction1/Code/Stage",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.AssetStaging",
-                          "version": "2.138.0"
+                          "version": "2.145.0"
                         }
                       },
                       "AssetBucket": {
@@ -416,13 +421,13 @@
                         "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/PhotosHandlerApiFunction1/Code/AssetBucket",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                          "version": "2.138.0"
+                          "version": "2.145.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "Resource": {
@@ -437,6 +442,11 @@
                           },
                           "s3Key": "654d49d4ea47a6be417d57b94dc0310933d0e971a3e48a3080c3e48487af3e50.zip"
                         },
+                        "environment": {
+                          "variables": {
+                            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+                          }
+                        },
                         "handler": "index.handler",
                         "role": {
                           "Fn::GetAtt": [
@@ -444,7 +454,7 @@
                             "Arn"
                           ]
                         },
-                        "runtime": "nodejs18.x",
+                        "runtime": "nodejs20.x",
                         "tracingConfig": {
                           "mode": "Active"
                         }
@@ -452,7 +462,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "PermitAPIGInvocation": {
@@ -497,13 +507,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.Function",
-                  "version": "2.138.0"
+                  "version": "2.145.0"
                 }
               },
               "ApiOutputAsset": {
@@ -515,7 +525,7 @@
                     "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/ApiOutputAsset/Stage",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.AssetStaging",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "AssetBucket": {
@@ -523,13 +533,13 @@
                     "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/ApiOutputAsset/AssetBucket",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                  "version": "2.138.0"
+                  "version": "2.145.0"
                 }
               },
               "LambdaFunctionServiceRole": {
@@ -541,7 +551,7 @@
                     "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "Resource": {
@@ -604,7 +614,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -640,19 +650,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.138.0"
+                          "version": "2.145.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.138.0"
+                  "version": "2.145.0"
                 }
               },
               "LambdaFunction": {
@@ -668,7 +678,7 @@
                         "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/LambdaFunction/Code/Stage",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.AssetStaging",
-                          "version": "2.138.0"
+                          "version": "2.145.0"
                         }
                       },
                       "AssetBucket": {
@@ -676,13 +686,13 @@
                         "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/LambdaFunction/Code/AssetBucket",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                          "version": "2.138.0"
+                          "version": "2.145.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "Resource": {
@@ -697,6 +707,11 @@
                           },
                           "s3Key": "b1223f33e5124fdec3dc7988012c02ed49e285da9c1b8bcd2ce2d2c7c5d09ee7.zip"
                         },
+                        "environment": {
+                          "variables": {
+                            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+                          }
+                        },
                         "handler": "index.handler",
                         "memorySize": 1024,
                         "role": {
@@ -705,7 +720,7 @@
                             "Arn"
                           ]
                         },
-                        "runtime": "nodejs18.x",
+                        "runtime": "nodejs20.x",
                         "timeout": 60,
                         "tracingConfig": {
                           "mode": "Active"
@@ -714,13 +729,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.Function",
-                  "version": "2.138.0"
+                  "version": "2.145.0"
                 }
               },
               "ApiTemplateWriterPolicy": {
@@ -788,13 +803,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Policy",
-                  "version": "2.138.0"
+                  "version": "2.145.0"
                 }
               },
               "ApiTemplateWriterProvider": {
@@ -814,7 +829,7 @@
                             "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/ServiceRole/ImportServiceRole",
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.Resource",
-                              "version": "2.138.0"
+                              "version": "2.145.0"
                             }
                           },
                           "Resource": {
@@ -853,7 +868,7 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                              "version": "2.138.0"
+                              "version": "2.145.0"
                             }
                           },
                           "DefaultPolicy": {
@@ -907,19 +922,19 @@
                                 },
                                 "constructInfo": {
                                   "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                                  "version": "2.138.0"
+                                  "version": "2.145.0"
                                 }
                               }
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.Policy",
-                              "version": "2.138.0"
+                              "version": "2.145.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Role",
-                          "version": "2.138.0"
+                          "version": "2.145.0"
                         }
                       },
                       "Code": {
@@ -931,7 +946,7 @@
                             "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/Code/Stage",
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.AssetStaging",
-                              "version": "2.138.0"
+                              "version": "2.145.0"
                             }
                           },
                           "AssetBucket": {
@@ -939,13 +954,13 @@
                             "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/Code/AssetBucket",
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                              "version": "2.138.0"
+                              "version": "2.145.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                          "version": "2.138.0"
+                          "version": "2.145.0"
                         }
                       },
                       "Resource": {
@@ -984,19 +999,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                          "version": "2.138.0"
+                          "version": "2.145.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.Function",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.custom_resources.Provider",
-                  "version": "2.138.0"
+                  "version": "2.145.0"
                 }
               },
               "ApiTemplateWriterCustomResource": {
@@ -1008,13 +1023,13 @@
                     "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/ApiTemplateWriterCustomResource/Default",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnResource",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CustomResource",
-                  "version": "2.138.0"
+                  "version": "2.145.0"
                 }
               },
               "ApiAccessLogGroup": {
@@ -1030,13 +1045,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                  "version": "2.138.0"
+                  "version": "2.145.0"
                 }
               },
               "SpecRestApi": {
@@ -1085,7 +1100,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.CfnRestApi",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "Default": {
@@ -1093,7 +1108,7 @@
                     "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/SpecRestApi/Default",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.ResourceBase",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "Deployment": {
@@ -1114,13 +1129,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_apigateway.CfnDeployment",
-                          "version": "2.138.0"
+                          "version": "2.145.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.Deployment",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "DeploymentStage.prod": {
@@ -1162,13 +1177,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_apigateway.CfnStage",
-                          "version": "2.138.0"
+                          "version": "2.145.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.Stage",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "Endpoint": {
@@ -1176,7 +1191,7 @@
                     "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/SpecRestApi/Endpoint",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnOutput",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "UsagePlan": {
@@ -1204,19 +1219,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_apigateway.CfnUsagePlan",
-                          "version": "2.138.0"
+                          "version": "2.145.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.UsagePlan",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigateway.SpecRestApi",
-                  "version": "2.138.0"
+                  "version": "2.145.0"
                 }
               },
               "LambdaRestApiCloudWatchRole": {
@@ -1228,7 +1243,7 @@
                     "path": "opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   },
                   "Resource": {
@@ -1295,13 +1310,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.138.0"
+                  "version": "2.145.0"
                 }
               },
               "LambdaRestApiAccount": {
@@ -1320,13 +1335,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigateway.CfnAccount",
-                  "version": "2.138.0"
+                  "version": "2.145.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-openapigateway-lambda.OpenApiGatewayToLambda",
-              "version": "2.56.0"
+              "version": "2.60.0"
             }
           },
           "Integ": {
@@ -1354,7 +1369,7 @@
                         "path": "opilam-apiFromAssetNewLambdaFunctions/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.138.0"
+                          "version": "2.145.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -1362,25 +1377,25 @@
                         "path": "opilam-apiFromAssetNewLambdaFunctions/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.138.0"
+                          "version": "2.145.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.138.0"
+                      "version": "2.145.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.138.0-alpha.0"
+                  "version": "2.145.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.138.0-alpha.0"
+              "version": "2.145.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -1388,7 +1403,7 @@
             "path": "opilam-apiFromAssetNewLambdaFunctions/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.138.0"
+              "version": "2.145.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -1396,13 +1411,13 @@
             "path": "opilam-apiFromAssetNewLambdaFunctions/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.138.0"
+              "version": "2.145.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.138.0"
+          "version": "2.145.0"
         }
       },
       "Tree": {
@@ -1416,7 +1431,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.138.0"
+      "version": "2.145.0"
     }
   }
 }

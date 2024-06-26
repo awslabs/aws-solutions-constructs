@@ -86,7 +86,7 @@ export interface OpenApiGatewayToLambdaProps {
    *   {
    *     id: 'MessagesHandler',
    *     lambdaFunctionProps: {
-   *       runtime: lambda.Runtime.NODEJS_16_X,
+   *       runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
    *       handler: 'index.handler',
    *       code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
    *     }
@@ -94,7 +94,7 @@ export interface OpenApiGatewayToLambdaProps {
    *   {
    *     id: 'PhotosHandler',
    *     existingLambdaObj: new lambda.Function(this, 'PhotosLambda', {
-   *       runtime: lambda.Runtime.NODEJS_16_X,
+   *       runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
    *       handler: 'index.handler',
    *       code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),
    *     })

@@ -27,7 +27,7 @@ test('Default construct has all expected properties', () => {
   const construct = new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     }
   });
@@ -46,7 +46,7 @@ test('New VPC is created when deployVpc flag is true', () => {
   new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     deployVpc: true
@@ -70,7 +70,7 @@ test('Existing VPC is used when specified', () => {
   new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     existingVpc
@@ -92,7 +92,7 @@ test('New VPC is created from user-provided vpcProps', () => {
   new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     vpcProps: {
@@ -117,7 +117,7 @@ test('Lambda Function has default stream environment variable', () => {
   new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     }
   });
@@ -145,7 +145,7 @@ test('Lambda Function stream name environment variable can be overridden', () =>
   new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     streamEnvironmentVariableName: 'CUSTOM_ENV_VAR_NAME'
@@ -174,7 +174,7 @@ test('Kinesis Stream is encrypted with AWS-managed CMK by default', () => {
   new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     }
   });
@@ -194,7 +194,7 @@ test('CloudWatch Alarms are created for Kinesis Stream by default', () => {
   new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     }
   });
@@ -217,7 +217,7 @@ test('CloudWatch Alarms are not created when createCloudWatchAlarms property is 
   new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     createCloudWatchAlarms: false
@@ -232,7 +232,7 @@ test('Error is thrown when vpc is specified and existing lambda function is not 
 
   const existingLambdaObj = new lambda.Function(stack, 'test-lamba', {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   });
 
@@ -253,7 +253,7 @@ test('Construct uses existing Lambda Function', () => {
 
   const existingLambdaObj = new lambda.Function(stack, 'test-lamba', {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     functionName: 'my-lambda-function'
   });
@@ -278,7 +278,7 @@ test('Construct uses existing Kinesis Stream', () => {
   new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     existingStreamObj
@@ -303,7 +303,7 @@ test('Construct uses unencrypted existing stream', () => {
   new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     existingStreamObj
@@ -326,7 +326,7 @@ test('Construct uses unencrypted streams from stream props', () => {
   new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     kinesisStreamProps: {
@@ -352,7 +352,7 @@ test('Construct grants PutRecord permission for the Lambda Function to write to 
   new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     }
   });
@@ -408,7 +408,7 @@ test('When a Customer-manged CMK is used on an existing stream, construct grants
   new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     existingStreamObj
@@ -567,7 +567,7 @@ test('Confirm CheckVpcProps() is being called', () => {
     new LambdaToKinesisStreams(stack, 'test-lambda-kinesisstreams', {
       lambdaFunctionProps: {
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_18_X,
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: 'index.handler'
       },
       deployVpc: true,
@@ -582,14 +582,14 @@ test('Confirm call to CheckLambdaProps', () => {
   // Initial Setup
   const stack = new cdk.Stack();
   const lambdaFunction = new lambda.Function(stack, 'a-function', {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
 
   const props: LambdaToKinesisStreamsProps = {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -608,7 +608,7 @@ test('Confirm call to CheckKinesisStreamProps', () => {
 
   const props: LambdaToKinesisStreamsProps = {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },

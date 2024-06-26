@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-kinesisstreams-kinesisfirehose-s3",
-  "version": "0.0.0",
+  "version": "2.60.0",
   "description": "CDK constructs for defining an interaction between an Amazon Kinesis Data Stream (KDS), Amazon Kinesis Data Firehose (KDF) delivery stream and an Amazon S3 bucket.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -22,12 +22,12 @@
     "test": "jest --coverage",
     "clean": "tsc -b --clean",
     "watch": "tsc -b -w",
-    "integ": "cdk-integ",
+    "integ": "integ-runner --update-on-failed",
     "integ-assert": "integ-runner",
     "jsii": "jsii",
     "jsii-pacmak": "jsii-pacmak",
     "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
-    "integ-no-clean": "cdk-integ --no-clean",
+    "integ-no-clean": "integ-runner --update-on-failed --no-clean",
     "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
   },
   "jsii": {
@@ -53,17 +53,17 @@
     }
   },
   "dependencies": {
-    "@aws-cdk/integ-tests-alpha": "0.0.0-alpha.0",
-    "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "0.0.0",
-    "@aws-solutions-constructs/aws-kinesisstreams-lambda": "0.0.0",
+    "@aws-cdk/integ-tests-alpha": "2.145.0-alpha.0",
+    "@aws-solutions-constructs/core": "2.60.0",
+    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "2.60.0",
+    "@aws-solutions-constructs/aws-kinesisstreams-lambda": "2.60.0",
     "constructs": "^10.0.0"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
     "@types/node": "^10.3.0",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "0.0.0"
+    "aws-cdk-lib": "2.145.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -80,11 +80,11 @@
     ]
   },
   "peerDependencies": {
-    "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-solutions-constructs/core": "2.60.0",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "^0.0.0",
-    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "0.0.0",
-    "@aws-solutions-constructs/aws-kinesisstreams-lambda": "0.0.0"
+    "aws-cdk-lib": "^2.145.0",
+    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "2.60.0",
+    "@aws-solutions-constructs/aws-kinesisstreams-lambda": "2.60.0"
   },
   "keywords": [
     "aws",

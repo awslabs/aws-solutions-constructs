@@ -17,11 +17,12 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as api from 'aws-cdk-lib/aws-apigateway';
 import * as s3 from "aws-cdk-lib/aws-s3";
 import { Template } from 'aws-cdk-lib/assertions';
+import * as defaults from '@aws-solutions-constructs/core';
 
 function deployNewFunc(stack: cdk.Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -33,7 +34,7 @@ function deployNewFunc(stack: cdk.Stack) {
 
 function useExistingFunc(stack: cdk.Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   };
@@ -72,7 +73,7 @@ test('check lambda function properties for deploy: true', () => {
         "Arn"
       ]
     },
-    Runtime: "nodejs16.x",
+    Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
@@ -150,7 +151,7 @@ test('override api gateway properties with existingLambdaObj', () => {
 
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -183,7 +184,7 @@ test('override api gateway properties without existingLambdaObj', () => {
   new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     apiGatewayProps: {
@@ -214,7 +215,7 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
   new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     apiGatewayProps: {
@@ -254,7 +255,7 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
   const app = () => { new CloudFrontToApiGatewayToLambda(stack, 'cloudfront-s3', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     apiGatewayProps: {
@@ -278,7 +279,7 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
 test('Confirm CheckLambdaProps is being called', () => {
   const stack = new cdk.Stack();
   const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -287,7 +288,7 @@ test('Confirm CheckLambdaProps is being called', () => {
     apiGatewayProps: { defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE }},
     existingLambdaObj,
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     }
@@ -306,7 +307,7 @@ test("Confirm CheckCloudFrontProps is being called", () => {
     new CloudFrontToApiGatewayToLambda(stack, "test-cloudfront-apigateway-lambda", {
       apiGatewayProps: { defaultMethodOptions: { authorizationType: api.AuthorizationType.NONE }},
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_18_X,
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
@@ -329,7 +330,7 @@ test('confirm error thrown for AWS_IAM authorization', () => {
   const stack = new cdk.Stack();
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -348,7 +349,7 @@ test('confirm error thrown for unspecified authorization', () => {
   const stack = new cdk.Stack();
   const lambdaFunctionProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
