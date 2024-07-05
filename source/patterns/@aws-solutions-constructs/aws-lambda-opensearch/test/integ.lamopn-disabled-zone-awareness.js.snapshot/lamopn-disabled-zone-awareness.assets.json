@@ -27,7 +27,7 @@
         }
       }
     },
-    "7197d03c3d1f57a764475254345b164a6360d6d9d0f519ee2f5f481e52eaf46a": {
+    "12b2c777fcbca6e98014ab2c23c088db65ec69162032901dddf421849421520b": {
       "source": {
         "path": "lamopn-disabled-zone-awareness.template.json",
         "packaging": "file"
@@ -35,7 +35,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "7197d03c3d1f57a764475254345b164a6360d6d9d0f519ee2f5f481e52eaf46a.json",
+          "objectKey": "12b2c777fcbca6e98014ab2c23c088db65ec69162032901dddf421849421520b.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
