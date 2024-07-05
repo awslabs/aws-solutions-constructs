@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.61.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.60.0...v2.61.0) (2024-07-05)
 
+Built on CDK v2.147.3
+
+### Maintenance
+
+* Updated all javascript to Node.js 20
+
 ## [2.60.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.59.0...v2.60.0) (2024-06-11)
 
 Built on CDK v2.145.0
