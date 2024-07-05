@@ -79,7 +79,7 @@
         }
       }
     },
-    "5f1e2b55fe3b645f68f58a07c7a39cabcaa22d63d77aca32c28f9ea241929f88": {
+    "853470d1f0bc850f4dc49b30dde72ad23ca69dfaf079be46d6cf4c36d29094f1": {
       "source": {
         "path": "opilam-apiFromAssetWithCognitoAuth.template.json",
         "packaging": "file"
@@ -87,7 +87,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "5f1e2b55fe3b645f68f58a07c7a39cabcaa22d63d77aca32c28f9ea241929f88.json",
+          "objectKey": "853470d1f0bc850f4dc49b30dde72ad23ca69dfaf079be46d6cf4c36d29094f1.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

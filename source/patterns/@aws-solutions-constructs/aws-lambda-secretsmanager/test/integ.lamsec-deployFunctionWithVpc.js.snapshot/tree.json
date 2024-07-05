@@ -21,7 +21,7 @@
                     "path": "lamsec-deployFunctionWithVpc/test-lambda-secretsmanager/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   },
                   "Resource": {
@@ -84,7 +84,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   },
                   "DefaultPolicy": {
@@ -135,19 +135,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.145.0"
+                          "version": "2.147.3"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.145.0"
+                  "version": "2.147.3"
                 }
               },
               "ReplaceDefaultSecurityGroup-security-group": {
@@ -175,13 +175,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
-                  "version": "2.145.0"
+                  "version": "2.147.3"
                 }
               },
               "LambdaFunction": {
@@ -197,7 +197,7 @@
                         "path": "lamsec-deployFunctionWithVpc/test-lambda-secretsmanager/LambdaFunction/Code/Stage",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.AssetStaging",
-                          "version": "2.145.0"
+                          "version": "2.147.3"
                         }
                       },
                       "AssetBucket": {
@@ -205,13 +205,13 @@
                         "path": "lamsec-deployFunctionWithVpc/test-lambda-secretsmanager/LambdaFunction/Code/AssetBucket",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                          "version": "2.145.0"
+                          "version": "2.147.3"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   },
                   "Resource": {
@@ -267,13 +267,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.Function",
-                  "version": "2.145.0"
+                  "version": "2.147.3"
                 }
               },
               "secret": {
@@ -291,13 +291,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_secretsmanager.CfnSecret",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_secretsmanager.Secret",
-                  "version": "2.145.0"
+                  "version": "2.147.3"
                 }
               }
             },
@@ -330,7 +330,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.CfnVPC",
-                  "version": "2.145.0"
+                  "version": "2.147.3"
                 }
               },
               "isolatedSubnet1": {
@@ -374,7 +374,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   },
                   "Acl": {
@@ -382,7 +382,7 @@
                     "path": "lamsec-deployFunctionWithVpc/Vpc/isolatedSubnet1/Acl",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   },
                   "RouteTable": {
@@ -404,7 +404,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   },
                   "RouteTableAssociation": {
@@ -423,13 +423,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
-                  "version": "2.145.0"
+                  "version": "2.147.3"
                 }
               },
               "isolatedSubnet2": {
@@ -473,7 +473,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   },
                   "Acl": {
@@ -481,7 +481,7 @@
                     "path": "lamsec-deployFunctionWithVpc/Vpc/isolatedSubnet2/Acl",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   },
                   "RouteTable": {
@@ -503,7 +503,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   },
                   "RouteTableAssociation": {
@@ -522,13 +522,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
-                  "version": "2.145.0"
+                  "version": "2.147.3"
                 }
               },
               "RestrictDefaultSecurityGroupCustomResource": {
@@ -540,13 +540,13 @@
                     "path": "lamsec-deployFunctionWithVpc/Vpc/RestrictDefaultSecurityGroupCustomResource/Default",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnResource",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CustomResource",
-                  "version": "2.145.0"
+                  "version": "2.147.3"
                 }
               },
               "FlowLog": {
@@ -562,7 +562,7 @@
                         "path": "lamsec-deployFunctionWithVpc/Vpc/FlowLog/IAMRole/ImportIAMRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.145.0"
+                          "version": "2.147.3"
                         }
                       },
                       "Resource": {
@@ -593,7 +593,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                          "version": "2.145.0"
+                          "version": "2.147.3"
                         }
                       },
                       "DefaultPolicy": {
@@ -645,19 +645,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                              "version": "2.145.0"
+                              "version": "2.147.3"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Policy",
-                          "version": "2.145.0"
+                          "version": "2.147.3"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Role",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   },
                   "LogGroup": {
@@ -681,13 +681,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                          "version": "2.145.0"
+                          "version": "2.147.3"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   },
                   "FlowLog": {
@@ -721,13 +721,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnFlowLog",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.FlowLog",
-                  "version": "2.145.0"
+                  "version": "2.147.3"
                 }
               },
               "SECRETS_MANAGER": {
@@ -777,19 +777,27 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnVPCEndpoint",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.InterfaceVpcEndpoint",
-                  "version": "2.145.0"
+                  "version": "2.147.3"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_ec2.Vpc",
-              "version": "2.145.0"
+              "version": "2.147.3"
+            }
+          },
+          "LatestNodeRuntimeMap": {
+            "id": "LatestNodeRuntimeMap",
+            "path": "lamsec-deployFunctionWithVpc/LatestNodeRuntimeMap",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnMapping",
+              "version": "2.147.3"
             }
           },
           "Custom::VpcRestrictDefaultSGCustomResourceProvider": {
@@ -801,7 +809,7 @@
                 "path": "lamsec-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Staging",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.145.0"
+                  "version": "2.147.3"
                 }
               },
               "Role": {
@@ -809,7 +817,7 @@
                 "path": "lamsec-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.145.0"
+                  "version": "2.147.3"
                 }
               },
               "Handler": {
@@ -817,13 +825,13 @@
                 "path": "lamsec-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.145.0"
+                  "version": "2.147.3"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResourceProviderBase",
-              "version": "2.145.0"
+              "version": "2.147.3"
             }
           },
           "lamsec-deployFunctionWithVpc-SECRETS_MANAGER-security-group": {
@@ -879,13 +887,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
-                  "version": "2.145.0"
+                  "version": "2.147.3"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
-              "version": "2.145.0"
+              "version": "2.147.3"
             }
           },
           "Integ": {
@@ -913,7 +921,7 @@
                         "path": "lamsec-deployFunctionWithVpc/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.145.0"
+                          "version": "2.147.3"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -921,25 +929,25 @@
                         "path": "lamsec-deployFunctionWithVpc/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.145.0"
+                          "version": "2.147.3"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.145.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.145.0-alpha.0"
+                  "version": "2.147.3-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.145.0-alpha.0"
+              "version": "2.147.3-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -947,7 +955,7 @@
             "path": "lamsec-deployFunctionWithVpc/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.145.0"
+              "version": "2.147.3"
             }
           },
           "CheckBootstrapVersion": {
@@ -955,13 +963,13 @@
             "path": "lamsec-deployFunctionWithVpc/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.145.0"
+              "version": "2.147.3"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.145.0"
+          "version": "2.147.3"
         }
       },
       "Tree": {
@@ -975,7 +983,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.145.0"
+      "version": "2.147.3"
     }
   }
 }

@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5f1e2b55fe3b645f68f58a07c7a39cabcaa22d63d77aca32c28f9ea241929f88.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/853470d1f0bc850f4dc49b30dde72ad23ca69dfaf079be46d6cf4c36d29094f1.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -224,6 +224,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "OpenApiGatewayToLambdaLambdaRestApiAccount71EC7DA6"
+          }
+        ],
+        "/opilam-apiFromAssetWithCognitoAuth/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/opilam-apiFromAssetWithCognitoAuth/BootstrapVersion": [
