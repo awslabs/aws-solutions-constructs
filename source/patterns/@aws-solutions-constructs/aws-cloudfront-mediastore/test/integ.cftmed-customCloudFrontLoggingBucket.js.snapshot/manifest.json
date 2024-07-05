@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/361a96ca72e5587bf2d587f50d609acfdfa36eab0f2324527762f85382ab5486.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e57b25dd1513e3375a9f73cb233102cfc7801ac26410ac410c1c19561b9d0720.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -142,6 +142,12 @@
             "data": "cloudfrontmediastoreCloudFrontDistribution639346BB"
           }
         ],
+        "/cftmed-customCloudFrontLoggingBucket/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
+          }
+        ],
         "/cftmed-customCloudFrontLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
           {
             "type": "aws:cdk:logicalId",
@@ -164,15 +170,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "cloudfrontmediastoreCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResource5D7907AB": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "cloudfrontmediastoreCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResource5D7907AB",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },

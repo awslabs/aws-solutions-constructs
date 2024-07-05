@@ -19,6 +19,7 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import { CreateScrapBucket, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
+import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -33,7 +34,7 @@ const mybucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'mybucket', existin
 const props: LambdaToS3Props = {
   existingBucketObj: mybucket,
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   }

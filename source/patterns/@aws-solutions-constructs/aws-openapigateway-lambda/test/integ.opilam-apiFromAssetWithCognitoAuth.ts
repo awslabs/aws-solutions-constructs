@@ -33,7 +33,7 @@ new OpenApiGatewayToLambda(stack, 'OpenApiGatewayToLambda', {
     {
       id: 'MessagesHandler',
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_18_X,
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
       }
@@ -41,7 +41,7 @@ new OpenApiGatewayToLambda(stack, 'OpenApiGatewayToLambda', {
     {
       id: 'PhotosHandler',
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_18_X,
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),
       }

@@ -50,7 +50,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                      "version": "2.118.0"
+                      "version": "2.147.3"
                     }
                   },
                   "Policy": {
@@ -184,13 +184,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                          "version": "2.118.0"
+                          "version": "2.147.3"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                      "version": "2.118.0"
+                      "version": "2.147.3"
                     }
                   },
                   "AutoDeleteObjectsCustomResource": {
@@ -202,19 +202,19 @@
                         "path": "lamfhs-no-arguments/destination-firehose/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
-                          "version": "2.118.0"
+                          "version": "2.147.3"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CustomResource",
-                      "version": "2.118.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.Bucket",
-                  "version": "2.118.0"
+                  "version": "2.147.3"
                 }
               },
               "S3Bucket": {
@@ -273,7 +273,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                      "version": "2.118.0"
+                      "version": "2.147.3"
                     }
                   },
                   "Policy": {
@@ -371,13 +371,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                          "version": "2.118.0"
+                          "version": "2.147.3"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                      "version": "2.118.0"
+                      "version": "2.147.3"
                     }
                   },
                   "AutoDeleteObjectsCustomResource": {
@@ -389,19 +389,19 @@
                         "path": "lamfhs-no-arguments/destination-firehose/S3Bucket/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
-                          "version": "2.118.0"
+                          "version": "2.147.3"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CustomResource",
-                      "version": "2.118.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.Bucket",
-                  "version": "2.118.0"
+                  "version": "2.147.3"
                 }
               },
               "firehose-log-group": {
@@ -417,7 +417,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                      "version": "2.118.0"
+                      "version": "2.147.3"
                     }
                   },
                   "firehose-log-stream": {
@@ -437,19 +437,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_logs.CfnLogStream",
-                          "version": "2.118.0"
+                          "version": "2.147.3"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.LogStream",
-                      "version": "2.118.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                  "version": "2.118.0"
+                  "version": "2.147.3"
                 }
               },
               "KinesisFirehoseRole": {
@@ -461,7 +461,7 @@
                     "path": "lamfhs-no-arguments/destination-firehose/KinesisFirehoseRole/ImportKinesisFirehoseRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.118.0"
+                      "version": "2.147.3"
                     }
                   },
                   "Resource": {
@@ -486,13 +486,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.118.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.118.0"
+                  "version": "2.147.3"
                 }
               },
               "KinesisFirehosePolicy": {
@@ -584,13 +584,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                      "version": "2.118.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Policy",
-                  "version": "2.118.0"
+                  "version": "2.147.3"
                 }
               },
               "KinesisFirehose": {
@@ -659,13 +659,21 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_kinesisfirehose.CfnDeliveryStream",
-                  "version": "2.118.0"
+                  "version": "2.147.3"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-kinesisfirehose-s3.KinesisFirehoseToS3",
-              "version": "2.50.0"
+              "version": "2.60.0"
+            }
+          },
+          "LatestNodeRuntimeMap": {
+            "id": "LatestNodeRuntimeMap",
+            "path": "lamfhs-no-arguments/LatestNodeRuntimeMap",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnMapping",
+              "version": "2.147.3"
             }
           },
           "Custom::S3AutoDeleteObjectsCustomResourceProvider": {
@@ -677,7 +685,7 @@
                 "path": "lamfhs-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Staging",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.118.0"
+                  "version": "2.147.3"
                 }
               },
               "Role": {
@@ -685,7 +693,7 @@
                 "path": "lamfhs-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.118.0"
+                  "version": "2.147.3"
                 }
               },
               "Handler": {
@@ -693,13 +701,13 @@
                 "path": "lamfhs-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.118.0"
+                  "version": "2.147.3"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResourceProviderBase",
-              "version": "2.118.0"
+              "version": "2.147.3"
             }
           },
           "destination-firehoseaws-managed-key": {
@@ -707,7 +715,7 @@
             "path": "lamfhs-no-arguments/destination-firehoseaws-managed-key",
             "constructInfo": {
               "fqn": "aws-cdk-lib.Resource",
-              "version": "2.118.0"
+              "version": "2.147.3"
             }
           },
           "test-construct": {
@@ -723,7 +731,7 @@
                     "path": "lamfhs-no-arguments/test-construct/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.118.0"
+                      "version": "2.147.3"
                     }
                   },
                   "Resource": {
@@ -786,7 +794,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.118.0"
+                      "version": "2.147.3"
                     }
                   },
                   "DefaultPolicy": {
@@ -837,19 +845,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.118.0"
+                          "version": "2.147.3"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.118.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.118.0"
+                  "version": "2.147.3"
                 }
               },
               "LambdaFunction": {
@@ -865,7 +873,7 @@
                         "path": "lamfhs-no-arguments/test-construct/LambdaFunction/Code/Stage",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.AssetStaging",
-                          "version": "2.118.0"
+                          "version": "2.147.3"
                         }
                       },
                       "AssetBucket": {
@@ -873,13 +881,13 @@
                         "path": "lamfhs-no-arguments/test-construct/LambdaFunction/Code/AssetBucket",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                          "version": "2.118.0"
+                          "version": "2.147.3"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                      "version": "2.118.0"
+                      "version": "2.147.3"
                     }
                   },
                   "Resource": {
@@ -896,6 +904,7 @@
                         },
                         "environment": {
                           "variables": {
+                            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
                             "FIREHOSE_DELIVERYSTREAM_NAME": "KinesisFirehoselamfhsnoargumentsdestinationfirehoseC6583242"
                           }
                         },
@@ -906,7 +915,7 @@
                             "Arn"
                           ]
                         },
-                        "runtime": "nodejs18.x",
+                        "runtime": "nodejs20.x",
                         "tracingConfig": {
                           "mode": "Active"
                         }
@@ -914,19 +923,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                      "version": "2.118.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.Function",
-                  "version": "2.118.0"
+                  "version": "2.147.3"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-lambda-kinesisfirehose.LambdaToKinesisFirehose",
-              "version": "2.50.0"
+              "version": "2.60.0"
             }
           },
           "Integ": {
@@ -942,7 +951,7 @@
                     "path": "lamfhs-no-arguments/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
-                      "version": "10.0.0"
+                      "version": "10.3.0"
                     }
                   },
                   "DeployAssert": {
@@ -954,7 +963,7 @@
                         "path": "lamfhs-no-arguments/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.118.0"
+                          "version": "2.147.3"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -962,25 +971,25 @@
                         "path": "lamfhs-no-arguments/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.118.0"
+                          "version": "2.147.3"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.118.0"
+                      "version": "2.147.3"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.118.0-alpha.0"
+                  "version": "2.147.3-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.118.0-alpha.0"
+              "version": "2.147.3-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -988,7 +997,7 @@
             "path": "lamfhs-no-arguments/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.118.0"
+              "version": "2.147.3"
             }
           },
           "CheckBootstrapVersion": {
@@ -996,13 +1005,13 @@
             "path": "lamfhs-no-arguments/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.118.0"
+              "version": "2.147.3"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.118.0"
+          "version": "2.147.3"
         }
       },
       "Tree": {
@@ -1010,13 +1019,13 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.0.0"
+          "version": "10.3.0"
         }
       }
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.118.0"
+      "version": "2.147.3"
     }
   }
 }

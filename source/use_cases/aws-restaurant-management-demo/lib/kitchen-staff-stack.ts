@@ -17,6 +17,8 @@ import { Construct } from 'constructs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as ddb from 'aws-cdk-lib/aws-dynamodb';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import * as cfg from './config';
+
 import {
   CognitoToApiGatewayToLambda
 } from '@aws-solutions-constructs/aws-cognito-apigateway-lambda';
@@ -40,7 +42,7 @@ export class KitchenStaffStack extends Stack {
     // Create a Lambda function that lists all open orders in the database
     const getOpenOrders = new LambdaToDynamoDB(this, 'get-open-orders', {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: cfg.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/kitchen-staff/get-open-orders`),
         handler: 'index.handler',
         timeout: Duration.seconds(15)
@@ -51,7 +53,7 @@ export class KitchenStaffStack extends Stack {
     // Create a Lambda function that marks an order as completed in the database
     const completeOrder = new LambdaToDynamoDB(this, 'complete-order', {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: cfg.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/kitchen-staff/complete-order`),
         handler: 'index.handler',
         timeout: Duration.seconds(15)
