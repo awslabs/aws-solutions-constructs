@@ -259,6 +259,7 @@ export class ApiGatewayToIot extends Construct {
     const resourceMethodOptions = {
       requestParameters: methodReqParams,
       methodResponses: methodResp,
+      requestValidator: this.requestValidator,
     };
 
     const resourceMethodParams: defaults.AddProxyMethodToApiResourceInputParams = {
@@ -268,7 +269,6 @@ export class ApiGatewayToIot extends Construct {
       apiMethod: 'POST',
       apiResource: resource,
       requestTemplate: "$input.json('$')",
-      requestValidator: this.requestValidator,
       awsIntegrationProps: integrationReqProps,
       methodOptions: resourceMethodOptions
     };

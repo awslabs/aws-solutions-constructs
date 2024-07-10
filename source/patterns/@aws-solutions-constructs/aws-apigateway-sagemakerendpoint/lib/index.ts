@@ -178,13 +178,15 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
       apiGatewayRole: this.apiGatewayRole,
       apiMethod: 'GET',
       apiResource,
-      requestValidator,
       requestTemplate: props.requestMappingTemplate,
       additionalRequestTemplates: props.additionalRequestTemplates,
       awsIntegrationProps: {
         options: { integrationResponses: integResponses }
       },
-      methodOptions: { methodResponses }
+      methodOptions: {
+        methodResponses,
+        requestValidator,
+      }
     });
   }
 }

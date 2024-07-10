@@ -320,8 +320,6 @@ export interface AddProxyMethodToApiResourceInputParams {
   readonly additionalRequestTemplates?: { [contentType: string]: string; },
   readonly integrationResponses?: cdk.aws_apigateway.IntegrationResponse[],
   readonly contentType?: string,
-  readonly requestValidator?: apigateway.IRequestValidator,
-  readonly requestModel?: { [contentType: string]: apigateway.IModel; },
   readonly awsIntegrationProps?: apigateway.AwsIntegrationProps | any,
   readonly methodOptions?: apigateway.MethodOptions
 }
@@ -393,9 +391,7 @@ export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceI
           "method.response.header.Content-Type": true
         },
       }
-    ],
-    requestValidator: params.requestValidator,
-    requestModels: params.requestModel
+    ]
   };
 
   // Setup the API Gateway method
