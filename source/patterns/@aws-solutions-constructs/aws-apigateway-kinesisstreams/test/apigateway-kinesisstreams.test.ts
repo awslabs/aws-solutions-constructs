@@ -238,3 +238,75 @@ test('Confirm that CheckKinesisStreamProps is called', () => {
   };
   expect(app).toThrowError();
 });
+
+test('Construct uses custom putRecordMethodResponses property', () => {
+  const stack = new Stack();
+  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis-streams ', {
+    putRecordIntegrationResponses: [
+      {
+        statusCode: '200',
+        responseTemplates: {
+          'text/html': 'OK'
+        }
+      }
+    ],
+    putRecordMethodResponses: [{
+      statusCode: "200"
+    }]
+  });
+
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    Integration: {
+      IntegrationResponses: [
+        {
+          ResponseTemplates: {
+            'text/html': 'OK'
+          },
+          StatusCode: '200'
+        }
+      ],
+    },
+    MethodResponses: [{
+      StatusCode: "200"
+    }]
+  });
+});
+
+test('Construct uses custom putRecordsMethodResponses property', () => {
+  const stack = new Stack();
+  new ApiGatewayToKinesisStreams(stack, 'api-gateway-kinesis-streams ', {
+    putRecordsIntegrationResponses: [
+      {
+        statusCode: '200',
+        responseTemplates: {
+          'text/html': 'OK'
+        }
+      }
+    ],
+    putRecordsMethodResponses: [{
+      statusCode: "200"
+    }]
+  });
+
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    Integration: {
+      IntegrationResponses: [
+        {
+          ResponseTemplates: {
+            'text/html': 'OK'
+          },
+          StatusCode: '200'
+        }
+      ],
+    },
+    MethodResponses: [{
+      StatusCode: "200"
+    }]
+  });
+});
