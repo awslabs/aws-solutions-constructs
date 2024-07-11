@@ -61,6 +61,25 @@ export interface ApiGatewayToKinesisStreamsProps {
    */
   readonly putRecordIntegrationResponses?: api.IntegrationResponse[];
   /**
+   * Optional, custom API Gateway Method Responses for the PutRecord action.
+   *
+   * @default - [
+   *   {
+   *     statusCode: "200",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     }
+   *   },
+   *   {
+   *     statusCode: "500",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     },
+   *   }
+   * ]
+   */
+  readonly putRecordMethodResponses?: api.MethodResponse[];
+  /**
    * API Gateway request template for the PutRecords action for the default `application/json` content-type.
    * If not provided, a default one will be used.
    *
@@ -85,11 +104,30 @@ export interface ApiGatewayToKinesisStreamsProps {
    */
   readonly putRecordsRequestModel?: api.ModelOptions;
   /**
-   * Optional, custom API Gateway Integration Response for the PutRecord action.
+   * Optional, custom API Gateway Integration Response for the PutRecords action.
    *
    * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
    */
   readonly putRecordsIntegrationResponses?: api.IntegrationResponse[];
+  /**
+   * Optional, custom API Gateway Method Responses for the PutRecord action.
+   *
+   * @default - [
+   *   {
+   *     statusCode: "200",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     }
+   *   },
+   *   {
+   *     statusCode: "500",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     },
+   *   }
+   * ]
+   */
+  readonly putRecordsMethodResponses?: api.MethodResponse[];
   /**
    * Existing instance of Kinesis Stream, providing both this and `kinesisStreamProps` will cause an error.
    *
@@ -163,6 +201,13 @@ export class ApiGatewayToKinesisStreams extends Construct {
       validateRequestBody: true
     });
 
+    let putRecordMethodOptions: api.MethodOptions = {
+      requestValidator,
+      requestModels: { 'application/json': this.buildPutRecordModel(props.putRecordRequestModel) },
+    };
+    if (props.putRecordMethodResponses) {
+      putRecordMethodOptions = defaults.overrideProps(putRecordMethodOptions, { methodResponses: props.putRecordMethodResponses});
+    }
     // PutRecord
     const putRecordResource = this.apiGateway.root.addResource('record');
     defaults.addProxyMethodToApiResource({
@@ -174,10 +219,17 @@ export class ApiGatewayToKinesisStreams extends Construct {
       requestTemplate: this.buildPutRecordTemplate(props.putRecordRequestTemplate),
       additionalRequestTemplates: this.buildAdditionalPutRecordTemplates(props.additionalPutRecordRequestTemplates),
       contentType: "'x-amz-json-1.1'",
-      requestValidator,
-      requestModel: { 'application/json': this.buildPutRecordModel(props.putRecordRequestModel) },
-      integrationResponses: props.putRecordIntegrationResponses
+      integrationResponses: props.putRecordIntegrationResponses,
+      methodOptions: putRecordMethodOptions
     });
+
+    let putRecordsMethodOptions: api.MethodOptions = {
+      requestValidator,
+      requestModels: { 'application/json': this.buildPutRecordsModel(props.putRecordsRequestModel) },
+    };
+    if (props.putRecordsMethodResponses) {
+      putRecordsMethodOptions = defaults.overrideProps(putRecordsMethodOptions, { methodResponses: props.putRecordsMethodResponses});
+    }
 
     // PutRecords
     const putRecordsResource = this.apiGateway.root.addResource('records');
@@ -190,9 +242,8 @@ export class ApiGatewayToKinesisStreams extends Construct {
       requestTemplate: this.buildPutRecordsTemplate(props.putRecordsRequestTemplate),
       additionalRequestTemplates: this.buildAdditionalPutRecordTemplates(props.additionalPutRecordsRequestTemplates),
       contentType: "'x-amz-json-1.1'",
-      requestValidator,
-      requestModel: { 'application/json': this.buildPutRecordsModel(props.putRecordsRequestModel) },
-      integrationResponses: props.putRecordsIntegrationResponses
+      integrationResponses: props.putRecordsIntegrationResponses,
+      methodOptions: putRecordsMethodOptions
     });
 
     if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {

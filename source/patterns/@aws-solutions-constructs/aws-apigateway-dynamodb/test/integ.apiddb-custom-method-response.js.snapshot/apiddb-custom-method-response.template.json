@@ -1,7 +1,33 @@
 {
- "Description": "Integration Test for aws-apigateway-kinesis",
+ "Description": "Integration Test for aws-apigateway-dynamodb",
  "Resources": {
-  "testapigatewaykinesisoverwriteApiAccessLogGroupE34C0A70": {
+  "existingtableE51CCC93": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "id",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "id",
+      "KeyType": "HASH"
+     }
+    ],
+    "PointInTimeRecoverySpecification": {
+     "PointInTimeRecoveryEnabled": true
+    },
+    "SSESpecification": {
+     "SSEEnabled": true
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
+  "testapigatewaydynamodbadditionalrequesttemplatesApiAccessLogGroupAF75D750": {
    "Type": "AWS::Logs::LogGroup",
    "UpdateReplacePolicy": "Retain",
    "DeletionPolicy": "Retain",
@@ -20,7 +46,7 @@
     }
    }
   },
-  "testapigatewaykinesisoverwriteRestApi77ABE5DA": {
+  "testapigatewaydynamodbadditionalrequesttemplatesRestApi03F6484C": {
    "Type": "AWS::ApiGateway::RestApi",
    "Properties": {
     "EndpointConfiguration": {
@@ -28,25 +54,21 @@
       "EDGE"
      ]
     },
-    "Name": "my-api"
+    "Name": "RestApi"
    }
   },
-  "testapigatewaykinesisoverwriteRestApiDeployment1EE3B09614424f458f8c706105d1d21f3bb9267c": {
+  "testapigatewaydynamodbadditionalrequesttemplatesRestApiDeployment0AE7C47799d5eb6ebbe5fc8402f3118bd7d77b35": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Automatically created by the RestApi construct",
     "RestApiId": {
-     "Ref": "testapigatewaykinesisoverwriteRestApi77ABE5DA"
+     "Ref": "testapigatewaydynamodbadditionalrequesttemplatesRestApi03F6484C"
     }
    },
    "DependsOn": [
-    "testapigatewaykinesisoverwriteRestApirecordPOST2B249308",
-    "testapigatewaykinesisoverwriteRestApirecordAECF6BBC",
-    "testapigatewaykinesisoverwriteRestApirecordsPOST1501AC33",
-    "testapigatewaykinesisoverwriteRestApirecordsB70B7E7F",
-    "testapigatewaykinesisoverwriteRestApiPutRecordModel82F936E0",
-    "testapigatewaykinesisoverwriteRestApiPutRecordsModel120A48A8",
-    "testapigatewaykinesisoverwriteRestApirequestvalidatorBAD987F2"
+    "testapigatewaydynamodbadditionalrequesttemplatesRestApiidDELETEF6A7D04D",
+    "testapigatewaydynamodbadditionalrequesttemplatesRestApiidGET05129D15",
+    "testapigatewaydynamodbadditionalrequesttemplatesRestApiidA77CCE90"
    ],
    "Metadata": {
     "cfn_nag": {
@@ -59,20 +81,20 @@
     }
    }
   },
-  "testapigatewaykinesisoverwriteRestApiDeploymentStageprodA3A23FDE": {
+  "testapigatewaydynamodbadditionalrequesttemplatesRestApiDeploymentStageprod33ED5D23": {
    "Type": "AWS::ApiGateway::Stage",
    "Properties": {
     "AccessLogSetting": {
      "DestinationArn": {
       "Fn::GetAtt": [
-       "testapigatewaykinesisoverwriteApiAccessLogGroupE34C0A70",
+       "testapigatewaydynamodbadditionalrequesttemplatesApiAccessLogGroupAF75D750",
        "Arn"
       ]
      },
      "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
     },
     "DeploymentId": {
-     "Ref": "testapigatewaykinesisoverwriteRestApiDeployment1EE3B09614424f458f8c706105d1d21f3bb9267c"
+     "Ref": "testapigatewaydynamodbadditionalrequesttemplatesRestApiDeployment0AE7C47799d5eb6ebbe5fc8402f3118bd7d77b35"
     },
     "MethodSettings": [
      {
@@ -80,46 +102,39 @@
       "HttpMethod": "*",
       "LoggingLevel": "INFO",
       "ResourcePath": "/*"
-     },
-     {
-      "DataTraceEnabled": false,
-      "HttpMethod": "*",
-      "ResourcePath": "/*",
-      "ThrottlingBurstLimit": 25,
-      "ThrottlingRateLimit": 100
      }
     ],
     "RestApiId": {
-     "Ref": "testapigatewaykinesisoverwriteRestApi77ABE5DA"
+     "Ref": "testapigatewaydynamodbadditionalrequesttemplatesRestApi03F6484C"
     },
     "StageName": "prod",
     "TracingEnabled": true
    }
   },
-  "testapigatewaykinesisoverwriteRestApirecordAECF6BBC": {
+  "testapigatewaydynamodbadditionalrequesttemplatesRestApiidA77CCE90": {
    "Type": "AWS::ApiGateway::Resource",
    "Properties": {
     "ParentId": {
      "Fn::GetAtt": [
-      "testapigatewaykinesisoverwriteRestApi77ABE5DA",
+      "testapigatewaydynamodbadditionalrequesttemplatesRestApi03F6484C",
       "RootResourceId"
      ]
     },
-    "PathPart": "record",
+    "PathPart": "{id}",
     "RestApiId": {
-     "Ref": "testapigatewaykinesisoverwriteRestApi77ABE5DA"
+     "Ref": "testapigatewaydynamodbadditionalrequesttemplatesRestApi03F6484C"
     }
    }
   },
-  "testapigatewaykinesisoverwriteRestApirecordPOST2B249308": {
+  "testapigatewaydynamodbadditionalrequesttemplatesRestApiidGET05129D15": {
    "Type": "AWS::ApiGateway::Method",
    "Properties": {
     "AuthorizationType": "AWS_IAM",
-    "HttpMethod": "POST",
+    "HttpMethod": "GET",
     "Integration": {
      "Credentials": {
       "Fn::GetAtt": [
-       "testapigatewaykinesisoverwriteapigatewayroleFAABFF26",
+       "testapigatewaydynamodbadditionalrequesttemplatesapigatewayroleFDAECAC6",
        "Arn"
       ]
      },
@@ -138,18 +153,18 @@
      ],
      "PassthroughBehavior": "NEVER",
      "RequestParameters": {
-      "integration.request.header.Content-Type": "'x-amz-json-1.1'"
+      "integration.request.header.Content-Type": "'application/json'"
      },
      "RequestTemplates": {
       "application/json": {
        "Fn::Join": [
         "",
         [
-         "{ \"StreamName\": \"",
+         "{           \"TableName\": \"",
          {
-          "Ref": "KinesisStream46752A3E"
+          "Ref": "existingtableE51CCC93"
          },
-         "\", \"Data\": \"$util.base64Encode($input.json('$.foo'))\", \"PartitionKey\": \"$input.path('$.bar')\" }"
+         "\",           \"KeyConditionExpression\": \"id = :v1\",           \"ExpressionAttributeValues\": {             \":v1\": {               \"S\": \"$input.params('id')\"             }           }         }"
         ]
        ]
       }
@@ -167,7 +182,7 @@
         {
          "Ref": "AWS::Region"
         },
-        ":kinesis:action/PutRecord"
+        ":dynamodb:action/Query"
        ]
       ]
      }
@@ -186,76 +201,55 @@
       "StatusCode": "500"
      }
     ],
-    "RequestModels": {
-     "application/json": {
-      "Ref": "testapigatewaykinesisoverwriteRestApiPutRecordModel82F936E0"
-     }
-    },
-    "RequestValidatorId": {
-     "Ref": "testapigatewaykinesisoverwriteRestApirequestvalidatorBAD987F2"
-    },
     "ResourceId": {
-     "Ref": "testapigatewaykinesisoverwriteRestApirecordAECF6BBC"
+     "Ref": "testapigatewaydynamodbadditionalrequesttemplatesRestApiidA77CCE90"
     },
     "RestApiId": {
-     "Ref": "testapigatewaykinesisoverwriteRestApi77ABE5DA"
+     "Ref": "testapigatewaydynamodbadditionalrequesttemplatesRestApi03F6484C"
     }
    }
   },
-  "testapigatewaykinesisoverwriteRestApirecordsB70B7E7F": {
-   "Type": "AWS::ApiGateway::Resource",
-   "Properties": {
-    "ParentId": {
-     "Fn::GetAtt": [
-      "testapigatewaykinesisoverwriteRestApi77ABE5DA",
-      "RootResourceId"
-     ]
-    },
-    "PathPart": "records",
-    "RestApiId": {
-     "Ref": "testapigatewaykinesisoverwriteRestApi77ABE5DA"
-    }
-   }
-  },
-  "testapigatewaykinesisoverwriteRestApirecordsPOST1501AC33": {
+  "testapigatewaydynamodbadditionalrequesttemplatesRestApiidDELETEF6A7D04D": {
    "Type": "AWS::ApiGateway::Method",
    "Properties": {
     "AuthorizationType": "AWS_IAM",
-    "HttpMethod": "POST",
+    "HttpMethod": "DELETE",
     "Integration": {
      "Credentials": {
       "Fn::GetAtt": [
-       "testapigatewaykinesisoverwriteapigatewayroleFAABFF26",
+       "testapigatewaydynamodbadditionalrequesttemplatesapigatewayroleFDAECAC6",
        "Arn"
       ]
      },
      "IntegrationHttpMethod": "POST",
      "IntegrationResponses": [
       {
+       "ResponseTemplates": {
+        "text/html": "OK"
+       },
        "StatusCode": "200"
       },
       {
        "ResponseTemplates": {
-        "text/html": "Error"
+        "text/html": "IntegrationTestError"
        },
-       "SelectionPattern": "500",
-       "StatusCode": "500"
+       "StatusCode": "400"
       }
      ],
      "PassthroughBehavior": "NEVER",
      "RequestParameters": {
-      "integration.request.header.Content-Type": "'x-amz-json-1.1'"
+      "integration.request.header.Content-Type": "'application/json'"
      },
      "RequestTemplates": {
       "application/json": {
        "Fn::Join": [
         "",
         [
-         "{ \"StreamName\": \"",
+         "{           \"TableName\": \"",
          {
-          "Ref": "KinesisStream46752A3E"
+          "Ref": "existingtableE51CCC93"
          },
-         "\", \"Records\": [ #foreach($elem in $input.path('$.records')) { \"Data\": \"$util.base64Encode($elem.foo)\", \"PartitionKey\": \"$elem.bar\"}#if($foreach.hasNext),#end #end ] }"
+         "\",           \"Key\": {             \"id\": {               \"S\": \"$input.params('id')\"               }             },           \"ReturnValues\": \"ALL_OLD\"         }"
         ]
        ]
       }
@@ -273,92 +267,44 @@
         {
          "Ref": "AWS::Region"
         },
-        ":kinesis:action/PutRecords"
+        ":dynamodb:action/DeleteItem"
        ]
       ]
      }
     },
     "MethodResponses": [
      {
-      "ResponseParameters": {
-       "method.response.header.Content-Type": true
-      },
       "StatusCode": "200"
      },
      {
-      "ResponseParameters": {
-       "method.response.header.Content-Type": true
-      },
-      "StatusCode": "500"
+      "StatusCode": "400"
      }
     ],
-    "RequestModels": {
-     "application/json": {
-      "Ref": "testapigatewaykinesisoverwriteRestApiPutRecordsModel120A48A8"
-     }
-    },
-    "RequestValidatorId": {
-     "Ref": "testapigatewaykinesisoverwriteRestApirequestvalidatorBAD987F2"
-    },
     "ResourceId": {
-     "Ref": "testapigatewaykinesisoverwriteRestApirecordsB70B7E7F"
+     "Ref": "testapigatewaydynamodbadditionalrequesttemplatesRestApiidA77CCE90"
     },
     "RestApiId": {
-     "Ref": "testapigatewaykinesisoverwriteRestApi77ABE5DA"
+     "Ref": "testapigatewaydynamodbadditionalrequesttemplatesRestApi03F6484C"
     }
    }
   },
-  "testapigatewaykinesisoverwriteRestApiUsagePlan3037D903": {
+  "testapigatewaydynamodbadditionalrequesttemplatesRestApiUsagePlan905D10C7": {
    "Type": "AWS::ApiGateway::UsagePlan",
    "Properties": {
     "ApiStages": [
      {
       "ApiId": {
-       "Ref": "testapigatewaykinesisoverwriteRestApi77ABE5DA"
+       "Ref": "testapigatewaydynamodbadditionalrequesttemplatesRestApi03F6484C"
       },
       "Stage": {
-       "Ref": "testapigatewaykinesisoverwriteRestApiDeploymentStageprodA3A23FDE"
+       "Ref": "testapigatewaydynamodbadditionalrequesttemplatesRestApiDeploymentStageprod33ED5D23"
       },
       "Throttle": {}
      }
     ]
    }
   },
-  "testapigatewaykinesisoverwriteRestApirequestvalidatorBAD987F2": {
-   "Type": "AWS::ApiGateway::RequestValidator",
-   "Properties": {
-    "Name": "request-body-validator",
-    "RestApiId": {
-     "Ref": "testapigatewaykinesisoverwriteRestApi77ABE5DA"
-    },
-    "ValidateRequestBody": true
-   }
-  },
-  "testapigatewaykinesisoverwriteRestApiPutRecordModel82F936E0": {
-   "Type": "AWS::ApiGateway::Model",
-   "Properties": {
-    "ContentType": "application/json",
-    "RestApiId": {
-     "Ref": "testapigatewaykinesisoverwriteRestApi77ABE5DA"
-    },
-    "Schema": {
-     "$schema": "http://json-schema.org/draft-04/schema#"
-    }
-   }
-  },
-  "testapigatewaykinesisoverwriteRestApiPutRecordsModel120A48A8": {
-   "Type": "AWS::ApiGateway::Model",
-   "Properties": {
-    "ContentType": "application/json",
-    "RestApiId": {
-     "Ref": "testapigatewaykinesisoverwriteRestApi77ABE5DA"
-    },
-    "Schema": {
-     "$schema": "http://json-schema.org/draft-04/schema#"
-    }
-   }
-  },
-  "testapigatewaykinesisoverwriteLambdaRestApiCloudWatchRole5ABBFDA0": {
+  "testapigatewaydynamodbadditionalrequesttemplatesLambdaRestApiCloudWatchRole51265771": {
    "Type": "AWS::IAM::Role",
    "Properties": {
     "AssumeRolePolicyDocument": {
@@ -417,21 +363,21 @@
     ]
    }
   },
-  "testapigatewaykinesisoverwriteLambdaRestApiAccount54AFDE68": {
+  "testapigatewaydynamodbadditionalrequesttemplatesLambdaRestApiAccount8891474D": {
    "Type": "AWS::ApiGateway::Account",
    "Properties": {
     "CloudWatchRoleArn": {
      "Fn::GetAtt": [
-      "testapigatewaykinesisoverwriteLambdaRestApiCloudWatchRole5ABBFDA0",
+      "testapigatewaydynamodbadditionalrequesttemplatesLambdaRestApiCloudWatchRole51265771",
       "Arn"
      ]
     }
    },
    "DependsOn": [
-    "testapigatewaykinesisoverwriteRestApi77ABE5DA"
+    "testapigatewaydynamodbadditionalrequesttemplatesRestApi03F6484C"
    ]
   },
-  "testapigatewaykinesisoverwriteapigatewayroleFAABFF26": {
+  "testapigatewaydynamodbadditionalrequesttemplatesapigatewayroleFDAECAC6": {
    "Type": "AWS::IAM::Role",
    "Properties": {
     "AssumeRolePolicyDocument": {
@@ -448,21 +394,20 @@
     }
    }
   },
-  "testapigatewaykinesisoverwriteapigatewayroleDefaultPolicy51F086B6": {
+  "testapigatewaydynamodbadditionalrequesttemplatesapigatewayroleDefaultPolicy4C47B35E": {
    "Type": "AWS::IAM::Policy",
    "Properties": {
     "PolicyDocument": {
      "Statement": [
       {
        "Action": [
-        "kinesis:ListShards",
-        "kinesis:PutRecord",
-        "kinesis:PutRecords"
+        "dynamodb:DeleteItem",
+        "dynamodb:Query"
        ],
        "Effect": "Allow",
        "Resource": {
         "Fn::GetAtt": [
-         "KinesisStream46752A3E",
+         "existingtableE51CCC93",
          "Arn"
         ]
        }
@@ -470,63 +415,24 @@
      ],
      "Version": "2012-10-17"
     },
-    "PolicyName": "testapigatewaykinesisoverwriteapigatewayroleDefaultPolicy51F086B6",
+    "PolicyName": "testapigatewaydynamodbadditionalrequesttemplatesapigatewayroleDefaultPolicy4C47B35E",
     "Roles": [
      {
-      "Ref": "testapigatewaykinesisoverwriteapigatewayroleFAABFF26"
+      "Ref": "testapigatewaydynamodbadditionalrequesttemplatesapigatewayroleFDAECAC6"
      }
     ]
    }
-  },
-  "testapigatewaykinesisoverwriteKinesisStreamGetRecordsIteratorAgeAlarmAF0BEF52": {
-   "Type": "AWS::CloudWatch::Alarm",
-   "Properties": {
-    "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
-    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
-    "EvaluationPeriods": 1,
-    "MetricName": "GetRecords.IteratorAgeMilliseconds",
-    "Namespace": "AWS/Kinesis",
-    "Period": 300,
-    "Statistic": "Maximum",
-    "Threshold": 43200000
-   }
-  },
-  "testapigatewaykinesisoverwriteKinesisStreamReadProvisionedThroughputExceededAlarm5C0040FB": {
-   "Type": "AWS::CloudWatch::Alarm",
-   "Properties": {
-    "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
-    "ComparisonOperator": "GreaterThanThreshold",
-    "EvaluationPeriods": 1,
-    "MetricName": "ReadProvisionedThroughputExceeded",
-    "Namespace": "AWS/Kinesis",
-    "Period": 300,
-    "Statistic": "Average",
-    "Threshold": 0
-   }
-  },
-  "KinesisStream46752A3E": {
-   "Type": "AWS::Kinesis::Stream",
-   "Properties": {
-    "RetentionPeriodHours": 96,
-    "ShardCount": 1,
-    "StreamEncryption": {
-     "EncryptionType": "KMS",
-     "KeyId": "alias/aws/kinesis"
-    }
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
   }
  },
  "Outputs": {
-  "testapigatewaykinesisoverwriteRestApiEndpoint2A940432": {
+  "testapigatewaydynamodbadditionalrequesttemplatesRestApiEndpoint855E7762": {
    "Value": {
     "Fn::Join": [
      "",
      [
       "https://",
       {
-       "Ref": "testapigatewaykinesisoverwriteRestApi77ABE5DA"
+       "Ref": "testapigatewaydynamodbadditionalrequesttemplatesRestApi03F6484C"
       },
       ".execute-api.",
       {
@@ -538,7 +444,7 @@
       },
       "/",
       {
-       "Ref": "testapigatewaykinesisoverwriteRestApiDeploymentStageprodA3A23FDE"
+       "Ref": "testapigatewaydynamodbadditionalrequesttemplatesRestApiDeploymentStageprod33ED5D23"
       },
       "/"
      ]

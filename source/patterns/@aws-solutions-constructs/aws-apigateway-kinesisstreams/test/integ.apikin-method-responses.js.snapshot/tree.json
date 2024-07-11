@@ -4,21 +4,21 @@
     "id": "App",
     "path": "",
     "children": {
-      "apikin-additional-request-templates": {
-        "id": "apikin-additional-request-templates",
-        "path": "apikin-additional-request-templates",
+      "apikin-method-responses": {
+        "id": "apikin-method-responses",
+        "path": "apikin-method-responses",
         "children": {
-          "test-apigateway-kinesis-additional-request-templates": {
-            "id": "test-apigateway-kinesis-additional-request-templates",
-            "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates",
+          "test-apigateway-kinesis-default": {
+            "id": "test-apigateway-kinesis-default",
+            "path": "apikin-method-responses/test-apigateway-kinesis-default",
             "children": {
               "ApiAccessLogGroup": {
                 "id": "ApiAccessLogGroup",
-                "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/ApiAccessLogGroup",
+                "path": "apikin-method-responses/test-apigateway-kinesis-default/ApiAccessLogGroup",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/ApiAccessLogGroup/Resource",
+                    "path": "apikin-method-responses/test-apigateway-kinesis-default/ApiAccessLogGroup/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::Logs::LogGroup",
                       "aws:cdk:cloudformation:props": {}
@@ -36,11 +36,11 @@
               },
               "RestApi": {
                 "id": "RestApi",
-                "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi",
+                "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/Resource",
+                    "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::ApiGateway::RestApi",
                       "aws:cdk:cloudformation:props": {
@@ -59,17 +59,17 @@
                   },
                   "Deployment": {
                     "id": "Deployment",
-                    "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/Deployment",
+                    "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/Deployment",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/Deployment/Resource",
+                        "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/Deployment/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::ApiGateway::Deployment",
                           "aws:cdk:cloudformation:props": {
                             "description": "Automatically created by the RestApi construct",
                             "restApiId": {
-                              "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApiCCD096E7"
+                              "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
                             }
                           }
                         },
@@ -86,25 +86,25 @@
                   },
                   "DeploymentStage.prod": {
                     "id": "DeploymentStage.prod",
-                    "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/DeploymentStage.prod",
+                    "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/DeploymentStage.prod",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/DeploymentStage.prod/Resource",
+                        "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/DeploymentStage.prod/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::ApiGateway::Stage",
                           "aws:cdk:cloudformation:props": {
                             "accessLogSetting": {
                               "destinationArn": {
                                 "Fn::GetAtt": [
-                                  "testapigatewaykinesisadditionalrequesttemplatesApiAccessLogGroup9C079B68",
+                                  "testapigatewaykinesisdefaultApiAccessLogGroup51BF9616",
                                   "Arn"
                                 ]
                               },
                               "format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
                             },
                             "deploymentId": {
-                              "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApiDeployment5A447E3D178e061c8d56d2d9b095ca538d00fe24"
+                              "Ref": "testapigatewaykinesisdefaultRestApiDeployment2852F1AAe11e785f0c835bae60935baac09fb799"
                             },
                             "methodSettings": [
                               {
@@ -115,7 +115,7 @@
                               }
                             ],
                             "restApiId": {
-                              "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApiCCD096E7"
+                              "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
                             },
                             "stageName": "prod",
                             "tracingEnabled": true
@@ -134,7 +134,7 @@
                   },
                   "Endpoint": {
                     "id": "Endpoint",
-                    "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/Endpoint",
+                    "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/Endpoint",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnOutput",
                       "version": "2.145.0"
@@ -142,27 +142,27 @@
                   },
                   "Default": {
                     "id": "Default",
-                    "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/Default",
+                    "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/Default",
                     "children": {
                       "record": {
                         "id": "record",
-                        "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/Default/record",
+                        "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/Default/record",
                         "children": {
                           "Resource": {
                             "id": "Resource",
-                            "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/Default/record/Resource",
+                            "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/Default/record/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
                               "aws:cdk:cloudformation:props": {
                                 "parentId": {
                                   "Fn::GetAtt": [
-                                    "testapigatewaykinesisadditionalrequesttemplatesRestApiCCD096E7",
+                                    "testapigatewaykinesisdefaultRestApi68CBA18C",
                                     "RootResourceId"
                                   ]
                                 },
                                 "pathPart": "record",
                                 "restApiId": {
-                                  "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApiCCD096E7"
+                                  "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
                                 }
                               }
                             },
@@ -173,11 +173,11 @@
                           },
                           "POST": {
                             "id": "POST",
-                            "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/Default/record/POST",
+                            "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/Default/record/POST",
                             "children": {
                               "Resource": {
                                 "id": "Resource",
-                                "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/Default/record/POST/Resource",
+                                "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/Default/record/POST/Resource",
                                 "attributes": {
                                   "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
                                   "aws:cdk:cloudformation:props": {
@@ -217,18 +217,6 @@
                                               "\", \"Data\": \"$util.base64Encode($input.json('$.data'))\", \"PartitionKey\": \"$input.path('$.partitionKey')\" }"
                                             ]
                                           ]
-                                        },
-                                        "text/plain": {
-                                          "Fn::Join": [
-                                            "",
-                                            [
-                                              "{ \"StreamName\": \"",
-                                              {
-                                                "Ref": "KinesisStream46752A3E"
-                                              },
-                                              "\", \"Data\": \"$util.base64Encode($input.json('$.foo'))\", \"PartitionKey\": \"$input.path('$.bar')\" }"
-                                            ]
-                                          ]
                                         }
                                       },
                                       "passthroughBehavior": "NEVER",
@@ -246,38 +234,38 @@
                                       ],
                                       "credentials": {
                                         "Fn::GetAtt": [
-                                          "testapigatewaykinesisadditionalrequesttemplatesapigatewayroleAC79617D",
+                                          "testapigatewaykinesisdefaultapigatewayroleAD430BE2",
                                           "Arn"
                                         ]
                                       }
                                     },
                                     "methodResponses": [
                                       {
-                                        "statusCode": "200",
-                                        "responseParameters": {
-                                          "method.response.header.Content-Type": true
-                                        }
+                                        "statusCode": "200"
                                       },
                                       {
-                                        "statusCode": "500",
-                                        "responseParameters": {
-                                          "method.response.header.Content-Type": true
-                                        }
+                                        "statusCode": "400"
+                                      },
+                                      {
+                                        "statusCode": "401"
+                                      },
+                                      {
+                                        "statusCode": "500"
                                       }
                                     ],
                                     "requestModels": {
                                       "application/json": {
-                                        "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApiPutRecordModel1A75CC15"
+                                        "Ref": "testapigatewaykinesisdefaultRestApiPutRecordModel06DC611F"
                                       }
                                     },
                                     "requestValidatorId": {
-                                      "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApirequestvalidator69E589CE"
+                                      "Ref": "testapigatewaykinesisdefaultRestApirequestvalidator5901C267"
                                     },
                                     "resourceId": {
-                                      "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApirecord01520200"
+                                      "Ref": "testapigatewaykinesisdefaultRestApirecord500DDD57"
                                     },
                                     "restApiId": {
-                                      "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApiCCD096E7"
+                                      "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
                                     }
                                   }
                                 },
@@ -300,23 +288,23 @@
                       },
                       "records": {
                         "id": "records",
-                        "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/Default/records",
+                        "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/Default/records",
                         "children": {
                           "Resource": {
                             "id": "Resource",
-                            "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/Default/records/Resource",
+                            "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/Default/records/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
                               "aws:cdk:cloudformation:props": {
                                 "parentId": {
                                   "Fn::GetAtt": [
-                                    "testapigatewaykinesisadditionalrequesttemplatesRestApiCCD096E7",
+                                    "testapigatewaykinesisdefaultRestApi68CBA18C",
                                     "RootResourceId"
                                   ]
                                 },
                                 "pathPart": "records",
                                 "restApiId": {
-                                  "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApiCCD096E7"
+                                  "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
                                 }
                               }
                             },
@@ -327,11 +315,11 @@
                           },
                           "POST": {
                             "id": "POST",
-                            "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/Default/records/POST",
+                            "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/Default/records/POST",
                             "children": {
                               "Resource": {
                                 "id": "Resource",
-                                "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/Default/records/POST/Resource",
+                                "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/Default/records/POST/Resource",
                                 "attributes": {
                                   "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
                                   "aws:cdk:cloudformation:props": {
@@ -388,38 +376,35 @@
                                       ],
                                       "credentials": {
                                         "Fn::GetAtt": [
-                                          "testapigatewaykinesisadditionalrequesttemplatesapigatewayroleAC79617D",
+                                          "testapigatewaykinesisdefaultapigatewayroleAD430BE2",
                                           "Arn"
                                         ]
                                       }
                                     },
                                     "methodResponses": [
                                       {
-                                        "statusCode": "200",
-                                        "responseParameters": {
-                                          "method.response.header.Content-Type": true
-                                        }
+                                        "statusCode": "200"
                                       },
                                       {
-                                        "statusCode": "500",
-                                        "responseParameters": {
-                                          "method.response.header.Content-Type": true
-                                        }
+                                        "statusCode": "300"
+                                      },
+                                      {
+                                        "statusCode": "401"
                                       }
                                     ],
                                     "requestModels": {
                                       "application/json": {
-                                        "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApiPutRecordsModel49E0CAB9"
+                                        "Ref": "testapigatewaykinesisdefaultRestApiPutRecordsModelA7CA8D6D"
                                       }
                                     },
                                     "requestValidatorId": {
-                                      "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApirequestvalidator69E589CE"
+                                      "Ref": "testapigatewaykinesisdefaultRestApirequestvalidator5901C267"
                                     },
                                     "resourceId": {
-                                      "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApirecords37B412D1"
+                                      "Ref": "testapigatewaykinesisdefaultRestApirecords972EAFEA"
                                     },
                                     "restApiId": {
-                                      "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApiCCD096E7"
+                                      "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
                                     }
                                   }
                                 },
@@ -448,21 +433,21 @@
                   },
                   "UsagePlan": {
                     "id": "UsagePlan",
-                    "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/UsagePlan",
+                    "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/UsagePlan",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/UsagePlan/Resource",
+                        "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/UsagePlan/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::ApiGateway::UsagePlan",
                           "aws:cdk:cloudformation:props": {
                             "apiStages": [
                               {
                                 "apiId": {
-                                  "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApiCCD096E7"
+                                  "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
                                 },
                                 "stage": {
-                                  "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApiDeploymentStageprodD274025B"
+                                  "Ref": "testapigatewaykinesisdefaultRestApiDeploymentStageprodB6206494"
                                 },
                                 "throttle": {}
                               }
@@ -482,17 +467,17 @@
                   },
                   "request-validator": {
                     "id": "request-validator",
-                    "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/request-validator",
+                    "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/request-validator",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/request-validator/Resource",
+                        "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/request-validator/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::ApiGateway::RequestValidator",
                           "aws:cdk:cloudformation:props": {
                             "name": "request-body-validator",
                             "restApiId": {
-                              "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApiCCD096E7"
+                              "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
                             },
                             "validateRequestBody": true
                           }
@@ -510,11 +495,11 @@
                   },
                   "PutRecordModel": {
                     "id": "PutRecordModel",
-                    "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/PutRecordModel",
+                    "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/PutRecordModel",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/PutRecordModel/Resource",
+                        "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/PutRecordModel/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::ApiGateway::Model",
                           "aws:cdk:cloudformation:props": {
@@ -522,7 +507,7 @@
                             "description": "PutRecord proxy single-record payload",
                             "name": "PutRecordModel",
                             "restApiId": {
-                              "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApiCCD096E7"
+                              "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
                             },
                             "schema": {
                               "$schema": "http://json-schema.org/draft-04/schema#",
@@ -556,11 +541,11 @@
                   },
                   "PutRecordsModel": {
                     "id": "PutRecordsModel",
-                    "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/PutRecordsModel",
+                    "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/PutRecordsModel",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/RestApi/PutRecordsModel/Resource",
+                        "path": "apikin-method-responses/test-apigateway-kinesis-default/RestApi/PutRecordsModel/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::ApiGateway::Model",
                           "aws:cdk:cloudformation:props": {
@@ -568,7 +553,7 @@
                             "description": "PutRecords proxy payload data",
                             "name": "PutRecordsModel",
                             "restApiId": {
-                              "Ref": "testapigatewaykinesisadditionalrequesttemplatesRestApiCCD096E7"
+                              "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
                             },
                             "schema": {
                               "$schema": "http://json-schema.org/draft-04/schema#",
@@ -619,11 +604,11 @@
               },
               "LambdaRestApiCloudWatchRole": {
                 "id": "LambdaRestApiCloudWatchRole",
-                "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/LambdaRestApiCloudWatchRole",
+                "path": "apikin-method-responses/test-apigateway-kinesis-default/LambdaRestApiCloudWatchRole",
                 "children": {
                   "ImportLambdaRestApiCloudWatchRole": {
                     "id": "ImportLambdaRestApiCloudWatchRole",
-                    "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole",
+                    "path": "apikin-method-responses/test-apigateway-kinesis-default/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
                       "version": "2.145.0"
@@ -631,7 +616,7 @@
                   },
                   "Resource": {
                     "id": "Resource",
-                    "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/LambdaRestApiCloudWatchRole/Resource",
+                    "path": "apikin-method-responses/test-apigateway-kinesis-default/LambdaRestApiCloudWatchRole/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                       "aws:cdk:cloudformation:props": {
@@ -704,13 +689,13 @@
               },
               "LambdaRestApiAccount": {
                 "id": "LambdaRestApiAccount",
-                "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/LambdaRestApiAccount",
+                "path": "apikin-method-responses/test-apigateway-kinesis-default/LambdaRestApiAccount",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::ApiGateway::Account",
                   "aws:cdk:cloudformation:props": {
                     "cloudWatchRoleArn": {
                       "Fn::GetAtt": [
-                        "testapigatewaykinesisadditionalrequesttemplatesLambdaRestApiCloudWatchRole4FA3BA8A",
+                        "testapigatewaykinesisdefaultLambdaRestApiCloudWatchRole319C8324",
                         "Arn"
                       ]
                     }
@@ -723,11 +708,11 @@
               },
               "api-gateway-role": {
                 "id": "api-gateway-role",
-                "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/api-gateway-role",
+                "path": "apikin-method-responses/test-apigateway-kinesis-default/api-gateway-role",
                 "children": {
                   "Importapi-gateway-role": {
                     "id": "Importapi-gateway-role",
-                    "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/api-gateway-role/Importapi-gateway-role",
+                    "path": "apikin-method-responses/test-apigateway-kinesis-default/api-gateway-role/Importapi-gateway-role",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
                       "version": "2.145.0"
@@ -735,7 +720,7 @@
                   },
                   "Resource": {
                     "id": "Resource",
-                    "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/api-gateway-role/Resource",
+                    "path": "apikin-method-responses/test-apigateway-kinesis-default/api-gateway-role/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                       "aws:cdk:cloudformation:props": {
@@ -760,11 +745,11 @@
                   },
                   "DefaultPolicy": {
                     "id": "DefaultPolicy",
-                    "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/api-gateway-role/DefaultPolicy",
+                    "path": "apikin-method-responses/test-apigateway-kinesis-default/api-gateway-role/DefaultPolicy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/api-gateway-role/DefaultPolicy/Resource",
+                        "path": "apikin-method-responses/test-apigateway-kinesis-default/api-gateway-role/DefaultPolicy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                           "aws:cdk:cloudformation:props": {
@@ -787,10 +772,10 @@
                               ],
                               "Version": "2012-10-17"
                             },
-                            "policyName": "testapigatewaykinesisadditionalrequesttemplatesapigatewayroleDefaultPolicy5D60DBDF",
+                            "policyName": "testapigatewaykinesisdefaultapigatewayroleDefaultPolicy65F728A5",
                             "roles": [
                               {
-                                "Ref": "testapigatewaykinesisadditionalrequesttemplatesapigatewayroleAC79617D"
+                                "Ref": "testapigatewaykinesisdefaultapigatewayroleAD430BE2"
                               }
                             ]
                           }
@@ -814,11 +799,11 @@
               },
               "KinesisStreamGetRecordsIteratorAgeAlarm": {
                 "id": "KinesisStreamGetRecordsIteratorAgeAlarm",
-                "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/KinesisStreamGetRecordsIteratorAgeAlarm",
+                "path": "apikin-method-responses/test-apigateway-kinesis-default/KinesisStreamGetRecordsIteratorAgeAlarm",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/KinesisStreamGetRecordsIteratorAgeAlarm/Resource",
+                    "path": "apikin-method-responses/test-apigateway-kinesis-default/KinesisStreamGetRecordsIteratorAgeAlarm/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
                       "aws:cdk:cloudformation:props": {
@@ -845,11 +830,11 @@
               },
               "KinesisStreamReadProvisionedThroughputExceededAlarm": {
                 "id": "KinesisStreamReadProvisionedThroughputExceededAlarm",
-                "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/KinesisStreamReadProvisionedThroughputExceededAlarm",
+                "path": "apikin-method-responses/test-apigateway-kinesis-default/KinesisStreamReadProvisionedThroughputExceededAlarm",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "apikin-additional-request-templates/test-apigateway-kinesis-additional-request-templates/KinesisStreamReadProvisionedThroughputExceededAlarm/Resource",
+                    "path": "apikin-method-responses/test-apigateway-kinesis-default/KinesisStreamReadProvisionedThroughputExceededAlarm/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
                       "aws:cdk:cloudformation:props": {
@@ -882,11 +867,11 @@
           },
           "KinesisStream": {
             "id": "KinesisStream",
-            "path": "apikin-additional-request-templates/KinesisStream",
+            "path": "apikin-method-responses/KinesisStream",
             "children": {
               "Resource": {
                 "id": "Resource",
-                "path": "apikin-additional-request-templates/KinesisStream/Resource",
+                "path": "apikin-method-responses/KinesisStream/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::Kinesis::Stream",
                   "aws:cdk:cloudformation:props": {
@@ -911,15 +896,15 @@
           },
           "Integ": {
             "id": "Integ",
-            "path": "apikin-additional-request-templates/Integ",
+            "path": "apikin-method-responses/Integ",
             "children": {
               "DefaultTest": {
                 "id": "DefaultTest",
-                "path": "apikin-additional-request-templates/Integ/DefaultTest",
+                "path": "apikin-method-responses/Integ/DefaultTest",
                 "children": {
                   "Default": {
                     "id": "Default",
-                    "path": "apikin-additional-request-templates/Integ/DefaultTest/Default",
+                    "path": "apikin-method-responses/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
                       "version": "10.3.0"
@@ -927,11 +912,11 @@
                   },
                   "DeployAssert": {
                     "id": "DeployAssert",
-                    "path": "apikin-additional-request-templates/Integ/DefaultTest/DeployAssert",
+                    "path": "apikin-method-responses/Integ/DefaultTest/DeployAssert",
                     "children": {
                       "BootstrapVersion": {
                         "id": "BootstrapVersion",
-                        "path": "apikin-additional-request-templates/Integ/DefaultTest/DeployAssert/BootstrapVersion",
+                        "path": "apikin-method-responses/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
                           "version": "2.145.0"
@@ -939,7 +924,7 @@
                       },
                       "CheckBootstrapVersion": {
                         "id": "CheckBootstrapVersion",
-                        "path": "apikin-additional-request-templates/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
+                        "path": "apikin-method-responses/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
                           "version": "2.145.0"
@@ -965,7 +950,7 @@
           },
           "BootstrapVersion": {
             "id": "BootstrapVersion",
-            "path": "apikin-additional-request-templates/BootstrapVersion",
+            "path": "apikin-method-responses/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
               "version": "2.145.0"
@@ -973,7 +958,7 @@
           },
           "CheckBootstrapVersion": {
             "id": "CheckBootstrapVersion",
-            "path": "apikin-additional-request-templates/CheckBootstrapVersion",
+            "path": "apikin-method-responses/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
               "version": "2.145.0"

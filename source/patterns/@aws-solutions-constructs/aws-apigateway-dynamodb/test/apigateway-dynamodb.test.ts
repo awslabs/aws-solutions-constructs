@@ -774,3 +774,112 @@ test('Test that CheckDynamoDBProps is getting called', () => {
   // Assertion
   expect(app).toThrowError(/Error - Either provide existingTableObj or dynamoTableProps, but not both.\n/);
 });
+
+test("provide createMethodResponses", () => {
+  const stack = new Stack();
+  const apiGatewayToDynamoDBProps: ApiGatewayToDynamoDBProps = {
+    allowCreateOperation: true,
+    createRequestTemplate: "fingerprint",
+    createMethodResponses: [{
+      statusCode: "100"
+    }]
+  };
+  new ApiGatewayToDynamoDB(stack, "test-api-gateway-dynamodb", apiGatewayToDynamoDBProps);
+
+  const template = Template.fromStack(stack);
+  // Checking for fingerprint ensures we're looking at the correct Method
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
+    HttpMethod: "POST",
+    Integration: {
+      RequestTemplates: {
+        "application/json": "fingerprint"
+      }
+    },
+    MethodResponses: [
+      {
+        StatusCode: "100"
+      }
+    ]
+  });
+});
+
+test("provide readMethodResponses", () => {
+  const stack = new Stack();
+  const apiGatewayToDynamoDBProps: ApiGatewayToDynamoDBProps = {
+    allowReadOperation: true,
+    readRequestTemplate: "fingerprint",
+    readMethodResponses: [{
+      statusCode: "100"
+    }]
+  };
+  new ApiGatewayToDynamoDB(stack, "test-api-gateway-dynamodb", apiGatewayToDynamoDBProps);
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
+    HttpMethod: "GET",
+    Integration: {
+      RequestTemplates: {
+        "application/json": "fingerprint"
+      }
+    },
+    MethodResponses: [
+      {
+        StatusCode: "100"
+      }
+    ]
+  });
+});
+
+test("provide updateMethodResponses", () => {
+  const stack = new Stack();
+  const apiGatewayToDynamoDBProps: ApiGatewayToDynamoDBProps = {
+    allowUpdateOperation: true,
+    updateRequestTemplate: "fingerprint",
+    updateMethodResponses: [{
+      statusCode: "100"
+    }]
+  };
+  new ApiGatewayToDynamoDB(stack, "test-api-gateway-dynamodb", apiGatewayToDynamoDBProps);
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
+    HttpMethod: "PUT",
+    Integration: {
+      RequestTemplates: {
+        "application/json": "fingerprint"
+      }
+    },
+    MethodResponses: [
+      {
+        StatusCode: "100"
+      }
+    ]
+  });
+});
+
+test("provide deleteMethodResponses", () => {
+  const stack = new Stack();
+  const apiGatewayToDynamoDBProps: ApiGatewayToDynamoDBProps = {
+    allowDeleteOperation: true,
+    deleteRequestTemplate: "fingerprint",
+    deleteMethodResponses: [{
+      statusCode: "100"
+    }]
+  };
+  new ApiGatewayToDynamoDB(stack, "test-api-gateway-dynamodb", apiGatewayToDynamoDBProps);
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
+    HttpMethod: "DELETE",
+    Integration: {
+      RequestTemplates: {
+        "application/json": "fingerprint"
+      }
+    },
+    MethodResponses: [
+      {
+        StatusCode: "100"
+      }
+    ]
+  });
+});
