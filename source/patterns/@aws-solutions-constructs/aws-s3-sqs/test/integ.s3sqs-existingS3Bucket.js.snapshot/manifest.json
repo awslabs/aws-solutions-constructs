@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3c25bef4d8da1e8ff688157d7e1e4bf6e56bd222d07b205e532c4e4a39390d5e.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3aca71f6cdd6e6bcdbc595d627b6f79ee34e936f2fee314d8db71aa5b28cfbf1.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -98,6 +98,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "scrapBucketLogAutoDeleteObjectsCustomResource307F3D47"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/s3sqs-existingS3Bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
@@ -200,24 +206,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "tests3sqsdeadLetterQueueEABBC814": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3sqsdeadLetterQueueEABBC814",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "tests3sqsdeadLetterQueuePolicy35D7CFE3": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3sqsdeadLetterQueuePolicy35D7CFE3",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },

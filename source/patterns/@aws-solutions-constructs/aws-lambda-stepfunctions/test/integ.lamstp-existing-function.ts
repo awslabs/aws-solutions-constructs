@@ -25,7 +25,7 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 
 // Setup the "existing" Lambda function props
 const lambdaFunctionProps = {
-  runtime: lambda.Runtime.NODEJS_20_X,
+  runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
   handler: 'index.handler',
   code: lambda.Code.fromAsset(`${__dirname}/lambda`)
 };

@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f7f3bc47729cec23f57d9261a0b4563be51e8bd81176744c2a652fd7c74a7459.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/2ecb5c151ee95861ae9db34854f13c5845f40ad319f8e5b35965f76a8f226ebf.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -188,6 +188,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "VpcCLOUDWATCHEVENTS1A0DAFBF"
+          }
+        ],
+        "/lamevt-deployFunctionWithNewEventBus/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/lamevt-deployFunctionWithNewEventBus/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [

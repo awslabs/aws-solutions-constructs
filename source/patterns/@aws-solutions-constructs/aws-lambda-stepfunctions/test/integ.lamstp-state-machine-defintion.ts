@@ -19,13 +19,14 @@ import * as sftasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import { generateIntegStackName, deployLambdaFunction } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
+import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup the app and stack
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
 const functionOne = deployLambdaFunction(stack, {
-  runtime: lambda.Runtime.NODEJS_20_X,
+  runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
   handler: 'index.handler',
   code: lambda.Code.fromInline(`exports.handler = async (event) => { console.log("First Function");}`)
 },
@@ -36,7 +37,7 @@ const taskOne = new sftasks.LambdaInvoke(stack, 'task-one', {
 });
 
 const functionTwo = deployLambdaFunction(stack, {
-  runtime: lambda.Runtime.NODEJS_20_X,
+  runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
   handler: 'index.handler',
   code: lambda.Code.fromInline(`exports.handler = async (event) => { console.log("Second Function");}`)
 },
@@ -52,7 +53,7 @@ const startState = sfn.DefinitionBody.fromChainable(taskOne.next(taskTwo));
 // Setup the pattern props
 const props: LambdaToStepfunctionsProps = {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_20_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   },

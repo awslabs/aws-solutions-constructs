@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5916072b9f01260833dba9cc6022794c4d7679966039d2ce970f44e4757a660c.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/574b7b43409a49a1d942d25937aa86c626994579c634c1931343de3327a48762.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -226,6 +226,12 @@
             "data": "testcloudfrontapigatewayCloudFrontDistribution159820CC"
           }
         ],
+        "/cftapi-no-arguments/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
+          }
+        ],
         "/cftapi-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
           {
             "type": "aws:cdk:logicalId",
@@ -248,15 +254,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "testcloudfrontapigatewayCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResourceCAC0A05B": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfrontapigatewayCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResourceCAC0A05B",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },

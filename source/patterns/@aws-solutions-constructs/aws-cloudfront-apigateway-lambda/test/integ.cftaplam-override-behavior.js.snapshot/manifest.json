@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/126b6c72d316536b4b73b1c1928345a5eb78d6d1d127a369e1b5690526ab0cb7.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/17472da3bceb13e92a48ce1b86167eded806adf5230767ad290f20c5dfd99b1a.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -262,6 +262,12 @@
             "data": "cfapilambdaoverrideCloudFrontToApiGatewayCloudFrontDistribution94A35932"
           }
         ],
+        "/cftaplam-override-behavior/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
+          }
+        ],
         "/cftaplam-override-behavior/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
           {
             "type": "aws:cdk:logicalId",
@@ -284,15 +290,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "cfapilambdaoverrideCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResource33279C95": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "cfapilambdaoverrideCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResource33279C95",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },

@@ -28,7 +28,7 @@ test('Test that properties are set correctly', () => {
   const construct = new LambdaToKinesisFirehose(stack, 'test-target', {
     existingKinesisFirehose: destination.kinesisFirehose,
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     }
@@ -45,7 +45,7 @@ test('Test existing function is utilized correctly', () => {
   const destination = GetTestFirehoseDestination(stack, 'test-destination');
   const testName = 'test-name';
   const existingFunction = new lambda.Function(stack, 'test-function', {
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     functionName: testName
@@ -75,7 +75,7 @@ test('Test that lambda function props are incorporated', () => {
   new LambdaToKinesisFirehose(stack, 'test-target', {
     existingKinesisFirehose: destination.kinesisFirehose,
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       functionName: testName
@@ -98,7 +98,7 @@ test('Test that new VPC is created', () => {
   const construct = new LambdaToKinesisFirehose(stack, 'test-target', {
     existingKinesisFirehose: destination.kinesisFirehose,
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -141,7 +141,7 @@ test('Test that existing VPC is used', () => {
   const construct = new LambdaToKinesisFirehose(stack, 'test-target', {
     existingKinesisFirehose: destination.kinesisFirehose,
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -187,7 +187,7 @@ test('Test fail if existingFirehose does not have a stream name', () => {
     new LambdaToKinesisFirehose(stack, 'test-target', {
       existingKinesisFirehose: mutatedFirehose,
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_18_X,
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
         functionName: testName
@@ -206,7 +206,7 @@ test('Test fail Vpc check with vpcProps yet deployVpc is false', () => {
     new LambdaToKinesisFirehose(stack, 'test-target', {
       existingKinesisFirehose: destination.kinesisFirehose,
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_18_X,
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
@@ -229,7 +229,7 @@ test('Test fail Vpc check with vpcProps yet deployVpc is undefined', () => {
     new LambdaToKinesisFirehose(stack, 'test-target', {
       existingKinesisFirehose: destination.kinesisFirehose,
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_18_X,
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
@@ -261,7 +261,7 @@ test('Confirm CheckVpcProps() is being called', () => {
       existingKinesisFirehose: destination.kinesisFirehose,
       lambdaFunctionProps: {
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-        runtime: lambda.Runtime.NODEJS_18_X,
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: 'index.handler'
       },
       deployVpc: true,
@@ -276,7 +276,7 @@ test('Confirm call to CheckLambdaProps', () => {
   // Initial Setup
   const stack = new cdk.Stack();
   const lambdaFunction = new lambda.Function(stack, 'a-function', {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -285,7 +285,7 @@ test('Confirm call to CheckLambdaProps', () => {
   const props: LambdaToKinesisFirehoseProps = {
     existingKinesisFirehose: destination.kinesisFirehose,
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },

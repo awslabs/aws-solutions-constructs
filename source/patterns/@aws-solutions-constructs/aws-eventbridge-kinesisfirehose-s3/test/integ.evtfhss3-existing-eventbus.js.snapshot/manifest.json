@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/60d5bc71dacb082ffc42997dc838b711997eec257f157353da1ea7a660231f97.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/01163a2b86e72f309b7d72bad2c8391e5bca6abe5492e0d76247630092b93ef1.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -152,6 +152,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "evtfhss3existingbusEventsRule7E0DBD3A"
+          }
+        ],
+        "/evtfhss3-existing-eventbus/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/evtfhss3-existing-eventbus/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [

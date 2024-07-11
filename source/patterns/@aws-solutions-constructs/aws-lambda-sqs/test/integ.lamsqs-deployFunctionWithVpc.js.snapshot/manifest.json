@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c1e341649482374813c3f7100ee90143d45039fc12308ff53717a3ffdf0822af.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c816279812dd808a13ce71bd6d875d82304f2d67fa08b865dea2f45879cb0feb.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -208,6 +208,12 @@
             "data": "VpcSQSDF166A88"
           }
         ],
+        "/lamsqs-deployFunctionWithVpc/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
+          }
+        ],
         "/lamsqs-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
           {
             "type": "aws:cdk:logicalId",
@@ -236,24 +242,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "testlambdasqsdeadLetterQueueC34BC0BD": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdasqsdeadLetterQueueC34BC0BD",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "testlambdasqsdeadLetterQueuePolicy270F1626": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdasqsdeadLetterQueuePolicy270F1626",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },

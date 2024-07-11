@@ -26,7 +26,7 @@ stack.templateOptions.description = 'Integration Test for aws-lambda-sqs-lambda'
 
 // Definitions
 const lambdaFunctionProps: lambda.FunctionProps = {
-  runtime: lambda.Runtime.NODEJS_16_X,
+  runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
   handler: 'index.handler',
   code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`)
 };
@@ -35,7 +35,7 @@ const existingConsumerFn = defaults.deployLambdaFunction(stack, lambdaFunctionPr
 
 const props: LambdaToSqsToLambdaProps = {
   producerLambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`)
   },

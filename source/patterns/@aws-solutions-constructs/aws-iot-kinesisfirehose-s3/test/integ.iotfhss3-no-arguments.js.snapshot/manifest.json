@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/25012696253bb9209060cf3ea17359b028f56d82bc589e9a0e41870de7c221b2.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c58bc61400a122c973b03bbb4cd016673f5da7e12943d34e04383c2534d530b4.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -164,6 +164,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testiotfirehoses3IotTopicAC1CA58D"
+          }
+        ],
+        "/iotfhss3-no-arguments/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/iotfhss3-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [

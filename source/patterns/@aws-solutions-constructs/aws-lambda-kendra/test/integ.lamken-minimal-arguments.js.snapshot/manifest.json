@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8580efe3fd26f681fd54ea431ac89cedb51cd29d31cc147a36452371f7f10619.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5f5b0e6efc98539c9a258f123fe38099da6e4f08a6d256724a8fa53582e5c8c8.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -98,6 +98,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "contentBucketLogAutoDeleteObjectsCustomResource533B8207"
+          }
+        ],
+        "/lamken-minimal-arguments/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/lamken-minimal-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [

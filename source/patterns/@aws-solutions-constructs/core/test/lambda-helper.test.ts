@@ -44,7 +44,7 @@ test("test FunctionProps override timeout", () => {
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: "index.handler",
     timeout: Duration.seconds(5),
   };
@@ -56,7 +56,7 @@ test("test FunctionProps override timeout", () => {
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
     },
-    Runtime: "nodejs16.x",
+    Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
     Timeout: 5,
   });
 });
@@ -66,7 +66,7 @@ test("test FunctionProps for environment variable when runtime = NODEJS", () => 
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: "index.handler",
   };
 
@@ -77,7 +77,7 @@ test("test FunctionProps for environment variable when runtime = NODEJS", () => 
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
     },
-    Runtime: "nodejs16.x",
+    Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
@@ -117,7 +117,7 @@ test("test buildLambdaFunction with deploy = true", () => {
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: "index.handler",
   };
 
@@ -130,7 +130,7 @@ test("test buildLambdaFunction with deploy = true", () => {
     Role: {
       "Fn::GetAtt": ["LambdaFunctionServiceRole0C4CDE0B", "Arn"],
     },
-    Runtime: "nodejs16.x",
+    Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
   });
 });
 
@@ -139,7 +139,7 @@ test("test buildLambdaFunction with existing Lambda function (no VPC)", () => {
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: "index.handler",
   };
 
@@ -210,7 +210,7 @@ test("test buildLambdaFunction when Lambda properties includes a VPC", () => {
   const fakeVpc = new ec2.Vpc(stack, "vpc", {});
 
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     vpc: fakeVpc,
@@ -249,7 +249,7 @@ test("Test for error if VPC in arguments AND in Lambda Function properties", () 
   const fakeVpc = new ec2.Vpc(stack, "vpc", {});
 
   const lambdaFunctionProps: lambda.FunctionProps = {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     vpc: fakeVpc,
@@ -267,7 +267,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   const stack = new Stack();
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -294,7 +294,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   const testVpc = new ec2.Vpc(stack, "test-vpc", {});
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     vpc: testVpc,
@@ -316,7 +316,7 @@ test("Test generating synthesized permission IDs", () => {
   const coreName = "TestInvokePermission";
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -345,7 +345,7 @@ test("Test invalid synthesized permission names", () => {
   const coreName = "TestInvokePermission";
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -366,13 +366,13 @@ test("Test invalid synthesized permission names", () => {
   expect(app).toThrowError();
 });
 
-test('Test environment variable for NodeJS 16.x', () => {
+test('Test environment variable for correct node version', () => {
   // Stack
   const stack = new Stack();
 
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
 
@@ -384,7 +384,7 @@ test('Test environment variable for NodeJS 16.x', () => {
     Role: {
       'Fn::GetAtt': ['LambdaFunctionServiceRole0C4CDE0B', 'Arn']
     },
-    Runtime: 'nodejs16.x',
+    Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
@@ -398,7 +398,7 @@ test('Test minimum deployment with an existing VPC as a vpc parameter in deployL
   const stack = new Stack();
   const inProps: lambda.FunctionProps = {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   };
   const fakeVpc: ec2.Vpc = new ec2.Vpc(stack, 'vpc', {});
@@ -436,7 +436,7 @@ test("Test retrieving lambda vpc security group ids", () => {
   const securityGroup2 = new ec2.SecurityGroup(stack, 'SecurityGroup2', { vpc });
 
   const testLambdaFunction = new lambda.Function(stack, 'test-lamba', {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     securityGroups: [securityGroup1, securityGroup2],
@@ -454,7 +454,7 @@ test('test buildLambdaFunction with lambdaFunctionProps default id', () => {
 
   defaults.buildLambdaFunction(stack, {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     }
@@ -473,7 +473,7 @@ test('test buildLambdaFunction with lambdaFunctionProps custom id', () => {
   defaults.buildLambdaFunction(stack, {
     lambdaFunctionProps: {
       functionName: 'MyTestFunction',
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     }
@@ -491,7 +491,7 @@ test('buildLambdaFunction uses constructId when specified', () => {
 
   defaults.buildLambdaFunction(stack, {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     }
@@ -511,7 +511,7 @@ test('buildLambdaFunction uses constructId when both constructId and functionNam
 
   defaults.buildLambdaFunction(stack, {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       functionName: 'MyTestFunction',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
@@ -530,7 +530,7 @@ test('buildLambdaFunction uses functionName when constructId is not specified', 
 
   defaults.buildLambdaFunction(stack, {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       functionName: 'MyTestFunction',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
@@ -549,7 +549,7 @@ test('buildLambdaFunction uses default name when neither constructId or function
 
   defaults.buildLambdaFunction(stack, {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     }
@@ -571,12 +571,12 @@ test("Test fail Lambda function check", () => {
   const props: defaults.LambdaProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: "index.handler",
     },
     existingLambdaObj: new lambda.Function(stack, "placeholder", {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: "index.handler",
     }),
   };
