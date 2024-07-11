@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3c9a8f0d48c83ad58db3ebf308da62a227204de7215e57eabce2d77a5eddb217.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/baa851f5b129916e9114d6020735592a75c9af1f31e7e20f04438f4b65e15968.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -238,6 +238,12 @@
             "data": "testlambdasqssqstolambdaLambdaFunctionSqsEventSourcelamsqslamdeployProducerFunctionWithVpctestlambdasqslambdatosqsqueueD62DE11EB9A24E09"
           }
         ],
+        "/lamsqslam-deployProducerFunctionWithVpc/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
+          }
+        ],
         "/lamsqslam-deployProducerFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
           {
             "type": "aws:cdk:logicalId",
@@ -260,24 +266,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "testlambdasqslambdatosqsdeadLetterQueue0FF744BB": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdasqslambdatosqsdeadLetterQueue0FF744BB",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "testlambdasqslambdatosqsdeadLetterQueuePolicy4A3E49B3": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdasqslambdatosqsdeadLetterQueuePolicy4A3E49B3",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },

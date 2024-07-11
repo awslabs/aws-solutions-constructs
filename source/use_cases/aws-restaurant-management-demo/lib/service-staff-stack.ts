@@ -16,6 +16,7 @@ import { Stack, Duration } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as ddb from 'aws-cdk-lib/aws-dynamodb';
+import * as cfg from './config';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import {
   CognitoToApiGatewayToLambda
@@ -40,7 +41,7 @@ export class ServiceStaffStack extends Stack {
     // Create a Lambda function that adds a new order to the database
     const createOrder = new LambdaToDynamoDB(this, 'create-order', {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: cfg.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/service-staff/create-order`),
         handler: 'index.handler',
         timeout: Duration.seconds(15)
@@ -51,7 +52,7 @@ export class ServiceStaffStack extends Stack {
     // Create a Lambda function that closes out an order in the table
     const processPayment = new LambdaToDynamoDB(this, 'process-payment', {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: cfg.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         code: lambda.Code.fromAsset(`${__dirname}/lambda/service-staff/process-payment`),
         handler: 'index.handler',
         timeout: Duration.seconds(15)

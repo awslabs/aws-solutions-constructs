@@ -18,6 +18,7 @@ import { LambdaToS3 } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
+import * as defaults from "@aws-solutions-constructs/core";
 
 const app = new App();
 
@@ -26,7 +27,7 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 
 new LambdaToS3(stack, 'test-lambda-s3', {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   },
