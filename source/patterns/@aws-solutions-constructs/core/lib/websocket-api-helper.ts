@@ -44,7 +44,6 @@ export interface BuildWebSocketApiProps {
 
 export interface BuildWebSocketQueueApiRequest {
   readonly queue: sqs.IQueue;
-  // TODO: Should we create an interface representing { [contentType: string]: string; }? It would be in code documentation
   readonly defaultRouteRequestTemplate?: { [contentType: string]: string };
   readonly createDefaultRoute?: boolean;
   readonly webSocketApiProps?: apigwv2.WebSocketApiProps;

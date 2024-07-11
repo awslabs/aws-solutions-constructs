@@ -163,7 +163,6 @@ export class ApiGatewayV2WebSocketToSqs extends Construct {
 
     const buildWebSocketQueueApiResponse = defaults.buildWebSocketQueueApi(this, id, {
       queue: this.sqsQueue,
-      // TODO: Should we create an interface representing { [contentType: string]: string; }? It would be in code documentation
       defaultRouteRequestTemplate: props.defaultRouteRequestTemplate,
       createDefaultRoute: props.createDefaultRoute,
       webSocketApiProps: props.webSocketApiProps,
