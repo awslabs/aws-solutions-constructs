@@ -161,7 +161,7 @@ export class ApiGatewayV2WebSocketToSqs extends Construct {
     this.sqsQueue = buildQueueResponse.queue;
     this.deadLetterQueue = buildQueueResponse.dlq;
 
-    const buildWetbSocketQueueApiResponse = defaults.buildWebSocketQueueApi(this, id, {
+    const buildWebSocketQueueApiResponse = defaults.buildWebSocketQueueApi(this, id, {
       queue: this.sqsQueue,
       // TODO: Should we create an interface representing { [contentType: string]: string; }? It would be in code documentation
       defaultRouteRequestTemplate: props.defaultRouteRequestTemplate,
@@ -171,9 +171,9 @@ export class ApiGatewayV2WebSocketToSqs extends Construct {
       logGroupProps: props.logGroupProps,
     });
 
-    this.webSocketApi = buildWetbSocketQueueApiResponse.webSocketApi;
-    this.webSocketStage = buildWetbSocketQueueApiResponse.webSocketStage;
-    this.apiGatewayRole = buildWetbSocketQueueApiResponse.apiGatewayRole;
-    this.apiGatewayLogGroup = buildWetbSocketQueueApiResponse.apiGatewayLogGroup;
+    this.webSocketApi = buildWebSocketQueueApiResponse.webSocketApi;
+    this.webSocketStage = buildWebSocketQueueApiResponse.webSocketStage;
+    this.apiGatewayRole = buildWebSocketQueueApiResponse.apiGatewayRole;
+    this.apiGatewayLogGroup = buildWebSocketQueueApiResponse.apiGatewayLogGroup;
   }
 }
