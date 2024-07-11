@@ -11,14 +11,14 @@
  *  and limitations under the License.
  */
 
-import * as defaults from '@aws-solutions-constructs/core';
-import * as cdk from 'aws-cdk-lib';
-import * as apigwv2 from 'aws-cdk-lib/aws-apigatewayv2';
-import * as iam from 'aws-cdk-lib/aws-iam';
-import * as kms from 'aws-cdk-lib/aws-kms';
-import * as logs from 'aws-cdk-lib/aws-logs';
-import * as sqs from 'aws-cdk-lib/aws-sqs';
-import { Construct } from 'constructs';
+import * as defaults from "@aws-solutions-constructs/core";
+import * as cdk from "aws-cdk-lib";
+import * as apigwv2 from "aws-cdk-lib/aws-apigatewayv2";
+import * as iam from "aws-cdk-lib/aws-iam";
+import * as kms from "aws-cdk-lib/aws-kms";
+import * as logs from "aws-cdk-lib/aws-logs";
+import * as sqs from "aws-cdk-lib/aws-sqs";
+import { Construct } from "constructs";
 
 /**
  * @summary The properties for the ApiGatewayV2WebSocketToSqs class.
@@ -106,14 +106,18 @@ export interface ApiGatewayV2WebSocketToSqsProps {
    * @default - false.
    */
   readonly createDefaultRoute?: boolean;
+
+  /**
+   * User provided websocket authorizer. If not provided, the constructs defaults to
+   * {@link https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigatewayv2.WebSocketAuthorizer.html WebSocketAuthorizer}
+   */
+  readonly defaultAuthorizer?: apigwv2.IWebSocketAuthorizer;
 }
 
 export class ApiGatewayV2WebSocketToSqs extends Construct {
   public readonly webSocketApi: apigwv2.WebSocketApi;
   public readonly webSocketStage: apigwv2.WebSocketStage;
   public readonly apiGatewayRole: iam.Role;
-  // TODO: It appears this is never set? Can it be deleted?
-  // public readonly apiGatewayCloudWatchRole?: iam.Role;
   public readonly apiGatewayLogGroup: logs.LogGroup;
   public readonly sqsQueue: sqs.Queue;
   public readonly deadLetterQueue?: sqs.DeadLetterQueue;
@@ -122,13 +126,13 @@ export class ApiGatewayV2WebSocketToSqs extends Construct {
     super(scope, id);
 
     if (props.existingWebSocketApi && props.webSocketApiProps) {
-      throw new Error('Provide either an existing WebSocketApi instance or WebSocketApiProps, not both');
+      throw new Error("Provide either an existing WebSocketApi instance or WebSocketApiProps, not both");
     }
 
     const constructMandatedDlqProps: sqs.QueueProps = {
       fifo: true,
       deduplicationScope: sqs.DeduplicationScope.MESSAGE_GROUP,
-      fifoThroughputLimit: sqs.FifoThroughputLimit.PER_MESSAGE_GROUP_ID
+      fifoThroughputLimit: sqs.FifoThroughputLimit.PER_MESSAGE_GROUP_ID,
     };
 
     const constructMandatedQueueProps: sqs.QueueProps = {
@@ -136,13 +140,13 @@ export class ApiGatewayV2WebSocketToSqs extends Construct {
       deduplicationScope: sqs.DeduplicationScope.MESSAGE_GROUP,
       fifoThroughputLimit: sqs.FifoThroughputLimit.PER_MESSAGE_GROUP_ID,
       redriveAllowPolicy: {
-        redrivePermission: sqs.RedrivePermission.DENY_ALL
+        redrivePermission: sqs.RedrivePermission.DENY_ALL,
       },
-      visibilityTimeout: cdk.Duration.minutes(15)
+      visibilityTimeout: cdk.Duration.minutes(15),
     };
 
     // Setup the queue
-    const buildQueueResponse = defaults.buildQueue(this, 'queue', {
+    const buildQueueResponse = defaults.buildQueue(this, "queue", {
       existingQueueObj: props.existingQueueObj,
       queueProps: props.queueProps,
       deployDeadLetterQueue: props.deployDeadLetterQueue,
@@ -152,7 +156,7 @@ export class ApiGatewayV2WebSocketToSqs extends Construct {
       encryptionKey: props.encryptionKey,
       encryptionKeyProps: props.encryptionKeyProps,
       constructDeadLetterQueueProps: constructMandatedDlqProps,
-      constructQueueProps: constructMandatedQueueProps
+      constructQueueProps: constructMandatedQueueProps,
     });
     this.sqsQueue = buildQueueResponse.queue;
     this.deadLetterQueue = buildQueueResponse.dlq;
@@ -164,7 +168,7 @@ export class ApiGatewayV2WebSocketToSqs extends Construct {
       createDefaultRoute: props.createDefaultRoute,
       webSocketApiProps: props.webSocketApiProps,
       existingWebSocketApi: props.existingWebSocketApi,
-      logGroupProps: props.logGroupProps
+      logGroupProps: props.logGroupProps,
     });
 
     this.webSocketApi = buildWetbSocketQueueApiResponse.webSocketApi;

@@ -12,27 +12,11 @@
  */
 
 // Imports
-import { Stack } from "aws-cdk-lib";
-import * as defaults from '../';
-import * as iam from 'aws-cdk-lib/aws-iam';
-import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as defaults from "../";
 
-test('Test DefaultWebSocketApiProps with no defaults', () => {
-  const stack = new Stack();
-
-  const emptyRole = new iam.Role(stack, 'testrole', {
-    assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com")
-  });
-  const queue = new sqs.Queue(stack, 'testqueue', {});
-
-  const props = defaults.DefaultWebSocketApiProps(
-    emptyRole,
-    queue
+test("Test default VTL transformation config", () => {
+  const config = defaults.DEFAULT_ROUTE_QUEUE_VTL_CONFIG;
+  expect(config).toMatch(
+    "Action=SendMessage&MessageGroupId=$input.path('$.MessageGroupId')&MessageDeduplicationId=$context.requestId&MessageAttribute.1.Name=connectionId&MessageAttribute.1.Value.StringValue=$context.connectionId&MessageAttribute.1.Value.DataType=String&MessageAttribute.2.Name=requestId&MessageAttribute.2.Value.StringValue=$context.requestId&MessageAttribute.2.Value.DataType=String&MessageBody=$util.urlEncode($input.json($util.escapeJavaScript('$').replaceAll(\"\\\\'\",\"'\")))"
   );
-
-  expect(props).toMatchObject({
-    connectRouteOptions: {
-      authorizer: {}
-    }
-  });
 });

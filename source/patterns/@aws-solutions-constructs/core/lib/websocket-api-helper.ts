@@ -11,116 +11,23 @@
  *  and limitations under the License.
  */
 
-import * as apigwv2 from 'aws-cdk-lib/aws-apigatewayv2';
-import { Construct } from 'constructs';
-import * as iam from 'aws-cdk-lib/aws-iam';
-import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-import * as logs from 'aws-cdk-lib/aws-logs';
-import * as sqs from 'aws-cdk-lib/aws-sqs';
-import { consolidateProps, addCfnSuppressRules } from './utils';
-import { DefaultWebSocketApiProps } from './websocket-api-defaults';
-import * as cdk from 'aws-cdk-lib';
-import { buildLogGroup } from './cloudwatch-log-group-helper';
+import * as cdk from "aws-cdk-lib";
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import * as apigwv2 from "aws-cdk-lib/aws-apigatewayv2";
+import { WebSocketAwsIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations";
+import * as iam from "aws-cdk-lib/aws-iam";
+import * as logs from "aws-cdk-lib/aws-logs";
+import * as sqs from "aws-cdk-lib/aws-sqs";
+import { Construct } from "constructs";
+import { buildLogGroup } from "./cloudwatch-log-group-helper";
+import { addCfnSuppressRules, consolidateProps } from "./utils";
+import { DEFAULT_ROUTE_QUEUE_VTL_CONFIG } from "./websocket-api-defaults";
 
 export interface BuildWebSocketQueueApiResponse {
-  readonly webSocketApi: apigwv2.WebSocketApi,
-  readonly webSocketStage: apigwv2.WebSocketStage,
-  readonly apiGatewayRole: iam.Role,
-  readonly apiGatewayLogGroup: logs.LogGroup
-}
-
-// TODO: consider whether existing queue prop can be IQueue instead of Queue
-export interface BuildWebSocketQueueApiRequest {
-  readonly queue: sqs.Queue,
-  // TODO: Should we create an interface representing { [contentType: string]: string; }? It would be in code documentation
-  readonly defaultRouteRequestTemplate?: { [contentType: string]: string; },
-  readonly createDefaultRoute?: boolean,
-  readonly webSocketApiProps?: apigwv2.WebSocketApiProps,
-  readonly existingWebSocketApi?: apigwv2.WebSocketApi,
-  readonly logGroupProps?: logs.LogGroupProps
-}
-
-export function buildWebSocketQueueApi(scope: Construct, id: string, props: BuildWebSocketQueueApiRequest): BuildWebSocketQueueApiResponse {
-  // Setup the API Gateway role
-  const apiGatewayRole = new iam.Role(scope, 'LambdaRestApiCloudWatchRole', {
-    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
-  });
-  props.queue.grantSendMessages(apiGatewayRole);
-  // TODO: Dropped this to pass cfn-nag after discussion with Nihit, does everything still work?
-  // const kmsKeyPolicyToAccessQueue = new iam.PolicyStatement({
-  //   actions: ['kms:GenerateDataKey', 'kms:Decrypt'],
-  //   resources: ['*']
-  // });
-  // apiGatewayRole.addToPolicy(kmsKeyPolicyToAccessQueue);
-
-  const webSocketApi = buildApiGatewayV2WebSocket(scope, id, {
-    webSocketApiProps: consolidateProps(
-      DefaultWebSocketApiProps(
-        apiGatewayRole,
-        props.queue,
-        props.defaultRouteRequestTemplate,
-        props.createDefaultRoute
-      ),
-      props.webSocketApiProps
-    ),
-    existingWebSocketApi: props.existingWebSocketApi
-  });
-
-  const webSocketStage = new apigwv2.WebSocketStage(scope, 'Stage', {
-    stageName: 'prod',
-    webSocketApi,
-    autoDeploy: true
-  });
-
-  const apiGatewayLogGroup = buildLogGroup(scope, 'LogGroup', props.logGroupProps);
-  apiGatewayLogGroup.grant(
-    apiGatewayRole,
-    ...[
-      'logs:CreateLogGroup',
-      'logs:CreateLogStream',
-      'logs:DescribeLogGroups',
-      'logs:DescribeLogStreams',
-      'logs:PutLogEvents',
-      'logs:GetLogEvents',
-      'logs:FilterLogEvents'
-    ]
-  );
-
-  const _cfnStage: apigwv2.CfnStage = webSocketStage.node.defaultChild as apigwv2.CfnStage;
-  _cfnStage.addPropertyOverride('AccessLogSettings', {
-    DestinationArn: apiGatewayLogGroup.logGroupArn,
-    Format: apigateway.AccessLogFormat.clf().toString()
-  });
-  _cfnStage.addPropertyOverride('DefaultRouteSettings', {
-    DataTraceEnabled: false,
-    DetailedMetricsEnabled: true,
-    LoggingLevel: 'ERROR'
-  });
-
-  addCfnSuppressRules(webSocketStage, [
-    {
-      id: 'AwsSolutions-APIG1',
-      reason: 'Access logging configuration has been provided as per ApiGateway v2 requirements'
-    }
-  ]);
-
-  addCfnSuppressRules(
-    apiGatewayRole.node.tryFindChild('DefaultPolicy')?.node.tryFindChild('Resource') as cdk.CfnResource,
-    [
-      {
-        id: 'AwsSolutions-IAM5',
-        reason: 'The APIGateway requires permissions to KMS so that it can write to an encrypted SQS queue'
-      }
-    ]
-  );
-
-  return {
-    webSocketApi,
-    webSocketStage,
-    apiGatewayRole,
-    apiGatewayLogGroup
-  };
-
+  readonly webSocketApi: apigwv2.WebSocketApi;
+  readonly webSocketStage: apigwv2.WebSocketStage;
+  readonly apiGatewayRole: iam.Role;
+  readonly apiGatewayLogGroup: logs.LogGroup;
 }
 
 export interface BuildWebSocketApiProps {
@@ -133,6 +40,102 @@ export interface BuildWebSocketApiProps {
    * User provided properties of Apigateway v2 WebSocket
    */
   readonly webSocketApiProps?: apigwv2.WebSocketApiProps;
+}
+
+export interface BuildWebSocketQueueApiRequest {
+  readonly queue: sqs.IQueue;
+  // TODO: Should we create an interface representing { [contentType: string]: string; }? It would be in code documentation
+  readonly defaultRouteRequestTemplate?: { [contentType: string]: string };
+  readonly createDefaultRoute?: boolean;
+  readonly webSocketApiProps?: apigwv2.WebSocketApiProps;
+  readonly existingWebSocketApi?: apigwv2.WebSocketApi;
+  readonly logGroupProps?: logs.LogGroupProps;
+}
+/**
+ * Builds an AWS API Gateway WebSocket API integrated with an Amazon SQS queue.
+ *
+ * @param scope The construct scope where the resources will be created.
+ * @param id The unique ID for the resources.
+ * @param props The configuration properties for the WebSocket API and SQS queue integration.
+ * @returns
+ */
+export function buildWebSocketQueueApi(
+  scope: Construct,
+  id: string,
+  props: BuildWebSocketQueueApiRequest,
+): BuildWebSocketQueueApiResponse {
+  // Setup the API Gateway role
+  const apiGatewayRole = new iam.Role(scope, "LambdaRestApiCloudWatchRole", {
+    assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
+  });
+  props.queue.grantSendMessages(apiGatewayRole);
+  const webSocketApi = buildApiGatewayV2WebSocket(scope, id, {
+    webSocketApiProps: consolidateProps(
+      buildWebSocketApiProps(
+        apiGatewayRole,
+        props.queue,
+        props.createDefaultRoute,
+        props.defaultRouteRequestTemplate
+      ),
+      props.webSocketApiProps
+    ),
+    existingWebSocketApi: props.existingWebSocketApi,
+  });
+
+  const webSocketStage = new apigwv2.WebSocketStage(scope, "Stage", {
+    stageName: "prod",
+    webSocketApi,
+    autoDeploy: true,
+  });
+
+  const apiGatewayLogGroup = buildLogGroup(scope, "LogGroup", props.logGroupProps);
+  apiGatewayLogGroup.grant(
+    apiGatewayRole,
+    ...[
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams",
+      "logs:PutLogEvents",
+      "logs:GetLogEvents",
+      "logs:FilterLogEvents",
+    ]
+  );
+
+  const cfnStage: apigwv2.CfnStage = webSocketStage.node.defaultChild as apigwv2.CfnStage;
+  cfnStage.addPropertyOverride("AccessLogSettings", {
+    DestinationArn: apiGatewayLogGroup.logGroupArn,
+    Format: apigateway.AccessLogFormat.clf().toString(),
+  });
+  cfnStage.addPropertyOverride("DefaultRouteSettings", {
+    DataTraceEnabled: false,
+    DetailedMetricsEnabled: true,
+    LoggingLevel: "ERROR",
+  });
+
+  addCfnSuppressRules(webSocketStage, [
+    {
+      id: "AwsSolutions-APIG1",
+      reason: "Access logging configuration has been provided as per ApiGateway v2 requirements",
+    },
+  ]);
+
+  addCfnSuppressRules(
+    apiGatewayRole.node.tryFindChild("DefaultPolicy")?.node.tryFindChild("Resource") as cdk.CfnResource,
+    [
+      {
+        id: "AwsSolutions-IAM5",
+        reason: "The APIGateway requires permissions to KMS so that it can write to an encrypted SQS queue",
+      },
+    ]
+  );
+
+  return {
+    webSocketApi,
+    webSocketStage,
+    apiGatewayRole,
+    apiGatewayLogGroup,
+  };
 }
 
 /**
@@ -149,4 +152,55 @@ function buildApiGatewayV2WebSocket(scope: Construct, id: string, props: BuildWe
   } else {
     return new apigwv2.WebSocketApi(scope, `WebSocketApi${id}`, props.webSocketApiProps);
   }
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function buildWebSocketApiProps(
+  // TODO: role and sqsQueue are only used if createDefaultRoute is true, why are they required arguments?
+  role: iam.Role,
+  sqsQueue: sqs.IQueue,
+  createDefaultRoute?: boolean,
+  requestTemplate?: { [contentType: string]: string },
+): apigwv2.WebSocketApiProps {
+  if (createDefaultRoute) {
+    if (!role || !sqsQueue) {
+      throw new Error("role and sqs must be provided to create a default route");
+    }
+  }
+
+  // prettier-ignore
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // Sonar exception reason: - typescript:S6571 - required because we are not passing all values. Using partial may cause @jsii to not work.
+  const websocketApiProps: apigwv2.WebSocketApiProps = { // NOSONAR
+    defaultRouteOptions: createDefaultRoute ? buildWebSocketQueueRouteOptions(role!, sqsQueue!, requestTemplate) : undefined,
+  };
+
+  return websocketApiProps;
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function buildWebSocketQueueRouteOptions(
+  role: iam.Role,
+  sqsQueue: sqs.IQueue,
+  requestTemplate?: { [contentType: string]: string },
+): apigwv2.WebSocketRouteOptions {
+  return {
+    integration: new WebSocketAwsIntegration("$default", {
+      integrationMethod: apigwv2.HttpMethod.POST,
+      integrationUri: `arn:${cdk.Aws.PARTITION}:apigateway:${cdk.Aws.REGION}:sqs:path/${cdk.Aws.ACCOUNT_ID}/${sqsQueue.queueName}`,
+      requestTemplates: requestTemplate ?? {
+        $default: DEFAULT_ROUTE_QUEUE_VTL_CONFIG,
+      },
+      templateSelectionExpression: "\\$default",
+      passthroughBehavior: apigwv2.PassthroughBehavior.NEVER,
+      credentialsRole: role,
+      requestParameters: {
+        "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'",
+      },
+    }),
+  };
 }
