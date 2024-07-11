@@ -31,7 +31,7 @@
     "Name": "RestApi"
    }
   },
-  "testapigatewaykinesisdefaultRestApiDeployment2852F1AA4ff693d376d46550825ad1d0025f9ef5": {
+  "testapigatewaykinesisdefaultRestApiDeployment2852F1AAe11e785f0c835bae60935baac09fb799": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Automatically created by the RestApi construct",
@@ -72,7 +72,7 @@
      "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
     },
     "DeploymentId": {
-     "Ref": "testapigatewaykinesisdefaultRestApiDeployment2852F1AA4ff693d376d46550825ad1d0025f9ef5"
+     "Ref": "testapigatewaykinesisdefaultRestApiDeployment2852F1AAe11e785f0c835bae60935baac09fb799"
     },
     "MethodSettings": [
      {
@@ -167,15 +167,15 @@
     },
     "MethodResponses": [
      {
-      "ResponseParameters": {
-       "method.response.header.Content-Type": true
-      },
       "StatusCode": "200"
      },
      {
-      "ResponseParameters": {
-       "method.response.header.Content-Type": true
-      },
+      "StatusCode": "400"
+     },
+     {
+      "StatusCode": "401"
+     },
+     {
       "StatusCode": "500"
      }
     ],
@@ -273,16 +273,13 @@
     },
     "MethodResponses": [
      {
-      "ResponseParameters": {
-       "method.response.header.Content-Type": true
-      },
       "StatusCode": "200"
      },
      {
-      "ResponseParameters": {
-       "method.response.header.Content-Type": true
-      },
-      "StatusCode": "500"
+      "StatusCode": "300"
+     },
+     {
+      "StatusCode": "401"
      }
     ],
     "RequestModels": {

@@ -90,6 +90,25 @@ export interface ApiGatewayToSqsProps {
    */
   readonly createIntegrationResponses?: api.IntegrationResponse[];
   /**
+   * Optional, custom API Gateway Method Responses for the create action.
+   *
+   * @default - [
+   *   {
+   *     statusCode: "200",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     }
+   *   },
+   *   {
+   *     statusCode: "500",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     },
+   *   }
+   * ]
+   */
+  readonly createMethodResponses?: api.MethodResponse[];
+  /**
    * Whether to deploy an API Gateway Method for GET HTTP operations on the queue (i.e. sqs:ReceiveMessage).
    *
    * @default - true
@@ -118,6 +137,25 @@ export interface ApiGatewayToSqsProps {
    */
   readonly readIntegrationResponses?: api.IntegrationResponse[];
   /**
+   * Optional, custom API Gateway Method Responses for the create action.
+   *
+   * @default - [
+   *   {
+   *     statusCode: "200",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     }
+   *   },
+   *   {
+   *     statusCode: "500",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     },
+   *   }
+   * ]
+   */
+  readonly readMethodResponses?: api.MethodResponse[];
+  /**
    * Whether to deploy an API Gateway Method for HTTP DELETE operations on the queue (i.e. sqs:DeleteMessage).
    *
    * @default - false
@@ -144,6 +182,25 @@ export interface ApiGatewayToSqsProps {
    * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
    */
   readonly deleteIntegrationResponses?: api.IntegrationResponse[];
+  /**
+   * Optional, custom API Gateway Method Responses for the create action.
+   *
+   * @default - [
+   *   {
+   *     statusCode: "200",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     }
+   *   },
+   *   {
+   *     statusCode: "500",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     },
+   *   }
+   * ]
+   */
+  readonly deleteMethodResponses?: api.MethodResponse[];
   /**
    * User provided props to override the default props for the CloudWatchLogs LogGroup.
    *
@@ -239,6 +296,7 @@ export class ApiGatewayToSqs extends Construct {
     // Create
     const createRequestTemplate = props.createRequestTemplate ?? this.defaultCreateRequestTemplate;
     if (props.allowCreateOperation && props.allowCreateOperation === true) {
+      const createMethodOptions: api.MethodOptions = props.createMethodResponses ? { methodResponses: props.createMethodResponses } : {};
       this.addActionToPolicy("sqs:SendMessage");
       defaults.addProxyMethodToApiResource({
         service: "sqs",
@@ -249,12 +307,14 @@ export class ApiGatewayToSqs extends Construct {
         requestTemplate: createRequestTemplate,
         additionalRequestTemplates: props.additionalCreateRequestTemplates,
         contentType: "'application/x-www-form-urlencoded'",
-        integrationResponses: props.createIntegrationResponses
+        integrationResponses: props.createIntegrationResponses,
+        methodOptions: createMethodOptions
       });
     }
 
     // Read
     const readRequestTemplate = props.readRequestTemplate ?? this.defaultReadRequestTemplate;
+    const readMethodOptions: api.MethodOptions = props.readMethodResponses ? { methodResponses: props.readMethodResponses } : {};
     if (props.allowReadOperation === undefined || props.allowReadOperation === true) {
       this.addActionToPolicy("sqs:ReceiveMessage");
       defaults.addProxyMethodToApiResource({
@@ -266,12 +326,14 @@ export class ApiGatewayToSqs extends Construct {
         requestTemplate: readRequestTemplate,
         additionalRequestTemplates: props.additionalReadRequestTemplates,
         contentType: "'application/x-www-form-urlencoded'",
-        integrationResponses: props.readIntegrationResponses
+        integrationResponses: props.readIntegrationResponses,
+        methodOptions: readMethodOptions
       });
     }
 
     // Delete
     const deleteRequestTemplate = props.deleteRequestTemplate ?? this.defaultDeleteRequestTemplate;
+    const deleteMethodOptions: api.MethodOptions = props.deleteMethodResponses ? { methodResponses: props.deleteMethodResponses } : {};
     if (props.allowDeleteOperation && props.allowDeleteOperation === true) {
       const apiGatewayResource = this.apiGateway.root.addResource('message');
       this.addActionToPolicy("sqs:DeleteMessage");
@@ -284,7 +346,8 @@ export class ApiGatewayToSqs extends Construct {
         requestTemplate: deleteRequestTemplate,
         additionalRequestTemplates: props.additionalDeleteRequestTemplates,
         contentType: "'application/x-www-form-urlencoded'",
-        integrationResponses: props.deleteIntegrationResponses
+        integrationResponses: props.deleteIntegrationResponses,
+        methodOptions: deleteMethodOptions
       });
     }
   }
