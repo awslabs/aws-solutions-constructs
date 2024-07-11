@@ -19,9 +19,7 @@ import { Capture, Match, Template } from "aws-cdk-lib/assertions";
 import { WebSocketIamAuthorizer } from "aws-cdk-lib/aws-apigatewayv2-authorizers";
 import { WebSocketLambdaIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations";
 import { ApiGatewayV2WebSocketToSqs } from "../lib";
-
-// TODO: Share this value across all constructs
-const COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME = lambda.Runtime.NODEJS_20_X;
+import { COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME } from "@aws-solutions-constructs/core";
 
 describe("When instantiating the ApiGatewayV2WebSocketToSqs construct with WebSocketApiProps", () => {
   let template: Template;
