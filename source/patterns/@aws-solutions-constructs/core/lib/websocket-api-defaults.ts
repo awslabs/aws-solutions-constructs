@@ -12,4 +12,10 @@
  */
 
 export const DEFAULT_ROUTE_QUEUE_VTL_CONFIG =
-  "Action=SendMessage&MessageGroupId=$input.path('$.MessageGroupId')&MessageDeduplicationId=$context.requestId&MessageAttribute.1.Name=connectionId&MessageAttribute.1.Value.StringValue=$context.connectionId&MessageAttribute.1.Value.DataType=String&MessageAttribute.2.Name=requestId&MessageAttribute.2.Value.StringValue=$context.requestId&MessageAttribute.2.Value.DataType=String&MessageBody=$util.urlEncode($input.json($util.escapeJavaScript('$').replaceAll(\"\\\\'\",\"'\")))";
+  "Action=SendMessage&MessageGroupId=$input.path('$.MessageGroupId')&"
+  + "MessageDeduplicationId=$context.requestId&"
+  + "MessageAttribute.1.Name=connectionId&"
+  + "MessageAttribute.1.Value.StringValue=$context.connectionId&"
+  + "MessageAttribute.1.Value.DataType=String&MessageAttribute.2.Name=requestId&"
+  + "MessageAttribute.2.Value.StringValue=$context.requestId&MessageAttribute.2.Value.DataType=String&"
+  + "MessageBody=$util.urlEncode($input.json($util.escapeJavaScript('$').replaceAll(\"\\\\'\",\"'\")))";

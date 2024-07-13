@@ -96,7 +96,6 @@ export interface ApiGatewayV2WebSocketToSqsProps {
   /**
    * API Gateway Request Template for the default route.
    *
-   * @default - "Action=ReceiveMessage"
    */
   readonly defaultRouteRequestTemplate?: { [contentType: string]: string };
 
@@ -106,12 +105,6 @@ export interface ApiGatewayV2WebSocketToSqsProps {
    * @default - false.
    */
   readonly createDefaultRoute?: boolean;
-
-  /**
-   * User provided websocket authorizer. If not provided, the constructs defaults to
-   * {@link https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigatewayv2.WebSocketAuthorizer.html WebSocketAuthorizer}
-   */
-  readonly defaultAuthorizer?: apigwv2.IWebSocketAuthorizer;
 }
 
 export class ApiGatewayV2WebSocketToSqs extends Construct {

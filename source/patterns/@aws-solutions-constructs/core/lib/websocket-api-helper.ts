@@ -90,15 +90,13 @@ export function buildWebSocketQueueApi(
   const apiGatewayLogGroup = buildLogGroup(scope, "LogGroup", props.logGroupProps);
   apiGatewayLogGroup.grant(
     apiGatewayRole,
-    ...[
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:DescribeLogGroups",
-      "logs:DescribeLogStreams",
-      "logs:PutLogEvents",
-      "logs:GetLogEvents",
-      "logs:FilterLogEvents",
-    ]
+    "logs:CreateLogGroup",
+    "logs:CreateLogStream",
+    "logs:DescribeLogGroups",
+    "logs:DescribeLogStreams",
+    "logs:PutLogEvents",
+    "logs:GetLogEvents",
+    "logs:FilterLogEvents",
   );
 
   const cfnStage: apigwv2.CfnStage = webSocketStage.node.defaultChild as apigwv2.CfnStage;
@@ -157,9 +155,8 @@ function buildApiGatewayV2WebSocket(scope: Construct, id: string, props: BuildWe
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function buildWebSocketApiProps(
-  // TODO: role and sqsQueue are only used if createDefaultRoute is true, why are they required arguments?
-  role: iam.Role,
-  sqsQueue: sqs.IQueue,
+  role?: iam.Role,
+  sqsQueue?: sqs.IQueue,
   createDefaultRoute?: boolean,
   requestTemplate?: { [contentType: string]: string },
 ): apigwv2.WebSocketApiProps {

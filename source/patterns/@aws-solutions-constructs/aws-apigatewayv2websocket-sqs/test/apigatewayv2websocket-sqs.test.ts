@@ -337,3 +337,19 @@ describe("When an existing instance of WebSocketApi and WebSocketApiProps both a
     }
   });
 });
+
+describe('When neither existingWebSocketApi nor webSocketApiProps are provided', () => {
+  it('should throw an error', () => {
+    const app = new cdk.App();
+    const stack = new cdk.Stack(app, 'TestStack');
+
+    try {
+      new ApiGatewayV2WebSocketToSqs(stack, 'ApiGatewayV2WebSocketToSqs', {});
+    } catch (error) {
+      expect(error).toBeInstanceOf(Error);
+      expect((error as Error).message).toEqual(
+        'Provide either an existing WebSocketApi instance or WebSocketApiProps, but not both'
+      );
+    }
+  });
+});
