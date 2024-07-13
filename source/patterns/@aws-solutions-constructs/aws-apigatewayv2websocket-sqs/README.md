@@ -20,26 +20,55 @@
 
 ## Overview
 
-This AWS Solutions Construct implements an Amazon API Gateway websocket connected to an Amazon SQS queue pattern.
+This AWS Solutions Construct implements an Amazon API Gateway WebSocket connected to an Amazon SQS queue pattern.
 
 Here is a minimal deployable pattern definition:
 
 Typescript
 ``` typescript
-import { Construct } from 'constructs';
-import { Stack, StackProps } from 'aws-cdk-lib';
-import { ApiGatewayV2WebSocketToSqs, ApiGatewayV2WebSocketToSqsProps } from "@aws-solutions-constructs/aws-apigatewayv2websocket-sqs";
+import { Construct } from "constructs";
+import { Stack, StackProps } from "aws-cdk-lib";
+import {
+	ApiGatewayV2WebSocketToSqs,
+	ApiGatewayV2WebSocketToSqsProps,
+} from "@aws-solutions-constructs/aws-apigatewayv2websocket-sqs";
+import { WebSocketLambdaAuthorizer } from 'aws-cdk-lib/aws-apigatewayv2-authorizers';
 
-new ApiGateApiGatewayV2WebSocketToSqswayToSqs(this, 'ApiGatewayV2WebSocketToSqsPattern', {});
+const authorizer = new WebSocketLambdaAuthorizer('Authorizer', authHandler);
+
+new ApiGateApiGatewayV2WebSocketToSqswayToSqs(this, "ApiGatewayV2WebSocketToSqsPattern", {
+	webSocketApiProps: {
+		connectRouteOptions: {
+			integration: new WebSocketLambdaIntegration("ConnectIntegration", connectLambda),
+			authorizer: authorizer,
+		},
+		disconnectRouteOptions: {
+			integration: new WebSocketLambdaIntegration("DisconnectIntegration", disconnectLambda),
+		},
+	},
+        createDefaultRoute: true
+});
 ```
 
 Python
 ``` python
 from aws_solutions_constructs.aws_apigateway_sqs import ApiGatewayV2WebSocketToSqs
+from aws_cdk.aws_apigatewayv2_authorizers import WebSocketLambdaAuthorizer
 from aws_cdk import Stack
 from constructs import Construct
 
-ApiGatewayV2WebSocketToSqs(self, 'ApiGatewayV2WebSocketToSqsPattern')
+authorizer = WebSocketLambdaAuthorizer("Authorizer", auth_handler)
+
+ApiGatewayV2WebSocketToSqs(self, 'ApiGatewayV2WebSocketToSqsPattern', 
+    connect_route_options=apigwv2.WebSocketRouteOptions(
+        integration=WebSocketLambdaIntegration("ConnectIntegration", connect_lambda),
+        authorizer=authorizer
+    ),
+    disconnect_route_options=apigwv2.WebSocketRouteOptions(
+        integration=WebSocketLambdaIntegration("DisConnectIntegration", disconnect_lambda),
+    ),
+    create_default_route=True
+)
 ```
 
 Java
@@ -48,9 +77,17 @@ import software.constructs.Construct;
 
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.aws_apigatewayv2_authorizers.*;
+import software.amazon.awscdk.aws_apigatewayv2_integrations.*;
 import software.amazon.awsconstructs.services.apigatewaysqs.*;
 
 new ApiGatewayV2WebSocketToSqs(this, "ApiGatewayV2WebSocketToSqsPattern", new ApiGatewayV2WebSocketToSqsProps.Builder()
+        .webSocketApiProps(new WebSocketApiProps.Builder()
+                .connectRouteOptions(new WebSocketRouteOptions.builder()
+                        .integration(new WebSocketLambdaIntegration("ConnectIntegration", connect_lambda)))
+                .disconnectRouteOptions(new WebSocketRouteOptions.builder()
+                        .integration(new WebSocketLambdaIntegration("DisConnectIntegration", disconnect_lambda)))
+                .createDefaultRoute(true)
         .build());
 ```
 
