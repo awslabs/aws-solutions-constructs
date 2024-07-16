@@ -15,11 +15,11 @@ import * as cdk from "aws-cdk-lib";
 import * as apigwv2 from "aws-cdk-lib/aws-apigatewayv2";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 
-import { Capture, Match, Template } from "aws-cdk-lib/assertions";
-import { WebSocketIamAuthorizer } from "aws-cdk-lib/aws-apigatewayv2-authorizers";
-import { WebSocketLambdaIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations";
-import { ApiGatewayV2WebSocketToSqs } from "../lib";
 import { COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME } from "@aws-solutions-constructs/core";
+import { Capture, Match, Template } from "aws-cdk-lib/assertions";
+import { WebSocketIamAuthorizer, WebSocketLambdaAuthorizer } from "aws-cdk-lib/aws-apigatewayv2-authorizers";
+import { WebSocketLambdaIntegration, WebSocketMockIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations";
+import { ApiGatewayV2WebSocketToSqs } from "../lib";
 
 describe("When instantiating the ApiGatewayV2WebSocketToSqs construct with WebSocketApiProps", () => {
   let template: Template;
@@ -43,7 +43,7 @@ describe("When instantiating the ApiGatewayV2WebSocketToSqs construct with WebSo
       webSocketApiProps: {
         connectRouteOptions: {
           integration: new WebSocketLambdaIntegration("ConnectIntegration", mockConnectLambda),
-          authorizer: new WebSocketIamAuthorizer()
+          authorizer: new WebSocketIamAuthorizer(),
         },
         disconnectRouteOptions: {
           integration: new WebSocketLambdaIntegration("DisconnectIntegration", mockDisconnectLambda),
@@ -54,6 +54,7 @@ describe("When instantiating the ApiGatewayV2WebSocketToSqs construct with WebSo
   });
 
   it("should have a FIFO queue and a DLQ", () => {
+    template.resourceCountIs("AWS::SQS::Queue", 2);
     template.hasResourceProperties("AWS::SQS::Queue", {
       DeduplicationScope: "messageGroup",
       FifoQueue: true,
@@ -68,6 +69,7 @@ describe("When instantiating the ApiGatewayV2WebSocketToSqs construct with WebSo
       FifoQueue: true,
       DeduplicationScope: "messageGroup",
       FifoThroughputLimit: "perMessageGroupId",
+      RedriveAllowPolicy: Match.absent(),
     });
   });
 
@@ -338,17 +340,159 @@ describe("When an existing instance of WebSocketApi and WebSocketApiProps both a
   });
 });
 
-describe('When neither existingWebSocketApi nor webSocketApiProps are provided', () => {
-  it('should throw an error', () => {
+describe("When instantiating the ApiGatewayV2WebSocketToSqs construct when not setting defaultIamAuthorizer", () => {
+  let template: Template;
+
+  beforeAll(() => {
     const app = new cdk.App();
-    const stack = new cdk.Stack(app, 'TestStack');
+    const stack = new cdk.Stack(app, "TestStack");
+
+    const mockDisconnectLambda = new lambda.Function(stack, "mockDisconnectFunction", {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: "disconnect.handler",
+    });
+
+    new ApiGatewayV2WebSocketToSqs(stack, "ApiGatewayV2WebSocketToSqs", {
+      webSocketApiProps: {
+        disconnectRouteOptions: {
+          integration: new WebSocketLambdaIntegration("DisconnectIntegration", mockDisconnectLambda),
+        },
+      },
+    });
+    template = Template.fromStack(stack);
+  });
+
+  it("should contain a websocket endpoint with a default implementation of $connect", () => {
+    template.hasResourceProperties("AWS::ApiGatewayV2::Route", {
+      RouteKey: "$connect",
+      AuthorizationType: "AWS_IAM",
+      Target: {
+        "Fn::Join": [
+          "",
+          [
+            "integrations/",
+            {
+              Ref: Match.stringLikeRegexp(
+                "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteconnect"
+              ),
+            },
+          ],
+        ],
+      },
+    });
+  });
+});
+
+describe("When instantiating the ApiGatewayV2WebSocketToSqs construct when not setting defaultIamAuthorizer", () => {
+  let template: Template;
+
+  beforeAll(() => {
+    const app = new cdk.App();
+    const stack = new cdk.Stack(app, "TestStack");
+
+    const mockConnectLambda = new lambda.Function(stack, "mockConnectFunction", {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: "connect.handler",
+    });
+
+    new ApiGatewayV2WebSocketToSqs(stack, "ApiGatewayV2WebSocketToSqs", {
+      webSocketApiProps: {
+        connectRouteOptions: {
+          integration: new WebSocketMockIntegration("connect"),
+          authorizer: new WebSocketLambdaAuthorizer("custom-authorizer", mockConnectLambda, {
+            identitySource: ["route.request.querystring.Authorization"],
+          }),
+        },
+      },
+    });
+    template = Template.fromStack(stack);
+  });
+
+  it("should contain a websocket endpoint with a default implementation of $connect", () => {
+    template.hasResourceProperties("AWS::ApiGatewayV2::Authorizer", {
+      ApiId: {
+        Ref: Match.stringLikeRegexp("ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqs"),
+      },
+      AuthorizerType: "REQUEST",
+      AuthorizerUri: {
+        "Fn::Join": [
+          "",
+          [
+            "arn:",
+            {
+              Ref: "AWS::Partition",
+            },
+            ":apigateway:",
+            {
+              Ref: "AWS::Region",
+            },
+            ":lambda:path/2015-03-31/functions/",
+            {
+              "Fn::GetAtt": [Match.stringLikeRegexp("mockConnectFunction"), "Arn"],
+            },
+            "/invocations",
+          ],
+        ],
+      },
+      IdentitySource: ["route.request.querystring.Authorization"],
+      Name: "custom-authorizer",
+    });
+
+    template.hasResourceProperties("AWS::ApiGatewayV2::Route", {
+      RouteKey: "$connect",
+      AuthorizationType: "CUSTOM",
+      Target: {
+        "Fn::Join": [
+          "",
+          [
+            "integrations/",
+            {
+              Ref: Match.stringLikeRegexp(
+                "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteconnect"
+              ),
+            },
+          ],
+        ],
+      },
+    });
+  });
+});
+
+describe("When instantiating the ApiGatewayV2WebSocketToSqs construct when setting defaultIamAuthorizer as false", () => {
+  let template: Template;
+
+  beforeAll(() => {
+    const app = new cdk.App();
+    const stack = new cdk.Stack(app, "TestStack");
+
+    new ApiGatewayV2WebSocketToSqs(stack, "ApiGatewayV2WebSocketToSqs", {
+      defaultIamAuthorization: false,
+      createDefaultRoute: false
+    });
+    template = Template.fromStack(stack);
+  });
+
+  it("should contain a websocket endpoint with a default implementation of $connect", () => {
+    template.resourceCountIs("AWS::ApiGatewayV2::Authorizer", 0);
+    template.resourceCountIs("AWS::ApiGatewayV2::Route", 0);
+    template.resourceCountIs("AWS::ApiGatewayV2::Integration", 0);
+    template.resourceCountIs("AWS::ApiGatewayV2::Api", 1);
+  });
+});
+
+describe("When neither existingWebSocketApi nor webSocketApiProps are provided", () => {
+  it("should throw an error", () => {
+    const app = new cdk.App();
+    const stack = new cdk.Stack(app, "TestStack");
 
     try {
-      new ApiGatewayV2WebSocketToSqs(stack, 'ApiGatewayV2WebSocketToSqs', {});
+      new ApiGatewayV2WebSocketToSqs(stack, "ApiGatewayV2WebSocketToSqs", {});
     } catch (error) {
       expect(error).toBeInstanceOf(Error);
       expect((error as Error).message).toEqual(
-        'Provide either an existing WebSocketApi instance or WebSocketApiProps, but not both'
+        "Provide either an existing WebSocketApi instance or WebSocketApiProps, but not both"
       );
     }
   });

@@ -612,7 +612,7 @@
     "ApiId": {
      "Ref": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqs92E2576D"
     },
-    "AuthorizationType": "NONE",
+    "AuthorizationType": "AWS_IAM",
     "RouteKey": "$connect",
     "Target": {
      "Fn::Join": [

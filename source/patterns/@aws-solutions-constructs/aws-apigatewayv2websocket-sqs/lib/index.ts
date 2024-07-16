@@ -106,9 +106,10 @@ export interface ApiGatewayV2WebSocketToSqsProps {
    */
   readonly createDefaultRoute?: boolean;
   /**
-   * Add IAM authorization to the $connect path by default. Only set to false if: 1) The connect Lambda function implements custom
-   * authorization; or 2) The API should be open (no authorization) (AWS recommends against deploying unprotected APIs). If an authorizer
-   * is specified in connectRouteOptions, this parameter is ignored and no default IAM authorizer will be cr
+   * Add IAM authorization to the $connect path by default. Only set to false if: 1) If plan to provide an authorizer with
+   * the `$connect` route; or 2) The API should be open (no authorization) (AWS recommends against deploying unprotected APIs).
+   *
+   * If an authorizer is specified in connectRouteOptions, this parameter is ignored and no default IAM authorizer will be created
    *
    * @default - true
    */
@@ -169,6 +170,7 @@ export class ApiGatewayV2WebSocketToSqs extends Construct {
       webSocketApiProps: props.webSocketApiProps,
       existingWebSocketApi: props.existingWebSocketApi,
       logGroupProps: props.logGroupProps,
+      defaultIamAuthorization: props.defaultIamAuthorization !== undefined ? props.defaultIamAuthorization : true,
     });
 
     this.webSocketApi = buildWebSocketQueueApiResponse.webSocketApi;

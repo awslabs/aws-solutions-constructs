@@ -11,6 +11,14 @@
  *  and limitations under the License.
  */
 
+import * as apigwv2 from 'aws-cdk-lib/aws-apigatewayv2';
+import { WebSocketIamAuthorizer } from 'aws-cdk-lib/aws-apigatewayv2-authorizers';
+import { WebSocketMockIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations';
+
+/**
+ * Velocity template transformation string that maps incoming request on the websocket to Amazon SQS Queue `sendMessage`
+ * API call.
+ */
 export const DEFAULT_ROUTE_QUEUE_VTL_CONFIG =
   "Action=SendMessage&MessageGroupId=$input.path('$.MessageGroupId')&"
   + "MessageDeduplicationId=$context.requestId&"
@@ -19,3 +27,11 @@ export const DEFAULT_ROUTE_QUEUE_VTL_CONFIG =
   + "MessageAttribute.1.Value.DataType=String&MessageAttribute.2.Name=requestId&"
   + "MessageAttribute.2.Value.StringValue=$context.requestId&MessageAttribute.2.Value.DataType=String&"
   + "MessageBody=$util.urlEncode($input.json($util.escapeJavaScript('$').replaceAll(\"\\\\'\",\"'\")))";
+
+/**
+ * default property for `$connect` route options for a websocket
+ */
+export const connectRouteOptions: apigwv2.WebSocketRouteOptions = {
+  integration: new WebSocketMockIntegration('connect'),
+  authorizer: new WebSocketIamAuthorizer()
+};

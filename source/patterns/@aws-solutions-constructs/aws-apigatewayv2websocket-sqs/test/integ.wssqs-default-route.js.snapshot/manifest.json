@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a830048d02d523b70c56c251e8398bd7ece123ad0d28ee745d253ec221019127.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a9c904808b48fcd139192dced978d45e10f6098878a8f8ca31db1ce7ef33cd08.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,24 +82,6 @@
         "wssqs-default-route.assets"
       ],
       "metadata": {
-        "/wssqs-default-route/connectServiceRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "connectServiceRoleD6E70EFD"
-          }
-        ],
-        "/wssqs-default-route/connectServiceRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "connectServiceRoleDefaultPolicyCE4B3DE0"
-          }
-        ],
-        "/wssqs-default-route/connect/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "connectEB2081F1"
-          }
-        ],
         "/wssqs-default-route/disconnectServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -160,16 +142,10 @@
             "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqs92E2576D"
           }
         ],
-        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/ConnectIntegration-Permission": [
+        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/connect/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteConnectIntegrationPermission7B960546"
-          }
-        ],
-        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/ConnectIntegration/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteConnectIntegration7C5EDD50"
+            "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteconnect5AB5A82B"
           }
         ],
         "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/Resource": [
@@ -230,6 +206,51 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "connectServiceRoleD6E70EFD": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "connectServiceRoleD6E70EFD",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "connectServiceRoleDefaultPolicyCE4B3DE0": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "connectServiceRoleDefaultPolicyCE4B3DE0",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "connectEB2081F1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "connectEB2081F1",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteConnectIntegrationPermission7B960546": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteConnectIntegrationPermission7B960546",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteConnectIntegration7C5EDD50": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteConnectIntegration7C5EDD50",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

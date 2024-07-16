@@ -20,8 +20,8 @@ import * as logs from "aws-cdk-lib/aws-logs";
 import * as sqs from "aws-cdk-lib/aws-sqs";
 import { Construct } from "constructs";
 import { buildLogGroup } from "./cloudwatch-log-group-helper";
-import { addCfnSuppressRules, consolidateProps } from "./utils";
-import { DEFAULT_ROUTE_QUEUE_VTL_CONFIG } from "./websocket-api-defaults";
+import { addCfnSuppressRules, consolidateProps, printWarning } from "./utils";
+import { connectRouteOptions, DEFAULT_ROUTE_QUEUE_VTL_CONFIG } from "./websocket-api-defaults";
 
 export interface BuildWebSocketQueueApiResponse {
   readonly webSocketApi: apigwv2.WebSocketApi;
@@ -49,6 +49,7 @@ export interface BuildWebSocketQueueApiRequest {
   readonly webSocketApiProps?: apigwv2.WebSocketApiProps;
   readonly existingWebSocketApi?: apigwv2.WebSocketApi;
   readonly logGroupProps?: logs.LogGroupProps;
+  readonly defaultIamAuthorization?: boolean;
 }
 /**
  * Builds an AWS API Gateway WebSocket API integrated with an Amazon SQS queue.
@@ -74,7 +75,8 @@ export function buildWebSocketQueueApi(
         apiGatewayRole,
         props.queue,
         props.createDefaultRoute,
-        props.defaultRouteRequestTemplate
+        props.defaultRouteRequestTemplate,
+        props.defaultIamAuthorization
       ),
       props.webSocketApiProps
     ),
@@ -96,7 +98,7 @@ export function buildWebSocketQueueApi(
     "logs:DescribeLogStreams",
     "logs:PutLogEvents",
     "logs:GetLogEvents",
-    "logs:FilterLogEvents",
+    "logs:FilterLogEvents"
   );
 
   const cfnStage: apigwv2.CfnStage = webSocketStage.node.defaultChild as apigwv2.CfnStage;
@@ -159,6 +161,7 @@ export function buildWebSocketApiProps(
   sqsQueue?: sqs.IQueue,
   createDefaultRoute?: boolean,
   requestTemplate?: { [contentType: string]: string },
+  defaultIamAuthorization?: boolean
 ): apigwv2.WebSocketApiProps {
   if (createDefaultRoute) {
     if (!role || !sqsQueue) {
@@ -171,8 +174,9 @@ export function buildWebSocketApiProps(
   // Sonar exception reason: - typescript:S6571 - required because we are not passing all values. Using partial may cause @jsii to not work.
   const websocketApiProps: apigwv2.WebSocketApiProps = { // NOSONAR
     defaultRouteOptions: createDefaultRoute ? buildWebSocketQueueRouteOptions(role!, sqsQueue!, requestTemplate) : undefined,
+    connectRouteOptions: (defaultIamAuthorization === undefined || defaultIamAuthorization === true) ? connectRouteOptions : undefined
   };
-
+  printWarning("defaultIamAuthorization is set to false. This construct will not add any authorizers. If this is not the case, please pass the `connectRouteOptions` with an authorizer or call `addRoute` on the websocket endpoint and provide the `$connect` configuration with an authorizer");
   return websocketApiProps;
 }
 
@@ -182,7 +186,7 @@ export function buildWebSocketApiProps(
 export function buildWebSocketQueueRouteOptions(
   role: iam.Role,
   sqsQueue: sqs.IQueue,
-  requestTemplate?: { [contentType: string]: string },
+  requestTemplate?: { [contentType: string]: string }
 ): apigwv2.WebSocketRouteOptions {
   return {
     integration: new WebSocketAwsIntegration("$default", {

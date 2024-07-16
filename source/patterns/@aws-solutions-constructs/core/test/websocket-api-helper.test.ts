@@ -16,14 +16,28 @@ import { Capture, Match, Template } from "aws-cdk-lib/assertions";
 import * as apigwv2 from "aws-cdk-lib/aws-apigatewayv2";
 import { WebSocketIamAuthorizer } from "aws-cdk-lib/aws-apigatewayv2-authorizers";
 import { WebSocketMockIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations";
+import * as iam from "aws-cdk-lib/aws-iam";
 import * as sqs from "aws-cdk-lib/aws-sqs";
-import * as iam from 'aws-cdk-lib/aws-iam';
-import { buildWebSocketApiProps, buildWebSocketQueueApi, buildWebSocketQueueRouteOptions, DEFAULT_ROUTE_QUEUE_VTL_CONFIG } from "..";
+import {
+  buildWebSocketApiProps,
+  buildWebSocketQueueApi,
+  buildWebSocketQueueRouteOptions,
+  connectRouteOptions,
+  DEFAULT_ROUTE_QUEUE_VTL_CONFIG,
+} from "..";
 
 test("creates API Gateway role and grants permissions and apigateway stage setup", () => {
   const app = new cdk.App();
   const stack = new cdk.Stack(app, "TestStack");
-  const queue = new sqs.Queue(stack, "TestQueue");
+  const queue = new sqs.Queue(stack, "TestQueue", {
+    fifo: true,
+    deadLetterQueue: {
+      queue: new sqs.Queue(stack, "DeadLetterQueue", {
+        fifo: true,
+      }),
+      maxReceiveCount: 10,
+    } as sqs.DeadLetterQueue,
+  });
 
   buildWebSocketQueueApi(stack, "TestApi", {
     queue,
@@ -47,9 +61,22 @@ test("creates API Gateway role and grants permissions and apigateway stage setup
     },
   });
 
-  template.resourceCountIs("AWS::SQS::Queue", 1);
-  const sqsQueueCapture = new Capture();
+  template.resourceCountIs("AWS::SQS::Queue", 2);
+  template.hasResourceProperties("AWS::SQS::Queue", {
+    FifoQueue: true,
+    RedrivePolicy: {
+      deadLetterTargetArn: {
+        "Fn::GetAtt": [Match.anyValue(), "Arn"],
+      },
+      maxReceiveCount: 10,
+    },
+  });
+  template.hasResourceProperties("AWS::SQS::Queue", {
+    FifoQueue: true,
+    RedrivePolicy: Match.absent(),
+  });
 
+  const sqsQueueCapture = new Capture();
   template.hasResourceProperties("AWS::IAM::Policy", {
     PolicyDocument: {
       Statement: [
@@ -87,7 +114,7 @@ test("creates API Gateway role and grants permissions and apigateway stage setup
   });
 
   const apigwv2Catpure = new Capture();
-  template.resourceCountIs("AWS::ApiGatewayV2::Route", 1);
+  template.resourceCountIs("AWS::ApiGatewayV2::Route", 2);
   template.hasResourceProperties("AWS::ApiGatewayV2::Route", {
     ApiId: {
       Ref: apigwv2Catpure,
@@ -101,6 +128,25 @@ test("creates API Gateway role and grants permissions and apigateway stage setup
           "integrations/",
           {
             Ref: Match.stringLikeRegexp("WebSocketApiTestApidefaultRoutedefault"),
+          },
+        ],
+      ],
+    },
+  });
+
+  template.hasResourceProperties("AWS::ApiGatewayV2::Route", {
+    ApiId: {
+      Ref: apigwv2Catpure,
+    },
+    AuthorizationType: "AWS_IAM",
+    RouteKey: "$connect",
+    Target: {
+      "Fn::Join": [
+        "",
+        [
+          "integrations/",
+          {
+            Ref: Match.stringLikeRegexp("WebSocketApiTestApiconnectRouteconnect"),
           },
         ],
       ],
@@ -171,9 +217,9 @@ test("creates API Gateway role and grants permissions and apigateway stage setup
   const template = Template.fromStack(stack);
   template.resourceCountIs("AWS::ApiGatewayV2::Api", 1);
   template.resourceCountIs("AWS::ApiGatewayV2::Stage", 0);
-  template.resourceCountIs('AWS::ApiGatewayV2::Integration', 3);
-  template.allResourcesProperties('AWS::ApiGatewayV2::Integration', {
-    IntegrationType: "MOCK"
+  template.resourceCountIs("AWS::ApiGatewayV2::Integration", 3);
+  template.allResourcesProperties("AWS::ApiGatewayV2::Integration", {
+    IntegrationType: "MOCK",
   });
   template.hasResourceProperties("AWS::ApiGatewayV2::Route", {
     ApiId: Match.anyValue(),
@@ -201,27 +247,104 @@ test("creates API Gateway role and grants permissions and apigateway stage setup
   });
 });
 
-test('buildWebSocketApiProps creates correct WebSocket API props', () => {
+test("buildWebSocketApiProps creates correct WebSocket API props", () => {
   const app = new cdk.App();
-  const stack = new cdk.Stack(app, 'TestStack');
-  const role = new iam.Role(stack, 'TestRole', {
-    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+  const stack = new cdk.Stack(app, "TestStack");
+  const role = new iam.Role(stack, "TestRole", {
+    assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
   });
-  const queue = new sqs.Queue(stack, 'TestQueue');
+  const queue = new sqs.Queue(stack, "TestQueue");
 
   const propsWithDefaultRoute = buildWebSocketApiProps(role, queue, true);
   expect(propsWithDefaultRoute.defaultRouteOptions).toBeDefined();
   expect(propsWithDefaultRoute.defaultRouteOptions).toEqual(
     buildWebSocketQueueRouteOptions(role, queue, { $default: DEFAULT_ROUTE_QUEUE_VTL_CONFIG })
   );
+  expect(propsWithDefaultRoute.connectRouteOptions).toEqual(connectRouteOptions);
 
   const propsWithoutDefaultRoute = buildWebSocketApiProps(role, queue, false);
   expect(propsWithoutDefaultRoute.defaultRouteOptions).toBeUndefined();
 
   expect(() => buildWebSocketApiProps(role, undefined as any, true)).toThrowError(
-    'role and sqs must be provided to create a default route'
+    "role and sqs must be provided to create a default route"
   );
   expect(() => buildWebSocketApiProps(undefined as any, queue, true)).toThrowError(
-    'role and sqs must be provided to create a default route'
+    "role and sqs must be provided to create a default route"
   );
+});
+
+test("buildWebSocketApiProps creates correct WebSocket API props with different values of defaultIamAuthorization and connectRouteOptions", () => {
+  const app = new cdk.App();
+  const stack = new cdk.Stack(app, "TestStack");
+  const role = new iam.Role(stack, "TestRole", {
+    assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
+  });
+  const queue = new sqs.Queue(stack, "TestQueue");
+
+  // do not create $default and $connect
+  const apiPropsWithNoDefaultAndConnect = buildWebSocketApiProps(role, queue, false, undefined, false);
+  expect(apiPropsWithNoDefaultAndConnect.defaultRouteOptions).toBeUndefined();
+  expect(apiPropsWithNoDefaultAndConnect.connectRouteOptions).toBeUndefined();
+
+  // create $default, do not create $connect
+  const apiPropsWithNoConnect = buildWebSocketApiProps(role, queue, true, undefined, false);
+  expect(apiPropsWithNoConnect.defaultRouteOptions).toBeDefined();
+  expect(apiPropsWithNoConnect.connectRouteOptions).toBeUndefined();
+});
+
+test("buildWebSocketQueueApi with defaultIamAuthorization is not set", () => {
+  const app = new cdk.App();
+  const stack = new cdk.Stack(app, "TestStack");
+  const queue = new sqs.Queue(stack, "TestQueue");
+
+  // not supplying authorizer with $connect with the expectation that the synthesized stack with add
+  // an authorizer because defaultIamAuthorization is not set to false.
+  buildWebSocketQueueApi(stack, "TestApi", {
+    queue,
+    createDefaultRoute: true,
+    webSocketApiProps: {
+      connectRouteOptions: {
+        integration: new WebSocketMockIntegration("user-created-mock")
+      }
+    }
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGatewayV2::Route", {
+    ApiId: Match.anyValue(),
+    AuthorizationType: "AWS_IAM",
+    RouteKey: "$connect",
+    Target: {
+      "Fn::Join": ["", ["integrations/", { Ref: Match.stringLikeRegexp("WebSocketApiTestApiconnectRouteusercreatedmock") }]],
+    },
+  });
+});
+
+test("buildWebSocketQueueApi with defaultIamAuthorization is set to false", () => {
+  const app = new cdk.App();
+  const stack = new cdk.Stack(app, "TestStack");
+  const queue = new sqs.Queue(stack, "TestQueue");
+
+  // not supplying authorizer with $connect with the expectation that the synthesized stack with add
+  // an authorizer because defaultIamAuthorization is not set to false.
+  buildWebSocketQueueApi(stack, "TestApi", {
+    queue,
+    createDefaultRoute: true,
+    webSocketApiProps: {
+      connectRouteOptions: {
+        integration: new WebSocketMockIntegration("user-created-mock")
+      }
+    },
+    defaultIamAuthorization: false
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::ApiGatewayV2::Route", {
+    ApiId: Match.anyValue(),
+    AuthorizationType: "NONE",
+    RouteKey: "$connect",
+    Target: {
+      "Fn::Join": ["", ["integrations/", { Ref: Match.stringLikeRegexp("WebSocketApiTestApiconnectRouteusercreatedmock") }]],
+    },
+  });
 });
