@@ -140,6 +140,8 @@ export function createTemplateWriterCustomResource(
     }
   });
 
+  customResource.node.addDependency(templateWriterPolicy);
+
   return {
     s3Bucket: outputAsset.bucket,
     s3Key: customResource.getAttString('TemplateOutputKey'),
