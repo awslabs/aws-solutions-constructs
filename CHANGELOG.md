@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.62.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.61.0...v2.62.0) (2024-07-16)
+
+
+### Features
+
+* **apigateway:** accept MethodResponses along with IntegrationResponses ([#1146](https://github.com/awslabs/aws-solutions-constructs/issues/1146)) ([c351953](https://github.com/awslabs/aws-solutions-constructs/commit/c35195335b530bde8e782bdc2ded8003060c9650))
+
+
+### Bug Fixes
+
+* **resources/template-writer:** add IAM policy as customResource dependency ([#1148](https://github.com/awslabs/aws-solutions-constructs/issues/1148)) ([bbdeddd](https://github.com/awslabs/aws-solutions-constructs/commit/bbdeddd4b5c57cdc2397f82d1724027e610df550))
+
 ## [2.61.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.60.0...v2.61.0) (2024-07-05)
 
 Built on CDK v2.147.3
