@@ -347,6 +347,9 @@
      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
     }
    },
+   "DependsOn": [
+    "TestTemplateWriterPolicy8177DE02"
+   ],
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   }

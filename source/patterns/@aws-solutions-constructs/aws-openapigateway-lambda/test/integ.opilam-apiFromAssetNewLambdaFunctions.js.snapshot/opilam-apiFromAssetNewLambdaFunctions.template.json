@@ -736,6 +736,9 @@
      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
     }
    },
+   "DependsOn": [
+    "OpenApiGatewayToLambdaApiTemplateWriterPolicy5B3085E5"
+   ],
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
