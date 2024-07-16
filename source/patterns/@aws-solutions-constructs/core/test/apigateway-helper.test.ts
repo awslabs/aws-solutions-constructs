@@ -310,8 +310,10 @@ test('Test default RestApi w/ request model and validator', () => {
     apiResource: apiGatewayResource,
     requestTemplate: "{}",
     contentType: "'x-amz-json-1.1'",
-    requestValidator: validator,
-    requestModel: { "application/json": api.Model.EMPTY_MODEL }
+    methodOptions: {
+      requestValidator: validator,
+      requestModels: { "application/json": api.Model.EMPTY_MODEL }
+    }
   });
 
   const template = Template.fromStack(stack);

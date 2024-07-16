@@ -31,7 +31,7 @@
     "Name": "RestApi"
    }
   },
-  "testapigatewaykinesisdefaultRestApiDeployment2852F1AA922824384d19fd27217710115cc2344f": {
+  "testapigatewaykinesisdefaultRestApiDeployment2852F1AA4ff693d376d46550825ad1d0025f9ef5": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Automatically created by the RestApi construct",
@@ -72,7 +72,7 @@
      "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
     },
     "DeploymentId": {
-     "Ref": "testapigatewaykinesisdefaultRestApiDeployment2852F1AA922824384d19fd27217710115cc2344f"
+     "Ref": "testapigatewaykinesisdefaultRestApiDeployment2852F1AA4ff693d376d46550825ad1d0025f9ef5"
     },
     "MethodSettings": [
      {

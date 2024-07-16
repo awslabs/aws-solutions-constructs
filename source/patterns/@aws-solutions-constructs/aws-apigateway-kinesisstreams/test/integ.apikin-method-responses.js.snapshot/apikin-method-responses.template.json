@@ -1,0 +1,616 @@
+{
+ "Description": "Integration Test for aws-apigateway-kinesis",
+ "Resources": {
+  "testapigatewaykinesisdefaultApiAccessLogGroup51BF9616": {
+   "Type": "AWS::Logs::LogGroup",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W86",
+       "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+      },
+      {
+       "id": "W84",
+       "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+      }
+     ]
+    }
+   }
+  },
+  "testapigatewaykinesisdefaultRestApi68CBA18C": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "EndpointConfiguration": {
+     "Types": [
+      "EDGE"
+     ]
+    },
+    "Name": "RestApi"
+   }
+  },
+  "testapigatewaykinesisdefaultRestApiDeployment2852F1AAe11e785f0c835bae60935baac09fb799": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Automatically created by the RestApi construct",
+    "RestApiId": {
+     "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
+    }
+   },
+   "DependsOn": [
+    "testapigatewaykinesisdefaultRestApirecordPOST731165E8",
+    "testapigatewaykinesisdefaultRestApirecord500DDD57",
+    "testapigatewaykinesisdefaultRestApirecordsPOST165BE933",
+    "testapigatewaykinesisdefaultRestApirecords972EAFEA",
+    "testapigatewaykinesisdefaultRestApiPutRecordModel06DC611F",
+    "testapigatewaykinesisdefaultRestApiPutRecordsModelA7CA8D6D",
+    "testapigatewaykinesisdefaultRestApirequestvalidator5901C267"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W45",
+       "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checks for it in AWS::ApiGateway::Deployment resource"
+      }
+     ]
+    }
+   }
+  },
+  "testapigatewaykinesisdefaultRestApiDeploymentStageprodB6206494": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "AccessLogSetting": {
+     "DestinationArn": {
+      "Fn::GetAtt": [
+       "testapigatewaykinesisdefaultApiAccessLogGroup51BF9616",
+       "Arn"
+      ]
+     },
+     "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
+    },
+    "DeploymentId": {
+     "Ref": "testapigatewaykinesisdefaultRestApiDeployment2852F1AAe11e785f0c835bae60935baac09fb799"
+    },
+    "MethodSettings": [
+     {
+      "DataTraceEnabled": false,
+      "HttpMethod": "*",
+      "LoggingLevel": "INFO",
+      "ResourcePath": "/*"
+     }
+    ],
+    "RestApiId": {
+     "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
+    },
+    "StageName": "prod",
+    "TracingEnabled": true
+   }
+  },
+  "testapigatewaykinesisdefaultRestApirecord500DDD57": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "testapigatewaykinesisdefaultRestApi68CBA18C",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "record",
+    "RestApiId": {
+     "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
+    }
+   }
+  },
+  "testapigatewaykinesisdefaultRestApirecordPOST731165E8": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "AWS_IAM",
+    "HttpMethod": "POST",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "testapigatewaykinesisdefaultapigatewayroleAD430BE2",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "StatusCode": "200"
+      },
+      {
+       "ResponseTemplates": {
+        "text/html": "Error"
+       },
+       "SelectionPattern": "500",
+       "StatusCode": "500"
+      }
+     ],
+     "PassthroughBehavior": "NEVER",
+     "RequestParameters": {
+      "integration.request.header.Content-Type": "'x-amz-json-1.1'"
+     },
+     "RequestTemplates": {
+      "application/json": {
+       "Fn::Join": [
+        "",
+        [
+         "{ \"StreamName\": \"",
+         {
+          "Ref": "KinesisStream46752A3E"
+         },
+         "\", \"Data\": \"$util.base64Encode($input.json('$.data'))\", \"PartitionKey\": \"$input.path('$.partitionKey')\" }"
+        ]
+       ]
+      }
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":kinesis:action/PutRecord"
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "StatusCode": "200"
+     },
+     {
+      "StatusCode": "400"
+     },
+     {
+      "StatusCode": "401"
+     },
+     {
+      "StatusCode": "500"
+     }
+    ],
+    "RequestModels": {
+     "application/json": {
+      "Ref": "testapigatewaykinesisdefaultRestApiPutRecordModel06DC611F"
+     }
+    },
+    "RequestValidatorId": {
+     "Ref": "testapigatewaykinesisdefaultRestApirequestvalidator5901C267"
+    },
+    "ResourceId": {
+     "Ref": "testapigatewaykinesisdefaultRestApirecord500DDD57"
+    },
+    "RestApiId": {
+     "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
+    }
+   }
+  },
+  "testapigatewaykinesisdefaultRestApirecords972EAFEA": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "testapigatewaykinesisdefaultRestApi68CBA18C",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "records",
+    "RestApiId": {
+     "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
+    }
+   }
+  },
+  "testapigatewaykinesisdefaultRestApirecordsPOST165BE933": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "AWS_IAM",
+    "HttpMethod": "POST",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "testapigatewaykinesisdefaultapigatewayroleAD430BE2",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "StatusCode": "200"
+      },
+      {
+       "ResponseTemplates": {
+        "text/html": "Error"
+       },
+       "SelectionPattern": "500",
+       "StatusCode": "500"
+      }
+     ],
+     "PassthroughBehavior": "NEVER",
+     "RequestParameters": {
+      "integration.request.header.Content-Type": "'x-amz-json-1.1'"
+     },
+     "RequestTemplates": {
+      "application/json": {
+       "Fn::Join": [
+        "",
+        [
+         "{ \"StreamName\": \"",
+         {
+          "Ref": "KinesisStream46752A3E"
+         },
+         "\", \"Records\": [ #foreach($elem in $input.path('$.records')) { \"Data\": \"$util.base64Encode($elem.data)\", \"PartitionKey\": \"$elem.partitionKey\"}#if($foreach.hasNext),#end #end ] }"
+        ]
+       ]
+      }
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":kinesis:action/PutRecords"
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "StatusCode": "200"
+     },
+     {
+      "StatusCode": "300"
+     },
+     {
+      "StatusCode": "401"
+     }
+    ],
+    "RequestModels": {
+     "application/json": {
+      "Ref": "testapigatewaykinesisdefaultRestApiPutRecordsModelA7CA8D6D"
+     }
+    },
+    "RequestValidatorId": {
+     "Ref": "testapigatewaykinesisdefaultRestApirequestvalidator5901C267"
+    },
+    "ResourceId": {
+     "Ref": "testapigatewaykinesisdefaultRestApirecords972EAFEA"
+    },
+    "RestApiId": {
+     "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
+    }
+   }
+  },
+  "testapigatewaykinesisdefaultRestApiUsagePlan9A725D0A": {
+   "Type": "AWS::ApiGateway::UsagePlan",
+   "Properties": {
+    "ApiStages": [
+     {
+      "ApiId": {
+       "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
+      },
+      "Stage": {
+       "Ref": "testapigatewaykinesisdefaultRestApiDeploymentStageprodB6206494"
+      },
+      "Throttle": {}
+     }
+    ]
+   }
+  },
+  "testapigatewaykinesisdefaultRestApirequestvalidator5901C267": {
+   "Type": "AWS::ApiGateway::RequestValidator",
+   "Properties": {
+    "Name": "request-body-validator",
+    "RestApiId": {
+     "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
+    },
+    "ValidateRequestBody": true
+   }
+  },
+  "testapigatewaykinesisdefaultRestApiPutRecordModel06DC611F": {
+   "Type": "AWS::ApiGateway::Model",
+   "Properties": {
+    "ContentType": "application/json",
+    "Description": "PutRecord proxy single-record payload",
+    "Name": "PutRecordModel",
+    "RestApiId": {
+     "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
+    },
+    "Schema": {
+     "$schema": "http://json-schema.org/draft-04/schema#",
+     "title": "PutRecord proxy single-record payload",
+     "type": "object",
+     "required": [
+      "data",
+      "partitionKey"
+     ],
+     "properties": {
+      "data": {
+       "type": "string"
+      },
+      "partitionKey": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "testapigatewaykinesisdefaultRestApiPutRecordsModelA7CA8D6D": {
+   "Type": "AWS::ApiGateway::Model",
+   "Properties": {
+    "ContentType": "application/json",
+    "Description": "PutRecords proxy payload data",
+    "Name": "PutRecordsModel",
+    "RestApiId": {
+     "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
+    },
+    "Schema": {
+     "$schema": "http://json-schema.org/draft-04/schema#",
+     "title": "PutRecords proxy payload data",
+     "type": "object",
+     "required": [
+      "records"
+     ],
+     "properties": {
+      "records": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "required": [
+         "data",
+         "partitionKey"
+        ],
+        "properties": {
+         "data": {
+          "type": "string"
+         },
+         "partitionKey": {
+          "type": "string"
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "testapigatewaykinesisdefaultLambdaRestApiCloudWatchRole319C8324": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
+          "logs:FilterLogEvents",
+          "logs:GetLogEvents",
+          "logs:PutLogEvents"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":logs:",
+            {
+             "Ref": "AWS::Region"
+            },
+            ":",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":*"
+           ]
+          ]
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "LambdaRestApiCloudWatchRolePolicy"
+     }
+    ]
+   }
+  },
+  "testapigatewaykinesisdefaultLambdaRestApiAccountD40371B7": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "testapigatewaykinesisdefaultLambdaRestApiCloudWatchRole319C8324",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "testapigatewaykinesisdefaultRestApi68CBA18C"
+   ]
+  },
+  "testapigatewaykinesisdefaultapigatewayroleAD430BE2": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "testapigatewaykinesisdefaultapigatewayroleDefaultPolicy65F728A5": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "kinesis:ListShards",
+        "kinesis:PutRecord",
+        "kinesis:PutRecords"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "KinesisStream46752A3E",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testapigatewaykinesisdefaultapigatewayroleDefaultPolicy65F728A5",
+    "Roles": [
+     {
+      "Ref": "testapigatewaykinesisdefaultapigatewayroleAD430BE2"
+     }
+    ]
+   }
+  },
+  "testapigatewaykinesisdefaultKinesisStreamGetRecordsIteratorAgeAlarm0638BB32": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmDescription": "Consumer Record Processing Falling Behind, there is risk for data loss due to record expiration.",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "EvaluationPeriods": 1,
+    "MetricName": "GetRecords.IteratorAgeMilliseconds",
+    "Namespace": "AWS/Kinesis",
+    "Period": 300,
+    "Statistic": "Maximum",
+    "Threshold": 43200000
+   }
+  },
+  "testapigatewaykinesisdefaultKinesisStreamReadProvisionedThroughputExceededAlarmE7251F6A": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmDescription": "Consumer Application is Reading at a Slower Rate Than Expected.",
+    "ComparisonOperator": "GreaterThanThreshold",
+    "EvaluationPeriods": 1,
+    "MetricName": "ReadProvisionedThroughputExceeded",
+    "Namespace": "AWS/Kinesis",
+    "Period": 300,
+    "Statistic": "Average",
+    "Threshold": 0
+   }
+  },
+  "KinesisStream46752A3E": {
+   "Type": "AWS::Kinesis::Stream",
+   "Properties": {
+    "RetentionPeriodHours": 24,
+    "ShardCount": 1,
+    "StreamEncryption": {
+     "EncryptionType": "KMS",
+     "KeyId": "alias/aws/kinesis"
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  }
+ },
+ "Outputs": {
+  "testapigatewaykinesisdefaultRestApiEndpoint70DAF21B": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "testapigatewaykinesisdefaultRestApi68CBA18C"
+      },
+      ".execute-api.",
+      {
+       "Ref": "AWS::Region"
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "testapigatewaykinesisdefaultRestApiDeploymentStageprodB6206494"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

@@ -78,6 +78,25 @@ export interface ApiGatewayToDynamoDBProps {
    */
   readonly createIntegrationResponses?: api.IntegrationResponse[];
   /**
+   * Optional, custom API Gateway Method Responses for the create action.
+   *
+   * @default - [
+   *   {
+   *     statusCode: "200",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     }
+   *   },
+   *   {
+   *     statusCode: "500",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     },
+   *   }
+   * ]
+   */
+  readonly createMethodResponses?: api.MethodResponse[];
+  /**
    * Whether to deploy an API Gateway Method for GET HTTP operations on DynamoDB table (i.e. dynamodb:Query).
    *
    * @default - true
@@ -113,6 +132,25 @@ export interface ApiGatewayToDynamoDBProps {
    */
   readonly readIntegrationResponses?: api.IntegrationResponse[];
   /**
+   * Optional, custom API Gateway Method Responses for the read action.
+   *
+   * @default - [
+   *   {
+   *     statusCode: "200",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     }
+   *   },
+   *   {
+   *     statusCode: "500",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     },
+   *   }
+   * ]
+   */
+  readonly readMethodResponses?: api.MethodResponse[];
+  /**
    * Whether to deploy API Gateway Method for PUT HTTP operations on DynamoDB table (i.e. dynamodb:UpdateItem).
    *
    * @default - false
@@ -140,6 +178,25 @@ export interface ApiGatewayToDynamoDBProps {
    * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
    */
   readonly updateIntegrationResponses?: api.IntegrationResponse[];
+  /**
+   * Optional, custom API Gateway Method Responses for the update action.
+   *
+   * @default - [
+   *   {
+   *     statusCode: "200",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     }
+   *   },
+   *   {
+   *     statusCode: "500",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     },
+   *   }
+   * ]
+   */
+  readonly updateMethodResponses?: api.MethodResponse[];
   /**
    * Whether to deploy API Gateway Method for DELETE HTTP operations on DynamoDB table (i.e. dynamodb:DeleteItem).
    *
@@ -176,6 +233,25 @@ export interface ApiGatewayToDynamoDBProps {
    * @default - [{statusCode:"200"},{statusCode:"500",responseTemplates:{"text/html":"Error"},selectionPattern:"500"}]
    */
   readonly deleteIntegrationResponses?: api.IntegrationResponse[];
+  /**
+   * Optional, custom API Gateway Method Responses for the delete action.
+   *
+   * @default - [
+   *   {
+   *     statusCode: "200",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     }
+   *   },
+   *   {
+   *     statusCode: "500",
+   *     responseParameters: {
+   *       "method.response.header.Content-Type": true
+   *     },
+   *   }
+   * ]
+   */
+  readonly deleteMethodResponses?: api.MethodResponse[];
   /**
    * User provided props to override the default props for the CloudWatchLogs LogGroup.
    *
@@ -261,6 +337,7 @@ export class ApiGatewayToDynamoDB extends Construct {
       // ImplementCreateOperation has confirmed that createRequestTemplate exists)
       const createRequestTemplate = props.createRequestTemplate!.replace("${Table}", this.dynamoTable.tableName);
       this.addActionToPolicy("dynamodb:PutItem");
+      const createMethodOptions: api.MethodOptions = props.createMethodResponses ? { methodResponses: props.createMethodResponses } : {};
       defaults.addProxyMethodToApiResource({
         service: "dynamodb",
         action: "PutItem",
@@ -269,7 +346,8 @@ export class ApiGatewayToDynamoDB extends Construct {
         apiResource: this.apiGateway.root,
         requestTemplate: createRequestTemplate,
         additionalRequestTemplates: props.additionalCreateRequestTemplates,
-        integrationResponses: props.createIntegrationResponses
+        integrationResponses: props.createIntegrationResponses,
+        methodOptions: createMethodOptions
       });
     }
     // Read
@@ -286,6 +364,7 @@ export class ApiGatewayToDynamoDB extends Construct {
         }`;
 
       this.addActionToPolicy("dynamodb:Query");
+      const readMethodOptions: api.MethodOptions = props.readMethodResponses ? { methodResponses: props.readMethodResponses } : {};
       defaults.addProxyMethodToApiResource({
         service: "dynamodb",
         action: "Query",
@@ -294,7 +373,8 @@ export class ApiGatewayToDynamoDB extends Construct {
         apiResource: apiGatewayResource,
         requestTemplate: readRequestTemplate,
         additionalRequestTemplates: props.additionalReadRequestTemplates,
-        integrationResponses: props.readIntegrationResponses
+        integrationResponses: props.readIntegrationResponses,
+        methodOptions: readMethodOptions
       });
     }
     // Update
@@ -302,6 +382,7 @@ export class ApiGatewayToDynamoDB extends Construct {
       // ImplementUpdateOperation confirmed the existence of updateRequestTemplate
       const updateRequestTemplate = props.updateRequestTemplate!.replace("${Table}", this.dynamoTable.tableName);
       this.addActionToPolicy("dynamodb:UpdateItem");
+      const updateMethodOptions: api.MethodOptions = props.updateMethodResponses ? { methodResponses: props.updateMethodResponses } : {};
       defaults.addProxyMethodToApiResource({
         service: "dynamodb",
         action: "UpdateItem",
@@ -310,7 +391,8 @@ export class ApiGatewayToDynamoDB extends Construct {
         apiResource: apiGatewayResource,
         requestTemplate: updateRequestTemplate,
         additionalRequestTemplates: props.additionalUpdateRequestTemplates,
-        integrationResponses: props.updateIntegrationResponses
+        integrationResponses: props.updateIntegrationResponses,
+        methodOptions: updateMethodOptions
       });
     }
     // Delete
@@ -327,6 +409,7 @@ export class ApiGatewayToDynamoDB extends Construct {
         }`;
 
       this.addActionToPolicy("dynamodb:DeleteItem");
+      const deleteMethodOptions: api.MethodOptions = props.deleteMethodResponses ? { methodResponses: props.deleteMethodResponses } : {};
       defaults.addProxyMethodToApiResource({
         service: "dynamodb",
         action: "DeleteItem",
@@ -335,7 +418,8 @@ export class ApiGatewayToDynamoDB extends Construct {
         apiResource: apiGatewayResource,
         requestTemplate: deleteRequestTemplate,
         additionalRequestTemplates: props.additionalDeleteRequestTemplates,
-        integrationResponses: props.deleteIntegrationResponses
+        integrationResponses: props.deleteIntegrationResponses,
+        methodOptions: deleteMethodOptions
       });
     }
   }

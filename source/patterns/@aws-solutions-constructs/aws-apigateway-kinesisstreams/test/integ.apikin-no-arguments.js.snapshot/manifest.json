@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d530d4fae0045c4d39f8b10efe8153b947cec73aa3f730f5762fbba1a30b8f65.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6370096b4deb761608bd18e0d11d5617688e5e380eee8c570360baa214ea42fd.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -97,7 +97,7 @@
         "/apikin-no-arguments/test-apigateway-kinesis-default/RestApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testapigatewaykinesisdefaultRestApiDeployment2852F1AA922824384d19fd27217710115cc2344f"
+            "data": "testapigatewaykinesisdefaultRestApiDeployment2852F1AA4ff693d376d46550825ad1d0025f9ef5"
           }
         ],
         "/apikin-no-arguments/test-apigateway-kinesis-default/RestApi/DeploymentStage.prod/Resource": [
@@ -212,6 +212,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testapigatewaykinesisdefaultRestApiDeployment2852F1AA922824384d19fd27217710115cc2344f": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaykinesisdefaultRestApiDeployment2852F1AA922824384d19fd27217710115cc2344f",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },
