@@ -2,7 +2,7 @@
 #!/bin/bash
 set -euo pipefail
 
-if [[$PWD!=aws-solutions-constructs]]
+if [[ "$PWD" != *aws-solutions-constructs ]]
 then
   echo Script must be run from aws-solutions-constructs folder
   exit 1
@@ -31,3 +31,4 @@ echo "installing..."
 yarn install --frozen-lockfile
 
 cd $starting_dir
+exit 1
