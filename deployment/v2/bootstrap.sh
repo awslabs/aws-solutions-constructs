@@ -31,4 +31,3 @@ echo "installing..."
 yarn install --frozen-lockfile
 
 cd $starting_dir
-exit 1
