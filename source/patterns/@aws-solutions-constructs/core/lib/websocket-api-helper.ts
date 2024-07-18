@@ -176,7 +176,9 @@ export function buildWebSocketApiProps(
     defaultRouteOptions: createDefaultRoute ? buildWebSocketQueueRouteOptions(role!, sqsQueue!, requestTemplate) : undefined,
     connectRouteOptions: (defaultIamAuthorization === undefined || defaultIamAuthorization === true) ? connectRouteOptions : undefined
   };
-  printWarning("defaultIamAuthorization is set to false. This construct will not add any authorizers. If this is not the case, please pass the `connectRouteOptions` with an authorizer or call `addRoute` on the websocket endpoint and provide the `$connect` configuration with an authorizer");
+  if (defaultIamAuthorization === false) {
+    printWarning("defaultIamAuthorization is set to false. This construct will not add any authorizers. If this is not the case, please pass the `connectRouteOptions` with an authorizer or call `addRoute` on the websocket endpoint and provide the `$connect` configuration with an authorizer.");
+  }
   return websocketApiProps;
 }
 

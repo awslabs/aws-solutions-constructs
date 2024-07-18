@@ -25,6 +25,7 @@ import {
   connectRouteOptions,
   DEFAULT_ROUTE_QUEUE_VTL_CONFIG,
 } from "..";
+import * as utils from '../lib/utils';
 
 test("creates API Gateway role and grants permissions and apigateway stage setup", () => {
   const app = new cdk.App();
@@ -265,10 +266,10 @@ test("buildWebSocketApiProps creates correct WebSocket API props", () => {
   const propsWithoutDefaultRoute = buildWebSocketApiProps(role, queue, false);
   expect(propsWithoutDefaultRoute.defaultRouteOptions).toBeUndefined();
 
-  expect(() => buildWebSocketApiProps(role, undefined as any, true)).toThrowError(
+  expect(() => buildWebSocketApiProps(role, undefined, true)).toThrowError(
     "role and sqs must be provided to create a default route"
   );
-  expect(() => buildWebSocketApiProps(undefined as any, queue, true)).toThrowError(
+  expect(() => buildWebSocketApiProps(undefined, queue, true)).toThrowError(
     "role and sqs must be provided to create a default route"
   );
 });
@@ -324,12 +325,13 @@ test("buildWebSocketQueueApi with defaultIamAuthorization is set to false", () =
   const app = new cdk.App();
   const stack = new cdk.Stack(app, "TestStack");
   const queue = new sqs.Queue(stack, "TestQueue");
+  const printWarningSpy = jest.spyOn(utils, 'printWarning');
 
   // not supplying authorizer with $connect with the expectation that the synthesized stack with add
   // an authorizer because defaultIamAuthorization is not set to false.
   buildWebSocketQueueApi(stack, "TestApi", {
     queue,
-    createDefaultRoute: true,
+    createDefaultRoute: false,
     webSocketApiProps: {
       connectRouteOptions: {
         integration: new WebSocketMockIntegration("user-created-mock")
@@ -347,4 +349,8 @@ test("buildWebSocketQueueApi with defaultIamAuthorization is set to false", () =
       "Fn::Join": ["", ["integrations/", { Ref: Match.stringLikeRegexp("WebSocketApiTestApiconnectRouteusercreatedmock") }]],
     },
   });
+
+  expect(printWarningSpy).toBeCalledWith(
+    "defaultIamAuthorization is set to false. This construct will create a WebSocket with NO Authorizer.");
+  printWarningSpy.mockRestore();
 });
