@@ -62,26 +62,37 @@ export interface BuildWebSocketQueueApiRequest {
 export function buildWebSocketQueueApi(
   scope: Construct,
   id: string,
-  props: BuildWebSocketQueueApiRequest,
+  props: BuildWebSocketQueueApiRequest
 ): BuildWebSocketQueueApiResponse {
   // Setup the API Gateway role
   const apiGatewayRole = new iam.Role(scope, "LambdaRestApiCloudWatchRole", {
     assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
   });
   props.queue.grantSendMessages(apiGatewayRole);
-  const webSocketApi = buildApiGatewayV2WebSocket(scope, id, {
-    webSocketApiProps: consolidateProps(
-      buildWebSocketApiProps(
-        apiGatewayRole,
-        props.queue,
-        props.createDefaultRoute,
-        props.defaultRouteRequestTemplate,
-        props.defaultIamAuthorization
-      ),
-      props.webSocketApiProps
+  const finalProps = consolidateProps(
+    buildWebSocketApiProps(
+      apiGatewayRole,
+      props.queue,
+      props.createDefaultRoute,
+      props.defaultRouteRequestTemplate,
+      props.defaultIamAuthorization
     ),
+    props.webSocketApiProps
+  ) as apigwv2.WebSocketApiProps;
+  const webSocketApi = buildApiGatewayV2WebSocket(scope, id, {
+    webSocketApiProps: finalProps,
     existingWebSocketApi: props.existingWebSocketApi,
   });
+
+  if (
+    props.existingWebSocketApi === undefined &&
+    props.defaultIamAuthorization === false &&
+    finalProps.connectRouteOptions?.authorizer === undefined
+  ) {
+    printWarning(
+      "This construct will create a WebSocket with NO Authorizer (defaultIamAuthorization is set to false)."
+    );
+  }
 
   const webSocketStage = new apigwv2.WebSocketStage(scope, "Stage", {
     stageName: "prod",
@@ -176,9 +187,6 @@ export function buildWebSocketApiProps(
     defaultRouteOptions: createDefaultRoute ? buildWebSocketQueueRouteOptions(role!, sqsQueue!, requestTemplate) : undefined,
     connectRouteOptions: (defaultIamAuthorization === undefined || defaultIamAuthorization === true) ? connectRouteOptions : undefined
   };
-  if (defaultIamAuthorization === false) {
-    printWarning("defaultIamAuthorization is set to false. This construct will not add any authorizers. If this is not the case, please pass the `connectRouteOptions` with an authorizer or call `addRoute` on the websocket endpoint and provide the `$connect` configuration with an authorizer.");
-  }
   return websocketApiProps;
 }
 

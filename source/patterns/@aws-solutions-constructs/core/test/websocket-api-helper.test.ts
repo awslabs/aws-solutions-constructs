@@ -321,7 +321,7 @@ test("buildWebSocketQueueApi with defaultIamAuthorization is not set", () => {
   });
 });
 
-test("buildWebSocketQueueApi with defaultIamAuthorization is set to false", () => {
+test("buildWebSocketQueueApi with defaultIamAuthorization is set to false and connectRouteOptions does not set authorizer", () => {
   const app = new cdk.App();
   const stack = new cdk.Stack(app, "TestStack");
   const queue = new sqs.Queue(stack, "TestQueue");
@@ -351,6 +351,6 @@ test("buildWebSocketQueueApi with defaultIamAuthorization is set to false", () =
   });
 
   expect(printWarningSpy).toBeCalledWith(
-    "defaultIamAuthorization is set to false. This construct will create a WebSocket with NO Authorizer.");
+    "This construct will create a WebSocket with NO Authorizer (defaultIamAuthorization is set to false).");
   printWarningSpy.mockRestore();
 });
