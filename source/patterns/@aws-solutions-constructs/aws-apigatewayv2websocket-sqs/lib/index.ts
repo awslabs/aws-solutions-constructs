@@ -94,13 +94,13 @@ export interface ApiGatewayV2WebSocketToSqsProps {
    */
   readonly maxReceiveCount?: number;
   /**
-   * Optional user provided API Gateway Request Template for the default route or customRoute (if customRouteName is provided).
+   * Optional user provided API Gateway Request Template for the $default route or customRoute (if customRouteName is provided).
    *
    * @default - construct will create and assign a template with default settings to send messages to Queue.
    */
   readonly defaultRouteRequestTemplate?: { [contentType: string]: string };
   /**
-   * Whether to create a default route. If set to true, then it will use the value supplied with `defaultRouteRequestTemplate`.
+   * Whether to create a $default route. If set to true, then it will use the value supplied with `defaultRouteRequestTemplate`.
    * At least one of createDefaultRoute or customRouteName must be provided.
    *
    * @default - false.
