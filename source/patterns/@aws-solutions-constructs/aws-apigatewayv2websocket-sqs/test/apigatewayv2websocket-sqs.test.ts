@@ -15,7 +15,7 @@ import * as cdk from "aws-cdk-lib";
 import * as apigwv2 from "aws-cdk-lib/aws-apigatewayv2";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 
-import { COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME } from "@aws-solutions-constructs/core";
+import { COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME, DEFAULT_ROUTE_QUEUE_VTL_CONFIG } from "@aws-solutions-constructs/core";
 import { Capture, Match, Template } from "aws-cdk-lib/assertions";
 import { WebSocketIamAuthorizer, WebSocketLambdaAuthorizer } from "aws-cdk-lib/aws-apigatewayv2-authorizers";
 import { WebSocketLambdaIntegration, WebSocketMockIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations";
@@ -49,6 +49,7 @@ describe("When instantiating the ApiGatewayV2WebSocketToSqs construct with WebSo
           integration: new WebSocketLambdaIntegration("DisconnectIntegration", mockDisconnectLambda),
         },
       },
+      createDefaultRoute: true,
     });
     template = Template.fromStack(stack);
   });
@@ -82,7 +83,7 @@ describe("When instantiating the ApiGatewayV2WebSocketToSqs construct with WebSo
   });
 
   it("should have a websocket api with different route options", () => {
-    template.resourceCountIs("AWS::ApiGatewayV2::Route", 2);
+    template.resourceCountIs("AWS::ApiGatewayV2::Route", 3);
 
     template.hasResourceProperties("AWS::ApiGatewayV2::Route", {
       RouteKey: "$disconnect",
@@ -177,12 +178,14 @@ describe("When instantiating the ApiGatewayV2WebSocketToSqs construct with WebSo
   });
 });
 
-describe("When the option of creating default route is provided", () => {
+describe("When the option of creating default route and custom route is provided", () => {
   let template: Template;
+  const routeName = "fakeroutename";
 
   beforeAll(() => {
     const app = new cdk.App();
     const stack = new cdk.Stack(app, "TestStack");
+
     const mockConnectLambda = new lambda.Function(stack, "mockConnectFunction", {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       runtime: COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
@@ -205,11 +208,12 @@ describe("When the option of creating default route is provided", () => {
         },
       },
       createDefaultRoute: true,
+      customRouteName : routeName
     });
     template = Template.fromStack(stack);
   });
 
-  it("should have the $default routing option", () => {
+  it("should have the $default and custom rpute routing option", () => {
     template.hasResourceProperties("AWS::ApiGatewayV2::Integration", {
       ApiId: { Ref: "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqs92E2576D" },
       CredentialsArn: { "Fn::GetAtt": [Match.anyValue(), "Arn"] },
@@ -218,6 +222,10 @@ describe("When the option of creating default route is provided", () => {
       IntegrationUri: { "Fn::Join": Match.anyValue() },
       PassthroughBehavior: "NEVER",
       RequestParameters: { "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'" },
+      RequestTemplates: {
+        $default: DEFAULT_ROUTE_QUEUE_VTL_CONFIG,
+      },
+      TemplateSelectionExpression: "\\$default",
     });
 
     template.hasResourceProperties("AWS::ApiGatewayV2::Route", {
@@ -225,6 +233,40 @@ describe("When the option of creating default route is provided", () => {
       AuthorizationType: "NONE",
       Target: {
         "Fn::Join": ["", ["integrations/", Match.anyValue()]],
+      },
+    });
+
+    template.hasResourceProperties("AWS::ApiGatewayV2::Integration", {
+      ApiId: { Ref: "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqs92E2576D" },
+      CredentialsArn: { "Fn::GetAtt": [Match.anyValue(), "Arn"] },
+      IntegrationMethod: "POST",
+      IntegrationType: "AWS",
+      IntegrationUri: Match.anyValue(),
+      PassthroughBehavior: "NEVER",
+      RequestParameters: {
+        "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'",
+      },
+      RequestTemplates: {
+        [routeName]: DEFAULT_ROUTE_QUEUE_VTL_CONFIG,
+      },
+      TemplateSelectionExpression: routeName,
+    });
+
+    template.hasResourceProperties("AWS::ApiGatewayV2::Route", {
+      ApiId: {
+        Ref: Match.anyValue(),
+      },
+      RouteKey: routeName,
+      Target: {
+        "Fn::Join": [
+          "",
+          [
+            "integrations/",
+            {
+              Ref: Match.stringLikeRegexp("ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsfakeroutenameRoutefakeroutename"),
+            },
+          ],
+        ],
       },
     });
   });
@@ -359,6 +401,7 @@ describe("When instantiating the ApiGatewayV2WebSocketToSqs construct when not s
           integration: new WebSocketLambdaIntegration("DisconnectIntegration", mockDisconnectLambda),
         },
       },
+      createDefaultRoute: true
     });
     template = Template.fromStack(stack);
   });
@@ -406,6 +449,7 @@ describe("When instantiating the ApiGatewayV2WebSocketToSqs construct when not s
           }),
         },
       },
+      createDefaultRoute: true
     });
     template = Template.fromStack(stack);
   });
@@ -469,15 +513,15 @@ describe("When instantiating the ApiGatewayV2WebSocketToSqs construct when setti
 
     new ApiGatewayV2WebSocketToSqs(stack, "ApiGatewayV2WebSocketToSqs", {
       defaultIamAuthorization: false,
-      createDefaultRoute: false
+      createDefaultRoute: true,
     });
     template = Template.fromStack(stack);
   });
 
   it("should contain a websocket endpoint with a default implementation of $connect", () => {
     template.resourceCountIs("AWS::ApiGatewayV2::Authorizer", 0);
-    template.resourceCountIs("AWS::ApiGatewayV2::Route", 0);
-    template.resourceCountIs("AWS::ApiGatewayV2::Integration", 0);
+    template.resourceCountIs("AWS::ApiGatewayV2::Route", 1);
+    template.resourceCountIs("AWS::ApiGatewayV2::Integration", 1);
     template.resourceCountIs("AWS::ApiGatewayV2::Api", 1);
   });
 });
@@ -488,12 +532,30 @@ describe("When neither existingWebSocketApi nor webSocketApiProps are provided",
     const stack = new cdk.Stack(app, "TestStack");
 
     try {
-      new ApiGatewayV2WebSocketToSqs(stack, "ApiGatewayV2WebSocketToSqs", {});
+      new ApiGatewayV2WebSocketToSqs(stack, "ApiGatewayV2WebSocketToSqs", {
+        createDefaultRoute: true
+      });
     } catch (error) {
       expect(error).toBeInstanceOf(Error);
       expect((error as Error).message).toEqual(
         "Provide either an existing WebSocketApi instance or WebSocketApiProps, but not both"
       );
     }
+  });
+
+  describe("When neither customRouteName is provided nor createDefaultRoute is set to true", () => {
+    it("should throw an error", () => {
+      const app = new cdk.App();
+      const stack = new cdk.Stack(app, "TestStack");
+
+      try {
+        new ApiGatewayV2WebSocketToSqs(stack, "ApiGatewayV2WebSocketToSqs", {});
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error);
+        expect((error as Error).message).toEqual(
+          "Either createDefaultRoute or customRouteName must be specified when creating a WebSocketApi"
+        );
+      }
+    });
   });
 });

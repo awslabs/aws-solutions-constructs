@@ -50,6 +50,7 @@ export interface BuildWebSocketQueueApiRequest {
   readonly existingWebSocketApi?: apigwv2.WebSocketApi;
   readonly logGroupProps?: logs.LogGroupProps;
   readonly defaultIamAuthorization?: boolean;
+  readonly customRouteName?: string;
 }
 /**
  * Builds an AWS API Gateway WebSocket API integrated with an Amazon SQS queue.
@@ -83,6 +84,13 @@ export function buildWebSocketQueueApi(
     webSocketApiProps: finalProps,
     existingWebSocketApi: props.existingWebSocketApi,
   });
+
+  if (props.customRouteName) {
+    webSocketApi.addRoute(
+      props.customRouteName,
+      buildWebSocketQueueRouteOptions(apiGatewayRole, props.queue, props.customRouteName)
+    );
+  }
 
   if (
     props.existingWebSocketApi === undefined &&
@@ -184,7 +192,7 @@ export function buildWebSocketApiProps(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // Sonar exception reason: - typescript:S6571 - required because we are not passing all values. Using partial may cause @jsii to not work.
   const websocketApiProps: apigwv2.WebSocketApiProps = { // NOSONAR
-    defaultRouteOptions: createDefaultRoute ? buildWebSocketQueueRouteOptions(role!, sqsQueue!, requestTemplate) : undefined,
+    defaultRouteOptions: createDefaultRoute ? buildWebSocketQueueRouteOptions(role!, sqsQueue!, '$default', requestTemplate) : undefined,
     connectRouteOptions: (defaultIamAuthorization === undefined || defaultIamAuthorization === true) ? connectRouteOptions : undefined
   };
   return websocketApiProps;
@@ -196,16 +204,17 @@ export function buildWebSocketApiProps(
 export function buildWebSocketQueueRouteOptions(
   role: iam.Role,
   sqsQueue: sqs.IQueue,
+  routeName: string,
   requestTemplate?: { [contentType: string]: string }
 ): apigwv2.WebSocketRouteOptions {
   return {
-    integration: new WebSocketAwsIntegration("$default", {
+    integration: new WebSocketAwsIntegration(routeName, {
       integrationMethod: apigwv2.HttpMethod.POST,
       integrationUri: `arn:${cdk.Aws.PARTITION}:apigateway:${cdk.Aws.REGION}:sqs:path/${cdk.Aws.ACCOUNT_ID}/${sqsQueue.queueName}`,
       requestTemplates: requestTemplate ?? {
-        $default: DEFAULT_ROUTE_QUEUE_VTL_CONFIG,
+        [routeName === "$default" ? "$default" : routeName]: DEFAULT_ROUTE_QUEUE_VTL_CONFIG,
       },
-      templateSelectionExpression: "\\$default",
+      templateSelectionExpression: routeName === "$default" ? "\\$default" : routeName,
       passthroughBehavior: apigwv2.PassthroughBehavior.NEVER,
       credentialsRole: role,
       requestParameters: {

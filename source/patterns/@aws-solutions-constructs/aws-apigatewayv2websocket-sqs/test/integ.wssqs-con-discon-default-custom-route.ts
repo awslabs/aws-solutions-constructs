@@ -28,13 +28,13 @@ const mockConnectLambda = defaults.deployLambdaFunction(stack, {
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
   handler: 'connect.handler'
-}, 'connect');
+}, "connect");
 
 const mockDisconnectLambda = defaults.deployLambdaFunction(stack, {
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
   handler: 'disconnect.handler'
-}, 'disconnect');
+}, "disconnect");
 
 new ApiGatewayV2WebSocketToSqs(stack, 'ApiGatewayV2WebSocketToSqs', {
   webSocketApiProps: {
@@ -45,7 +45,8 @@ new ApiGatewayV2WebSocketToSqs(stack, 'ApiGatewayV2WebSocketToSqs', {
       integration: new WebSocketLambdaIntegration('DisconnectIntegration', mockDisconnectLambda)
     }
   },
-  createDefaultRoute: true
+  createDefaultRoute: true,
+  customRouteName: 'customName'
 });
 
 // Synth

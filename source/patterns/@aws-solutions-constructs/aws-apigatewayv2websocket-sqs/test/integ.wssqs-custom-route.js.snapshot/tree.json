@@ -4,211 +4,17 @@
     "id": "App",
     "path": "",
     "children": {
-      "wssqs-route-lambdas": {
-        "id": "wssqs-route-lambdas",
-        "path": "wssqs-route-lambdas",
+      "wssqs-custom-route": {
+        "id": "wssqs-custom-route",
+        "path": "wssqs-custom-route",
         "children": {
-          "connectServiceRole": {
-            "id": "connectServiceRole",
-            "path": "wssqs-route-lambdas/connectServiceRole",
-            "children": {
-              "ImportconnectServiceRole": {
-                "id": "ImportconnectServiceRole",
-                "path": "wssqs-route-lambdas/connectServiceRole/ImportconnectServiceRole",
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.Resource",
-                  "version": "2.147.3"
-                }
-              },
-              "Resource": {
-                "id": "Resource",
-                "path": "wssqs-route-lambdas/connectServiceRole/Resource",
-                "attributes": {
-                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
-                  "aws:cdk:cloudformation:props": {
-                    "assumeRolePolicyDocument": {
-                      "Statement": [
-                        {
-                          "Action": "sts:AssumeRole",
-                          "Effect": "Allow",
-                          "Principal": {
-                            "Service": "lambda.amazonaws.com"
-                          }
-                        }
-                      ],
-                      "Version": "2012-10-17"
-                    },
-                    "policies": [
-                      {
-                        "policyName": "LambdaFunctionServiceRolePolicy",
-                        "policyDocument": {
-                          "Statement": [
-                            {
-                              "Action": [
-                                "logs:CreateLogGroup",
-                                "logs:CreateLogStream",
-                                "logs:PutLogEvents"
-                              ],
-                              "Effect": "Allow",
-                              "Resource": {
-                                "Fn::Join": [
-                                  "",
-                                  [
-                                    "arn:",
-                                    {
-                                      "Ref": "AWS::Partition"
-                                    },
-                                    ":logs:",
-                                    {
-                                      "Ref": "AWS::Region"
-                                    },
-                                    ":",
-                                    {
-                                      "Ref": "AWS::AccountId"
-                                    },
-                                    ":log-group:/aws/lambda/*"
-                                  ]
-                                ]
-                              }
-                            }
-                          ],
-                          "Version": "2012-10-17"
-                        }
-                      }
-                    ]
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                  "version": "2.147.3"
-                }
-              },
-              "DefaultPolicy": {
-                "id": "DefaultPolicy",
-                "path": "wssqs-route-lambdas/connectServiceRole/DefaultPolicy",
-                "children": {
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "wssqs-route-lambdas/connectServiceRole/DefaultPolicy/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
-                      "aws:cdk:cloudformation:props": {
-                        "policyDocument": {
-                          "Statement": [
-                            {
-                              "Action": [
-                                "xray:PutTelemetryRecords",
-                                "xray:PutTraceSegments"
-                              ],
-                              "Effect": "Allow",
-                              "Resource": "*"
-                            }
-                          ],
-                          "Version": "2012-10-17"
-                        },
-                        "policyName": "connectServiceRoleDefaultPolicyCE4B3DE0",
-                        "roles": [
-                          {
-                            "Ref": "connectServiceRoleD6E70EFD"
-                          }
-                        ]
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                      "version": "2.147.3"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_iam.Policy",
-                  "version": "2.147.3"
-                }
-              }
-            },
-            "constructInfo": {
-              "fqn": "aws-cdk-lib.aws_iam.Role",
-              "version": "2.147.3"
-            }
-          },
-          "connect": {
-            "id": "connect",
-            "path": "wssqs-route-lambdas/connect",
-            "children": {
-              "Code": {
-                "id": "Code",
-                "path": "wssqs-route-lambdas/connect/Code",
-                "children": {
-                  "Stage": {
-                    "id": "Stage",
-                    "path": "wssqs-route-lambdas/connect/Code/Stage",
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.AssetStaging",
-                      "version": "2.147.3"
-                    }
-                  },
-                  "AssetBucket": {
-                    "id": "AssetBucket",
-                    "path": "wssqs-route-lambdas/connect/Code/AssetBucket",
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                      "version": "2.147.3"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                  "version": "2.147.3"
-                }
-              },
-              "Resource": {
-                "id": "Resource",
-                "path": "wssqs-route-lambdas/connect/Resource",
-                "attributes": {
-                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
-                  "aws:cdk:cloudformation:props": {
-                    "code": {
-                      "s3Bucket": {
-                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-                      },
-                      "s3Key": "9da0e8bdfa0712cb47fc2d6c6bad128e2edc58ffe5a8af5a322914f5c63609d1.zip"
-                    },
-                    "environment": {
-                      "variables": {
-                        "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
-                      }
-                    },
-                    "handler": "connect.handler",
-                    "role": {
-                      "Fn::GetAtt": [
-                        "connectServiceRoleD6E70EFD",
-                        "Arn"
-                      ]
-                    },
-                    "runtime": "nodejs20.x",
-                    "tracingConfig": {
-                      "mode": "Active"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                  "version": "2.147.3"
-                }
-              }
-            },
-            "constructInfo": {
-              "fqn": "aws-cdk-lib.aws_lambda.Function",
-              "version": "2.147.3"
-            }
-          },
           "disconnectServiceRole": {
             "id": "disconnectServiceRole",
-            "path": "wssqs-route-lambdas/disconnectServiceRole",
+            "path": "wssqs-custom-route/disconnectServiceRole",
             "children": {
               "ImportdisconnectServiceRole": {
                 "id": "ImportdisconnectServiceRole",
-                "path": "wssqs-route-lambdas/disconnectServiceRole/ImportdisconnectServiceRole",
+                "path": "wssqs-custom-route/disconnectServiceRole/ImportdisconnectServiceRole",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.Resource",
                   "version": "2.147.3"
@@ -216,7 +22,7 @@
               },
               "Resource": {
                 "id": "Resource",
-                "path": "wssqs-route-lambdas/disconnectServiceRole/Resource",
+                "path": "wssqs-custom-route/disconnectServiceRole/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                   "aws:cdk:cloudformation:props": {
@@ -279,11 +85,11 @@
               },
               "DefaultPolicy": {
                 "id": "DefaultPolicy",
-                "path": "wssqs-route-lambdas/disconnectServiceRole/DefaultPolicy",
+                "path": "wssqs-custom-route/disconnectServiceRole/DefaultPolicy",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "wssqs-route-lambdas/disconnectServiceRole/DefaultPolicy/Resource",
+                    "path": "wssqs-custom-route/disconnectServiceRole/DefaultPolicy/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                       "aws:cdk:cloudformation:props": {
@@ -327,15 +133,15 @@
           },
           "disconnect": {
             "id": "disconnect",
-            "path": "wssqs-route-lambdas/disconnect",
+            "path": "wssqs-custom-route/disconnect",
             "children": {
               "Code": {
                 "id": "Code",
-                "path": "wssqs-route-lambdas/disconnect/Code",
+                "path": "wssqs-custom-route/disconnect/Code",
                 "children": {
                   "Stage": {
                     "id": "Stage",
-                    "path": "wssqs-route-lambdas/disconnect/Code/Stage",
+                    "path": "wssqs-custom-route/disconnect/Code/Stage",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.AssetStaging",
                       "version": "2.147.3"
@@ -343,7 +149,7 @@
                   },
                   "AssetBucket": {
                     "id": "AssetBucket",
-                    "path": "wssqs-route-lambdas/disconnect/Code/AssetBucket",
+                    "path": "wssqs-custom-route/disconnect/Code/AssetBucket",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketBase",
                       "version": "2.147.3"
@@ -357,7 +163,7 @@
               },
               "Resource": {
                 "id": "Resource",
-                "path": "wssqs-route-lambdas/disconnect/Resource",
+                "path": "wssqs-custom-route/disconnect/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
                   "aws:cdk:cloudformation:props": {
@@ -398,15 +204,15 @@
           },
           "ApiGatewayV2WebSocketToSqs": {
             "id": "ApiGatewayV2WebSocketToSqs",
-            "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs",
+            "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs",
             "children": {
               "queue-dlq": {
                 "id": "queue-dlq",
-                "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/queue-dlq",
+                "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/queue-dlq",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/queue-dlq/Resource",
+                    "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/queue-dlq/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
                       "aws:cdk:cloudformation:props": {
@@ -423,11 +229,11 @@
                   },
                   "Policy": {
                     "id": "Policy",
-                    "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/queue-dlq/Policy",
+                    "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/queue-dlq/Policy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/queue-dlq/Policy/Resource",
+                        "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/queue-dlq/Policy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
                           "aws:cdk:cloudformation:props": {
@@ -518,11 +324,11 @@
               },
               "queue": {
                 "id": "queue",
-                "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/queue",
+                "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/queue",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/queue/Resource",
+                    "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/queue/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
                       "aws:cdk:cloudformation:props": {
@@ -552,11 +358,11 @@
                   },
                   "Policy": {
                     "id": "Policy",
-                    "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/queue/Policy",
+                    "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/queue/Policy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/queue/Policy/Resource",
+                        "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/queue/Policy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
                           "aws:cdk:cloudformation:props": {
@@ -647,11 +453,11 @@
               },
               "LambdaRestApiCloudWatchRole": {
                 "id": "LambdaRestApiCloudWatchRole",
-                "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole",
+                "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole",
                 "children": {
                   "ImportLambdaRestApiCloudWatchRole": {
                     "id": "ImportLambdaRestApiCloudWatchRole",
-                    "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole",
+                    "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
                       "version": "2.147.3"
@@ -659,7 +465,7 @@
                   },
                   "Resource": {
                     "id": "Resource",
-                    "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/Resource",
+                    "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                       "aws:cdk:cloudformation:props": {
@@ -684,11 +490,11 @@
                   },
                   "DefaultPolicy": {
                     "id": "DefaultPolicy",
-                    "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/DefaultPolicy",
+                    "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/DefaultPolicy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/DefaultPolicy/Resource",
+                        "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/DefaultPolicy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                           "aws:cdk:cloudformation:props": {
@@ -756,11 +562,11 @@
               },
               "WebSocketApiApiGatewayV2WebSocketToSqs": {
                 "id": "WebSocketApiApiGatewayV2WebSocketToSqs",
-                "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs",
+                "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/Resource",
+                    "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::ApiGatewayV2::Api",
                       "aws:cdk:cloudformation:props": {
@@ -776,90 +582,23 @@
                   },
                   "$connect-Route": {
                     "id": "$connect-Route",
-                    "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route",
+                    "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route",
                     "children": {
-                      "ConnectIntegration-Permission": {
-                        "id": "ConnectIntegration-Permission",
-                        "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/ConnectIntegration-Permission",
-                        "attributes": {
-                          "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
-                          "aws:cdk:cloudformation:props": {
-                            "action": "lambda:InvokeFunction",
-                            "functionName": {
-                              "Fn::GetAtt": [
-                                "connectEB2081F1",
-                                "Arn"
-                              ]
-                            },
-                            "principal": "apigateway.amazonaws.com",
-                            "sourceArn": {
-                              "Fn::Join": [
-                                "",
-                                [
-                                  "arn:",
-                                  {
-                                    "Ref": "AWS::Partition"
-                                  },
-                                  ":execute-api:",
-                                  {
-                                    "Ref": "AWS::Region"
-                                  },
-                                  ":",
-                                  {
-                                    "Ref": "AWS::AccountId"
-                                  },
-                                  ":",
-                                  {
-                                    "Ref": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqs92E2576D"
-                                  },
-                                  "/*$connect"
-                                ]
-                              ]
-                            }
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                          "version": "2.147.3"
-                        }
-                      },
-                      "ConnectIntegration": {
-                        "id": "ConnectIntegration",
-                        "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/ConnectIntegration",
+                      "connect": {
+                        "id": "connect",
+                        "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/connect",
                         "children": {
                           "Resource": {
                             "id": "Resource",
-                            "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/ConnectIntegration/Resource",
+                            "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/connect/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::ApiGatewayV2::Integration",
                               "aws:cdk:cloudformation:props": {
                                 "apiId": {
                                   "Ref": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqs92E2576D"
                                 },
-                                "integrationType": "AWS_PROXY",
-                                "integrationUri": {
-                                  "Fn::Join": [
-                                    "",
-                                    [
-                                      "arn:",
-                                      {
-                                        "Ref": "AWS::Partition"
-                                      },
-                                      ":apigateway:",
-                                      {
-                                        "Ref": "AWS::Region"
-                                      },
-                                      ":lambda:path/2015-03-31/functions/",
-                                      {
-                                        "Fn::GetAtt": [
-                                          "connectEB2081F1",
-                                          "Arn"
-                                        ]
-                                      },
-                                      "/invocations"
-                                    ]
-                                  ]
-                                }
+                                "integrationType": "MOCK",
+                                "integrationUri": ""
                               }
                             },
                             "constructInfo": {
@@ -875,7 +614,7 @@
                       },
                       "Resource": {
                         "id": "Resource",
-                        "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/Resource",
+                        "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::ApiGatewayV2::Route",
                           "aws:cdk:cloudformation:props": {
@@ -890,7 +629,7 @@
                                 [
                                   "integrations/",
                                   {
-                                    "Ref": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteConnectIntegration7C5EDD50"
+                                    "Ref": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteconnect5AB5A82B"
                                   }
                                 ]
                               ]
@@ -910,11 +649,11 @@
                   },
                   "$disconnect-Route": {
                     "id": "$disconnect-Route",
-                    "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route",
+                    "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route",
                     "children": {
                       "DisconnectIntegration-Permission": {
                         "id": "DisconnectIntegration-Permission",
-                        "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route/DisconnectIntegration-Permission",
+                        "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route/DisconnectIntegration-Permission",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
                           "aws:cdk:cloudformation:props": {
@@ -959,11 +698,11 @@
                       },
                       "DisconnectIntegration": {
                         "id": "DisconnectIntegration",
-                        "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route/DisconnectIntegration",
+                        "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route/DisconnectIntegration",
                         "children": {
                           "Resource": {
                             "id": "Resource",
-                            "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route/DisconnectIntegration/Resource",
+                            "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route/DisconnectIntegration/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::ApiGatewayV2::Integration",
                               "aws:cdk:cloudformation:props": {
@@ -1009,7 +748,7 @@
                       },
                       "Resource": {
                         "id": "Resource",
-                        "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route/Resource",
+                        "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::ApiGatewayV2::Route",
                           "aws:cdk:cloudformation:props": {
@@ -1042,17 +781,17 @@
                       "version": "2.147.3"
                     }
                   },
-                  "$default-Route": {
-                    "id": "$default-Route",
-                    "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$default-Route",
+                  "custom-action-Route": {
+                    "id": "custom-action-Route",
+                    "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/custom-action-Route",
                     "children": {
-                      "$default": {
-                        "id": "$default",
-                        "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$default-Route/$default",
+                      "custom-action": {
+                        "id": "custom-action",
+                        "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/custom-action-Route/custom-action",
                         "children": {
                           "Resource": {
                             "id": "Resource",
-                            "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$default-Route/$default/Resource",
+                            "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/custom-action-Route/custom-action/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::ApiGatewayV2::Integration",
                               "aws:cdk:cloudformation:props": {
@@ -1098,9 +837,9 @@
                                   "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'"
                                 },
                                 "requestTemplates": {
-                                  "$default": "Action=SendMessage&MessageGroupId=$input.path('$.MessageGroupId')&MessageDeduplicationId=$context.requestId&MessageAttribute.1.Name=connectionId&MessageAttribute.1.Value.StringValue=$context.connectionId&MessageAttribute.1.Value.DataType=String&MessageAttribute.2.Name=requestId&MessageAttribute.2.Value.StringValue=$context.requestId&MessageAttribute.2.Value.DataType=String&MessageBody=$util.urlEncode($input.json($util.escapeJavaScript('$').replaceAll(\"\\\\'\",\"'\")))"
+                                  "custom-action": "Action=SendMessage&MessageGroupId=$input.path('$.MessageGroupId')&MessageDeduplicationId=$context.requestId&MessageAttribute.1.Name=connectionId&MessageAttribute.1.Value.StringValue=$context.connectionId&MessageAttribute.1.Value.DataType=String&MessageAttribute.2.Name=requestId&MessageAttribute.2.Value.StringValue=$context.requestId&MessageAttribute.2.Value.DataType=String&MessageBody=$util.urlEncode($input.json($util.escapeJavaScript('$').replaceAll(\"\\\\'\",\"'\")))"
                                 },
-                                "templateSelectionExpression": "\\$default"
+                                "templateSelectionExpression": "custom-action"
                               }
                             },
                             "constructInfo": {
@@ -1116,7 +855,7 @@
                       },
                       "Resource": {
                         "id": "Resource",
-                        "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$default-Route/Resource",
+                        "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/custom-action-Route/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::ApiGatewayV2::Route",
                           "aws:cdk:cloudformation:props": {
@@ -1124,14 +863,14 @@
                               "Ref": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqs92E2576D"
                             },
                             "authorizationType": "NONE",
-                            "routeKey": "$default",
+                            "routeKey": "custom-action",
                             "target": {
                               "Fn::Join": [
                                 "",
                                 [
                                   "integrations/",
                                   {
-                                    "Ref": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsdefaultRoutedefaultB531E839"
+                                    "Ref": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqscustomactionRoutecustomaction8774D9C0"
                                   }
                                 ]
                               ]
@@ -1157,11 +896,11 @@
               },
               "Stage": {
                 "id": "Stage",
-                "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/Stage",
+                "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/Stage",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/Stage/Resource",
+                    "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/Stage/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::ApiGatewayV2::Stage",
                       "aws:cdk:cloudformation:props": {
@@ -1185,11 +924,11 @@
               },
               "LogGroup": {
                 "id": "LogGroup",
-                "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/LogGroup",
+                "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/LogGroup",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/LogGroup/Resource",
+                    "path": "wssqs-custom-route/ApiGatewayV2WebSocketToSqs/LogGroup/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::Logs::LogGroup",
                       "aws:cdk:cloudformation:props": {}
@@ -1207,21 +946,21 @@
               }
             },
             "constructInfo": {
-              "fqn": "@aws-solutions-constructs/aws-apigatewayv2websocket-sqs.ApiGatewayV2WebSocketToSqs",
-              "version": "2.62.0"
+              "fqn": "constructs.Construct",
+              "version": "10.3.0"
             }
           },
           "Integ": {
             "id": "Integ",
-            "path": "wssqs-route-lambdas/Integ",
+            "path": "wssqs-custom-route/Integ",
             "children": {
               "DefaultTest": {
                 "id": "DefaultTest",
-                "path": "wssqs-route-lambdas/Integ/DefaultTest",
+                "path": "wssqs-custom-route/Integ/DefaultTest",
                 "children": {
                   "Default": {
                     "id": "Default",
-                    "path": "wssqs-route-lambdas/Integ/DefaultTest/Default",
+                    "path": "wssqs-custom-route/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
                       "version": "10.3.0"
@@ -1229,11 +968,11 @@
                   },
                   "DeployAssert": {
                     "id": "DeployAssert",
-                    "path": "wssqs-route-lambdas/Integ/DefaultTest/DeployAssert",
+                    "path": "wssqs-custom-route/Integ/DefaultTest/DeployAssert",
                     "children": {
                       "BootstrapVersion": {
                         "id": "BootstrapVersion",
-                        "path": "wssqs-route-lambdas/Integ/DefaultTest/DeployAssert/BootstrapVersion",
+                        "path": "wssqs-custom-route/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
                           "version": "2.147.3"
@@ -1241,7 +980,7 @@
                       },
                       "CheckBootstrapVersion": {
                         "id": "CheckBootstrapVersion",
-                        "path": "wssqs-route-lambdas/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
+                        "path": "wssqs-custom-route/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
                           "version": "2.147.3"
@@ -1267,7 +1006,7 @@
           },
           "BootstrapVersion": {
             "id": "BootstrapVersion",
-            "path": "wssqs-route-lambdas/BootstrapVersion",
+            "path": "wssqs-custom-route/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
               "version": "2.147.3"
@@ -1275,7 +1014,7 @@
           },
           "CheckBootstrapVersion": {
             "id": "CheckBootstrapVersion",
-            "path": "wssqs-route-lambdas/CheckBootstrapVersion",
+            "path": "wssqs-custom-route/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
               "version": "2.147.3"

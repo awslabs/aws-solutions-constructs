@@ -24,28 +24,19 @@ const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-apigateway-sqs';
 
-const mockConnectLambda = defaults.deployLambdaFunction(stack, {
-  code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-  runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
-  handler: 'connect.handler'
-}, 'connect');
-
 const mockDisconnectLambda = defaults.deployLambdaFunction(stack, {
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
   handler: 'disconnect.handler'
-}, 'disconnect');
+}, "disconnect");
 
 new ApiGatewayV2WebSocketToSqs(stack, 'ApiGatewayV2WebSocketToSqs', {
   webSocketApiProps: {
-    connectRouteOptions: {
-      integration: new WebSocketLambdaIntegration('ConnectIntegration', mockConnectLambda)
-    },
     disconnectRouteOptions: {
       integration: new WebSocketLambdaIntegration('DisconnectIntegration', mockDisconnectLambda)
     }
   },
-  createDefaultRoute: true
+  customRouteName: 'custom-action'
 });
 
 // Synth

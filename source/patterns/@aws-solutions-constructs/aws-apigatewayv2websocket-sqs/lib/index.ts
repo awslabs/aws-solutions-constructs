@@ -94,17 +94,25 @@ export interface ApiGatewayV2WebSocketToSqsProps {
    */
   readonly maxReceiveCount?: number;
   /**
-   * API Gateway Request Template for the default route.
+   * Optional user provided API Gateway Request Template for the default route or customRoute (if customRouteName is provided).
    *
+   * @default - construct will create and assign a template with default settings to send messages to Queue.
    */
   readonly defaultRouteRequestTemplate?: { [contentType: string]: string };
-
   /**
-   * Whether to create a default route. If set to true, then it will use the value supplied with `defaultRouteRequestTemplate`
+   * Whether to create a default route. If set to true, then it will use the value supplied with `defaultRouteRequestTemplate`.
+   * At least one of createDefaultRoute or customRouteName must be provided.
    *
    * @default - false.
    */
   readonly createDefaultRoute?: boolean;
+  /**
+   * The name of the route that will be sent through WebSocketApiProps.routeSelectionExpression when invoking the WebSocket
+   * endpoint. At least one of createDefaultRoute or customRouteName must be provided.
+   *
+   * @default - None
+   */
+  readonly customRouteName?: string;
   /**
    * Add IAM authorization to the $connect path by default. Only set this to false if: 1) If plan to provide an authorizer with
    * the `$connect` route; or 2) The API should be open (no authorization) (AWS recommends against deploying unprotected APIs).
@@ -129,6 +137,10 @@ export class ApiGatewayV2WebSocketToSqs extends Construct {
 
     if (props.existingWebSocketApi && props.webSocketApiProps) {
       throw new Error("Provide either an existing WebSocketApi instance or WebSocketApiProps, not both");
+    }
+
+    if (!props.existingWebSocketApi && !props.createDefaultRoute && !props.customRouteName) {
+      throw new Error("Either createDefaultRoute or customRouteName must be specified when creating a WebSocketApi");
     }
 
     const constructMandatedDlqProps: sqs.QueueProps = {
@@ -170,7 +182,8 @@ export class ApiGatewayV2WebSocketToSqs extends Construct {
       webSocketApiProps: props.webSocketApiProps,
       existingWebSocketApi: props.existingWebSocketApi,
       logGroupProps: props.logGroupProps,
-      defaultIamAuthorization: props.defaultIamAuthorization !== undefined ? props.defaultIamAuthorization : true,
+      defaultIamAuthorization: props.defaultIamAuthorization ?? true,
+      customRouteName: props.customRouteName,
     });
 
     this.webSocketApi = buildWebSocketQueueApiResponse.webSocketApi;

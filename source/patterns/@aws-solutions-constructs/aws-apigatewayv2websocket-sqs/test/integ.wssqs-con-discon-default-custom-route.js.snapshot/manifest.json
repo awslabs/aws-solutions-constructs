@@ -1,19 +1,19 @@
 {
   "version": "36.0.0",
   "artifacts": {
-    "wssqsroutelambdasIntegDefaultTestDeployAssert3BD0A2E7.assets": {
+    "wssqscondiscondefaultcustomrouteIntegDefaultTestDeployAssertB27E8B96.assets": {
       "type": "cdk:asset-manifest",
       "properties": {
-        "file": "wssqsroutelambdasIntegDefaultTestDeployAssert3BD0A2E7.assets.json",
+        "file": "wssqscondiscondefaultcustomrouteIntegDefaultTestDeployAssertB27E8B96.assets.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
       }
     },
-    "wssqsroutelambdasIntegDefaultTestDeployAssert3BD0A2E7": {
+    "wssqscondiscondefaultcustomrouteIntegDefaultTestDeployAssertB27E8B96": {
       "type": "aws:cloudformation:stack",
       "environment": "aws://unknown-account/unknown-region",
       "properties": {
-        "templateFile": "wssqsroutelambdasIntegDefaultTestDeployAssert3BD0A2E7.template.json",
+        "templateFile": "wssqscondiscondefaultcustomrouteIntegDefaultTestDeployAssertB27E8B96.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
@@ -22,7 +22,7 @@
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
-          "wssqsroutelambdasIntegDefaultTestDeployAssert3BD0A2E7.assets"
+          "wssqscondiscondefaultcustomrouteIntegDefaultTestDeployAssertB27E8B96.assets"
         ],
         "lookupRole": {
           "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
@@ -31,46 +31,46 @@
         }
       },
       "dependencies": [
-        "wssqsroutelambdasIntegDefaultTestDeployAssert3BD0A2E7.assets"
+        "wssqscondiscondefaultcustomrouteIntegDefaultTestDeployAssertB27E8B96.assets"
       ],
       "metadata": {
-        "/wssqs-route-lambdas/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+        "/wssqs-con-discon-default-custom-route/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BootstrapVersion"
           }
         ],
-        "/wssqs-route-lambdas/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+        "/wssqs-con-discon-default-custom-route/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
         ]
       },
-      "displayName": "wssqs-route-lambdas/Integ/DefaultTest/DeployAssert"
+      "displayName": "wssqs-con-discon-default-custom-route/Integ/DefaultTest/DeployAssert"
     },
-    "wssqs-route-lambdas.assets": {
+    "wssqs-con-discon-default-custom-route.assets": {
       "type": "cdk:asset-manifest",
       "properties": {
-        "file": "wssqs-route-lambdas.assets.json",
+        "file": "wssqs-con-discon-default-custom-route.assets.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
       }
     },
-    "wssqs-route-lambdas": {
+    "wssqs-con-discon-default-custom-route": {
       "type": "aws:cloudformation:stack",
       "environment": "aws://unknown-account/unknown-region",
       "properties": {
-        "templateFile": "wssqs-route-lambdas.template.json",
+        "templateFile": "wssqs-con-discon-default-custom-route.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/67e2a456337787fa72c92d4e009383663f285a31a19963e5d8b52a3792757da8.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/18f85282d4af10ca071bad4dfa67f5123900e64ce6fa2f138bab644f9901f29f.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
-          "wssqs-route-lambdas.assets"
+          "wssqs-con-discon-default-custom-route.assets"
         ],
         "lookupRole": {
           "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
@@ -79,161 +79,173 @@
         }
       },
       "dependencies": [
-        "wssqs-route-lambdas.assets"
+        "wssqs-con-discon-default-custom-route.assets"
       ],
       "metadata": {
-        "/wssqs-route-lambdas/connectServiceRole/Resource": [
+        "/wssqs-con-discon-default-custom-route/connectServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "connectServiceRoleD6E70EFD"
           }
         ],
-        "/wssqs-route-lambdas/connectServiceRole/DefaultPolicy/Resource": [
+        "/wssqs-con-discon-default-custom-route/connectServiceRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "connectServiceRoleDefaultPolicyCE4B3DE0"
           }
         ],
-        "/wssqs-route-lambdas/connect/Resource": [
+        "/wssqs-con-discon-default-custom-route/connect/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "connectEB2081F1"
           }
         ],
-        "/wssqs-route-lambdas/disconnectServiceRole/Resource": [
+        "/wssqs-con-discon-default-custom-route/disconnectServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "disconnectServiceRole0B1E33D9"
           }
         ],
-        "/wssqs-route-lambdas/disconnectServiceRole/DefaultPolicy/Resource": [
+        "/wssqs-con-discon-default-custom-route/disconnectServiceRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "disconnectServiceRoleDefaultPolicyD85178B8"
           }
         ],
-        "/wssqs-route-lambdas/disconnect/Resource": [
+        "/wssqs-con-discon-default-custom-route/disconnect/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "disconnect829B70D0"
           }
         ],
-        "/wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/queue-dlq/Resource": [
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsqueuedlq875602DF"
           }
         ],
-        "/wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/queue-dlq/Policy/Resource": [
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsqueuedlqPolicy9E75C5D9"
           }
         ],
-        "/wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/queue/Resource": [
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/queue/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsqueue6D26A944"
           }
         ],
-        "/wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/queue/Policy/Resource": [
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/queue/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsqueuePolicyEFABA1AE"
           }
         ],
-        "/wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/Resource": [
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsLambdaRestApiCloudWatchRole42C4E931"
           }
         ],
-        "/wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/DefaultPolicy/Resource": [
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsLambdaRestApiCloudWatchRoleDefaultPolicy6D004FA5"
           }
         ],
-        "/wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/Resource": [
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqs92E2576D"
           }
         ],
-        "/wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/ConnectIntegration-Permission": [
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/ConnectIntegration-Permission": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteConnectIntegrationPermission7B960546"
           }
         ],
-        "/wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/ConnectIntegration/Resource": [
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/ConnectIntegration/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteConnectIntegration7C5EDD50"
           }
         ],
-        "/wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/Resource": [
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRoute16EADCB5"
           }
         ],
-        "/wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route/DisconnectIntegration-Permission": [
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route/DisconnectIntegration-Permission": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsdisconnectRouteDisconnectIntegrationPermission5D4CD3D3"
           }
         ],
-        "/wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route/DisconnectIntegration/Resource": [
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route/DisconnectIntegration/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsdisconnectRouteDisconnectIntegrationFAAA34C8"
           }
         ],
-        "/wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route/Resource": [
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsdisconnectRoute9D52E365"
           }
         ],
-        "/wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$default-Route/$default/Resource": [
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$default-Route/$default/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsdefaultRoutedefaultB531E839"
           }
         ],
-        "/wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$default-Route/Resource": [
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$default-Route/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsdefaultRouteCD89F0EF"
           }
         ],
-        "/wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/Stage/Resource": [
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/customName-Route/customName/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqscustomNameRoutecustomName5211E1DA"
+          }
+        ],
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/customName-Route/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqscustomNameRouteB8B0BDEE"
+          }
+        ],
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/Stage/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsStage5C419F9E"
           }
         ],
-        "/wssqs-route-lambdas/ApiGatewayV2WebSocketToSqs/LogGroup/Resource": [
+        "/wssqs-con-discon-default-custom-route/ApiGatewayV2WebSocketToSqs/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsLogGroupAD536311"
           }
         ],
-        "/wssqs-route-lambdas/BootstrapVersion": [
+        "/wssqs-con-discon-default-custom-route/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BootstrapVersion"
           }
         ],
-        "/wssqs-route-lambdas/CheckBootstrapVersion": [
+        "/wssqs-con-discon-default-custom-route/CheckBootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
         ]
       },
-      "displayName": "wssqs-route-lambdas"
+      "displayName": "wssqs-con-discon-default-custom-route"
     },
     "Tree": {
       "type": "cdk:tree",

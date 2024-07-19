@@ -25,7 +25,7 @@ import {
   connectRouteOptions,
   DEFAULT_ROUTE_QUEUE_VTL_CONFIG,
 } from "..";
-import * as utils from '../lib/utils';
+import * as utils from "../lib/utils";
 
 test("creates API Gateway role and grants permissions and apigateway stage setup", () => {
   const app = new cdk.App();
@@ -259,7 +259,7 @@ test("buildWebSocketApiProps creates correct WebSocket API props", () => {
   const propsWithDefaultRoute = buildWebSocketApiProps(role, queue, true);
   expect(propsWithDefaultRoute.defaultRouteOptions).toBeDefined();
   expect(propsWithDefaultRoute.defaultRouteOptions).toEqual(
-    buildWebSocketQueueRouteOptions(role, queue, { $default: DEFAULT_ROUTE_QUEUE_VTL_CONFIG })
+    buildWebSocketQueueRouteOptions(role, queue, "$default", { $default: DEFAULT_ROUTE_QUEUE_VTL_CONFIG })
   );
   expect(propsWithDefaultRoute.connectRouteOptions).toEqual(connectRouteOptions);
 
@@ -305,9 +305,9 @@ test("buildWebSocketQueueApi with defaultIamAuthorization is not set", () => {
     createDefaultRoute: true,
     webSocketApiProps: {
       connectRouteOptions: {
-        integration: new WebSocketMockIntegration("user-created-mock")
-      }
-    }
+        integration: new WebSocketMockIntegration("user-created-mock"),
+      },
+    },
   });
 
   const template = Template.fromStack(stack);
@@ -316,7 +316,10 @@ test("buildWebSocketQueueApi with defaultIamAuthorization is not set", () => {
     AuthorizationType: "AWS_IAM",
     RouteKey: "$connect",
     Target: {
-      "Fn::Join": ["", ["integrations/", { Ref: Match.stringLikeRegexp("WebSocketApiTestApiconnectRouteusercreatedmock") }]],
+      "Fn::Join": [
+        "",
+        ["integrations/", { Ref: Match.stringLikeRegexp("WebSocketApiTestApiconnectRouteusercreatedmock") }],
+      ],
     },
   });
 });
@@ -325,7 +328,7 @@ test("buildWebSocketQueueApi with defaultIamAuthorization is set to false and co
   const app = new cdk.App();
   const stack = new cdk.Stack(app, "TestStack");
   const queue = new sqs.Queue(stack, "TestQueue");
-  const printWarningSpy = jest.spyOn(utils, 'printWarning');
+  const printWarningSpy = jest.spyOn(utils, "printWarning");
 
   // not supplying authorizer with $connect with the expectation that the synthesized stack with add
   // an authorizer because defaultIamAuthorization is not set to false.
@@ -334,10 +337,10 @@ test("buildWebSocketQueueApi with defaultIamAuthorization is set to false and co
     createDefaultRoute: false,
     webSocketApiProps: {
       connectRouteOptions: {
-        integration: new WebSocketMockIntegration("user-created-mock")
-      }
+        integration: new WebSocketMockIntegration("user-created-mock"),
+      },
     },
-    defaultIamAuthorization: false
+    defaultIamAuthorization: false,
   });
 
   const template = Template.fromStack(stack);
@@ -346,11 +349,93 @@ test("buildWebSocketQueueApi with defaultIamAuthorization is set to false and co
     AuthorizationType: "NONE",
     RouteKey: "$connect",
     Target: {
-      "Fn::Join": ["", ["integrations/", { Ref: Match.stringLikeRegexp("WebSocketApiTestApiconnectRouteusercreatedmock") }]],
+      "Fn::Join": [
+        "",
+        ["integrations/", { Ref: Match.stringLikeRegexp("WebSocketApiTestApiconnectRouteusercreatedmock") }],
+      ],
     },
   });
 
   expect(printWarningSpy).toBeCalledWith(
-    "This construct will create a WebSocket with NO Authorizer (defaultIamAuthorization is set to false).");
+    "This construct will create a WebSocket with NO Authorizer (defaultIamAuthorization is set to false)."
+  );
   printWarningSpy.mockRestore();
+});
+
+test("buildWebSocketQueueApi when passing a custom route name, it should add a custom route integration to the websocket", () => {
+  const app = new cdk.App();
+  const stack = new cdk.Stack(app, "TestStack");
+  const queue = new sqs.Queue(stack, "TestQueue");
+
+  const customRouteName = "fakeroutename";
+
+  buildWebSocketQueueApi(stack, "TestApi", {
+    queue,
+    createDefaultRoute: false,
+    defaultIamAuthorization: false,
+    customRouteName
+  });
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::ApiGatewayV2::Integration", 1);
+  template.hasResourceProperties("AWS::ApiGatewayV2::Integration", {
+    ApiId: {
+      Ref: Match.anyValue(),
+    },
+    CredentialsArn: {
+      "Fn::GetAtt": [Match.anyValue(), "Arn"],
+    },
+    IntegrationMethod: "POST",
+    IntegrationType: "AWS",
+    IntegrationUri: {
+      "Fn::Join": [
+        "",
+        [
+          "arn:",
+          {
+            Ref: "AWS::Partition",
+          },
+          ":apigateway:",
+          {
+            Ref: "AWS::Region",
+          },
+          ":sqs:path/",
+          {
+            Ref: "AWS::AccountId",
+          },
+          "/",
+          {
+            "Fn::GetAtt": [Match.anyValue(), "QueueName"],
+          },
+        ],
+      ],
+    },
+    PassthroughBehavior: "NEVER",
+    RequestParameters: {
+      "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'",
+    },
+    RequestTemplates: {
+      [customRouteName]: DEFAULT_ROUTE_QUEUE_VTL_CONFIG,
+    },
+    TemplateSelectionExpression: customRouteName,
+  });
+
+  template.resourceCountIs("AWS::ApiGatewayV2::Route", 1);
+  template.hasResourceProperties("AWS::ApiGatewayV2::Route", {
+    ApiId: {
+      Ref: Match.anyValue(),
+    },
+    RouteKey: customRouteName,
+    Target: {
+      "Fn::Join": [
+        "",
+        [
+          "integrations/",
+          {
+            Ref: Match.stringLikeRegexp("WebSocketApiTestApifakeroutenameRoutefakeroutename"),
+          },
+        ],
+      ],
+    },
+  });
 });

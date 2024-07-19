@@ -788,6 +788,77 @@
     }
    }
   },
+  "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqscustomNameRoutecustomName5211E1DA": {
+   "Type": "AWS::ApiGatewayV2::Integration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqs92E2576D"
+    },
+    "CredentialsArn": {
+     "Fn::GetAtt": [
+      "ApiGatewayV2WebSocketToSqsLambdaRestApiCloudWatchRole42C4E931",
+      "Arn"
+     ]
+    },
+    "IntegrationMethod": "POST",
+    "IntegrationType": "AWS",
+    "IntegrationUri": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":apigateway:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":sqs:path/",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       "/",
+       {
+        "Fn::GetAtt": [
+         "ApiGatewayV2WebSocketToSqsqueue6D26A944",
+         "QueueName"
+        ]
+       }
+      ]
+     ]
+    },
+    "PassthroughBehavior": "NEVER",
+    "RequestParameters": {
+     "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'"
+    },
+    "RequestTemplates": {
+     "customName": "Action=SendMessage&MessageGroupId=$input.path('$.MessageGroupId')&MessageDeduplicationId=$context.requestId&MessageAttribute.1.Name=connectionId&MessageAttribute.1.Value.StringValue=$context.connectionId&MessageAttribute.1.Value.DataType=String&MessageAttribute.2.Name=requestId&MessageAttribute.2.Value.StringValue=$context.requestId&MessageAttribute.2.Value.DataType=String&MessageBody=$util.urlEncode($input.json($util.escapeJavaScript('$').replaceAll(\"\\\\'\",\"'\")))"
+    },
+    "TemplateSelectionExpression": "customName"
+   }
+  },
+  "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqscustomNameRouteB8B0BDEE": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqs92E2576D"
+    },
+    "AuthorizationType": "NONE",
+    "RouteKey": "customName",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqscustomNameRoutecustomName5211E1DA"
+       }
+      ]
+     ]
+    }
+   }
+  },
   "ApiGatewayV2WebSocketToSqsStage5C419F9E": {
    "Type": "AWS::ApiGatewayV2::Stage",
    "Properties": {
