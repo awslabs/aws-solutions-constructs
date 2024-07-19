@@ -1,0 +1,266 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "wssqsdefaultrouteIntegDefaultTestDeployAssert04324B3F.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "wssqsdefaultrouteIntegDefaultTestDeployAssert04324B3F.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "wssqsdefaultrouteIntegDefaultTestDeployAssert04324B3F": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "wssqsdefaultrouteIntegDefaultTestDeployAssert04324B3F.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "wssqsdefaultrouteIntegDefaultTestDeployAssert04324B3F.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "wssqsdefaultrouteIntegDefaultTestDeployAssert04324B3F.assets"
+      ],
+      "metadata": {
+        "/wssqs-default-route/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/wssqs-default-route/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "wssqs-default-route/Integ/DefaultTest/DeployAssert"
+    },
+    "wssqs-default-route.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "wssqs-default-route.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "wssqs-default-route": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "wssqs-default-route.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a9c904808b48fcd139192dced978d45e10f6098878a8f8ca31db1ce7ef33cd08.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "wssqs-default-route.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "wssqs-default-route.assets"
+      ],
+      "metadata": {
+        "/wssqs-default-route/disconnectServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "disconnectServiceRole0B1E33D9"
+          }
+        ],
+        "/wssqs-default-route/disconnectServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "disconnectServiceRoleDefaultPolicyD85178B8"
+          }
+        ],
+        "/wssqs-default-route/disconnect/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "disconnect829B70D0"
+          }
+        ],
+        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/queue-dlq/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsqueuedlq875602DF"
+          }
+        ],
+        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/queue-dlq/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsqueuedlqPolicy9E75C5D9"
+          }
+        ],
+        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/queue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsqueue6D26A944"
+          }
+        ],
+        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/queue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsqueuePolicyEFABA1AE"
+          }
+        ],
+        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsLambdaRestApiCloudWatchRole42C4E931"
+          }
+        ],
+        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsLambdaRestApiCloudWatchRoleDefaultPolicy6D004FA5"
+          }
+        ],
+        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqs92E2576D"
+          }
+        ],
+        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/connect/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteconnect5AB5A82B"
+          }
+        ],
+        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$connect-Route/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRoute16EADCB5"
+          }
+        ],
+        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route/DisconnectIntegration-Permission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsdisconnectRouteDisconnectIntegrationPermission5D4CD3D3"
+          }
+        ],
+        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route/DisconnectIntegration/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsdisconnectRouteDisconnectIntegrationFAAA34C8"
+          }
+        ],
+        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$disconnect-Route/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsdisconnectRoute9D52E365"
+          }
+        ],
+        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$default-Route/$default/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsdefaultRoutedefaultB531E839"
+          }
+        ],
+        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/WebSocketApiApiGatewayV2WebSocketToSqs/$default-Route/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsdefaultRouteCD89F0EF"
+          }
+        ],
+        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/Stage/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsStage5C419F9E"
+          }
+        ],
+        "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsLogGroupAD536311"
+          }
+        ],
+        "/wssqs-default-route/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/wssqs-default-route/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ],
+        "connectServiceRoleD6E70EFD": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "connectServiceRoleD6E70EFD",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "connectServiceRoleDefaultPolicyCE4B3DE0": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "connectServiceRoleDefaultPolicyCE4B3DE0",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "connectEB2081F1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "connectEB2081F1",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteConnectIntegrationPermission7B960546": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteConnectIntegrationPermission7B960546",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteConnectIntegration7C5EDD50": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayV2WebSocketToSqsWebSocketApiApiGatewayV2WebSocketToSqsconnectRouteConnectIntegration7C5EDD50",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ]
+      },
+      "displayName": "wssqs-default-route"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

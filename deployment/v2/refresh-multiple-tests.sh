@@ -92,6 +92,7 @@ aws-wafwebacl-alb
 aws-wafwebacl-apigateway
 aws-wafwebacl-appsync
 aws-wafwebacl-cloudfront
+aws-apigatewayv2websocket-sqs
 resources
 "
 
