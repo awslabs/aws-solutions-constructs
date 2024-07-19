@@ -156,7 +156,7 @@ export class KinesisstreamsToGluejob extends Construct {
    * configuration is supplied, the construct does not create an S3 bucket and hence the @outputBucket
    * property is undefined
    */
-  public readonly outputBucket?: [Bucket, (Bucket | undefined)?];
+  public readonly outputBucket?: Bucket[];
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 
   /**
@@ -203,7 +203,13 @@ export class KinesisstreamsToGluejob extends Construct {
     this.glueJobRole = buildGlueJobResponse.role;
     // We refactored the array of anonymous values out of the helper functions, but it was exposed in the
     // construct interface, so we need to recreate it.
-    this.outputBucket = buildGlueJobResponse.bucket ? [ buildGlueJobResponse.bucket, buildGlueJobResponse.loggingBucket] : undefined;
+    if (buildGlueJobResponse.bucket) {
+      this.outputBucket = [];
+      this.outputBucket?.push(buildGlueJobResponse.bucket);
+      if (buildGlueJobResponse.loggingBucket) {
+        this.outputBucket?.push(buildGlueJobResponse.loggingBucket);
+      }
+    }
 
     this.glueJobRole = this.buildRolePolicy(scope, id, this.database, this.table, this.glueJob, this.glueJobRole);
 
