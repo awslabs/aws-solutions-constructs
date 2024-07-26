@@ -183,7 +183,15 @@
                                   "Action": "sts:AssumeRole",
                                   "Effect": "Allow",
                                   "Principal": {
-                                    "Service": "states.amazonaws.com"
+                                    "Service": {
+                                      "Fn::FindInMap": [
+                                        "ServiceprincipalMap",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        "states"
+                                      ]
+                                    }
                                   }
                                 }
                               ],
@@ -716,7 +724,7 @@
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-lambda-stepfunctions.LambdaToStepfunctions",
-              "version": "2.62.0"
+              "version": "2.63.0"
             }
           },
           "Vpc": {
@@ -1361,6 +1369,14 @@
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
               "version": "2.149.0-alpha.0"
+            }
+          },
+          "Service-principalMap": {
+            "id": "Service-principalMap",
+            "path": "lamstp-deployFunctionWithVpc/Service-principalMap",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnMapping",
+              "version": "2.149.0"
             }
           },
           "BootstrapVersion": {

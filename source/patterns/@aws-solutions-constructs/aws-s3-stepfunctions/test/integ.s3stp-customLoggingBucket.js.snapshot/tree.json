@@ -610,7 +610,15 @@
                                       "Action": "sts:AssumeRole",
                                       "Effect": "Allow",
                                       "Principal": {
-                                        "Service": "states.amazonaws.com"
+                                        "Service": {
+                                          "Fn::FindInMap": [
+                                            "ServiceprincipalMap",
+                                            {
+                                              "Ref": "AWS::Region"
+                                            },
+                                            "states"
+                                          ]
+                                        }
                                       }
                                     }
                                   ],
@@ -1021,13 +1029,13 @@
                 },
                 "constructInfo": {
                   "fqn": "@aws-solutions-constructs/aws-eventbridge-stepfunctions.EventbridgeToStepfunctions",
-                  "version": "2.62.0"
+                  "version": "2.63.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-s3-stepfunctions.S3ToStepfunctions",
-              "version": "2.62.0"
+              "version": "2.63.0"
             }
           },
           "LatestNodeRuntimeMap": {
@@ -1238,6 +1246,14 @@
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
               "version": "2.149.0-alpha.0"
+            }
+          },
+          "Service-principalMap": {
+            "id": "Service-principalMap",
+            "path": "s3stp-customLoggingBucket/Service-principalMap",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnMapping",
+              "version": "2.149.0"
             }
           },
           "BootstrapVersion": {
