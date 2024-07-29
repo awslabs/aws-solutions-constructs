@@ -519,3 +519,35 @@ test('Confirm that CheckAlbProps is called', () => {
   // Assertion
   expect(app).toThrowError('Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n');
 });
+
+test('Test sending VPC in loadBalancerProps error', () => {
+  const props = {
+    loadBalancerProps: {
+      vpc: { val: 'placeholder' }
+    }
+  };
+
+  const app = () => {
+    defaults.CheckAlbProps(props);
+  };
+
+  expect(app).toThrowError("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
+});
+
+test('WHen providing VPC in construct and resource props, the vpcId must match', () => {
+  const fakeVpcOne = {vpcId: 'one'};
+  const fakeVpcTwo = {vpcId: 'two'};
+
+  const props = {
+    existingVpc: fakeVpcOne,
+    loadBalancerProps: {
+      vpc: fakeVpcTwo
+    }
+  };
+
+  const app = () => {
+    defaults.CheckAlbProps(props);
+  };
+
+  expect(app).toThrowError("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
+});
