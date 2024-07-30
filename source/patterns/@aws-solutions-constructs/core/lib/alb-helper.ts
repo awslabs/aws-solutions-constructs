@@ -264,8 +264,12 @@ export function CheckAlbProps(props: any) {
   }
 
   if (props.loadBalancerProps?.vpc) {
-    errorFound = true;
-    errorMessages += 'Specify any existing VPC at the construct level, not within loadBalancerProps.\n';
+    // Only reason this should exist is to enable specifying ALB network configuration. There must still
+    // be a construct VPC and  they must match
+    if ((!props.existingVpc) || (props.existingVpc.vpcId !== props.loadBalancerProps?.vpc.vpcId)) {
+      errorFound = true;
+      errorMessages += 'Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC';
+    }
   }
 
   if (props.existingLoadBalancerObj) {
