@@ -1,4 +1,4 @@
-const aws = require('aws-sdk');
+const { SFN } = require('@aws-sdk/client-sfn');
 
 console.log('Loading function');
 
@@ -7,7 +7,7 @@ exports.handler = () => {
     stateMachineArn: process.env.STATE_MACHINE_ARN,
     input: JSON.stringify({})
   };
-  const stepFunction = new aws.StepFunctions();
+  const stepFunction = new SFN();
   stepFunction.startExecution(params, function (err, data) {
     if (err) {
       throw Error('An error occurred executing the step function.');

@@ -12,9 +12,14 @@
  */
 
 // Imports
-const aws = require('aws-sdk');
-const ddb = new aws.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
-const sns = new aws.SNS();
+
+
+const { DynamoDBDocument } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDB } = require("@aws-sdk/client-dynamodb");
+const { SNS } = require("@aws-sdk/client-sns");
+
+const ddb = DynamoDBDocument.from(new DynamoDB({apiVersion: '2012-08-10'}));
+const sns = new SNS();
 
 // Handler
 exports.handler = async (event) => {
@@ -42,7 +47,7 @@ exports.handler = async (event) => {
 
   // Query all late orders from the table
   try {
-    const result = await ddb.query(params).promise();
+    const result = await ddb.query(params);
     // Extract the order JSON objects
     const orders = Array.from(result.Items);
     // Save the open orders to the array

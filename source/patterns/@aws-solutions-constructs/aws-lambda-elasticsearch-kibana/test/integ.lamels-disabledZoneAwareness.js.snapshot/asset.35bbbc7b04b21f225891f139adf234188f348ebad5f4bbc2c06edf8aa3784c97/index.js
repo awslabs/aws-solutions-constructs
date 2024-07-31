@@ -1,4 +1,7 @@
 var AWS = require('aws-sdk');
+
+const { fromEnv } = require('@aws-sdk/credential-providers');
+
 var path = require('path');
 
 console.log('Loading function');
@@ -10,8 +13,11 @@ var esDomain = {
     doctype: 'movie'
 };
 
-var creds = new AWS.EnvironmentCredentials('AWS');
-var endpoint =  new AWS.Endpoint(esDomain.endpoint);
+var creds = // JS SDK v3 switched credential providers from classes to functions.
+// This is the closest approximation from codemod of what your application needs.
+// Reference: https://www.npmjs.com/package/@aws-sdk/credential-providers
+fromEnv('AWS');
+var endpoint =  new URL(esDomain.endpoint);
 
 function postDocumentToES(doc, context) {
     var req = new AWS.HttpRequest(endpoint);

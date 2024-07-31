@@ -11,8 +11,11 @@
  *  and limitations under the License.
  */
 
-const aws = require('aws-sdk');
-const eventbridge = new aws.EventBridge();
+
+
+const { EventBridge } = require('@aws-sdk/client-eventbridge');
+
+const eventbridge = new EventBridge();
 exports.handler = () => {
   const params = {
     Entries: [{

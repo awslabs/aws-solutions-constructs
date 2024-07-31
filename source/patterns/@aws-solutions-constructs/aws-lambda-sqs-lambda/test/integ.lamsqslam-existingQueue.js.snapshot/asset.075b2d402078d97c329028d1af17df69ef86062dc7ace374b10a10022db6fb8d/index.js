@@ -11,7 +11,9 @@
  *  and limitations under the License.
  */
 
-const aws = require('aws-sdk');
+
+
+const { SQS } = require('@aws-sdk/client-sqs');
 
 exports.handler = () => {
     console.log('Loading producer function');
@@ -19,7 +21,7 @@ exports.handler = () => {
         MessageBody: 'sample-message-body',
         QueueUrl: process.env.SQS_QUEUE_URL
     };
-    const sqs = new aws.SQS();
+    const sqs = new SQS();
     sqs.sendMessage(params, function (err, data) {
         if (err) {
             throw Error('An error occurred sending the message.');
