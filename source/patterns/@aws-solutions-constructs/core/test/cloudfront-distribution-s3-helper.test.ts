@@ -450,14 +450,24 @@ test('Are cloudfront log bucket access log bucket properties used', () => {
   template.hasResourceProperties("AWS::S3::Bucket", {
     BucketName: testName
   });
+});
+test('Is logCloudFrontAccessLog observed', () => {
+  const stack = new Stack();
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
 
-  template.hasResourceProperties("AWS::S3::Bucket", {
-    LoggingConfiguration: {
-      DestinationBucketName: {
-        Ref: "CloudfrontLoggingBucketAccessLogAC47A543"
-      }
-    },
+  const response = createCloudFrontDistributionForS3(stack, 'sample-cf-distro', {
+    sourceBucket: buildS3BucketResponse.bucket,
+    logCloudFrontAccessLog: false,
+    cloudFrontDistributionProps: {},
   });
+
+  expect(response.loggingBucket).toBeDefined();
+  expect(response.loggingBucketS3AccesssLogBucket).not.toBeDefined();
+
+  const template = Template.fromStack(stack);
+
+  // Content Bucket, Content Bucket Access Log, CloudFront Log, NO CloudFront Log Access Log
+  template.resourceCountIs("AWS::S3::Bucket", 3);
 });
 
 // ---------------------------
