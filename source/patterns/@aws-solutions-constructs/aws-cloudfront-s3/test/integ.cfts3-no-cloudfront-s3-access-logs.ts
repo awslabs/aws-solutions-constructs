@@ -48,6 +48,11 @@ defaults.addCfnSuppressRules(construct.s3Bucket!, [
     reason: 'Test case only' },
 ]);
 
+defaults.addCfnSuppressRules(construct.cloudFrontLoggingBucket!, [
+  { id: 'W35',
+    reason: 'Test case only' },
+]);
+
 defaults.addCfnSuppressRules(construct.cloudFrontWebDistribution, [
   { id: 'W35',
     reason: 'Test case only' },

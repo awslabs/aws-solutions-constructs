@@ -261,6 +261,14 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W35",
+       "reason": "Test case only"
+      }
+     ]
+    },
     "guard": {
      "SuppressedRules": [
       "S3_BUCKET_LOGGING_ENABLED"
