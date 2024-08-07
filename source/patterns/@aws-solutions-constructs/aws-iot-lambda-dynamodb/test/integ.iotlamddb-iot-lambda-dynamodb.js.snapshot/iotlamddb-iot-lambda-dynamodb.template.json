@@ -53,6 +53,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionServiceRoleDefaultPolicy2B35234F": {
@@ -212,7 +219,14 @@
     }
    },
    "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "DYNAMODB_TABLE_ENCRYPTED_KMS"
+     ]
+    }
+   }
   },
   "testiotlambdadynamodbstackIotToLambdaIotTopic74F5E3BB": {
    "Type": "AWS::IoT::TopicRule",

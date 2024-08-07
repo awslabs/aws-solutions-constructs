@@ -1,7 +1,7 @@
 {
   "version": "36.0.0",
   "files": {
-    "0465f48229b2853b1aa5ff73fd317315867e85ae1358c39e6defc2913349dd07": {
+    "37cd1fc146211d3c0f4b0d43b9a2179db2e37bf05569fda30f1fc83519e9c8ce": {
       "source": {
         "path": "apikin-apigateway-kinesis-overwrite.template.json",
         "packaging": "file"
@@ -9,7 +9,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "0465f48229b2853b1aa5ff73fd317315867e85ae1358c39e6defc2913349dd07.json",
+          "objectKey": "37cd1fc146211d3c0f4b0d43b9a2179db2e37bf05569fda30f1fc83519e9c8ce.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

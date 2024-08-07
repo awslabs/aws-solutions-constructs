@@ -74,6 +74,7 @@ const albToLambda = new AlbToLambda(stack, 'test-one', props);
 defaults.addCfnSuppressRules(albToLambda.listener, [
   { id: 'W56', reason: 'All integration tests must be HTTP because of certificate limitations.' },
 ]);
+defaults.addCfnGuardSuppressRules(albToLambda.listener, ["ELBV2_LISTENER_SSL_POLICY_RULE"]);
 
 const newSecurityGroup = albToLambda.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
 defaults.addCfnSuppressRules(newSecurityGroup, [

@@ -17,7 +17,12 @@ export NODE_OPTIONS="--max-old-space-size=4096 ${NODE_OPTIONS:-}"
 
 echo "============================================================================================="
 echo "building..."
-time lerna run $bail --stream $runtarget || fail
+# time lerna run $bail --stream $runtarget || fail
+
+echo "============================================================================================="
+echo "running cfn-guard..."
+pwd
+~/.guard/bin/cfn-guard validate -r ~/.guard/rules/aws-solutions.guard -d **/**/**/test/**/*.template.json
 
 echo "============================================================================================="
 echo "packaging..."

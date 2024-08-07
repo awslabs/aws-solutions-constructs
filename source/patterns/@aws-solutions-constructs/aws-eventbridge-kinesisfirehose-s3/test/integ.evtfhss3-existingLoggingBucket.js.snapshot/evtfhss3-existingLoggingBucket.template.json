@@ -565,6 +565,13 @@
      ],
      "Version": "2012-10-17"
     }
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "evtfhss3existinglogbucketKinesisFirehoseToS3KinesisFirehosePolicy8151CDB1": {
@@ -705,6 +712,14 @@
        "Arn"
       ]
      }
+    }
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "KINESIS_FIREHOSE_REDSHIFT_DESTINATION_CONFIGURATION_NO_PLAINTEXT_PASSWORD",
+      "KINESIS_FIREHOSE_SPLUNK_DESTINATION_CONFIGURATION_NO_PLAINTEXT_PASSWORD"
+     ]
     }
    }
   },

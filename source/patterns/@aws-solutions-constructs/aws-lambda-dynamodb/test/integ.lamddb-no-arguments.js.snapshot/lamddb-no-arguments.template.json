@@ -53,6 +53,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testlambdadynamodbstackLambdaFunctionServiceRoleDefaultPolicy547FB7F4": {
@@ -193,7 +200,14 @@
     }
    },
    "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "DYNAMODB_TABLE_ENCRYPTED_KMS"
+     ]
+    }
+   }
   }
  },
  "Parameters": {

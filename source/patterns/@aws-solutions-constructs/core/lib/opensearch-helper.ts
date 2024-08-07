@@ -19,7 +19,7 @@
 import * as opensearch from 'aws-cdk-lib/aws-opensearchservice';
 import { DefaultOpenSearchCfnDomainProps } from './opensearch-defaults';
 import { retrievePrivateSubnetIds } from './vpc-helper';
-import { consolidateProps, addCfnSuppressRules } from './utils';
+import { consolidateProps, addCfnSuppressRules, addCfnGuardSuppressRules } from './utils';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cdk from 'aws-cdk-lib';
 import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
@@ -97,6 +97,8 @@ export function buildOpenSearch(scope: Construct, props: BuildOpenSearchProps): 
       reason: `This is not a rule for the general case, just for specific use cases/industries`,
     },
   ]);
+
+  addCfnGuardSuppressRules(opensearchDomain, ["CFN_NO_EXPLICIT_RESOURCE_NAMES"]);
 
   return  { domain: opensearchDomain, role: cognitoDashboardConfigureRole };
 }

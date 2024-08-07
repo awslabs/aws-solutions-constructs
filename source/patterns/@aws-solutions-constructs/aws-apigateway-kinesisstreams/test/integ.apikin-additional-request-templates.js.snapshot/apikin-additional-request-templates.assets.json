@@ -1,7 +1,7 @@
 {
   "version": "36.0.0",
   "files": {
-    "66c4a74fa528b6b9e62db0f24a50ddf18997b021b8452f499c0a9188e62b354c": {
+    "ce68e48cd6af30e6a7e44e6a0eed77222c359c5d9a7979ed9a4667133f0ff55d": {
       "source": {
         "path": "apikin-additional-request-templates.template.json",
         "packaging": "file"
@@ -9,7 +9,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "66c4a74fa528b6b9e62db0f24a50ddf18997b021b8452f499c0a9188e62b354c.json",
+          "objectKey": "ce68e48cd6af30e6a7e44e6a0eed77222c359c5d9a7979ed9a4667133f0ff55d.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

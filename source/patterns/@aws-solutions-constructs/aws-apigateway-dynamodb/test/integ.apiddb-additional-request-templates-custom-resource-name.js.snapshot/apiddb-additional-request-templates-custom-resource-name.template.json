@@ -33,7 +33,14 @@
     }
    },
    "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "DYNAMODB_TABLE_ENCRYPTED_KMS"
+     ]
+    }
+   }
   },
   "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameApiAccessLogGroup89C7FD92": {
    "Type": "AWS::Logs::LogGroup",
@@ -116,6 +123,13 @@
     },
     "StageName": "prod",
     "TracingEnabled": true
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "API_GW_CACHE_ENABLED_AND_ENCRYPTED"
+     ]
+    }
    }
   },
   "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiid4EBF99AB": {
@@ -301,6 +315,13 @@
       "PolicyName": "LambdaRestApiCloudWatchRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameLambdaRestApiAccountFA4A4D09": {

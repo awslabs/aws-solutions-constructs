@@ -695,6 +695,11 @@
       }
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": []
+    }
    }
   },
   "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
@@ -1091,6 +1096,11 @@
        "reason": "Rule does not apply for ELB."
       }
      ]
+    },
+    "guard": {
+     "SuppressedRules": [
+      "SECURITY_GROUP_MISSING_EGRESS_RULE"
+     ]
     }
    }
   },
@@ -1142,6 +1152,11 @@
        "id": "W56",
        "reason": "All integration tests must be HTTP because of certificate limitations."
       }
+     ]
+    },
+    "guard": {
+     "SuppressedRules": [
+      "ELBV2_LISTENER_SSL_POLICY_RULE"
      ]
     }
    }

@@ -449,6 +449,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "minimalargumentsLambdaFunctionServiceRoleDefaultPolicy59EC60ED": {
@@ -730,6 +737,11 @@
        "reason": "PutMetricData does not allow resource specification, scope is narrowed by the namespace condition. https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazoncloudwatch.html"
       }
      ]
+    },
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
     }
    }
   },
@@ -846,6 +858,13 @@
       "PolicyName": "s3CrawlPolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "minimalargumentsdatasourceminimalarguments05A02FF3B": {
@@ -1260,6 +1279,11 @@
       }
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": []
+    }
    }
   },
   "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {

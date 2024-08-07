@@ -27,7 +27,14 @@
     }
    },
    "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "DYNAMODB_TABLE_ENCRYPTED_KMS"
+     ]
+    }
+   }
   },
   "testdynamodbstreamslambdaLambdaFunctionServiceRole17CB5CA1": {
    "Type": "AWS::IAM::Role",
@@ -82,6 +89,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testdynamodbstreamslambdaLambdaFunctionServiceRoleDefaultPolicyC83E18AD": {

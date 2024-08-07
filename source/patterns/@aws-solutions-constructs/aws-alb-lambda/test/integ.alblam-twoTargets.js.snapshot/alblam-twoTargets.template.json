@@ -363,6 +363,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testoneLambdaFunctionServiceRoleDefaultPolicy6025A173": {
@@ -551,6 +558,11 @@
        "id": "W56",
        "reason": "All integration tests must be HTTP because of certificate limitations."
       }
+     ]
+    },
+    "guard": {
+     "SuppressedRules": [
+      "ELBV2_LISTENER_SSL_POLICY_RULE"
      ]
     }
    }
@@ -1206,6 +1218,11 @@
       }
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": []
+    }
    }
   },
   "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
@@ -1380,6 +1397,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testtwoLambdaFunctionServiceRoleDefaultPolicy3BCA0DDD": {

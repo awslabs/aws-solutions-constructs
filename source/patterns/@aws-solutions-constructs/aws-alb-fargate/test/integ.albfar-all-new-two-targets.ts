@@ -63,6 +63,7 @@ const albToFargate = new AlbToFargate(stack, 'test-two-construct', testPropsTwo)
 defaults.addCfnSuppressRules(albToFargate.listener, [
   { id: 'W56', reason: 'All integration tests must be HTTP because of certificate limitations.' },
 ]);
+defaults.addCfnGuardSuppressRules(albToFargate.listener, ["ELBV2_LISTENER_SSL_POLICY_RULE"]);
 
 const newSecurityGroup = albToFargate.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
 defaults.addCfnSuppressRules(newSecurityGroup, [
@@ -70,6 +71,7 @@ defaults.addCfnSuppressRules(newSecurityGroup, [
   { id: 'W2', reason: 'Rule does not apply for ELB.'},
   { id: 'W9', reason: 'Rule does not apply for ELB.'}
 ]);
+defaults.addCfnGuardSuppressRules(newSecurityGroup, ["SECURITY_GROUP_MISSING_EGRESS_RULE"]);
 
 defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');

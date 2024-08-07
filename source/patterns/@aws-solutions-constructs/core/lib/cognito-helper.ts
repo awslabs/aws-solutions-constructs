@@ -19,7 +19,7 @@
 import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cdk from 'aws-cdk-lib';
-import { addCfnSuppressRules, consolidateProps } from './utils';
+import { addCfnGuardSuppressRules, addCfnSuppressRules, consolidateProps } from './utils';
 import { DefaultUserPoolProps, DefaultUserPoolClientProps, DefaultIdentityPoolProps } from './cognito-defaults';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
@@ -126,6 +126,8 @@ export function setupCognitoForSearchService(scope: Construct, domainName: strin
       })
     }
   });
+
+  addCfnGuardSuppressRules(cognitoAuthorizedRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
 
   // Attach the IAM Role for Cognito Authorized Users
   const props: cognito.CfnIdentityPoolRoleAttachmentProps = {

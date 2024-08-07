@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4805cd5eb2663df7fcd0915f23478f34d31c9efac9f9e99699cf205f188430cb.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c78726b1e7017a147848c82fa17538f73a7e684250ee805686eaaacb0f746b30.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -182,24 +182,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "testapigatewaysqsintegrationresponsesdeadLetterQueue22D4FBC4": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesdeadLetterQueue22D4FBC4",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "testapigatewaysqsintegrationresponsesdeadLetterQueuePolicyC05CEDC7": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesdeadLetterQueuePolicyC05CEDC7",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },

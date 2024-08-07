@@ -836,6 +836,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testcloudfronts3cmkencryptionkeyLambdaFunctionServiceRoleDefaultPolicyE566BC43": {
@@ -1032,7 +1039,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "3542be390685e0c8353d92ccb5796d343cd93ca946b6b0de798004206a199adc.zip"
+     "S3Key": "d9861ea7a45affd23e47a614acb2fddc6e45c20a891284c958187dafbf9ee36b.zip"
     },
     "Description": "AWS CDK resource provider framework - onEvent (cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateProvider)",
     "Environment": {

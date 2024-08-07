@@ -140,6 +140,7 @@ export class ApiGatewayToIot extends Construct {
 
       // Create a policy that overrides the default policy that gets created with the construct
       this.apiGatewayRole = new iam.Role(this, 'apigateway-iot-role', iamRoleProps);
+      defaults.addCfnGuardSuppressRules(this.apiGatewayRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
     }
 
     // Setup the API Gateway

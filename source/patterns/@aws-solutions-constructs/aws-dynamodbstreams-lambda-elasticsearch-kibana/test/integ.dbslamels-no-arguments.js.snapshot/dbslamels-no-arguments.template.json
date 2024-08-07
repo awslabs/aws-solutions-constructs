@@ -53,6 +53,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleDefaultPolicyA7EEDEDA": {
@@ -415,6 +422,13 @@
       "PolicyName": "CognitoAccessPolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testddbstreamslambdaeskLambdaToElasticSearchIdentityPoolRoleMapping508D4D41": {
@@ -746,6 +760,11 @@
        "reason": "This is not a rule for the general case, just for specific use cases/industries"
       }
      ]
+    },
+    "guard": {
+     "SuppressedRules": [
+      "CFN_NO_EXPLICIT_RESOURCE_NAMES"
+     ]
     }
    }
   },
@@ -893,7 +912,14 @@
     }
    },
    "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "DYNAMODB_TABLE_ENCRYPTED_KMS"
+     ]
+    }
+   }
   },
   "testddbstreamslambdaeskDynamoDBStreamsToLambdaSqsDlqQueue82B4D17B": {
    "Type": "AWS::SQS::Queue",

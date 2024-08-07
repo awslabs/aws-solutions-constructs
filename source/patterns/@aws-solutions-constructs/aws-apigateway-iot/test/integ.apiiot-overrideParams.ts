@@ -16,7 +16,7 @@ import * as cdk from "aws-cdk-lib";
 import { ApiGatewayToIot, ApiGatewayToIotProps } from "../lib";
 import * as api from 'aws-cdk-lib/aws-apigateway';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { addCfnGuardSuppressRules, generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // App setup
@@ -62,6 +62,7 @@ const iamRoleProps: iam.RoleProps = {
 
 // Create a policy that overrides the default policy that gets created with the construct
 const apiGatewayExecutionRole: iam.Role = new iam.Role(stack, 'apigateway-iot-role', iamRoleProps);
+addCfnGuardSuppressRules(apiGatewayExecutionRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
 
 // Api gateway setup
 const props: ApiGatewayToIotProps = {
