@@ -605,6 +605,11 @@
       }
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": []
+    }
    }
   },
   "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
@@ -703,6 +708,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testlambdaelasticsearchkibana4LambdaFunctionServiceRoleDefaultPolicyA5AD88E5": {
@@ -1064,6 +1076,13 @@
       "PolicyName": "CognitoAccessPolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testlambdaelasticsearchkibana4IdentityPoolRoleMapping9378D177": {
@@ -1412,6 +1431,11 @@
        "id": "W90",
        "reason": "This is not a rule for the general case, just for specific use cases/industries"
       }
+     ]
+    },
+    "guard": {
+     "SuppressedRules": [
+      "CFN_NO_EXPLICIT_RESOURCE_NAMES"
      ]
     }
    }

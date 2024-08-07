@@ -115,6 +115,7 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
       this.apiGatewayRole = new iam.Role(this, 'api-gateway-role', {
         assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
       });
+      defaults.addCfnGuardSuppressRules(this.apiGatewayRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
 
       // Setup the IAM policy for SageMaker endpoint
       const invokePolicy = new iam.Policy(this, 'InvokeEndpointPolicy', {

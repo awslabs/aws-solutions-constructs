@@ -17,7 +17,7 @@ import { Stack, App, Aws } from 'aws-cdk-lib';
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { addCfnGuardSuppressRules, generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -41,6 +41,7 @@ const lambdaRole = new iam.Role(stack, 'test-role', {
     })
   }
 });
+addCfnGuardSuppressRules(lambdaRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
 
 const lambdaFn = new lambda.Function(stack, 'test-fn', {
   runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,

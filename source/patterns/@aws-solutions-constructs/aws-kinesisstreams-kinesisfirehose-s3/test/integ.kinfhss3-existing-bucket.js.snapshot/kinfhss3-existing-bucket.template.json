@@ -453,6 +453,13 @@
      ],
      "Version": "2012-10-17"
     }
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testexistingbucketfirehoses3stackKinesisFirehoseToS3KinesisFirehosePolicyE9A78781": {
@@ -626,6 +633,14 @@
       ]
      }
     }
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "KINESIS_FIREHOSE_REDSHIFT_DESTINATION_CONFIGURATION_NO_PLAINTEXT_PASSWORD",
+      "KINESIS_FIREHOSE_SPLUNK_DESTINATION_CONFIGURATION_NO_PLAINTEXT_PASSWORD"
+     ]
+    }
    }
   },
   "testexistingbucketfirehoses3stackKinesisStreamGetRecordsIteratorAgeAlarmD41CBD58": {
@@ -694,6 +709,13 @@
       "PolicyName": "KinesisStreamsRoleRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   }
  },

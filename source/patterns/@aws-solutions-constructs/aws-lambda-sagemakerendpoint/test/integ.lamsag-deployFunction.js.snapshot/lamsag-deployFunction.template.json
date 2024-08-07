@@ -83,6 +83,13 @@
      ],
      "Version": "2012-10-17"
     }
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testlambdasagemakerSagemakerRoleDefaultPolicy9909C0A0": {
@@ -301,6 +308,11 @@
        "reason": "Complex role becuase Sagemaker needs permissions to access several services"
       }
      ]
+    },
+    "guard": {
+     "SuppressedRules": [
+      "IAM_POLICY_NON_COMPLIANT_ARN"
+     ]
     }
    }
   },
@@ -461,6 +473,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testlambdasagemakerLambdaFunctionServiceRoleDefaultPolicy208C2512": {

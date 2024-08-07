@@ -20,7 +20,7 @@ import * as logs from "aws-cdk-lib/aws-logs";
 import * as sqs from "aws-cdk-lib/aws-sqs";
 import { Construct } from "constructs";
 import { buildLogGroup } from "./cloudwatch-log-group-helper";
-import { addCfnSuppressRules, consolidateProps, printWarning } from "./utils";
+import { addCfnGuardSuppressRules, addCfnSuppressRules, consolidateProps, printWarning } from "./utils";
 import { connectRouteOptions, DEFAULT_ROUTE_QUEUE_VTL_CONFIG } from "./websocket-api-defaults";
 
 export interface BuildWebSocketQueueApiResponse {
@@ -107,6 +107,8 @@ export function buildWebSocketQueueApi(
     webSocketApi,
     autoDeploy: true,
   });
+
+  addCfnGuardSuppressRules(webSocketStage, ["API_GW_CACHE_ENABLED_AND_ENCRYPTED"]);
 
   const apiGatewayLogGroup = buildLogGroup(scope, "LogGroup", props.logGroupProps);
   apiGatewayLogGroup.grant(

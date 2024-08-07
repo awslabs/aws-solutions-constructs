@@ -695,6 +695,11 @@
       }
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": []
+    }
    }
   },
   "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
@@ -1205,6 +1210,13 @@
       "PolicyName": "CognitoAccessPolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testconstructIdentityPoolRoleMapping1391CBDD": {
@@ -1545,6 +1557,11 @@
        "id": "W90",
        "reason": "This is not a rule for the general case, just for specific use cases/industries"
       }
+     ]
+    },
+    "guard": {
+     "SuppressedRules": [
+      "CFN_NO_EXPLICIT_RESOURCE_NAMES"
      ]
     }
    }

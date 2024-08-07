@@ -23,13 +23,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_route53.CfnHostedZone",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_route53.PublicHostedZone",
-              "version": "2.147.3"
+              "version": "2.150.0"
             }
           },
           "new-alb-stack": {
@@ -88,7 +88,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnLoadBalancer",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "SecurityGroup": {
@@ -118,19 +118,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
-                          "version": "2.147.3"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationLoadBalancer",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "new-alb-stack": {
@@ -171,7 +171,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "Policy": {
@@ -337,13 +337,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                          "version": "2.147.3"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "AutoDeleteObjectsCustomResource": {
@@ -355,19 +355,19 @@
                         "path": "r53alb-deployPublicApiNewAlb/new-alb-stack/new-alb-stack/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
-                          "version": "2.147.3"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CustomResource",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.Bucket",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "new-alb-stack-alias": {
@@ -411,19 +411,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_route53.CfnRecordSet",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_route53.ARecord",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-route53-alb.Route53ToAlb",
-              "version": "2.60.0"
+              "version": "2.63.0"
             }
           },
           "Vpc": {
@@ -450,7 +450,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.CfnVPC",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "PublicSubnet1": {
@@ -494,7 +494,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "Acl": {
@@ -502,7 +502,7 @@
                     "path": "r53alb-deployPublicApiNewAlb/Vpc/PublicSubnet1/Acl",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "RouteTable": {
@@ -524,7 +524,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "RouteTableAssociation": {
@@ -543,7 +543,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "DefaultRoute": {
@@ -563,7 +563,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "EIP": {
@@ -583,7 +583,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnEIP",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "NATGateway": {
@@ -611,13 +611,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnNatGateway",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.PublicSubnet",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "PublicSubnet2": {
@@ -661,7 +661,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "Acl": {
@@ -669,7 +669,7 @@
                     "path": "r53alb-deployPublicApiNewAlb/Vpc/PublicSubnet2/Acl",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "RouteTable": {
@@ -691,7 +691,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "RouteTableAssociation": {
@@ -710,7 +710,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "DefaultRoute": {
@@ -730,7 +730,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "EIP": {
@@ -750,7 +750,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnEIP",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "NATGateway": {
@@ -778,13 +778,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnNatGateway",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.PublicSubnet",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "PrivateSubnet1": {
@@ -828,7 +828,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "Acl": {
@@ -836,7 +836,7 @@
                     "path": "r53alb-deployPublicApiNewAlb/Vpc/PrivateSubnet1/Acl",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "RouteTable": {
@@ -858,7 +858,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "RouteTableAssociation": {
@@ -877,7 +877,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "DefaultRoute": {
@@ -897,13 +897,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "PrivateSubnet2": {
@@ -947,7 +947,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "Acl": {
@@ -955,7 +955,7 @@
                     "path": "r53alb-deployPublicApiNewAlb/Vpc/PrivateSubnet2/Acl",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "RouteTable": {
@@ -977,7 +977,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "RouteTableAssociation": {
@@ -996,7 +996,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "DefaultRoute": {
@@ -1016,13 +1016,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "IGW": {
@@ -1041,7 +1041,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.CfnInternetGateway",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "VPCGW": {
@@ -1060,7 +1060,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.CfnVPCGatewayAttachment",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "RestrictDefaultSecurityGroupCustomResource": {
@@ -1072,13 +1072,13 @@
                     "path": "r53alb-deployPublicApiNewAlb/Vpc/RestrictDefaultSecurityGroupCustomResource/Default",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnResource",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CustomResource",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "FlowLog": {
@@ -1094,7 +1094,7 @@
                         "path": "r53alb-deployPublicApiNewAlb/Vpc/FlowLog/IAMRole/ImportIAMRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.147.3"
+                          "version": "2.150.0"
                         }
                       },
                       "Resource": {
@@ -1125,7 +1125,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                          "version": "2.147.3"
+                          "version": "2.150.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -1177,19 +1177,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                              "version": "2.147.3"
+                              "version": "2.150.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Policy",
-                          "version": "2.147.3"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Role",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "LogGroup": {
@@ -1213,13 +1213,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                          "version": "2.147.3"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "FlowLog": {
@@ -1253,19 +1253,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnFlowLog",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.FlowLog",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_ec2.Vpc",
-              "version": "2.147.3"
+              "version": "2.150.0"
             }
           },
           "Custom::VpcRestrictDefaultSGCustomResourceProvider": {
@@ -1277,7 +1277,7 @@
                 "path": "r53alb-deployPublicApiNewAlb/Custom::VpcRestrictDefaultSGCustomResourceProvider/Staging",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "Role": {
@@ -1285,7 +1285,7 @@
                 "path": "r53alb-deployPublicApiNewAlb/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "Handler": {
@@ -1293,13 +1293,13 @@
                 "path": "r53alb-deployPublicApiNewAlb/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResourceProviderBase",
-              "version": "2.147.3"
+              "version": "2.150.0"
             }
           },
           "Custom::S3AutoDeleteObjectsCustomResourceProvider": {
@@ -1311,7 +1311,7 @@
                 "path": "r53alb-deployPublicApiNewAlb/Custom::S3AutoDeleteObjectsCustomResourceProvider/Staging",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "Role": {
@@ -1319,7 +1319,7 @@
                 "path": "r53alb-deployPublicApiNewAlb/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "Handler": {
@@ -1327,13 +1327,13 @@
                 "path": "r53alb-deployPublicApiNewAlb/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResourceProviderBase",
-              "version": "2.147.3"
+              "version": "2.150.0"
             }
           },
           "Integ": {
@@ -1361,7 +1361,7 @@
                         "path": "r53alb-deployPublicApiNewAlb/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.147.3"
+                          "version": "2.150.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -1369,25 +1369,25 @@
                         "path": "r53alb-deployPublicApiNewAlb/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.147.3"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.147.3-alpha.0"
+                  "version": "2.150.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.147.3-alpha.0"
+              "version": "2.150.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -1395,7 +1395,7 @@
             "path": "r53alb-deployPublicApiNewAlb/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.147.3"
+              "version": "2.150.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -1403,13 +1403,13 @@
             "path": "r53alb-deployPublicApiNewAlb/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.147.3"
+              "version": "2.150.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.147.3"
+          "version": "2.150.0"
         }
       },
       "Tree": {
@@ -1423,7 +1423,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.147.3"
+      "version": "2.150.0"
     }
   }
 }

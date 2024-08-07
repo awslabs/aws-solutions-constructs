@@ -25,7 +25,7 @@
                         "path": "iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       },
                       "Resource": {
@@ -88,7 +88,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -157,19 +157,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                              "version": "2.149.0"
+                              "version": "2.150.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Policy",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Role",
-                      "version": "2.149.0"
+                      "version": "2.150.0"
                     }
                   },
                   "ReplaceDefaultSecurityGroup-security-group": {
@@ -197,13 +197,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
-                      "version": "2.149.0"
+                      "version": "2.150.0"
                     }
                   },
                   "LambdaFunction": {
@@ -219,7 +219,7 @@
                             "path": "iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/Code/Stage",
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.AssetStaging",
-                              "version": "2.149.0"
+                              "version": "2.150.0"
                             }
                           },
                           "AssetBucket": {
@@ -227,13 +227,13 @@
                             "path": "iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/Code/AssetBucket",
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                              "version": "2.149.0"
+                              "version": "2.150.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       },
                       "Resource": {
@@ -289,7 +289,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       },
                       "AwsIotLambdaInvokePermission-1": {
@@ -316,13 +316,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.Function",
-                      "version": "2.149.0"
+                      "version": "2.150.0"
                     }
                   },
                   "DynamoTable": {
@@ -358,7 +358,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       },
                       "ScalingRole": {
@@ -366,19 +366,19 @@
                         "path": "iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/DynamoTable/ScalingRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_dynamodb.Table",
-                      "version": "2.149.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-solutions-constructs/aws-lambda-dynamodb.LambdaToDynamoDB",
-                  "version": "2.62.0"
+                  "version": "2.63.0"
                 }
               },
               "Vpc": {
@@ -405,7 +405,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnVPC",
-                      "version": "2.149.0"
+                      "version": "2.150.0"
                     }
                   },
                   "isolatedSubnet1": {
@@ -449,7 +449,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       },
                       "Acl": {
@@ -457,7 +457,7 @@
                         "path": "iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/isolatedSubnet1/Acl",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       },
                       "RouteTable": {
@@ -479,7 +479,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       },
                       "RouteTableAssociation": {
@@ -498,13 +498,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
-                      "version": "2.149.0"
+                      "version": "2.150.0"
                     }
                   },
                   "isolatedSubnet2": {
@@ -548,7 +548,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       },
                       "Acl": {
@@ -556,7 +556,7 @@
                         "path": "iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/isolatedSubnet2/Acl",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       },
                       "RouteTable": {
@@ -578,7 +578,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       },
                       "RouteTableAssociation": {
@@ -597,13 +597,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
-                      "version": "2.149.0"
+                      "version": "2.150.0"
                     }
                   },
                   "RestrictDefaultSecurityGroupCustomResource": {
@@ -615,13 +615,13 @@
                         "path": "iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/RestrictDefaultSecurityGroupCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CustomResource",
-                      "version": "2.149.0"
+                      "version": "2.150.0"
                     }
                   },
                   "FlowLog": {
@@ -637,7 +637,7 @@
                             "path": "iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/FlowLog/IAMRole/ImportIAMRole",
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.Resource",
-                              "version": "2.149.0"
+                              "version": "2.150.0"
                             }
                           },
                           "Resource": {
@@ -668,7 +668,7 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                              "version": "2.149.0"
+                              "version": "2.150.0"
                             }
                           },
                           "DefaultPolicy": {
@@ -720,19 +720,19 @@
                                 },
                                 "constructInfo": {
                                   "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                                  "version": "2.149.0"
+                                  "version": "2.150.0"
                                 }
                               }
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.Policy",
-                              "version": "2.149.0"
+                              "version": "2.150.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Role",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       },
                       "LogGroup": {
@@ -756,13 +756,13 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                              "version": "2.149.0"
+                              "version": "2.150.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       },
                       "FlowLog": {
@@ -796,13 +796,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_ec2.CfnFlowLog",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.FlowLog",
-                      "version": "2.149.0"
+                      "version": "2.150.0"
                     }
                   },
                   "DDB": {
@@ -843,19 +843,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_ec2.CfnVPCEndpoint",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.GatewayVpcEndpoint",
-                      "version": "2.149.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.Vpc",
-                  "version": "2.149.0"
+                  "version": "2.150.0"
                 }
               },
               "IotToLambda": {
@@ -889,19 +889,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iot.CfnTopicRule",
-                      "version": "2.149.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-solutions-constructs/aws-iot-lambda.IotToLambda",
-                  "version": "2.62.0"
+                  "version": "2.63.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-iot-lambda-dynamodb.IotToLambdaToDynamoDB",
-              "version": "2.62.0"
+              "version": "2.63.0"
             }
           },
           "LatestNodeRuntimeMap": {
@@ -909,7 +909,7 @@
             "path": "iotlamddb-with-vpc/LatestNodeRuntimeMap",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnMapping",
-              "version": "2.149.0"
+              "version": "2.150.0"
             }
           },
           "Custom::VpcRestrictDefaultSGCustomResourceProvider": {
@@ -921,7 +921,7 @@
                 "path": "iotlamddb-with-vpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Staging",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.149.0"
+                  "version": "2.150.0"
                 }
               },
               "Role": {
@@ -929,7 +929,7 @@
                 "path": "iotlamddb-with-vpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.149.0"
+                  "version": "2.150.0"
                 }
               },
               "Handler": {
@@ -937,13 +937,13 @@
                 "path": "iotlamddb-with-vpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.149.0"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResourceProviderBase",
-              "version": "2.149.0"
+              "version": "2.150.0"
             }
           },
           "Integ": {
@@ -971,7 +971,7 @@
                         "path": "iotlamddb-with-vpc/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -979,25 +979,25 @@
                         "path": "iotlamddb-with-vpc/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.149.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.149.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.149.0-alpha.0"
+                  "version": "2.150.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.149.0-alpha.0"
+              "version": "2.150.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -1005,7 +1005,7 @@
             "path": "iotlamddb-with-vpc/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.149.0"
+              "version": "2.150.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -1013,13 +1013,13 @@
             "path": "iotlamddb-with-vpc/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.149.0"
+              "version": "2.150.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.149.0"
+          "version": "2.150.0"
         }
       },
       "Tree": {
@@ -1033,7 +1033,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.149.0"
+      "version": "2.150.0"
     }
   }
 }

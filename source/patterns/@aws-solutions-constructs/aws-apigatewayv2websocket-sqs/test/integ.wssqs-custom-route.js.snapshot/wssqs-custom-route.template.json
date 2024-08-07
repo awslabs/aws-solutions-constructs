@@ -54,6 +54,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "disconnectServiceRoleDefaultPolicyD85178B8": {
@@ -615,6 +622,11 @@
     "StageName": "prod"
    },
    "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "API_GW_CACHE_ENABLED_AND_ENCRYPTED"
+     ]
+    },
     "cfn_nag": {
      "rules_to_suppress": [
       {

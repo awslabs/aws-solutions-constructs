@@ -53,6 +53,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testlambdaopensearchLambdaFunctionServiceRoleDefaultPolicy78C56359": {
@@ -357,6 +364,13 @@
       "PolicyName": "CognitoAccessPolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testlambdaopensearchIdentityPoolRoleMappingD8C765B1": {
@@ -687,6 +701,11 @@
        "id": "W90",
        "reason": "This is not a rule for the general case, just for specific use cases/industries"
       }
+     ]
+    },
+    "guard": {
+     "SuppressedRules": [
+      "CFN_NO_EXPLICIT_RESOURCE_NAMES"
      ]
     }
    }

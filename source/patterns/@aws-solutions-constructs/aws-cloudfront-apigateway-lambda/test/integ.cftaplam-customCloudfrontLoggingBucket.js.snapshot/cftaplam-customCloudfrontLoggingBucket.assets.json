@@ -27,7 +27,7 @@
         }
       }
     },
-    "283932be8f5f741a4af86dd47c944d44fa0259195cb05d9943f41d95a50ba4f2": {
+    "c4e4d280534d4394e3632ca62dacd67ea0c8aefb1615e7a4d75c15bf744550da": {
       "source": {
         "path": "cftaplam-customCloudfrontLoggingBucket.template.json",
         "packaging": "file"
@@ -35,7 +35,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "283932be8f5f741a4af86dd47c944d44fa0259195cb05d9943f41d95a50ba4f2.json",
+          "objectKey": "c4e4d280534d4394e3632ca62dacd67ea0c8aefb1615e7a4d75c15bf744550da.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

@@ -16,7 +16,7 @@ import { App, Stack } from "aws-cdk-lib";
 import { DynamoDBStreamsToLambdaProps, DynamoDBStreamsToLambda } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { addCfnGuardSuppressRules, generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -34,6 +34,7 @@ const table = new dynamodb.Table(stack, 'mytable', {
   },
   stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES
 });
+addCfnGuardSuppressRules(table, ["DYNAMODB_TABLE_ENCRYPTED_KMS"]);
 
 const props: DynamoDBStreamsToLambdaProps = {
   lambdaFunctionProps: {

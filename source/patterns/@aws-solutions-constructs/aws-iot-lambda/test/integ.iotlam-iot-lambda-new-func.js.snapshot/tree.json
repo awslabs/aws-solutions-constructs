@@ -21,7 +21,7 @@
                     "path": "iotlam-iot-lambda-new-func/test-iot-lambda-integration/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.145.0"
+                      "version": "2.150.0"
                     }
                   },
                   "Resource": {
@@ -84,7 +84,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.145.0"
+                      "version": "2.150.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -120,19 +120,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.145.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.145.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.145.0"
+                  "version": "2.150.0"
                 }
               },
               "LambdaFunction": {
@@ -148,7 +148,7 @@
                         "path": "iotlam-iot-lambda-new-func/test-iot-lambda-integration/LambdaFunction/Code/Stage",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.AssetStaging",
-                          "version": "2.145.0"
+                          "version": "2.150.0"
                         }
                       },
                       "AssetBucket": {
@@ -156,13 +156,13 @@
                         "path": "iotlam-iot-lambda-new-func/test-iot-lambda-integration/LambdaFunction/Code/AssetBucket",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                          "version": "2.145.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                      "version": "2.145.0"
+                      "version": "2.150.0"
                     }
                   },
                   "Resource": {
@@ -197,7 +197,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                      "version": "2.145.0"
+                      "version": "2.150.0"
                     }
                   },
                   "AwsIotLambdaInvokePermission-1": {
@@ -224,13 +224,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                      "version": "2.145.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.Function",
-                  "version": "2.145.0"
+                  "version": "2.150.0"
                 }
               },
               "IotTopic": {
@@ -260,13 +260,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iot.CfnTopicRule",
-                  "version": "2.145.0"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-iot-lambda.IotToLambda",
-              "version": "2.60.0"
+              "version": "2.63.0"
             }
           },
           "Integ": {
@@ -294,7 +294,7 @@
                         "path": "iotlam-iot-lambda-new-func/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.145.0"
+                          "version": "2.150.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -302,25 +302,25 @@
                         "path": "iotlam-iot-lambda-new-func/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.145.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.145.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.145.0-alpha.0"
+                  "version": "2.150.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.145.0-alpha.0"
+              "version": "2.150.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -328,7 +328,7 @@
             "path": "iotlam-iot-lambda-new-func/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.145.0"
+              "version": "2.150.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -336,13 +336,13 @@
             "path": "iotlam-iot-lambda-new-func/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.145.0"
+              "version": "2.150.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.145.0"
+          "version": "2.150.0"
         }
       },
       "Tree": {
@@ -356,7 +356,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.145.0"
+      "version": "2.150.0"
     }
   }
 }
