@@ -53,6 +53,7 @@ defaults.addCfnSuppressRules(construct.cloudFrontWebDistribution, [
     reason: 'Test case only' },
 ]);
 
+defaults.addCfnGuardSuppressRules(construct.cloudFrontLoggingBucket, ["S3_BUCKET_LOGGING_ENABLED"]);
 defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
