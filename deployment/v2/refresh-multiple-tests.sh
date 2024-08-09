@@ -32,6 +32,7 @@ aws-cloudfront-apigateway-lambda
 aws-cloudfront-mediastore
 aws-cloudfront-s3
 aws-cognito-apigateway-lambda
+aws-constructs-factories
 aws-dynamodbstreams-lambda
 aws-dynamodbstreams-lambda-elasticsearch-kibana
 aws-eventbridge-kinesisfirehose-s3
@@ -91,6 +92,8 @@ aws-wafwebacl-alb
 aws-wafwebacl-apigateway
 aws-wafwebacl-appsync
 aws-wafwebacl-cloudfront
+aws-apigatewayv2websocket-sqs
+resources
 "
 
 deployment_dir=$(cd $(dirname $0) && pwd)

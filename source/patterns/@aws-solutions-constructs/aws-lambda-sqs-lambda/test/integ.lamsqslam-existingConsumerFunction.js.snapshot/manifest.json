@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1f28693634bfd46b904c43e6de2132e383ed501504905c4afd6f5d16e355fc20.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6b9a66113dbafdb461707354f81b51a7278ebb2e24e0117384d5691f9046f139.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -124,16 +124,16 @@
             "data": "testlambdasqslambdalambdatosqsLambdaFunction8CCC2F0B"
           }
         ],
-        "/lamsqslam-existingConsumerFunction/test-lambda-sqs-lambda/lambda-to-sqs/deadLetterQueue/Resource": [
+        "/lamsqslam-existingConsumerFunction/test-lambda-sqs-lambda/lambda-to-sqs/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasqslambdalambdatosqsdeadLetterQueue016B6E58"
+            "data": "testlambdasqslambdalambdatosqsqueuedlq4B0084E6"
           }
         ],
-        "/lamsqslam-existingConsumerFunction/test-lambda-sqs-lambda/lambda-to-sqs/deadLetterQueue/Policy/Resource": [
+        "/lamsqslam-existingConsumerFunction/test-lambda-sqs-lambda/lambda-to-sqs/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasqslambdalambdatosqsdeadLetterQueuePolicyAA313AD2"
+            "data": "testlambdasqslambdalambdatosqsqueuedlqPolicyF003B63F"
           }
         ],
         "/lamsqslam-existingConsumerFunction/test-lambda-sqs-lambda/lambda-to-sqs/queue/Resource": [

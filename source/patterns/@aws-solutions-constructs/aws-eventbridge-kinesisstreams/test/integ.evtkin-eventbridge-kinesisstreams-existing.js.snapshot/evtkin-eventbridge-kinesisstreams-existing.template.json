@@ -10,7 +10,9 @@
      "EncryptionType": "KMS",
      "KeyId": "alias/aws/kinesis"
     }
-   }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testeventbridgekinesisstreamexistingeventsRoleDFC1450E": {
    "Type": "AWS::IAM::Role",

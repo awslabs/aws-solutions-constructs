@@ -32,13 +32,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_kinesis.CfnStream",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_kinesis.Stream",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "IotActionsRole": {
@@ -50,7 +50,7 @@
                     "path": "iotkin-new-kinesisstream/test-iot-kinesisstreams/IotActionsRole/ImportIotActionsRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "Resource": {
@@ -75,13 +75,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "IotActionsPolicy": {
@@ -119,13 +119,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Policy",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "IotTopic": {
@@ -158,7 +158,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iot.CfnTopicRule",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "KinesisStreamGetRecordsIteratorAgeAlarm": {
@@ -183,13 +183,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "KinesisStreamReadProvisionedThroughputExceededAlarm": {
@@ -214,19 +214,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-iot-kinesisstreams.IotToKinesisStreams",
-              "version": "2.50.0"
+              "version": "2.57.0"
             }
           },
           "Integ": {
@@ -242,7 +242,7 @@
                     "path": "iotkin-new-kinesisstream/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
-                      "version": "10.0.0"
+                      "version": "10.3.0"
                     }
                   },
                   "DeployAssert": {
@@ -254,7 +254,7 @@
                         "path": "iotkin-new-kinesisstream/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -262,25 +262,25 @@
                         "path": "iotkin-new-kinesisstream/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.118.0-alpha.0"
+                  "version": "2.143.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.118.0-alpha.0"
+              "version": "2.143.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -288,7 +288,7 @@
             "path": "iotkin-new-kinesisstream/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -296,13 +296,13 @@
             "path": "iotkin-new-kinesisstream/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.118.0"
+          "version": "2.143.0"
         }
       },
       "Tree": {
@@ -310,13 +310,13 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.0.0"
+          "version": "10.3.0"
         }
       }
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.118.0"
+      "version": "2.143.0"
     }
   }
 }

@@ -85,13 +85,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_kms.CfnKey",
-                  "version": "2.135.0"
+                  "version": "2.149.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_kms.Key",
-              "version": "2.135.0"
+              "version": "2.149.0"
             }
           },
           "test-s3-sqs": {
@@ -149,7 +149,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                      "version": "2.135.0"
+                      "version": "2.149.0"
                     }
                   },
                   "Policy": {
@@ -247,13 +247,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                          "version": "2.135.0"
+                          "version": "2.149.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                      "version": "2.135.0"
+                      "version": "2.149.0"
                     }
                   },
                   "AutoDeleteObjectsCustomResource": {
@@ -265,13 +265,13 @@
                         "path": "s3sqs-creatingNewQueue/test-s3-sqs/S3Bucket/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
-                          "version": "2.135.0"
+                          "version": "2.149.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CustomResource",
-                      "version": "2.135.0"
+                      "version": "2.149.0"
                     }
                   },
                   "Notifications": {
@@ -283,7 +283,7 @@
                         "path": "s3sqs-creatingNewQueue/test-s3-sqs/S3Bucket/Notifications/Resource",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
-                          "version": "2.135.0"
+                          "version": "2.149.0"
                         }
                       }
                     },
@@ -295,16 +295,16 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.Bucket",
-                  "version": "2.135.0"
+                  "version": "2.149.0"
                 }
               },
-              "deadLetterQueue": {
-                "id": "deadLetterQueue",
-                "path": "s3sqs-creatingNewQueue/test-s3-sqs/deadLetterQueue",
+              "queue-dlq": {
+                "id": "queue-dlq",
+                "path": "s3sqs-creatingNewQueue/test-s3-sqs/queue-dlq",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "s3sqs-creatingNewQueue/test-s3-sqs/deadLetterQueue/Resource",
+                    "path": "s3sqs-creatingNewQueue/test-s3-sqs/queue-dlq/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
                       "aws:cdk:cloudformation:props": {
@@ -314,16 +314,16 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
-                      "version": "2.135.0"
+                      "version": "2.149.0"
                     }
                   },
                   "Policy": {
                     "id": "Policy",
-                    "path": "s3sqs-creatingNewQueue/test-s3-sqs/deadLetterQueue/Policy",
+                    "path": "s3sqs-creatingNewQueue/test-s3-sqs/queue-dlq/Policy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "s3sqs-creatingNewQueue/test-s3-sqs/deadLetterQueue/Policy/Resource",
+                        "path": "s3sqs-creatingNewQueue/test-s3-sqs/queue-dlq/Policy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
                           "aws:cdk:cloudformation:props": {
@@ -360,7 +360,7 @@
                                   },
                                   "Resource": {
                                     "Fn::GetAtt": [
-                                      "tests3sqsdeadLetterQueueEABBC814",
+                                      "tests3sqsqueuedlq9DE05351",
                                       "Arn"
                                     ]
                                   },
@@ -379,7 +379,7 @@
                                   },
                                   "Resource": {
                                     "Fn::GetAtt": [
-                                      "tests3sqsdeadLetterQueueEABBC814",
+                                      "tests3sqsqueuedlq9DE05351",
                                       "Arn"
                                     ]
                                   },
@@ -390,26 +390,26 @@
                             },
                             "queues": [
                               {
-                                "Ref": "tests3sqsdeadLetterQueueEABBC814"
+                                "Ref": "tests3sqsqueuedlq9DE05351"
                               }
                             ]
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
-                          "version": "2.135.0"
+                          "version": "2.149.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
-                      "version": "2.135.0"
+                      "version": "2.149.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_sqs.Queue",
-                  "version": "2.135.0"
+                  "version": "2.149.0"
                 }
               },
               "queue": {
@@ -432,7 +432,7 @@
                         "redrivePolicy": {
                           "deadLetterTargetArn": {
                             "Fn::GetAtt": [
-                              "tests3sqsdeadLetterQueueEABBC814",
+                              "tests3sqsqueuedlq9DE05351",
                               "Arn"
                             ]
                           },
@@ -442,7 +442,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
-                      "version": "2.135.0"
+                      "version": "2.149.0"
                     }
                   },
                   "Policy": {
@@ -552,25 +552,33 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
-                          "version": "2.135.0"
+                          "version": "2.149.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
-                      "version": "2.135.0"
+                      "version": "2.149.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_sqs.Queue",
-                  "version": "2.135.0"
+                  "version": "2.149.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-s3-sqs.S3ToSqs",
-              "version": "2.54.1"
+              "version": "2.62.0"
+            }
+          },
+          "LatestNodeRuntimeMap": {
+            "id": "LatestNodeRuntimeMap",
+            "path": "s3sqs-creatingNewQueue/LatestNodeRuntimeMap",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnMapping",
+              "version": "2.149.0"
             }
           },
           "Custom::S3AutoDeleteObjectsCustomResourceProvider": {
@@ -582,7 +590,7 @@
                 "path": "s3sqs-creatingNewQueue/Custom::S3AutoDeleteObjectsCustomResourceProvider/Staging",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.135.0"
+                  "version": "2.149.0"
                 }
               },
               "Role": {
@@ -590,7 +598,7 @@
                 "path": "s3sqs-creatingNewQueue/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.135.0"
+                  "version": "2.149.0"
                 }
               },
               "Handler": {
@@ -598,13 +606,13 @@
                 "path": "s3sqs-creatingNewQueue/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.135.0"
+                  "version": "2.149.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResourceProviderBase",
-              "version": "2.135.0"
+              "version": "2.149.0"
             }
           },
           "BucketNotificationsHandler050a0587b7544547bf325f094a3db834": {
@@ -620,7 +628,7 @@
                     "path": "s3sqs-creatingNewQueue/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/ImportRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.135.0"
+                      "version": "2.149.0"
                     }
                   },
                   "Resource": {
@@ -659,7 +667,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.135.0"
+                      "version": "2.149.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -692,19 +700,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.135.0"
+                          "version": "2.149.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.135.0"
+                      "version": "2.149.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.135.0"
+                  "version": "2.149.0"
                 }
               },
               "Resource": {
@@ -712,7 +720,7 @@
                 "path": "s3sqs-creatingNewQueue/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.135.0"
+                  "version": "2.149.0"
                 }
               }
             },
@@ -746,7 +754,7 @@
                         "path": "s3sqs-creatingNewQueue/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.135.0"
+                          "version": "2.149.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -754,25 +762,25 @@
                         "path": "s3sqs-creatingNewQueue/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.135.0"
+                          "version": "2.149.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.135.0"
+                      "version": "2.149.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.135.0-alpha.0"
+                  "version": "2.149.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.135.0-alpha.0"
+              "version": "2.149.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -780,7 +788,7 @@
             "path": "s3sqs-creatingNewQueue/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.135.0"
+              "version": "2.149.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -788,13 +796,13 @@
             "path": "s3sqs-creatingNewQueue/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.135.0"
+              "version": "2.149.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.135.0"
+          "version": "2.149.0"
         }
       },
       "Tree": {
@@ -808,7 +816,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.135.0"
+      "version": "2.149.0"
     }
   }
 }

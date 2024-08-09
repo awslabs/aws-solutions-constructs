@@ -12,18 +12,16 @@
  */
 
 import { S3ToStepfunctions, S3ToStepfunctionsProps } from '../lib/index';
-import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import * as cdk from 'aws-cdk-lib';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { Template } from 'aws-cdk-lib/assertions';
+import * as defaults from '@aws-solutions-constructs/core';
 
 function deployNewStateMachine(stack: cdk.Stack) {
 
-  const startState = new sfn.Pass(stack, 'StartState');
-
   const props: S3ToStepfunctionsProps = {
     stateMachineProps: {
-      definition: startState
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 's3stp-test')
     }
   };
 
@@ -34,11 +32,10 @@ test('override eventRuleProps', () => {
   const stack = new cdk.Stack();
 
   const mybucket = new Bucket(stack, 'mybucket');
-  const startState = new sfn.Pass(stack, 'StartState');
 
   const props: S3ToStepfunctionsProps = {
     stateMachineProps: {
-      definition: startState
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 's3stp-test')
     },
     existingBucketObj: mybucket,
     eventRuleProps: {
@@ -113,13 +110,12 @@ test("Confirm that CheckS3Props is getting called", () => {
   const stack = new cdk.Stack();
 
   const testBucket = new Bucket(stack, 'test-bucket', {});
-  const startState = new sfn.Pass(stack, 'StartState');
 
   const app = () => {
     // Helper declaration
     new S3ToStepfunctions(stack, "bad-s3-args", {
       stateMachineProps: {
-        definition: startState
+        definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 's3stp-test')
       },
       existingBucketObj: testBucket,
       bucketProps: {
@@ -136,11 +132,10 @@ test("Confirm that CheckS3Props is getting called", () => {
 // --------------------------------------------------------------
 test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
   const stack = new cdk.Stack();
-  const startState = new sfn.Pass(stack, 'StartState');
 
   const testProps: S3ToStepfunctionsProps = {
     stateMachineProps: {
-      definition: startState
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 's3stp-test')
     },
     bucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY
@@ -175,11 +170,10 @@ test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
 // --------------------------------------------------------------
 test('s3 bucket with no logging bucket', () => {
   const stack = new cdk.Stack();
-  const startState = new sfn.Pass(stack, 'StartState');
 
   const construct = new S3ToStepfunctions(stack, 's3-stepfunctions', {
     stateMachineProps: {
-      definition: startState
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 's3stp-test')
     },
     bucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,

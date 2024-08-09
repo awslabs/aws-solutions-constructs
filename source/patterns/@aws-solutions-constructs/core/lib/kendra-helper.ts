@@ -18,7 +18,7 @@
 
 import * as kendra from 'aws-cdk-lib/aws-kendra';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import { addCfnSuppressRules, consolidateProps, generatePhysicalName, overrideProps } from "./utils";
+import { addCfnGuardSuppressRules, addCfnSuppressRules, consolidateProps, generatePhysicalName, overrideProps } from "./utils";
 import { Aws } from 'aws-cdk-lib';
 
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
@@ -173,6 +173,7 @@ function CreateS3DataSource(scope: Construct,
       },
     });
     defaultProps = overrideProps(defaultProps, { roleArn: dataSourceRole.roleArn });
+    addCfnGuardSuppressRules(dataSourceRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
   }
 
   const consolidatedProps: kendra.CfnDataSourceProps = consolidateProps(defaultProps, clientProps);
@@ -235,6 +236,8 @@ function CreateKendraIndexLoggingRole(scope: Construct, id: string): string {
       "scope is narrowed by the namespace condition. " +
       "https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazoncloudwatch.html"
   }]);
+  addCfnGuardSuppressRules(indexRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
+
   return indexRole.roleArn;
 }
 

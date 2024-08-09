@@ -16,12 +16,13 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as cdk from "aws-cdk-lib";
 import { Template } from 'aws-cdk-lib/assertions';
+import * as defaults from '@aws-solutions-constructs/core';
 
 function deployStack(stack: cdk.Stack) {
   const props: IotToLambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     iotTopicRuleProps: {
@@ -51,7 +52,7 @@ test('check lambda function properties', () => {
         "Arn"
       ]
     },
-    Runtime: "nodejs16.x",
+    Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
@@ -260,7 +261,7 @@ test('check properties', () => {
     deployVpc: true,
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     iotTopicRuleProps: {
@@ -308,7 +309,7 @@ test('Check incorrect table permission', () => {
   const props: IotToLambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     iotTopicRuleProps: {
@@ -335,7 +336,7 @@ test('check lambda function custom environment variable', () => {
   const props: IotToLambdaToDynamoDBProps = {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler'
     },
     tableEnvironmentVariableName: 'CUSTOM_DYNAMODB_TABLE',
@@ -354,7 +355,7 @@ test('check lambda function custom environment variable', () => {
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
-    Runtime: 'nodejs16.x',
+    Runtime:  defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
@@ -372,7 +373,7 @@ test("Test minimal deployment that deploys a VPC without vpcProps", () => {
   // Helper declaration
   new IotToLambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -428,7 +429,7 @@ test("Test minimal deployment that deploys a VPC w/vpcProps", () => {
   // Helper declaration
   new IotToLambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -493,7 +494,7 @@ test("Test minimal deployment with an existing VPC", () => {
   // Helper declaration
   new IotToLambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: "index.handler",
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     },
@@ -542,7 +543,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   // buildLambdaFunction should throw an error if the Lambda function is not
   // attached to a VPC
   const testLambdaFunction = new lambda.Function(stack, 'test-lambda', {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: "index.handler",
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -581,7 +582,7 @@ test("Confirm CheckVpcProps is called", () => {
     // Helper declaration
     new IotToLambdaToDynamoDB(stack, "lambda-to-dynamodb-stack", {
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: "index.handler",
         code: lambda.Code.fromAsset(`${__dirname}/lambda`),
       },
@@ -604,7 +605,7 @@ test("Confirm CheckVpcProps is called", () => {
 test('Confirm CheckLambdaProps is being called', () => {
   const stack = new cdk.Stack();
   const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
-    runtime: lambda.Runtime.NODEJS_18_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   });
@@ -620,7 +621,7 @@ test('Confirm CheckLambdaProps is being called', () => {
     },
     existingLambdaObj,
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
     }
@@ -651,7 +652,7 @@ test('Confirm CheckLambdaProps is being called', () => {
 //   const props: IotToLambdaToDynamoDBProps = {
 //     lambdaFunctionProps: {
 //       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-//       runtime: lambda.Runtime.NODEJS_16_X,
+//       runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
 //       handler: 'index.handler'
 //     },
 //     iotTopicRuleProps: {

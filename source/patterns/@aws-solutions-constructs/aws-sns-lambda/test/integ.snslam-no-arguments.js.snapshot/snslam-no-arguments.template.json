@@ -54,6 +54,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testsnslambdaLambdaFunctionServiceRoleDefaultPolicy3E6745ED": {
@@ -111,7 +118,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs16.x",
+    "Runtime": "nodejs20.x",
     "TracingConfig": {
      "Mode": "Active"
     }

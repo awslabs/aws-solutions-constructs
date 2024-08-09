@@ -11,7 +11,9 @@
     "StreamModeDetails": {
      "StreamMode": "ON_DEMAND"
     }
-   }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testlambdakinesisstreamsLambdaFunctionServiceRole95206CF3": {
    "Type": "AWS::IAM::Role",
@@ -66,6 +68,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testlambdakinesisstreamsLambdaFunctionServiceRoleDefaultPolicyED972043": {
@@ -127,6 +136,7 @@
     },
     "Environment": {
      "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
       "KINESIS_DATASTREAM_NAME": {
        "Ref": "teststream04374A09"
       }
@@ -139,7 +149,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs18.x",
+    "Runtime": "nodejs20.x",
     "TracingConfig": {
      "Mode": "Active"
     }

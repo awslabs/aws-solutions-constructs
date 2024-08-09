@@ -18,7 +18,8 @@ import { CfnResource, RemovalPolicy, Stack, Aspects, IAspect, Aws, Fn } from "aw
 import { buildVpc } from '../lib/vpc-helper';
 import { DefaultPublicPrivateVpcProps, DefaultIsolatedVpcProps } from '../lib/vpc-defaults';
 import { overrideProps, addCfnSuppressRules } from "../lib/utils";
-import { createCacheSubnetGroup  } from "../lib/elasticache-helper";
+import * as defaults from '../index';
+import { createCacheSubnetGroup } from "../lib/elasticache-helper";
 import * as path from 'path';
 import * as cache from 'aws-cdk-lib/aws-elasticache';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
@@ -27,6 +28,8 @@ import { CfnFunction } from "aws-cdk-lib/aws-lambda";
 import { GetDefaultCachePort } from "../lib/elasticache-defaults";
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as sfn from "aws-cdk-lib/aws-stepfunctions";
+import * as sftasks from "aws-cdk-lib/aws-stepfunctions-tasks";
 import * as api from "aws-cdk-lib/aws-apigateway";
 
 export const fakeEcrRepoArn = 'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo';
@@ -112,13 +115,33 @@ export function getFakeCertificate(scope: Construct, id: string): acm.ICertifica
   );
 }
 
+// Creates a bucket used for testing - minimal properties, destroyed after test
+export function CreateTestStateMachineDefinitionBody(scope: Construct, id: string): sfn.DefinitionBody {
+
+  const smStep = new lambda.Function(scope, `lambda${id}`, {
+    code: new lambda.InlineCode(
+      "exports.handler = async (event) => console.log(event)"
+    ),
+    runtime: lambda.Runtime.NODEJS_20_X,
+    handler: "index.handler",
+  });
+
+  const task = new sftasks.LambdaInvoke(scope, `task${id}`, {
+    lambdaFunction: smStep,
+  });
+
+  SuppressCfnNagLambdaWarnings(Stack.of(scope));
+
+  return sfn.DefinitionBody.fromChainable(task);
+}
+
 export function suppressCustomHandlerCfnNagWarnings(stack: Stack, handlerId: string) {
   stack.node.children.forEach(child => {
     if (child.node.id === handlerId) {
       const handlerFunction = child.node.findChild('Handler') as CfnFunction;
-      addCfnSuppressRules(handlerFunction, [{ id: "W58", reason: "CDK generated custom resource"}]);
-      addCfnSuppressRules(handlerFunction, [{ id: "W89", reason: "CDK generated custom resource"}]);
-      addCfnSuppressRules(handlerFunction, [{ id: "W92", reason: "CDK generated custom resource"}]);
+      addCfnSuppressRules(handlerFunction, [{ id: "W58", reason: "CDK generated custom resource" }]);
+      addCfnSuppressRules(handlerFunction, [{ id: "W89", reason: "CDK generated custom resource" }]);
+      addCfnSuppressRules(handlerFunction, [{ id: "W92", reason: "CDK generated custom resource" }]);
     }
   });
 }
@@ -171,7 +194,7 @@ export function expectKmsKeyAttachedToCorrectResource(stack: Stack, parentResour
     }
   });
 
-  const [ logicalId ] = Object.keys(resource);
+  const [logicalId] = Object.keys(resource);
   Template.fromStack(stack).hasResourceProperties(parentResourceType, {
     KmsMasterKeyId: {
       "Fn::GetAtt": [
@@ -204,7 +227,7 @@ class CfnNagLambdaAspect implements IAspect {
 export function CreateTestApi(stack: Stack, id: string): api.LambdaRestApi {
   const lambdaFunction = new lambda.Function(stack, `${id}Function`, {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: ".handler",
   });
   addCfnSuppressRules(lambdaFunction, [{ id: "W58", reason: "Test Resource" }]);
@@ -241,7 +264,7 @@ export function CreateTestApi(stack: Stack, id: string): api.LambdaRestApi {
 export function CreateApiAuthorizer(stack: Stack, id: string): api.IAuthorizer {
   const authFn = new lambda.Function(stack, `${id}AuthFunction`, {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: ".handler",
   });
   addCfnSuppressRules(authFn, [{ id: "W58", reason: "Test Resource" }]);
@@ -263,7 +286,7 @@ export function CreateApiAuthorizer(stack: Stack, id: string): api.IAuthorizer {
 export function CreateShortUniqueTestName(stub: string) {
   const stackGuid = Fn.select(2, Fn.split('/', `${Aws.STACK_ID}`));
   const guidPortion = Fn.select(4, Fn.split('-', stackGuid));
-  return Fn.join("-", [stub,  guidPortion]);
+  return Fn.join("-", [stub, guidPortion]);
 }
 
 /**

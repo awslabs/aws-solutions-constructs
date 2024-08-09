@@ -54,6 +54,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "LambdaFunctionServiceRoleDefaultPolicy126C8897": {
@@ -127,7 +134,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs16.x",
+    "Runtime": "nodejs20.x",
     "TracingConfig": {
      "Mode": "Active"
     }
@@ -222,6 +229,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testlambdasqslambdalambdatosqsLambdaFunctionServiceRoleDefaultPolicyA63E8A47": {
@@ -296,7 +310,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs16.x",
+    "Runtime": "nodejs20.x",
     "TracingConfig": {
      "Mode": "Active"
     }
@@ -324,7 +338,7 @@
     }
    }
   },
-  "testlambdasqslambdalambdatosqsdeadLetterQueue016B6E58": {
+  "testlambdasqslambdalambdatosqsqueuedlq4B0084E6": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
     "KmsMasterKeyId": "alias/aws/sqs"
@@ -332,7 +346,7 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "testlambdasqslambdalambdatosqsdeadLetterQueuePolicyAA313AD2": {
+  "testlambdasqslambdalambdatosqsqueuedlqPolicyF003B63F": {
    "Type": "AWS::SQS::QueuePolicy",
    "Properties": {
     "PolicyDocument": {
@@ -368,7 +382,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testlambdasqslambdalambdatosqsdeadLetterQueue016B6E58",
+         "testlambdasqslambdalambdatosqsqueuedlq4B0084E6",
          "Arn"
         ]
        },
@@ -387,7 +401,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testlambdasqslambdalambdatosqsdeadLetterQueue016B6E58",
+         "testlambdasqslambdalambdatosqsqueuedlq4B0084E6",
          "Arn"
         ]
        },
@@ -398,7 +412,7 @@
     },
     "Queues": [
      {
-      "Ref": "testlambdasqslambdalambdatosqsdeadLetterQueue016B6E58"
+      "Ref": "testlambdasqslambdalambdatosqsqueuedlq4B0084E6"
      }
     ]
    }
@@ -410,7 +424,7 @@
     "RedrivePolicy": {
      "deadLetterTargetArn": {
       "Fn::GetAtt": [
-       "testlambdasqslambdalambdatosqsdeadLetterQueue016B6E58",
+       "testlambdasqslambdalambdatosqsqueuedlq4B0084E6",
        "Arn"
       ]
      },

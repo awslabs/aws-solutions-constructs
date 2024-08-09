@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e4e821dd6ed485dc2428d3c6581a01bf7b170d1aa5ee88d6a5dd18c3dc1e3cf1.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c414c6bf526b026d3789c7b8eb97ca10ab988deb0ff98b3dc23806db6b670d6b.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -146,6 +146,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "destinationfirehoseKinesisFirehoseE8EB5D91"
+          }
+        ],
+        "/farfhs-vpcFromprops/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/farfhs-vpcFromprops/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [

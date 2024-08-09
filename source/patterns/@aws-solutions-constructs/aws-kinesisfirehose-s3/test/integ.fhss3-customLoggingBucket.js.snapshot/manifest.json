@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c8dfb17d574f9386e7bbf49cad0458431f6b81524a2406f5ffcc981f7d7deb68.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5dcc5e5466f9e5a9823a3516560a78348094a636d92f53d202e953495b043723.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -140,6 +140,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testkinesisfirehoses3KinesisFirehose92F73280"
+          }
+        ],
+        "/fhss3-customLoggingBucket/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/fhss3-customLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [

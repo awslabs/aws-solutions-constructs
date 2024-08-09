@@ -54,6 +54,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "LambdaFunctionServiceRoleDefaultPolicy126C8897": {
@@ -128,7 +135,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs16.x",
+    "Runtime": "nodejs20.x",
     "TracingConfig": {
      "Mode": "Active"
     }
@@ -156,7 +163,7 @@
     }
    }
   },
-  "testlambdasqsdeadLetterQueueC34BC0BD": {
+  "testlambdasqsqueuedlq0AFE8CA9": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
     "KmsMasterKeyId": "alias/aws/sqs"
@@ -164,7 +171,7 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "testlambdasqsdeadLetterQueuePolicy270F1626": {
+  "testlambdasqsqueuedlqPolicy2AF7238E": {
    "Type": "AWS::SQS::QueuePolicy",
    "Properties": {
     "PolicyDocument": {
@@ -200,7 +207,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testlambdasqsdeadLetterQueueC34BC0BD",
+         "testlambdasqsqueuedlq0AFE8CA9",
          "Arn"
         ]
        },
@@ -219,7 +226,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testlambdasqsdeadLetterQueueC34BC0BD",
+         "testlambdasqsqueuedlq0AFE8CA9",
          "Arn"
         ]
        },
@@ -230,7 +237,7 @@
     },
     "Queues": [
      {
-      "Ref": "testlambdasqsdeadLetterQueueC34BC0BD"
+      "Ref": "testlambdasqsqueuedlq0AFE8CA9"
      }
     ]
    }
@@ -242,7 +249,7 @@
     "RedrivePolicy": {
      "deadLetterTargetArn": {
       "Fn::GetAtt": [
-       "testlambdasqsdeadLetterQueueC34BC0BD",
+       "testlambdasqsqueuedlq0AFE8CA9",
        "Arn"
       ]
      },

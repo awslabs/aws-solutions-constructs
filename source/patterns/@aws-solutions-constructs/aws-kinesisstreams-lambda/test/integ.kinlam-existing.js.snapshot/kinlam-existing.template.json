@@ -54,6 +54,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testroleDefaultPolicy884631E2": {
@@ -121,7 +128,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs16.x"
+    "Runtime": "nodejs20.x"
    },
    "DependsOn": [
     "testroleDefaultPolicy884631E2",
@@ -180,7 +187,9 @@
      "EncryptionType": "KMS",
      "KeyId": "alias/aws/kinesis"
     }
-   }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testkslambdaSqsDlqQueueDE67EC6C": {
    "Type": "AWS::SQS::Queue",

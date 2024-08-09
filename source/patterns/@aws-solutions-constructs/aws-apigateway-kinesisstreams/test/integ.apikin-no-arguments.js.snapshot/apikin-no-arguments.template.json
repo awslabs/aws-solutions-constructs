@@ -31,7 +31,7 @@
     "Name": "RestApi"
    }
   },
-  "testapigatewaykinesisdefaultRestApiDeployment2852F1AA922824384d19fd27217710115cc2344f": {
+  "testapigatewaykinesisdefaultRestApiDeployment2852F1AA4ff693d376d46550825ad1d0025f9ef5": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Automatically created by the RestApi construct",
@@ -72,7 +72,7 @@
      "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
     },
     "DeploymentId": {
-     "Ref": "testapigatewaykinesisdefaultRestApiDeployment2852F1AA922824384d19fd27217710115cc2344f"
+     "Ref": "testapigatewaykinesisdefaultRestApiDeployment2852F1AA4ff693d376d46550825ad1d0025f9ef5"
     },
     "MethodSettings": [
      {
@@ -87,6 +87,13 @@
     },
     "StageName": "prod",
     "TracingEnabled": true
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "API_GW_CACHE_ENABLED_AND_ENCRYPTED"
+     ]
+    }
    }
   },
   "testapigatewaykinesisdefaultRestApirecord500DDD57": {
@@ -451,6 +458,13 @@
       "PolicyName": "LambdaRestApiCloudWatchRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testapigatewaykinesisdefaultLambdaRestApiAccountD40371B7": {
@@ -549,7 +563,9 @@
      "EncryptionType": "KMS",
      "KeyId": "alias/aws/kinesis"
     }
-   }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   }
  },
  "Outputs": {

@@ -1,7 +1,7 @@
 {
  "Description": "Integration Test for aws-apigateway-sqs",
  "Resources": {
-  "testapigatewaysqsintegrationresponsesdeadLetterQueue22D4FBC4": {
+  "testapigatewaysqsintegrationresponsesqueuedlqD02C49B3": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
     "KmsMasterKeyId": "alias/aws/sqs"
@@ -9,7 +9,7 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "testapigatewaysqsintegrationresponsesdeadLetterQueuePolicyC05CEDC7": {
+  "testapigatewaysqsintegrationresponsesqueuedlqPolicy65790213": {
    "Type": "AWS::SQS::QueuePolicy",
    "Properties": {
     "PolicyDocument": {
@@ -45,7 +45,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testapigatewaysqsintegrationresponsesdeadLetterQueue22D4FBC4",
+         "testapigatewaysqsintegrationresponsesqueuedlqD02C49B3",
          "Arn"
         ]
        },
@@ -64,7 +64,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testapigatewaysqsintegrationresponsesdeadLetterQueue22D4FBC4",
+         "testapigatewaysqsintegrationresponsesqueuedlqD02C49B3",
          "Arn"
         ]
        },
@@ -75,7 +75,7 @@
     },
     "Queues": [
      {
-      "Ref": "testapigatewaysqsintegrationresponsesdeadLetterQueue22D4FBC4"
+      "Ref": "testapigatewaysqsintegrationresponsesqueuedlqD02C49B3"
      }
     ]
    }
@@ -87,7 +87,7 @@
     "RedrivePolicy": {
      "deadLetterTargetArn": {
       "Fn::GetAtt": [
-       "testapigatewaysqsintegrationresponsesdeadLetterQueue22D4FBC4",
+       "testapigatewaysqsintegrationresponsesqueuedlqD02C49B3",
        "Arn"
       ]
      },
@@ -248,6 +248,13 @@
     },
     "StageName": "prod",
     "TracingEnabled": true
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "API_GW_CACHE_ENABLED_AND_ENCRYPTED"
+     ]
+    }
    }
   },
   "testapigatewaysqsintegrationresponsesRestApiGETD105D1F1": {
@@ -404,6 +411,13 @@
       "PolicyName": "LambdaRestApiCloudWatchRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testapigatewaysqsintegrationresponsesLambdaRestApiAccountEFC75D59": {

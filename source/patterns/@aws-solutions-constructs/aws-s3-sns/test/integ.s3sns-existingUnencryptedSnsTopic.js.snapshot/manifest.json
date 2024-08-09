@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/86563c1d85c2b68874649a12d47b2f054ad6fa17ca7e3585f603f2307df5cd63.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/25245e387ba4c2b630da115487df0c0554f90bfeb3a7940a023581079ed232a1.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -134,6 +134,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "tests3snsS3BucketNotificationsFCF8E340"
+          }
+        ],
+        "/s3sns-existingUnencryptedSnsTopic/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/s3sns-existingUnencryptedSnsTopic/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [

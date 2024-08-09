@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/54d554b9acf32426c251daa651e7f3b38cb60a72446784dbf2246d6d86717326.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/577fb0269f1ba232d32dc733bf37f611e1d1baff76f8ed773daede11e602c7cf.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -232,12 +232,6 @@
             "data": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogPolicy521355D8"
           }
         ],
-        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResource2395E2A2"
-          }
-        ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -260,6 +254,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudFrontDistribution0AFC98FC"
+          }
+        ],
+        "/cftaplam-no-arguments/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/cftaplam-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [

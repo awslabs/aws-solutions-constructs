@@ -17,17 +17,19 @@ import { EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps } from "../
 import { Duration } from 'aws-cdk-lib';
 import * as tasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import { deployLambdaFunction } from '@aws-solutions-constructs/core';
 import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import { EventBus } from "aws-cdk-lib/aws-events";
+import * as defaults from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
 const submitLambda = deployLambdaFunction(stack, {
-  runtime: lambda.Runtime.NODEJS_16_X,
+  runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
   handler: 'index.handler'
 });
@@ -41,7 +43,7 @@ startState.next(submitJob);
 const existingEventBus = new EventBus(stack, `existing-event-bus`, { eventBusName: 'test-existing'});
 const props: EventbridgeToStepfunctionsProps = {
   stateMachineProps: {
-    definition: startState,
+    definitionBody: sfn.DefinitionBody.fromChainable(startState),
     timeout: Duration.minutes(5)
   },
   eventRuleProps: {

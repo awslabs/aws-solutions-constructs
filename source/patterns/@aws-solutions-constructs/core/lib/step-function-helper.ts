@@ -28,6 +28,12 @@ import { buildLogGroup } from './cloudwatch-log-group-helper';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 
+/*
+ * the id parameter was added to buildStateMachine() long after the original implementation,
+ * this value can be used for the new parameter and ensure behavior is the same.
+ */
+export const idPlaceholder = undefined;
+
 export interface BuildStateMachineResponse {
   readonly stateMachine: sfn.StateMachine,
   readonly logGroup: logs.ILogGroup
@@ -39,7 +45,7 @@ export interface BuildStateMachineResponse {
  * @param scope - the construct to which the StateMachine should be attached to.
  * @param stateMachineProps - user-specified properties to override the default properties.
  */
-export function buildStateMachine(scope: Construct, stateMachineProps: sfn.StateMachineProps,
+export function buildStateMachine(scope: Construct, id: string | undefined, stateMachineProps: sfn.StateMachineProps,
   logGroupProps?: logs.LogGroupProps): BuildStateMachineResponse {
 
   let logGroup: logs.ILogGroup;
@@ -66,7 +72,7 @@ export function buildStateMachine(scope: Construct, stateMachineProps: sfn.State
       const maxGeneratedNameLength = maxLogGroupNameLength - logGroupPrefix.length;
       const nameParts: string[] = [
         cdk.Stack.of(scope).stackName, // Name of the stack
-        scope.node.id,                 // Construct ID
+        id ?? scope.node.id,           // Use the ID from client if provided, otherwise use the construct ID
         'StateMachineLog'              // Literal string for log group name portion
       ];
 
@@ -75,14 +81,14 @@ export function buildStateMachine(scope: Construct, stateMachineProps: sfn.State
     }
 
     // Create new Cloudwatch log group for Step function State Machine
-    logGroup = buildLogGroup(scope, 'StateMachineLogGroup', consolidatedLogGroupProps);
+    logGroup = buildLogGroup(scope, `StateMachineLogGroup${(id ?? '')}`, consolidatedLogGroupProps);
 
     // Override the defaults with the user provided props
     consolidatedStateMachineProps = overrideProps(smDefaults.DefaultStateMachineProps(logGroup), stateMachineProps);
   }
 
   // Override the Cloudwatch permissions to make it more fine grained
-  const newStateMachine = new sfn.StateMachine(scope, 'StateMachine', consolidatedStateMachineProps);
+  const newStateMachine = new sfn.StateMachine(scope, `StateMachine${(id ?? '')}`, consolidatedStateMachineProps);
 
   // If the client did not pass a role we got the default role and will trim the privileges
   if (!stateMachineProps.role) {

@@ -1,0 +1,251 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "snssqsoldallowtwoinstancesIntegDefaultTestDeployAssert0B45AAF6.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "snssqsoldallowtwoinstancesIntegDefaultTestDeployAssert0B45AAF6.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "snssqsoldallowtwoinstancesIntegDefaultTestDeployAssert0B45AAF6": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "snssqsoldallowtwoinstancesIntegDefaultTestDeployAssert0B45AAF6.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "snssqsoldallowtwoinstancesIntegDefaultTestDeployAssert0B45AAF6.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "snssqsoldallowtwoinstancesIntegDefaultTestDeployAssert0B45AAF6.assets"
+      ],
+      "metadata": {
+        "/snssqs-old-allow-two-instances/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "snssqs-old-allow-two-instances/Integ/DefaultTest/DeployAssert"
+    },
+    "snssqs-old-allow-two-instances.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "snssqs-old-allow-two-instances.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "snssqs-old-allow-two-instances": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "snssqs-old-allow-two-instances.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b5c1005a415c6b80d8325e95a6e2874c2ac3739a1c5a720472b1ad20af277ba7.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "snssqs-old-allow-two-instances.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "snssqs-old-allow-two-instances.assets"
+      ],
+      "metadata": {
+        "/snssqs-old-allow-two-instances/test-sns-sqs-stack/SnsTopic/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstackSnsTopic92693DD8"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/test-sns-sqs-stack/SnsTopic/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstackSnsTopicPolicyBD0740CC"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/test-sns-sqs-stack/queue-dlq/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstackqueuedlq0BD0C2B9"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/test-sns-sqs-stack/queue-dlq/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstackqueuedlqPolicy3BB4A79B"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/test-sns-sqs-stack/queue": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "encryption: Automatically changed to QueueEncryption.KMS, was: QueueEncryption.KMS_MANAGED\nWhen encryptionMasterKey is provided, always set `encryption: QueueEncryption.KMS` [ack: @aws-cdk/aws-sqs:queueEncryptionChangedToKMS]"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/test-sns-sqs-stack/queue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstackqueue908D8D48"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/test-sns-sqs-stack/queue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstackqueuePolicyFD3F4725"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/test-sns-sqs-stack/queue/snssqsoldallowtwoinstancestestsnssqsstackSnsTopic0D474529/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstackqueuesnssqsoldallowtwoinstancestestsnssqsstackSnsTopic0D474529868FB7F9"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/'test-sns-sqs-stackKey'/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstackKeyCECC9471"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/test-sns-sqs-stack-two/SnsTopic/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstacktwoSnsTopicA8E12211"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/test-sns-sqs-stack-two/SnsTopic/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstacktwoSnsTopicPolicy70FF6492"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/test-sns-sqs-stack-two/queue-dlq/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstacktwoqueuedlqA27CF8DA"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/test-sns-sqs-stack-two/queue-dlq/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstacktwoqueuedlqPolicyC15C0D6F"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/test-sns-sqs-stack-two/queue": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "encryption: Automatically changed to QueueEncryption.KMS, was: QueueEncryption.KMS_MANAGED\nWhen encryptionMasterKey is provided, always set `encryption: QueueEncryption.KMS` [ack: @aws-cdk/aws-sqs:queueEncryptionChangedToKMS]"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/test-sns-sqs-stack-two/queue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstacktwoqueue1D59436B"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/test-sns-sqs-stack-two/queue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstacktwoqueuePolicyDCE23166"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/test-sns-sqs-stack-two/queue/snssqsoldallowtwoinstancestestsnssqsstacktwoSnsTopicBBC3F33A/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstacktwoqueuesnssqsoldallowtwoinstancestestsnssqsstacktwoSnsTopicBBC3F33AD5821DCC"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/'test-sns-sqs-stack-twoKey'/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstacktwoKey2932E7DF"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/snssqs-old-allow-two-instances/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testsnssqsstackdeadLetterQueue83D183F2": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstackdeadLetterQueue83D183F2",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testsnssqsstackdeadLetterQueuePolicy388F06A8": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstackdeadLetterQueuePolicy388F06A8",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testsnssqsstacktwodeadLetterQueueE2CAC509": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstacktwodeadLetterQueueE2CAC509",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testsnssqsstacktwodeadLetterQueuePolicyDC6FD645": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsstacktwodeadLetterQueuePolicyDC6FD645",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ]
+      },
+      "displayName": "snssqs-old-allow-two-instances"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

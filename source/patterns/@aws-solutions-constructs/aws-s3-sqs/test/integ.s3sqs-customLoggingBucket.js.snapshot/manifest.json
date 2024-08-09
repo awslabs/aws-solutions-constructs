@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/7d888bac322f924857fb4e80afa5709905cc63d852053d6dc951c62240afd920.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/61170150ad442db34981e9349277955cfc0093ea3ed5a687425bb749309da741.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -118,16 +118,16 @@
             "data": "tests3sqsS3BucketNotifications32539247"
           }
         ],
-        "/s3sqs-customLoggingBucket/test-s3-sqs/deadLetterQueue/Resource": [
+        "/s3sqs-customLoggingBucket/test-s3-sqs/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "tests3sqsdeadLetterQueueEABBC814"
+            "data": "tests3sqsqueuedlq9DE05351"
           }
         ],
-        "/s3sqs-customLoggingBucket/test-s3-sqs/deadLetterQueue/Policy/Resource": [
+        "/s3sqs-customLoggingBucket/test-s3-sqs/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "tests3sqsdeadLetterQueuePolicy35D7CFE3"
+            "data": "tests3sqsqueuedlqPolicy8D717400"
           }
         ],
         "/s3sqs-customLoggingBucket/test-s3-sqs/'queueKey'/Resource": [
@@ -152,6 +152,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "tests3sqsqueuePolicyDDC0D745"
+          }
+        ],
+        "/s3sqs-customLoggingBucket/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/s3sqs-customLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
@@ -194,15 +200,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "tests3sqsEncryptionKeyFD4D5946": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3sqsEncryptionKeyFD4D5946",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },

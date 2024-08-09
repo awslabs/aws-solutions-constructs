@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f51c7d39b813692bf74ac7f2c310c7e4baec747909cdf92de9b0a3a350fd0b8b.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/cbd1d6fe2ecb5191db2dbe8487bf017f2fc4a0c4cd65bddf532979383d36b4dd.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -98,6 +98,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "scrapBucketLogAutoDeleteObjectsCustomResource307F3D47"
+          }
+        ],
+        "/s3sqs-existingS3Bucket/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/s3sqs-existingS3Bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
@@ -136,16 +142,16 @@
             "data": "scrapBucketNotifications065035E3"
           }
         ],
-        "/s3sqs-existingS3Bucket/test-s3-sqs/deadLetterQueue/Resource": [
+        "/s3sqs-existingS3Bucket/test-s3-sqs/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "tests3sqsdeadLetterQueueEABBC814"
+            "data": "tests3sqsqueuedlq9DE05351"
           }
         ],
-        "/s3sqs-existingS3Bucket/test-s3-sqs/deadLetterQueue/Policy/Resource": [
+        "/s3sqs-existingS3Bucket/test-s3-sqs/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "tests3sqsdeadLetterQueuePolicy35D7CFE3"
+            "data": "tests3sqsqueuedlqPolicy8D717400"
           }
         ],
         "/s3sqs-existingS3Bucket/test-s3-sqs/'queueKey'/Resource": [
@@ -200,15 +206,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "tests3sqsEncryptionKeyFD4D5946": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3sqsEncryptionKeyFD4D5946",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },

@@ -23,6 +23,7 @@ import { buildLambdaFunction } from "@aws-solutions-constructs/core";
 import { addCfnSuppressRulesForCustomResourceProvider } from "./utils";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
+import * as defaults from '@aws-solutions-constructs/core';
 
 /**
  * The TemplateValue interface defines the id-value pair that will
@@ -97,7 +98,7 @@ export function createTemplateWriterCustomResource(
 
   const templateWriterLambda = buildLambdaFunction(scope, {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/template-writer-custom-resource`),
       timeout: props.timeout,
@@ -138,6 +139,8 @@ export function createTemplateWriterCustomResource(
       TemplateOutputBucket: outputAsset.s3BucketName
     }
   });
+
+  customResource.node.addDependency(templateWriterPolicy);
 
   return {
     s3Bucket: outputAsset.bucket,

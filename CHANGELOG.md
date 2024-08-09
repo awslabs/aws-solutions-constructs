@@ -2,6 +2,73 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.64.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.63.0...v2.64.0) (2024-07-31)
+
+Built on CDK v2.150.0
+
+* **aws-alb-lambda** allow vpc in loadBalancerProps when specifying subnets ([#1161](https://github.com/awslabs/aws-solutions-constructs/issues/1161))
+
+## [2.63.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.62.0...v2.63.0) (2024-07-19)
+
+Built on CDK v2.150.0
+
+* **aws-apigatewayv2websockets-sqs:** New construct! ([#1140](https://github.com/awslabs/aws-solutions-constructs/pull/1140))
+
+## [2.62.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.61.0...v2.62.0) (2024-07-16)
+
+Built on CDK v2.147.3
+
+### Features
+
+* **apigateway:** accept MethodResponses along with IntegrationResponses ([#1146](https://github.com/awslabs/aws-solutions-constructs/issues/1146)) ([c351953](https://github.com/awslabs/aws-solutions-constructs/commit/c35195335b530bde8e782bdc2ded8003060c9650))
+
+
+### Bug Fixes
+
+* **resources/template-writer:** add IAM policy as customResource dependency ([#1148](https://github.com/awslabs/aws-solutions-constructs/issues/1148)) ([bbdeddd](https://github.com/awslabs/aws-solutions-constructs/commit/bbdeddd4b5c57cdc2397f82d1724027e610df550))
+
+## [2.61.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.60.0...v2.61.0) (2024-07-05)
+
+Built on CDK v2.147.3
+
+### Maintenance
+
+* Updated all javascript to Node.js 20
+
+## [2.60.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.59.0...v2.60.0) (2024-06-11)
+
+Built on CDK v2.145.0
+
+### Features
+
+* **aws-constructs-factories:** add a factory for sqs queues ([#1131](https://github.com/awslabs/aws-solutions-constructs/issues/1131)) ([b35b9b8](https://github.com/awslabs/aws-solutions-constructs/commit/b35b9b86dcbda1d90dceac1cc539be816defe288))
+
+## [2.59.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.58.1...v2.59.0) (2024-06-08)
+
+Built on CDK v2.143.0
+
+### Features
+
+* **aws-constructs-factories:** add state machine factory ([#1128](https://github.com/awslabs/aws-solutions-constructs/issues/1128)) ([d82342c](https://github.com/awslabs/aws-solutions-constructs/commit/d82342c99c1b5ec77a015c96620bc99b0650346f))
+
+### Bug Fixes
+
+* **aws-s3-cloudfront:** address handling and definition of peripheral buckets ([#1129](https://github.com/awslabs/aws-solutions-constructs/issues/1129)) ([8b30791](https://github.com/awslabs/aws-solutions-constructs/commit/8b30791902e09db2f7c49410a03d5d95ccc2ef51))
+
+## [2.58.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.58.0...v2.58.1) (2024-05-28)
+
+Built on CDK v2.143.0
+
+No library changes - testing changes in our CI/CD process
+
+## [2.58.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.57.0...v2.58.0) (2024-05-25)
+
+Built on CDK v2.143.0
+
+### Bug Fixes
+
+* **aws-sns-sqs:** fix circular dependency error in aws-sns-sqs ([#1122](https://github.com/awslabs/aws-solutions-constructs/issues/1122)) ([2366272](https://github.com/awslabs/aws-solutions-constructs/commit/23662723b477baf43787979cb9c8b809ceba6dfe))
+
 ## [2.57.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.56.0...v2.57.0) (2024-05-06)
 
 Built on CDK v2.138.0

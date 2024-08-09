@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/5ded65a1c92292f081290c068e3e5c081bbc31aa22734527bbb8d47bee93076f.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/1dc05c24a51b2a47906af20aca8a2e14109a98ee859dc2f2d1e28eadd03752f4.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -332,6 +332,18 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testserviceService2730C249"
+          }
+        ],
+        "/farstp-new-resources/lambdafarstp-test/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdafarstptestServiceRole3635EEF7"
+          }
+        ],
+        "/farstp-new-resources/lambdafarstp-test/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdafarstptest04DC4058"
           }
         ],
         "/farstp-new-resources/test-construct/StateMachineLogGroup/Resource": [

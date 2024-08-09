@@ -1,0 +1,179 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "snssqsoldexistingkmskeyIntegDefaultTestDeployAssert133AD4F8.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "snssqsoldexistingkmskeyIntegDefaultTestDeployAssert133AD4F8.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "snssqsoldexistingkmskeyIntegDefaultTestDeployAssert133AD4F8": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "snssqsoldexistingkmskeyIntegDefaultTestDeployAssert133AD4F8.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "snssqsoldexistingkmskeyIntegDefaultTestDeployAssert133AD4F8.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "snssqsoldexistingkmskeyIntegDefaultTestDeployAssert133AD4F8.assets"
+      ],
+      "metadata": {
+        "/snssqs-old-existing-kms-key/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/snssqs-old-existing-kms-key/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "snssqs-old-existing-kms-key/Integ/DefaultTest/DeployAssert"
+    },
+    "snssqs-old-existing-kms-key.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "snssqs-old-existing-kms-key.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "snssqs-old-existing-kms-key": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "snssqs-old-existing-kms-key.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f03462121a93096f93351d9e82fed39382e891086039c0972fe3f54c76e259f2.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "snssqs-old-existing-kms-key.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "snssqs-old-existing-kms-key.assets"
+      ],
+      "metadata": {
+        "/snssqs-old-existing-kms-key/ImportedEncryptionKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImportedEncryptionKeyBE10B2FC"
+          }
+        ],
+        "/snssqs-old-existing-kms-key/test-sns-sqs/SnsTopic/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsSnsTopic2CD0065B"
+          }
+        ],
+        "/snssqs-old-existing-kms-key/test-sns-sqs/SnsTopic/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsSnsTopicPolicy604079F2"
+          }
+        ],
+        "/snssqs-old-existing-kms-key/test-sns-sqs/queue-dlq/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsqueuedlq3331312B"
+          }
+        ],
+        "/snssqs-old-existing-kms-key/test-sns-sqs/queue-dlq/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsqueuedlqPolicy63646E47"
+          }
+        ],
+        "/snssqs-old-existing-kms-key/test-sns-sqs/queue": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "encryption: Automatically changed to QueueEncryption.KMS, was: QueueEncryption.KMS_MANAGED\nWhen encryptionMasterKey is provided, always set `encryption: QueueEncryption.KMS` [ack: @aws-cdk/aws-sqs:queueEncryptionChangedToKMS]"
+          }
+        ],
+        "/snssqs-old-existing-kms-key/test-sns-sqs/queue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsqueueB02504BF"
+          }
+        ],
+        "/snssqs-old-existing-kms-key/test-sns-sqs/queue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsqueuePolicyE64464B6"
+          }
+        ],
+        "/snssqs-old-existing-kms-key/test-sns-sqs/queue/snssqsoldexistingkmskeytestsnssqsSnsTopic1207774F/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsqueuesnssqsoldexistingkmskeytestsnssqsSnsTopic1207774F20743A1D"
+          }
+        ],
+        "/snssqs-old-existing-kms-key/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/snssqs-old-existing-kms-key/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testsnssqsdeadLetterQueue8DACC0A1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsdeadLetterQueue8DACC0A1",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testsnssqsdeadLetterQueuePolicyAB8A9883": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnssqsdeadLetterQueuePolicyAB8A9883",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ]
+      },
+      "displayName": "snssqs-old-existing-kms-key"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

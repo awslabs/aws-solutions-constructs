@@ -90,7 +90,9 @@
      "EncryptionType": "KMS",
      "KeyId": "alias/aws/kinesis"
     }
-   }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testkinesisstreamslambdaKinesisStreamGetRecordsIteratorAgeAlarmFB74C363": {
    "Type": "AWS::CloudWatch::Alarm",

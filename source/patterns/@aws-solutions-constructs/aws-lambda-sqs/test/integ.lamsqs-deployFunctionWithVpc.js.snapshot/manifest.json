@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9b558d7a270546f43afc15a37123f06ecdf548b0ef30abdbf03ec8efa644ce32.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/34888f0b529ad8e9622ebaeeb122b43bfc1893d37b92f4bdaf09157e73000c54.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -106,16 +106,16 @@
             "data": "testlambdasqsLambdaFunction28E890A1"
           }
         ],
-        "/lamsqs-deployFunctionWithVpc/test-lambda-sqs/deadLetterQueue/Resource": [
+        "/lamsqs-deployFunctionWithVpc/test-lambda-sqs/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasqsdeadLetterQueueC34BC0BD"
+            "data": "testlambdasqsqueuedlq0AFE8CA9"
           }
         ],
-        "/lamsqs-deployFunctionWithVpc/test-lambda-sqs/deadLetterQueue/Policy/Resource": [
+        "/lamsqs-deployFunctionWithVpc/test-lambda-sqs/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasqsdeadLetterQueuePolicy270F1626"
+            "data": "testlambdasqsqueuedlqPolicy2AF7238E"
           }
         ],
         "/lamsqs-deployFunctionWithVpc/test-lambda-sqs/queue/Resource": [
@@ -206,6 +206,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "VpcSQSDF166A88"
+          }
+        ],
+        "/lamsqs-deployFunctionWithVpc/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/lamsqs-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [

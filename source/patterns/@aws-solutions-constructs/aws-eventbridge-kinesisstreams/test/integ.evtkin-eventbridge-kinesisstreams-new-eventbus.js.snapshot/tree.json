@@ -32,13 +32,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_kinesis.CfnStream",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_kinesis.Stream",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "eventsRole": {
@@ -50,7 +50,7 @@
                     "path": "evtkin-eventbridge-kinesisstreams-new-eventbus/test-eventbridge-kinesis-stream/eventsRole/ImporteventsRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "Resource": {
@@ -76,7 +76,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -118,19 +118,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "CustomEventBus": {
@@ -148,13 +148,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_events.CfnEventBus",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_events.EventBus",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "EventsRule": {
@@ -197,13 +197,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_events.CfnRule",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_events.Rule",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "KinesisStreamGetRecordsIteratorAgeAlarm": {
@@ -228,13 +228,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               },
               "KinesisStreamReadProvisionedThroughputExceededAlarm": {
@@ -259,19 +259,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                  "version": "2.118.0"
+                  "version": "2.143.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-eventbridge-kinesisstreams.EventbridgeToKinesisStreams",
-              "version": "2.50.0"
+              "version": "2.57.0"
             }
           },
           "Integ": {
@@ -287,7 +287,7 @@
                     "path": "evtkin-eventbridge-kinesisstreams-new-eventbus/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
-                      "version": "10.0.0"
+                      "version": "10.3.0"
                     }
                   },
                   "DeployAssert": {
@@ -299,7 +299,7 @@
                         "path": "evtkin-eventbridge-kinesisstreams-new-eventbus/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -307,25 +307,25 @@
                         "path": "evtkin-eventbridge-kinesisstreams-new-eventbus/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.118.0"
+                          "version": "2.143.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.118.0"
+                      "version": "2.143.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.118.0-alpha.0"
+                  "version": "2.143.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.118.0-alpha.0"
+              "version": "2.143.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -333,7 +333,7 @@
             "path": "evtkin-eventbridge-kinesisstreams-new-eventbus/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -341,13 +341,13 @@
             "path": "evtkin-eventbridge-kinesisstreams-new-eventbus/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.118.0"
+              "version": "2.143.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.118.0"
+          "version": "2.143.0"
         }
       },
       "Tree": {
@@ -355,13 +355,13 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.0.0"
+          "version": "10.3.0"
         }
       }
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.118.0"
+      "version": "2.143.0"
     }
   }
 }

@@ -8,12 +8,103 @@
         "id": "s3stp-customLoggingBucket",
         "path": "s3stp-customLoggingBucket",
         "children": {
-          "StartState": {
-            "id": "StartState",
-            "path": "s3stp-customLoggingBucket/StartState",
+          "lambdas3stp-test": {
+            "id": "lambdas3stp-test",
+            "path": "s3stp-customLoggingBucket/lambdas3stp-test",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "s3stp-customLoggingBucket/lambdas3stp-test/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "s3stp-customLoggingBucket/lambdas3stp-test/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.150.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "s3stp-customLoggingBucket/lambdas3stp-test/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.150.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.150.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "s3stp-customLoggingBucket/lambdas3stp-test/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "zipFile": "exports.handler = async (event) => console.log(event)"
+                    },
+                    "handler": "index.handler",
+                    "role": {
+                      "Fn::GetAtt": [
+                        "lambdas3stptestServiceRoleF17BB6C7",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs20.x"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.150.0"
+                }
+              }
+            },
             "constructInfo": {
-              "fqn": "aws-cdk-lib.aws_stepfunctions.Pass",
-              "version": "2.135.0"
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.150.0"
+            }
+          },
+          "tasks3stp-test": {
+            "id": "tasks3stp-test",
+            "path": "s3stp-customLoggingBucket/tasks3stp-test",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_stepfunctions_tasks.LambdaInvoke",
+              "version": "2.150.0"
             }
           },
           "test-s3-stepfunctions": {
@@ -71,7 +162,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   },
                   "Policy": {
@@ -205,13 +296,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   },
                   "AutoDeleteObjectsCustomResource": {
@@ -223,19 +314,19 @@
                         "path": "s3stp-customLoggingBucket/test-s3-stepfunctions/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CustomResource",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.Bucket",
-                  "version": "2.135.0"
+                  "version": "2.150.0"
                 }
               },
               "S3Bucket": {
@@ -294,7 +385,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   },
                   "Policy": {
@@ -392,13 +483,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   },
                   "AutoDeleteObjectsCustomResource": {
@@ -410,13 +501,13 @@
                         "path": "s3stp-customLoggingBucket/test-s3-stepfunctions/S3Bucket/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CustomResource",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   },
                   "Notifications": {
@@ -428,7 +519,7 @@
                         "path": "s3stp-customLoggingBucket/test-s3-stepfunctions/S3Bucket/Notifications/Resource",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
@@ -440,7 +531,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.Bucket",
-                  "version": "2.135.0"
+                  "version": "2.150.0"
                 }
               },
               "test-s3-stepfunctions-event-rule-step-function-construct": {
@@ -482,13 +573,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   },
                   "StateMachine": {
@@ -504,7 +595,7 @@
                             "path": "s3stp-customLoggingBucket/test-s3-stepfunctions/test-s3-stepfunctions-event-rule-step-function-construct/StateMachine/Role/ImportRole",
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.Resource",
-                              "version": "2.135.0"
+                              "version": "2.150.0"
                             }
                           },
                           "Resource": {
@@ -529,7 +620,7 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                              "version": "2.135.0"
+                              "version": "2.150.0"
                             }
                           },
                           "DefaultPolicy": {
@@ -544,6 +635,32 @@
                                   "aws:cdk:cloudformation:props": {
                                     "policyDocument": {
                                       "Statement": [
+                                        {
+                                          "Action": "lambda:InvokeFunction",
+                                          "Effect": "Allow",
+                                          "Resource": [
+                                            {
+                                              "Fn::GetAtt": [
+                                                "lambdas3stptest9FBDC6CE",
+                                                "Arn"
+                                              ]
+                                            },
+                                            {
+                                              "Fn::Join": [
+                                                "",
+                                                [
+                                                  {
+                                                    "Fn::GetAtt": [
+                                                      "lambdas3stptest9FBDC6CE",
+                                                      "Arn"
+                                                    ]
+                                                  },
+                                                  ":*"
+                                                ]
+                                              ]
+                                            }
+                                          ]
+                                        },
                                         {
                                           "Action": [
                                             "logs:CreateLogDelivery",
@@ -571,19 +688,19 @@
                                 },
                                 "constructInfo": {
                                   "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                                  "version": "2.135.0"
+                                  "version": "2.150.0"
                                 }
                               }
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.Policy",
-                              "version": "2.135.0"
+                              "version": "2.150.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Role",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       },
                       "Resource": {
@@ -592,7 +709,25 @@
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::StepFunctions::StateMachine",
                           "aws:cdk:cloudformation:props": {
-                            "definitionString": "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"End\":true}}}",
+                            "definitionString": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "{\"StartAt\":\"tasks3stp-test\",\"States\":{\"tasks3stp-test\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ClientExecutionTimeoutException\",\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+                                  {
+                                    "Ref": "AWS::Partition"
+                                  },
+                                  ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
+                                  {
+                                    "Fn::GetAtt": [
+                                      "lambdas3stptest9FBDC6CE",
+                                      "Arn"
+                                    ]
+                                  },
+                                  "\",\"Payload.$\":\"$\"}}}}"
+                                ]
+                              ]
+                            },
                             "loggingConfiguration": {
                               "destinations": [
                                 {
@@ -618,13 +753,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_stepfunctions.CfnStateMachine",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_stepfunctions.StateMachine",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   },
                   "EventsRuleRole": {
@@ -636,7 +771,7 @@
                         "path": "s3stp-customLoggingBucket/test-s3-stepfunctions/test-s3-stepfunctions-event-rule-step-function-construct/EventsRuleRole/ImportEventsRuleRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       },
                       "Resource": {
@@ -661,7 +796,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -696,19 +831,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                              "version": "2.135.0"
+                              "version": "2.150.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Policy",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Role",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   },
                   "EventsRule": {
@@ -757,13 +892,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_events.CfnRule",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_events.Rule",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   },
                   "ExecutionFailedAlarm": {
@@ -796,13 +931,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   },
                   "ExecutionThrottledAlarm": {
@@ -835,13 +970,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   },
                   "ExecutionAbortedAlarm": {
@@ -874,25 +1009,33 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-solutions-constructs/aws-eventbridge-stepfunctions.EventbridgeToStepfunctions",
-                  "version": "2.54.1"
+                  "version": "2.63.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-s3-stepfunctions.S3ToStepfunctions",
-              "version": "2.54.1"
+              "version": "2.63.0"
+            }
+          },
+          "LatestNodeRuntimeMap": {
+            "id": "LatestNodeRuntimeMap",
+            "path": "s3stp-customLoggingBucket/LatestNodeRuntimeMap",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnMapping",
+              "version": "2.150.0"
             }
           },
           "Custom::S3AutoDeleteObjectsCustomResourceProvider": {
@@ -904,7 +1047,7 @@
                 "path": "s3stp-customLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Staging",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.135.0"
+                  "version": "2.150.0"
                 }
               },
               "Role": {
@@ -912,7 +1055,7 @@
                 "path": "s3stp-customLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.135.0"
+                  "version": "2.150.0"
                 }
               },
               "Handler": {
@@ -920,13 +1063,13 @@
                 "path": "s3stp-customLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.135.0"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResourceProviderBase",
-              "version": "2.135.0"
+              "version": "2.150.0"
             }
           },
           "BucketNotificationsHandler050a0587b7544547bf325f094a3db834": {
@@ -942,7 +1085,7 @@
                     "path": "s3stp-customLoggingBucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/ImportRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   },
                   "Resource": {
@@ -981,7 +1124,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -1014,19 +1157,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.135.0"
+                  "version": "2.150.0"
                 }
               },
               "Resource": {
@@ -1034,7 +1177,7 @@
                 "path": "s3stp-customLoggingBucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.135.0"
+                  "version": "2.150.0"
                 }
               }
             },
@@ -1068,7 +1211,7 @@
                         "path": "s3stp-customLoggingBucket/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -1076,25 +1219,25 @@
                         "path": "s3stp-customLoggingBucket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.135.0-alpha.0"
+                  "version": "2.150.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.135.0-alpha.0"
+              "version": "2.150.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -1102,7 +1245,7 @@
             "path": "s3stp-customLoggingBucket/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.135.0"
+              "version": "2.150.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -1110,13 +1253,13 @@
             "path": "s3stp-customLoggingBucket/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.135.0"
+              "version": "2.150.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.135.0"
+          "version": "2.150.0"
         }
       },
       "Tree": {
@@ -1130,7 +1273,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.135.0"
+      "version": "2.150.0"
     }
   }
 }

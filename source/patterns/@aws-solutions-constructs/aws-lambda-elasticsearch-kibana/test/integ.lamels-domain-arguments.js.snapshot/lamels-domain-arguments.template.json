@@ -53,6 +53,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleDefaultPolicy438CAC76": {
@@ -116,7 +123,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs16.x",
+    "Runtime": "nodejs20.x",
     "TracingConfig": {
      "Mode": "Active"
     }
@@ -357,6 +364,13 @@
       "PolicyName": "CognitoAccessPolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testlambdaelasticsearchkibana2IdentityPoolRoleMapping5CE56BBF": {
@@ -687,6 +701,11 @@
        "id": "W90",
        "reason": "This is not a rule for the general case, just for specific use cases/industries"
       }
+     ]
+    },
+    "guard": {
+     "SuppressedRules": [
+      "CFN_NO_EXPLICIT_RESOURCE_NAMES"
      ]
     }
    }

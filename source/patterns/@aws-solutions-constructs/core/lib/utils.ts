@@ -21,7 +21,11 @@ import { flagOverriddenDefaults } from './override-warning-service';
 import * as log from 'npmlog';
 import * as crypto from 'crypto';
 import * as cdk from 'aws-cdk-lib';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { Construct } from "constructs";
+
+export const COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME = lambda.Runtime.NODEJS_20_X;
+export const COMMERCIAL_REGION_LAMBDA_NODE_STRING = "nodejs20.x";
 
 function isObject(val: object) {
   return val != null && typeof val === 'object'
@@ -217,6 +221,38 @@ export function addCfnSuppressRules(resource: cdk.Resource | cdk.CfnResource, ru
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  *
+ * Adds CfnGuard suppress rules to the CDK resource.
+ * @param resource The CDK resource
+ * @param rules The CfnGaurd rules to suppress
+ */
+export function addCfnGuardSuppressRules(resource: any /* cdk.Resource | cdk.CfnResource | IRole */, rules: string[]) {
+
+  if (resource instanceof cdk.Resource) {
+    resource = resource.node.findChild('Resource') as cdk.CfnResource;
+  }
+
+  if (resource.cfnOptions.metadata?.guard?.SuppressedRules) {
+    resource.cfnOptions.metadata?.guard.SuppressedRules.push(...rules);
+  } else {
+    resource.addMetadata('guard', {
+      SuppressedRules: rules
+    });
+  }
+}
+
+export function suppressVpcCustomerHandlerRoleWarnings(stack: cdk.Stack) {
+  stack.node.children.forEach(child => {
+    if (child.node.id === "Custom::VpcRestrictDefaultSGCustomResourceProvider") {
+      const role = (child as any).role;
+      // Turn off all warnings coming from custom resource
+      addCfnGuardSuppressRules(role, []);
+    }
+  });
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
  * Creates the props to be used to instantiate a CDK L2 construct within a Solutions Construct
  *
  * @param defaultProps The default props to be used by the construct
@@ -273,4 +309,12 @@ export function CheckListValues(allowedPermissions: string[], submittedValues: s
       throw Error(`Invalid ${valueType} submitted - ${submittedValue}`);
     }
   });
+}
+
+export function CheckBooleanWithDefault(value: boolean | undefined, defaultValue: boolean): boolean {
+  if (value === undefined) {
+    return defaultValue;
+  } else {
+    return value;
+  }
 }

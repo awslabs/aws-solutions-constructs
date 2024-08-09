@@ -18,6 +18,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
@@ -27,7 +28,7 @@ stack.templateOptions.description = 'Integration Test with new resourcesfor aws-
 // Definitions
 const props: LambdaToElasticachememcachedProps = {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   },

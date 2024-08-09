@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "e0644c9c37b3d31f64173a4eba4af27d914c5736e948d95b69ed8a7aa276d2a3": {
+      "source": {
+        "path": "apiddb-custom-method-response.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "e0644c9c37b3d31f64173a4eba4af27d914c5736e948d95b69ed8a7aa276d2a3.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

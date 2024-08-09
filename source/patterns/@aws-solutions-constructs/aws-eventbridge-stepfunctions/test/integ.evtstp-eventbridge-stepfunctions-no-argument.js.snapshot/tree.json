@@ -8,12 +8,103 @@
         "id": "evtstp-eventbridge-stepfunctions-no-argument",
         "path": "evtstp-eventbridge-stepfunctions-no-argument",
         "children": {
-          "StartState": {
-            "id": "StartState",
-            "path": "evtstp-eventbridge-stepfunctions-no-argument/StartState",
+          "lambdaevtstp-test": {
+            "id": "lambdaevtstp-test",
+            "path": "evtstp-eventbridge-stepfunctions-no-argument/lambdaevtstp-test",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "evtstp-eventbridge-stepfunctions-no-argument/lambdaevtstp-test/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "evtstp-eventbridge-stepfunctions-no-argument/lambdaevtstp-test/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.150.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "evtstp-eventbridge-stepfunctions-no-argument/lambdaevtstp-test/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.150.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.150.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "evtstp-eventbridge-stepfunctions-no-argument/lambdaevtstp-test/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "zipFile": "exports.handler = async (event) => console.log(event)"
+                    },
+                    "handler": "index.handler",
+                    "role": {
+                      "Fn::GetAtt": [
+                        "lambdaevtstptestServiceRole57CC5BE7",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs20.x"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.150.0"
+                }
+              }
+            },
             "constructInfo": {
-              "fqn": "aws-cdk-lib.aws_stepfunctions.Pass",
-              "version": "2.127.0"
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.150.0"
+            }
+          },
+          "taskevtstp-test": {
+            "id": "taskevtstp-test",
+            "path": "evtstp-eventbridge-stepfunctions-no-argument/taskevtstp-test",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_stepfunctions_tasks.LambdaInvoke",
+              "version": "2.150.0"
             }
           },
           "test-eventbridge-stepfunctions-construct": {
@@ -55,13 +146,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                      "version": "2.127.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                  "version": "2.127.0"
+                  "version": "2.150.0"
                 }
               },
               "StateMachine": {
@@ -77,7 +168,7 @@
                         "path": "evtstp-eventbridge-stepfunctions-no-argument/test-eventbridge-stepfunctions-construct/StateMachine/Role/ImportRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.127.0"
+                          "version": "2.150.0"
                         }
                       },
                       "Resource": {
@@ -102,7 +193,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                          "version": "2.127.0"
+                          "version": "2.150.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -117,6 +208,32 @@
                               "aws:cdk:cloudformation:props": {
                                 "policyDocument": {
                                   "Statement": [
+                                    {
+                                      "Action": "lambda:InvokeFunction",
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "lambdaevtstptest4DAE33D9",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::GetAtt": [
+                                                  "lambdaevtstptest4DAE33D9",
+                                                  "Arn"
+                                                ]
+                                              },
+                                              ":*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    },
                                     {
                                       "Action": [
                                         "logs:CreateLogDelivery",
@@ -144,19 +261,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                              "version": "2.127.0"
+                              "version": "2.150.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Policy",
-                          "version": "2.127.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Role",
-                      "version": "2.127.0"
+                      "version": "2.150.0"
                     }
                   },
                   "Resource": {
@@ -165,7 +282,25 @@
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::StepFunctions::StateMachine",
                       "aws:cdk:cloudformation:props": {
-                        "definitionString": "{\"StartAt\":\"StartState\",\"States\":{\"StartState\":{\"Type\":\"Pass\",\"End\":true}}}",
+                        "definitionString": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "{\"StartAt\":\"taskevtstp-test\",\"States\":{\"taskevtstp-test\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ClientExecutionTimeoutException\",\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
+                              {
+                                "Fn::GetAtt": [
+                                  "lambdaevtstptest4DAE33D9",
+                                  "Arn"
+                                ]
+                              },
+                              "\",\"Payload.$\":\"$\"}}}}"
+                            ]
+                          ]
+                        },
                         "loggingConfiguration": {
                           "destinations": [
                             {
@@ -191,13 +326,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_stepfunctions.CfnStateMachine",
-                      "version": "2.127.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_stepfunctions.StateMachine",
-                  "version": "2.127.0"
+                  "version": "2.150.0"
                 }
               },
               "EventsRuleRole": {
@@ -209,7 +344,7 @@
                     "path": "evtstp-eventbridge-stepfunctions-no-argument/test-eventbridge-stepfunctions-construct/EventsRuleRole/ImportEventsRuleRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.127.0"
+                      "version": "2.150.0"
                     }
                   },
                   "Resource": {
@@ -234,7 +369,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.127.0"
+                      "version": "2.150.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -269,19 +404,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.127.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.127.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.127.0"
+                  "version": "2.150.0"
                 }
               },
               "EventsRule": {
@@ -314,13 +449,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_events.CfnRule",
-                      "version": "2.127.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_events.Rule",
-                  "version": "2.127.0"
+                  "version": "2.150.0"
                 }
               },
               "ExecutionFailedAlarm": {
@@ -353,13 +488,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                      "version": "2.127.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                  "version": "2.127.0"
+                  "version": "2.150.0"
                 }
               },
               "ExecutionThrottledAlarm": {
@@ -392,13 +527,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                      "version": "2.127.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                  "version": "2.127.0"
+                  "version": "2.150.0"
                 }
               },
               "ExecutionAbortedAlarm": {
@@ -431,19 +566,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                      "version": "2.127.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                  "version": "2.127.0"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-eventbridge-stepfunctions.EventbridgeToStepfunctions",
-              "version": "2.53.0"
+              "version": "2.63.0"
             }
           },
           "Integ": {
@@ -471,7 +606,7 @@
                         "path": "evtstp-eventbridge-stepfunctions-no-argument/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.127.0"
+                          "version": "2.150.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -479,25 +614,25 @@
                         "path": "evtstp-eventbridge-stepfunctions-no-argument/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.127.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.127.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.127.0-alpha.0"
+                  "version": "2.150.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.127.0-alpha.0"
+              "version": "2.150.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -505,7 +640,7 @@
             "path": "evtstp-eventbridge-stepfunctions-no-argument/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.127.0"
+              "version": "2.150.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -513,13 +648,13 @@
             "path": "evtstp-eventbridge-stepfunctions-no-argument/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.127.0"
+              "version": "2.150.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.127.0"
+          "version": "2.150.0"
         }
       },
       "Tree": {
@@ -533,7 +668,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.127.0"
+      "version": "2.150.0"
     }
   }
 }

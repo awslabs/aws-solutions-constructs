@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fba04853409ac9cba6b7ffd07099627e49ffd0f590cb43f1c80b33786e977a29.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0f4b95584aff944af3e3df212a90ae39b0a26ad46cd07637d3bd3978d8063c88.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -106,16 +106,16 @@
             "data": "testlambdasqslambdatosqsLambdaFunction0973C5A7"
           }
         ],
-        "/lamsqslam-deployProducerFunctionWithVpc/test-lambda-sqs/lambda-to-sqs/deadLetterQueue/Resource": [
+        "/lamsqslam-deployProducerFunctionWithVpc/test-lambda-sqs/lambda-to-sqs/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasqslambdatosqsdeadLetterQueue0FF744BB"
+            "data": "testlambdasqslambdatosqsqueuedlqC154C220"
           }
         ],
-        "/lamsqslam-deployProducerFunctionWithVpc/test-lambda-sqs/lambda-to-sqs/deadLetterQueue/Policy/Resource": [
+        "/lamsqslam-deployProducerFunctionWithVpc/test-lambda-sqs/lambda-to-sqs/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasqslambdatosqsdeadLetterQueuePolicy4A3E49B3"
+            "data": "testlambdasqslambdatosqsqueuedlqPolicy74C45781"
           }
         ],
         "/lamsqslam-deployProducerFunctionWithVpc/test-lambda-sqs/lambda-to-sqs/queue/Resource": [
@@ -236,6 +236,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdasqssqstolambdaLambdaFunctionSqsEventSourcelamsqslamdeployProducerFunctionWithVpctestlambdasqslambdatosqsqueueD62DE11EB9A24E09"
+          }
+        ],
+        "/lamsqslam-deployProducerFunctionWithVpc/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/lamsqslam-deployProducerFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [

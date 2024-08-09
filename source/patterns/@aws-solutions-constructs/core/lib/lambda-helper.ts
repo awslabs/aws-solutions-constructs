@@ -25,7 +25,7 @@ import { overrideProps, addCfnSuppressRules } from './utils';
 import { buildSecurityGroup } from "./security-group-helper";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct, IConstruct } from 'constructs';
-
+import * as defaults from '../index';
 export interface BuildLambdaFunctionProps {
   /**
    * Existing instance of Lambda Function object, Providing both this and lambdaFunctionProps will cause an error.
@@ -128,6 +128,8 @@ export function deployLambdaFunction(scope: Construct,
     }));
   }
 
+  defaults.addCfnGuardSuppressRules(lambdaServiceRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
+
   // Override the DefaultFunctionProps with user provided  lambdaFunctionProps
   let finalLambdaFunctionProps: lambda.FunctionProps = overrideProps(DefaultLambdaFunctionProps(lambdaServiceRole), lambdaFunctionProps);
 
@@ -154,7 +156,7 @@ export function deployLambdaFunction(scope: Construct,
 
   const lambdafunction = new lambda.Function(scope, functionId, finalLambdaFunctionProps);
 
-  if (lambdaFunctionProps.runtime === lambda.Runtime.NODEJS_16_X) {
+  if (lambdaFunctionProps.runtime === defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME) {
     lambdafunction.addEnvironment('AWS_NODEJS_CONNECTION_REUSE_ENABLED', '1', { removeInEdge: true });
   }
 

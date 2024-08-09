@@ -16,7 +16,6 @@ import { Aws, App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { FargateToStepfunctions, FargateToStepfunctionsProps } from "../lib";
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
@@ -27,7 +26,6 @@ const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
 stack.templateOptions.description = 'Integration Test with existing VPC and Service and a new state machine with no CloudWatch alarms';
 
 const existingVpc = defaults.getTestVpc(stack);
-const startState = new stepfunctions.Pass(stack, 'StartState');
 const image = ecs.ContainerImage.fromRegistry('nginx');
 
 const createFargateServiceResponse = defaults.CreateFargateService(stack, 'test', {
@@ -41,7 +39,7 @@ const constructProps: FargateToStepfunctionsProps = {
   publicApi: true,
   existingVpc,
   stateMachineProps: {
-    definition: startState
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'farstp-test')
   },
   existingContainerDefinitionObject: createFargateServiceResponse.containerDefinition,
   existingFargateServiceObject: createFargateServiceResponse.service,

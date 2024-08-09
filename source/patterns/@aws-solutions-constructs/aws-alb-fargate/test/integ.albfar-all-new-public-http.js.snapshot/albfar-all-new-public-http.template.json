@@ -29,6 +29,11 @@
        "reason": "All integration tests must be HTTP because of certificate limitations."
       }
      ]
+    },
+    "guard": {
+     "SuppressedRules": [
+      "ELBV2_LISTENER_SSL_POLICY_RULE"
+     ]
     }
    }
   },
@@ -726,6 +731,11 @@
       }
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": []
+    }
    }
   },
   "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
@@ -735,7 +745,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
      },
-     "S3Key": "dd5711540f04e06aa955d7f4862fc04e8cdea464cb590dae91ed2976bb78098e.zip"
+     "S3Key": "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a.zip"
     },
     "Timeout": 900,
     "MemorySize": 128,
@@ -746,7 +756,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs18.x",
+    "Runtime": "nodejs20.x",
     "Description": "Lambda function for removing all inbound/outbound rules from the VPC default security group"
    },
    "DependsOn": [
@@ -853,6 +863,11 @@
        "id": "W9",
        "reason": "Rule does not apply for ELB."
       }
+     ]
+    },
+    "guard": {
+     "SuppressedRules": [
+      "SECURITY_GROUP_MISSING_EGRESS_RULE"
      ]
     }
    }
@@ -1121,7 +1136,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
      },
-     "S3Key": "b7f33614a69548d6bafe224d751a7ef238cde19097415e553fe8b63a4c8fd8a6.zip"
+     "S3Key": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip"
     },
     "Timeout": 900,
     "MemorySize": 128,
@@ -1132,7 +1147,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs18.x",
+    "Runtime": "nodejs20.x",
     "Description": {
      "Fn::Join": [
       "",
@@ -1394,11 +1409,6 @@
      "Ref": "testconstructcluster7B6231C5"
     },
     "DeploymentConfiguration": {
-     "Alarms": {
-      "AlarmNames": [],
-      "Enable": false,
-      "Rollback": false
-     },
      "MaximumPercent": 150,
      "MinimumHealthyPercent": 75
     },

@@ -1,7 +1,7 @@
 {
   "version": "36.0.0",
   "files": {
-    "7fdd1d3c2f19ccc39f555cfef1bca298d0ceb465581088bbf4d4f649184c8268": {
+    "7093db8fbd617f2358d33b02025104feec38ac412e546c35f0817cb078c037b6": {
       "source": {
         "path": "iotsqs-use-queue-props.template.json",
         "packaging": "file"
@@ -9,7 +9,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "7fdd1d3c2f19ccc39f555cfef1bca298d0ceb465581088bbf4d4f649184c8268.json",
+          "objectKey": "7093db8fbd617f2358d33b02025104feec38ac412e546c35f0817cb078c037b6.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

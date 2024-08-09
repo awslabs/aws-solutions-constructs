@@ -135,7 +135,7 @@ test('Pattern deployment with queue and dead letter queue props', () => {
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
-          "testiotsqsdeadLetterQueue66A04E81",
+          "testiotsqsqueuedlqEFBBF989",
           "Arn",
         ],
       },
@@ -212,7 +212,7 @@ test('Pattern deployment with custom maxReceiveCount', () => {
     RedrivePolicy: {
       deadLetterTargetArn: {
         "Fn::GetAtt": [
-          "testiotsqsdeadLetterQueue66A04E81",
+          "testiotsqsqueuedlqEFBBF989",
           "Arn",
         ],
       },
@@ -508,7 +508,7 @@ test('Pattern deployment with passing a FIFO queue (not supported by IoT)', () =
 
   try {
     new IotToSqs(stack, 'test-iot-sqs', props);
-  } catch (err) {
+  } catch (err: any) {
     expect(err.message).toBe('The IoT SQS action doesn\'t support Amazon SQS FIFO (First-In-First-Out) queues');
   }
 });

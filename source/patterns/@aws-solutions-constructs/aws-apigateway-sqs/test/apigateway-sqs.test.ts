@@ -675,3 +675,115 @@ test('Confirm the CheckSqsProps is being called', () => {
 
   expect(app).toThrowError(/Error - Either provide queueProps or existingQueueObj, but not both.\n/);
 });
+
+test('Construct uses custom createMethodResponses property', () => {
+  const stack = new Stack();
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    allowCreateOperation: true,
+    createIntegrationResponses: [
+      {
+        statusCode: '401',
+        responseTemplates: {
+          'text/html': 'fingerprint'
+        }
+      }
+    ],
+    createMethodResponses: [{
+      statusCode: "401"
+    }]
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    MethodResponses: [{
+      StatusCode: "401"
+    }],
+    Integration: {
+      IntegrationResponses: [
+        {
+          ResponseTemplates: {
+            'text/html': 'fingerprint'
+          },
+          StatusCode: '401'
+        }
+      ]
+    }
+  });
+});
+
+test.only('Construct uses custom deleteMethodResponses property', () => {
+  const stack = new Stack();
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    allowCreateOperation: false,
+    allowReadOperation: false,
+    allowDeleteOperation: true,
+    deleteIntegrationResponses: [
+      {
+        statusCode: '401',
+        responseTemplates: {
+          'text/html': 'fingerprint'
+        }
+      }
+    ],
+    deleteMethodResponses: [{
+      statusCode: "401"
+    }]
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
+    HttpMethod: 'DELETE',
+    MethodResponses: [{
+      StatusCode: "401"
+    }],
+    Integration: {
+      IntegrationResponses: [
+        {
+          ResponseTemplates: {
+            'text/html': 'fingerprint'
+          },
+          StatusCode: '401'
+        }
+      ]
+    }
+  });
+});
+
+test.only('Construct uses custom readMethodResponses property', () => {
+  const stack = new Stack();
+  new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    allowCreateOperation: false,
+    allowDeleteOperation: false,
+    allowReadOperation: true,
+    readIntegrationResponses: [
+      {
+        statusCode: '401',
+        responseTemplates: {
+          'text/html': 'fingerprint'
+        }
+      }
+    ],
+    readMethodResponses: [{
+      statusCode: "401"
+    }]
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::Method', {
+    HttpMethod: 'GET',
+    MethodResponses: [{
+      StatusCode: "401"
+    }],
+    Integration: {
+      IntegrationResponses: [
+        {
+          ResponseTemplates: {
+            'text/html': 'fingerprint'
+          },
+          StatusCode: '401'
+        }
+      ]
+    }
+  });
+});

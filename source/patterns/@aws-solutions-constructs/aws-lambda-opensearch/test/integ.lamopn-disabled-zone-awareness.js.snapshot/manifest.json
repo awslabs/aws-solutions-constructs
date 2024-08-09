@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c38368ee7b0278f3ccee51c0988d3bc2bfb4ef44527995c89193105e9e601043.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/36e921a4201c9eb19686128726421fe9e9bb10f4a1582a1f96bf0329a40384e6.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -266,6 +266,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "VpcFlowLog8FF33A73"
+          }
+        ],
+        "/lamopn-disabled-zone-awareness/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/lamopn-disabled-zone-awareness/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [

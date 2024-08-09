@@ -140,6 +140,7 @@ export class ApiGatewayToIot extends Construct {
 
       // Create a policy that overrides the default policy that gets created with the construct
       this.apiGatewayRole = new iam.Role(this, 'apigateway-iot-role', iamRoleProps);
+      defaults.addCfnGuardSuppressRules(this.apiGatewayRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
     }
 
     // Setup the API Gateway
@@ -259,6 +260,7 @@ export class ApiGatewayToIot extends Construct {
     const resourceMethodOptions = {
       requestParameters: methodReqParams,
       methodResponses: methodResp,
+      requestValidator: this.requestValidator,
     };
 
     const resourceMethodParams: defaults.AddProxyMethodToApiResourceInputParams = {
@@ -268,7 +270,6 @@ export class ApiGatewayToIot extends Construct {
       apiMethod: 'POST',
       apiResource: resource,
       requestTemplate: "$input.json('$')",
-      requestValidator: this.requestValidator,
       awsIntegrationProps: integrationReqProps,
       methodOptions: resourceMethodOptions
     };

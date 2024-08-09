@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8c2ab1285c365ee0b9d8c8944c7722140bbd2a81c4a02e544a52383b0a6f589f.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/857a739ae2b99fc102746ec4e56b6c1fc2e5d85e66db20275e6adfb57e395534.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -97,7 +97,7 @@
         "/apikin-custom-integration-responses/test-apigateway-kinesis-additional-request-templates/RestApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testapigatewaykinesisadditionalrequesttemplatesRestApiDeployment5A447E3D68efb2650de4064374902887dee80c33"
+            "data": "testapigatewaykinesisadditionalrequesttemplatesRestApiDeployment5A447E3D22375d3b4b188e664e530d7eed3613d8"
           }
         ],
         "/apikin-custom-integration-responses/test-apigateway-kinesis-additional-request-templates/RestApi/DeploymentStage.prod/Resource": [

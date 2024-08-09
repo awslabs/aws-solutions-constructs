@@ -40,7 +40,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                  "version": "2.118.0"
+                  "version": "2.150.0"
                 }
               },
               "Policy": {
@@ -174,13 +174,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                  "version": "2.118.0"
+                  "version": "2.150.0"
                 }
               },
               "AutoDeleteObjectsCustomResource": {
@@ -192,19 +192,27 @@
                     "path": "fhss3-pre-existing-logging-bucket/scrapBucketLog/AutoDeleteObjectsCustomResource/Default",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnResource",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CustomResource",
-                  "version": "2.118.0"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_s3.Bucket",
-              "version": "2.118.0"
+              "version": "2.150.0"
+            }
+          },
+          "LatestNodeRuntimeMap": {
+            "id": "LatestNodeRuntimeMap",
+            "path": "fhss3-pre-existing-logging-bucket/LatestNodeRuntimeMap",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnMapping",
+              "version": "2.150.0"
             }
           },
           "Custom::S3AutoDeleteObjectsCustomResourceProvider": {
@@ -216,7 +224,7 @@
                 "path": "fhss3-pre-existing-logging-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Staging",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.118.0"
+                  "version": "2.150.0"
                 }
               },
               "Role": {
@@ -224,7 +232,7 @@
                 "path": "fhss3-pre-existing-logging-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.118.0"
+                  "version": "2.150.0"
                 }
               },
               "Handler": {
@@ -232,13 +240,13 @@
                 "path": "fhss3-pre-existing-logging-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.118.0"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResourceProviderBase",
-              "version": "2.118.0"
+              "version": "2.150.0"
             }
           },
           "scrapBucket": {
@@ -278,7 +286,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                  "version": "2.118.0"
+                  "version": "2.150.0"
                 }
               },
               "Policy": {
@@ -412,13 +420,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                  "version": "2.118.0"
+                  "version": "2.150.0"
                 }
               },
               "AutoDeleteObjectsCustomResource": {
@@ -430,19 +438,19 @@
                     "path": "fhss3-pre-existing-logging-bucket/scrapBucket/AutoDeleteObjectsCustomResource/Default",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnResource",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CustomResource",
-                  "version": "2.118.0"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_s3.Bucket",
-              "version": "2.118.0"
+              "version": "2.150.0"
             }
           },
           "test-firehose-s3-pre-existing-logging-bucket-stack": {
@@ -505,7 +513,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   },
                   "Policy": {
@@ -603,13 +611,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   },
                   "AutoDeleteObjectsCustomResource": {
@@ -621,19 +629,19 @@
                         "path": "fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stack/S3Bucket/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CustomResource",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.Bucket",
-                  "version": "2.118.0"
+                  "version": "2.150.0"
                 }
               },
               "firehose-log-group": {
@@ -649,7 +657,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   },
                   "firehose-log-stream": {
@@ -669,19 +677,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_logs.CfnLogStream",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.LogStream",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                  "version": "2.118.0"
+                  "version": "2.150.0"
                 }
               },
               "KinesisFirehoseRole": {
@@ -693,7 +701,7 @@
                     "path": "fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stack/KinesisFirehoseRole/ImportKinesisFirehoseRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   },
                   "Resource": {
@@ -718,13 +726,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.118.0"
+                  "version": "2.150.0"
                 }
               },
               "KinesisFirehosePolicy": {
@@ -816,13 +824,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Policy",
-                  "version": "2.118.0"
+                  "version": "2.150.0"
                 }
               },
               "KinesisFirehose": {
@@ -891,13 +899,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_kinesisfirehose.CfnDeliveryStream",
-                  "version": "2.118.0"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-kinesisfirehose-s3.KinesisFirehoseToS3",
-              "version": "2.50.0"
+              "version": "2.63.0"
             }
           },
           "test-firehose-s3-pre-existing-logging-bucket-stackaws-managed-key": {
@@ -905,7 +913,7 @@
             "path": "fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stackaws-managed-key",
             "constructInfo": {
               "fqn": "aws-cdk-lib.Resource",
-              "version": "2.118.0"
+              "version": "2.150.0"
             }
           },
           "Integ": {
@@ -921,7 +929,7 @@
                     "path": "fhss3-pre-existing-logging-bucket/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
-                      "version": "10.0.0"
+                      "version": "10.3.0"
                     }
                   },
                   "DeployAssert": {
@@ -933,7 +941,7 @@
                         "path": "fhss3-pre-existing-logging-bucket/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -941,25 +949,25 @@
                         "path": "fhss3-pre-existing-logging-bucket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.118.0-alpha.0"
+                  "version": "2.150.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.118.0-alpha.0"
+              "version": "2.150.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -967,7 +975,7 @@
             "path": "fhss3-pre-existing-logging-bucket/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.118.0"
+              "version": "2.150.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -975,13 +983,13 @@
             "path": "fhss3-pre-existing-logging-bucket/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.118.0"
+              "version": "2.150.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.118.0"
+          "version": "2.150.0"
         }
       },
       "Tree": {
@@ -989,13 +997,13 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.0.0"
+          "version": "10.3.0"
         }
       }
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.118.0"
+      "version": "2.150.0"
     }
   }
 }

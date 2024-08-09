@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d0ab375d516b11abd4d39332af9bcf42faf443fcbb20fcfdc37972c120910686.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8deb74a5448a1adbf87e68727957fba05d1415f37d1b9827130a7c82f90f9389.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -98,6 +98,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "scrapBucketLogAutoDeleteObjectsCustomResource307F3D47"
+          }
+        ],
+        "/s3sqs-existingLoggingBucket/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/s3sqs-existingLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
@@ -154,16 +160,16 @@
             "data": "tests3sqstempS3BucketNotificationsE2A27A09"
           }
         ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/deadLetterQueue/Resource": [
+        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "tests3sqstempdeadLetterQueueDD55EEDB"
+            "data": "tests3sqstempqueuedlq19A93E90"
           }
         ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/deadLetterQueue/Policy/Resource": [
+        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "tests3sqstempdeadLetterQueuePolicy56962C75"
+            "data": "tests3sqstempqueuedlqPolicyBD207BAA"
           }
         ],
         "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/'queueKey'/Resource": [
@@ -218,15 +224,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "tests3sqstempEncryptionKey57CC85E2": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3sqstempEncryptionKey57CC85E2",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },

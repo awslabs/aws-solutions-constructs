@@ -10,7 +10,9 @@
      "EncryptionType": "KMS",
      "KeyId": "alias/aws/kinesis"
     }
-   }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testkinesislambdaLambdaFunctionServiceRole965E2A08": {
    "Type": "AWS::IAM::Role",
@@ -65,6 +67,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testkinesislambdaLambdaFunctionServiceRoleDefaultPolicy6FF6B6A5": {
@@ -155,7 +164,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs16.x",
+    "Runtime": "nodejs20.x",
     "TracingConfig": {
      "Mode": "Active"
     }
@@ -456,6 +465,13 @@
      ],
      "Version": "2012-10-17"
     }
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testexistingstreamfirehoses3stackKinesisFirehoseToS3KinesisFirehosePolicyE9C16144": {
@@ -609,6 +625,14 @@
       ]
      }
     }
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "KINESIS_FIREHOSE_REDSHIFT_DESTINATION_CONFIGURATION_NO_PLAINTEXT_PASSWORD",
+      "KINESIS_FIREHOSE_SPLUNK_DESTINATION_CONFIGURATION_NO_PLAINTEXT_PASSWORD"
+     ]
+    }
    }
   },
   "KinesisStreamsRole2BFD39A5": {
@@ -651,6 +675,13 @@
       "PolicyName": "KinesisStreamsRoleRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   }
  },

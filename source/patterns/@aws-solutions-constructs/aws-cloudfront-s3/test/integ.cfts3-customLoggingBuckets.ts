@@ -54,7 +54,11 @@ new CloudFrontToS3(stack, 'test-cloudfront-s3', {
         transitionAfter: Duration.days(7)
       }]
     }]
-  }
+  },
+  cloudFrontLoggingBucketAccessLogBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
 });
 suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 new IntegTest(stack, 'Integ', { testCases: [

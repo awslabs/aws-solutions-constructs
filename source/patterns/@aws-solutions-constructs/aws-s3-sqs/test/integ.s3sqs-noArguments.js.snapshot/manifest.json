@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f0717d020b24e22963d03931df9cd9bec2d76174de1c0dbc13f4d5730eef8f6a.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ae6329b008cd68cf4c0151d75834bee63773f4fc8619dba22f17ac5f0ac4a2d5.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -124,16 +124,16 @@
             "data": "tests3sqsS3BucketNotifications32539247"
           }
         ],
-        "/s3sqs-noArguments/test-s3-sqs/deadLetterQueue/Resource": [
+        "/s3sqs-noArguments/test-s3-sqs/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "tests3sqsdeadLetterQueueEABBC814"
+            "data": "tests3sqsqueuedlq9DE05351"
           }
         ],
-        "/s3sqs-noArguments/test-s3-sqs/deadLetterQueue/Policy/Resource": [
+        "/s3sqs-noArguments/test-s3-sqs/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "tests3sqsdeadLetterQueuePolicy35D7CFE3"
+            "data": "tests3sqsqueuedlqPolicy8D717400"
           }
         ],
         "/s3sqs-noArguments/test-s3-sqs/'queueKey'/Resource": [
@@ -158,6 +158,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "tests3sqsqueuePolicyDDC0D745"
+          }
+        ],
+        "/s3sqs-noArguments/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/s3sqs-noArguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
@@ -200,15 +206,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "tests3sqsEncryptionKeyFD4D5946": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3sqsEncryptionKeyFD4D5946",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },

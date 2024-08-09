@@ -35,6 +35,18 @@ const props: CloudFrontToS3Props = {
     encryption: BucketEncryption.KMS,
     encryptionKey
   },
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
+  cloudFrontLoggingBucketAccessLogBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
   insertHttpSecurityHeaders: false
 };
 

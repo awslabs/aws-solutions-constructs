@@ -53,6 +53,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "firstfunctionServiceRoleDefaultPolicy05FFD222": {
@@ -94,6 +101,11 @@
    "Properties": {
     "Code": {
      "ZipFile": "exports.handler = async (event) => { console.log(\"First Function\");}"
+    },
+    "Environment": {
+     "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
     },
     "Handler": "index.handler",
     "Role": {
@@ -183,6 +195,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "secondfunctionServiceRoleDefaultPolicy02F27461": {
@@ -224,6 +243,11 @@
    "Properties": {
     "Code": {
      "ZipFile": "exports.handler = async (event) => { console.log(\"Second Function\");}"
+    },
+    "Environment": {
+     "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
     },
     "Handler": "index.handler",
     "Role": {
@@ -520,6 +544,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testlambdastepfunctionsconstructLambdaFunctionServiceRoleDefaultPolicyB6E73348": {
@@ -574,6 +605,7 @@
     },
     "Environment": {
      "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
       "STATE_MACHINE_ARN": {
        "Ref": "testlambdastepfunctionsconstructStateMachineE1526513"
       }

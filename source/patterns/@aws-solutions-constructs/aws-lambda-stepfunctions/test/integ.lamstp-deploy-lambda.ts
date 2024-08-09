@@ -18,13 +18,15 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as sftasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { generateIntegStackName, deployLambdaFunction } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
+import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup the app and stack
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
 const taskFunction = deployLambdaFunction(stack, {
-  runtime: lambda.Runtime.NODEJS_20_X,
+  runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
   handler: 'index.handler',
   code: lambda.Code.fromAsset(`${__dirname}/lambda-task`),
   environment: {
@@ -40,12 +42,12 @@ const startState = new sftasks.LambdaInvoke(stack, 'permission-test', {
 // Setup the pattern props
 const props: LambdaToStepfunctionsProps = {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_20_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/lambda`)
   },
   stateMachineProps: {
-    definition: startState
+    definitionBody: sfn.DefinitionBody.fromChainable(startState)
   },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY,

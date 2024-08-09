@@ -14,7 +14,7 @@
         }
       }
     },
-    "b63e164fc0ad23ec3d78c5a3b2969e294f2a7cf690a59b1e28fbb0c1addcfaf0": {
+    "8219a73d23d1c42ca5215f5654b1c748d23c5d1ce9b9833829441a7081635704": {
       "source": {
         "path": "iotlamddb-iot-lambda-dynamodb.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "b63e164fc0ad23ec3d78c5a3b2969e294f2a7cf690a59b1e28fbb0c1addcfaf0.json",
+          "objectKey": "8219a73d23d1c42ca5215f5654b1c748d23c5d1ce9b9833829441a7081635704.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

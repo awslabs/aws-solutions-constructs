@@ -214,6 +214,13 @@
       "PolicyName": "CognitoAccessPolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testconstructIdentityPoolRoleMapping1391CBDD": {
@@ -554,6 +561,11 @@
        "id": "W90",
        "reason": "This is not a rule for the general case, just for specific use cases/industries"
       }
+     ]
+    },
+    "guard": {
+     "SuppressedRules": [
+      "CFN_NO_EXPLICIT_RESOURCE_NAMES"
      ]
     }
    }
@@ -1369,6 +1381,11 @@
       }
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": []
+    }
    }
   },
   "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
@@ -1378,7 +1395,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
      },
-     "S3Key": "dd5711540f04e06aa955d7f4862fc04e8cdea464cb590dae91ed2976bb78098e.zip"
+     "S3Key": "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a.zip"
     },
     "Timeout": 900,
     "MemorySize": 128,
@@ -1389,7 +1406,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs18.x",
+    "Runtime": "nodejs20.x",
     "Description": "Lambda function for removing all inbound/outbound rules from the VPC default security group"
    },
    "DependsOn": [
@@ -1630,11 +1647,6 @@
      "Ref": "testconstructcluster7B6231C5"
     },
     "DeploymentConfiguration": {
-     "Alarms": {
-      "AlarmNames": [],
-      "Enable": false,
-      "Rollback": false
-     },
      "MaximumPercent": 150,
      "MinimumHealthyPercent": 75
     },

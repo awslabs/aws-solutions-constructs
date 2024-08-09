@@ -12,7 +12,7 @@
  */
 
 // Imports
-import { App, Stack } from "aws-cdk-lib";
+import { App, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
 import { buildS3Bucket, generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
@@ -27,12 +27,26 @@ stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
 // Definitions
 const existingBucketObj = buildS3Bucket(stack, {
   bucketProps: {
-    encryption: BucketEncryption.S3_MANAGED
+    encryption: BucketEncryption.S3_MANAGED,
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
   }
 }, 'existing-s3-bucket-encrypted-with-s3-managed-key').bucket;
 
 const props: CloudFrontToS3Props = {
   existingBucketObj,
+  cloudFrontLoggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
+  cloudFrontLoggingBucketAccessLogBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
   insertHttpSecurityHeaders: false
 };
 

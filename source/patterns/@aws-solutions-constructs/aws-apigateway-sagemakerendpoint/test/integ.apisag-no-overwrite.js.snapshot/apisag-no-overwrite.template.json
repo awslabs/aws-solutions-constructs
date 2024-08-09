@@ -83,6 +83,13 @@
     },
     "StageName": "prod",
     "TracingEnabled": true
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "API_GW_CACHE_ENABLED_AND_ENCRYPTED"
+     ]
+    }
    }
   },
   "testapigatewaysagemakerendpointdefaultRestApiuserid9952BA11": {
@@ -256,6 +263,13 @@
       "PolicyName": "LambdaRestApiCloudWatchRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testapigatewaysagemakerendpointdefaultLambdaRestApiAccount6B3C7FDD": {
@@ -286,6 +300,13 @@
       }
      ],
      "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
     }
    }
   },

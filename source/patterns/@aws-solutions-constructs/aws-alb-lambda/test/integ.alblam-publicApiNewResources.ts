@@ -34,7 +34,7 @@ stack.templateOptions.description = 'Integration Test for public HTTP API with a
 const props: AlbToLambdaProps = {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   },
   listenerProps: {
@@ -51,6 +51,7 @@ const albToLambda = new AlbToLambda(stack, 'test-one', props);
 defaults.addCfnSuppressRules(albToLambda.listener, [
   { id: 'W56', reason: 'All integration tests must be HTTP because of certificate limitations.' },
 ]);
+defaults.addCfnGuardSuppressRules(albToLambda.listener, ["ELBV2_LISTENER_SSL_POLICY_RULE"]);
 
 const newSecurityGroup = albToLambda.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
 defaults.addCfnSuppressRules(newSecurityGroup, [

@@ -1,7 +1,7 @@
 {
  "Description": "Integration Test for aws-apigateway-sqs",
  "Resources": {
-  "testapigatewaysqsdefaultdeadLetterQueue24467CAD": {
+  "testapigatewaysqsdefaultqueuedlqF08203A7": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
     "KmsMasterKeyId": "alias/aws/sqs"
@@ -9,7 +9,7 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "testapigatewaysqsdefaultdeadLetterQueuePolicyEF507332": {
+  "testapigatewaysqsdefaultqueuedlqPolicy3E4AECEE": {
    "Type": "AWS::SQS::QueuePolicy",
    "Properties": {
     "PolicyDocument": {
@@ -45,7 +45,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testapigatewaysqsdefaultdeadLetterQueue24467CAD",
+         "testapigatewaysqsdefaultqueuedlqF08203A7",
          "Arn"
         ]
        },
@@ -64,7 +64,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testapigatewaysqsdefaultdeadLetterQueue24467CAD",
+         "testapigatewaysqsdefaultqueuedlqF08203A7",
          "Arn"
         ]
        },
@@ -75,7 +75,7 @@
     },
     "Queues": [
      {
-      "Ref": "testapigatewaysqsdefaultdeadLetterQueue24467CAD"
+      "Ref": "testapigatewaysqsdefaultqueuedlqF08203A7"
      }
     ]
    }
@@ -87,7 +87,7 @@
     "RedrivePolicy": {
      "deadLetterTargetArn": {
       "Fn::GetAtt": [
-       "testapigatewaysqsdefaultdeadLetterQueue24467CAD",
+       "testapigatewaysqsdefaultqueuedlqF08203A7",
        "Arn"
       ]
      },
@@ -248,6 +248,13 @@
     },
     "StageName": "prod",
     "TracingEnabled": true
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "API_GW_CACHE_ENABLED_AND_ENCRYPTED"
+     ]
+    }
    }
   },
   "testapigatewaysqsdefaultRestApiGET733E6394": {
@@ -408,6 +415,13 @@
       "PolicyName": "LambdaRestApiCloudWatchRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testapigatewaysqsdefaultLambdaRestApiAccountF7D19F4F": {

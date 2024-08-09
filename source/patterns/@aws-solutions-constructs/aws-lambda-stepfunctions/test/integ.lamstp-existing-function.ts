@@ -15,7 +15,6 @@
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { LambdaToStepfunctions, LambdaToStepfunctionsProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
 import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
@@ -24,12 +23,9 @@ import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-// Create a start state for the state machine
-const startState = new stepfunctions.Pass(stack, 'StartState');
-
 // Setup the "existing" Lambda function props
 const lambdaFunctionProps = {
-  runtime: lambda.Runtime.NODEJS_20_X,
+  runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
   handler: 'index.handler',
   code: lambda.Code.fromAsset(`${__dirname}/lambda`)
 };
@@ -41,7 +37,7 @@ const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 const props: LambdaToStepfunctionsProps = {
   existingLambdaObj: fn,
   stateMachineProps: {
-    definition: startState
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'lamstp-test')
   },
   logGroupProps: {
     removalPolicy: RemovalPolicy.DESTROY,

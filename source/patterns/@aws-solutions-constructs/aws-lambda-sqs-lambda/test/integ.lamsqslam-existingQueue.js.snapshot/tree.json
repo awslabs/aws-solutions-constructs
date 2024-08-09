@@ -8,6 +8,119 @@
         "id": "lamsqslam-existingQueue",
         "path": "lamsqslam-existingQueue",
         "children": {
+          "existing-sqs-queue-dlq": {
+            "id": "existing-sqs-queue-dlq",
+            "path": "lamsqslam-existingQueue/existing-sqs-queue-dlq",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "lamsqslam-existingQueue/existing-sqs-queue-dlq/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
+                  "aws:cdk:cloudformation:props": {
+                    "kmsMasterKeyId": "alias/aws/sqs"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
+                  "version": "2.150.0"
+                }
+              },
+              "Policy": {
+                "id": "Policy",
+                "path": "lamsqslam-existingQueue/existing-sqs-queue-dlq/Policy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "lamsqslam-existingQueue/existing-sqs-queue-dlq/Policy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "sqs:AddPermission",
+                                "sqs:DeleteMessage",
+                                "sqs:GetQueueAttributes",
+                                "sqs:ReceiveMessage",
+                                "sqs:RemovePermission",
+                                "sqs:SendMessage",
+                                "sqs:SetQueueAttributes"
+                              ],
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":iam::",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":root"
+                                    ]
+                                  ]
+                                }
+                              },
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "existingsqsqueuedlq6DF9E3FB",
+                                  "Arn"
+                                ]
+                              },
+                              "Sid": "QueueOwnerOnlyAccess"
+                            },
+                            {
+                              "Action": "SQS:*",
+                              "Condition": {
+                                "Bool": {
+                                  "aws:SecureTransport": "false"
+                                }
+                              },
+                              "Effect": "Deny",
+                              "Principal": {
+                                "AWS": "*"
+                              },
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "existingsqsqueuedlq6DF9E3FB",
+                                  "Arn"
+                                ]
+                              },
+                              "Sid": "HttpsOnly"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "queues": [
+                          {
+                            "Ref": "existingsqsqueuedlq6DF9E3FB"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
+                      "version": "2.150.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
+                  "version": "2.150.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_sqs.Queue",
+              "version": "2.150.0"
+            }
+          },
           "existing-sqs-queue": {
             "id": "existing-sqs-queue",
             "path": "lamsqslam-existingQueue/existing-sqs-queue",
@@ -18,12 +131,21 @@
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
                   "aws:cdk:cloudformation:props": {
-                    "kmsMasterKeyId": "alias/aws/sqs"
+                    "kmsMasterKeyId": "alias/aws/sqs",
+                    "redrivePolicy": {
+                      "deadLetterTargetArn": {
+                        "Fn::GetAtt": [
+                          "existingsqsqueuedlq6DF9E3FB",
+                          "Arn"
+                        ]
+                      },
+                      "maxReceiveCount": 15
+                    }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
-                  "version": "2.118.0"
+                  "version": "2.150.0"
                 }
               },
               "Policy": {
@@ -106,19 +228,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
-                  "version": "2.118.0"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_sqs.Queue",
-              "version": "2.118.0"
+              "version": "2.150.0"
             }
           },
           "test-lambda-sqs-lambda": {
@@ -138,7 +260,7 @@
                         "path": "lamsqslam-existingQueue/test-lambda-sqs-lambda/lambda-to-sqs/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       },
                       "Resource": {
@@ -201,7 +323,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -251,19 +373,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                              "version": "2.118.0"
+                              "version": "2.150.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Policy",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Role",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   },
                   "LambdaFunction": {
@@ -279,7 +401,7 @@
                             "path": "lamsqslam-existingQueue/test-lambda-sqs-lambda/lambda-to-sqs/LambdaFunction/Code/Stage",
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.AssetStaging",
-                              "version": "2.118.0"
+                              "version": "2.150.0"
                             }
                           },
                           "AssetBucket": {
@@ -287,13 +409,13 @@
                             "path": "lamsqslam-existingQueue/test-lambda-sqs-lambda/lambda-to-sqs/LambdaFunction/Code/AssetBucket",
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                              "version": "2.118.0"
+                              "version": "2.150.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       },
                       "Resource": {
@@ -323,7 +445,7 @@
                                 "Arn"
                               ]
                             },
-                            "runtime": "nodejs16.x",
+                            "runtime": "nodejs20.x",
                             "tracingConfig": {
                               "mode": "Active"
                             }
@@ -331,19 +453,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.Function",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-solutions-constructs/aws-lambda-sqs.LambdaToSqs",
-                  "version": "2.50.0"
+                  "version": "2.63.0"
                 }
               },
               "sqs-to-lambda": {
@@ -359,7 +481,7 @@
                         "path": "lamsqslam-existingQueue/test-lambda-sqs-lambda/sqs-to-lambda/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       },
                       "Resource": {
@@ -422,7 +544,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -474,19 +596,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                              "version": "2.118.0"
+                              "version": "2.150.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Policy",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Role",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   },
                   "LambdaFunction": {
@@ -502,7 +624,7 @@
                             "path": "lamsqslam-existingQueue/test-lambda-sqs-lambda/sqs-to-lambda/LambdaFunction/Code/Stage",
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.AssetStaging",
-                              "version": "2.118.0"
+                              "version": "2.150.0"
                             }
                           },
                           "AssetBucket": {
@@ -510,13 +632,13 @@
                             "path": "lamsqslam-existingQueue/test-lambda-sqs-lambda/sqs-to-lambda/LambdaFunction/Code/AssetBucket",
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                              "version": "2.118.0"
+                              "version": "2.150.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       },
                       "Resource": {
@@ -543,7 +665,7 @@
                                 "Arn"
                               ]
                             },
-                            "runtime": "nodejs16.x",
+                            "runtime": "nodejs20.x",
                             "tracingConfig": {
                               "mode": "Active"
                             }
@@ -551,7 +673,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       },
                       "SqsEventSource:lamsqslamexistingQueueexistingsqsqueue9D244BAE": {
@@ -577,31 +699,31 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_lambda.CfnEventSourceMapping",
-                              "version": "2.118.0"
+                              "version": "2.150.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_lambda.EventSourceMapping",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.Function",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-solutions-constructs/aws-sqs-lambda.SqsToLambda",
-                  "version": "2.50.0"
+                  "version": "2.63.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-lambda-sqs-lambda.LambdaToSqsToLambda",
-              "version": "2.50.0"
+              "version": "2.63.0"
             }
           },
           "Integ": {
@@ -617,7 +739,7 @@
                     "path": "lamsqslam-existingQueue/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
-                      "version": "10.0.0"
+                      "version": "10.3.0"
                     }
                   },
                   "DeployAssert": {
@@ -629,7 +751,7 @@
                         "path": "lamsqslam-existingQueue/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -637,25 +759,25 @@
                         "path": "lamsqslam-existingQueue/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.118.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.118.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.118.0-alpha.0"
+                  "version": "2.150.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.118.0-alpha.0"
+              "version": "2.150.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -663,7 +785,7 @@
             "path": "lamsqslam-existingQueue/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.118.0"
+              "version": "2.150.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -671,13 +793,13 @@
             "path": "lamsqslam-existingQueue/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.118.0"
+              "version": "2.150.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.118.0"
+          "version": "2.150.0"
         }
       },
       "Tree": {
@@ -685,13 +807,13 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.0.0"
+          "version": "10.3.0"
         }
       }
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.118.0"
+      "version": "2.150.0"
     }
   }
 }

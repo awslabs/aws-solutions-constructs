@@ -20,7 +20,7 @@
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as defaults from './sqs-defaults';
 import * as kms from 'aws-cdk-lib/aws-kms';
-import { overrideProps, printWarning } from './utils';
+import { CheckBooleanWithDefault, consolidateProps, printWarning,  overrideProps } from './utils';
 import { AccountPrincipal, Effect, PolicyStatement, AnyPrincipal } from 'aws-cdk-lib/aws-iam';
 import { Stack } from 'aws-cdk-lib';
 import {buildEncryptionKey} from "./kms-helper";
@@ -41,11 +41,11 @@ export interface BuildQueueProps {
      */
     readonly queueProps?: sqs.QueueProps;
     /**
-     * Optional dead letter queue to pass bad requests to after the max receive count is reached.
+     * Optional props required by the construct that overide both the default and client supplied values
      *
-     * @default - Default props are used.
+     * @default - none
      */
-    readonly deadLetterQueue?: sqs.DeadLetterQueue;
+    readonly constructQueueProps?: sqs.QueueProps;
     /**
      * If no key is provided, this flag determines whether the queue is encrypted with a new CMK or an AWS managed key.
      * This flag is ignored if any of the following are defined: queueProps.encryptionMasterKey, encryptionKey or encryptionKeyProps.
@@ -65,18 +65,54 @@ export interface BuildQueueProps {
      * @default - None
      */
      readonly encryptionKeyProps?: kms.KeyProps;
+    /**
+     * Whether to deploy a secondary queue to be used as a dead letter queue.
+     *
+     * @default - true
+     */
+    readonly deployDeadLetterQueue?: boolean,
+    /**
+     * Optional user provided properties for the dead letter queue
+     *
+     * @default - Default props are used
+     */
+    readonly deadLetterQueueProps?: sqs.QueueProps,
+    /**
+     * Optional props required by the construct that overide both the default and client supplied values
+     *
+     * @default - none
+     */
+    readonly constructDeadLetterQueueProps?: sqs.QueueProps,
+    /**
+     * The number of times a message can be unsuccessfully dequeued before being moved to the dead letter queue.
+     *
+     * @default - Default props are used
+     */
+    readonly maxReceiveCount?: number
 }
 
 export interface BuildQueueResponse {
   readonly queue: sqs.Queue,
-  readonly key?: kms.IKey
+  readonly key?: kms.IKey,
+  readonly dlq?: sqs.DeadLetterQueue,
 }
 
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function buildQueue(scope: Construct, id: string, props: BuildQueueProps): BuildQueueResponse {
-  CheckEncryptionWarnings(props);
+  CheckBuidQueueProps(props);
+  let deadLetterQueue: sqs.DeadLetterQueue | undefined;
+
+  if (CheckBooleanWithDefault( props.deployDeadLetterQueue, true)) {
+    deadLetterQueue = buildDeadLetterQueue(scope, id, {
+      existingQueueObj: props.existingQueueObj,
+      deployDeadLetterQueue: props.deployDeadLetterQueue,
+      deadLetterQueueProps: props.deadLetterQueueProps,
+      constructDeadLetterQueueProps: props.constructDeadLetterQueueProps,
+      maxReceiveCount: props.maxReceiveCount
+    });
+  }
 
   // If an existingQueueObj is not specified
   if (!props.existingQueueObj) {
@@ -90,10 +126,13 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
       // If no property overrides, deploy using the default configuration
       queueProps = defaults.DefaultQueueProps();
     }
+    if (props.constructQueueProps) {
+      queueProps = overrideProps(queueProps, props.constructQueueProps);
+    }
 
     // Determine whether a DLQ property should be added
-    if (props.deadLetterQueue) {
-      queueProps.deadLetterQueue = props.deadLetterQueue;
+    if (deadLetterQueue) {
+      queueProps.deadLetterQueue = deadLetterQueue;
     }
 
     // Set encryption properties.
@@ -115,7 +154,7 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
     applySecureQueuePolicy(queue);
 
     // Return the queue
-    return { queue, key: queue.encryptionMasterKey };
+    return { queue, key: queue.encryptionMasterKey,  dlq: deadLetterQueue };
   } else {
     // If an existingQueueObj is specified, return that object as the queue to be used
     return { queue: props.existingQueueObj };
@@ -125,13 +164,26 @@ export function buildQueue(scope: Construct, id: string, props: BuildQueueProps)
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-function CheckEncryptionWarnings(props: BuildQueueProps) {
+function CheckBuidQueueProps(props: BuildQueueProps) {
   if ((props.queueProps?.encryptionMasterKey || props.encryptionKey || props.encryptionKeyProps)
-  && props.enableEncryptionWithCustomerManagedKey === true) {
+  && props.enableEncryptionWithCustomerManagedKey !== true) {
     printWarning(`Ignoring enableEncryptionWithCustomerManagedKey because one of
      queueProps.encryptionMasterKey, encryptionKey, or encryptionKeyProps was already specified`);
   }
+
+  let errorMessages = '';
+  let errorFound = false;
+
+  if ((props.deployDeadLetterQueue === false) && props.maxReceiveCount) {
+    errorMessages += 'Error - MaxReceiveCount cannot be set if deployDeadLetterQueue is false.\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }
+
 export interface BuildDeadLetterQueueProps {
   /**
    * Existing instance of SQS queue object, providing both this and queueProps will cause an error.
@@ -152,6 +204,12 @@ export interface BuildDeadLetterQueueProps {
    */
   readonly deadLetterQueueProps?: sqs.QueueProps,
   /**
+   * Optional Props that override default and client props
+   *
+   * @default - Default props are used
+   */
+  readonly constructDeadLetterQueueProps?: sqs.QueueProps,
+  /**
    * The number of times a message can be unsuccessfully dequeued before being moved to the dead letter queue.
    *
    * @default - Default props are used
@@ -162,23 +220,24 @@ export interface BuildDeadLetterQueueProps {
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function buildDeadLetterQueue(scope: Construct, props: BuildDeadLetterQueueProps): sqs.DeadLetterQueue | undefined {
-  if (!props.existingQueueObj && (props.deployDeadLetterQueue || props.deployDeadLetterQueue === undefined)) {
+export function buildDeadLetterQueue(scope: Construct, id: string, props: BuildDeadLetterQueueProps): sqs.DeadLetterQueue | undefined {
+  if (!props.existingQueueObj && CheckBooleanWithDefault(props.deployDeadLetterQueue, true)) {
     // Create the Dead Letter Queue
-    const buildQueueResponse = buildQueue(scope, 'deadLetterQueue', {
-      queueProps: props.deadLetterQueueProps
+    const buildQueueResponse = buildQueue(scope, `${id}-dlq`, {
+      queueProps: consolidateProps({}, props.deadLetterQueueProps, props.constructDeadLetterQueueProps),
+      deployDeadLetterQueue: false  // don't deploy a DLQ for the DLG!
     });
 
     const mrc = (props.maxReceiveCount) ? props.maxReceiveCount : defaults.defaultMaxReceiveCount;
 
     // Setup the Dead Letter Queue interface
-    const dlqInterface: sqs.DeadLetterQueue = {
+    const deadLetterQueueObject: sqs.DeadLetterQueue = {
       maxReceiveCount: mrc,
       queue: buildQueueResponse.queue
     };
 
     // Return the dead letter queue interface
-    return dlqInterface;
+    return deadLetterQueueObject;
   }
   // ESLint requires this return statement, so disabling SonarQube warning
   return; // NOSONAR
@@ -269,7 +328,7 @@ export function CheckSqsProps(propsObject: SqsProps | any) {
 
   const isQueueFifo: boolean = propsObject?.queueProps?.fifo;
   const isDeadLetterQueueFifo: boolean = propsObject?.deadLetterQueueProps?.fifo;
-  const deployDeadLetterQueue: boolean = propsObject.deployDeadLetterQueue || propsObject.deployDeadLetterQueue === undefined;
+  const deployDeadLetterQueue: boolean = CheckBooleanWithDefault(propsObject.deployDeadLetterQueue, true);
 
   if (deployDeadLetterQueue && (isQueueFifo !== isDeadLetterQueueFifo)) {
     errorMessages += 'Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +

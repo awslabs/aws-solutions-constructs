@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/2a042bc52d33519c4d240ec0cf74ff8ef74c42183f6dd3eb7e4ab111f1923884.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/efbb644dd3af8d0c105898013266207d77cb3c2aa7d5d0ef57d322c42d0713cc.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,16 +82,16 @@
         "apisqs-additional-request-templates.assets"
       ],
       "metadata": {
-        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/deadLetterQueue/Resource": [
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsdefaultdeadLetterQueue24467CAD"
+            "data": "testapigatewaysqsdefaultqueuedlqF08203A7"
           }
         ],
-        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/deadLetterQueue/Policy/Resource": [
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsdefaultdeadLetterQueuePolicyEF507332"
+            "data": "testapigatewaysqsdefaultqueuedlqPolicy3E4AECEE"
           }
         ],
         "/apisqs-additional-request-templates/test-api-gateway-sqs-default/queue/Resource": [

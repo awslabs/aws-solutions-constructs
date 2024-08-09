@@ -17,7 +17,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as defaults from '../index';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
-import { Template } from 'aws-cdk-lib/assertions';
+import { Match, Template } from 'aws-cdk-lib/assertions';
 
 test('Test ObtainAlb with existing ALB', () => {
   const stack = new Stack();
@@ -59,7 +59,6 @@ test('Test ObtainAlb for new ALB with provided props', () => {
     publicApi: true,
     loadBalancerProps: {
       loadBalancerName: 'new-loadbalancer',
-      vpc,
       internetFacing: true
     }
   });
@@ -90,6 +89,43 @@ test('Test ObtainAlb for new ALB with default props', () => {
 
   template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
     Scheme: "internal",
+  });
+});
+
+test('Test ObtainAlb with specific subnets', () => {
+  const stack = new Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+  // Build VPC
+  const vpc = defaults.buildVpc(stack, {
+    defaultVpcProps: defaults.DefaultPublicPrivateVpcProps(),
+    userVpcProps: {
+      availabilityZones: [
+        "us-east-1a",
+        "us-east-1b",
+        "us-east-1c",
+        "us-east-1d",
+        "us-east-1e",
+      ],
+    }
+  });
+
+  defaults.ObtainAlb(stack, 'test', {
+    vpc,
+    publicApi: true,
+    loadBalancerProps: {
+      vpc,
+      vpcSubnets: { availabilityZones: ["us-east-1b", "us-east-1d"] }
+    }
+  });
+
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+    Subnets: [
+      Match.anyValue(),
+      Match.anyValue(),
+    ]
   });
 });
 
@@ -567,7 +603,6 @@ test('Test sending loadBalancerProps and existingLoadBalancerObj is an error', (
     existingLoadBalancerObj: existingLoadBalancer,
     loadBalancerProps: {
       loadBalancerName: 'new-loadbalancer',
-      vpc,
       internetFacing: true
     }
   };
@@ -608,7 +643,25 @@ test('Test sending VPC in loadBalancerProps error', () => {
     defaults.CheckAlbProps(props);
   };
 
-  expect(app).toThrowError('Specify any existing VPC at the construct level, not within loadBalancerProps.\n');
+  expect(app).toThrowError("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
+});
+
+test('WHen providing VPC in construct and resource props, the vpcId must match', () => {
+  const fakeVpcOne = {vpcId: 'one'};
+  const fakeVpcTwo = {vpcId: 'two'};
+
+  const props = {
+    existingVpc: fakeVpcOne,
+    loadBalancerProps: {
+      vpc: fakeVpcTwo
+    }
+  };
+
+  const app = () => {
+    defaults.CheckAlbProps(props);
+  };
+
+  expect(app).toThrowError("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
 });
 
 function CreateTestLoadBalancer(stack: Stack, vpc: ec2.IVpc): elb.ApplicationLoadBalancer {
@@ -622,7 +675,7 @@ function CreateTestLoadBalancer(stack: Stack, vpc: ec2.IVpc): elb.ApplicationLoa
 function CreateTestFunction(stack: Stack, id: string): lambda.Function {
   return new lambda.Function(stack, id, {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: "index.handler",
   });
 }

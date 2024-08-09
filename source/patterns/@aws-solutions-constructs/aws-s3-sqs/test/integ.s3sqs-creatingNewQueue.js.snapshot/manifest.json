@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a3172ab1693dd73affc851e2e96c6879537b179607bedd2bab22659410573cf7.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d2e9493f1689e55f85205485500c437a1f7f8d435fd76e17584b5c524d364e1e.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -112,16 +112,16 @@
             "data": "tests3sqsS3BucketNotifications32539247"
           }
         ],
-        "/s3sqs-creatingNewQueue/test-s3-sqs/deadLetterQueue/Resource": [
+        "/s3sqs-creatingNewQueue/test-s3-sqs/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "tests3sqsdeadLetterQueueEABBC814"
+            "data": "tests3sqsqueuedlq9DE05351"
           }
         ],
-        "/s3sqs-creatingNewQueue/test-s3-sqs/deadLetterQueue/Policy/Resource": [
+        "/s3sqs-creatingNewQueue/test-s3-sqs/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "tests3sqsdeadLetterQueuePolicy35D7CFE3"
+            "data": "tests3sqsqueuedlqPolicy8D717400"
           }
         ],
         "/s3sqs-creatingNewQueue/test-s3-sqs/queue": [
@@ -140,6 +140,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "tests3sqsqueuePolicyDDC0D745"
+          }
+        ],
+        "/s3sqs-creatingNewQueue/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/s3sqs-creatingNewQueue/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
