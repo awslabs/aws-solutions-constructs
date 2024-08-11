@@ -25,7 +25,14 @@
     }
    },
    "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "DYNAMODB_TABLE_ENCRYPTED_KMS"
+     ]
+    }
+   }
   },
   "Vpc8378EB38": {
    "Type": "AWS::EC2::VPC",
@@ -756,6 +763,11 @@
       }
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": []
+    }
    }
   },
   "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {

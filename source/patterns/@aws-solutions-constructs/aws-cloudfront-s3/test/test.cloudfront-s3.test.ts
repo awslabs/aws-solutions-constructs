@@ -890,3 +890,18 @@ test('cloudFrontLoggingBucketAccessLogBucket property is set correctly', () => {
   expect(construct.cloudFrontLoggingBucketAccessLogBucket).toBeDefined();
   expect(construct.cloudFrontLoggingBucketAccessLogBucket!.bucketName).toBeDefined();
 });
+
+test('logCloudFrontAccessLog property is used correctly', () => {
+  const stack = new cdk.Stack();
+
+  const construct = new CloudFrontToS3(stack, 'cloudfront-s3', {
+    logCloudFrontAccessLog: false
+  });
+
+  const template = Template.fromStack(stack);
+
+  // Content Bucket, Content Bucket S3 Access Log Bucket, CloudFront Log Bucket, CloudFront Log Bucket S3 Access Log Bucket
+  template.resourceCountIs("AWS::S3::Bucket", 3);
+  expect(construct.cloudFrontLoggingBucket).toBeDefined();
+  expect(construct.cloudFrontLoggingBucketAccessLogBucket).not.toBeDefined();
+});

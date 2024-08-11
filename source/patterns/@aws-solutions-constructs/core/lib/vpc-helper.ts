@@ -20,7 +20,8 @@ import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { CfnLogGroup } from "aws-cdk-lib/aws-logs";
 import { Construct } from "constructs";
 import { buildSecurityGroup } from "./security-group-helper";
-import { consolidateProps, addCfnSuppressRules } from "./utils";
+import { consolidateProps, addCfnSuppressRules, suppressVpcCustomerHandlerRoleWarnings } from "./utils";
+import * as cdk from 'aws-cdk-lib';
 
 export interface BuildVpcProps {
   /**
@@ -61,6 +62,7 @@ export function buildVpc(scope: Construct, props: BuildVpcProps): ec2.IVpc {
 
   SuppressMapPublicIpWarnings(vpc);
   SuppressEncryptedLogWarnings(flowLog);
+  suppressVpcCustomerHandlerRoleWarnings(cdk.Stack.of(scope));
 
   return vpc;
 }

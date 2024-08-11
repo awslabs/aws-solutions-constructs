@@ -174,7 +174,8 @@ export class CloudFrontToS3 extends Construct {
       httpSecurityHeaders: props.insertHttpSecurityHeaders,
       cloudFrontLoggingBucketProps: props.cloudFrontLoggingBucketProps,
       responseHeadersPolicyProps: props.responseHeadersPolicyProps,
-      cloudFrontLoggingBucketS3AccessLogBucketProps: props.cloudFrontLoggingBucketAccessLogBucketProps
+      cloudFrontLoggingBucketS3AccessLogBucketProps: props.cloudFrontLoggingBucketAccessLogBucketProps,
+      logCloudFrontAccessLog: props.logCloudFrontAccessLog
     };
     const cloudFrontDistributionForS3Response = defaults.createCloudFrontDistributionForS3(this, id, cloudFrontDistributionForS3Props);
     this.cloudFrontWebDistribution = cloudFrontDistributionForS3Response.distribution;

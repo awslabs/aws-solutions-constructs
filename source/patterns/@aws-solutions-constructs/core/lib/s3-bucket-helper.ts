@@ -21,7 +21,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cdk from 'aws-cdk-lib';
 import { DefaultS3Props } from './s3-bucket-defaults';
-import { overrideProps, addCfnSuppressRules, consolidateProps } from './utils';
+import { overrideProps, addCfnSuppressRules, consolidateProps, CheckBooleanWithDefault } from './utils';
 import { StorageClass } from 'aws-cdk-lib/aws-s3';
 import { Duration } from 'aws-cdk-lib';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
@@ -87,7 +87,8 @@ export function createS3AccessLoggingBucket(scope: Construct,
 
 export interface CreateCloudFrontLoggingBucketRequest {
   readonly loggingBucketProps: s3.BucketProps,
-  readonly s3AccessLogBucketProps?: s3.BucketProps
+  readonly s3AccessLogBucketProps?: s3.BucketProps,
+  readonly enableS3AccessLogs?: boolean
 }
 
 export interface CreateCloudFrontLoggingBucketResponse {
@@ -112,15 +113,16 @@ export function createCloudFrontLoggingBucket(scope: Construct,
     // Create bucket and add to props
     const combinedS3LogBucketProps = consolidateProps(DefaultS3Props(), props.s3AccessLogBucketProps);
 
-    cloudFrontLogAccessLogBucket = new s3.Bucket(scope, `${bucketId}AccessLog`, combinedS3LogBucketProps); // NOSONAR
-    combinedBucketProps = overrideProps(combinedBucketProps, { serverAccessLogsBucket: cloudFrontLogAccessLogBucket });
-
-    addCfnSuppressRules(cloudFrontLogAccessLogBucket, [
-      {
-        id: 'W35',
-        reason: "This S3 bucket is used as the access logging bucket for another bucket"
-      }
-    ]);
+    if (CheckBooleanWithDefault(props.enableS3AccessLogs, true)) {
+      cloudFrontLogAccessLogBucket = new s3.Bucket(scope, `${bucketId}AccessLog`, combinedS3LogBucketProps); // NOSONAR
+      combinedBucketProps = overrideProps(combinedBucketProps, { serverAccessLogsBucket: cloudFrontLogAccessLogBucket });
+      addCfnSuppressRules(cloudFrontLogAccessLogBucket, [
+        {
+          id: 'W35',
+          reason: "This S3 bucket is used as the access logging bucket for another bucket"
+        }
+      ]);
+    }
   }
 
   // Create the Logging Bucket

@@ -26,7 +26,7 @@ import {
   DefaultSagemakerEndpointProps,
 } from './sagemaker-defaults';
 import * as cdk from 'aws-cdk-lib';
-import { addCfnSuppressRules, consolidateProps } from './utils';
+import { addCfnGuardSuppressRules, addCfnSuppressRules, consolidateProps } from './utils';
 import { buildVpc } from './vpc-helper';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Aws } from 'aws-cdk-lib';
@@ -180,7 +180,7 @@ function addPermissions(role: iam.Role, props?: BuildSagemakerEndpointProps) {
   role.addToPolicy(
     new iam.PolicyStatement({
       actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject', 's3:ListBucket'],
-      resources: ['arn:aws:s3:::*'],
+      resources: [`arn:aws:s3:::*`],
     })
   );
 
@@ -217,6 +217,7 @@ function addPermissions(role: iam.Role, props?: BuildSagemakerEndpointProps) {
       reason: 'Complex role becuase Sagemaker needs permissions to access several services',
     }
   ]);
+  addCfnGuardSuppressRules(roleDefaultPolicy, ["IAM_POLICY_NON_COMPLIANT_ARN"]);
 }
 
 export interface BuildSagemakerNotebookResponse {
@@ -420,6 +421,7 @@ export function deploySagemakerEndpoint(
       });
       // Add required permissions
       addPermissions(sagemakerRole, props);
+      addCfnGuardSuppressRules(sagemakerRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
     }
 
     // Create Sagemaker Model

@@ -18,7 +18,7 @@
 
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import { DefaultTableProps, DefaultTableWithStreamProps } from './dynamodb-table-defaults';
-import { consolidateProps } from './utils';
+import { addCfnGuardSuppressRules, consolidateProps } from './utils';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 
@@ -79,6 +79,9 @@ export function buildDynamoDBTable(scope: Construct, props: BuildDynamoDBTablePr
   } else {
     const consolidatedTableProps = consolidateProps(DefaultTableProps, props.dynamoTableProps);
     const newTable = new dynamodb.Table(scope, 'DynamoTable', consolidatedTableProps);
+    // AWS Managed encryption keys is acceptable under published best practices
+    // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices-security-preventative.html
+    addCfnGuardSuppressRules(newTable, ["DYNAMODB_TABLE_ENCRYPTED_KMS"]);
     return { tableInterface: newTable, tableObject: newTable };
   }
 }
@@ -97,6 +100,9 @@ export function buildDynamoDBTableWithStream(scope: Construct, props: BuildDynam
     // Set the default props for DynamoDB table
     const dynamoTableProps = consolidateProps(DefaultTableWithStreamProps, props.dynamoTableProps);
     const dynamoTable: dynamodb.Table = new dynamodb.Table(scope, 'DynamoTable', dynamoTableProps);
+    // AWS Managed encryption keys is acceptable under published best practices
+    // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices-security-preventative.html
+    addCfnGuardSuppressRules(dynamoTable, ["DYNAMODB_TABLE_ENCRYPTED_KMS"]);
     return { tableInterface: dynamoTable, tableObject: dynamoTable };
   } else {
     return { tableInterface: props.existingTableInterface };

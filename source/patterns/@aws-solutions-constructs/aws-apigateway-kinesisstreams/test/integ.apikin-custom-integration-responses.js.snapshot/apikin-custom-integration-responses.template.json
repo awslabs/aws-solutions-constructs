@@ -87,6 +87,13 @@
     },
     "StageName": "prod",
     "TracingEnabled": true
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "API_GW_CACHE_ENABLED_AND_ENCRYPTED"
+     ]
+    }
    }
   },
   "testapigatewaykinesisadditionalrequesttemplatesRestApirecord01520200": {
@@ -447,6 +454,13 @@
       "PolicyName": "LambdaRestApiCloudWatchRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testapigatewaykinesisadditionalrequesttemplatesLambdaRestApiAccount9A5A772A": {

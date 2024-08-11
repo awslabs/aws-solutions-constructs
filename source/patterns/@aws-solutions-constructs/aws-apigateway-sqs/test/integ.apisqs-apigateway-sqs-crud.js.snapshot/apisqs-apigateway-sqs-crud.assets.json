@@ -1,7 +1,7 @@
 {
   "version": "36.0.0",
   "files": {
-    "f6c5d696f795705ebf54d3bae4567ce2383408a6175c7eab9cf2ba4151929f9a": {
+    "e59e956d09eb7e86d9a5d4139b87da14950710123d9eff7e53993eba4d8076c0": {
       "source": {
         "path": "apisqs-apigateway-sqs-crud.template.json",
         "packaging": "file"
@@ -9,7 +9,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "f6c5d696f795705ebf54d3bae4567ce2383408a6175c7eab9cf2ba4151929f9a.json",
+          "objectKey": "e59e956d09eb7e86d9a5d4139b87da14950710123d9eff7e53993eba4d8076c0.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

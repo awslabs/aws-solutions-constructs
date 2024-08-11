@@ -54,6 +54,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "LambdaFunctionServiceRoleDefaultPolicy126C8897": {
@@ -167,6 +174,13 @@
       }
      ],
      "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
     }
    }
   },
@@ -385,6 +399,11 @@
        "id": "W76",
        "reason": "Complex role becuase Sagemaker needs permissions to access several services"
       }
+     ]
+    },
+    "guard": {
+     "SuppressedRules": [
+      "IAM_POLICY_NON_COMPLIANT_ARN"
      ]
     }
    }

@@ -20,7 +20,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
-import { overrideProps } from '@aws-solutions-constructs/core';
+import { addCfnGuardSuppressRules, overrideProps } from '@aws-solutions-constructs/core';
 import * as logs from 'aws-cdk-lib/aws-logs';
 
 /**
@@ -142,6 +142,7 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
         })
       }
     });
+    addCfnGuardSuppressRules(this.kinesisStreamRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
 
     // This Construct requires that the deliveryStreamType be overridden regardless of what is specified in the user props
     if (props.kinesisFirehoseProps) {

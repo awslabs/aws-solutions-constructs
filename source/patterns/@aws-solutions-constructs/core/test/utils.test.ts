@@ -14,7 +14,10 @@
 // Imports
 import * as defaults from '../';
 import * as cdk from 'aws-cdk-lib';
+import { CfnResource, Stack } from 'aws-cdk-lib';
 import * as log from 'npmlog';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import { Template } from 'aws-cdk-lib/assertions';
 
 // Need 2 parts, but they can't overlap
 // so we can explicitly find them in the results.
@@ -324,4 +327,18 @@ test('CheckBooleanWithDefault', () => {
 
   response = defaults.CheckBooleanWithDefault(false, false);
   expect(response).toBe(false);
+});
+
+test('test addCfnGuardSuppressRules', () => {
+  const stack = new Stack();
+
+  const testBucket = new s3.Bucket(stack, 'test-bucket');
+  defaults.addCfnGuardSuppressRules(testBucket, ["ADDED_TO_BUCKET"]);
+  defaults.addCfnGuardSuppressRules(testBucket.node.findChild('Resource') as CfnResource, ["ADDED_TO_CFN_RESOURCE"]);
+
+  const template = Template.fromStack(stack);
+  const bucket = template.findResources("AWS::S3::Bucket");
+  defaults.printWarning(`DBG*********${JSON.stringify(bucket.testbucketE6E05ABE.Metadata)}`);
+  expect(bucket.testbucketE6E05ABE.Metadata.guard.SuppressedRules[0]).toEqual("ADDED_TO_BUCKET");
+  expect(bucket.testbucketE6E05ABE.Metadata.guard.SuppressedRules[1]).toEqual("ADDED_TO_CFN_RESOURCE");
 });

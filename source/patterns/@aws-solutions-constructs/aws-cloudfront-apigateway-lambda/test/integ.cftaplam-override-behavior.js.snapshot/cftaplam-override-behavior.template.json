@@ -274,6 +274,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "cfapilambdaoverrideLambdaFunctionServiceRoleDefaultPolicy1A3D9202": {
@@ -443,6 +450,13 @@
     },
     "StageName": "prod",
     "TracingEnabled": true
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "API_GW_CACHE_ENABLED_AND_ENCRYPTED"
+     ]
+    }
    }
   },
   "cfapilambdaoverrideLambdaRestApistaticC2ECB649": {
@@ -710,6 +724,13 @@
       "PolicyName": "LambdaRestApiCloudWatchRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "cfapilambdaoverrideLambdaRestApiAccountFB480D92": {

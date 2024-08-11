@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.65.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.64.0...v2.65.0) (2024-08-11)
+
+Built on CDK v2.150.0
+
+### Bug Fixes
+* **aws-apiv2gatewaywebsockets-sqs:** fix for custom websocket route not mapping to request template ([#1171](https://github.com/awslabs/aws-solutions-constructs/issues/1171))
+
+* **aws-cloudfront-s3:** observe props.logCloudFrontAccessLog ([#1170](https://github.com/awslabs/aws-solutions-constructs/issues/1170)) ([b2b8201](https://github.com/awslabs/aws-solutions-constructs/commit/b2b8201930326fe7de93d7eadf808f899fa8aa25))
+
 ## [2.64.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.63.0...v2.64.0) (2024-07-31)
 
 Built on CDK v2.150.0

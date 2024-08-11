@@ -54,6 +54,13 @@
       "PolicyName": "LambdaFunctionServiceRolePolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testlambdasqsLambdaFunctionServiceRoleDefaultPolicyE3CAD09D": {
@@ -747,6 +754,11 @@
       }
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": []
+    }
    }
   },
   "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {

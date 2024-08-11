@@ -128,6 +128,8 @@ export function deployLambdaFunction(scope: Construct,
     }));
   }
 
+  defaults.addCfnGuardSuppressRules(lambdaServiceRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
+
   // Override the DefaultFunctionProps with user provided  lambdaFunctionProps
   let finalLambdaFunctionProps: lambda.FunctionProps = overrideProps(DefaultLambdaFunctionProps(lambdaServiceRole), lambdaFunctionProps);
 

@@ -13,7 +13,7 @@
             "path": "lamsag-existingSageMakerEndpoint/mappings",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnMapping",
-              "version": "2.135.0"
+              "version": "2.150.0"
             }
           },
           "SampleAsset": {
@@ -25,7 +25,7 @@
                 "path": "lamsag-existingSageMakerEndpoint/SampleAsset/Stage",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.135.0"
+                  "version": "2.150.0"
                 }
               },
               "AssetBucket": {
@@ -33,13 +33,13 @@
                 "path": "lamsag-existingSageMakerEndpoint/SampleAsset/AssetBucket",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                  "version": "2.135.0"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-              "version": "2.135.0"
+              "version": "2.150.0"
             }
           },
           "SagemakerRole": {
@@ -51,7 +51,7 @@
                 "path": "lamsag-existingSageMakerEndpoint/SagemakerRole/ImportSagemakerRole",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.Resource",
-                  "version": "2.135.0"
+                  "version": "2.150.0"
                 }
               },
               "Resource": {
@@ -76,7 +76,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                  "version": "2.135.0"
+                  "version": "2.150.0"
                 }
               },
               "DefaultPolicy": {
@@ -293,19 +293,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Policy",
-                  "version": "2.135.0"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_iam.Role",
-              "version": "2.135.0"
+              "version": "2.150.0"
             }
           },
           "SagemakerModel": {
@@ -338,7 +338,7 @@
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_sagemaker.CfnModel",
-              "version": "2.135.0"
+              "version": "2.150.0"
             }
           },
           "'testKey'": {
@@ -384,13 +384,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_kms.CfnKey",
-                  "version": "2.135.0"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_kms.Key",
-              "version": "2.135.0"
+              "version": "2.150.0"
             }
           },
           "SagemakerEndpointConfig": {
@@ -420,7 +420,7 @@
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_sagemaker.CfnEndpointConfig",
-              "version": "2.135.0"
+              "version": "2.150.0"
             }
           },
           "SagemakerEndpoint": {
@@ -439,7 +439,7 @@
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_sagemaker.CfnEndpoint",
-              "version": "2.135.0"
+              "version": "2.150.0"
             }
           },
           "test-lambda-sagemaker": {
@@ -455,7 +455,7 @@
                     "path": "lamsag-existingSageMakerEndpoint/test-lambda-sagemaker/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   },
                   "Resource": {
@@ -518,7 +518,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -561,19 +561,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.135.0"
+                  "version": "2.150.0"
                 }
               },
               "LambdaFunction": {
@@ -589,7 +589,7 @@
                         "path": "lamsag-existingSageMakerEndpoint/test-lambda-sagemaker/LambdaFunction/Code/Stage",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.AssetStaging",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       },
                       "AssetBucket": {
@@ -597,13 +597,13 @@
                         "path": "lamsag-existingSageMakerEndpoint/test-lambda-sagemaker/LambdaFunction/Code/AssetBucket",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   },
                   "Resource": {
@@ -645,19 +645,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.Function",
-                  "version": "2.135.0"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-lambda-sagemakerendpoint.LambdaToSagemakerEndpoint",
-              "version": "2.54.1"
+              "version": "2.63.0"
             }
           },
           "Integ": {
@@ -685,7 +685,7 @@
                         "path": "lamsag-existingSageMakerEndpoint/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -693,25 +693,25 @@
                         "path": "lamsag-existingSageMakerEndpoint/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.135.0"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.135.0"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.135.0-alpha.0"
+                  "version": "2.150.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.135.0-alpha.0"
+              "version": "2.150.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -719,7 +719,7 @@
             "path": "lamsag-existingSageMakerEndpoint/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.135.0"
+              "version": "2.150.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -727,13 +727,13 @@
             "path": "lamsag-existingSageMakerEndpoint/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.135.0"
+              "version": "2.150.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.135.0"
+          "version": "2.150.0"
         }
       },
       "Tree": {
@@ -747,7 +747,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.135.0"
+      "version": "2.150.0"
     }
   }
 }

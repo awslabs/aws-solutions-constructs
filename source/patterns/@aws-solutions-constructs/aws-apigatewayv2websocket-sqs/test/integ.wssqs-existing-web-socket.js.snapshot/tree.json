@@ -17,7 +17,7 @@
                 "path": "wssqs-existing-web-socket/connectServiceRole/ImportconnectServiceRole",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.Resource",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "Resource": {
@@ -80,7 +80,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "DefaultPolicy": {
@@ -116,19 +116,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Policy",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_iam.Role",
-              "version": "2.147.3"
+              "version": "2.150.0"
             }
           },
           "connect": {
@@ -144,7 +144,7 @@
                     "path": "wssqs-existing-web-socket/connect/Code/Stage",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.AssetStaging",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "AssetBucket": {
@@ -152,13 +152,13 @@
                     "path": "wssqs-existing-web-socket/connect/Code/AssetBucket",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "Resource": {
@@ -193,13 +193,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_lambda.Function",
-              "version": "2.147.3"
+              "version": "2.150.0"
             }
           },
           "disconnectServiceRole": {
@@ -211,7 +211,7 @@
                 "path": "wssqs-existing-web-socket/disconnectServiceRole/ImportdisconnectServiceRole",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.Resource",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "Resource": {
@@ -274,7 +274,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "DefaultPolicy": {
@@ -310,19 +310,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Policy",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_iam.Role",
-              "version": "2.147.3"
+              "version": "2.150.0"
             }
           },
           "disconnect": {
@@ -338,7 +338,7 @@
                     "path": "wssqs-existing-web-socket/disconnect/Code/Stage",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.AssetStaging",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "AssetBucket": {
@@ -346,13 +346,13 @@
                     "path": "wssqs-existing-web-socket/disconnect/Code/AssetBucket",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "Resource": {
@@ -387,13 +387,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_lambda.Function",
-              "version": "2.147.3"
+              "version": "2.150.0"
             }
           },
           "TestWebSocket": {
@@ -414,7 +414,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigatewayv2.CfnApi",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "$connect-Route": {
@@ -463,7 +463,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "ConnectIntegration": {
@@ -507,13 +507,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_apigatewayv2.CfnIntegration",
-                          "version": "2.147.3"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigatewayv2.WebSocketIntegration",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "Resource": {
@@ -542,13 +542,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigatewayv2.CfnRoute",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigatewayv2.WebSocketRoute",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "$disconnect-Route": {
@@ -597,7 +597,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "DisconnectIntegration": {
@@ -641,13 +641,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_apigatewayv2.CfnIntegration",
-                          "version": "2.147.3"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigatewayv2.WebSocketIntegration",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "Resource": {
@@ -676,19 +676,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigatewayv2.CfnRoute",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigatewayv2.WebSocketRoute",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_apigatewayv2.WebSocketApi",
-              "version": "2.147.3"
+              "version": "2.150.0"
             }
           },
           "ApiGatewayV2WebSocketToSqs": {
@@ -713,7 +713,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "Policy": {
@@ -796,19 +796,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
-                          "version": "2.147.3"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_sqs.Queue",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "queue": {
@@ -842,7 +842,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "Policy": {
@@ -925,19 +925,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
-                          "version": "2.147.3"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_sqs.Queue",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "LambdaRestApiCloudWatchRole": {
@@ -949,7 +949,7 @@
                     "path": "wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "Resource": {
@@ -974,7 +974,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -1034,19 +1034,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.147.3"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "Stage": {
@@ -1068,13 +1068,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigatewayv2.CfnStage",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigatewayv2.WebSocketStage",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               },
               "LogGroup": {
@@ -1090,19 +1090,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                  "version": "2.147.3"
+                  "version": "2.150.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-apigatewayv2websocket-sqs.ApiGatewayV2WebSocketToSqs",
-              "version": "2.61.0"
+              "version": "2.63.0"
             }
           },
           "Integ": {
@@ -1130,7 +1130,7 @@
                         "path": "wssqs-existing-web-socket/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.147.3"
+                          "version": "2.150.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -1138,25 +1138,25 @@
                         "path": "wssqs-existing-web-socket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.147.3"
+                          "version": "2.150.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.147.3"
+                      "version": "2.150.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.147.3-alpha.0"
+                  "version": "2.150.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.147.3-alpha.0"
+              "version": "2.150.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -1164,7 +1164,7 @@
             "path": "wssqs-existing-web-socket/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.147.3"
+              "version": "2.150.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -1172,13 +1172,13 @@
             "path": "wssqs-existing-web-socket/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.147.3"
+              "version": "2.150.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.147.3"
+          "version": "2.150.0"
         }
       },
       "Tree": {
@@ -1192,7 +1192,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.147.3"
+      "version": "2.150.0"
     }
   }
 }

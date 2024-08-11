@@ -110,6 +110,7 @@ export interface CreateCloudFrontDistributionForS3Props {
   readonly cloudFrontLoggingBucketProps?: s3.BucketProps,
   readonly  cloudFrontLoggingBucketS3AccessLogBucketProps?: s3.BucketProps,
   readonly responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
+  readonly logCloudFrontAccessLog?: boolean
 }
 
 export interface CreateCloudFrontDistributionForS3Response {
@@ -134,7 +135,8 @@ export function createCloudFrontDistributionForS3(
   const getLoggingBucketResponse = getLoggingBucket(scope, {
     cloudFrontDistributionProps: props.cloudFrontDistributionProps,
     cloudFrontLoggingBucketProps: props.cloudFrontLoggingBucketProps,
-    cloudFrontLoggingBucketS3AccessLogBucketProps: props.cloudFrontLoggingBucketS3AccessLogBucketProps
+    cloudFrontLoggingBucketS3AccessLogBucketProps: props.cloudFrontLoggingBucketS3AccessLogBucketProps,
+    enableS3AccessLogs: props.logCloudFrontAccessLog
   });
 
   let originAccessControl;
@@ -274,6 +276,7 @@ interface GetLoggingBucketRequest {
   readonly cloudFrontDistributionProps: cloudfront.DistributionProps | any,
   readonly cloudFrontLoggingBucketProps?: s3.BucketProps,
   readonly cloudFrontLoggingBucketS3AccessLogBucketProps?: s3.BucketProps,
+  readonly enableS3AccessLogs?: boolean
 }
 interface GetLoggingBucketResponse {
   logBucket?: s3.Bucket,
@@ -304,6 +307,7 @@ function getLoggingBucket(scope: Construct, props: GetLoggingBucketRequest): Get
           objectOwnership: s3.ObjectOwnership.OBJECT_WRITER
         }),
         s3AccessLogBucketProps: props.cloudFrontLoggingBucketS3AccessLogBucketProps,
+        enableS3AccessLogs: props.enableS3AccessLogs
       });
 
     logBucket = createBucketResponse.logBucket;

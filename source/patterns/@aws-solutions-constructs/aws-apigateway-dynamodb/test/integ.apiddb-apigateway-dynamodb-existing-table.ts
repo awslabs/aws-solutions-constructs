@@ -16,7 +16,7 @@ import { App, Stack } from "aws-cdk-lib";
 import { ApiGatewayToDynamoDBProps, ApiGatewayToDynamoDB } from "../lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import { BillingMode } from "aws-cdk-lib/aws-dynamodb";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { addCfnGuardSuppressRules, generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
@@ -35,6 +35,7 @@ const table = new dynamodb.Table(stack, 'existing-table', {
   encryption: dynamodb.TableEncryption.AWS_MANAGED,
   billingMode: BillingMode.PAY_PER_REQUEST
 });
+addCfnGuardSuppressRules(table, ["DYNAMODB_TABLE_ENCRYPTED_KMS"]);
 
 // Definitions
 const props: ApiGatewayToDynamoDBProps = {

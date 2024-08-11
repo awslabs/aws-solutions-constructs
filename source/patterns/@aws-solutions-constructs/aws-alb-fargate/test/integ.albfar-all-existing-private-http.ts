@@ -60,6 +60,7 @@ defaults.addCfnSuppressRules(existingAlb, [{ id: 'W52', reason: 'This ALB is cre
 defaults.addCfnSuppressRules(albToFargate.listener, [
   { id: 'W56', reason: 'All integration tests must be HTTP because of certificate limitations.' },
 ]);
+defaults.addCfnGuardSuppressRules(albToFargate.listener, ["ELBV2_LISTENER_SSL_POLICY_RULE"]);
 
 const newSecurityGroup = albToFargate.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
 defaults.addCfnSuppressRules(newSecurityGroup, [
@@ -68,6 +69,7 @@ defaults.addCfnSuppressRules(newSecurityGroup, [
   { id: 'W9', reason: 'Rule does not apply for ELB.'}
 ]);
 defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
+defaults.addCfnGuardSuppressRules(newSecurityGroup, ["SECURITY_GROUP_MISSING_EGRESS_RULE"]);
 
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [

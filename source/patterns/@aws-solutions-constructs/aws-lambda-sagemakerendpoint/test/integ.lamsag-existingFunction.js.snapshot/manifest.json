@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/97ddc3e7bdd8bbc8186a37a98d66500c4e8c2280bdf6dd8e5a45f4dcba8e3f35.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/34b339ec7914198830b18a3159be18e767f579d59ab23c31c93f9921a8b69e22.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -133,10 +133,7 @@
         "/lamsag-existingFunction/test-lambda-sagemaker/SagemakerEndpointConfig": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasagemakerSagemakerEndpointConfig6BABA334",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_REPLACE"
-            ]
+            "data": "testlambdasagemakerSagemakerEndpointConfig6BABA334"
           }
         ],
         "/lamsag-existingFunction/test-lambda-sagemaker/SagemakerEndpoint": [
@@ -155,15 +152,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "testlambdasagemakerEncryptionKey2AACF9E0": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdasagemakerEncryptionKey2AACF9E0",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },
