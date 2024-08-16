@@ -52,6 +52,8 @@ Built on CDK v2.145.0
 
 * **aws-constructs-factories:** add a factory for sqs queues ([#1131](https://github.com/awslabs/aws-solutions-constructs/issues/1131)) ([b35b9b8](https://github.com/awslabs/aws-solutions-constructs/commit/b35b9b86dcbda1d90dceac1cc539be816defe288))
 
+WARNING - This release changes the resource IDs of DLQs. As a result a stack update will delete the existing DLQ and create a new one. Before updating your stack, process all messages in your current DLQ.
+
 ## [2.59.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.58.1...v2.59.0) (2024-06-08)
 
 Built on CDK v2.143.0
