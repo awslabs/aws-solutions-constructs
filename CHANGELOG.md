@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.66.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.65.0...v2.66.0) (2024-08-22)
+
+Built on CDK v2.151.0
+
+There are no other changes in this release, we are testing our upgraded release pipeline
+
 ## [2.65.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.64.0...v2.65.0) (2024-08-11)
 
 Built on CDK v2.150.0
@@ -51,6 +57,8 @@ Built on CDK v2.145.0
 ### Features
 
 * **aws-constructs-factories:** add a factory for sqs queues ([#1131](https://github.com/awslabs/aws-solutions-constructs/issues/1131)) ([b35b9b8](https://github.com/awslabs/aws-solutions-constructs/commit/b35b9b86dcbda1d90dceac1cc539be816defe288))
+
+WARNING - This release changes the resource IDs of DLQs. As a result a stack update will delete the existing DLQ and create a new one. Before updating your stack, process all messages in your current DLQ.
 
 ## [2.59.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.58.1...v2.59.0) (2024-06-08)
 
