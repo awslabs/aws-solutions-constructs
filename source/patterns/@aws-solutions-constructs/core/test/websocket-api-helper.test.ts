@@ -373,7 +373,7 @@ test("buildWebSocketQueueApi when passing a custom route name, it should add a c
     queue,
     createDefaultRoute: false,
     defaultIamAuthorization: false,
-    customRouteName
+    customRouteName,
   });
 
   const template = Template.fromStack(stack);
@@ -416,6 +416,87 @@ test("buildWebSocketQueueApi when passing a custom route name, it should add a c
     },
     RequestTemplates: {
       [customRouteName]: DEFAULT_ROUTE_QUEUE_VTL_CONFIG,
+    },
+    TemplateSelectionExpression: customRouteName,
+  });
+
+  template.resourceCountIs("AWS::ApiGatewayV2::Route", 1);
+  template.hasResourceProperties("AWS::ApiGatewayV2::Route", {
+    ApiId: {
+      Ref: Match.anyValue(),
+    },
+    RouteKey: customRouteName,
+    Target: {
+      "Fn::Join": [
+        "",
+        [
+          "integrations/",
+          {
+            Ref: Match.stringLikeRegexp("WebSocketApiTestApifakeroutenameRoutefakeroutename"),
+          },
+        ],
+      ],
+    },
+  });
+});
+
+test("buildWebSocketQueueApi when passing a custom route name, with requestTemplate, should map the request template to the custom route", () => {
+  const app = new cdk.App();
+  const stack = new cdk.Stack(app, "TestStack");
+  const queue = new sqs.Queue(stack, "TestQueue");
+
+  const customRouteName = "fakeroutename";
+
+  buildWebSocketQueueApi(stack, "TestApi", {
+    queue,
+    createDefaultRoute: false,
+    defaultIamAuthorization: false,
+    customRouteName,
+    defaultRouteRequestTemplate: {
+      [customRouteName]: "a&fake&vtl",
+    },
+  });
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::ApiGatewayV2::Integration", 1);
+  template.hasResourceProperties("AWS::ApiGatewayV2::Integration", {
+    ApiId: {
+      Ref: Match.anyValue(),
+    },
+    CredentialsArn: {
+      "Fn::GetAtt": [Match.anyValue(), "Arn"],
+    },
+    IntegrationMethod: "POST",
+    IntegrationType: "AWS",
+    IntegrationUri: {
+      "Fn::Join": [
+        "",
+        [
+          "arn:",
+          {
+            Ref: "AWS::Partition",
+          },
+          ":apigateway:",
+          {
+            Ref: "AWS::Region",
+          },
+          ":sqs:path/",
+          {
+            Ref: "AWS::AccountId",
+          },
+          "/",
+          {
+            "Fn::GetAtt": [Match.anyValue(), "QueueName"],
+          },
+        ],
+      ],
+    },
+    PassthroughBehavior: "NEVER",
+    RequestParameters: {
+      "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'",
+    },
+    RequestTemplates: {
+      [customRouteName]: "a&fake&vtl",
     },
     TemplateSelectionExpression: customRouteName,
   });

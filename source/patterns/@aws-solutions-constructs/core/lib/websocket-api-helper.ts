@@ -88,7 +88,7 @@ export function buildWebSocketQueueApi(
   if (props.customRouteName) {
     webSocketApi.addRoute(
       props.customRouteName,
-      buildWebSocketQueueRouteOptions(apiGatewayRole, props.queue, props.customRouteName)
+      buildWebSocketQueueRouteOptions(apiGatewayRole, props.queue, props.customRouteName, props.defaultRouteRequestTemplate)
     );
   }
 
