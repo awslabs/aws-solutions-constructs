@@ -78,6 +78,10 @@ export interface OpenApiGatewayToLambdaProps {
    */
   readonly apiDefinitionAsset?: Asset;
   /**
+   * Inline definition of the OpenAPI spec file.
+   */
+  readonly apiDefinitionInline?: apigateway.InlineApiDefinition;
+  /**
    * One or more key-value pairs that contain an id for the api integration
    * and either an existing lambda function or an instance of the LambdaProps.
    *
@@ -146,6 +150,7 @@ export class OpenApiGatewayToLambda extends Construct {
     super(scope, id);
     CheckOpenapiProps(props);
 
+    const apiDefinitionInline = props.apiDefinitionInline;
     const apiDefinitionBucket = props.apiDefinitionBucket ?? props.apiDefinitionAsset?.bucket;
     const apiDefinitionKey = props.apiDefinitionKey ?? props.apiDefinitionAsset?.s3ObjectKey;
 
@@ -183,22 +188,31 @@ export class OpenApiGatewayToLambda extends Construct {
       };
     });
 
-    // This custom resource will overwrite the string placeholders in the openapi definition with the resolved values of the lambda URIs
-    const apiDefinitionWriter = resources.createTemplateWriterCustomResource(this, 'Api', {
-      // CheckAlbProps() has confirmed the existence of these values
-      templateBucket: apiDefinitionBucket!,
-      templateKey: apiDefinitionKey!,
-      templateValues: apiIntegrationUris,
-      timeout: props.internalTransformTimeout ?? cdk.Duration.minutes(1),
-      memorySize: props.internalTransformMemorySize ?? 1024
-    });
+    let apiDefinitionWriter: resources.CreateTemplateWriterResponse | undefined;
+    let s3Definition: apigateway.S3ApiDefinition | undefined;
+
+    if (!apiDefinitionInline) {
+      // This custom resource will overwrite the string placeholders in the openapi definition with the resolved values of the lambda URIs
+      apiDefinitionWriter = resources.createTemplateWriterCustomResource(this, 'Api', {
+        // CheckAlbProps() has confirmed the existence of these values
+        templateBucket: apiDefinitionBucket!,
+        templateKey: apiDefinitionKey!,
+        templateValues: apiIntegrationUris,
+        timeout: props.internalTransformTimeout ?? cdk.Duration.minutes(1),
+        memorySize: props.internalTransformMemorySize ?? 1024
+      });
+
+      s3Definition = apigateway.ApiDefinition.fromBucket(
+        apiDefinitionWriter.s3Bucket,
+        apiDefinitionWriter.s3Key
+      );
+    }
+
+    const inlineDefinition = apiDefinitionInline ? InlineTemplateWriter(apiDefinitionInline.bind(scope), apiIntegrationUris) : undefined;
 
     const specRestApiResponse = defaults.CreateSpecRestApi(this, {
       ...props.apiGatewayProps,
-      apiDefinition: apigateway.ApiDefinition.fromBucket(
-        apiDefinitionWriter.s3Bucket,
-        apiDefinitionWriter.s3Key
-      )
+      apiDefinition: (inlineDefinition ?? s3Definition)!
     }, props.logGroupProps);
 
     this.apiGateway = specRestApiResponse.api;
@@ -220,10 +234,30 @@ export class OpenApiGatewayToLambda extends Construct {
   }
 }
 
+function InlineTemplateWriter({ inlineDefinition }: apigateway.ApiDefinitionConfig, templateValues: resources.TemplateValue[]) {
+  let template = JSON.stringify(inlineDefinition);
+
+  templateValues.forEach((templateValue) => {
+    template = template?.replace(new RegExp(templateValue.id, 'g'), templateValue.value);
+  });
+
+  return new apigateway.InlineApiDefinition(JSON.parse(template));
+}
+
 function CheckOpenapiProps(props: OpenApiGatewayToLambdaProps) {
 
   let errorMessages = '';
   let errorFound = false;
+
+  if (props.apiDefinitionAsset && props.apiDefinitionInline) {
+    errorMessages += 'Either apiDefinitionAsset or apiDefinitionInline must be specified, but not both\n';
+    errorFound = true;
+  }
+
+  if (props.apiDefinitionInline && (props.apiDefinitionBucket || props.apiDefinitionKey)) {
+    errorMessages += 'Either apiDefinitionBucket/apiDefinitionKey or apiDefinitionInline must be specified, but not both\n';
+    errorFound = true;
+  }
 
   if (props.apiDefinitionAsset && (props.apiDefinitionBucket || props.apiDefinitionKey)) {
     errorMessages += 'Either apiDefinitionBucket/apiDefinitionKey or apiDefinitionAsset must be specified, but not both\n';
@@ -233,8 +267,8 @@ function CheckOpenapiProps(props: OpenApiGatewayToLambdaProps) {
   const apiDefinitionBucket = props.apiDefinitionBucket ?? props.apiDefinitionAsset?.bucket;
   const apiDefinitionKey = props.apiDefinitionKey ?? props.apiDefinitionAsset?.s3ObjectKey;
 
-  if (apiDefinitionBucket === undefined || apiDefinitionKey === undefined) {
-    errorMessages += 'Either apiDefinitionBucket/apiDefinitionKey or apiDefinitionAsset must be specified\n';
+  if (!props.apiDefinitionInline && (apiDefinitionBucket === undefined || apiDefinitionKey === undefined)) {
+    errorMessages += 'Either apiDefinitionBucket/apiDefinitionKey, apiDefinitionAsset or apiDefinitionInline must be specified\n';
     errorFound = true;
   }
 
