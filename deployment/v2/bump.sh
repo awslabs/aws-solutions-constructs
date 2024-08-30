@@ -25,7 +25,7 @@ echo "Loading ${deployment_dir}/get-sc-version"
 # A super HACK here is to locally remove all version tags that don't match this major version prior
 # to doing the bump, and then later fetching to restore those tags.
 # BiffNote - it's unclear whether this is still required now that Main is V2 only...
-git tag -d `git tag -l | grep -v '^v2.'`
+# git tag -d `git tag -l | grep -v '^v2.'`
 
 # Generate CHANGELOG and create a commit
 npx standard-version --release-as ${version}
