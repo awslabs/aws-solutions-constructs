@@ -66,7 +66,7 @@ export function buildWebSocketQueueApi(
   props: BuildWebSocketQueueApiRequest
 ): BuildWebSocketQueueApiResponse {
   // Setup the API Gateway role
-  const apiGatewayRole = new iam.Role(scope, "LambdaRestApiCloudWatchRole", {
+  const apiGatewayRole = new iam.Role(scope, "WebSocketApiCloudWatchRole", {
     assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
   });
   props.queue.grantSendMessages(apiGatewayRole);
