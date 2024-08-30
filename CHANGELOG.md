@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.68.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.67.1...v2.68.0) (2024-08-28)
+
+Built on CDK v2.154.1
+
+### Bug Fixes
+* **version:** unpin constructs from specific cdk version ([#1187](https://github.com/awslabs/aws-solutions-constructs/pull/1187))
+
 ## [2.67.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.67.0...v2.67.1) (2024-08-27)
 
 Built on CDK v2.151.0
