@@ -194,7 +194,7 @@ export class OpenApiGatewayToLambda extends Construct {
     if (!apiDefinitionInline) {
       // This custom resource will overwrite the string placeholders in the openapi definition with the resolved values of the lambda URIs
       apiDefinitionWriter = resources.createTemplateWriterCustomResource(this, 'Api', {
-        // CheckAlbProps() has confirmed the existence of these values
+        // CheckOpenapiProps() has confirmed the existence of these values
         templateBucket: apiDefinitionBucket!,
         templateKey: apiDefinitionKey!,
         templateValues: apiIntegrationUris,
