@@ -218,7 +218,7 @@ Built on CDK v2.111.0
 ### Bug Fixes
 
 * **aws-apigateway-sqs:** Remove /message path when delete method is not allowed ([#1030](https://github.com/awslabs/aws-solutions-constructs/issues/1030)) ([f772200](https://github.com/awslabs/aws-solutions-constructs/commit/f772200d6885cf0e0030239ce6f7511cdb2814d6))
-=======
+
 
 ## [2.47.0](https://github.com/aws-solutions-constructs-team/aws-solutions-constructs-test/compare/v2.14.0...v2.47.0) (2023-11-27)
 
