@@ -16,18 +16,15 @@ import { OpenApiGatewayToLambda } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
-import { InlineApiDefinition } from "aws-cdk-lib/aws-apigateway";
 
-import * as apiDefinition from './openapi/apiDefinition.json';
+import * as jsonApiDefinition from './openapi/apiDefinition.json';
 
 const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-openapigateway-lambda';
 
-const apiDefinitionInline = new InlineApiDefinition(apiDefinition);
-
 new OpenApiGatewayToLambda(stack, 'OpenApiGatewayToLambda', {
-  apiDefinitionInline,
+  apiJsonDefinition: jsonApiDefinition,
   apiIntegrations: [
     {
       id: 'MessagesHandler',
