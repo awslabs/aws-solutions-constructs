@@ -59,7 +59,7 @@ export interface ApiIntegration {
 /**
  * Helper object to map an ApiIntegration id to its resolved lambda.Function. This type is exposed as a property on the instantiated construct.
  */
-export interface TokenToFunctionMapping {
+export interface ApiLambdaFunction {
   /**
    * Id of the ApiIntegration, used to correlate this lambda function to the api integration in the open api definition.
    */
@@ -113,7 +113,7 @@ export function CheckOpenapiProps(props: OpenApiProps) {
 }
 
 export interface ObtainApiDefinitionProps {
-  readonly tokenToFunctionMap: TokenToFunctionMapping[],
+  readonly tokenToFunctionMap: ApiLambdaFunction[],
   readonly apiDefinitionBucket?: s3.IBucket,
   readonly apiDefinitionKey?: string,
   readonly apiDefinitionAsset?: Asset,
