@@ -81,7 +81,7 @@ export interface OpenApiProps {
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function CheckOpenapiProps(props: OpenApiProps) {
+export function CheckOpenApiProps(props: OpenApiProps) {
 
   let errorMessages = '';
   let errorFound = false;

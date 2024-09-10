@@ -14,7 +14,7 @@
 // Imports
 import { Stack, Duration } from "aws-cdk-lib";
 import { OpenApiGatewayToLambda } from "../lib";
-import { ObtainApiDefinition, CheckOpenapiProps } from "../lib/openapi-helper";
+import { ObtainApiDefinition, CheckOpenApiProps } from "../lib/openapi-helper";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
@@ -408,7 +408,7 @@ test('Confirm  that providing both lambdaFunction and functionProps is an error'
 */
 test('Throws error when no api definition is specified', () => {
   const app = () => {
-    CheckOpenapiProps({
+    CheckOpenApiProps({
       apiIntegrations: [
         {
           id: 'MessagesHandler',
@@ -432,7 +432,7 @@ test('Throws error when no api integration is specified', () => {
   });
 
   const app = () => {
-    CheckOpenapiProps({
+    CheckOpenApiProps({
       apiDefinitionAsset,
       apiIntegrations: []
     });
@@ -446,7 +446,7 @@ test('Throws error when api definition s3 bucket is specified but s3 object key 
   const apiDefinitionBucket = CreateScrapBucket(stack, "scrapBucket");
 
   const app = () => {
-    CheckOpenapiProps({
+    CheckOpenApiProps({
       apiDefinitionBucket,
       apiIntegrations: []
     });
@@ -456,7 +456,7 @@ test('Throws error when api definition s3 bucket is specified but s3 object key 
 
 test('Throws error when api definition s3 object key is specified but s3 bucket is missing', () => {
   const app = () => {
-    CheckOpenapiProps({
+    CheckOpenApiProps({
       apiDefinitionKey: 'prefix/api-definition.yml',
       apiIntegrations: []
     });
@@ -473,7 +473,7 @@ test('Throws error when api is defined as asset and s3 bucket is specified', () 
   const apiDefinitionBucket = CreateScrapBucket(stack, "scrapBucket");
 
   const app = () => {
-    CheckOpenapiProps({
+    CheckOpenApiProps({
       apiDefinitionAsset,
       apiDefinitionBucket,
       apiDefinitionKey: 'prefix/api-definition.yml',
@@ -501,7 +501,7 @@ test('Throws error when api is defined as asset and s3 key is specified', () => 
   const apiDefinitionBucket = CreateScrapBucket(stack, "scrapBucket");
 
   const app = () => {
-    CheckOpenapiProps({
+    CheckOpenApiProps({
       apiDefinitionAsset,
       apiDefinitionBucket,
       apiDefinitionKey: 'prefix/api-definition.yml',
@@ -528,7 +528,7 @@ test('Throws error when both api definition inline and api definition asset are 
   });
 
   const app = () => {
-    CheckOpenapiProps({
+    CheckOpenApiProps({
       apiDefinitionAsset,
       apiJsonDefinition: inlineJsonApiDefinition,
       apiIntegrations: [
@@ -550,7 +550,7 @@ test('Throws error when both api definition inline and s3 object are specified',
   const stack = new Stack();
 
   const app = () => {
-    CheckOpenapiProps({
+    CheckOpenApiProps({
       apiJsonDefinition: inlineJsonApiDefinition,
       apiDefinitionBucket: new s3.Bucket(stack, 'ApiDefinitionBucket'),
       apiDefinitionKey: 'key',

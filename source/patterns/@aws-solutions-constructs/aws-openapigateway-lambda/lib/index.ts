@@ -20,7 +20,7 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
 import { RestApiBaseProps } from 'aws-cdk-lib/aws-apigateway';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
-import { ApiIntegration, CheckOpenapiProps, ApiLambdaFunction, ObtainApiDefinition } from './openapi-helper';
+import { ApiIntegration, CheckOpenApiProps, ApiLambdaFunction, ObtainApiDefinition } from './openapi-helper';
 // openapi-helper is on its way to core, so these interfaces must be exported here
 export { ApiIntegration, ApiLambdaFunction } from './openapi-helper';
 
@@ -38,7 +38,7 @@ export interface OpenApiGatewayToLambdaProps {
    */
   readonly apiDefinitionAsset?: Asset;
   /**
-   * The OpenApi spec represented as a json object to be included in the CloudFormation template.
+   * OpenAPI specification represented in a JSON object to be embedded in the CloudFormation template. 
    * IMPORTANT - Including the spec in the template introduces a risk of the template growing too big, but
    * there are some use cases that require an embedded spec. Unless your use case explicitly requires an embedded spec
    * you should pass your spec as an S3 asset.
@@ -111,7 +111,7 @@ export class OpenApiGatewayToLambda extends Construct {
 
   constructor(scope: Construct, id: string, props: OpenApiGatewayToLambdaProps) {
     super(scope, id);
-    CheckOpenapiProps(props);
+    CheckOpenApiProps(props);
 
     // store a counter to be able to uniquely name lambda functions to avoid naming collisions
     let lambdaCounter = 0;
