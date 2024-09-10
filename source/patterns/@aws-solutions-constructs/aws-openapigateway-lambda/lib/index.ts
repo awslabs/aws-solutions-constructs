@@ -43,7 +43,7 @@ export interface OpenApiGatewayToLambdaProps {
    * there are some use cases that require an embedded spec. Unless your use case explicitly requires an embedded spec
    * you should pass your spec as an S3 asset.
    */
-  readonly apiJsonDefinition?: any;
+  readonly apiDefinitionJson?: any;
   /**
    * One or more key-value pairs that contain an id for the api integration
    * and either an existing lambda function or an instance of the LambdaProps.
@@ -138,7 +138,7 @@ export class OpenApiGatewayToLambda extends Construct {
       apiDefinitionBucket: props.apiDefinitionBucket,
       apiDefinitionKey: props.apiDefinitionKey,
       apiDefinitionAsset: props.apiDefinitionAsset,
-      apiJsonDefinition: props.apiJsonDefinition,
+      apiJsonDefinition: props.apiDefinitionJson,
       internalTransformTimeout: props.internalTransformTimeout,
       internalTransformMemorySize: props.internalTransformMemorySize
     });

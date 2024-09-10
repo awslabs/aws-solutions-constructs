@@ -24,7 +24,7 @@ const stack = new Stack(app, defaults.generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-openapigateway-lambda';
 
 new OpenApiGatewayToLambda(stack, 'OpenApiGatewayToLambda', {
-  apiJsonDefinition: jsonApiDefinition,
+  apiDefinitionJson: jsonApiDefinition,
   apiIntegrations: [
     {
       id: 'MessagesHandler',

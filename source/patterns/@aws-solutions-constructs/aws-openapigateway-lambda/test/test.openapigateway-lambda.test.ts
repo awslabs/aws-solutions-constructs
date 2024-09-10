@@ -107,7 +107,7 @@ test('API Definition can be specified from an InlineApiDefinition ', () => {
   const stack = new Stack();
 
   const construct = new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
-    apiJsonDefinition: inlineJsonApiDefinition,
+    apiDefinitionJson: inlineJsonApiDefinition,
     apiIntegrations: [
       {
         id: 'MessagesHandler',
