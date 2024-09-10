@@ -38,7 +38,7 @@ export interface OpenApiGatewayToLambdaProps {
    */
   readonly apiDefinitionAsset?: Asset;
   /**
-   * OpenAPI specification represented in a JSON object to be embedded in the CloudFormation template. 
+   * OpenAPI specification represented in a JSON object to be embedded in the CloudFormation template.
    * IMPORTANT - Including the spec in the template introduces a risk of the template growing too big, but
    * there are some use cases that require an embedded spec. Unless your use case explicitly requires an embedded spec
    * you should pass your spec as an S3 asset.
