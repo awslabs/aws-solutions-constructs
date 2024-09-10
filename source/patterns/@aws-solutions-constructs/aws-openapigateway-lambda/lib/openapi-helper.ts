@@ -72,7 +72,7 @@ export interface ApiLambdaFunction {
 
 export interface OpenApiProps {
   readonly apiDefinitionAsset?: Asset,
-  readonly apiJsonDefinition?: any,
+  readonly apiDefinitionJson?: any,
   readonly apiDefinitionBucket?: s3.IBucket,
   readonly apiDefinitionKey?: string,
   readonly apiIntegrations: ApiIntegration[]
@@ -94,10 +94,10 @@ export function CheckOpenApiProps(props: OpenApiProps) {
   const definitionCount: number =
     (props.apiDefinitionAsset ? 1 : 0) +
     (props.apiDefinitionBucket ? 1 : 0) +
-    (props.apiJsonDefinition ? 1 : 0);
+    (props.apiDefinitionJson ? 1 : 0);
 
   if (definitionCount !== 1) {
-    errorMessages += 'Exactly one of apiDefinitionAsset, apiInlineDefinition or (apiDefinitionBucket/apiDefinitionKey) must be provided\n';
+    errorMessages += 'Exactly one of apiDefinitionAsset, apiDefinitionJson or (apiDefinitionBucket/apiDefinitionKey) must be provided\n';
     errorFound = true;
   }
 

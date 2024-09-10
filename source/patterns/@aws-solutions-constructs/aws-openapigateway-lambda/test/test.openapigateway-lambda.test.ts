@@ -103,7 +103,7 @@ test('API Definition can be specified from S3 Bucket and Key', () => {
   expect(construct.apiLambdaFunctions[0].lambdaFunction).toBeDefined();
 });
 
-test('API Definition can be specified from an InlineApiDefinition ', () => {
+test('API Definition can be specified from an apiDefinitionJson ', () => {
   const stack = new Stack();
 
   const construct = new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
@@ -125,7 +125,7 @@ test('API Definition can be specified from an InlineApiDefinition ', () => {
 });
 
 const incorrectDefinitionMessage =
-  'Exactly one of apiDefinitionAsset, apiInlineDefinition or (apiDefinitionBucket/apiDefinitionKey) must be provided';
+  'Exactly one of apiDefinitionAsset, apiDefinitionJson or (apiDefinitionBucket/apiDefinitionKey) must be provided';
 
 test('Throws error when both api definition asset and s3 object are specified', () => {
   const stack = new Stack();
@@ -369,7 +369,7 @@ test('Confirm API definition uri is added to function name', () => {
 
 });
 
-test('Confirm  that providing both lambdaFunction and functionProps is an error', () => {
+test('Confirm that providing both lambdaFunction and functionProps is an error', () => {
   const stack = new Stack();
   const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
@@ -530,7 +530,7 @@ test('Throws error when both api definition inline and api definition asset are 
   const app = () => {
     CheckOpenApiProps({
       apiDefinitionAsset,
-      apiJsonDefinition: inlineJsonApiDefinition,
+      apiDefinitionJson: inlineJsonApiDefinition,
       apiIntegrations: [
         {
           id: 'MessagesHandler',
@@ -551,7 +551,7 @@ test('Throws error when both api definition inline and s3 object are specified',
 
   const app = () => {
     CheckOpenApiProps({
-      apiJsonDefinition: inlineJsonApiDefinition,
+      apiDefinitionJson: inlineJsonApiDefinition,
       apiDefinitionBucket: new s3.Bucket(stack, 'ApiDefinitionBucket'),
       apiDefinitionKey: 'key',
       apiIntegrations: [
@@ -700,7 +700,6 @@ test('ObtainApiDefinition uses custom properties', () => {
   expect((api as any).key).toBeDefined();
 
   const template = Template.fromStack(stack);
-  defaults.printWarning(`\n\n==dbg==\n${JSON.stringify(template)}\n\n==dbg===\n\n`);
   template.resourceCountIs("Custom::TemplateWriter", 1);
   template.hasResource("AWS::Lambda::Function", {
     Properties: {
