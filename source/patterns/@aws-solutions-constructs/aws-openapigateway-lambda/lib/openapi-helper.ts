@@ -16,6 +16,12 @@
  *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
+/*
+ * This file is core openapi functionality and should ideally be in the core library. Since
+ * that causes a circular reference with the resources library we have left it here for now
+ * in the interest of getting these updates out faster
+ */
+
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
@@ -53,7 +59,7 @@ export interface ApiIntegration {
 /**
  * Helper object to map an ApiIntegration id to its resolved lambda.Function. This type is exposed as a property on the instantiated construct.
  */
-export interface ApiLambdaFunction {
+export interface TokenToFunctionMapping {
   /**
    * Id of the ApiIntegration, used to correlate this lambda function to the api integration in the open api definition.
    */
@@ -72,6 +78,9 @@ export interface OpenApiProps {
   readonly apiIntegrations: ApiIntegration[]
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function CheckOpenapiProps(props: OpenApiProps) {
 
   let errorMessages = '';
@@ -103,8 +112,8 @@ export function CheckOpenapiProps(props: OpenApiProps) {
 
 }
 
-interface ObtainApiDefinitionProps {
-  readonly apiLambdaFunctions: ApiLambdaFunction[],
+export interface ObtainApiDefinitionProps {
+  readonly tokenToFunctionMap: TokenToFunctionMapping[],
   readonly apiDefinitionBucket?: s3.IBucket,
   readonly apiDefinitionKey?: string,
   readonly apiDefinitionAsset?: Asset,
@@ -113,13 +122,16 @@ interface ObtainApiDefinitionProps {
   readonly internalTransformMemorySize?: number
 }
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
 export function ObtainApiDefinition(scope: Construct, props: ObtainApiDefinitionProps): apigateway.ApiDefinition {
   const apiRawInlineSpec = props.apiJsonDefinition;
-  const apiDefinitionBucket = props.apiDefinitionBucket ?? props.apiDefinitionAsset?.bucket;
-  const apiDefinitionKey = props.apiDefinitionKey ?? props.apiDefinitionAsset?.s3ObjectKey;
+  const meldedDefinitionBucket = props.apiDefinitionBucket ?? props.apiDefinitionAsset?.bucket;
+  const meldedDefinitionKey = props.apiDefinitionKey ?? props.apiDefinitionAsset?.s3ObjectKey;
 
   // Map each id and lambda function pair to the required format for the template writer custom resource
-  const apiIntegrationUris = props.apiLambdaFunctions.map(apiLambdaFunction => {
+  const apiIntegrationUris = props.tokenToFunctionMap.map(apiLambdaFunction => {
     // the placeholder string that will be replaced in the OpenAPI Definition
     const uriPlaceholderString = apiLambdaFunction.id;
     // the endpoint URI of the backing lambda function, as defined in the API Gateway extensions for OpenAPI here:
@@ -139,8 +151,8 @@ export function ObtainApiDefinition(scope: Construct, props: ObtainApiDefinition
     // This custom resource will overwrite the string placeholders in the openapi definition with the resolved values of the lambda URIs
     apiDefinitionWriter = resources.createTemplateWriterCustomResource(scope, 'Api', {
       // CheckOpenapiProps() has confirmed the existence of these values
-      templateBucket: apiDefinitionBucket!,
-      templateKey: apiDefinitionKey!,
+      templateBucket: meldedDefinitionBucket!,
+      templateKey: meldedDefinitionKey!,
       templateValues: apiIntegrationUris,
       timeout: props.internalTransformTimeout ?? Duration.minutes(1),
       memorySize: props.internalTransformMemorySize ?? 1024
@@ -163,6 +175,8 @@ export function ObtainApiDefinition(scope: Construct, props: ObtainApiDefinition
 function InlineTemplateWriter({ inlineDefinition }: apigateway.ApiDefinitionConfig, templateValues: resources.TemplateValue[]) {
   let template = JSON.stringify(inlineDefinition);
 
+  // This replicates logic in the template writer custom resource (resources/lib/template-writer-custom-resource/index.ts),
+  // any logic changes should be made to both locations every time
   templateValues.forEach((templateValue) => {
     template = template?.replace(new RegExp(templateValue.id, 'g'), templateValue.value);
   });

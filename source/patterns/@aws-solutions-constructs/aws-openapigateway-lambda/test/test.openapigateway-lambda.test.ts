@@ -12,8 +12,9 @@
  */
 
 // Imports
-import { Stack } from "aws-cdk-lib";
+import { Stack, Duration } from "aws-cdk-lib";
 import { OpenApiGatewayToLambda } from "../lib";
+import { ObtainApiDefinition, CheckOpenapiProps } from "../lib/openapi-helper";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
@@ -21,7 +22,7 @@ import * as path from 'path';
 import { Template } from "aws-cdk-lib/assertions";
 import { CreateScrapBucket } from "@aws-solutions-constructs/core";
 import * as defaults from '@aws-solutions-constructs/core';
-import * as inlineApiDefinition from './openapi/apiDefinition.json';
+import * as inlineJsonApiDefinition from './openapi/apiDefinition.json';
 
 test('Simple deployment works', () => {
   const stack = new Stack();
@@ -106,7 +107,7 @@ test('API Definition can be specified from an InlineApiDefinition ', () => {
   const stack = new Stack();
 
   const construct = new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
-    apiJsonDefinition: inlineApiDefinition,
+    apiJsonDefinition: inlineJsonApiDefinition,
     apiIntegrations: [
       {
         id: 'MessagesHandler',
@@ -247,173 +248,6 @@ test('Throws error when neither existingLambdaObj or lambdaFunctionProps is spec
     });
   };
   expect(app).toThrowError('One of existingLambdaObj or lambdaFunctionProps must be specified for the api integration with id: MessagesHandler');
-});
-
-test('Throws error when no api definition is specified', () => {
-  const stack = new Stack();
-
-  const app = () => {
-    new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
-      apiIntegrations: [
-        {
-          id: 'MessagesHandler',
-          lambdaFunctionProps: {
-            runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
-          }
-        }
-      ]
-    });
-  };
-  expect(app).toThrowError(incorrectDefinitionMessage);
-});
-
-test('Throws error when no api integration is specified', () => {
-  const stack = new Stack();
-
-  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
-    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
-  });
-
-  const app = () => {
-    new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
-      apiDefinitionAsset,
-      apiIntegrations: []
-    });
-  };
-  expect(app).toThrowError('At least one ApiIntegration must be specified in the apiIntegrations property');
-});
-
-test('Throws error when api definition s3 bucket is specified but s3 object key is missing', () => {
-  const stack = new Stack();
-
-  const apiDefinitionBucket = CreateScrapBucket(stack, "scrapBucket");
-
-  const app = () => {
-    new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
-      apiDefinitionBucket,
-      apiIntegrations: []
-    });
-  };
-  expect(app).toThrowError('apiDefinitionBucket and apiDefinitionKey must be specified together.');
-});
-
-test('Throws error when api definition s3 object key is specified but s3 bucket is missing', () => {
-  const stack = new Stack();
-
-  const app = () => {
-    new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
-      apiDefinitionKey: 'prefix/api-definition.yml',
-      apiIntegrations: []
-    });
-  };
-  expect(app).toThrowError('apiDefinitionBucket and apiDefinitionKey must be specified together.');
-});
-
-test('Throws error when api is defined as asset and s3 bucket is specified', () => {
-  const stack = new Stack();
-
-  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
-    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
-  });
-  const apiDefinitionBucket = CreateScrapBucket(stack, "scrapBucket");
-
-  const app = () => {
-    new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
-      apiDefinitionAsset,
-      apiDefinitionBucket,
-      apiDefinitionKey: 'prefix/api-definition.yml',
-      apiIntegrations: [
-        {
-          id: 'MessagesHandler',
-          lambdaFunctionProps: {
-            runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
-          }
-        }
-      ]
-    });
-  };
-  expect(app).toThrowError(incorrectDefinitionMessage);
-});
-
-test('Throws error when api is defined as asset and s3 key is specified', () => {
-  const stack = new Stack();
-
-  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
-    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
-  });
-  const apiDefinitionBucket = CreateScrapBucket(stack, "scrapBucket");
-
-  const app = () => {
-    new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
-      apiDefinitionAsset,
-      apiDefinitionBucket,
-      apiDefinitionKey: 'prefix/api-definition.yml',
-      apiIntegrations: [
-        {
-          id: 'MessagesHandler',
-          lambdaFunctionProps: {
-            runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
-          }
-        }
-      ]
-    });
-  };
-  expect(app).toThrowError(incorrectDefinitionMessage);
-});
-
-test('Throws error when both api definition inline and api definition asset are specified', () => {
-  const stack = new Stack();
-
-  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
-    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
-  });
-
-  const app = () => {
-    new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
-      apiDefinitionAsset,
-      apiJsonDefinition: inlineApiDefinition,
-      apiIntegrations: [
-        {
-          id: 'MessagesHandler',
-          lambdaFunctionProps: {
-            runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
-          }
-        }
-      ]
-    });
-  };
-  expect(app).toThrowError(incorrectDefinitionMessage);
-});
-
-test('Throws error when both api definition inline and s3 object are specified', () => {
-  const stack = new Stack();
-
-  const app = () => {
-    new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
-      apiJsonDefinition: inlineApiDefinition,
-      apiDefinitionBucket: new s3.Bucket(stack, 'ApiDefinitionBucket'),
-      apiDefinitionKey: 'key',
-      apiIntegrations: [
-        {
-          id: 'MessagesHandler',
-          lambdaFunctionProps: {
-            runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
-            handler: 'index.handler',
-            code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
-          }
-        }
-      ]
-    });
-  };
-  expect(app).toThrowError(incorrectDefinitionMessage);
 });
 
 test('Two Constructs create APIs with different names', () => {
@@ -564,7 +398,314 @@ test('Confirm  that providing both lambdaFunction and functionProps is an error'
   };
 
   const app = () => {
-    new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
+    new OpenApiGatewayToLambda(stack, 'test', props);
   };
   expect(app).toThrowError(`Error - Cannot provide both lambdaFunctionProps and existingLambdaObj in an ApiIntegrationfor the api integration with id: MessagesHandler`);
+});
+
+/*
+ * openapi-helper.ts tests
+*/
+test('Throws error when no api definition is specified', () => {
+  const app = () => {
+    CheckOpenapiProps({
+      apiIntegrations: [
+        {
+          id: 'MessagesHandler',
+          lambdaFunctionProps: {
+            runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+            handler: 'index.handler',
+            code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+          }
+        }
+      ]
+    });
+  };
+  expect(app).toThrowError(incorrectDefinitionMessage);
+});
+
+test('Throws error when no api integration is specified', () => {
+  const stack = new Stack();
+
+  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
+    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
+  });
+
+  const app = () => {
+    CheckOpenapiProps({
+      apiDefinitionAsset,
+      apiIntegrations: []
+    });
+  };
+  expect(app).toThrowError('At least one ApiIntegration must be specified in the apiIntegrations property');
+});
+
+test('Throws error when api definition s3 bucket is specified but s3 object key is missing', () => {
+  const stack = new Stack();
+
+  const apiDefinitionBucket = CreateScrapBucket(stack, "scrapBucket");
+
+  const app = () => {
+    CheckOpenapiProps({
+      apiDefinitionBucket,
+      apiIntegrations: []
+    });
+  };
+  expect(app).toThrowError('apiDefinitionBucket and apiDefinitionKey must be specified together.');
+});
+
+test('Throws error when api definition s3 object key is specified but s3 bucket is missing', () => {
+  const app = () => {
+    CheckOpenapiProps({
+      apiDefinitionKey: 'prefix/api-definition.yml',
+      apiIntegrations: []
+    });
+  };
+  expect(app).toThrowError('apiDefinitionBucket and apiDefinitionKey must be specified together.');
+});
+
+test('Throws error when api is defined as asset and s3 bucket is specified', () => {
+  const stack = new Stack();
+
+  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
+    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
+  });
+  const apiDefinitionBucket = CreateScrapBucket(stack, "scrapBucket");
+
+  const app = () => {
+    CheckOpenapiProps({
+      apiDefinitionAsset,
+      apiDefinitionBucket,
+      apiDefinitionKey: 'prefix/api-definition.yml',
+      apiIntegrations: [
+        {
+          id: 'MessagesHandler',
+          lambdaFunctionProps: {
+            runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+            handler: 'index.handler',
+            code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+          }
+        }
+      ]
+    });
+  };
+  expect(app).toThrowError(incorrectDefinitionMessage);
+});
+
+test('Throws error when api is defined as asset and s3 key is specified', () => {
+  const stack = new Stack();
+
+  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
+    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
+  });
+  const apiDefinitionBucket = CreateScrapBucket(stack, "scrapBucket");
+
+  const app = () => {
+    CheckOpenapiProps({
+      apiDefinitionAsset,
+      apiDefinitionBucket,
+      apiDefinitionKey: 'prefix/api-definition.yml',
+      apiIntegrations: [
+        {
+          id: 'MessagesHandler',
+          lambdaFunctionProps: {
+            runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+            handler: 'index.handler',
+            code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+          }
+        }
+      ]
+    });
+  };
+  expect(app).toThrowError(incorrectDefinitionMessage);
+});
+
+test('Throws error when both api definition inline and api definition asset are specified', () => {
+  const stack = new Stack();
+
+  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
+    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
+  });
+
+  const app = () => {
+    CheckOpenapiProps({
+      apiDefinitionAsset,
+      apiJsonDefinition: inlineJsonApiDefinition,
+      apiIntegrations: [
+        {
+          id: 'MessagesHandler',
+          lambdaFunctionProps: {
+            runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+            handler: 'index.handler',
+            code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+          }
+        }
+      ]
+    });
+  };
+  expect(app).toThrowError(incorrectDefinitionMessage);
+});
+
+test('Throws error when both api definition inline and s3 object are specified', () => {
+  const stack = new Stack();
+
+  const app = () => {
+    CheckOpenapiProps({
+      apiJsonDefinition: inlineJsonApiDefinition,
+      apiDefinitionBucket: new s3.Bucket(stack, 'ApiDefinitionBucket'),
+      apiDefinitionKey: 'key',
+      apiIntegrations: [
+        {
+          id: 'MessagesHandler',
+          lambdaFunctionProps: {
+            runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+            handler: 'index.handler',
+            code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+          }
+        }
+      ]
+    });
+  };
+  expect(app).toThrowError(incorrectDefinitionMessage);
+});
+
+test('ObtainApiDefinition from local asset', () => {
+  const stack = new Stack();
+
+  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
+    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
+  });
+
+  const testFunction = new lambda.Function(stack, 'test', {
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+  });
+
+  const apiLambdaFunctions = [
+    {
+      id: 'MessageHandler',
+      lambdaFunction: testFunction
+    }
+  ];
+
+  const api = ObtainApiDefinition(stack,
+    {
+      apiDefinitionAsset,
+      tokenToFunctionMap: apiLambdaFunctions
+    });
+
+  expect(api).toBeDefined();
+  expect((api as any).bucketName).toBeDefined();
+  expect((api as any).key).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("Custom::TemplateWriter", 1);
+});
+
+test('ObtainApiDefinition from inline JSON spec', () => {
+  const stack = new Stack();
+
+  const testFunction = new lambda.Function(stack, 'test', {
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+  });
+
+  const apiLambdaFunctions = [
+    {
+      id: 'MessageHandler',
+      lambdaFunction: testFunction
+    }
+  ];
+
+  const api = ObtainApiDefinition(stack,
+    {
+      apiJsonDefinition: inlineJsonApiDefinition,
+      tokenToFunctionMap: apiLambdaFunctions
+    });
+
+  expect(api).toBeDefined();
+  expect((api as any).definition).toBeDefined();
+  expect((api as any).definition.openapi).toEqual("3.0.1");
+  expect((api as any).definition.info).toBeDefined();
+  expect((api as any).definition.paths).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("Custom::TemplateWriter", 0);
+
+});
+
+test('ObtainApiDefinition from S3 bucket/key', () => {
+  const stack = new Stack();
+
+  const testFunction = new lambda.Function(stack, 'test', {
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+  });
+
+  const apiLambdaFunctions = [
+    {
+      id: 'MessageHandler',
+      lambdaFunction: testFunction
+    }
+  ];
+
+  const api = ObtainApiDefinition(stack,
+    {
+      apiDefinitionBucket: CreateScrapBucket(stack, "scrapBucket"),
+      apiDefinitionKey: "api.yml",
+      tokenToFunctionMap: apiLambdaFunctions
+    });
+  expect(api).toBeDefined();
+  expect((api as any).bucketName).toBeDefined();
+  expect((api as any).key).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("Custom::TemplateWriter", 1);
+
+});
+
+test('ObtainApiDefinition uses custom properties', () => {
+  const stack = new Stack();
+
+  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
+    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
+  });
+
+  const testFunction = new lambda.Function(stack, 'test', {
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+  });
+
+  const apiLambdaFunctions = [
+    {
+      id: 'MessageHandler',
+      lambdaFunction: testFunction
+    }
+  ];
+
+  const api = ObtainApiDefinition(stack,
+    {
+      apiDefinitionAsset,
+      tokenToFunctionMap: apiLambdaFunctions,
+      internalTransformTimeout: Duration.seconds(385),
+      internalTransformMemorySize: 3456
+    });
+
+  expect(api).toBeDefined();
+  expect((api as any).bucketName).toBeDefined();
+  expect((api as any).key).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  defaults.printWarning(`\n\n==dbg==\n${JSON.stringify(template)}\n\n==dbg===\n\n`);
+  template.resourceCountIs("Custom::TemplateWriter", 1);
+  template.hasResource("AWS::Lambda::Function", {
+    Properties: {
+      Timeout: 385,
+      MemorySize: 3456
+    }
+  });
 });

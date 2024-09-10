@@ -20,8 +20,8 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
 import { RestApiBaseProps } from 'aws-cdk-lib/aws-apigateway';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
-import { ApiIntegration, CheckOpenapiProps, ApiLambdaFunction, ObtainApiDefinition } from './openapi-helper';
-export { ApiIntegration, ApiLambdaFunction } from './openapi-helper';
+import { ApiIntegration, CheckOpenapiProps, TokenToFunctionMapping, ObtainApiDefinition } from './openapi-helper';
+export { ApiIntegration, TokenToFunctionMapping as ApiLambdaFunction } from './openapi-helper';
 
 export interface OpenApiGatewayToLambdaProps {
   /**
@@ -106,7 +106,7 @@ export class OpenApiGatewayToLambda extends Construct {
   public readonly apiGateway: apigateway.SpecRestApi;
   public readonly apiGatewayCloudWatchRole?: iam.Role;
   public readonly apiGatewayLogGroup: logs.LogGroup;
-  public readonly apiLambdaFunctions: ApiLambdaFunction[];
+  public readonly apiLambdaFunctions: TokenToFunctionMapping[];
 
   constructor(scope: Construct, id: string, props: OpenApiGatewayToLambdaProps) {
     super(scope, id);
@@ -133,7 +133,7 @@ export class OpenApiGatewayToLambda extends Construct {
     });
 
     const definition = ObtainApiDefinition(this,  {
-      apiLambdaFunctions: this.apiLambdaFunctions,
+      tokenToFunctionMap: this.apiLambdaFunctions,
       apiDefinitionBucket: props.apiDefinitionBucket,
       apiDefinitionKey: props.apiDefinitionKey,
       apiDefinitionAsset: props.apiDefinitionAsset,
