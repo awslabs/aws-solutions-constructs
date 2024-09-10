@@ -126,7 +126,7 @@ new OpenApiGatewayToLambda(this, "OpenApiGatewayToLambda", OpenApiGatewayToLambd
 |apiDefinitionBucket?|[`s3.IBucket`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html)|S3 Bucket where the OpenAPI spec file is located. When specifying this property, `apiDefinitionKey` must also be specified.|
 |apiDefinitionKey?|`string`|S3 Object name of the OpenAPI spec file. When specifying this property, `apiDefinitionBucket` must also be specified.|
 |apiDefinitionAsset?|[`aws_s3_assets.Asset`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html)|Local file asset of the OpenAPI spec file.|
-|apiDefinitionInline?|[`apigateway.InlineApiDefinition`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.InlineApiDefinition.html)|OpenAPI specification from an inline JSON object.|
+|apiJsonDefinition?|any|OpenAPI specification represented in a JSON object to be included in the CloudFormation template. IMPORTANT - Including the spec in the template introduces a risk of the template growing too big, but there are some use cases that require an embedded spec. Unless your use case explicitly requires an embedded spec you should pass your spec as an S3 asset.|
 |apiIntegrations|`ApiIntegration[]`|One or more key-value pairs that contain an id for the api integration and either an existing lambda function or an instance of the LambdaProps. Please see the `Overview of how the OpenAPI file transformation works` section below for more usage details.|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.|
 
