@@ -21,6 +21,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 import { RestApiBaseProps } from 'aws-cdk-lib/aws-apigateway';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
 import { ApiIntegration, CheckOpenapiProps, ApiLambdaFunction, ObtainApiDefinition } from './openapi-helper';
+// openapi-helper is on its way to core, so these interfaces must be exported here
 export { ApiIntegration, ApiLambdaFunction } from './openapi-helper';
 
 export interface OpenApiGatewayToLambdaProps {
