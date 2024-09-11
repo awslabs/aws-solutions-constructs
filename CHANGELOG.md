@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.69.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.68.0...v2.69.0) (2024-09-11)
+
+Built on CDK v2.154.1
+
+### Features
+
+* **aws-openapigateway-lambda:** update construct to allow specifying an inline api definition ([#1190](https://github.com/awslabs/aws-solutions-constructs/issues/1190)) ([b1baf59](https://github.com/awslabs/aws-solutions-constructs/commit/b1baf59c13d6270cd1e32dcaed7dae3c6b302087))
+
 ## [2.68.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.67.1...v2.68.0) (2024-08-28)
 
 Built on CDK v2.154.1
