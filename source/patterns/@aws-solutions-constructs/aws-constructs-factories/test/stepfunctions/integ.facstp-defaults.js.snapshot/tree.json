@@ -47,13 +47,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                      "version": "2.150.0"
+                      "version": "2.154.1"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                  "version": "2.150.0"
+                  "version": "2.154.1"
                 }
               },
               "StateMachinetestsm": {
@@ -69,7 +69,7 @@
                         "path": "facstp-defaults/target/StateMachinetestsm/Role/ImportRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.150.0"
+                          "version": "2.154.1"
                         }
                       },
                       "Resource": {
@@ -94,7 +94,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                          "version": "2.150.0"
+                          "version": "2.154.1"
                         }
                       },
                       "DefaultPolicy": {
@@ -162,19 +162,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                              "version": "2.150.0"
+                              "version": "2.154.1"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Policy",
-                          "version": "2.150.0"
+                          "version": "2.154.1"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Role",
-                      "version": "2.150.0"
+                      "version": "2.154.1"
                     }
                   },
                   "Resource": {
@@ -227,19 +227,136 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_stepfunctions.CfnStateMachine",
-                      "version": "2.150.0"
+                      "version": "2.154.1"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_stepfunctions.StateMachine",
-                  "version": "2.150.0"
+                  "version": "2.154.1"
+                }
+              },
+              "ExecutionFailedAlarm": {
+                "id": "ExecutionFailedAlarm",
+                "path": "facstp-defaults/target/ExecutionFailedAlarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "facstp-defaults/target/ExecutionFailedAlarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "dimensions": [
+                          {
+                            "name": "StateMachineArn",
+                            "value": {
+                              "Ref": "targetStateMachinetestsm59897C57"
+                            }
+                          }
+                        ],
+                        "evaluationPeriods": 1,
+                        "metricName": "ExecutionsFailed",
+                        "namespace": "AWS/States",
+                        "period": 300,
+                        "statistic": "Sum",
+                        "threshold": 1
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.154.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.154.1"
+                }
+              },
+              "ExecutionThrottledAlarm": {
+                "id": "ExecutionThrottledAlarm",
+                "path": "facstp-defaults/target/ExecutionThrottledAlarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "facstp-defaults/target/ExecutionThrottledAlarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "dimensions": [
+                          {
+                            "name": "StateMachineArn",
+                            "value": {
+                              "Ref": "targetStateMachinetestsm59897C57"
+                            }
+                          }
+                        ],
+                        "evaluationPeriods": 1,
+                        "metricName": "ExecutionThrottled",
+                        "namespace": "AWS/States",
+                        "period": 300,
+                        "statistic": "Sum",
+                        "threshold": 1
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.154.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.154.1"
+                }
+              },
+              "ExecutionAbortedAlarm": {
+                "id": "ExecutionAbortedAlarm",
+                "path": "facstp-defaults/target/ExecutionAbortedAlarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "facstp-defaults/target/ExecutionAbortedAlarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "dimensions": [
+                          {
+                            "name": "StateMachineArn",
+                            "value": {
+                              "Ref": "targetStateMachinetestsm59897C57"
+                            }
+                          }
+                        ],
+                        "evaluationPeriods": 1,
+                        "metricName": "ExecutionsAborted",
+                        "namespace": "AWS/States",
+                        "period": 300,
+                        "statistic": "Maximum",
+                        "threshold": 1
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.154.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.154.1"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-constructs-factories.ConstructsFactories",
-              "version": "2.63.0"
+              "version": "2.69.0"
             }
           },
           "lambdatest": {
@@ -255,7 +372,7 @@
                     "path": "facstp-defaults/lambdatest/ServiceRole/ImportServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.150.0"
+                      "version": "2.154.1"
                     }
                   },
                   "Resource": {
@@ -294,13 +411,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.150.0"
+                      "version": "2.154.1"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.150.0"
+                  "version": "2.154.1"
                 }
               },
               "Resource": {
@@ -324,13 +441,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                  "version": "2.150.0"
+                  "version": "2.154.1"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_lambda.Function",
-              "version": "2.150.0"
+              "version": "2.154.1"
             }
           },
           "tasktest": {
@@ -338,7 +455,7 @@
             "path": "facstp-defaults/tasktest",
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_stepfunctions_tasks.LambdaInvoke",
-              "version": "2.150.0"
+              "version": "2.154.1"
             }
           },
           "Integ": {
@@ -366,7 +483,7 @@
                         "path": "facstp-defaults/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.150.0"
+                          "version": "2.154.1"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -374,25 +491,25 @@
                         "path": "facstp-defaults/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.150.0"
+                          "version": "2.154.1"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.150.0"
+                      "version": "2.154.1"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.150.0-alpha.0"
+                  "version": "2.154.1-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.150.0-alpha.0"
+              "version": "2.154.1-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -400,7 +517,7 @@
             "path": "facstp-defaults/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.150.0"
+              "version": "2.154.1"
             }
           },
           "CheckBootstrapVersion": {
@@ -408,13 +525,13 @@
             "path": "facstp-defaults/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.150.0"
+              "version": "2.154.1"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.150.0"
+          "version": "2.154.1"
         }
       },
       "Tree": {
@@ -428,7 +545,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.150.0"
+      "version": "2.154.1"
     }
   }
 }

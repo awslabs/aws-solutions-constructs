@@ -28,8 +28,10 @@ test('Test deployment w/ custom properties', () => {
 
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
-    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
-    stateMachineName: 'myStateMachine'
+    stateMachineProps: {
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
+      stateMachineName: 'myStateMachine'
+    }
   });
   // Assertion
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
@@ -50,10 +52,12 @@ test('Test deployment w/ logging enabled', () => {
 
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
-    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
-    logs: {
-      destination: logGroup,
-      level: sfn.LogLevel.FATAL
+    stateMachineProps: {
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
+      logs: {
+        destination: logGroup,
+        level: sfn.LogLevel.FATAL
+      }
     }
   });
   // Assertion
@@ -84,7 +88,9 @@ test('Check default Cloudwatch permissions', () => {
   const stack = new Stack();
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
-    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test')
+    stateMachineProps: {
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test')
+    }
   });
   // Assertion
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
@@ -137,7 +143,9 @@ test('Check State Machine IAM Policy with 2 Lambda fuctions in State Machine Def
   const startState = sfn.DefinitionBody.fromChainable(taskOne.next(taskTwo));
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
-    definitionBody: startState
+    stateMachineProps: {
+      definitionBody: startState
+    }
   });
   // Assertion
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
@@ -215,7 +223,9 @@ test('Check State Machine IAM Policy with S3 API call in State Machine Definitio
 
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
-    definitionBody: sfn.DefinitionBody.fromChainable(stateMachineDefinition)
+    stateMachineProps: {
+      definitionBody: sfn.DefinitionBody.fromChainable(stateMachineDefinition)
+    }
   });
   // Assertion
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
@@ -256,12 +266,52 @@ test('Count State Machine CW Alarms', () => {
   const stack = new Stack();
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
-    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test')
+    stateMachineProps: {
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test')
+    }
   });
-  const cwList = defaults.buildStepFunctionCWAlarms(stack, buildStateMachineResponse.stateMachine);
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
 
-  expect(cwList.length).toEqual(3);
+  expect(buildStateMachineResponse.cloudWatchAlarms!.length).toEqual(3);
+});
+
+test('Confirm CloudWatch Alarm Prefix is used', () => {
+  const customPrefix = "SomeText";
+  // Stack
+  const stack = new Stack();
+  // Build state machine
+  const buildStateMachineResponse = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
+    stateMachineProps: {
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test')
+    },
+    cloudWatchAlarmsPrefix: customPrefix
+  });
+  expect(buildStateMachineResponse.stateMachine).toBeDefined();
+
+  expect(buildStateMachineResponse.cloudWatchAlarms!.length).toEqual(3);
+  // expect() checks look for properties, not the resource ID, so we need to
+  // exploit knowledge of the internals of template. This may be brittle,
+  // take care in the future
+  const template = Template.fromStack(stack);
+  const keys = Object.keys((template as any).template.Resources);
+  const regex = new RegExp(`${customPrefix}Execution`);
+  const alarms = keys.filter(alarmName => regex.test(alarmName));
+  expect(alarms.length).toEqual(3);
+});
+
+test('Skip creating CW alarms', () => {
+  // Stack
+  const stack = new Stack();
+  // Build state machine
+  const buildStateMachineResponse = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
+    stateMachineProps: {
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test')
+    },
+    createCloudWatchAlarms: false
+  });
+  expect(buildStateMachineResponse.stateMachine).toBeDefined();
+
+  expect(buildStateMachineResponse.cloudWatchAlarms).not.toBeDefined();
 });
 
 test('Test deployment with custom role', () => {
@@ -285,8 +335,10 @@ test('Test deployment with custom role', () => {
 
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
-    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
-    role: customRole
+    stateMachineProps: {
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
+      role: customRole
+    }
   });
 
   // Assertion
@@ -306,8 +358,10 @@ test('Confirm format of name', () => {
   const stack = new Stack(undefined, 'teststack');
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
-    stateMachineName: 'myStateMachine',
-    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
+    stateMachineProps: {
+      stateMachineName: 'myStateMachine',
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
+    }
   });
   // Assertion
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
@@ -331,7 +385,9 @@ test('Confirm format of name with ID provided', () => {
   const stack = new Stack(undefined, 'teststack');
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, 'zxz', {
-    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
+    stateMachineProps: {
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
+    }
   });
   // Assertion
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
@@ -354,19 +410,40 @@ test('multiple state machines', () => {
   const stack = new Stack(undefined, 'teststack');
   // Build state machine
   const buildStateMachineResponse = defaults.buildStateMachine(stack, 'one', {
-    stateMachineName: 'myStateMachine',
-    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'smOne'),
+    stateMachineProps: {
+      stateMachineName: 'myStateMachineOne',
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'smOne'),
+    },
+    cloudWatchAlarmsPrefix: 'one'
   });
   const buildStateMachineResponseTwo = defaults.buildStateMachine(stack, 'two', {
-    stateMachineName: 'myStateMachine',
-    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'smTwo'),
+    stateMachineProps: {
+      stateMachineName: 'myStateMachineTwo',
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'smTwo'),
+    },
+    cloudWatchAlarmsPrefix: 'two'
   });
   const buildStateMachineResponseThree = defaults.buildStateMachine(stack, defaults.idPlaceholder, {
-    stateMachineName: 'myStateMachine',
-    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'smThree'),
+    stateMachineProps: {
+      stateMachineName: 'myStateMachineThree',
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'smThree'),
+    },
+    cloudWatchAlarmsPrefix: 'three'
   });
   // Assertion
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
   expect(buildStateMachineResponseTwo.stateMachine).toBeDefined();
   expect(buildStateMachineResponseThree.stateMachine).toBeDefined();
+});
+
+test('Confirm cloudWatchAlarmsPrefix requires createCloudWatchAlarms', () => {
+
+  const app = () => {
+    defaults.CheckStateMachineProps({
+      createCloudWatchAlarms: false,
+      cloudWatchAlarmsPrefix: 'prefix'
+    });
+  };
+  // Assertion
+  expect(app).toThrowError('Error - cloudWatchAlarmsPrefix is invalid when createCloudWatchAlarms is false\n');
 });

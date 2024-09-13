@@ -19,6 +19,7 @@ import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as defaults from '@aws-solutions-constructs/core';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 
 export interface S3BucketFactoryProps {
   readonly bucketProps?: s3.BucketProps | any,
@@ -44,6 +45,22 @@ export interface StateMachineFactoryProps {
    * Default: none, the construct will create a new log group.
    */
   readonly logGroupProps?: logs.LogGroupProps
+  /**
+   * Whether to create recommended CloudWatch alarms
+   *
+   * @default - Alarms are created
+   */
+  readonly createCloudWatchAlarms?: boolean,
+  /**
+   * Creating multiple State Machines in 1 stack with constructs will
+   * result in name collisions as the cloudwatch alarms originally had fixed resource ids.
+   * This value was added to avoid collisions while not making changes that would be
+   * destructive for existing stacks. Unless you are creating multiple State Machines using constructs
+   * you can ignore it.
+   *
+   * @default - undefined
+   */
+  readonly cloudWatchAlarmsPrefix?: string
 }
 
 // Create a response specifically for the interface to avoid coupling client with internal implementation
@@ -57,6 +74,8 @@ export interface StateMachineFactoryResponse {
    * The log group that will receive log messages from the state maching
    */
   readonly logGroup: logs.ILogGroup
+  // TODO: Document this
+  readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 }
 
 export interface SqsQueueFactoryProps {
@@ -135,10 +154,16 @@ export class ConstructsFactories extends Construct {
   }
 
   public stateMachineFactory(id: string, props: StateMachineFactoryProps): StateMachineFactoryResponse {
-    const buildStateMachineResponse = defaults.buildStateMachine(this, id, props.stateMachineProps, props.logGroupProps);
+    const buildStateMachineResponse = defaults.buildStateMachine(this, id, {
+      stateMachineProps: props.stateMachineProps,
+      logGroupProps: props.logGroupProps,
+      createCloudWatchAlarms: props.createCloudWatchAlarms,
+      cloudWatchAlarmsPrefix: props.cloudWatchAlarmsPrefix
+    });
     return {
       stateMachine: buildStateMachineResponse.stateMachine,
-      logGroup: buildStateMachineResponse.logGroup
+      logGroup: buildStateMachineResponse.logGroup,
+      cloudwatchAlarms: buildStateMachineResponse.cloudWatchAlarms
     };
   }
 

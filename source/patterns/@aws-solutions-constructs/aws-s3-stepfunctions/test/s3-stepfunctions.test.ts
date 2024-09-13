@@ -185,3 +185,21 @@ test('s3 bucket with no logging bucket', () => {
   template.hasResourceProperties("Custom::S3BucketNotifications", {});
   expect(construct.s3LoggingBucket).toEqual(undefined);
 });
+
+test('Deploy 2 constructs', () => {
+  const stack = new cdk.Stack();
+
+  new S3ToStepfunctions(stack, 'test-new-eventbridge-stepfunctions', {
+    stateMachineProps: {
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
+    },
+  });
+
+  new S3ToStepfunctions(stack, 'test-second-eventbridge-stepfunctions', {
+    stateMachineProps: {
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'seconttest'),
+    },
+  });
+  Template.fromStack(stack);
+  // No checks, as our main concern is this has no collisions
+});

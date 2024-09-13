@@ -80,11 +80,16 @@ export class EventbridgeToStepfunctions extends Construct {
   constructor(scope: Construct, id: string, props: EventbridgeToStepfunctionsProps) {
     super(scope, id);
     defaults.CheckEventBridgeProps(props);
+    defaults.CheckStateMachineProps(props);
 
-    const buildStateMachineResponse = defaults.buildStateMachine(this, defaults.idPlaceholder, props.stateMachineProps,
-      props.logGroupProps);
+    const buildStateMachineResponse = defaults.buildStateMachine(this, defaults.idPlaceholder, {
+      stateMachineProps: props.stateMachineProps,
+      logGroupProps: props.logGroupProps,
+      createCloudWatchAlarms: props.createCloudWatchAlarms,
+    });
     this.stateMachine = buildStateMachineResponse.stateMachine;
     this.stateMachineLogGroup = buildStateMachineResponse.logGroup;
+    this.cloudwatchAlarms = buildStateMachineResponse.cloudWatchAlarms;
 
     // Create an IAM role for Events to start the State Machine
     const eventsRole = new iam.Role(this, 'EventsRuleRole', {
@@ -115,10 +120,5 @@ export class EventbridgeToStepfunctions extends Construct {
     const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
     // Create the Events Rule for the State Machine
     this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);
-
-    if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
-      // Deploy best practices CW Alarms for State Machine
-      this.cloudwatchAlarms = defaults.buildStepFunctionCWAlarms(this, this.stateMachine);
-    }
   }
 }
