@@ -74,7 +74,9 @@ export interface StateMachineFactoryResponse {
    * The log group that will receive log messages from the state maching
    */
   readonly logGroup: logs.ILogGroup
-  // TODO: Document this
+  /*
+   * The alarms created by the factory (ExecutionFailed, ExecutionThrottled, ExecutionAborted)
+   */
   readonly cloudwatchAlarms?: cloudwatch.Alarm[];
 }
 
