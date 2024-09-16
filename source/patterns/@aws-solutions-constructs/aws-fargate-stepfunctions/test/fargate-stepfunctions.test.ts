@@ -354,3 +354,36 @@ function testStateMachineProps(stack: cdk.Stack, userProps?: stepfunctions.State
 
   return defaults.consolidateProps(defaultTestProp, userProps);
 }
+
+test('Deploy 2 constructs', () => {
+  const stack = new cdk.Stack();
+  const existingVpc = defaults.getTestVpc(stack);
+
+  new FargateToStepfunctions(stack, 'test-new-fargate-stepfunctions', {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    existingVpc,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    stateMachineProps: {
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
+    },
+  });
+
+  new FargateToStepfunctions(stack, 'test-second-fargate-stepfunctions', {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    existingVpc,
+    clusterProps: { clusterName },
+    containerDefinitionProps: { containerName },
+    fargateTaskDefinitionProps: { family: familyName },
+    fargateServiceProps: { serviceName },
+    stateMachineProps: {
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'secondtest'),
+    },
+  });
+  Template.fromStack(stack);
+  // No checks, as our main concern is this has no collisions
+});

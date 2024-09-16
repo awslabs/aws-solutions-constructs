@@ -187,3 +187,37 @@ test('check custom event bus resource with props when deploy:true', () => {
     Name: 'testcustomeventbus'
   });
 });
+
+test('Deploy 2 constructs', () => {
+  const stack = new cdk.Stack();
+
+  new EventbridgeToStepfunctions(stack, 'test-new-eventbridge-stepfunctions', {
+    stateMachineProps: {
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'test'),
+    },
+    eventBusProps: {
+      eventBusName: 'testcustomeventbus'
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['solutionsconstructs']
+      }
+    },
+  });
+
+  new EventbridgeToStepfunctions(stack, 'test-second-eventbridge-stepfunctions', {
+    stateMachineProps: {
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'seconttest'),
+    },
+    eventBusProps: {
+      eventBusName: 'secondtestcustomeventbus'
+    },
+    eventRuleProps: {
+      eventPattern: {
+        source: ['secondsolutionsconstructs']
+      }
+    },
+  });
+  Template.fromStack(stack);
+  // No checks, as our main concern is this has no collisions
+});

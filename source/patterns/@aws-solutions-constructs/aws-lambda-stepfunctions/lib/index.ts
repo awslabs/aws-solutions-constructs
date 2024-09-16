@@ -99,6 +99,7 @@ export class LambdaToStepfunctions extends Construct {
     super(scope, id);
     defaults.CheckVpcProps(props);
     defaults.CheckLambdaProps(props);
+    defaults.CheckStateMachineProps(props);
 
     // Setup vpc
     if (props.deployVpc || props.existingVpc) {
@@ -117,10 +118,14 @@ export class LambdaToStepfunctions extends Construct {
     }
 
     // Setup the state machine
-    const buildStateMachineResponse = defaults.buildStateMachine(this, defaults.idPlaceholder, props.stateMachineProps,
-      props.logGroupProps);
+    const buildStateMachineResponse = defaults.buildStateMachine(this, defaults.idPlaceholder, {
+      stateMachineProps: props.stateMachineProps,
+      logGroupProps: props.logGroupProps,
+      createCloudWatchAlarms: props.createCloudWatchAlarms,
+    });
     this.stateMachine = buildStateMachineResponse.stateMachine;
     this.stateMachineLogGroup = buildStateMachineResponse.logGroup;
+    this.cloudwatchAlarms = buildStateMachineResponse.cloudWatchAlarms;
 
     // Setup the Lambda function
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
@@ -135,10 +140,5 @@ export class LambdaToStepfunctions extends Construct {
 
     // Grant the start execution permission to the Lambda function
     this.stateMachine.grantStartExecution(this.lambdaFunction);
-
-    if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
-      // Deploy best-practice CloudWatch Alarm for state machine
-      this.cloudwatchAlarms = defaults.buildStepFunctionCWAlarms(this, this.stateMachine);
-    }
   }
 }

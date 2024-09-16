@@ -176,6 +176,69 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
+  "targetExecutionFailedAlarm97DD1630": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "StateMachineArn",
+      "Value": {
+       "Ref": "targetStateMachinetestsm59897C57"
+      }
+     }
+    ],
+    "EvaluationPeriods": 1,
+    "MetricName": "ExecutionsFailed",
+    "Namespace": "AWS/States",
+    "Period": 300,
+    "Statistic": "Sum",
+    "Threshold": 1
+   }
+  },
+  "targetExecutionThrottledAlarmCAA85FD5": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "StateMachineArn",
+      "Value": {
+       "Ref": "targetStateMachinetestsm59897C57"
+      }
+     }
+    ],
+    "EvaluationPeriods": 1,
+    "MetricName": "ExecutionThrottled",
+    "Namespace": "AWS/States",
+    "Period": 300,
+    "Statistic": "Sum",
+    "Threshold": 1
+   }
+  },
+  "targetExecutionAbortedAlarm70BA06C6": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "StateMachineArn",
+      "Value": {
+       "Ref": "targetStateMachinetestsm59897C57"
+      }
+     }
+    ],
+    "EvaluationPeriods": 1,
+    "MetricName": "ExecutionsAborted",
+    "Namespace": "AWS/States",
+    "Period": 300,
+    "Statistic": "Maximum",
+    "Threshold": 1
+   }
+  },
   "lambdatestServiceRoleF3BDB8FC": {
    "Type": "AWS::IAM::Role",
    "Properties": {

@@ -171,6 +171,8 @@ stateMachineFactory(id: string, props: StateMachineFactoryProps): StateMachineFa
 |:-------------|:----------------|-----------------|
 |stateMachineProps|[`sfn.StateMachineProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachineProps.html)|The CDK properties that define the state machine. This property is required and must include a definitionBody or definition (definition is deprecated)|
 |logGroup?|[]`logs.LogGroup`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroup.html)|An existing LogGroup to which the new state machine will write log entries. Default: none, the construct will create a new log group.|
+|createCloudWatchAlarms?|boolean|Whether to create recommended CloudWatch alarms for the State Machine. Default: the alarms are created|
+|cloudWatchAlarmsPrefix?|string|Creating multiple State Machines with one Factories construct will result in name collisions as the cloudwatch alarms originally had fixed resource ids. This value was added to avoid collisions while not making changes that would be destructive for existing stacks. Unless you are creating multiple State Machines using factories you can ignore it|
 
 # StateMachineFactoryResponse
 
@@ -178,6 +180,7 @@ stateMachineFactory(id: string, props: StateMachineFactoryProps): StateMachineFa
 |:-------------|:----------------|-----------------|
 |stateMachineProps|[`sfn.StateMachineProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachineProps.html)||
 |logGroup|[]`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)||
+|cloudwatchAlarms?|[`cloudwatch.Alarm[]`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Alarm.html)|The alarms created by the factory (ExecutionFailed, ExecutionThrottled, ExecutionAborted)|
 
 # Default settings
 

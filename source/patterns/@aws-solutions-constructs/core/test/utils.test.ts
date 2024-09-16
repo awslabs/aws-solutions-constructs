@@ -338,7 +338,6 @@ test('test addCfnGuardSuppressRules', () => {
 
   const template = Template.fromStack(stack);
   const bucket = template.findResources("AWS::S3::Bucket");
-  defaults.printWarning(`DBG*********${JSON.stringify(bucket.testbucketE6E05ABE.Metadata)}`);
   expect(bucket.testbucketE6E05ABE.Metadata.guard.SuppressedRules[0]).toEqual("ADDED_TO_BUCKET");
   expect(bucket.testbucketE6E05ABE.Metadata.guard.SuppressedRules[1]).toEqual("ADDED_TO_CFN_RESOURCE");
 });

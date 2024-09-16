@@ -625,14 +625,14 @@ test('ObtainApiDefinition from inline JSON spec', () => {
       tokenToFunctionMap: apiLambdaFunctions
     });
 
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("Custom::TemplateWriter", 0);
+
   expect(api).toBeDefined();
   expect((api as any).definition).toBeDefined();
   expect((api as any).definition.openapi).toEqual("3.0.1");
   expect((api as any).definition.info).toBeDefined();
   expect((api as any).definition.paths).toBeDefined();
-
-  const template = Template.fromStack(stack);
-  template.resourceCountIs("Custom::TemplateWriter", 0);
 
 });
 
