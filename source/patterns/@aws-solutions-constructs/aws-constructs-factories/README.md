@@ -190,6 +190,10 @@ Out of the box implementation of the Construct without any override will set the
   * Configured to log to the new log group at LogLevel.ERROR
 * Amazon CloudWatch Logs Log Group
   * Log name is prefaced with /aws/vendedlogs/ to avoid resource policy [issues](https://docs.aws.amazon.com/step-functions/latest/dg/cw-logs.html#cloudwatch-iam-policy). The Log Group name is still created to be unique to the stack to avoid name collisions. 
+* CloudWatch alarms for:
+  * 1 or more failed executions
+  * 1 or more executions being throttled
+  * 1 or more executions being aborted
 
 # Architecture
 ![Architecture Diagram](sf-architecture.png)
