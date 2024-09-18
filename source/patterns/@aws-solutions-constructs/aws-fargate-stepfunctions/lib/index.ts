@@ -140,6 +140,7 @@ export class FargateToStepfunctions extends Construct {
     super(scope, id);
     defaults.CheckFargateProps(props);
     defaults.CheckVpcProps(props);
+    defaults.CheckStateMachineProps(props);
 
     this.vpc = defaults.buildVpc(scope, {
       existingVpc: props.existingVpc,
@@ -168,17 +169,16 @@ export class FargateToStepfunctions extends Construct {
       this.container = createFargateServiceResponse.containerDefinition;
     }
 
-    const buildStateMachineResponse = defaults.buildStateMachine(this, defaults.idPlaceholder, props.stateMachineProps,
-      props.logGroupProps);
+    const buildStateMachineResponse = defaults.buildStateMachine(this, defaults.idPlaceholder, {
+      stateMachineProps: props.stateMachineProps,
+      logGroupProps: props.logGroupProps,
+      createCloudWatchAlarms: props.createCloudWatchAlarms,
+    });
     this.stateMachine = buildStateMachineResponse.stateMachine;
     this.stateMachineLogGroup = buildStateMachineResponse.logGroup;
+    this.cloudwatchAlarms = buildStateMachineResponse.cloudWatchAlarms;
 
     this.stateMachine.grantStartExecution(this.service.taskDefinition.taskRole);
-
-    if (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms) {
-      // Deploy best-practice CloudWatch Alarm for state machine
-      this.cloudwatchAlarms = defaults.buildStepFunctionCWAlarms(this, this.stateMachine);
-    }
 
     // Add environment variable
     const stateMachineEnvironmentVariableName = props.stateMachineEnvironmentVariableName || 'STATE_MACHINE_ARN';

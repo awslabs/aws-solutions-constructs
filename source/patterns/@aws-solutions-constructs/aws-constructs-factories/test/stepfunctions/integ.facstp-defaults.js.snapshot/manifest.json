@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "36.0.24",
   "artifacts": {
     "facstpdefaultsIntegDefaultTestDeployAssertFD717592.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c7ecd4e8eaccb1e7f7416826559ce7fa1c58bb3a5fb8298e571ac6695d1d50b7.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c609c27e6e7fc30d831454d0ca67932fbbb0f7d66f09883e3fc1e4a0afe294b6.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -104,6 +104,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "targetStateMachinetestsm59897C57"
+          }
+        ],
+        "/facstp-defaults/target/ExecutionFailedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "targetExecutionFailedAlarm97DD1630"
+          }
+        ],
+        "/facstp-defaults/target/ExecutionThrottledAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "targetExecutionThrottledAlarmCAA85FD5"
+          }
+        ],
+        "/facstp-defaults/target/ExecutionAbortedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "targetExecutionAbortedAlarm70BA06C6"
           }
         ],
         "/facstp-defaults/lambdatest/ServiceRole/Resource": [

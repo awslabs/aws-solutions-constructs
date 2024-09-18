@@ -78,3 +78,65 @@ test('Existing Log Group', () => {
     LoggingConfiguration: Match.anyValue()
   });
 });
+
+test('check cloudwatch alarm prefix', () => {
+  const somePrefix = "randomString";
+  const stack = new Stack();
+  const factories = new ConstructsFactories(stack, 'target');
+  const taskOne = new sftasks.EvaluateExpression(stack, 'simpleTask', {
+    expression: '$.a + $.b'
+  });
+
+  const existingLogGroup = new logs.LogGroup(stack, 'existingLogGroup');
+
+  const startState = sfn.DefinitionBody.fromChainable(taskOne);
+
+  factories.stateMachineFactory('testsm', {
+    stateMachineProps: {
+      definitionBody: startState,
+      logs: {
+        destination: existingLogGroup
+      },
+    },
+    cloudWatchAlarmsPrefix: somePrefix
+  });
+
+  const template = Template.fromStack(stack);
+  const keys = Object.keys((template as any).template.Resources);
+  const regex = new RegExp(`${somePrefix}Execution`);
+  const alarms = keys.filter(alarmName => regex.test(alarmName));
+  expect(alarms.length).toEqual(3);
+});
+
+test('Deploy 2 state machines', () => {
+  const stack = new Stack();
+
+  const factories = new ConstructsFactories(stack, 'target');
+  const taskOne = new sftasks.EvaluateExpression(stack, 'simpleTask', {
+    expression: '$.a + $.b'
+  });
+
+  const startState = sfn.DefinitionBody.fromChainable(taskOne);
+
+  factories.stateMachineFactory('testsm', {
+    stateMachineProps: {
+      definitionBody: startState
+    },
+    cloudWatchAlarmsPrefix: "one"
+  });
+
+  const taskTwo = new sftasks.EvaluateExpression(stack, 'simpleTaskTwo', {
+    expression: '$.a + $.b'
+  });
+
+  const startStateTwo = sfn.DefinitionBody.fromChainable(taskTwo);
+  factories.stateMachineFactory('testsm-two', {
+    stateMachineProps: {
+      definitionBody: startStateTwo,
+    },
+    cloudWatchAlarmsPrefix: "two"
+  });
+
+  Template.fromStack(stack);
+  // No checks, as our main concern is this has no collisions
+});

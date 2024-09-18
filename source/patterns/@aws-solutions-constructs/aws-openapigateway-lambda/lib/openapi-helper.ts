@@ -163,8 +163,7 @@ export function ObtainApiDefinition(scope: Construct, props: ObtainApiDefinition
       apiDefinitionWriter.s3Key
     );
   } else if (apiRawInlineSpec) {
-    const apiInlineSpec = new apigateway.InlineApiDefinition(apiRawInlineSpec);
-    newApiDefinition = InlineTemplateWriter(apiInlineSpec.bind(scope), apiIntegrationUris);
+    newApiDefinition = InlineTemplateWriter(apiRawInlineSpec, apiIntegrationUris);
   } else {
     throw new Error("No definition provided (this code should be unreachable)");
   }
@@ -172,8 +171,8 @@ export function ObtainApiDefinition(scope: Construct, props: ObtainApiDefinition
   return newApiDefinition!;
 }
 
-function InlineTemplateWriter({ inlineDefinition }: apigateway.ApiDefinitionConfig, templateValues: resources.TemplateValue[]) {
-  let template = JSON.stringify(inlineDefinition);
+function InlineTemplateWriter(rawInlineSpec: any, templateValues: resources.TemplateValue[]) {
+  let template = JSON.stringify(rawInlineSpec);
 
   // This replicates logic in the template writer custom resource (resources/lib/template-writer-custom-resource/index.ts),
   // any logic changes should be made to both locations every time

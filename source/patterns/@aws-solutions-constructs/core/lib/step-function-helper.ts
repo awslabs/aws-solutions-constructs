@@ -31,12 +31,22 @@ import { Construct } from 'constructs';
 /*
  * the id parameter was added to buildStateMachine() long after the original implementation,
  * this value can be used for the new parameter and ensure behavior is the same.
+ * (if we just require an id, the state machine name will be changed and it will be a
+ * destructive change)
  */
 export const idPlaceholder = undefined;
 
+export interface BuildStateMacineProps {
+  readonly stateMachineProps: sfn.StateMachineProps,
+  readonly logGroupProps?: logs.LogGroupProps,
+  readonly createCloudWatchAlarms?: boolean,
+  readonly cloudWatchAlarmsPrefix?: string
+}
+
 export interface BuildStateMachineResponse {
   readonly stateMachine: sfn.StateMachine,
-  readonly logGroup: logs.ILogGroup
+  readonly logGroup: logs.ILogGroup,
+  readonly cloudWatchAlarms?: cloudwatch.Alarm[]
 }
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
@@ -45,22 +55,21 @@ export interface BuildStateMachineResponse {
  * @param scope - the construct to which the StateMachine should be attached to.
  * @param stateMachineProps - user-specified properties to override the default properties.
  */
-export function buildStateMachine(scope: Construct, id: string | undefined, stateMachineProps: sfn.StateMachineProps,
-  logGroupProps?: logs.LogGroupProps): BuildStateMachineResponse {
+export function buildStateMachine(scope: Construct, id: string | undefined, props: BuildStateMacineProps): BuildStateMachineResponse {
 
   let logGroup: logs.ILogGroup;
   let consolidatedStateMachineProps;
 
   // If they sent a logGroup in stateMachineProps
-  if (stateMachineProps.logs?.destination) {
-    logGroup = stateMachineProps.logs?.destination;
-    consolidatedStateMachineProps = stateMachineProps;
+  if (props.stateMachineProps.logs?.destination) {
+    logGroup = props.stateMachineProps.logs?.destination;
+    consolidatedStateMachineProps = props.stateMachineProps;
   } else {
     // Three possibilities
     // 1) logGroupProps not provided - create logGroupProps with just logGroupName
     // 2) logGroupProps provided with no logGroupName - override logGroupProps.logGroupName
     // 3) logGroupProps provided with logGroupName - pass unaltered logGroupProps
-    let consolidatedLogGroupProps = logGroupProps;
+    let consolidatedLogGroupProps = props.logGroupProps;
 
     if (!consolidatedLogGroupProps) {
       consolidatedLogGroupProps = {};
@@ -84,14 +93,14 @@ export function buildStateMachine(scope: Construct, id: string | undefined, stat
     logGroup = buildLogGroup(scope, `StateMachineLogGroup${(id ?? '')}`, consolidatedLogGroupProps);
 
     // Override the defaults with the user provided props
-    consolidatedStateMachineProps = overrideProps(smDefaults.DefaultStateMachineProps(logGroup), stateMachineProps);
+    consolidatedStateMachineProps = overrideProps(smDefaults.DefaultStateMachineProps(logGroup), props.stateMachineProps);
   }
 
   // Override the Cloudwatch permissions to make it more fine grained
   const newStateMachine = new sfn.StateMachine(scope, `StateMachine${(id ?? '')}`, consolidatedStateMachineProps);
 
   // If the client did not pass a role we got the default role and will trim the privileges
-  if (!stateMachineProps.role) {
+  if (!props.stateMachineProps.role) {
     const role = newStateMachine.node.findChild('Role') as iam.Role;
     const cfnDefaultPolicy = role.node.findChild('DefaultPolicy').node.defaultChild as any;
     // Override Cfn Nag warning W12: IAM policy should not allow * resource
@@ -102,18 +111,26 @@ export function buildStateMachine(scope: Construct, id: string | undefined, stat
       }
     ]);
   }
-  return { stateMachine: newStateMachine, logGroup };
+  const createCloudWatchAlarms: boolean = (props.createCloudWatchAlarms === undefined || props.createCloudWatchAlarms);
+  const cloudWatchAlarms = createCloudWatchAlarms ? buildStepFunctionCWAlarms(scope, props.cloudWatchAlarmsPrefix, newStateMachine) : undefined;
+
+  return {
+    stateMachine: newStateMachine,
+    logGroup,
+    cloudWatchAlarms
+  };
 }
 
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function buildStepFunctionCWAlarms(scope: Construct, sm: sfn.StateMachine): cloudwatch.Alarm[] {
+export function buildStepFunctionCWAlarms(scope: Construct, id: string | undefined, sm: sfn.StateMachine): cloudwatch.Alarm[] {
   // Setup CW Alarms for State Machine
   const alarms: cloudwatch.Alarm[] = new Array();
+  const prefix = id ?? "";
 
   // Sum of number of executions that failed is >= 1 for 5 minutes, 1 consecutive time
-  alarms.push(new cloudwatch.Alarm(scope, 'ExecutionFailedAlarm', {
+  alarms.push(new cloudwatch.Alarm(scope, `${prefix}ExecutionFailedAlarm`, {
     metric: sm.metricFailed({
       statistic: 'Sum',
       period: cdk.Duration.seconds(300),
@@ -125,7 +142,7 @@ export function buildStepFunctionCWAlarms(scope: Construct, sm: sfn.StateMachine
   }));
 
   // Sum of number of executions that failed maximum is >= 1 for 5 minute, 1 consecutive time
-  alarms.push(new cloudwatch.Alarm(scope, 'ExecutionThrottledAlarm', {
+  alarms.push(new cloudwatch.Alarm(scope, `${prefix}ExecutionThrottledAlarm`, {
     metric: sm.metricThrottled({
       statistic: 'Sum',
       period: cdk.Duration.seconds(300),
@@ -137,7 +154,7 @@ export function buildStepFunctionCWAlarms(scope: Construct, sm: sfn.StateMachine
   }));
 
   // Number of executions that aborted maximum is >= 1 for 5 minute, 1 consecutive time
-  alarms.push(new cloudwatch.Alarm(scope, 'ExecutionAbortedAlarm', {
+  alarms.push(new cloudwatch.Alarm(scope, `${prefix}ExecutionAbortedAlarm`, {
     metric: sm.metricAborted({
       statistic: 'Maximum',
       period: cdk.Duration.seconds(300),
@@ -149,4 +166,25 @@ export function buildStepFunctionCWAlarms(scope: Construct, sm: sfn.StateMachine
   }));
 
   return alarms;
+}
+
+export interface StateMachineProps {
+  readonly stateMachineProps: sfn.StateMachineProps;
+  readonly createCloudWatchAlarms?: boolean;
+  readonly cloudWatchAlarmsPrefix?: string
+  readonly logGroupProps?: logs.LogGroupProps;
+}
+
+export function CheckStateMachineProps(propsObject: StateMachineProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if ((propsObject.createCloudWatchAlarms === false) && propsObject.cloudWatchAlarmsPrefix) {
+    errorMessages += 'Error - cloudWatchAlarmsPrefix is invalid when createCloudWatchAlarms is false\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }
