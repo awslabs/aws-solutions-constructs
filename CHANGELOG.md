@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.70.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.69.0...v2.70.0) (2024-09-18)
+
+
+### Features
+
+* **aws-constructs-factories:** add cloudwatch alarms to factory output ([#1201](https://github.com/awslabs/aws-solutions-constructs/issues/1201)) ([5e49430](https://github.com/awslabs/aws-solutions-constructs/commit/5e49430c88a6e8a403fd0f35028d1619d03df8ed))
+
 ## [2.69.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.68.0...v2.69.0) (2024-09-11)
 
 Built on CDK v2.154.1
