@@ -32,13 +32,13 @@
     "constructs": "^10.0.0"
   },
   "devDependencies": {
-    "lerna": "^3.22.1",
+    "lerna": "8.1.8",
     "constructs": "^10.0.0",
     "aws-cdk-lib": "0.0.0"
   },
   "workspaces": {
     "packages": [
-      "./patterns/@aws-solutions-constructs/*"
+      "patterns/@aws-solutions-constructs/*"
     ],
     "nohoist": [
       "**/deepmerge",
