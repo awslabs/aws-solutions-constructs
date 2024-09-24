@@ -12,15 +12,20 @@
  */
 
 // Imports
-const aws = require('aws-sdk');
-const ddb = new aws.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
+
+
+const { DynamoDBDocument } = require('@aws-sdk/lib-dynamodb');
+const { DynamoDB } = require('@aws-sdk/client-dynamodb');
+
+const ddb = DynamoDBDocument.from(new DynamoDB({apiVersion: '2012-08-10'}));
 const { v4: uuidv4 } = require('uuid');
 
 // Handler
 exports.handler = async (event) => {
-    
+
   // Setup the parameters
   const req = JSON.parse(event.body);
+  const orderTime = new Date().getTime();
   const params = {
     TableName: process.env.DDB_TABLE_NAME,
     Item: {
@@ -31,16 +36,16 @@ exports.handler = async (event) => {
       orderStatus: 'OPEN',
       orderTotal: req.orderTotal,
       tipAmount: req.tipAmount,
-      timeOpened: new Date().getTime(),
+      timeOpened: orderTime,
       timeClosed: undefined,
       gsi1pk: 'order',
-      gsi1sk: `OPEN#${req.timeOpened}`,
+      gsi1sk: `OPEN#${orderTime}`,
     }
   };
 
   // Add the item to the database
   try {
-    const res = await ddb.put(params).promise();
+    const res = await ddb.put(params);
     return {
       statusCode: 200,
       isBase64Encoded: false,

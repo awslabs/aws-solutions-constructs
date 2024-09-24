@@ -12,8 +12,11 @@
  */
 
 // Imports
-const aws = require('aws-sdk');
-const sns = new aws.SNS();
+
+
+const { SNS } = require('@aws-sdk/client-sns');
+
+const sns = new SNS();
 const db_access = require('/opt/db-access');
 
 // Handler
