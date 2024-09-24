@@ -14,7 +14,7 @@
 // Imports
 
 
-const { SNS } = require('@aws-sdk/client-sns');
+const { SNS, PublishCommand } = require('@aws-sdk/client-sns');
 
 const sns = new SNS();
 const db_access = require('/opt/db-access');
@@ -38,25 +38,21 @@ exports.handler = async (event) => {
   scanResults.forEach((r) => {
     if (r.tipAmount !== undefined) {
       if (!servers.includes(r.createdBy)) {
-        tips[r.createdBy] = Number(r.tipAmount)
+        tips[r.createdBy] = Number(r.tipAmount);
+        servers.push(r.createdBy);
       } else {
-        tips[r.createdBy] = Number(tips[r.createdBy]) + Number(r.tipAmount)
+        tips[r.createdBy] = Number(tips[r.createdBy]) + Number(r.tipAmount);
       }
     }
   });
 
-  // Send a notification to each active server with tip information
-  Object.keys(tips).forEach((t) => {
-    // Message parameters
+  for (var i = 0; i<Object.keys(tips).length; i++) {
+    var key = Object.keys(tips)[i];
     const sns_params = {
-      Message: `${t}, your tip total for today is $${tips[t]}}`,
+      Message: `${key}, your tip total for today is $${tips[key]}`,
       TopicArn: process.env.SNS_TOPIC_ARN
     };
-    console.log(sns_params);
-    // Send the message
-    sns.publish(sns_params, function(err, data) {
-      if (err) console.log(err, err.stack); // an error occurred
-      else     console.log(data);           // successful response
-    });
-  })
+    await sns.send(new PublishCommand(sns_params));
+  }
+
 };
