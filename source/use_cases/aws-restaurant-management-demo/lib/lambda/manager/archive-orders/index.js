@@ -13,7 +13,6 @@
 
 // Imports
 
-
 const { DynamoDBDocument, DeleteCommand } = require('@aws-sdk/lib-dynamodb');
 const { DynamoDB } = require('@aws-sdk/client-dynamodb');
 const { S3 } = require('@aws-sdk/client-s3');

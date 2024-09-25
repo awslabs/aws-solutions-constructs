@@ -13,7 +13,6 @@
 
 // Imports
 
-
 const { DynamoDBDocument } = require("@aws-sdk/lib-dynamodb");
 const { DynamoDB } = require("@aws-sdk/client-dynamodb");
 const { SNS } = require("@aws-sdk/client-sns");

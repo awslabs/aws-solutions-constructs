@@ -13,7 +13,6 @@
 
 // Imports
 
-
 const { SFN } = require('@aws-sdk/client-sfn');
 
 const sfn = new SFN();

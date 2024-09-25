@@ -13,7 +13,6 @@
 
 // Imports
 
-
 const { SNS, PublishCommand } = require('@aws-sdk/client-sns');
 
 const sns = new SNS();
