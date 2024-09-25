@@ -13,7 +13,7 @@
 
 // Imports
 
-const { S3 } = require('@aws-sdk/client-s3');
+const { S3, PutObjectCommand } = require('@aws-sdk/client-s3');
 
 const s3 = new S3();
 const db_access = require('/opt/db-access');
@@ -62,7 +62,7 @@ exports.handler = async (event) => {
   
   // Save the report
   try {
-    await s3.putObject(s3_params);
+    await s3.send(new PutObjectCommand(s3_params));
     console.log(`Successfully saved the report to "${process.env.S3_BUCKET_NAME}"`);
     console.log(`Report filename: "${s3_params.Key}"`);
   } catch (err) {

@@ -14,7 +14,7 @@
 // Imports
 
 
-const { DynamoDBDocument } = require('@aws-sdk/lib-dynamodb');
+const { DynamoDBDocument, ScanCommand } = require('@aws-sdk/lib-dynamodb');
 const { DynamoDB } = require('@aws-sdk/client-dynamodb');
 
 const ddb = DynamoDBDocument.from(new DynamoDB({apiVersion: '2012-08-10'}));
@@ -36,7 +36,7 @@ exports.scanTable = async () => {
   // Perform the scan
   try {
     do {
-        items = await ddb.scan(params);
+        items = await ddb.send(new ScanCommand(params));
         items.Items.forEach((item) => scanResults.push(item));
         params.ExclusiveStartKey = items.LastEvaluatedKey;
     } while (typeof items.LastEvaluatedKey != "undefined");

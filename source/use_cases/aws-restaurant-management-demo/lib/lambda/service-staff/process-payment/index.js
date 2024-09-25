@@ -13,7 +13,7 @@
 
 // Imports
 
-const { DynamoDBDocument } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocument, UpdateCommand } = require("@aws-sdk/lib-dynamodb");
 const { DynamoDB } = require("@aws-sdk/client-dynamodb");
 
 const ddb = DynamoDBDocument.from(new DynamoDB({apiVersion: '2012-08-10'}));
@@ -40,7 +40,7 @@ exports.handler = async (event) => {
 
   // Add the item to the database
   try {
-    const result = await ddb.update(params);
+    const result = await ddb.send(new UpdateCommand(params));
     return {
       statusCode: 200,
       isBase64Encoded: false,

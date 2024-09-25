@@ -13,7 +13,7 @@
 
 // Imports
 
-const { S3 } = require('@aws-sdk/client-s3');
+const { S3, GetObjectCommand } = require('@aws-sdk/client-s3');
 
 const s3 = new S3();
 
@@ -32,7 +32,7 @@ exports.handler = async (event) => {
   
   // Get the report
   try {
-    const res = await s3.getObject(params);
+    const res = await s3.send(new GetObjectCommand(params));
     const parsed = await res.Body.transformToString();
     return {
       statusCode: 200,

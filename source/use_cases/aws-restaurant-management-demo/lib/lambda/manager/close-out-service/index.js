@@ -13,7 +13,7 @@
 
 // Imports
 
-const { SFN } = require('@aws-sdk/client-sfn');
+const { SFN, StartExecutionCommand } = require('@aws-sdk/client-sfn');
 
 const sfn = new SFN();
 
@@ -27,7 +27,7 @@ exports.handler = async (event) => {
   
   // Start the process
   try {
-    const res = await sfn.startExecution(params);
+    const res = await sfn.send(new StartExecutionCommand(params));
     console.log(res);
     return {
       statusCode: 200,
