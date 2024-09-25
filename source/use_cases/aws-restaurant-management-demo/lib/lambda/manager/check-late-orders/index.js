@@ -33,10 +33,11 @@ exports.handler = async (event) => {
   // Setup the parameters
   const params = {
     KeyConditionExpression:
-      "gsi1pk = :type and gsi1sk < :sortEnd",
+      "gsi1pk = :type and gsi1sk between :sortStart and :sortEnd",
     ExpressionAttributeValues: {
       ":type": "order",
-      ":sortEnd": `OPEN#${lateThreshold}`
+      ":sortEnd": `OPEN#${lateThreshold}`,
+      ":sortStart": "OPEN#0"
     },
     TableName: process.env.DDB_TABLE_NAME,
     IndexName: 'gsi1pk-gsi1sk-index'

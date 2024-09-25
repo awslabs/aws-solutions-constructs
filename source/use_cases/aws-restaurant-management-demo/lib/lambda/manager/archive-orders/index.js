@@ -14,7 +14,7 @@
 // Imports
 
 
-const { DynamoDBDocument } = require('@aws-sdk/lib-dynamodb');
+const { DynamoDBDocument, DeleteCommand } = require('@aws-sdk/lib-dynamodb');
 const { DynamoDB } = require('@aws-sdk/client-dynamodb');
 const { S3 } = require('@aws-sdk/client-s3');
 
@@ -61,17 +61,12 @@ exports.handler = async (event) => {
   // ---------------------------------------------------------------------------
   // Clear-out the table
   // ---------------------------------------------------------------------------
-  deleteEntries(scanResults);
+  await deleteEntries(scanResults);
 };
 
-/**
- * Method to delete an entry from the DynamoDB table using recursion. Takes an 
- * array of entries, pops the array and deletes the popped item before repeating
- * until the array is reduced to 0 indices.
- * @param {array} entries - an array of entries
- */
-const deleteEntries = (entries) => {
-  if (entries.length > 0) {
+
+async function deleteEntries(entries) {
+  while (entries.length > 0) {
     const entry = entries.pop();
     const params = {
       Key: {
@@ -79,13 +74,8 @@ const deleteEntries = (entries) => {
       },
       TableName: process.env.DDB_TABLE_NAME
     };
+    console.log(`deleting: ${entry.id}`);
     // Delete the entry
-    ddb.delete(params, function(err, data) {
-      if (err) console.log(err);
-      else {
-        console.log(data);
-        deleteEntries(entries);
-      }
-    });
+    await ddb.send(new DeleteCommand(params));
   }
 }
