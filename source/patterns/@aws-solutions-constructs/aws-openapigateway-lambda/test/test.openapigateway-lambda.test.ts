@@ -708,3 +708,43 @@ test('ObtainApiDefinition uses custom properties', () => {
     }
   });
 });
+
+test('Shared lambda function works', () => {
+  const stack = new Stack();
+
+  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
+    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
+  });
+
+  const construct = new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
+    apiDefinitionAsset,
+    apiIntegrations: [
+      {
+        id: 'MessagesHandler',
+        lambdaFunctionProps: {
+          runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+          handler: 'index.handler',
+          code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+        }
+      }
+    ]
+  });
+
+  const constructTwo = new OpenApiGatewayToLambda(stack, 'two-apigateway-lambda', {
+    apiDefinitionAsset,
+    apiIntegrations: [
+      {
+        id: 'MessagesHandler',
+        existingLambdaObj: construct.apiLambdaFunctions[0].lambdaFunction
+      }
+    ]
+  });
+
+  expect(construct.apiGateway).toBeDefined();
+  expect(construct.apiGatewayCloudWatchRole).toBeDefined();
+  expect(construct.apiGatewayLogGroup).toBeDefined();
+  expect(construct.apiLambdaFunctions.length).toEqual(1);
+  expect(construct.apiLambdaFunctions[0].id).toEqual('MessagesHandler');
+  expect(construct.apiLambdaFunctions[0].lambdaFunction).toBeDefined();
+  expect(construct.apiLambdaFunctions[0].lambdaFunction.functionArn).toEqual(constructTwo.apiLambdaFunctions[0].lambdaFunction.functionArn);
+});

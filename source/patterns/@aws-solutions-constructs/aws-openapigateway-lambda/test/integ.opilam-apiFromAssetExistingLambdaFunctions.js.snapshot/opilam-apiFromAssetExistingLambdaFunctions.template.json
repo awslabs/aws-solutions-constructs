@@ -146,7 +146,7 @@
     }
    }
   },
-  "LambdaFunctionPermitAPIGInvocation805898E4": {
+  "LambdaFunctionOpenApiGatewayToLambdaPermitAPIGInvocation9D043C93": {
    "Type": "AWS::Lambda::Permission",
    "Properties": {
     "Action": "lambda:InvokeFunction",
@@ -329,7 +329,7 @@
     }
    }
   },
-  "PhotosLambdaTestFromAssetPermitAPIGInvocation323F8FF0": {
+  "PhotosLambdaTestFromAssetOpenApiGatewayToLambdaPermitAPIGInvocationA0D5D04E": {
    "Type": "AWS::Lambda::Permission",
    "Properties": {
     "Action": "lambda:InvokeFunction",
@@ -649,7 +649,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "d9861ea7a45affd23e47a614acb2fddc6e45c20a891284c958187dafbf9ee36b.zip"
+     "S3Key": "4dc48ffba382f93077a1e6824599bbd4ceb6f91eb3d9442eca3b85bdb1a20b1e.zip"
     },
     "Description": "AWS CDK resource provider framework - onEvent (opilam-apiFromAssetExistingLambdaFunctions/OpenApiGatewayToLambda/ApiTemplateWriterProvider)",
     "Environment": {
