@@ -158,7 +158,7 @@ export class OpenApiGatewayToLambda extends Construct {
       // Redeploy the API any time one of the lambda functions changes
       this.apiGateway.latestDeployment?.addToLogicalId(apiLambdaFunction.lambdaFunction.functionArn);
       // Grant APIGW invocation rights for each lambda function
-      apiLambdaFunction.lambdaFunction.addPermission('PermitAPIGInvocation', {
+      apiLambdaFunction.lambdaFunction.addPermission(`${id}PermitAPIGInvocation`, {
         principal: new iam.ServicePrincipal('apigateway.amazonaws.com'),
         sourceArn: this.apiGateway.arnForExecuteApi('*')
       });
