@@ -12,8 +12,12 @@
  */
 
 // Imports
-const aws = require('aws-sdk');
-const ddb = new aws.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
+
+
+const { DynamoDBDocument, ScanCommand } = require('@aws-sdk/lib-dynamodb');
+const { DynamoDB } = require('@aws-sdk/client-dynamodb');
+
+const ddb = DynamoDBDocument.from(new DynamoDB({apiVersion: '2012-08-10'}));
 
 /**
  * Common function for scanning the database and getting all entries. Supports multiple functions within the system.
@@ -32,7 +36,7 @@ exports.scanTable = async () => {
   // Perform the scan
   try {
     do {
-        items = await ddb.scan(params).promise();
+        items = await ddb.send(new ScanCommand(params));
         items.Items.forEach((item) => scanResults.push(item));
         params.ExclusiveStartKey = items.LastEvaluatedKey;
     } while (typeof items.LastEvaluatedKey != "undefined");

@@ -12,8 +12,10 @@
  */
 
 // Imports
-const aws = require('aws-sdk');
-const s3 = new aws.S3();
+
+const { S3, GetObjectCommand } = require('@aws-sdk/client-s3');
+
+const s3 = new S3();
 
 exports.handler = async (event) => {
   
@@ -30,9 +32,8 @@ exports.handler = async (event) => {
   
   // Get the report
   try {
-    const res = await s3.getObject(params).promise();
-    const parsed = res.Body.toString('utf-8');
-    console.log(parsed);
+    const res = await s3.send(new GetObjectCommand(params));
+    const parsed = await res.Body.transformToString();
     return {
       statusCode: 200,
       isBase64Encoded: false,

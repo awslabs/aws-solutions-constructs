@@ -12,8 +12,10 @@
  */
 
 // Imports
-const aws = require('aws-sdk');
-const sfn = new aws.StepFunctions();
+
+const { SFN, StartExecutionCommand } = require('@aws-sdk/client-sfn');
+
+const sfn = new SFN();
 
 // Handler
 exports.handler = async (event) => {
@@ -25,7 +27,7 @@ exports.handler = async (event) => {
   
   // Start the process
   try {
-    const res = await sfn.startExecution(params).promise();
+    const res = await sfn.send(new StartExecutionCommand(params));
     console.log(res);
     return {
       statusCode: 200,

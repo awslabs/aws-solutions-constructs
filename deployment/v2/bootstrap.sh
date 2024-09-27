@@ -22,7 +22,8 @@ npm install -g aws-cdk
 
 # Install cfn-guard and rules
 export RULE_BUCKET=solutions-build-assets
-export RULE_FILE_NAME=aws-solutions-constructs.guard
+# export RULE_FILE_NAME=aws-solutions-constructs.guard
+export RULE_FILE_NAME=aws-solutions.guard
 
 mkdir -p  ~/.guard
 mkdir -p ~/.guard/bin
