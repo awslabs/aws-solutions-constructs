@@ -12,8 +12,11 @@
  */
 
 // Imports
-const aws = require('aws-sdk');
-const ddb = new aws.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
+
+const { DynamoDBDocument, QueryCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDB } = require("@aws-sdk/client-dynamodb");
+
+const ddb = DynamoDBDocument.from(new DynamoDB({apiVersion: '2012-08-10'}));
 
 // Handler
 exports.handler = async (event) => {
@@ -32,7 +35,7 @@ exports.handler = async (event) => {
 
   // Perform the query
   try {
-    const result = await ddb.query(params).promise();
+    const result = await ddb.send(new QueryCommand(params));
     // Extract the order JSON objects
     const orders = Array.from(result.Items);
     // Return the open orders

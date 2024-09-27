@@ -12,9 +12,13 @@
  */
 
 // Imports
-const aws = require('aws-sdk');
-const ddb = new aws.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
-const sns = new aws.SNS();
+
+const { DynamoDBDocument, QueryCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDB } = require("@aws-sdk/client-dynamodb");
+const { SNS, PublishCommand } = require("@aws-sdk/client-sns");
+
+const ddb = DynamoDBDocument.from(new DynamoDB({apiVersion: '2012-08-10'}));
+const sns = new SNS();
 
 // Handler
 exports.handler = async (event) => {
@@ -23,14 +27,15 @@ exports.handler = async (event) => {
   // that is still open is overdue
   const lateInterval = Number(process.env.LATE_ORDER_THRESHOLD) * 60000;
   const lateThreshold = Number(new Date().getTime()) - lateInterval;
-    
+
   // Setup the parameters
   const params = {
     KeyConditionExpression:
-      "gsi1pk = :type and gsi1sk < :sortEnd",
+      "gsi1pk = :type and gsi1sk between :sortStart and :sortEnd",
     ExpressionAttributeValues: {
       ":type": "order",
-      ":sortEnd": `OPEN#${lateThreshold}`
+      ":sortEnd": `OPEN#${lateThreshold}`,
+      ":sortStart": "OPEN#0"
     },
     TableName: process.env.DDB_TABLE_NAME,
     IndexName: 'gsi1pk-gsi1sk-index'
@@ -38,30 +43,38 @@ exports.handler = async (event) => {
 
   // Hold the late orders in an array
   let lateOrders = [];
-  console.log(lateOrders);
 
   // Query all late orders from the table
   try {
-    const result = await ddb.query(params).promise();
+    const result = await ddb.send(new QueryCommand(params));
     // Extract the order JSON objects
     const orders = Array.from(result.Items);
     // Save the open orders to the array
     lateOrders = orders;
   } catch (error) {
-    console.error(error);
+    console.error(`Query error: ${error}`);
   }
+  console.log(`Late Orders:\n${JSON.stringify(lateOrders)}`);
 
   // Send a notification if there is one or more orders running late
   if (lateOrders.length > 0) {
     // Message parameters
     const sns_params = {
-      Message: 'One or more orders are running late!',
+      Message: `One or more orders are running late:\n${FormatLateOrders(lateOrders)}`,
       TopicArn: process.env.SNS_TOPIC_ARN
     };
-    // Send the message
-    sns.publish(sns_params, function(err, data) {
-      if (err) console.log(err, err.stack); // an error occurred
-      else     console.log(data);           // successful response
-    });
+    try {
+      await sns.send(new PublishCommand(sns_params));
+    } catch (error) {
+      console.error(`SNS error: ${error}`);
+    }
   }
 };
+
+function FormatLateOrders(lateOrders) {
+  let formattedOrders = '';
+  lateOrders.forEach(order => {
+    formattedOrders += `${order.createdBy}: Table ${order.tableNumber}, order: ${order.items}\n`;
+  });
+  return formattedOrders;
+}
