@@ -1,5 +1,5 @@
 {
-  "version": "36.0.5",
+  "version": "38.0.1",
   "artifacts": {
     "opilamapiFromInlineDefinitionIntegDefaultTestDeployAssertCF0E111E.assets": {
       "type": "cdk:asset-manifest",
@@ -16,6 +16,7 @@
         "templateFile": "opilamapiFromInlineDefinitionIntegDefaultTestDeployAssertCF0E111E.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
+        "notificationArns": [],
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
         "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
@@ -64,9 +65,10 @@
         "templateFile": "opilam-apiFromInlineDefinition.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
+        "notificationArns": [],
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/97d284396586d88e440dcc04bdaa6eda5c6fea4dd2ba30fc55c76f9af72c20b8.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/880b32e5861284ef598b70d50c80e9160c9d4de49a7897118a74e4994a1600cb.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -100,10 +102,10 @@
             "data": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0E78C5307"
           }
         ],
-        "/opilam-apiFromInlineDefinition/OpenApiGatewayToLambda/MessagesHandlerApiFunction0/PermitAPIGInvocation": [
+        "/opilam-apiFromInlineDefinition/OpenApiGatewayToLambda/MessagesHandlerApiFunction0/OpenApiGatewayToLambdaPermitAPIGInvocation": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0PermitAPIGInvocationB70BC520"
+            "data": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0OpenApiGatewayToLambdaPermitAPIGInvocationC5ACBCDF"
           }
         ],
         "/opilam-apiFromInlineDefinition/OpenApiGatewayToLambda/PhotosHandlerApiFunction1ServiceRole/Resource": [
@@ -124,10 +126,10 @@
             "data": "OpenApiGatewayToLambdaPhotosHandlerApiFunction1C42C52E8"
           }
         ],
-        "/opilam-apiFromInlineDefinition/OpenApiGatewayToLambda/PhotosHandlerApiFunction1/PermitAPIGInvocation": [
+        "/opilam-apiFromInlineDefinition/OpenApiGatewayToLambda/PhotosHandlerApiFunction1/OpenApiGatewayToLambdaPermitAPIGInvocation": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaPhotosHandlerApiFunction1PermitAPIGInvocationA20E40FB"
+            "data": "OpenApiGatewayToLambdaPhotosHandlerApiFunction1OpenApiGatewayToLambdaPermitAPIGInvocation5B0B1DC7"
           }
         ],
         "/opilam-apiFromInlineDefinition/OpenApiGatewayToLambda/ApiAccessLogGroup/Resource": [
@@ -188,6 +190,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "OpenApiGatewayToLambdaMessagesHandlerApiFunction0PermitAPIGInvocationB70BC520": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0PermitAPIGInvocationB70BC520",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "OpenApiGatewayToLambdaPhotosHandlerApiFunction1PermitAPIGInvocationA20E40FB": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenApiGatewayToLambdaPhotosHandlerApiFunction1PermitAPIGInvocationA20E40FB",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },
