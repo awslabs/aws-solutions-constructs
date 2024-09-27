@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.71.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.70.0...v2.71.0) (2024-09-27)
 
+Build on CDK v2.160.0
+
+### Bug Fixes
+* **aws-openapigateway-lambda:** add id to permission resource id ([#1211](https://github.com/awslabs/aws-solutions-constructs/pull/1211))
+
+
 ## [2.70.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.69.0...v2.70.0) (2024-09-18)
 
 Built on CDK v2.154.1
