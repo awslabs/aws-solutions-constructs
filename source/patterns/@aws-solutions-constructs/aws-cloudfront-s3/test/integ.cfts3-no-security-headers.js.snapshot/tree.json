@@ -50,7 +50,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                      "version": "2.149.0"
+                      "version": "2.160.0"
                     }
                   },
                   "Policy": {
@@ -184,13 +184,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                          "version": "2.149.0"
+                          "version": "2.160.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                      "version": "2.149.0"
+                      "version": "2.160.0"
                     }
                   },
                   "AutoDeleteObjectsCustomResource": {
@@ -202,19 +202,19 @@
                         "path": "cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
-                          "version": "2.149.0"
+                          "version": "2.160.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CustomResource",
-                      "version": "2.149.0"
+                      "version": "2.160.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.Bucket",
-                  "version": "2.149.0"
+                  "version": "2.160.0"
                 }
               },
               "S3Bucket": {
@@ -273,7 +273,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                      "version": "2.149.0"
+                      "version": "2.160.0"
                     }
                   },
                   "Policy": {
@@ -372,7 +372,11 @@
                                         "Fn::Join": [
                                           "",
                                           [
-                                            "arn:aws:cloudfront::",
+                                            "arn:",
+                                            {
+                                              "Ref": "AWS::Partition"
+                                            },
+                                            ":cloudfront::",
                                             {
                                               "Ref": "AWS::AccountId"
                                             },
@@ -411,13 +415,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                          "version": "2.149.0"
+                          "version": "2.160.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                      "version": "2.149.0"
+                      "version": "2.160.0"
                     }
                   },
                   "AutoDeleteObjectsCustomResource": {
@@ -429,19 +433,19 @@
                         "path": "cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/S3Bucket/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
-                          "version": "2.149.0"
+                          "version": "2.160.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CustomResource",
-                      "version": "2.149.0"
+                      "version": "2.160.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.Bucket",
-                  "version": "2.149.0"
+                  "version": "2.160.0"
                 }
               },
               "CloudfrontLoggingBucketAccessLog": {
@@ -482,7 +486,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                      "version": "2.149.0"
+                      "version": "2.160.0"
                     }
                   },
                   "Policy": {
@@ -616,13 +620,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                          "version": "2.149.0"
+                          "version": "2.160.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                      "version": "2.149.0"
+                      "version": "2.160.0"
                     }
                   },
                   "AutoDeleteObjectsCustomResource": {
@@ -634,19 +638,19 @@
                         "path": "cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
-                          "version": "2.149.0"
+                          "version": "2.160.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CustomResource",
-                      "version": "2.149.0"
+                      "version": "2.160.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.Bucket",
-                  "version": "2.149.0"
+                  "version": "2.160.0"
                 }
               },
               "CloudfrontLoggingBucket": {
@@ -699,7 +703,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                      "version": "2.149.0"
+                      "version": "2.160.0"
                     }
                   },
                   "Policy": {
@@ -797,13 +801,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                          "version": "2.149.0"
+                          "version": "2.160.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                      "version": "2.149.0"
+                      "version": "2.160.0"
                     }
                   },
                   "AutoDeleteObjectsCustomResource": {
@@ -815,19 +819,19 @@
                         "path": "cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
-                          "version": "2.149.0"
+                          "version": "2.160.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CustomResource",
-                      "version": "2.149.0"
+                      "version": "2.160.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.Bucket",
-                  "version": "2.149.0"
+                  "version": "2.160.0"
                 }
               },
               "CloudFrontOac": {
@@ -867,7 +871,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_cloudfront.CfnOriginAccessControl",
-                  "version": "2.149.0"
+                  "version": "2.160.0"
                 }
               },
               "CloudFrontDistribution": {
@@ -927,19 +931,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_cloudfront.CfnDistribution",
-                      "version": "2.149.0"
+                      "version": "2.160.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_cloudfront.Distribution",
-                  "version": "2.149.0"
+                  "version": "2.160.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-cloudfront-s3.CloudFrontToS3",
-              "version": "2.62.0"
+              "version": "2.71.0"
             }
           },
           "LatestNodeRuntimeMap": {
@@ -947,7 +951,7 @@
             "path": "cfts3-no-security-headers/LatestNodeRuntimeMap",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnMapping",
-              "version": "2.149.0"
+              "version": "2.160.0"
             }
           },
           "Custom::S3AutoDeleteObjectsCustomResourceProvider": {
@@ -959,7 +963,7 @@
                 "path": "cfts3-no-security-headers/Custom::S3AutoDeleteObjectsCustomResourceProvider/Staging",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.149.0"
+                  "version": "2.160.0"
                 }
               },
               "Role": {
@@ -967,7 +971,7 @@
                 "path": "cfts3-no-security-headers/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.149.0"
+                  "version": "2.160.0"
                 }
               },
               "Handler": {
@@ -975,13 +979,13 @@
                 "path": "cfts3-no-security-headers/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.149.0"
+                  "version": "2.160.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResourceProviderBase",
-              "version": "2.149.0"
+              "version": "2.160.0"
             }
           },
           "Integ": {
@@ -1009,7 +1013,7 @@
                         "path": "cfts3-no-security-headers/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.149.0"
+                          "version": "2.160.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -1017,25 +1021,25 @@
                         "path": "cfts3-no-security-headers/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.149.0"
+                          "version": "2.160.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.149.0"
+                      "version": "2.160.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.149.0-alpha.0"
+                  "version": "2.160.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.149.0-alpha.0"
+              "version": "2.160.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -1043,7 +1047,7 @@
             "path": "cfts3-no-security-headers/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.149.0"
+              "version": "2.160.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -1051,13 +1055,13 @@
             "path": "cfts3-no-security-headers/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.149.0"
+              "version": "2.160.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.149.0"
+          "version": "2.160.0"
         }
       },
       "Tree": {
@@ -1071,7 +1075,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.149.0"
+      "version": "2.160.0"
     }
   }
 }
