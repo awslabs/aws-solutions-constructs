@@ -198,7 +198,7 @@
     "Name": "RestApi"
    }
   },
-  "testapigatewaysqsRestApiDeploymentCA19D3729ed4c2c9e3bb9d0e8c5b1e8d0c261087": {
+  "testapigatewaysqsRestApiDeploymentCA19D372a533abf5414c204f290523aaae9a51c0": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Automatically created by the RestApi construct",
@@ -237,7 +237,7 @@
      "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
     },
     "DeploymentId": {
-     "Ref": "testapigatewaysqsRestApiDeploymentCA19D3729ed4c2c9e3bb9d0e8c5b1e8d0c261087"
+     "Ref": "testapigatewaysqsRestApiDeploymentCA19D372a533abf5414c204f290523aaae9a51c0"
     },
     "MethodSettings": [
      {
@@ -264,7 +264,7 @@
   "testapigatewaysqsRestApiPOST26D15DBA": {
    "Type": "AWS::ApiGateway::Method",
    "Properties": {
-    "AuthorizationType": "NONE",
+    "AuthorizationType": "AWS_IAM",
     "HttpMethod": "POST",
     "Integration": {
      "Credentials": {
@@ -360,7 +360,7 @@
   "testapigatewaysqsRestApiGET4AA265C9": {
    "Type": "AWS::ApiGateway::Method",
    "Properties": {
-    "AuthorizationType": "NONE",
+    "AuthorizationType": "AWS_IAM",
     "HttpMethod": "GET",
     "Integration": {
      "Credentials": {

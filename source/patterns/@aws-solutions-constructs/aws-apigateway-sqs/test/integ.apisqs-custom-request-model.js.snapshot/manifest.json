@@ -68,7 +68,7 @@
         "notificationArns": [],
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8dfc8f790903aa2e6022f12acc712c9328f9f6efe56cea59e84f50b1ca0462f8.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0194d8d93f7ef8918132d1d509ff87c71a2fb5f6ebf3228bc6533ce637e6dc22.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -123,7 +123,7 @@
         "/apisqs-custom-request-model/test-api-gateway-sqs/RestApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsRestApiDeploymentCA19D3729ed4c2c9e3bb9d0e8c5b1e8d0c261087"
+            "data": "testapigatewaysqsRestApiDeploymentCA19D372a533abf5414c204f290523aaae9a51c0"
           }
         ],
         "/apisqs-custom-request-model/test-api-gateway-sqs/RestApi/DeploymentStage.prod/Resource": [
@@ -210,10 +210,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testapigatewaysqsRestApiDeploymentCA19D372a533abf5414c204f290523aaae9a51c0": [
+        "testapigatewaysqsRestApiDeploymentCA19D3729ed4c2c9e3bb9d0e8c5b1e8d0c261087": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsRestApiDeploymentCA19D372a533abf5414c204f290523aaae9a51c0",
+            "data": "testapigatewaysqsRestApiDeploymentCA19D3729ed4c2c9e3bb9d0e8c5b1e8d0c261087",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
