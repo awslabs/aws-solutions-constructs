@@ -798,7 +798,7 @@ test('Construct uses custom readMethodResponses property', () => {
   });
 });
 
-test('Construct uses mulitple custom createModels', () => {
+test('Construct uses mulitple custom messageSchema', () => {
   const stack = new Stack();
   const props: ApiGatewayToSqsProps = {
     allowCreateOperation: true,

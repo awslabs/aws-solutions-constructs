@@ -320,11 +320,10 @@ export class ApiGatewayToSqs extends Construct {
     const createRequestTemplate = props.createRequestTemplate ?? this.defaultCreateRequestTemplate;
     if (props.allowCreateOperation && props.allowCreateOperation === true) {
       let createMethodOptions: api.MethodOptions = {};
-      let requestModels: any;
 
       // If the client supplied model definitions, set requestModels
       if (props.messageSchema) {
-        requestModels = {};
+        const requestModels: { [contentType: string]: api.IModel; } = {};
         Object.keys(props.messageSchema).forEach(key => {
           const contentType = key;
           const schema = props.messageSchema![key];

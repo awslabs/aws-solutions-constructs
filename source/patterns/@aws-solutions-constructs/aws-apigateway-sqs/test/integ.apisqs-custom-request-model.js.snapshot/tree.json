@@ -339,7 +339,7 @@
                               "format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
                             },
                             "deploymentId": {
-                              "Ref": "testapigatewaysqsRestApiDeploymentCA19D372cf8c79f036e9296cd487915d52c99ca9"
+                              "Ref": "testapigatewaysqsRestApiDeploymentCA19D3729ed4c2c9e3bb9d0e8c5b1e8d0c261087"
                             },
                             "methodSettings": [
                               {
@@ -397,7 +397,7 @@
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
                               "aws:cdk:cloudformation:props": {
-                                "authorizationType": "AWS_IAM",
+                                "authorizationType": "NONE",
                                 "httpMethod": "POST",
                                 "integration": {
                                   "type": "AWS",
@@ -471,6 +471,9 @@
                                 "requestModels": {
                                   "application/json": {
                                     "Ref": "testapigatewaysqstestapigatewaysqsmodelapplicationjson94EAC0E9"
+                                  },
+                                  "application/text": {
+                                    "Ref": "testapigatewaysqstestapigatewaysqsmodelapplicationtext6A72CC47"
                                   }
                                 },
                                 "requestValidatorId": {
@@ -508,7 +511,7 @@
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
                               "aws:cdk:cloudformation:props": {
-                                "authorizationType": "AWS_IAM",
+                                "authorizationType": "NONE",
                                 "httpMethod": "GET",
                                 "integration": {
                                   "type": "AWS",
@@ -912,11 +915,52 @@
                   "fqn": "aws-cdk-lib.aws_apigateway.Model",
                   "version": "2.160.0"
                 }
+              },
+              "test-api-gateway-sqs-model-applicationtext": {
+                "id": "test-api-gateway-sqs-model-applicationtext",
+                "path": "apisqs-custom-request-model/test-api-gateway-sqs/test-api-gateway-sqs-model-applicationtext",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/test-api-gateway-sqs-model-applicationtext/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGateway::Model",
+                      "aws:cdk:cloudformation:props": {
+                        "contentType": "application/text",
+                        "restApiId": {
+                          "Ref": "testapigatewaysqsRestApi557C7EDC"
+                        },
+                        "schema": {
+                          "$schema": "http://json-schema.org/draft-04/schema#",
+                          "title": "pollResponse",
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "textstate": {
+                              "type": "string"
+                            },
+                            "textgreeting": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.CfnModel",
+                      "version": "2.160.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.Model",
+                  "version": "2.160.0"
+                }
               }
             },
             "constructInfo": {
-              "fqn": "@aws-solutions-constructs/aws-apigateway-sqs.ApiGatewayToSqs",
-              "version": "2.71.0"
+              "fqn": "constructs.Construct",
+              "version": "10.3.0"
             }
           },
           "Integ": {

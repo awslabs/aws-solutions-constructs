@@ -36,6 +36,16 @@ const props: ApiGatewayToSqsProps = {
         state: { type: api.JsonSchemaType.STRING },
         greeting: { type: api.JsonSchemaType.STRING }
       }
+    },
+    "application/text": {
+      schema: api.JsonSchemaVersion.DRAFT4,
+      title: 'pollResponse',
+      type: api.JsonSchemaType.OBJECT,
+      additionalProperties: false,
+      properties: {
+        textstate: { type: api.JsonSchemaType.STRING },
+        textgreeting: { type: api.JsonSchemaType.STRING }
+      }
     }
   }
 };

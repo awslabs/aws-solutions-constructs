@@ -198,7 +198,7 @@
     "Name": "RestApi"
    }
   },
-  "testapigatewaysqsRestApiDeploymentCA19D372cf8c79f036e9296cd487915d52c99ca9": {
+  "testapigatewaysqsRestApiDeploymentCA19D3729ed4c2c9e3bb9d0e8c5b1e8d0c261087": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Automatically created by the RestApi construct",
@@ -210,7 +210,8 @@
     "testapigatewaysqsRestApiapisqscustomrequestmodeltestapigatewaysqsRestApiPOSTValidator83A54BA4C98634F8",
     "testapigatewaysqsRestApiGET4AA265C9",
     "testapigatewaysqsRestApiPOST26D15DBA",
-    "testapigatewaysqstestapigatewaysqsmodelapplicationjson94EAC0E9"
+    "testapigatewaysqstestapigatewaysqsmodelapplicationjson94EAC0E9",
+    "testapigatewaysqstestapigatewaysqsmodelapplicationtext6A72CC47"
    ],
    "Metadata": {
     "cfn_nag": {
@@ -236,7 +237,7 @@
      "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
     },
     "DeploymentId": {
-     "Ref": "testapigatewaysqsRestApiDeploymentCA19D372cf8c79f036e9296cd487915d52c99ca9"
+     "Ref": "testapigatewaysqsRestApiDeploymentCA19D3729ed4c2c9e3bb9d0e8c5b1e8d0c261087"
     },
     "MethodSettings": [
      {
@@ -263,7 +264,7 @@
   "testapigatewaysqsRestApiPOST26D15DBA": {
    "Type": "AWS::ApiGateway::Method",
    "Properties": {
-    "AuthorizationType": "AWS_IAM",
+    "AuthorizationType": "NONE",
     "HttpMethod": "POST",
     "Integration": {
      "Credentials": {
@@ -337,6 +338,9 @@
     "RequestModels": {
      "application/json": {
       "Ref": "testapigatewaysqstestapigatewaysqsmodelapplicationjson94EAC0E9"
+     },
+     "application/text": {
+      "Ref": "testapigatewaysqstestapigatewaysqsmodelapplicationtext6A72CC47"
      }
     },
     "RequestValidatorId": {
@@ -356,7 +360,7 @@
   "testapigatewaysqsRestApiGET4AA265C9": {
    "Type": "AWS::ApiGateway::Method",
    "Properties": {
-    "AuthorizationType": "AWS_IAM",
+    "AuthorizationType": "NONE",
     "HttpMethod": "GET",
     "Integration": {
      "Credentials": {
@@ -610,6 +614,29 @@
        "type": "string"
       },
       "greeting": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "testapigatewaysqstestapigatewaysqsmodelapplicationtext6A72CC47": {
+   "Type": "AWS::ApiGateway::Model",
+   "Properties": {
+    "ContentType": "application/text",
+    "RestApiId": {
+     "Ref": "testapigatewaysqsRestApi557C7EDC"
+    },
+    "Schema": {
+     "$schema": "http://json-schema.org/draft-04/schema#",
+     "title": "pollResponse",
+     "type": "object",
+     "additionalProperties": false,
+     "properties": {
+      "textstate": {
+       "type": "string"
+      },
+      "textgreeting": {
        "type": "string"
       }
      }
