@@ -1,7 +1,7 @@
 {
  "Description": "Integration Test for aws-apigateway-sqs",
  "Resources": {
-  "testapigatewaysqsintegrationresponsesqueuedlqD02C49B3": {
+  "testapigatewaysqsqueuedlq8A515F77": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
     "KmsMasterKeyId": "alias/aws/sqs"
@@ -9,7 +9,7 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "testapigatewaysqsintegrationresponsesqueuedlqPolicy65790213": {
+  "testapigatewaysqsqueuedlqPolicyB341351F": {
    "Type": "AWS::SQS::QueuePolicy",
    "Properties": {
     "PolicyDocument": {
@@ -45,7 +45,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testapigatewaysqsintegrationresponsesqueuedlqD02C49B3",
+         "testapigatewaysqsqueuedlq8A515F77",
          "Arn"
         ]
        },
@@ -64,7 +64,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testapigatewaysqsintegrationresponsesqueuedlqD02C49B3",
+         "testapigatewaysqsqueuedlq8A515F77",
          "Arn"
         ]
        },
@@ -75,19 +75,19 @@
     },
     "Queues": [
      {
-      "Ref": "testapigatewaysqsintegrationresponsesqueuedlqD02C49B3"
+      "Ref": "testapigatewaysqsqueuedlq8A515F77"
      }
     ]
    }
   },
-  "testapigatewaysqsintegrationresponsesqueueF9FA04EF": {
+  "testapigatewaysqsqueue8EDC3CAF": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
     "KmsMasterKeyId": "alias/aws/sqs",
     "RedrivePolicy": {
      "deadLetterTargetArn": {
       "Fn::GetAtt": [
-       "testapigatewaysqsintegrationresponsesqueuedlqD02C49B3",
+       "testapigatewaysqsqueuedlq8A515F77",
        "Arn"
       ]
      },
@@ -97,7 +97,7 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "testapigatewaysqsintegrationresponsesqueuePolicy22D3DE99": {
+  "testapigatewaysqsqueuePolicy8623EDE8": {
    "Type": "AWS::SQS::QueuePolicy",
    "Properties": {
     "PolicyDocument": {
@@ -133,7 +133,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testapigatewaysqsintegrationresponsesqueueF9FA04EF",
+         "testapigatewaysqsqueue8EDC3CAF",
          "Arn"
         ]
        },
@@ -152,7 +152,7 @@
        },
        "Resource": {
         "Fn::GetAtt": [
-         "testapigatewaysqsintegrationresponsesqueueF9FA04EF",
+         "testapigatewaysqsqueue8EDC3CAF",
          "Arn"
         ]
        },
@@ -163,12 +163,12 @@
     },
     "Queues": [
      {
-      "Ref": "testapigatewaysqsintegrationresponsesqueueF9FA04EF"
+      "Ref": "testapigatewaysqsqueue8EDC3CAF"
      }
     ]
    }
   },
-  "testapigatewaysqsintegrationresponsesApiAccessLogGroup12574495": {
+  "testapigatewaysqsApiAccessLogGroup37AB0350": {
    "Type": "AWS::Logs::LogGroup",
    "UpdateReplacePolicy": "Retain",
    "DeletionPolicy": "Retain",
@@ -187,7 +187,7 @@
     }
    }
   },
-  "testapigatewaysqsintegrationresponsesRestApi3BE7E402": {
+  "testapigatewaysqsRestApi557C7EDC": {
    "Type": "AWS::ApiGateway::RestApi",
    "Properties": {
     "EndpointConfiguration": {
@@ -198,17 +198,19 @@
     "Name": "RestApi"
    }
   },
-  "testapigatewaysqsintegrationresponsesRestApiDeployment974922353e4806ac8e022d69559519d119a6f456": {
+  "testapigatewaysqsRestApiDeploymentCA19D372cf8c79f036e9296cd487915d52c99ca9": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Automatically created by the RestApi construct",
     "RestApiId": {
-     "Ref": "testapigatewaysqsintegrationresponsesRestApi3BE7E402"
+     "Ref": "testapigatewaysqsRestApi557C7EDC"
     }
    },
    "DependsOn": [
-    "testapigatewaysqsintegrationresponsesRestApiGETD105D1F1",
-    "testapigatewaysqsintegrationresponsesRestApiPOSTFBB6D4FB"
+    "testapigatewaysqsRestApiapisqscustomrequestmodeltestapigatewaysqsRestApiPOSTValidator83A54BA4C98634F8",
+    "testapigatewaysqsRestApiGET4AA265C9",
+    "testapigatewaysqsRestApiPOST26D15DBA",
+    "testapigatewaysqstestapigatewaysqsmodelapplicationjson94EAC0E9"
    ],
    "Metadata": {
     "cfn_nag": {
@@ -221,20 +223,20 @@
     }
    }
   },
-  "testapigatewaysqsintegrationresponsesRestApiDeploymentStageprod07200D02": {
+  "testapigatewaysqsRestApiDeploymentStageprod1C007159": {
    "Type": "AWS::ApiGateway::Stage",
    "Properties": {
     "AccessLogSetting": {
      "DestinationArn": {
       "Fn::GetAtt": [
-       "testapigatewaysqsintegrationresponsesApiAccessLogGroup12574495",
+       "testapigatewaysqsApiAccessLogGroup37AB0350",
        "Arn"
       ]
      },
      "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
     },
     "DeploymentId": {
-     "Ref": "testapigatewaysqsintegrationresponsesRestApiDeployment974922353e4806ac8e022d69559519d119a6f456"
+     "Ref": "testapigatewaysqsRestApiDeploymentCA19D372cf8c79f036e9296cd487915d52c99ca9"
     },
     "MethodSettings": [
      {
@@ -245,7 +247,7 @@
      }
     ],
     "RestApiId": {
-     "Ref": "testapigatewaysqsintegrationresponsesRestApi3BE7E402"
+     "Ref": "testapigatewaysqsRestApi557C7EDC"
     },
     "StageName": "prod",
     "TracingEnabled": true
@@ -258,7 +260,7 @@
     }
    }
   },
-  "testapigatewaysqsintegrationresponsesRestApiPOSTFBB6D4FB": {
+  "testapigatewaysqsRestApiPOST26D15DBA": {
    "Type": "AWS::ApiGateway::Method",
    "Properties": {
     "AuthorizationType": "AWS_IAM",
@@ -266,17 +268,21 @@
     "Integration": {
      "Credentials": {
       "Fn::GetAtt": [
-       "testapigatewaysqsintegrationresponsesapigatewayrole6FC88B17",
+       "testapigatewaysqsapigatewayrole07110CD6",
        "Arn"
       ]
      },
      "IntegrationHttpMethod": "POST",
      "IntegrationResponses": [
       {
+       "StatusCode": "200"
+      },
+      {
        "ResponseTemplates": {
-        "text/html": "OK"
+        "text/html": "Error"
        },
-       "StatusCode": "201"
+       "SelectionPattern": "500",
+       "StatusCode": "500"
       }
      ],
      "PassthroughBehavior": "NEVER",
@@ -306,7 +312,7 @@
         "/",
         {
          "Fn::GetAtt": [
-          "testapigatewaysqsintegrationresponsesqueueF9FA04EF",
+          "testapigatewaysqsqueue8EDC3CAF",
           "QueueName"
          ]
         }
@@ -316,21 +322,38 @@
     },
     "MethodResponses": [
      {
-      "StatusCode": "201"
+      "ResponseParameters": {
+       "method.response.header.Content-Type": true
+      },
+      "StatusCode": "200"
+     },
+     {
+      "ResponseParameters": {
+       "method.response.header.Content-Type": true
+      },
+      "StatusCode": "500"
      }
     ],
+    "RequestModels": {
+     "application/json": {
+      "Ref": "testapigatewaysqstestapigatewaysqsmodelapplicationjson94EAC0E9"
+     }
+    },
+    "RequestValidatorId": {
+     "Ref": "testapigatewaysqsRestApiapisqscustomrequestmodeltestapigatewaysqsRestApiPOSTValidator83A54BA4C98634F8"
+    },
     "ResourceId": {
      "Fn::GetAtt": [
-      "testapigatewaysqsintegrationresponsesRestApi3BE7E402",
+      "testapigatewaysqsRestApi557C7EDC",
       "RootResourceId"
      ]
     },
     "RestApiId": {
-     "Ref": "testapigatewaysqsintegrationresponsesRestApi3BE7E402"
+     "Ref": "testapigatewaysqsRestApi557C7EDC"
     }
    }
   },
-  "testapigatewaysqsintegrationresponsesRestApiGETD105D1F1": {
+  "testapigatewaysqsRestApiGET4AA265C9": {
    "Type": "AWS::ApiGateway::Method",
    "Properties": {
     "AuthorizationType": "AWS_IAM",
@@ -338,17 +361,21 @@
     "Integration": {
      "Credentials": {
       "Fn::GetAtt": [
-       "testapigatewaysqsintegrationresponsesapigatewayrole6FC88B17",
+       "testapigatewaysqsapigatewayrole07110CD6",
        "Arn"
       ]
      },
      "IntegrationHttpMethod": "POST",
      "IntegrationResponses": [
       {
-       "ResponseTemplates": {
-        "text/html": "OK"
-       },
        "StatusCode": "200"
+      },
+      {
+       "ResponseTemplates": {
+        "text/html": "Error"
+       },
+       "SelectionPattern": "500",
+       "StatusCode": "500"
       }
      ],
      "PassthroughBehavior": "NEVER",
@@ -378,7 +405,7 @@
         "/",
         {
          "Fn::GetAtt": [
-          "testapigatewaysqsintegrationresponsesqueueF9FA04EF",
+          "testapigatewaysqsqueue8EDC3CAF",
           "QueueName"
          ]
         }
@@ -388,40 +415,55 @@
     },
     "MethodResponses": [
      {
+      "ResponseParameters": {
+       "method.response.header.Content-Type": true
+      },
       "StatusCode": "200"
      },
      {
-      "StatusCode": "403"
+      "ResponseParameters": {
+       "method.response.header.Content-Type": true
+      },
+      "StatusCode": "500"
      }
     ],
     "ResourceId": {
      "Fn::GetAtt": [
-      "testapigatewaysqsintegrationresponsesRestApi3BE7E402",
+      "testapigatewaysqsRestApi557C7EDC",
       "RootResourceId"
      ]
     },
     "RestApiId": {
-     "Ref": "testapigatewaysqsintegrationresponsesRestApi3BE7E402"
+     "Ref": "testapigatewaysqsRestApi557C7EDC"
     }
    }
   },
-  "testapigatewaysqsintegrationresponsesRestApiUsagePlan4172DBF8": {
+  "testapigatewaysqsRestApiUsagePlan2295EB95": {
    "Type": "AWS::ApiGateway::UsagePlan",
    "Properties": {
     "ApiStages": [
      {
       "ApiId": {
-       "Ref": "testapigatewaysqsintegrationresponsesRestApi3BE7E402"
+       "Ref": "testapigatewaysqsRestApi557C7EDC"
       },
       "Stage": {
-       "Ref": "testapigatewaysqsintegrationresponsesRestApiDeploymentStageprod07200D02"
+       "Ref": "testapigatewaysqsRestApiDeploymentStageprod1C007159"
       },
       "Throttle": {}
      }
     ]
    }
   },
-  "testapigatewaysqsintegrationresponsesLambdaRestApiCloudWatchRoleC95A1D3B": {
+  "testapigatewaysqsRestApiapisqscustomrequestmodeltestapigatewaysqsRestApiPOSTValidator83A54BA4C98634F8": {
+   "Type": "AWS::ApiGateway::RequestValidator",
+   "Properties": {
+    "RestApiId": {
+     "Ref": "testapigatewaysqsRestApi557C7EDC"
+    },
+    "ValidateRequestBody": true
+   }
+  },
+  "testapigatewaysqsLambdaRestApiCloudWatchRoleF10D0F78": {
    "Type": "AWS::IAM::Role",
    "Properties": {
     "AssumeRolePolicyDocument": {
@@ -487,21 +529,21 @@
     }
    }
   },
-  "testapigatewaysqsintegrationresponsesLambdaRestApiAccountEFC75D59": {
+  "testapigatewaysqsLambdaRestApiAccountACC6BE82": {
    "Type": "AWS::ApiGateway::Account",
    "Properties": {
     "CloudWatchRoleArn": {
      "Fn::GetAtt": [
-      "testapigatewaysqsintegrationresponsesLambdaRestApiCloudWatchRoleC95A1D3B",
+      "testapigatewaysqsLambdaRestApiCloudWatchRoleF10D0F78",
       "Arn"
      ]
     }
    },
    "DependsOn": [
-    "testapigatewaysqsintegrationresponsesRestApi3BE7E402"
+    "testapigatewaysqsRestApi557C7EDC"
    ]
   },
-  "testapigatewaysqsintegrationresponsesapigatewayrole6FC88B17": {
+  "testapigatewaysqsapigatewayrole07110CD6": {
    "Type": "AWS::IAM::Role",
    "Properties": {
     "AssumeRolePolicyDocument": {
@@ -518,7 +560,7 @@
     }
    }
   },
-  "testapigatewaysqsintegrationresponsesapigatewayroleDefaultPolicyB4D5EFE9": {
+  "testapigatewaysqsapigatewayroleDefaultPolicy052E7AD5": {
    "Type": "AWS::IAM::Policy",
    "Properties": {
     "PolicyDocument": {
@@ -531,7 +573,7 @@
        "Effect": "Allow",
        "Resource": {
         "Fn::GetAtt": [
-         "testapigatewaysqsintegrationresponsesqueueF9FA04EF",
+         "testapigatewaysqsqueue8EDC3CAF",
          "Arn"
         ]
        }
@@ -539,24 +581,51 @@
      ],
      "Version": "2012-10-17"
     },
-    "PolicyName": "testapigatewaysqsintegrationresponsesapigatewayroleDefaultPolicyB4D5EFE9",
+    "PolicyName": "testapigatewaysqsapigatewayroleDefaultPolicy052E7AD5",
     "Roles": [
      {
-      "Ref": "testapigatewaysqsintegrationresponsesapigatewayrole6FC88B17"
+      "Ref": "testapigatewaysqsapigatewayrole07110CD6"
      }
     ]
+   }
+  },
+  "testapigatewaysqstestapigatewaysqsmodelapplicationjson94EAC0E9": {
+   "Type": "AWS::ApiGateway::Model",
+   "Properties": {
+    "ContentType": "application/json",
+    "RestApiId": {
+     "Ref": "testapigatewaysqsRestApi557C7EDC"
+    },
+    "Schema": {
+     "$schema": "http://json-schema.org/draft-04/schema#",
+     "title": "pollResponse",
+     "type": "object",
+     "required": [
+      "state",
+      "greeting"
+     ],
+     "additionalProperties": false,
+     "properties": {
+      "state": {
+       "type": "string"
+      },
+      "greeting": {
+       "type": "string"
+      }
+     }
+    }
    }
   }
  },
  "Outputs": {
-  "testapigatewaysqsintegrationresponsesRestApiEndpointEBC579CE": {
+  "testapigatewaysqsRestApiEndpointD98015FF": {
    "Value": {
     "Fn::Join": [
      "",
      [
       "https://",
       {
-       "Ref": "testapigatewaysqsintegrationresponsesRestApi3BE7E402"
+       "Ref": "testapigatewaysqsRestApi557C7EDC"
       },
       ".execute-api.",
       {
@@ -568,7 +637,7 @@
       },
       "/",
       {
-       "Ref": "testapigatewaysqsintegrationresponsesRestApiDeploymentStageprod07200D02"
+       "Ref": "testapigatewaysqsRestApiDeploymentStageprod1C007159"
       },
       "/"
      ]

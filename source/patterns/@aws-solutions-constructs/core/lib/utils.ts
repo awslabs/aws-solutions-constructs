@@ -184,7 +184,7 @@ export function generatePhysicalName(
 /**
  * Removes all non-alphanumeric characters in a string.
  */
-function removeNonAlphanumeric(s: string) {
+export function removeNonAlphanumeric(s: string) {
   return s.replace(/[^A-Za-z0-9]/g, '');
 }
 

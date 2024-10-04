@@ -226,6 +226,29 @@ export interface ApiGatewayToSqsProps {
    * @default - None
    */
   readonly encryptionKeyProps?: kms.KeyProps;
+  /**
+   * Optional schema to define format of incoming message in API request body. Example:
+   * {
+   *  "application/json": {
+   *    schema: api.JsonSchemaVersion.DRAFT4,
+   *    title: 'pollResponse',
+   *    type: api.JsonSchemaType.OBJECT,
+   *    required: ['firstProperty', 'antotherProperty'],
+   *    additionalProperties: false,
+   *    properties: {
+   *      firstProperty: { type: api.JsonSchemaType.STRING },
+   *      antotherProperty: { type: api.JsonSchemaType.STRING }
+   *    }
+   *  }
+   *
+   * Only relevant for create operation, if allowCreateOperation is not true, then supplying this
+   * is an error.
+   *
+   * Sending this value causes this construct to turn on validation for the request body.
+   *
+   * @default - None
+   */
+  readonly messageSchema?: { [contentType: string]: api.JsonSchema; };
 }
 
 /**
@@ -257,7 +280,7 @@ export class ApiGatewayToSqs extends Construct {
 
     if (this.CheckCreateRequestProps(props)) {
       throw new Error(`The 'allowCreateOperation' property must be set to true when setting any of the following: ` +
-        `'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses'`);
+        `'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses', 'messageSchema'`);
     }
     if (this.CheckReadRequestProps(props)) {
       throw new Error(`The 'allowReadOperation' property must be set to true or undefined when setting any of the following: ` +
@@ -265,7 +288,7 @@ export class ApiGatewayToSqs extends Construct {
     }
     if (this.CheckDeleteRequestProps(props)) {
       throw new Error(`The 'allowDeleteOperation' property must be set to true when setting any of the following: ` +
-      `'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'`);
+        `'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'`);
     }
 
     // Setup the queue
@@ -296,7 +319,36 @@ export class ApiGatewayToSqs extends Construct {
     // Create
     const createRequestTemplate = props.createRequestTemplate ?? this.defaultCreateRequestTemplate;
     if (props.allowCreateOperation && props.allowCreateOperation === true) {
-      const createMethodOptions: api.MethodOptions = props.createMethodResponses ? { methodResponses: props.createMethodResponses } : {};
+      let createMethodOptions: api.MethodOptions = {};
+      let requestModels: any;
+
+      // If the client supplied model definitions, set requestModels
+      if (props.messageSchema) {
+        requestModels = {};
+        Object.keys(props.messageSchema).forEach(key => {
+          const contentType = key;
+          const schema = props.messageSchema![key];
+
+          const newModel = new api.Model(this, `${id}-model-${defaults.removeNonAlphanumeric(contentType)}`, {
+            restApi: this.apiGateway,
+            contentType,
+            schema
+          });
+
+          requestModels[contentType] = newModel;
+          createMethodOptions = defaults.overrideProps(createMethodOptions, {
+            requestModels,
+            requestValidatorOptions: {
+              validateRequestBody: true
+            }
+          });
+        });
+      }
+
+      if (props.createMethodResponses) {
+        createMethodOptions = defaults.overrideProps(createMethodOptions, { methodResponses: props.createMethodResponses });
+      }
+
       this.addActionToPolicy("sqs:SendMessage");
       defaults.addProxyMethodToApiResource({
         service: "sqs",
@@ -353,22 +405,22 @@ export class ApiGatewayToSqs extends Construct {
   }
   private CheckReadRequestProps(props: ApiGatewayToSqsProps): boolean {
     if ((props.readRequestTemplate || props.additionalReadRequestTemplates || props.readIntegrationResponses)
-        && props.allowReadOperation === false) {
+      && props.allowReadOperation === false) {
       return true;
     }
     return false;
   }
   private CheckDeleteRequestProps(props: ApiGatewayToSqsProps): boolean {
     if ((props.deleteRequestTemplate || props.additionalDeleteRequestTemplates || props.deleteIntegrationResponses)
-        && props.allowDeleteOperation !== true)  {
+      && props.allowDeleteOperation !== true) {
       return true;
     }
     return false;
   }
 
   private CheckCreateRequestProps(props: ApiGatewayToSqsProps): boolean {
-    if ((props.createRequestTemplate || props.additionalCreateRequestTemplates || props.createIntegrationResponses)
-        && props.allowCreateOperation !== true) {
+    if ((props.createRequestTemplate || props.additionalCreateRequestTemplates || props.createIntegrationResponses || props.messageSchema)
+      && props.allowCreateOperation !== true) {
       return true;
     }
     return false;
@@ -379,7 +431,7 @@ export class ApiGatewayToSqs extends Construct {
       resources: [
         this.sqsQueue.queueArn
       ],
-      actions: [ `${action}` ]
+      actions: [`${action}`]
     }));
   }
 }

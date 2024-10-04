@@ -341,3 +341,13 @@ test('test addCfnGuardSuppressRules', () => {
   expect(bucket.testbucketE6E05ABE.Metadata.guard.SuppressedRules[0]).toEqual("ADDED_TO_BUCKET");
   expect(bucket.testbucketE6E05ABE.Metadata.guard.SuppressedRules[1]).toEqual("ADDED_TO_CFN_RESOURCE");
 });
+
+test('Test removeNonAlphanumeric', () => {
+  const source = '\\this&&is%a#stringg@';
+  const desiredResult = 'thisisastringg';
+
+  const result = defaults.removeNonAlphanumeric(source);
+
+  expect(result).toEqual(desiredResult);
+
+});

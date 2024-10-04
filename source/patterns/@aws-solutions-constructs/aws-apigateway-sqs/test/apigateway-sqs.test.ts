@@ -13,11 +13,11 @@
 
 // Imports
 import { RemovalPolicy, Stack } from "aws-cdk-lib";
-import { ApiGatewayToSqs } from '../lib';
+import { ApiGatewayToSqs, ApiGatewayToSqsProps } from '../lib';
 import * as api from "aws-cdk-lib/aws-apigateway";
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sqs from "aws-cdk-lib/aws-sqs";
-import { Template } from "aws-cdk-lib/assertions";
+import { Match, Template } from "aws-cdk-lib/assertions";
 
 test('Test deployment w/o DLQ', () => {
   const stack = new Stack();
@@ -69,7 +69,7 @@ test('Test properties', () => {
     deployDeadLetterQueue: true,
     maxReceiveCount: 3
   });
-    // Assertion 1
+  // Assertion 1
   expect(pattern.apiGateway).toBeDefined();
   // Assertion 2
   expect(pattern.sqsQueue).toBeDefined();
@@ -113,7 +113,7 @@ test('Test deployment for override ApiGateway createRequestTemplate', () => {
   const stack = new Stack();
 
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
-    createRequestTemplate:  "Action=SendMessage&MessageBody=$util.urlEncode(\"HelloWorld\")",
+    createRequestTemplate: "Action=SendMessage&MessageBody=$util.urlEncode(\"HelloWorld\")",
     allowCreateOperation: true
   });
   const template = Template.fromStack(stack);
@@ -131,7 +131,7 @@ test('Test deployment for override ApiGateway getRequestTemplate', () => {
   const stack = new Stack();
 
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
-    readRequestTemplate:  "Action=HelloWorld",
+    readRequestTemplate: "Action=HelloWorld",
     allowReadOperation: true
   });
   const template = Template.fromStack(stack);
@@ -149,7 +149,7 @@ test('Test deployment for override ApiGateway deleteRequestTemplate', () => {
   const stack = new Stack();
 
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
-    deleteRequestTemplate:  "Action=HelloWorld",
+    deleteRequestTemplate: "Action=HelloWorld",
     allowDeleteOperation: true
   });
   const template = Template.fromStack(stack);
@@ -577,13 +577,22 @@ test('Construct uses custom deleteIntegrationResponses property', () => {
   });
 });
 
+test('Construct throws error when messageSchema is set and allowCreateOperation is not true', () => {
+  const stack = new Stack();
+  const app = () => new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
+    messageSchema: '{}' as any,
+  });
+
+  expect(app).toThrowError(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses', 'messageSchema'/);
+});
+
 test('Construct throws error when createRequestTemplate is set and allowCreateOperation is not true', () => {
   const stack = new Stack();
   const app = () => new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
     createRequestTemplate: '{}',
   });
 
-  expect(app).toThrowError(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses'/);
+  expect(app).toThrowError(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses', 'messageSchema'/);
 });
 
 test('Construct throws error when additionalCreateRequestTemplates is set and allowCreateOperation is not true', () => {
@@ -592,7 +601,7 @@ test('Construct throws error when additionalCreateRequestTemplates is set and al
     additionalCreateRequestTemplates: {}
   });
 
-  expect(app).toThrowError(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses'/);
+  expect(app).toThrowError(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses', 'messageSchema'/);
 });
 
 test('Construct throws error when createIntegrationResponses is set and allowCreateOperation is not true', () => {
@@ -601,7 +610,7 @@ test('Construct throws error when createIntegrationResponses is set and allowCre
     createIntegrationResponses: []
   });
 
-  expect(app).toThrowError(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses'/);
+  expect(app).toThrowError(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses', 'messageSchema'/);
 });
 
 test('Construct throws error when readRequestTemplate is set and allowReadOperation is false', () => {
@@ -694,6 +703,7 @@ test('Construct uses custom createMethodResponses property', () => {
   });
 
   const template = Template.fromStack(stack);
+
   template.hasResourceProperties('AWS::ApiGateway::Method', {
     HttpMethod: 'POST',
     MethodResponses: [{
@@ -712,7 +722,7 @@ test('Construct uses custom createMethodResponses property', () => {
   });
 });
 
-test.only('Construct uses custom deleteMethodResponses property', () => {
+test('Construct uses custom deleteMethodResponses property', () => {
   const stack = new Stack();
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
     allowCreateOperation: false,
@@ -750,7 +760,7 @@ test.only('Construct uses custom deleteMethodResponses property', () => {
   });
 });
 
-test.only('Construct uses custom readMethodResponses property', () => {
+test('Construct uses custom readMethodResponses property', () => {
   const stack = new Stack();
   new ApiGatewayToSqs(stack, 'api-gateway-sqs', {
     allowCreateOperation: false,
@@ -784,6 +794,93 @@ test.only('Construct uses custom readMethodResponses property', () => {
           StatusCode: '401'
         }
       ]
+    }
+  });
+});
+
+test('Construct uses mulitple custom createModels', () => {
+  const stack = new Stack();
+  const props: ApiGatewayToSqsProps = {
+    allowCreateOperation: true,
+    messageSchema: {
+      "application/json": {
+        schema: api.JsonSchemaVersion.DRAFT4,
+        title: 'pollResponse',
+        type: api.JsonSchemaType.OBJECT,
+        required: ['state', 'greeting'],
+        additionalProperties: false,
+        properties: {
+          state: { type: api.JsonSchemaType.STRING },
+          greeting: { type: api.JsonSchemaType.STRING }
+        }
+      },
+      "application/text": {
+        schema: api.JsonSchemaVersion.DRAFT4,
+        title: 'pollResponse',
+        type: api.JsonSchemaType.OBJECT,
+        additionalProperties: false,
+        properties: {
+          textstate: { type: api.JsonSchemaType.STRING },
+          textgreeting: { type: api.JsonSchemaType.STRING }
+        }
+      }
+    }
+  };
+
+  new ApiGatewayToSqs(stack, 'test-api-gateway-sqs', props);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::ApiGateway::Model", 2);
+  template.hasResourceProperties("AWS::ApiGateway::Model", {
+    ContentType: "application/json",
+    RestApiId: Match.anyValue(),
+    Schema: {
+      $schema: "http://json-schema.org/draft-04/schema#",
+      title: "pollResponse",
+      type: "object",
+      required: [
+        "state",
+        "greeting"
+      ],
+      additionalProperties: false,
+      properties: {
+        state: {
+          type: "string"
+        },
+        greeting: {
+          type: "string"
+        }
+      }
+    }
+  });
+  template.hasResourceProperties("AWS::ApiGateway::Model", {
+    ContentType: "application/text",
+    RestApiId: Match.anyValue(),
+    Schema: {
+      $schema: "http://json-schema.org/draft-04/schema#",
+      title: "pollResponse",
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        textstate: {
+          type: "string"
+        },
+        textgreeting: {
+          type: "string"
+        }
+      }
+    }
+  });
+  template.hasResourceProperties("AWS::ApiGateway::Method", {
+    Integration: {
+      IntegrationHttpMethod: "POST"
+    },
+    RequestModels: {
+      'application/json': {
+        Ref: "testapigatewaysqstestapigatewaysqsmodelapplicationjson94EAC0E9"
+      },
+      'application/text': {
+        Ref: "testapigatewaysqstestapigatewaysqsmodelapplicationtext6A72CC47"
+      }
     }
   });
 });
