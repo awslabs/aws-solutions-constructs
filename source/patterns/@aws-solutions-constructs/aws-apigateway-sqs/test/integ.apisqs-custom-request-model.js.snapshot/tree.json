@@ -4,21 +4,21 @@
     "id": "App",
     "path": "",
     "children": {
-      "apisqs-custom-method-responses": {
-        "id": "apisqs-custom-method-responses",
-        "path": "apisqs-custom-method-responses",
+      "apisqs-custom-request-model": {
+        "id": "apisqs-custom-request-model",
+        "path": "apisqs-custom-request-model",
         "children": {
-          "test-api-gateway-sqs-integration-responses": {
-            "id": "test-api-gateway-sqs-integration-responses",
-            "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses",
+          "test-api-gateway-sqs": {
+            "id": "test-api-gateway-sqs",
+            "path": "apisqs-custom-request-model/test-api-gateway-sqs",
             "children": {
               "queue-dlq": {
                 "id": "queue-dlq",
-                "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/queue-dlq",
+                "path": "apisqs-custom-request-model/test-api-gateway-sqs/queue-dlq",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/queue-dlq/Resource",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/queue-dlq/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
                       "aws:cdk:cloudformation:props": {
@@ -32,11 +32,11 @@
                   },
                   "Policy": {
                     "id": "Policy",
-                    "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/queue-dlq/Policy",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/queue-dlq/Policy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/queue-dlq/Policy/Resource",
+                        "path": "apisqs-custom-request-model/test-api-gateway-sqs/queue-dlq/Policy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
                           "aws:cdk:cloudformation:props": {
@@ -73,7 +73,7 @@
                                   },
                                   "Resource": {
                                     "Fn::GetAtt": [
-                                      "testapigatewaysqsintegrationresponsesqueuedlqD02C49B3",
+                                      "testapigatewaysqsqueuedlq8A515F77",
                                       "Arn"
                                     ]
                                   },
@@ -92,7 +92,7 @@
                                   },
                                   "Resource": {
                                     "Fn::GetAtt": [
-                                      "testapigatewaysqsintegrationresponsesqueuedlqD02C49B3",
+                                      "testapigatewaysqsqueuedlq8A515F77",
                                       "Arn"
                                     ]
                                   },
@@ -103,7 +103,7 @@
                             },
                             "queues": [
                               {
-                                "Ref": "testapigatewaysqsintegrationresponsesqueuedlqD02C49B3"
+                                "Ref": "testapigatewaysqsqueuedlq8A515F77"
                               }
                             ]
                           }
@@ -127,11 +127,11 @@
               },
               "queue": {
                 "id": "queue",
-                "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/queue",
+                "path": "apisqs-custom-request-model/test-api-gateway-sqs/queue",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/queue/Resource",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/queue/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
                       "aws:cdk:cloudformation:props": {
@@ -139,7 +139,7 @@
                         "redrivePolicy": {
                           "deadLetterTargetArn": {
                             "Fn::GetAtt": [
-                              "testapigatewaysqsintegrationresponsesqueuedlqD02C49B3",
+                              "testapigatewaysqsqueuedlq8A515F77",
                               "Arn"
                             ]
                           },
@@ -154,11 +154,11 @@
                   },
                   "Policy": {
                     "id": "Policy",
-                    "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/queue/Policy",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/queue/Policy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/queue/Policy/Resource",
+                        "path": "apisqs-custom-request-model/test-api-gateway-sqs/queue/Policy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
                           "aws:cdk:cloudformation:props": {
@@ -195,7 +195,7 @@
                                   },
                                   "Resource": {
                                     "Fn::GetAtt": [
-                                      "testapigatewaysqsintegrationresponsesqueueF9FA04EF",
+                                      "testapigatewaysqsqueue8EDC3CAF",
                                       "Arn"
                                     ]
                                   },
@@ -214,7 +214,7 @@
                                   },
                                   "Resource": {
                                     "Fn::GetAtt": [
-                                      "testapigatewaysqsintegrationresponsesqueueF9FA04EF",
+                                      "testapigatewaysqsqueue8EDC3CAF",
                                       "Arn"
                                     ]
                                   },
@@ -225,7 +225,7 @@
                             },
                             "queues": [
                               {
-                                "Ref": "testapigatewaysqsintegrationresponsesqueueF9FA04EF"
+                                "Ref": "testapigatewaysqsqueue8EDC3CAF"
                               }
                             ]
                           }
@@ -249,11 +249,11 @@
               },
               "ApiAccessLogGroup": {
                 "id": "ApiAccessLogGroup",
-                "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/ApiAccessLogGroup",
+                "path": "apisqs-custom-request-model/test-api-gateway-sqs/ApiAccessLogGroup",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/ApiAccessLogGroup/Resource",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/ApiAccessLogGroup/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::Logs::LogGroup",
                       "aws:cdk:cloudformation:props": {}
@@ -271,11 +271,11 @@
               },
               "RestApi": {
                 "id": "RestApi",
-                "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi",
+                "path": "apisqs-custom-request-model/test-api-gateway-sqs/RestApi",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/Resource",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/RestApi/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::ApiGateway::RestApi",
                       "aws:cdk:cloudformation:props": {
@@ -294,17 +294,17 @@
                   },
                   "Deployment": {
                     "id": "Deployment",
-                    "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/Deployment",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/RestApi/Deployment",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/Deployment/Resource",
+                        "path": "apisqs-custom-request-model/test-api-gateway-sqs/RestApi/Deployment/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::ApiGateway::Deployment",
                           "aws:cdk:cloudformation:props": {
                             "description": "Automatically created by the RestApi construct",
                             "restApiId": {
-                              "Ref": "testapigatewaysqsintegrationresponsesRestApi3BE7E402"
+                              "Ref": "testapigatewaysqsRestApi557C7EDC"
                             }
                           }
                         },
@@ -321,25 +321,25 @@
                   },
                   "DeploymentStage.prod": {
                     "id": "DeploymentStage.prod",
-                    "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/DeploymentStage.prod",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/RestApi/DeploymentStage.prod",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/DeploymentStage.prod/Resource",
+                        "path": "apisqs-custom-request-model/test-api-gateway-sqs/RestApi/DeploymentStage.prod/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::ApiGateway::Stage",
                           "aws:cdk:cloudformation:props": {
                             "accessLogSetting": {
                               "destinationArn": {
                                 "Fn::GetAtt": [
-                                  "testapigatewaysqsintegrationresponsesApiAccessLogGroup12574495",
+                                  "testapigatewaysqsApiAccessLogGroup37AB0350",
                                   "Arn"
                                 ]
                               },
                               "format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
                             },
                             "deploymentId": {
-                              "Ref": "testapigatewaysqsintegrationresponsesRestApiDeployment974922353e4806ac8e022d69559519d119a6f456"
+                              "Ref": "testapigatewaysqsRestApiDeploymentCA19D372a533abf5414c204f290523aaae9a51c0"
                             },
                             "methodSettings": [
                               {
@@ -350,7 +350,7 @@
                               }
                             ],
                             "restApiId": {
-                              "Ref": "testapigatewaysqsintegrationresponsesRestApi3BE7E402"
+                              "Ref": "testapigatewaysqsRestApi557C7EDC"
                             },
                             "stageName": "prod",
                             "tracingEnabled": true
@@ -369,7 +369,7 @@
                   },
                   "Endpoint": {
                     "id": "Endpoint",
-                    "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/Endpoint",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/RestApi/Endpoint",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnOutput",
                       "version": "2.160.0"
@@ -377,15 +377,23 @@
                   },
                   "Default": {
                     "id": "Default",
-                    "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/Default",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/RestApi/Default",
                     "children": {
                       "POST": {
                         "id": "POST",
-                        "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/Default/POST",
+                        "path": "apisqs-custom-request-model/test-api-gateway-sqs/RestApi/Default/POST",
                         "children": {
+                          "Validator": {
+                            "id": "Validator",
+                            "path": "apisqs-custom-request-model/test-api-gateway-sqs/RestApi/Default/POST/Validator",
+                            "constructInfo": {
+                              "fqn": "constructs.Construct",
+                              "version": "10.3.0"
+                            }
+                          },
                           "Resource": {
                             "id": "Resource",
-                            "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/Default/POST/Resource",
+                            "path": "apisqs-custom-request-model/test-api-gateway-sqs/RestApi/Default/POST/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
                               "aws:cdk:cloudformation:props": {
@@ -412,7 +420,7 @@
                                         "/",
                                         {
                                           "Fn::GetAtt": [
-                                            "testapigatewaysqsintegrationresponsesqueueF9FA04EF",
+                                            "testapigatewaysqsqueue8EDC3CAF",
                                             "QueueName"
                                           ]
                                         }
@@ -429,32 +437,56 @@
                                   "passthroughBehavior": "NEVER",
                                   "integrationResponses": [
                                     {
-                                      "statusCode": "201",
+                                      "statusCode": "200"
+                                    },
+                                    {
+                                      "statusCode": "500",
                                       "responseTemplates": {
-                                        "text/html": "OK"
-                                      }
+                                        "text/html": "Error"
+                                      },
+                                      "selectionPattern": "500"
                                     }
                                   ],
                                   "credentials": {
                                     "Fn::GetAtt": [
-                                      "testapigatewaysqsintegrationresponsesapigatewayrole6FC88B17",
+                                      "testapigatewaysqsapigatewayrole07110CD6",
                                       "Arn"
                                     ]
                                   }
                                 },
                                 "methodResponses": [
                                   {
-                                    "statusCode": "201"
+                                    "statusCode": "200",
+                                    "responseParameters": {
+                                      "method.response.header.Content-Type": true
+                                    }
+                                  },
+                                  {
+                                    "statusCode": "500",
+                                    "responseParameters": {
+                                      "method.response.header.Content-Type": true
+                                    }
                                   }
                                 ],
+                                "requestModels": {
+                                  "application/json": {
+                                    "Ref": "testapigatewaysqstestapigatewaysqsmodelapplicationjson94EAC0E9"
+                                  },
+                                  "application/text": {
+                                    "Ref": "testapigatewaysqstestapigatewaysqsmodelapplicationtext6A72CC47"
+                                  }
+                                },
+                                "requestValidatorId": {
+                                  "Ref": "testapigatewaysqsRestApiapisqscustomrequestmodeltestapigatewaysqsRestApiPOSTValidator83A54BA4C98634F8"
+                                },
                                 "resourceId": {
                                   "Fn::GetAtt": [
-                                    "testapigatewaysqsintegrationresponsesRestApi3BE7E402",
+                                    "testapigatewaysqsRestApi557C7EDC",
                                     "RootResourceId"
                                   ]
                                 },
                                 "restApiId": {
-                                  "Ref": "testapigatewaysqsintegrationresponsesRestApi3BE7E402"
+                                  "Ref": "testapigatewaysqsRestApi557C7EDC"
                                 }
                               }
                             },
@@ -471,11 +503,11 @@
                       },
                       "GET": {
                         "id": "GET",
-                        "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/Default/GET",
+                        "path": "apisqs-custom-request-model/test-api-gateway-sqs/RestApi/Default/GET",
                         "children": {
                           "Resource": {
                             "id": "Resource",
-                            "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/Default/GET/Resource",
+                            "path": "apisqs-custom-request-model/test-api-gateway-sqs/RestApi/Default/GET/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
                               "aws:cdk:cloudformation:props": {
@@ -502,7 +534,7 @@
                                         "/",
                                         {
                                           "Fn::GetAtt": [
-                                            "testapigatewaysqsintegrationresponsesqueueF9FA04EF",
+                                            "testapigatewaysqsqueue8EDC3CAF",
                                             "QueueName"
                                           ]
                                         }
@@ -519,35 +551,45 @@
                                   "passthroughBehavior": "NEVER",
                                   "integrationResponses": [
                                     {
-                                      "statusCode": "200",
+                                      "statusCode": "200"
+                                    },
+                                    {
+                                      "statusCode": "500",
                                       "responseTemplates": {
-                                        "text/html": "OK"
-                                      }
+                                        "text/html": "Error"
+                                      },
+                                      "selectionPattern": "500"
                                     }
                                   ],
                                   "credentials": {
                                     "Fn::GetAtt": [
-                                      "testapigatewaysqsintegrationresponsesapigatewayrole6FC88B17",
+                                      "testapigatewaysqsapigatewayrole07110CD6",
                                       "Arn"
                                     ]
                                   }
                                 },
                                 "methodResponses": [
                                   {
-                                    "statusCode": "200"
+                                    "statusCode": "200",
+                                    "responseParameters": {
+                                      "method.response.header.Content-Type": true
+                                    }
                                   },
                                   {
-                                    "statusCode": "403"
+                                    "statusCode": "500",
+                                    "responseParameters": {
+                                      "method.response.header.Content-Type": true
+                                    }
                                   }
                                 ],
                                 "resourceId": {
                                   "Fn::GetAtt": [
-                                    "testapigatewaysqsintegrationresponsesRestApi3BE7E402",
+                                    "testapigatewaysqsRestApi557C7EDC",
                                     "RootResourceId"
                                   ]
                                 },
                                 "restApiId": {
-                                  "Ref": "testapigatewaysqsintegrationresponsesRestApi3BE7E402"
+                                  "Ref": "testapigatewaysqsRestApi557C7EDC"
                                 }
                               }
                             },
@@ -570,21 +612,21 @@
                   },
                   "UsagePlan": {
                     "id": "UsagePlan",
-                    "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/UsagePlan",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/RestApi/UsagePlan",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/UsagePlan/Resource",
+                        "path": "apisqs-custom-request-model/test-api-gateway-sqs/RestApi/UsagePlan/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::ApiGateway::UsagePlan",
                           "aws:cdk:cloudformation:props": {
                             "apiStages": [
                               {
                                 "apiId": {
-                                  "Ref": "testapigatewaysqsintegrationresponsesRestApi3BE7E402"
+                                  "Ref": "testapigatewaysqsRestApi557C7EDC"
                                 },
                                 "stage": {
-                                  "Ref": "testapigatewaysqsintegrationresponsesRestApiDeploymentStageprod07200D02"
+                                  "Ref": "testapigatewaysqsRestApiDeploymentStageprod1C007159"
                                 },
                                 "throttle": {}
                               }
@@ -601,6 +643,33 @@
                       "fqn": "aws-cdk-lib.aws_apigateway.UsagePlan",
                       "version": "2.160.0"
                     }
+                  },
+                  "apisqscustomrequestmodeltestapigatewaysqsRestApiPOSTValidator83A54BA4": {
+                    "id": "apisqscustomrequestmodeltestapigatewaysqsRestApiPOSTValidator83A54BA4",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/RestApi/apisqscustomrequestmodeltestapigatewaysqsRestApiPOSTValidator83A54BA4",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "apisqs-custom-request-model/test-api-gateway-sqs/RestApi/apisqscustomrequestmodeltestapigatewaysqsRestApiPOSTValidator83A54BA4/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::RequestValidator",
+                          "aws:cdk:cloudformation:props": {
+                            "restApiId": {
+                              "Ref": "testapigatewaysqsRestApi557C7EDC"
+                            },
+                            "validateRequestBody": true
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnRequestValidator",
+                          "version": "2.160.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.RequestValidator",
+                      "version": "2.160.0"
+                    }
                   }
                 },
                 "constructInfo": {
@@ -610,11 +679,11 @@
               },
               "LambdaRestApiCloudWatchRole": {
                 "id": "LambdaRestApiCloudWatchRole",
-                "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/LambdaRestApiCloudWatchRole",
+                "path": "apisqs-custom-request-model/test-api-gateway-sqs/LambdaRestApiCloudWatchRole",
                 "children": {
                   "ImportLambdaRestApiCloudWatchRole": {
                     "id": "ImportLambdaRestApiCloudWatchRole",
-                    "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
                       "version": "2.160.0"
@@ -622,7 +691,7 @@
                   },
                   "Resource": {
                     "id": "Resource",
-                    "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/LambdaRestApiCloudWatchRole/Resource",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/LambdaRestApiCloudWatchRole/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                       "aws:cdk:cloudformation:props": {
@@ -695,13 +764,13 @@
               },
               "LambdaRestApiAccount": {
                 "id": "LambdaRestApiAccount",
-                "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/LambdaRestApiAccount",
+                "path": "apisqs-custom-request-model/test-api-gateway-sqs/LambdaRestApiAccount",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::ApiGateway::Account",
                   "aws:cdk:cloudformation:props": {
                     "cloudWatchRoleArn": {
                       "Fn::GetAtt": [
-                        "testapigatewaysqsintegrationresponsesLambdaRestApiCloudWatchRoleC95A1D3B",
+                        "testapigatewaysqsLambdaRestApiCloudWatchRoleF10D0F78",
                         "Arn"
                       ]
                     }
@@ -714,11 +783,11 @@
               },
               "api-gateway-role": {
                 "id": "api-gateway-role",
-                "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/api-gateway-role",
+                "path": "apisqs-custom-request-model/test-api-gateway-sqs/api-gateway-role",
                 "children": {
                   "Importapi-gateway-role": {
                     "id": "Importapi-gateway-role",
-                    "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/api-gateway-role/Importapi-gateway-role",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/api-gateway-role/Importapi-gateway-role",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
                       "version": "2.160.0"
@@ -726,7 +795,7 @@
                   },
                   "Resource": {
                     "id": "Resource",
-                    "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/api-gateway-role/Resource",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/api-gateway-role/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                       "aws:cdk:cloudformation:props": {
@@ -751,11 +820,11 @@
                   },
                   "DefaultPolicy": {
                     "id": "DefaultPolicy",
-                    "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/api-gateway-role/DefaultPolicy",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/api-gateway-role/DefaultPolicy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/api-gateway-role/DefaultPolicy/Resource",
+                        "path": "apisqs-custom-request-model/test-api-gateway-sqs/api-gateway-role/DefaultPolicy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                           "aws:cdk:cloudformation:props": {
@@ -769,7 +838,7 @@
                                   "Effect": "Allow",
                                   "Resource": {
                                     "Fn::GetAtt": [
-                                      "testapigatewaysqsintegrationresponsesqueueF9FA04EF",
+                                      "testapigatewaysqsqueue8EDC3CAF",
                                       "Arn"
                                     ]
                                   }
@@ -777,10 +846,10 @@
                               ],
                               "Version": "2012-10-17"
                             },
-                            "policyName": "testapigatewaysqsintegrationresponsesapigatewayroleDefaultPolicyB4D5EFE9",
+                            "policyName": "testapigatewaysqsapigatewayroleDefaultPolicy052E7AD5",
                             "roles": [
                               {
-                                "Ref": "testapigatewaysqsintegrationresponsesapigatewayrole6FC88B17"
+                                "Ref": "testapigatewaysqsapigatewayrole07110CD6"
                               }
                             ]
                           }
@@ -801,24 +870,110 @@
                   "fqn": "aws-cdk-lib.aws_iam.Role",
                   "version": "2.160.0"
                 }
+              },
+              "test-api-gateway-sqs-model-applicationjson": {
+                "id": "test-api-gateway-sqs-model-applicationjson",
+                "path": "apisqs-custom-request-model/test-api-gateway-sqs/test-api-gateway-sqs-model-applicationjson",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/test-api-gateway-sqs-model-applicationjson/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGateway::Model",
+                      "aws:cdk:cloudformation:props": {
+                        "contentType": "application/json",
+                        "restApiId": {
+                          "Ref": "testapigatewaysqsRestApi557C7EDC"
+                        },
+                        "schema": {
+                          "$schema": "http://json-schema.org/draft-04/schema#",
+                          "title": "pollResponse",
+                          "type": "object",
+                          "required": [
+                            "state",
+                            "greeting"
+                          ],
+                          "additionalProperties": false,
+                          "properties": {
+                            "state": {
+                              "type": "string"
+                            },
+                            "greeting": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.CfnModel",
+                      "version": "2.160.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.Model",
+                  "version": "2.160.0"
+                }
+              },
+              "test-api-gateway-sqs-model-applicationtext": {
+                "id": "test-api-gateway-sqs-model-applicationtext",
+                "path": "apisqs-custom-request-model/test-api-gateway-sqs/test-api-gateway-sqs-model-applicationtext",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "apisqs-custom-request-model/test-api-gateway-sqs/test-api-gateway-sqs-model-applicationtext/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGateway::Model",
+                      "aws:cdk:cloudformation:props": {
+                        "contentType": "application/text",
+                        "restApiId": {
+                          "Ref": "testapigatewaysqsRestApi557C7EDC"
+                        },
+                        "schema": {
+                          "$schema": "http://json-schema.org/draft-04/schema#",
+                          "title": "pollResponse",
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "textstate": {
+                              "type": "string"
+                            },
+                            "textgreeting": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.CfnModel",
+                      "version": "2.160.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.Model",
+                  "version": "2.160.0"
+                }
               }
             },
             "constructInfo": {
-              "fqn": "@aws-solutions-constructs/aws-apigateway-sqs.ApiGatewayToSqs",
-              "version": "2.71.0"
+              "fqn": "constructs.Construct",
+              "version": "10.3.0"
             }
           },
           "Integ": {
             "id": "Integ",
-            "path": "apisqs-custom-method-responses/Integ",
+            "path": "apisqs-custom-request-model/Integ",
             "children": {
               "DefaultTest": {
                 "id": "DefaultTest",
-                "path": "apisqs-custom-method-responses/Integ/DefaultTest",
+                "path": "apisqs-custom-request-model/Integ/DefaultTest",
                 "children": {
                   "Default": {
                     "id": "Default",
-                    "path": "apisqs-custom-method-responses/Integ/DefaultTest/Default",
+                    "path": "apisqs-custom-request-model/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
                       "version": "10.3.0"
@@ -826,11 +981,11 @@
                   },
                   "DeployAssert": {
                     "id": "DeployAssert",
-                    "path": "apisqs-custom-method-responses/Integ/DefaultTest/DeployAssert",
+                    "path": "apisqs-custom-request-model/Integ/DefaultTest/DeployAssert",
                     "children": {
                       "BootstrapVersion": {
                         "id": "BootstrapVersion",
-                        "path": "apisqs-custom-method-responses/Integ/DefaultTest/DeployAssert/BootstrapVersion",
+                        "path": "apisqs-custom-request-model/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
                           "version": "2.160.0"
@@ -838,7 +993,7 @@
                       },
                       "CheckBootstrapVersion": {
                         "id": "CheckBootstrapVersion",
-                        "path": "apisqs-custom-method-responses/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
+                        "path": "apisqs-custom-request-model/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
                           "version": "2.160.0"
@@ -864,7 +1019,7 @@
           },
           "BootstrapVersion": {
             "id": "BootstrapVersion",
-            "path": "apisqs-custom-method-responses/BootstrapVersion",
+            "path": "apisqs-custom-request-model/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
               "version": "2.160.0"
@@ -872,7 +1027,7 @@
           },
           "CheckBootstrapVersion": {
             "id": "CheckBootstrapVersion",
-            "path": "apisqs-custom-method-responses/CheckBootstrapVersion",
+            "path": "apisqs-custom-request-model/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
               "version": "2.160.0"

@@ -13,44 +13,44 @@
 
 // Imports
 import { App, Stack } from "aws-cdk-lib";
-import { ApiGatewayToSqs } from "../lib";
+import { ApiGatewayToSqs, ApiGatewayToSqsProps } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
-
+import * as api from 'aws-cdk-lib/aws-apigateway';
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-apigateway-sqs';
 
-new ApiGatewayToSqs(stack, 'test-api-gateway-sqs-integration-responses', {
-  allowReadOperation: true,
-  readIntegrationResponses: [
-    {
-      statusCode: '200',
-      responseTemplates: {
-        'text/html': 'OK'
-      }
-    }
-  ],
-  readMethodResponses: [{
-    statusCode: '200'
-  },
-  {
-    statusCode: '403'
-  }],
+// Definitions
+const props: ApiGatewayToSqsProps = {
   allowCreateOperation: true,
-  createIntegrationResponses: [
-    {
-      statusCode: '201',
-      responseTemplates: {
-        'text/html': 'OK'
+  messageSchema: {
+    "application/json": {
+      schema: api.JsonSchemaVersion.DRAFT4,
+      title: 'pollResponse',
+      type: api.JsonSchemaType.OBJECT,
+      required: ['state', 'greeting'],
+      additionalProperties: false,
+      properties: {
+        state: { type: api.JsonSchemaType.STRING },
+        greeting: { type: api.JsonSchemaType.STRING }
+      }
+    },
+    "application/text": {
+      schema: api.JsonSchemaVersion.DRAFT4,
+      title: 'pollResponse',
+      type: api.JsonSchemaType.OBJECT,
+      additionalProperties: false,
+      properties: {
+        textstate: { type: api.JsonSchemaType.STRING },
+        textgreeting: { type: api.JsonSchemaType.STRING }
       }
     }
-  ],
-  createMethodResponses: [{
-    statusCode: '201'
-  }]
-});
+  }
+};
+
+new ApiGatewayToSqs(stack, 'test-api-gateway-sqs', props);
 
 // Synth
 new IntegTest(stack, 'Integ', { testCases: [
