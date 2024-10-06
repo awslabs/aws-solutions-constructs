@@ -198,7 +198,7 @@
     "Name": "RestApi"
    }
   },
-  "testapigatewaysqsintegrationresponsesRestApiDeployment97492235ba12181676bc85f5ec834b0573595244": {
+  "testapigatewaysqsintegrationresponsesRestApiDeployment974922353e4806ac8e022d69559519d119a6f456": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Automatically created by the RestApi construct",
@@ -207,7 +207,8 @@
     }
    },
    "DependsOn": [
-    "testapigatewaysqsintegrationresponsesRestApiGETD105D1F1"
+    "testapigatewaysqsintegrationresponsesRestApiGETD105D1F1",
+    "testapigatewaysqsintegrationresponsesRestApiPOSTFBB6D4FB"
    ],
    "Metadata": {
     "cfn_nag": {
@@ -233,7 +234,7 @@
      "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
     },
     "DeploymentId": {
-     "Ref": "testapigatewaysqsintegrationresponsesRestApiDeployment97492235ba12181676bc85f5ec834b0573595244"
+     "Ref": "testapigatewaysqsintegrationresponsesRestApiDeployment974922353e4806ac8e022d69559519d119a6f456"
     },
     "MethodSettings": [
      {
@@ -254,6 +255,78 @@
      "SuppressedRules": [
       "API_GW_CACHE_ENABLED_AND_ENCRYPTED"
      ]
+    }
+   }
+  },
+  "testapigatewaysqsintegrationresponsesRestApiPOSTFBB6D4FB": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "AWS_IAM",
+    "HttpMethod": "POST",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "testapigatewaysqsintegrationresponsesapigatewayrole6FC88B17",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "ResponseTemplates": {
+        "text/html": "OK"
+       },
+       "StatusCode": "201"
+      }
+     ],
+     "PassthroughBehavior": "NEVER",
+     "RequestParameters": {
+      "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'"
+     },
+     "RequestTemplates": {
+      "application/json": "Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")"
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":sqs:path/",
+        {
+         "Ref": "AWS::AccountId"
+        },
+        "/",
+        {
+         "Fn::GetAtt": [
+          "testapigatewaysqsintegrationresponsesqueueF9FA04EF",
+          "QueueName"
+         ]
+        }
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "StatusCode": "201"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "testapigatewaysqsintegrationresponsesRestApi3BE7E402",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "testapigatewaysqsintegrationresponsesRestApi3BE7E402"
     }
    }
   },
@@ -451,7 +524,10 @@
     "PolicyDocument": {
      "Statement": [
       {
-       "Action": "sqs:ReceiveMessage",
+       "Action": [
+        "sqs:ReceiveMessage",
+        "sqs:SendMessage"
+       ],
        "Effect": "Allow",
        "Resource": {
         "Fn::GetAtt": [

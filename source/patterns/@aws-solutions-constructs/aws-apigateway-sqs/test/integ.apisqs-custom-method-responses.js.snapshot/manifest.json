@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "38.0.1",
   "artifacts": {
     "apisqscustommethodresponsesIntegDefaultTestDeployAssert1077EBE4.assets": {
       "type": "cdk:asset-manifest",
@@ -16,6 +16,7 @@
         "templateFile": "apisqscustommethodresponsesIntegDefaultTestDeployAssert1077EBE4.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
+        "notificationArns": [],
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
         "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
@@ -64,9 +65,10 @@
         "templateFile": "apisqs-custom-method-responses.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
+        "notificationArns": [],
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ffcb28580155609b6742f44a39e21a4bc1428993a1c8d27ff75ccd916dc7fc83.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a833b41dd73a597b3f3639956815c07229fc3e8ffc7c95190083a2f2150d1741.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -121,7 +123,7 @@
         "/apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesRestApiDeployment97492235ba12181676bc85f5ec834b0573595244"
+            "data": "testapigatewaysqsintegrationresponsesRestApiDeployment974922353e4806ac8e022d69559519d119a6f456"
           }
         ],
         "/apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/DeploymentStage.prod/Resource": [
@@ -134,6 +136,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaysqsintegrationresponsesRestApiEndpointEBC579CE"
+          }
+        ],
+        "/apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/Default/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsintegrationresponsesRestApiPOSTFBB6D4FB"
           }
         ],
         "/apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/Default/GET/Resource": [
@@ -182,6 +190,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testapigatewaysqsintegrationresponsesRestApiDeployment97492235bc028531be7a48af2fc8610476ef0ee8": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaysqsintegrationresponsesRestApiDeployment97492235bc028531be7a48af2fc8610476ef0ee8",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

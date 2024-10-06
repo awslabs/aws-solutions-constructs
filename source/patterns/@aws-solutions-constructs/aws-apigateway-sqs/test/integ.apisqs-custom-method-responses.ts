@@ -37,6 +37,18 @@ new ApiGatewayToSqs(stack, 'test-api-gateway-sqs-integration-responses', {
   },
   {
     statusCode: '403'
+  }],
+  allowCreateOperation: true,
+  createIntegrationResponses: [
+    {
+      statusCode: '201',
+      responseTemplates: {
+        'text/html': 'OK'
+      }
+    }
+  ],
+  createMethodResponses: [{
+    statusCode: '201'
   }]
 });
 

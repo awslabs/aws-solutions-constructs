@@ -27,7 +27,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
-                      "version": "2.150.0"
+                      "version": "2.160.0"
                     }
                   },
                   "Policy": {
@@ -110,19 +110,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
-                          "version": "2.150.0"
+                          "version": "2.160.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
-                      "version": "2.150.0"
+                      "version": "2.160.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_sqs.Queue",
-                  "version": "2.150.0"
+                  "version": "2.160.0"
                 }
               },
               "queue": {
@@ -149,7 +149,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
-                      "version": "2.150.0"
+                      "version": "2.160.0"
                     }
                   },
                   "Policy": {
@@ -232,19 +232,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
-                          "version": "2.150.0"
+                          "version": "2.160.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
-                      "version": "2.150.0"
+                      "version": "2.160.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_sqs.Queue",
-                  "version": "2.150.0"
+                  "version": "2.160.0"
                 }
               },
               "ApiAccessLogGroup": {
@@ -260,13 +260,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                      "version": "2.150.0"
+                      "version": "2.160.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                  "version": "2.150.0"
+                  "version": "2.160.0"
                 }
               },
               "RestApi": {
@@ -289,7 +289,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.CfnRestApi",
-                      "version": "2.150.0"
+                      "version": "2.160.0"
                     }
                   },
                   "Deployment": {
@@ -310,13 +310,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_apigateway.CfnDeployment",
-                          "version": "2.150.0"
+                          "version": "2.160.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.Deployment",
-                      "version": "2.150.0"
+                      "version": "2.160.0"
                     }
                   },
                   "DeploymentStage.prod": {
@@ -339,7 +339,7 @@
                               "format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
                             },
                             "deploymentId": {
-                              "Ref": "testapigatewaysqsintegrationresponsesRestApiDeployment97492235ba12181676bc85f5ec834b0573595244"
+                              "Ref": "testapigatewaysqsintegrationresponsesRestApiDeployment974922353e4806ac8e022d69559519d119a6f456"
                             },
                             "methodSettings": [
                               {
@@ -358,13 +358,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_apigateway.CfnStage",
-                          "version": "2.150.0"
+                          "version": "2.160.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.Stage",
-                      "version": "2.150.0"
+                      "version": "2.160.0"
                     }
                   },
                   "Endpoint": {
@@ -372,13 +372,103 @@
                     "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/Endpoint",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnOutput",
-                      "version": "2.150.0"
+                      "version": "2.160.0"
                     }
                   },
                   "Default": {
                     "id": "Default",
                     "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/Default",
                     "children": {
+                      "POST": {
+                        "id": "POST",
+                        "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/Default/POST",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/Default/POST/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "authorizationType": "AWS_IAM",
+                                "httpMethod": "POST",
+                                "integration": {
+                                  "type": "AWS",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:",
+                                        {
+                                          "Ref": "AWS::Partition"
+                                        },
+                                        ":apigateway:",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        ":sqs:path/",
+                                        {
+                                          "Ref": "AWS::AccountId"
+                                        },
+                                        "/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "testapigatewaysqsintegrationresponsesqueueF9FA04EF",
+                                            "QueueName"
+                                          ]
+                                        }
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST",
+                                  "requestParameters": {
+                                    "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'"
+                                  },
+                                  "requestTemplates": {
+                                    "application/json": "Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")"
+                                  },
+                                  "passthroughBehavior": "NEVER",
+                                  "integrationResponses": [
+                                    {
+                                      "statusCode": "201",
+                                      "responseTemplates": {
+                                        "text/html": "OK"
+                                      }
+                                    }
+                                  ],
+                                  "credentials": {
+                                    "Fn::GetAtt": [
+                                      "testapigatewaysqsintegrationresponsesapigatewayrole6FC88B17",
+                                      "Arn"
+                                    ]
+                                  }
+                                },
+                                "methodResponses": [
+                                  {
+                                    "statusCode": "201"
+                                  }
+                                ],
+                                "resourceId": {
+                                  "Fn::GetAtt": [
+                                    "testapigatewaysqsintegrationresponsesRestApi3BE7E402",
+                                    "RootResourceId"
+                                  ]
+                                },
+                                "restApiId": {
+                                  "Ref": "testapigatewaysqsintegrationresponsesRestApi3BE7E402"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.160.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.160.0"
+                        }
+                      },
                       "GET": {
                         "id": "GET",
                         "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/RestApi/Default/GET",
@@ -463,19 +553,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
-                              "version": "2.150.0"
+                              "version": "2.160.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_apigateway.Method",
-                          "version": "2.150.0"
+                          "version": "2.160.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.ResourceBase",
-                      "version": "2.150.0"
+                      "version": "2.160.0"
                     }
                   },
                   "UsagePlan": {
@@ -503,19 +593,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_apigateway.CfnUsagePlan",
-                          "version": "2.150.0"
+                          "version": "2.160.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_apigateway.UsagePlan",
-                      "version": "2.150.0"
+                      "version": "2.160.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigateway.RestApi",
-                  "version": "2.150.0"
+                  "version": "2.160.0"
                 }
               },
               "LambdaRestApiCloudWatchRole": {
@@ -527,7 +617,7 @@
                     "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.150.0"
+                      "version": "2.160.0"
                     }
                   },
                   "Resource": {
@@ -594,13 +684,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.150.0"
+                      "version": "2.160.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.150.0"
+                  "version": "2.160.0"
                 }
               },
               "LambdaRestApiAccount": {
@@ -619,7 +709,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_apigateway.CfnAccount",
-                  "version": "2.150.0"
+                  "version": "2.160.0"
                 }
               },
               "api-gateway-role": {
@@ -631,7 +721,7 @@
                     "path": "apisqs-custom-method-responses/test-api-gateway-sqs-integration-responses/api-gateway-role/Importapi-gateway-role",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.150.0"
+                      "version": "2.160.0"
                     }
                   },
                   "Resource": {
@@ -656,7 +746,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.150.0"
+                      "version": "2.160.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -672,7 +762,10 @@
                             "policyDocument": {
                               "Statement": [
                                 {
-                                  "Action": "sqs:ReceiveMessage",
+                                  "Action": [
+                                    "sqs:ReceiveMessage",
+                                    "sqs:SendMessage"
+                                  ],
                                   "Effect": "Allow",
                                   "Resource": {
                                     "Fn::GetAtt": [
@@ -694,25 +787,25 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.150.0"
+                          "version": "2.160.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.150.0"
+                      "version": "2.160.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.150.0"
+                  "version": "2.160.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-apigateway-sqs.ApiGatewayToSqs",
-              "version": "2.63.0"
+              "version": "2.71.0"
             }
           },
           "Integ": {
@@ -740,7 +833,7 @@
                         "path": "apisqs-custom-method-responses/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.150.0"
+                          "version": "2.160.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -748,25 +841,25 @@
                         "path": "apisqs-custom-method-responses/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.150.0"
+                          "version": "2.160.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.150.0"
+                      "version": "2.160.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.150.0-alpha.0"
+                  "version": "2.160.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.150.0-alpha.0"
+              "version": "2.160.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -774,7 +867,7 @@
             "path": "apisqs-custom-method-responses/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.150.0"
+              "version": "2.160.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -782,13 +875,13 @@
             "path": "apisqs-custom-method-responses/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.150.0"
+              "version": "2.160.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.150.0"
+          "version": "2.160.0"
         }
       },
       "Tree": {
@@ -802,7 +895,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.150.0"
+      "version": "2.160.0"
     }
   }
 }

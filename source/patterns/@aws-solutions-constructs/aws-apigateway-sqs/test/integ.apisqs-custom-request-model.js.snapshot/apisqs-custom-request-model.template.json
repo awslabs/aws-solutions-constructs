@@ -1,0 +1,709 @@
+{
+ "Description": "Integration Test for aws-apigateway-sqs",
+ "Resources": {
+  "testapigatewaysqsqueuedlq8A515F77": {
+   "Type": "AWS::SQS::Queue",
+   "Properties": {
+    "KmsMasterKeyId": "alias/aws/sqs"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "testapigatewaysqsqueuedlqPolicyB341351F": {
+   "Type": "AWS::SQS::QueuePolicy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "sqs:AddPermission",
+        "sqs:DeleteMessage",
+        "sqs:GetQueueAttributes",
+        "sqs:ReceiveMessage",
+        "sqs:RemovePermission",
+        "sqs:SendMessage",
+        "sqs:SetQueueAttributes"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       },
+       "Resource": {
+        "Fn::GetAtt": [
+         "testapigatewaysqsqueuedlq8A515F77",
+         "Arn"
+        ]
+       },
+       "Sid": "QueueOwnerOnlyAccess"
+      },
+      {
+       "Action": "SQS:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": {
+        "Fn::GetAtt": [
+         "testapigatewaysqsqueuedlq8A515F77",
+         "Arn"
+        ]
+       },
+       "Sid": "HttpsOnly"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Queues": [
+     {
+      "Ref": "testapigatewaysqsqueuedlq8A515F77"
+     }
+    ]
+   }
+  },
+  "testapigatewaysqsqueue8EDC3CAF": {
+   "Type": "AWS::SQS::Queue",
+   "Properties": {
+    "KmsMasterKeyId": "alias/aws/sqs",
+    "RedrivePolicy": {
+     "deadLetterTargetArn": {
+      "Fn::GetAtt": [
+       "testapigatewaysqsqueuedlq8A515F77",
+       "Arn"
+      ]
+     },
+     "maxReceiveCount": 15
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "testapigatewaysqsqueuePolicy8623EDE8": {
+   "Type": "AWS::SQS::QueuePolicy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "sqs:AddPermission",
+        "sqs:DeleteMessage",
+        "sqs:GetQueueAttributes",
+        "sqs:ReceiveMessage",
+        "sqs:RemovePermission",
+        "sqs:SendMessage",
+        "sqs:SetQueueAttributes"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       },
+       "Resource": {
+        "Fn::GetAtt": [
+         "testapigatewaysqsqueue8EDC3CAF",
+         "Arn"
+        ]
+       },
+       "Sid": "QueueOwnerOnlyAccess"
+      },
+      {
+       "Action": "SQS:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": {
+        "Fn::GetAtt": [
+         "testapigatewaysqsqueue8EDC3CAF",
+         "Arn"
+        ]
+       },
+       "Sid": "HttpsOnly"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Queues": [
+     {
+      "Ref": "testapigatewaysqsqueue8EDC3CAF"
+     }
+    ]
+   }
+  },
+  "testapigatewaysqsApiAccessLogGroup37AB0350": {
+   "Type": "AWS::Logs::LogGroup",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W86",
+       "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+      },
+      {
+       "id": "W84",
+       "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+      }
+     ]
+    }
+   }
+  },
+  "testapigatewaysqsRestApi557C7EDC": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "EndpointConfiguration": {
+     "Types": [
+      "EDGE"
+     ]
+    },
+    "Name": "RestApi"
+   }
+  },
+  "testapigatewaysqsRestApiDeploymentCA19D372a533abf5414c204f290523aaae9a51c0": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Automatically created by the RestApi construct",
+    "RestApiId": {
+     "Ref": "testapigatewaysqsRestApi557C7EDC"
+    }
+   },
+   "DependsOn": [
+    "testapigatewaysqsRestApiapisqscustomrequestmodeltestapigatewaysqsRestApiPOSTValidator83A54BA4C98634F8",
+    "testapigatewaysqsRestApiGET4AA265C9",
+    "testapigatewaysqsRestApiPOST26D15DBA",
+    "testapigatewaysqstestapigatewaysqsmodelapplicationjson94EAC0E9",
+    "testapigatewaysqstestapigatewaysqsmodelapplicationtext6A72CC47"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W45",
+       "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checks for it in AWS::ApiGateway::Deployment resource"
+      }
+     ]
+    }
+   }
+  },
+  "testapigatewaysqsRestApiDeploymentStageprod1C007159": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "AccessLogSetting": {
+     "DestinationArn": {
+      "Fn::GetAtt": [
+       "testapigatewaysqsApiAccessLogGroup37AB0350",
+       "Arn"
+      ]
+     },
+     "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
+    },
+    "DeploymentId": {
+     "Ref": "testapigatewaysqsRestApiDeploymentCA19D372a533abf5414c204f290523aaae9a51c0"
+    },
+    "MethodSettings": [
+     {
+      "DataTraceEnabled": false,
+      "HttpMethod": "*",
+      "LoggingLevel": "INFO",
+      "ResourcePath": "/*"
+     }
+    ],
+    "RestApiId": {
+     "Ref": "testapigatewaysqsRestApi557C7EDC"
+    },
+    "StageName": "prod",
+    "TracingEnabled": true
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "API_GW_CACHE_ENABLED_AND_ENCRYPTED"
+     ]
+    }
+   }
+  },
+  "testapigatewaysqsRestApiPOST26D15DBA": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "AWS_IAM",
+    "HttpMethod": "POST",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "testapigatewaysqsapigatewayrole07110CD6",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "StatusCode": "200"
+      },
+      {
+       "ResponseTemplates": {
+        "text/html": "Error"
+       },
+       "SelectionPattern": "500",
+       "StatusCode": "500"
+      }
+     ],
+     "PassthroughBehavior": "NEVER",
+     "RequestParameters": {
+      "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'"
+     },
+     "RequestTemplates": {
+      "application/json": "Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")"
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":sqs:path/",
+        {
+         "Ref": "AWS::AccountId"
+        },
+        "/",
+        {
+         "Fn::GetAtt": [
+          "testapigatewaysqsqueue8EDC3CAF",
+          "QueueName"
+         ]
+        }
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Content-Type": true
+      },
+      "StatusCode": "200"
+     },
+     {
+      "ResponseParameters": {
+       "method.response.header.Content-Type": true
+      },
+      "StatusCode": "500"
+     }
+    ],
+    "RequestModels": {
+     "application/json": {
+      "Ref": "testapigatewaysqstestapigatewaysqsmodelapplicationjson94EAC0E9"
+     },
+     "application/text": {
+      "Ref": "testapigatewaysqstestapigatewaysqsmodelapplicationtext6A72CC47"
+     }
+    },
+    "RequestValidatorId": {
+     "Ref": "testapigatewaysqsRestApiapisqscustomrequestmodeltestapigatewaysqsRestApiPOSTValidator83A54BA4C98634F8"
+    },
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "testapigatewaysqsRestApi557C7EDC",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "testapigatewaysqsRestApi557C7EDC"
+    }
+   }
+  },
+  "testapigatewaysqsRestApiGET4AA265C9": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "AWS_IAM",
+    "HttpMethod": "GET",
+    "Integration": {
+     "Credentials": {
+      "Fn::GetAtt": [
+       "testapigatewaysqsapigatewayrole07110CD6",
+       "Arn"
+      ]
+     },
+     "IntegrationHttpMethod": "POST",
+     "IntegrationResponses": [
+      {
+       "StatusCode": "200"
+      },
+      {
+       "ResponseTemplates": {
+        "text/html": "Error"
+       },
+       "SelectionPattern": "500",
+       "StatusCode": "500"
+      }
+     ],
+     "PassthroughBehavior": "NEVER",
+     "RequestParameters": {
+      "integration.request.header.Content-Type": "'application/x-www-form-urlencoded'"
+     },
+     "RequestTemplates": {
+      "application/json": "Action=ReceiveMessage"
+     },
+     "Type": "AWS",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":sqs:path/",
+        {
+         "Ref": "AWS::AccountId"
+        },
+        "/",
+        {
+         "Fn::GetAtt": [
+          "testapigatewaysqsqueue8EDC3CAF",
+          "QueueName"
+         ]
+        }
+       ]
+      ]
+     }
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Content-Type": true
+      },
+      "StatusCode": "200"
+     },
+     {
+      "ResponseParameters": {
+       "method.response.header.Content-Type": true
+      },
+      "StatusCode": "500"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "testapigatewaysqsRestApi557C7EDC",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "testapigatewaysqsRestApi557C7EDC"
+    }
+   }
+  },
+  "testapigatewaysqsRestApiUsagePlan2295EB95": {
+   "Type": "AWS::ApiGateway::UsagePlan",
+   "Properties": {
+    "ApiStages": [
+     {
+      "ApiId": {
+       "Ref": "testapigatewaysqsRestApi557C7EDC"
+      },
+      "Stage": {
+       "Ref": "testapigatewaysqsRestApiDeploymentStageprod1C007159"
+      },
+      "Throttle": {}
+     }
+    ]
+   }
+  },
+  "testapigatewaysqsRestApiapisqscustomrequestmodeltestapigatewaysqsRestApiPOSTValidator83A54BA4C98634F8": {
+   "Type": "AWS::ApiGateway::RequestValidator",
+   "Properties": {
+    "RestApiId": {
+     "Ref": "testapigatewaysqsRestApi557C7EDC"
+    },
+    "ValidateRequestBody": true
+   }
+  },
+  "testapigatewaysqsLambdaRestApiCloudWatchRoleF10D0F78": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
+          "logs:FilterLogEvents",
+          "logs:GetLogEvents",
+          "logs:PutLogEvents"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":logs:",
+            {
+             "Ref": "AWS::Region"
+            },
+            ":",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":*"
+           ]
+          ]
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "LambdaRestApiCloudWatchRolePolicy"
+     }
+    ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
+   }
+  },
+  "testapigatewaysqsLambdaRestApiAccountACC6BE82": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "testapigatewaysqsLambdaRestApiCloudWatchRoleF10D0F78",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "testapigatewaysqsRestApi557C7EDC"
+   ]
+  },
+  "testapigatewaysqsapigatewayrole07110CD6": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "testapigatewaysqsapigatewayroleDefaultPolicy052E7AD5": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "sqs:ReceiveMessage",
+        "sqs:SendMessage"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "testapigatewaysqsqueue8EDC3CAF",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testapigatewaysqsapigatewayroleDefaultPolicy052E7AD5",
+    "Roles": [
+     {
+      "Ref": "testapigatewaysqsapigatewayrole07110CD6"
+     }
+    ]
+   }
+  },
+  "testapigatewaysqstestapigatewaysqsmodelapplicationjson94EAC0E9": {
+   "Type": "AWS::ApiGateway::Model",
+   "Properties": {
+    "ContentType": "application/json",
+    "RestApiId": {
+     "Ref": "testapigatewaysqsRestApi557C7EDC"
+    },
+    "Schema": {
+     "$schema": "http://json-schema.org/draft-04/schema#",
+     "title": "pollResponse",
+     "type": "object",
+     "required": [
+      "state",
+      "greeting"
+     ],
+     "additionalProperties": false,
+     "properties": {
+      "state": {
+       "type": "string"
+      },
+      "greeting": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "testapigatewaysqstestapigatewaysqsmodelapplicationtext6A72CC47": {
+   "Type": "AWS::ApiGateway::Model",
+   "Properties": {
+    "ContentType": "application/text",
+    "RestApiId": {
+     "Ref": "testapigatewaysqsRestApi557C7EDC"
+    },
+    "Schema": {
+     "$schema": "http://json-schema.org/draft-04/schema#",
+     "title": "pollResponse",
+     "type": "object",
+     "additionalProperties": false,
+     "properties": {
+      "textstate": {
+       "type": "string"
+      },
+      "textgreeting": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  }
+ },
+ "Outputs": {
+  "testapigatewaysqsRestApiEndpointD98015FF": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "testapigatewaysqsRestApi557C7EDC"
+      },
+      ".execute-api.",
+      {
+       "Ref": "AWS::Region"
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "testapigatewaysqsRestApiDeploymentStageprod1C007159"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
