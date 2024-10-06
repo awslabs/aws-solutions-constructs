@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.72.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.71.0...v2.72.0) (2024-10-06)
+
+
+### Features
+
+* **aws-apigateway-sqs:** add schema validation for create operation ([#1216](https://github.com/awslabs/aws-solutions-constructs/issues/1216)) ([9d42398](https://github.com/awslabs/aws-solutions-constructs/commit/9d423986b8aaee4c921000e8738ce8ad5ef78765))
+
 ## [2.71.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.70.0...v2.71.0) (2024-09-27)
 
 Build on CDK v2.160.0
