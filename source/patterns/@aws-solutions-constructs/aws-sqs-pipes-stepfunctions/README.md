@@ -19,7 +19,7 @@
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.sqspipesstepfunctions`|
 
 ## Overview
-This AWS Solutions Construct implements an AWS SQS queue whose messages are passed to an AWS Step Functions state machine by and Eventbridge pipe.
+This AWS Solutions Construct implements an AWS SQS queue whose messages are passed to an AWS Step Functions state machine by an Amazon Eventbridge pipe.
 
 Here is a minimal deployable pattern definition:
 
@@ -41,12 +41,12 @@ new SqsToPipesToStepfunctions(this, 'SqsToLambdaToStepfunctionsPattern', {
 
 Python
 ``` python
-TBD
+Coming soon
 ```
 
 Java
 ``` java
-TBD
+Coming soon
 ```
 
 ## Pattern Construct Props
