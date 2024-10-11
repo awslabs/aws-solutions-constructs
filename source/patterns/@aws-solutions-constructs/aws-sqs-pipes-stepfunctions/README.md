@@ -94,7 +94,7 @@ Out of the box implementation of the Construct without any override will set the
 * Deploy best practices CloudWatch Alarms for the Step Functions
 
 ### AWS EventBridge Pipe
-* Pipe configured with and SQS queue source and state machine target
+* Pipe configured with an SQS queue source and state machine target
 * A least privilege IAM role assigned to the pipe to access the queue and state machine
 * CloudWatch logs set up at the 'TBD' level
 * Encrypted with an AWS managed KMS key
