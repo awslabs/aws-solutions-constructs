@@ -75,3 +75,5 @@ export * from './lib/opensearch-helper';
 export * from './lib/kendra-helper';
 export * from './lib/websocket-api-defaults';
 export * from './lib/websocket-api-helper';
+export * from './lib/pipes-defaults';
+export * from './lib/pipes-helper';

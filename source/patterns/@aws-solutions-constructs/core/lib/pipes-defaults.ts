@@ -11,16 +11,22 @@
  *  and limitations under the License.
  */
 
-import * as kendra from 'aws-cdk-lib/aws-kendra';
-import { generatePhysicalKendraIndexName } from "./utils";
+// import * as pipes from 'aws-cdk-lib/aws-pipes';
 
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
-export function DefaultKendraIndexProps(id: string, roleArn?: string): kendra.CfnIndexProps {
+export function defaultPipesProps(): any {
+  return {};
+}
+
+export function defaultSqsSourceProps(): any {
   return {
-    name: generatePhysicalKendraIndexName("", ["KendraIndex", id]),
-    roleArn,
-    edition: 'DEVELOPER_EDITION',
-  } as kendra.CfnIndexProps;
+  };
+}
+
+export function defaultStateMachineTargetProps(): any {
+  return {
+    stepFunctionStateMachineParameters: {
+      // TODO: can we confirm best value with TFC, also: put in docs
+      invocationType: 'FIRE_AND_FORGET'
+    }
+  };
 }

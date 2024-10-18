@@ -138,6 +138,34 @@ export function generateResourceName(
   return finalName.toLowerCase();
 }
 
+export function generatePhysicalLogGroupName(
+  prefix: string,
+  parts: string[]
+): string {
+  return generatePhysicalName(prefix, parts, 255 - prefix.length);
+}
+
+export function generatePhysicalRestApiName(
+  prefix: string,
+  parts: string[]
+): string {
+  return generatePhysicalName(prefix, parts, 255);
+}
+
+export function generatePhysicalOacName(
+  prefix: string,
+  parts: string[]
+): string {
+  return generatePhysicalName(prefix, parts, 64);
+}
+
+export function generatePhysicalKendraIndexName(
+  prefix: string,
+  parts: string[]
+): string {
+  return generatePhysicalName(prefix, parts, 1000);
+}
+
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  *
@@ -312,6 +340,14 @@ export function CheckListValues(allowedPermissions: string[], submittedValues: s
 }
 
 export function CheckBooleanWithDefault(value: boolean | undefined, defaultValue: boolean): boolean {
+  if (value === undefined) {
+    return defaultValue;
+  } else {
+    return value;
+  }
+}
+
+export function CheckStringWithDefault(value: string | undefined, defaultValue: string): string {
   if (value === undefined) {
     return defaultValue;
   } else {
