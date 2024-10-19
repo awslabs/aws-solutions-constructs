@@ -44,7 +44,7 @@ export interface BuildPipesProps {
   readonly pipeLogProps?: logs.LogGroupProps
 }
 
-interface BuildPipesResponse {
+export interface BuildPipesResponse {
   readonly pipe: pipes.CfnPipe,
   readonly pipeRole: iam.Role
 }
@@ -90,8 +90,8 @@ export function BuildPipe(scope: Construct, id: string, props: BuildPipesProps):
       const defaultLogGroupProps = {
         logGroupName: createPipesLogGroupName(scope, id),
       };
-      const consolidatedGroupProps = defaults.consolidateProps(defaultLogGroupProps, props.pipeLogProps);
-      const newLogGroup = new logs.LogGroup(scope, `LogGroup-${id}`, consolidatedGroupProps);
+      const consolidatedLogGroupProps = defaults.consolidateProps(defaultLogGroupProps, props.pipeLogProps);
+      const newLogGroup = new logs.LogGroup(scope, `LogGroup-${id}`, consolidatedLogGroupProps);
       const logConfiguration = {
         cloudwatchLogsLogDestination: {
           logGroupArn: newLogGroup.logGroupArn

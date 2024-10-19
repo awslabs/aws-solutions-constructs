@@ -22,6 +22,10 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Match, Template } from "aws-cdk-lib/assertions";
 import { RetentionDays } from "aws-cdk-lib/aws-logs";
 
+// =================================
+// Test sources and targets generation
+// =================================
+
 test('Create a default SQS Source', () => {
   // Stack
   const stack = new Stack();
@@ -106,169 +110,69 @@ test('Create a Step Functions Target with overrides', () => {
   expect(stateMachineTarget.targetPolicy.statementCount).toEqual(1);
 });
 
+// =================================
+// Test pipe creation
+// =================================
+
 test('Create a default pipe', () => {
+  const prerequisiteId = 'alldefault';
+  const pipeId = 'defaultpipe';
 
   // Stack
   const stack = new Stack();
-  const prerequisites = CreatePrerequisites(stack, 'default-test');
+  const prerequisites = CreatePrerequisites(stack, prerequisiteId);
 
-  const pipeResponse = defaults.BuildPipe(stack, 'test-pipe', {
+  const pipeResponse = defaults.BuildPipe(stack, pipeId, {
     source: prerequisites.source,
     target: prerequisites.target,
     clientProps: {}
   });
 
-  expect(pipeResponse.pipe).toBeDefined();
-  expect(pipeResponse.pipe.source).toEqual(prerequisites.source.sourceArn);
-  expect(pipeResponse.pipe.target).toEqual(prerequisites.target.targetArn);
-  expect(pipeResponse.pipeRole).toBeDefined();
-  expect(pipeResponse.pipeRole.node).toBeDefined();
+  CheckPipeResponseProperties(pipeResponse, prerequisites);
 
   const template = Template.fromStack(stack);
-
   template.resourceCountIs('AWS::Pipes::Pipe', 1);
-  template.hasResourceProperties('AWS::IAM::Role', {
-    AssumeRolePolicyDocument: {
-      Statement: [
-        {
-          Action: "sts:AssumeRole",
-          Effect: "Allow",
-          Principal: {
-            Service: "pipes.amazonaws.com"
-          }
-        }
-      ],
-      Version: "2012-10-17"
-    },
-    Policies: [
-      {
-        PolicyDocument: {
-          Statement: [
-            {
-              Action: [
-                "sqs:ReceiveMessage",
-                "sqs:DeleteMessage",
-                "sqs:GetQueueAttributes"
-              ],
-              Effect: "Allow",
-              Resource: {
-                "Fn::GetAtt": [
-                  Match.stringLikeRegexp("defaulttestsourcequeue.*"),
-                  "Arn"
-                ]
-              }
-            }
-          ],
-          Version: "2012-10-17"
-        },
-        PolicyName: "sourcePolicy"
-      },
-      {
-        PolicyDocument: {
-          Statement: [
-            {
-              Action: "states:StartExecution",
-              Effect: "Allow",
-              Resource: {
-                Ref: Match.stringLikeRegexp("StateMachinedefaulttesttargetstatemachine.*")
-              }
-            }
-          ],
-          Version: "2012-10-17"
-        },
-        PolicyName: "targetPolicy"
-      }
-    ]
-  });
-  template.hasResourceProperties('AWS::Logs::LogGroup', {
-    LogGroupName: {
-      "Fn::Join": [
-        "",
-        [
-          Match.stringLikeRegexp('\/aws\/vendedlogs\/pipes\/constructs'),
-          {
-            "Fn::Select": [
-              2,
-              Match.anyValue()
-            ]
-          }
-        ]
-      ]
-    },
-  });
-  template.hasResourceProperties('AWS::Pipes::Pipe', {
-    Source: {
-      "Fn::GetAtt": [
-        Match.stringLikeRegexp('defaulttestsourcequeue.*'),
-        "Arn"
-      ]
-    },
-    Target: {
-      Ref: Match.stringLikeRegexp('StateMachinedefaulttesttargetstatemachine.*'),
-    },
-    LogConfiguration: {
-      CloudwatchLogsLogDestination: {
-        LogGroupArn: {
-          "Fn::GetAtt": [
-            Match.stringLikeRegexp('LogGrouptestpipe.*'),
-            "Arn"
-          ]
-        }
-      }
-    }
-  });
+  CheckPipeResource(template, pipeId, prerequisiteId);
+  CheckPipeRole(template, prerequisiteId);
+  CheckLogGroup(template);
 });
 
 test('Create a pipe with overrides', () => {
+  const prerequisiteId = 'overridestest';
+  const pipeId = 'overridespipe';
   // Stack
   const stack = new Stack();
-  const prerequisites = CreatePrerequisites(stack, 'overrides-test');
+  const prerequisites = CreatePrerequisites(stack, prerequisiteId);
 
   const testDescription = 'test-description';
-  const pipeResponse = defaults.BuildPipe(stack, 'test-pipe', {
+  const pipeResponse = defaults.BuildPipe(stack, pipeId, {
     source: prerequisites.source,
     target: prerequisites.target,
     clientProps: {
       description: testDescription
     }
   });
-  expect(pipeResponse.pipe).toBeDefined();
-  expect(pipeResponse.pipe.source).toEqual(prerequisites.source.sourceArn);
-  expect(pipeResponse.pipe.target).toEqual(prerequisites.target.targetArn);
-  expect(pipeResponse.pipeRole).toBeDefined();
-  expect(pipeResponse.pipeRole.node).toBeDefined();
+  CheckPipeResponseProperties(pipeResponse, prerequisites);
 
   const template = Template.fromStack(stack);
+  CheckPipeResource(template, pipeId, prerequisiteId);
+  CheckPipeRole(template, prerequisiteId);
+  CheckLogGroup(template);
 
+  // The description is unique to this test, so check it here
   template.hasResourceProperties('AWS::Pipes::Pipe', {
-    Source: {
-      "Fn::GetAtt": [
-        Match.stringLikeRegexp('overridestestsourcequeue.*'),
-        "Arn"
-      ]
-    },
-    Target: {
-      Ref: Match.stringLikeRegexp('StateMachineoverridestesttargetstatemachine.*'),
-    },
-    LogConfiguration: {
-      CloudwatchLogsLogDestination: {
-        LogGroupArn: {
-          "Fn::GetAtt": [
-            Match.stringLikeRegexp('LogGrouptestpipe.*'),
-            "Arn"
-          ]
-        }
-      }
-    },
     Description: testDescription
   });
 
 });
 
 test('Create a pipe with a filter', () => {
+  const prerequisiteId = 'filtertest';
+  const pipeId = 'filterpipe';
+
   // Stack
   const stack = new Stack();
-  const prerequisites = CreatePrerequisites(stack, 'filter-test');
+  const prerequisites = CreatePrerequisites(stack, prerequisiteId);
 
   const testFilterPattern = `{
     "body": {
@@ -276,7 +180,7 @@ test('Create a pipe with a filter', () => {
     }
   }`;
 
-  const pipeResponse = defaults.BuildPipe(stack, 'test-pipe', {
+  const pipeResponse = defaults.BuildPipe(stack, pipeId, {
     source: prerequisites.source,
     target: prerequisites.target,
     clientProps: {
@@ -287,34 +191,15 @@ test('Create a pipe with a filter', () => {
       }
     },
   });
-  expect(pipeResponse.pipe).toBeDefined();
-  expect(pipeResponse.pipe.source).toEqual(prerequisites.source.sourceArn);
-  expect(pipeResponse.pipe.target).toEqual(prerequisites.target.targetArn);
-  expect(pipeResponse.pipeRole).toBeDefined();
-  expect(pipeResponse.pipeRole.node).toBeDefined();
+  CheckPipeResponseProperties(pipeResponse, prerequisites);
 
   const template = Template.fromStack(stack);
+  CheckPipeResource(template, pipeId, prerequisiteId);
+  CheckPipeRole(template, prerequisiteId);
+  CheckLogGroup(template);
 
+  // SourceParameters is unique to this test, so check it here
   template.hasResourceProperties('AWS::Pipes::Pipe', {
-    Source: {
-      "Fn::GetAtt": [
-        Match.stringLikeRegexp('filtertestsourcequeue.*'),
-        "Arn"
-      ]
-    },
-    Target: {
-      Ref: Match.stringLikeRegexp('StateMachinefiltertesttargetstatemachine.*'),
-    },
-    LogConfiguration: {
-      CloudwatchLogsLogDestination: {
-        LogGroupArn: {
-          "Fn::GetAtt": [
-            Match.stringLikeRegexp('LogGrouptestpipe.*'),
-            "Arn"
-          ]
-        }
-      }
-    },
     SourceParameters: {
       FilterCriteria: {
         Filters: [
@@ -328,9 +213,12 @@ test('Create a pipe with a filter', () => {
 });
 
 test('Create a pipe with Lambda function enrichment', () => {
+  const prerequisiteId = 'lambdaenrichtest';
+  const pipeId = 'lambdaenrichpipe';
+
   // Stack
   const stack = new Stack();
-  const prerequisites = CreatePrerequisites(stack, 'enrichment-test');
+  const prerequisites = CreatePrerequisites(stack, prerequisiteId);
 
   const enrichmentFunction = new lambda.Function(stack, 'enrichment-function', {
     code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
@@ -338,83 +226,19 @@ test('Create a pipe with Lambda function enrichment', () => {
     runtime: lambda.Runtime.NODEJS_20_X,
   });
 
-  defaults.BuildPipe(stack, 'test-pipe', {
+  const pipeResponse = defaults.BuildPipe(stack, pipeId, {
     source: prerequisites.source,
     target: prerequisites.target,
     enrichmentFunction
   });
-  const template = Template.fromStack(stack);
+  CheckPipeResponseProperties(pipeResponse, prerequisites);
 
+  const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::Pipes::Pipe', 1);
-  template.hasResourceProperties('AWS::IAM::Role', {
-    AssumeRolePolicyDocument: {
-      Statement: [
-        {
-          Action: "sts:AssumeRole",
-          Effect: "Allow",
-          Principal: {
-            Service: "pipes.amazonaws.com"
-          }
-        }
-      ],
-      Version: "2012-10-17"
-    },
-    Policies: [
-      {
-        PolicyDocument: {
-          Statement: [
-            {
-              Action: [
-                "sqs:ReceiveMessage",
-                "sqs:DeleteMessage",
-                "sqs:GetQueueAttributes"
-              ],
-              Effect: "Allow",
-              Resource: {
-                "Fn::GetAtt": [
-                  Match.stringLikeRegexp('enrichmenttestsourcequeue.*'),
-                  "Arn"
-                ]
-              }
-            }
-          ],
-          Version: "2012-10-17"
-        },
-        PolicyName: "sourcePolicy"
-      },
-      {
-        PolicyDocument: {
-          Statement: [
-            {
-              Action: "states:StartExecution",
-              Effect: "Allow",
-              Resource: {
-                Ref: Match.stringLikeRegexp('StateMachineenrichmenttesttargetstatemachine.*')
-              }
-            }
-          ],
-          Version: "2012-10-17"
-        },
-        PolicyName: "targetPolicy"
-      }
-    ]
-  });
-  template.hasResourceProperties('AWS::Logs::LogGroup', {
-    LogGroupName: {
-      "Fn::Join": [
-        "",
-        [
-          Match.stringLikeRegexp('\/aws\/vendedlogs\/pipes\/constructs'),
-          {
-            "Fn::Select": [
-              2,
-              Match.anyValue()
-            ]
-          }
-        ]
-      ]
-    },
-  });
+  CheckPipeResource(template, pipeId, prerequisiteId);
+  CheckLogGroup(template);
+
+  // Enrichment is unique to this test so check it here
   template.hasResourceProperties('AWS::Pipes::Pipe', {
     Enrichment: {
       "Fn::GetAtt": [
@@ -422,26 +246,10 @@ test('Create a pipe with Lambda function enrichment', () => {
         "Arn"
       ]
     },
-    Source: {
-      "Fn::GetAtt": [
-        Match.stringLikeRegexp('enrichmenttestsourcequeue.*'),
-        "Arn"
-      ]
-    },
-    Target: {
-      Ref: Match.stringLikeRegexp('StateMachineenrichmenttesttargetstatemachine.*'),
-    },
-    LogConfiguration: {
-      CloudwatchLogsLogDestination: {
-        LogGroupArn: {
-          "Fn::GetAtt": [
-            Match.stringLikeRegexp('LogGrouptestpipe.*'),
-            "Arn"
-          ]
-        }
-      }
-    }
   });
+  // This checks for everything but enrichment
+  CheckPipeRole(template, prerequisiteId);
+  // This checks for enrichment permissions
   template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
@@ -458,126 +266,41 @@ test('Create a pipe with Lambda function enrichment', () => {
       ],
       Version: "2012-10-17"
     },
-    PolicyName: Match.stringLikeRegexp('enrichmentpolicytestpipe.*'),
+    PolicyName: Match.stringLikeRegexp(`enrichmentpolicy${pipeId}.*`),
     Roles: [
       {
-        Ref: Match.stringLikeRegexp('PipeRoletestpipeF634866B.*')
+        Ref: Match.stringLikeRegexp(`PipeRole${pipeId}.*`)
       }
     ]
   });
 });
 
 test('Create a pipe with state machine enrichment', () => {
+  const prerequisiteId = 'smenrichtest';
+  const pipeId = 'smenrichpipe';
+
   // Stack
   const stack = new Stack();
-  const prerequisites = CreatePrerequisites(stack, 'enrichment-test');
+  const prerequisites = CreatePrerequisites(stack, prerequisiteId);
 
   const enrichmentStateMachine = new sfn.StateMachine(stack, 'state-machine-enrichment', {
     definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'pipes-test')
   });
 
-  defaults.BuildPipe(stack, 'test-pipe', {
+  const pipeResponse = defaults.BuildPipe(stack, pipeId, {
     source: prerequisites.source,
     target: prerequisites.target,
     enrichmentStateMachine
   });
-  const template = Template.fromStack(stack);
-  defaults.printWarning(`\n\n==dbg==\n${JSON.stringify(template)}\n\n==dbg===\n\n`);
+  CheckPipeResponseProperties(pipeResponse, prerequisites);
 
+  const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::Pipes::Pipe', 1);
-  template.hasResourceProperties('AWS::IAM::Role', {
-    AssumeRolePolicyDocument: {
-      Statement: [
-        {
-          Action: "sts:AssumeRole",
-          Effect: "Allow",
-          Principal: {
-            Service: "pipes.amazonaws.com"
-          }
-        }
-      ],
-      Version: "2012-10-17"
-    },
-    Policies: [
-      {
-        PolicyDocument: {
-          Statement: [
-            {
-              Action: [
-                "sqs:ReceiveMessage",
-                "sqs:DeleteMessage",
-                "sqs:GetQueueAttributes"
-              ],
-              Effect: "Allow",
-              Resource: {
-                "Fn::GetAtt": [
-                  Match.stringLikeRegexp('enrichmenttestsourcequeue.*'),
-                  "Arn"
-                ]
-              }
-            }
-          ],
-          Version: "2012-10-17"
-        },
-        PolicyName: "sourcePolicy"
-      },
-      {
-        PolicyDocument: {
-          Statement: [
-            {
-              Action: "states:StartExecution",
-              Effect: "Allow",
-              Resource: {
-                Ref: Match.stringLikeRegexp('StateMachineenrichmenttesttargetstatemachine.*')
-              }
-            }
-          ],
-          Version: "2012-10-17"
-        },
-        PolicyName: "targetPolicy"
-      }
-    ]
-  });
-  template.hasResourceProperties('AWS::Logs::LogGroup', {
-    LogGroupName: {
-      "Fn::Join": [
-        "",
-        [
-          Match.stringLikeRegexp('\/aws\/vendedlogs\/pipes\/constructs'),
-          {
-            "Fn::Select": [
-              2,
-              Match.anyValue()
-            ]
-          }
-        ]
-      ]
-    },
-  });
-  template.hasResourceProperties('AWS::Pipes::Pipe', {
-    Enrichment: {
-      Ref: Match.stringLikeRegexp("statemachineenrichment.*")
-    },
-    Source: {
-      "Fn::GetAtt": [
-        Match.stringLikeRegexp('enrichmenttestsourcequeue.*'),
-        "Arn"
-      ]
-    },
-    Target: {
-      Ref: Match.stringLikeRegexp('StateMachineenrichmenttesttargetstatemachine.*'),
-    },
-    LogConfiguration: {
-      CloudwatchLogsLogDestination: {
-        LogGroupArn: {
-          "Fn::GetAtt": [
-            Match.stringLikeRegexp('LogGrouptestpipe.*'),
-            "Arn"
-          ]
-        }
-      }
-    }
-  });
+  CheckPipeResource(template, pipeId, prerequisiteId);
+  CheckPipeRole(template, prerequisiteId);
+  CheckLogGroup(template);
+
+  // Look for additional enrichment permision
   template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
@@ -591,20 +314,27 @@ test('Create a pipe with state machine enrichment', () => {
       ],
       Version: "2012-10-17"
     },
-    PolicyName: Match.stringLikeRegexp('enrichmentpolicytestpipe.*'),
+    PolicyName: Match.stringLikeRegexp(`enrichmentpolicy${pipeId}.*`),
     Roles: [
       {
-        Ref: Match.stringLikeRegexp('PipeRoletestpipeF634866B.*')
+        Ref: Match.stringLikeRegexp(`PipeRole${pipeId}.*`)
       }
     ]
+  });
+  template.hasResourceProperties('AWS::Pipes::Pipe', {
+    Enrichment: {
+      Ref: Match.stringLikeRegexp("statemachineenrichment.*")
+    },
   });
 });
 
 test('Provide replacement LogConfiguration', () => {
+  const prerequisiteId = 'logconfigtest';
+  const pipeId = 'logconfigpipe';
 
   // Stack
   const stack = new Stack();
-  const prerequisites = CreatePrerequisites(stack, 'default-test');
+  const prerequisites = CreatePrerequisites(stack, prerequisiteId);
 
   const customLogConfiguration: pipes.CfnPipe.PipeLogConfigurationProperty = {
     s3LogDestination: {
@@ -612,85 +342,19 @@ test('Provide replacement LogConfiguration', () => {
     },
     level: defaults.PipesLogLevel.ERROR
   };
-  const pipeResponse = defaults.BuildPipe(stack, 'test-pipe', {
+  const pipeResponse = defaults.BuildPipe(stack, pipeId, {
     source: prerequisites.source,
     target: prerequisites.target,
     clientProps: {
       logConfiguration: customLogConfiguration
     }
   });
-  expect(pipeResponse.pipe).toBeDefined();
-  expect(pipeResponse.pipe.source).toEqual(prerequisites.source.sourceArn);
-  expect(pipeResponse.pipe.target).toEqual(prerequisites.target.targetArn);
-  expect(pipeResponse.pipeRole).toBeDefined();
-  expect(pipeResponse.pipeRole.node).toBeDefined();
+  CheckPipeResponseProperties(pipeResponse, prerequisites);
 
   const template = Template.fromStack(stack);
+  CheckPipeSourceAndTarget(template, prerequisiteId);
 
-  template.resourceCountIs('AWS::Pipes::Pipe', 1);
-  template.hasResourceProperties('AWS::IAM::Role', {
-    AssumeRolePolicyDocument: {
-      Statement: [
-        {
-          Action: "sts:AssumeRole",
-          Effect: "Allow",
-          Principal: {
-            Service: "pipes.amazonaws.com"
-          }
-        }
-      ],
-      Version: "2012-10-17"
-    },
-    Policies: [
-      {
-        PolicyDocument: {
-          Statement: [
-            {
-              Action: [
-                "sqs:ReceiveMessage",
-                "sqs:DeleteMessage",
-                "sqs:GetQueueAttributes"
-              ],
-              Effect: "Allow",
-              Resource: {
-                "Fn::GetAtt": [
-                  Match.stringLikeRegexp("defaulttestsourcequeue.*"),
-                  "Arn"
-                ]
-              }
-            }
-          ],
-          Version: "2012-10-17"
-        },
-        PolicyName: "sourcePolicy"
-      },
-      {
-        PolicyDocument: {
-          Statement: [
-            {
-              Action: "states:StartExecution",
-              Effect: "Allow",
-              Resource: {
-                Ref: Match.stringLikeRegexp("StateMachinedefaulttesttargetstatemachine.*")
-              }
-            }
-          ],
-          Version: "2012-10-17"
-        },
-        PolicyName: "targetPolicy"
-      }
-    ]
-  });
   template.hasResourceProperties('AWS::Pipes::Pipe', {
-    Source: {
-      "Fn::GetAtt": [
-        Match.stringLikeRegexp('defaulttestsourcequeue.*'),
-        "Arn"
-      ]
-    },
-    Target: {
-      Ref: Match.stringLikeRegexp('StateMachinedefaulttesttargetstatemachine.*'),
-    },
     LogConfiguration: {
       Level: "ERROR",
       S3LogDestination: {
@@ -700,111 +364,134 @@ test('Provide replacement LogConfiguration', () => {
       }
     }
   });
+
+  template.resourceCountIs('AWS::Pipes::Pipe', 1);
+  CheckPipeRole(template, prerequisiteId);
 });
 
 test('Override the default log level', () => {
+  const prerequisiteId = 'loglevelttest';
+  const pipeId = 'loglevelpipe';
+
   // Stack
   const stack = new Stack();
-  const prerequisites = CreatePrerequisites(stack, 'log-level-test');
+  const prerequisites = CreatePrerequisites(stack, prerequisiteId);
 
-  defaults.BuildPipe(stack, 'test-pipe', {
+  const pipeResponse = defaults.BuildPipe(stack, pipeId, {
     source: prerequisites.source,
     target: prerequisites.target,
     logLevel: defaults.PipesLogLevel.ERROR
   });
-  const template = Template.fromStack(stack);
+  CheckPipeResponseProperties(pipeResponse, prerequisites);
 
+  const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::Pipes::Pipe', 1);
-  template.hasResourceProperties('AWS::IAM::Role', {
-    AssumeRolePolicyDocument: {
-      Statement: [
-        {
-          Action: "sts:AssumeRole",
-          Effect: "Allow",
-          Principal: {
-            Service: "pipes.amazonaws.com"
-          }
-        }
-      ],
-      Version: "2012-10-17"
-    },
-    Policies: [
-      {
-        PolicyDocument: {
-          Statement: [
-            {
-              Action: [
-                "sqs:ReceiveMessage",
-                "sqs:DeleteMessage",
-                "sqs:GetQueueAttributes"
-              ],
-              Effect: "Allow",
-              Resource: {
-                "Fn::GetAtt": [
-                  Match.stringLikeRegexp("logleveltestsourcequeue.*"),
-                  "Arn"
-                ]
-              }
-            }
-          ],
-          Version: "2012-10-17"
-        },
-        PolicyName: "sourcePolicy"
-      },
-      {
-        PolicyDocument: {
-          Statement: [
-            {
-              Action: "states:StartExecution",
-              Effect: "Allow",
-              Resource: {
-                Ref: Match.stringLikeRegexp("StateMachinelogleveltesttargetstatemachine.*")
-              }
-            }
-          ],
-          Version: "2012-10-17"
-        },
-        PolicyName: "targetPolicy"
-      }
-    ]
-  });
-  template.hasResourceProperties('AWS::Logs::LogGroup', {
-    LogGroupName: {
-      "Fn::Join": [
-        "",
-        [
-          Match.stringLikeRegexp('\/aws\/vendedlogs\/pipes\/constructs'),
-          {
-            "Fn::Select": [
-              2,
-              Match.anyValue()
-            ]
-          }
-        ]
-      ]
-    },
-  });
+  CheckPipeResource(template, pipeId, prerequisiteId);
+  CheckPipeRole(template, prerequisiteId);
+  CheckLogGroup(template);
+
+  // Level is unique to this test
   template.hasResourceProperties('AWS::Pipes::Pipe', {
-    Source: {
-      "Fn::GetAtt": [
-        Match.stringLikeRegexp('logleveltestsourcequeue.*'),
-        "Arn"
-      ]
-    },
-    Target: {
-      Ref: Match.stringLikeRegexp('StateMachinelogleveltesttargetstatemachine.*'),
-    },
     LogConfiguration: {
       Level: defaults.PipesLogLevel.ERROR,
-      CloudwatchLogsLogDestination: {
-        LogGroupArn: {
-          "Fn::GetAtt": [
-            Match.stringLikeRegexp('LogGrouptestpipe.*'),
-            "Arn"
-          ]
+    }
+  });
+});
+
+test('Test no logging', () => {
+  const prerequisiteId = 'nologs';
+  const pipeId = 'testpipe';
+
+  // Stack
+  const stack = new Stack();
+  const prerequisites = CreatePrerequisites(stack, prerequisiteId);
+
+  const pipeResponse = defaults.BuildPipe(stack, pipeId, {
+    source: prerequisites.source,
+    target: prerequisites.target,
+    logLevel: defaults.PipesLogLevel.OFF
+  });
+  CheckPipeResponseProperties(pipeResponse, prerequisites);
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Pipes::Pipe', 1);
+  CheckPipeSourceAndTarget(template, prerequisiteId);
+  CheckPipeRole(template, prerequisiteId);
+
+  // One log group for the state machine, none for the pipe
+  template.resourceCountIs('AWS::Logs::LogGroup', 1);
+});
+
+test('Override a subset of SQS source paramters', () => {
+  const prerequisiteId = 'srcparamtest';
+  const pipeId = 'srcparampipe';
+  const testBatchSize = 7;
+
+  // Stack
+  const stack = new Stack();
+  const prerequisites = CreatePrerequisites(stack, prerequisiteId);
+
+  const pipeResponse = defaults.BuildPipe(stack, pipeId, {
+    source: prerequisites.source,
+    target: prerequisites.target,
+    clientProps: {
+      sourceParameters: {
+        sqsQueueParameters: {
+          batchSize: testBatchSize,
         }
       }
     }
+  });
+
+  CheckPipeResponseProperties(pipeResponse, prerequisites);
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Pipes::Pipe', 1);
+  CheckPipeResource(template, pipeId, prerequisiteId);
+  CheckPipeRole(template, prerequisiteId);
+  CheckLogGroup(template);
+
+  template.resourceCountIs('AWS::Pipes::Pipe', 1);
+  template.hasResourceProperties('AWS::Pipes::Pipe', {
+    SourceParameters: {
+      SqsQueueParameters: {
+        BatchSize: testBatchSize
+      }
+    },
+  });
+});
+
+test('Provide pipeLogProps', () => {
+  const prerequisiteId = 'pipelogpropstest';
+  const pipeId = 'pipelogpropspipe';
+  // While this is an enum we need to use, in the template
+  // it is converted to days, in this case 120
+  const testRetention = RetentionDays.FOUR_MONTHS;
+
+  // Stack
+  const stack = new Stack();
+  const prerequisites = CreatePrerequisites(stack, prerequisiteId);
+
+  const pipeResponse = defaults.BuildPipe(stack, pipeId, {
+    source: prerequisites.source,
+    target: prerequisites.target,
+    pipeLogProps: {
+      retention: testRetention
+    }
+  });
+
+  CheckPipeResponseProperties(pipeResponse, prerequisites);
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::Pipes::Pipe', 1);
+  CheckPipeResource(template, pipeId, prerequisiteId);
+  CheckPipeRole(template, prerequisiteId);
+  CheckLogGroup(template);
+  CheckPipeLogConfiguration(template, pipeId);
+
+  // Look for additional property we passed in pipeLogProps
+  template.hasResourceProperties('AWS::Logs::LogGroup', {
+    RetentionInDays: 120,
   });
 });
 
@@ -826,174 +513,7 @@ test('Check for error when providing source in CfnProps', () => {
   expect(app).toThrowError('ERROR - BuildPipeProps cannot specify source, target, roleArn, or enrichment');
 });
 
-interface Prerequisites {
-  source: defaults.CreateSourceResponse,
-  target: defaults.CreateTargetResponse,
-}
-
-function CreatePrerequisites(scope: Stack, id: string): Prerequisites {
-  const buildQueueResponse = buildQueue(scope, `${id}-source-queue`, {});
-  const sqsSource = defaults.CreateSqsSource(buildQueueResponse.queue);
-
-  const buildStateMachineResponse = buildStateMachine(scope, `${id}-target-state-machine`, {
-    stateMachineProps: {
-      definitionBody: defaults.CreateTestStateMachineDefinitionBody(scope, `${id}-steps`)
-    }
-  });
-  const stateMachineTarget = defaults.CreateStateMachineTarget(buildStateMachineResponse.stateMachine, {
-    stepFunctionStateMachineParameters: {
-      invocationType: 'REQUEST_RESPONSE'
-    }
-  });
-  return {
-    source: sqsSource,
-    target: stateMachineTarget
-  };
-}
-
-test('Test no logging', () => {
-
-  // Stack
-  const stack = new Stack();
-  const prerequisites = CreatePrerequisites(stack, 'no-logs');
-
-  defaults.BuildPipe(stack, 'test-pipe', {
-    source: prerequisites.source,
-    target: prerequisites.target,
-    logLevel: defaults.PipesLogLevel.OFF
-  });
-  const template = Template.fromStack(stack);
-
-  template.resourceCountIs('AWS::Pipes::Pipe', 1);
-
-  // One log group for the state machine, none for the pipe
-  template.resourceCountIs('AWS::Logs::LogGroup', 1);
-});
-
-test('Override a subset of SQS source paramters', () => {
-  const testBatchSize = 7;
-
-  // Stack
-  const stack = new Stack();
-  const prerequisites = CreatePrerequisites(stack, 'default-test');
-
-  const pipeResponse = defaults.BuildPipe(stack, 'test-pipe', {
-    source: prerequisites.source,
-    target: prerequisites.target,
-    clientProps: {
-      sourceParameters: {
-        sqsQueueParameters: {
-          batchSize: testBatchSize,
-        }
-      }
-    }
-  });
-
-  expect(pipeResponse.pipe).toBeDefined();
-  expect(pipeResponse.pipe.source).toEqual(prerequisites.source.sourceArn);
-  expect(pipeResponse.pipe.target).toEqual(prerequisites.target.targetArn);
-  expect(pipeResponse.pipeRole).toBeDefined();
-  expect(pipeResponse.pipeRole.node).toBeDefined();
-
-  const template = Template.fromStack(stack);
-
-  template.resourceCountIs('AWS::Pipes::Pipe', 1);
-  template.hasResourceProperties('AWS::Pipes::Pipe', {
-    Source: {
-      "Fn::GetAtt": [
-        Match.stringLikeRegexp('defaulttestsourcequeue.*'),
-        "Arn"
-      ]
-    },
-    SourceParameters: {
-      SqsQueueParameters: {
-        BatchSize: testBatchSize
-      }
-    },
-    Target: {
-      Ref: Match.stringLikeRegexp('StateMachinedefaulttesttargetstatemachine.*'),
-    },
-    LogConfiguration: {
-      CloudwatchLogsLogDestination: {
-        LogGroupArn: {
-          "Fn::GetAtt": [
-            Match.stringLikeRegexp('LogGrouptestpipe.*'),
-            "Arn"
-          ]
-        }
-      }
-    }
-  });
-});
-
-test('Provide pipeLogProps', () => {
-  // While this is an enum we need to use, in the template
-  // it is converted to days, in this case 120
-  const testRetention = RetentionDays.FOUR_MONTHS;
-
-  // Stack
-  const stack = new Stack();
-  const prerequisites = CreatePrerequisites(stack, 'default-test');
-
-  const pipeResponse = defaults.BuildPipe(stack, 'test-pipe', {
-    source: prerequisites.source,
-    target: prerequisites.target,
-    pipeLogProps: {
-      retention: testRetention
-    }
-  });
-
-  expect(pipeResponse.pipe).toBeDefined();
-  expect(pipeResponse.pipe.source).toEqual(prerequisites.source.sourceArn);
-  expect(pipeResponse.pipe.target).toEqual(prerequisites.target.targetArn);
-  expect(pipeResponse.pipeRole).toBeDefined();
-  expect(pipeResponse.pipeRole.node).toBeDefined();
-
-  const template = Template.fromStack(stack);
-  defaults.printWarning(`\n\n==dbg==\n${JSON.stringify(template)}\n\n==dbg===\n\n`);
-
-  template.resourceCountIs('AWS::Pipes::Pipe', 1);
-  template.hasResourceProperties('AWS::Pipes::Pipe', {
-    Source: {
-      "Fn::GetAtt": [
-        Match.stringLikeRegexp('defaulttestsourcequeue.*'),
-        "Arn"
-      ]
-    },
-    Target: {
-      Ref: Match.stringLikeRegexp('StateMachinedefaulttesttargetstatemachine.*'),
-    },
-    LogConfiguration: {
-      CloudwatchLogsLogDestination: {
-        LogGroupArn: {
-          "Fn::GetAtt": [
-            Match.stringLikeRegexp('LogGrouptestpipe.*'),
-            "Arn"
-          ]
-        }
-      }
-    }
-  });
-  template.hasResourceProperties('AWS::Logs::LogGroup', {
-    RetentionInDays: 120,
-    LogGroupName: {
-      "Fn::Join": [
-        "",
-        [
-          Match.stringLikeRegexp('\/aws\/vendedlogs\/pipes\/constructs'),
-          {
-            "Fn::Select": [
-              2,
-              Match.anyValue()
-            ]
-          }
-        ]
-      ]
-    },
-  });
-});
-
-test('Check for error when providing destination in CfnProps', () => {
+test('Check for error when providing target in CfnProps', () => {
   // Stack
   const stack = new Stack();
   const prerequisites = CreatePrerequisites(stack, 'log-level-test');
@@ -1137,3 +657,156 @@ test('Test all of CheckPipesProps', () => {
   expect(appTwo).toThrowError('Do not set target in pipesProps. It is set by the construct.\n');
 
 });
+
+// ==============================
+// Shared setup function
+// ==============================
+
+interface Prerequisites {
+  source: defaults.CreateSourceResponse,
+  target: defaults.CreateTargetResponse,
+}
+
+function CreatePrerequisites(scope: Stack, id: string): Prerequisites {
+  const buildQueueResponse = buildQueue(scope, `${id}-source-queue`, {});
+  const sqsSource = defaults.CreateSqsSource(buildQueueResponse.queue);
+
+  const buildStateMachineResponse = buildStateMachine(scope, `${id}-target-state-machine`, {
+    stateMachineProps: {
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(scope, `${id}-steps`)
+    }
+  });
+  const stateMachineTarget = defaults.CreateStateMachineTarget(buildStateMachineResponse.stateMachine, {
+    stepFunctionStateMachineParameters: {
+      invocationType: 'REQUEST_RESPONSE'
+    }
+  });
+  return {
+    source: sqsSource,
+    target: stateMachineTarget
+  };
+}
+
+// ==============================
+// Shared functions that check default settings
+// ==============================
+
+function CheckPipeResponseProperties(pipeResponse: defaults.BuildPipesResponse, prerequisites: Prerequisites) {
+  expect(pipeResponse.pipe).toBeDefined();
+  expect(pipeResponse.pipe.source).toEqual(prerequisites.source.sourceArn);
+  expect(pipeResponse.pipe.target).toEqual(prerequisites.target.targetArn);
+  expect(pipeResponse.pipeRole).toBeDefined();
+  expect(pipeResponse.pipeRole.node).toBeDefined();
+}
+
+function CheckPipeResource(template: Template,
+  pipeId: string,
+  prerequisiteId: string
+) {
+  CheckPipeSourceAndTarget(template, prerequisiteId);
+  CheckPipeLogConfiguration(template, pipeId);
+}
+
+function CheckPipeSourceAndTarget(template: Template, prerequisiteId: string) {
+  template.hasResourceProperties('AWS::Pipes::Pipe', {
+    Source: {
+      "Fn::GetAtt": [
+        Match.stringLikeRegexp(`${prerequisiteId}sourcequeue.*`),
+        "Arn"
+      ]
+    },
+    Target: {
+      Ref: Match.stringLikeRegexp(`StateMachine${prerequisiteId}targetstatemachine.*`),
+    },
+  });
+}
+
+function CheckPipeLogConfiguration(template: Template, pipeId: string) {
+  template.hasResourceProperties('AWS::Pipes::Pipe', {
+    LogConfiguration: {
+      CloudwatchLogsLogDestination: {
+        LogGroupArn: {
+          "Fn::GetAtt": [
+            Match.stringLikeRegexp(`LogGroup${pipeId}.*`),
+            "Arn"
+          ]
+        }
+      }
+    }
+  });
+}
+
+function CheckPipeRole(template: Template, prerequisiteId: string) {
+  template.hasResourceProperties('AWS::IAM::Role', {
+    AssumeRolePolicyDocument: {
+      Statement: [
+        {
+          Action: "sts:AssumeRole",
+          Effect: "Allow",
+          Principal: {
+            Service: "pipes.amazonaws.com"
+          }
+        }
+      ],
+      Version: "2012-10-17"
+    },
+    Policies: [
+      {
+        PolicyDocument: {
+          Statement: [
+            {
+              Action: [
+                "sqs:ReceiveMessage",
+                "sqs:DeleteMessage",
+                "sqs:GetQueueAttributes"
+              ],
+              Effect: "Allow",
+              Resource: {
+                "Fn::GetAtt": [
+                  Match.stringLikeRegexp(`${prerequisiteId}sourcequeue.*`),
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          Version: "2012-10-17"
+        },
+        PolicyName: "sourcePolicy"
+      },
+      {
+        PolicyDocument: {
+          Statement: [
+            {
+              Action: "states:StartExecution",
+              Effect: "Allow",
+              Resource: {
+                Ref: Match.stringLikeRegexp(`StateMachine${prerequisiteId}targetstatemachine.*`)
+              }
+            }
+          ],
+          Version: "2012-10-17"
+        },
+        PolicyName: "targetPolicy"
+      }
+    ]
+  });
+}
+
+function CheckLogGroup(template: Template) {
+  template.hasResourceProperties('AWS::Logs::LogGroup', {
+    LogGroupName: {
+      "Fn::Join": [
+        "",
+        [
+          Match.stringLikeRegexp('\/aws\/vendedlogs\/pipes\/constructs'),
+          {
+            "Fn::Select": [
+              2,
+              Match.anyValue()
+            ]
+          }
+        ]
+      ]
+    },
+  });
+}
