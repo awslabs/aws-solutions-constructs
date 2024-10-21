@@ -1,0 +1,19 @@
+{
+  "version": "38.0.1",
+  "files": {
+    "b608de4251b772257f786d1776e1bb2dbb6566658681631d71e5741f2e95c986": {
+      "source": {
+        "path": "sqspstp-set-queue-batch-size.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "b608de4251b772257f786d1776e1bb2dbb6566658681631d71e5741f2e95c986.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

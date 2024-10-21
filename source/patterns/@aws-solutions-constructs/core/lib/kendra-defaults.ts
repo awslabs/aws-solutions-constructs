@@ -12,14 +12,14 @@
  */
 
 import * as kendra from 'aws-cdk-lib/aws-kendra';
-import { generatePhysicalName } from "./utils";
+import { generatePhysicalKendraIndexName } from "./utils";
 
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function DefaultKendraIndexProps(id: string, roleArn?: string): kendra.CfnIndexProps {
   return {
-    name: generatePhysicalName("", ["KendraIndex", id], 1000),
+    name: generatePhysicalKendraIndexName("", ["KendraIndex", id]),
     roleArn,
     edition: 'DEVELOPER_EDITION',
   } as kendra.CfnIndexProps;

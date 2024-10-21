@@ -329,6 +329,19 @@ test('CheckBooleanWithDefault', () => {
   expect(response).toBe(false);
 });
 
+test('CheckStringWithDefault', () => {
+  let response;
+  const value = 'testValue';
+  const defaultValue = 'default';
+
+  response = defaults.CheckStringWithDefault(undefined, defaultValue);
+  expect(response).toBe(defaultValue);
+
+  response = defaults.CheckStringWithDefault(value, defaultValue);
+  expect(response).toBe(value);
+
+});
+
 test('test addCfnGuardSuppressRules', () => {
   const stack = new Stack();
 

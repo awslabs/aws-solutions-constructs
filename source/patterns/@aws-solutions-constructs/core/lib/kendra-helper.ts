@@ -18,7 +18,7 @@
 
 import * as kendra from 'aws-cdk-lib/aws-kendra';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import { addCfnGuardSuppressRules, addCfnSuppressRules, consolidateProps, generatePhysicalName, overrideProps } from "./utils";
+import { addCfnGuardSuppressRules, addCfnSuppressRules, consolidateProps, generatePhysicalKendraIndexName, overrideProps } from "./utils";
 import { Aws } from 'aws-cdk-lib';
 
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
@@ -126,7 +126,7 @@ function CreateS3DataSource(scope: Construct,
   // Put bucket name in default props
   let defaultProps: kendra.CfnDataSourceProps = {
     indexId: targetIndex.ref,
-    name: generatePhysicalName('', ['s3-datasource', id], 1000),
+    name: generatePhysicalKendraIndexName('', ['s3-datasource', id]),
     type: 'S3'
   };
 
