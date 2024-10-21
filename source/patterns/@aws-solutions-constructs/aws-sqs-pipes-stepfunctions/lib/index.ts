@@ -109,13 +109,34 @@ export interface SqsToPipesToStepfunctionsProps {
    * can be freely overridden.
    */
   readonly pipeProps?: pipes.CfnPipeProps | any,
-
+  /**
+   * Default behavior is for the this construct to create a new CloudWatch Logs log group for the pipe.
+   * These props are used to override defaults set by AWS or this construct. If there are concerns about
+   * the cost of log storage, this is where a client can specify a shorter retention duration (in days)
+   */
   readonly pipeLogProps?: logs.LogGroupProps,
-
+  /**
+   * Threshold for what messages the new pipe sends to the log, PipesLogLevel.OFF, PipesLogLevel.ERROR,
+   * PipesLogLevel.INFO, PipesLogLevel.TRACE. The default is INFO. Setting the level to OFF will prevent
+   * any log group from being created. Providing pipeProps.logConfiguration will controls all aspects of
+   * logging and any construct provided log configuration is disabled. If pipeProps.logConfiguration is
+   * provided then specifying this or pipeLogProps is an error.
+   */
   readonly logLevel?: PipesLogLevel,
-
+  /**
+   * Optional - Lambda function that the construct will configure to be called to enrich the message
+   * between source and target. The construct will configure the pipe IAM role to allow invoking the
+   * function (but will not affect the IArole assigned to the function). Specifying both this and
+   * enrichmentStateMachine is an error. Default - undefined
+   */
   readonly enrichmentFunction?: lambda.Function,
-
+  /**
+   * Optional - Step Functions state machine that the construct will configure to be called to enrich the message
+   * between source and target. The construct will configure the pipe IAM role to allow executing the state
+   * machine (but will not affect the IAM role assigned to the state machine). Specifying both this and
+   * enrichmentStateMachine is an error. Enrichment is invoked synchronously, so this must be an EXPRESS
+   * state machin. Default - undefined
+   */
   readonly enrichmentStateMachine?: sfn.StateMachine,
 
 }
