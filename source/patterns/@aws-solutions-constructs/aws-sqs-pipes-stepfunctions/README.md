@@ -39,16 +39,6 @@ new SqsToPipesToStepfunctions(this, 'SqsToLambdaToStepfunctionsPattern', {
 });
 ```
 
-Python
-``` python
-Coming soon
-```
-
-Java
-``` java
-Coming soon
-```
-
 ## Pattern Construct Props
 
 | **Name**     | **Type**        | **Description** |
@@ -65,8 +55,8 @@ Coming soon
 |createCloudWatchAlarms|`boolean`|Whether to create recommended CloudWatch alarms|
 | logGroupProps | [logs.logGroupProps ](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)| Optional user provided props to override the default props for for the CloudWatchLogs LogGroup for the state machine. |
 |pipeProps?|[ pipes.CfnPipeProps ](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_pipes.CfnPipeProps.html)|Optional customer provided settings for the EventBridge pipe. source, target, roleArn and enrichment settings are set by the construct and cannot be overriden here. The construct will generate default sourceParameters, targetParameters and logConfiguration (found [here](link)) that can be overriden by populating those values in these props. If the client wants to implement enrichment or a filter, this is where that information can be provided. Any other props can be freely overridden. If a client wants to set values such as batchSize, that can be done here in the sourceParameters property.|
-| enrichmentFunction | [lambda.Function ](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html) | Optional - Lambda function that the construct will configure to be called to enrich the message between source and target. The construct will configure the pipe IAM role to allow invoking the function (but will not affect the IArole assigned to the function). Specifying both this and enrichmentStateMachine is an error. Default - undefined |
-| enrichmentStateMachine | [sfn.StateMachine ](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachine.html) | Optional - Step Functions state machine that the construct will configure to be called to enrich the message between source and target. The construct will configure the pipe IAM role to allow executing the state machine (but will not affect the IAM role assigned to the state machine). Specifying both this and enrichmentStateMachine is an error. Default - undefined |
+| enrichmentFunction? | [lambda.Function ](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html) | Optional - Lambda function that the construct will configure to be called to enrich the message between source and target. The construct will configure the pipe IAM role to allow invoking the function (but will not affect the IArole assigned to the function). Specifying both this and enrichmentStateMachine is an error. Default - undefined |
+| enrichmentStateMachine? | [sfn.StateMachine ](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachine.html) | Optional - Step Functions state machine that the construct will configure to be called to enrich the message between source and target. The construct will configure the pipe IAM role to allow executing the state machine (but will not affect the IAM role assigned to the state machine). Specifying both this and enrichmentStateMachine is an error. Default - undefined |
 |pipesLogLevel|PipesLogLevel|Threshold for what messages the new pipe sends to the log, PipesLogLevel.OFF, PipesLogLevel.ERROR, PipesLogLevel.INFO, , PipesLogLevel.TRACE. The default is INFO. Setting the level to OFF will prevent any log group from being created. Providing pipeProps.logConfiguration will controls all aspects of logging and any construct provided log configuration is disabled. If pipeProps.logConfiguration is provided then specifying this or pipeLogProps is an error. |
 |pipeLogProps|[logs.LogGroupProps]()| Default behavior is for the this construct to create a new CloudWatch Logs log group for the pipe. These props are used to override defaults set by AWS or this construct. If there are concerns about the cost of log storage, this is where a client can specify a shorter retention duration (in days) |
 
