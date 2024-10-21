@@ -256,7 +256,7 @@ test('test state machine enrichment', () => {
     PolicyDocument: {
       Statement: [
         {
-          Action: "states:StartExecution",
+          Action: "states:StartSyncExecution",
           Effect: "Allow",
           Resource: {
             Ref: Match.stringLikeRegexp('enrichmentstatemachine.*'),
