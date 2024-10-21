@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.73.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.72.0...v2.73.0) (2024-10-21)
+
+
+### Features
+
+* **aws-sqs-pipes-stepfunctions:** new construct ([#1220](https://github.com/awslabs/aws-solutions-constructs/issues/1220)) ([c508279](https://github.com/awslabs/aws-solutions-constructs/commit/c508279b6f69a1126e8b58bf6bfc13d246ea2a9e))
+
 ## [2.72.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.71.0...v2.72.0) (2024-10-06)
 
 Build on CDK v2.161.0
