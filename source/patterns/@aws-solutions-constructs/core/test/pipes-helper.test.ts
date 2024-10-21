@@ -52,7 +52,7 @@ test('Create an SQS Source with overrides', () => {
   });
 
   expect(sqsSource.sourceArn).toEqual(buildQueueResponse.queue.queueArn);
-  // Because sqsQueueParameters type include 'IDurable |', we need to extract the property this way
+  // Because sqsQueueParameters type include 'IResolvable |', we need to extract the property this way
   const batchSizeProp =
     (sqsSource.sourceParameters.sqsQueueParameters as pipes.CfnPipe.PipeSourceSqsQueueParametersProperty)!.batchSize;
   expect(batchSizeProp).toEqual(123);
@@ -283,9 +283,7 @@ test('Create a pipe with state machine enrichment', () => {
   const stack = new Stack();
   const prerequisites = CreatePrerequisites(stack, prerequisiteId);
 
-  const enrichmentStateMachine = new sfn.StateMachine(stack, 'state-machine-enrichment', {
-    definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'pipes-test')
-  });
+  const enrichmentStateMachine = defaults.CreateTestStateMachine(stack, 'state-machine-enrichment');
 
   const pipeResponse = defaults.BuildPipe(stack, pipeId, {
     source: prerequisites.source,
@@ -305,7 +303,8 @@ test('Create a pipe with state machine enrichment', () => {
     PolicyDocument: {
       Statement: [
         {
-          Action: "states:StartExecution",
+          // This won't run if we actually launched it as the enrichmentStateMachine is not EXPRESS
+          Action: "states:StartSyncExecution",
           Effect: "Allow",
           Resource: {
             Ref: Match.stringLikeRegexp('statemachineenrichment.*'),

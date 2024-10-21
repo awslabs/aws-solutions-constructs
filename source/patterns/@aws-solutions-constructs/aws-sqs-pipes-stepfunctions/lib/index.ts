@@ -14,10 +14,14 @@
 import * as defaults from '@aws-solutions-constructs/core';
 import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import * as logs from 'aws-cdk-lib/aws-logs';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as pipes from 'aws-cdk-lib/aws-pipes';
 import * as kms from 'aws-cdk-lib/aws-kms';
+import { PipesLogLevel } from '@aws-solutions-constructs/core';
+export { PipesLogLevel } from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 
@@ -104,7 +108,16 @@ export interface SqsToPipesToStepfunctionsProps {
    * enrichment or a filter, this is where that information can be provided. Any other props
    * can be freely overridden.
    */
-  readonly pipeProps?: pipes.CfnPipeProps,
+  readonly pipeProps?: pipes.CfnPipeProps | any,
+
+  readonly pipeLogProps?: logs.LogGroupProps,
+
+  readonly logLevel?: PipesLogLevel,
+
+  readonly enrichmentFunction?: lambda.Function,
+
+  readonly enrichmentStateMachine?: sfn.StateMachine,
+
 }
 
 export class SqsToPipesToStepfunctions extends Construct {
@@ -114,8 +127,8 @@ export class SqsToPipesToStepfunctions extends Construct {
   public readonly sqsQueue: sqs.Queue;
   public readonly deadLetterQueue?: sqs.DeadLetterQueue;
   public readonly encryptionKey?: kms.IKey;
-  // public readonly pipe: pipes.CfnPipe;
-  // public readonly pipeRole: iam.Role;
+  public readonly pipe: pipes.CfnPipe;
+  public readonly pipeRole: iam.Role;
   /**
    * @summary Constructs a new instance of the SqsToPipesToStepfunctions class.
    * @param {cdk.App} scope - represents the scope for all the resources.
@@ -156,5 +169,16 @@ export class SqsToPipesToStepfunctions extends Construct {
     this.cloudwatchAlarms = buildStateMachineResponse.cloudWatchAlarms;
 
     // Create the pipe to connect the queue and state machine
+    const buildPipeResponse = defaults.BuildPipe(this, id, {
+      source: defaults.CreateSqsSource(this.sqsQueue, props.pipeProps?.sourceParameters),
+      target: defaults.CreateStateMachineTarget(this.stateMachine, props.pipeProps?.targetParameters),
+      enrichmentFunction: props.enrichmentFunction,
+      enrichmentStateMachine: props.enrichmentStateMachine,
+      clientProps: props.pipeProps,
+      logLevel: props.logLevel,
+      pipeLogProps: props.pipeLogProps
+    });
+    this.pipe = buildPipeResponse.pipe;
+    this.pipeRole = buildPipeResponse.pipeRole;
   }
 }

@@ -242,7 +242,7 @@
      "Fn::Join": [
       "",
       [
-       "/aws/vendedlogs/states/constructs/sqspstp-no-argumentstest-sqs-pipes-states-constructStateMachineLog-",
+       "/aws/vendedlogs/states/constructs/sqspstp-set-queue-batch-sizetest-sqs-pipes-states-constructStateMachineLog-",
        {
         "Fn::Select": [
          2,
@@ -537,7 +537,7 @@
      "Fn::Join": [
       "",
       [
-       "/aws/vendedlogs/pipes/constructs/sqspstp-no-argumentstest-sqs-pipes-states-constructPipesLog-",
+       "/aws/vendedlogs/pipes/constructs/sqspstp-set-queue-batch-sizetest-sqs-pipes-states-constructPipesLog-",
        {
         "Fn::Select": [
          2,
@@ -585,7 +585,11 @@
       "Arn"
      ]
     },
-    "SourceParameters": {},
+    "SourceParameters": {
+     "SqsQueueParameters": {
+      "BatchSize": 3
+     }
+    },
     "Target": {
      "Ref": "testsqspipesstatesconstructStateMachine29272AA9"
     },

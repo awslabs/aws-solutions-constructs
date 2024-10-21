@@ -242,7 +242,7 @@
      "Fn::Join": [
       "",
       [
-       "/aws/vendedlogs/states/constructs/sqspstp-no-argumentstest-sqs-pipes-states-constructStateMachineLog-",
+       "/aws/vendedlogs/states/constructs/sqspstp-logs-offtest-sqs-pipes-states-constructStateMachineLog-",
        {
         "Fn::Select": [
          2,
@@ -530,49 +530,9 @@
     ]
    }
   },
-  "testsqspipesstatesconstructLogGrouptestsqspipesstatesconstructF827FE15": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/vendedlogs/pipes/constructs/sqspstp-no-argumentstest-sqs-pipes-states-constructPipesLog-",
-       {
-        "Fn::Select": [
-         2,
-         {
-          "Fn::Split": [
-           "/",
-           {
-            "Ref": "AWS::StackId"
-           }
-          ]
-         }
-        ]
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testsqspipesstatesconstructpipetestsqspipesstatesconstruct71A64A15": {
    "Type": "AWS::Pipes::Pipe",
    "Properties": {
-    "LogConfiguration": {
-     "CloudwatchLogsLogDestination": {
-      "LogGroupArn": {
-       "Fn::GetAtt": [
-        "testsqspipesstatesconstructLogGrouptestsqspipesstatesconstructF827FE15",
-        "Arn"
-       ]
-      }
-     },
-     "Level": "INFO"
-    },
     "RoleArn": {
      "Fn::GetAtt": [
       "testsqspipesstatesconstructPipeRoletestsqspipesstatesconstruct2CC9A13C",

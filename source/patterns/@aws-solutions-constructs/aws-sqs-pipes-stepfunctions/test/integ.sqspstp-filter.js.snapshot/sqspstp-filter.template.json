@@ -242,7 +242,7 @@
      "Fn::Join": [
       "",
       [
-       "/aws/vendedlogs/states/constructs/sqspstp-no-argumentstest-sqs-pipes-states-constructStateMachineLog-",
+       "/aws/vendedlogs/states/constructs/sqspstp-filtertest-sqs-pipes-states-constructStateMachineLog-",
        {
         "Fn::Select": [
          2,
@@ -537,7 +537,7 @@
      "Fn::Join": [
       "",
       [
-       "/aws/vendedlogs/pipes/constructs/sqspstp-no-argumentstest-sqs-pipes-states-constructPipesLog-",
+       "/aws/vendedlogs/pipes/constructs/sqspstp-filtertest-sqs-pipes-states-constructPipesLog-",
        {
         "Fn::Select": [
          2,
@@ -585,7 +585,15 @@
       "Arn"
      ]
     },
-    "SourceParameters": {},
+    "SourceParameters": {
+     "FilterCriteria": {
+      "Filters": [
+       {
+        "Pattern": "{\n  \"body\": {\n    \"state\": [\"open\"]\n  }\n}"
+       }
+      ]
+     }
+    },
     "Target": {
      "Ref": "testsqspipesstatesconstructStateMachine29272AA9"
     },

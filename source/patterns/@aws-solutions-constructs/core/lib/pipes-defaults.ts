@@ -25,7 +25,6 @@ export function defaultSqsSourceProps(): any {
 export function defaultStateMachineTargetProps(): any {
   return {
     stepFunctionStateMachineParameters: {
-      // TODO: can we confirm best value with TFC, also: put in docs
       invocationType: 'FIRE_AND_FORGET'
     }
   };

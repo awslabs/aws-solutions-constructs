@@ -1,5 +1,76 @@
 {
  "Resources": {
+  "enrichmentfunctionServiceRoleF21A0515": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  "enrichmentfunction84C1BE72": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "33adcab38bd8c4e154734b436a40ee81920a89cd6c787ce62302c33df5e1dfcb.zip"
+    },
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "enrichmentfunctionServiceRoleF21A0515",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x"
+   },
+   "DependsOn": [
+    "enrichmentfunctionServiceRoleF21A0515"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W89",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      },
+      {
+       "id": "W92",
+       "reason": "This Lambda Function is created for integration testing purposes only and is not part of an actual construct"
+      }
+     ]
+    }
+   }
+  },
   "lambdas3stptestServiceRoleF17BB6C7": {
    "Type": "AWS::IAM::Role",
    "Properties": {
@@ -242,7 +313,7 @@
      "Fn::Join": [
       "",
       [
-       "/aws/vendedlogs/states/constructs/sqspstp-no-argumentstest-sqs-pipes-states-constructStateMachineLog-",
+       "/aws/vendedlogs/states/constructs/sqspstp-lambda-function-enrichmenttest-sqs-pipes-states-constructStateMachineLog-",
        {
         "Fn::Select": [
          2,
@@ -530,6 +601,32 @@
     ]
    }
   },
+  "testsqspipesstatesconstructenrichmentpolicytestsqspipesstatesconstructC752476A": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "lambda:InvokeFunction",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "enrichmentfunction84C1BE72",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testsqspipesstatesconstructenrichmentpolicytestsqspipesstatesconstructC752476A",
+    "Roles": [
+     {
+      "Ref": "testsqspipesstatesconstructPipeRoletestsqspipesstatesconstruct2CC9A13C"
+     }
+    ]
+   }
+  },
   "testsqspipesstatesconstructLogGrouptestsqspipesstatesconstructF827FE15": {
    "Type": "AWS::Logs::LogGroup",
    "Properties": {
@@ -537,7 +634,7 @@
      "Fn::Join": [
       "",
       [
-       "/aws/vendedlogs/pipes/constructs/sqspstp-no-argumentstest-sqs-pipes-states-constructPipesLog-",
+       "/aws/vendedlogs/pipes/constructs/sqspstp-lambda-function-enrichmenttest-sqs-pipes-states-constructPipesLog-",
        {
         "Fn::Select": [
          2,
@@ -562,6 +659,12 @@
   "testsqspipesstatesconstructpipetestsqspipesstatesconstruct71A64A15": {
    "Type": "AWS::Pipes::Pipe",
    "Properties": {
+    "Enrichment": {
+     "Fn::GetAtt": [
+      "enrichmentfunction84C1BE72",
+      "Arn"
+     ]
+    },
     "LogConfiguration": {
      "CloudwatchLogsLogDestination": {
       "LogGroupArn": {
@@ -571,7 +674,7 @@
        ]
       }
      },
-     "Level": "INFO"
+     "Level": "TRACE"
     },
     "RoleArn": {
      "Fn::GetAtt": [

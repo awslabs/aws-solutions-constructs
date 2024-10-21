@@ -242,7 +242,7 @@
      "Fn::Join": [
       "",
       [
-       "/aws/vendedlogs/states/constructs/sqspstp-no-argumentstest-sqs-pipes-states-constructStateMachineLog-",
+       "/aws/vendedlogs/states/constructs/sqspstp-custom-log-leveltest-sqs-pipes-states-constructStateMachineLog-",
        {
         "Fn::Select": [
          2,
@@ -537,7 +537,7 @@
      "Fn::Join": [
       "",
       [
-       "/aws/vendedlogs/pipes/constructs/sqspstp-no-argumentstest-sqs-pipes-states-constructPipesLog-",
+       "/aws/vendedlogs/pipes/constructs/sqspstp-custom-log-leveltest-sqs-pipes-states-constructPipesLog-",
        {
         "Fn::Select": [
          2,
@@ -571,7 +571,7 @@
        ]
       }
      },
-     "Level": "INFO"
+     "Level": "TRACE"
     },
     "RoleArn": {
      "Fn::GetAtt": [

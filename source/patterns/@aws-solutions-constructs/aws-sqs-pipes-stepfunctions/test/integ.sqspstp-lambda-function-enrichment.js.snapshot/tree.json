@@ -4,21 +4,21 @@
     "id": "App",
     "path": "",
     "children": {
-      "sqspstp-no-arguments": {
-        "id": "sqspstp-no-arguments",
-        "path": "sqspstp-no-arguments",
+      "sqspstp-lambda-function-enrichment": {
+        "id": "sqspstp-lambda-function-enrichment",
+        "path": "sqspstp-lambda-function-enrichment",
         "children": {
-          "lambdas3stp-test": {
-            "id": "lambdas3stp-test",
-            "path": "sqspstp-no-arguments/lambdas3stp-test",
+          "enrichment-function": {
+            "id": "enrichment-function",
+            "path": "sqspstp-lambda-function-enrichment/enrichment-function",
             "children": {
               "ServiceRole": {
                 "id": "ServiceRole",
-                "path": "sqspstp-no-arguments/lambdas3stp-test/ServiceRole",
+                "path": "sqspstp-lambda-function-enrichment/enrichment-function/ServiceRole",
                 "children": {
                   "ImportServiceRole": {
                     "id": "ImportServiceRole",
-                    "path": "sqspstp-no-arguments/lambdas3stp-test/ServiceRole/ImportServiceRole",
+                    "path": "sqspstp-lambda-function-enrichment/enrichment-function/ServiceRole/ImportServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
                       "version": "2.161.0"
@@ -26,7 +26,127 @@
                   },
                   "Resource": {
                     "id": "Resource",
-                    "path": "sqspstp-no-arguments/lambdas3stp-test/ServiceRole/Resource",
+                    "path": "sqspstp-lambda-function-enrichment/enrichment-function/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.161.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.161.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "sqspstp-lambda-function-enrichment/enrichment-function/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "sqspstp-lambda-function-enrichment/enrichment-function/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.161.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "sqspstp-lambda-function-enrichment/enrichment-function/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.161.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.161.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "sqspstp-lambda-function-enrichment/enrichment-function/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "33adcab38bd8c4e154734b436a40ee81920a89cd6c787ce62302c33df5e1dfcb.zip"
+                    },
+                    "handler": "index.handler",
+                    "role": {
+                      "Fn::GetAtt": [
+                        "enrichmentfunctionServiceRoleF21A0515",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs20.x"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.161.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.161.0"
+            }
+          },
+          "lambdas3stp-test": {
+            "id": "lambdas3stp-test",
+            "path": "sqspstp-lambda-function-enrichment/lambdas3stp-test",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "sqspstp-lambda-function-enrichment/lambdas3stp-test/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "sqspstp-lambda-function-enrichment/lambdas3stp-test/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.161.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "sqspstp-lambda-function-enrichment/lambdas3stp-test/ServiceRole/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                       "aws:cdk:cloudformation:props": {
@@ -71,7 +191,7 @@
               },
               "Resource": {
                 "id": "Resource",
-                "path": "sqspstp-no-arguments/lambdas3stp-test/Resource",
+                "path": "sqspstp-lambda-function-enrichment/lambdas3stp-test/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
                   "aws:cdk:cloudformation:props": {
@@ -101,7 +221,7 @@
           },
           "tasks3stp-test": {
             "id": "tasks3stp-test",
-            "path": "sqspstp-no-arguments/tasks3stp-test",
+            "path": "sqspstp-lambda-function-enrichment/tasks3stp-test",
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_stepfunctions_tasks.LambdaInvoke",
               "version": "2.161.0"
@@ -109,15 +229,15 @@
           },
           "test-sqs-pipes-states-construct": {
             "id": "test-sqs-pipes-states-construct",
-            "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct",
+            "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct",
             "children": {
               "queue-dlq": {
                 "id": "queue-dlq",
-                "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/queue-dlq",
+                "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/queue-dlq",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/queue-dlq/Resource",
+                    "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/queue-dlq/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
                       "aws:cdk:cloudformation:props": {
@@ -131,11 +251,11 @@
                   },
                   "Policy": {
                     "id": "Policy",
-                    "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/queue-dlq/Policy",
+                    "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/queue-dlq/Policy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/queue-dlq/Policy/Resource",
+                        "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/queue-dlq/Policy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
                           "aws:cdk:cloudformation:props": {
@@ -226,11 +346,11 @@
               },
               "queue": {
                 "id": "queue",
-                "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/queue",
+                "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/queue",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/queue/Resource",
+                    "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/queue/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
                       "aws:cdk:cloudformation:props": {
@@ -253,11 +373,11 @@
                   },
                   "Policy": {
                     "id": "Policy",
-                    "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/queue/Policy",
+                    "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/queue/Policy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/queue/Policy/Resource",
+                        "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/queue/Policy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
                           "aws:cdk:cloudformation:props": {
@@ -348,11 +468,11 @@
               },
               "StateMachineLogGroup": {
                 "id": "StateMachineLogGroup",
-                "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/StateMachineLogGroup",
+                "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/StateMachineLogGroup",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/StateMachineLogGroup/Resource",
+                    "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/StateMachineLogGroup/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::Logs::LogGroup",
                       "aws:cdk:cloudformation:props": {
@@ -360,7 +480,7 @@
                           "Fn::Join": [
                             "",
                             [
-                              "/aws/vendedlogs/states/constructs/sqspstp-no-argumentstest-sqs-pipes-states-constructStateMachineLog-",
+                              "/aws/vendedlogs/states/constructs/sqspstp-lambda-function-enrichmenttest-sqs-pipes-states-constructStateMachineLog-",
                               {
                                 "Fn::Select": [
                                   2,
@@ -392,15 +512,15 @@
               },
               "StateMachine": {
                 "id": "StateMachine",
-                "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/StateMachine",
+                "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/StateMachine",
                 "children": {
                   "Role": {
                     "id": "Role",
-                    "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/StateMachine/Role",
+                    "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/StateMachine/Role",
                     "children": {
                       "ImportRole": {
                         "id": "ImportRole",
-                        "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/StateMachine/Role/ImportRole",
+                        "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/StateMachine/Role/ImportRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
                           "version": "2.161.0"
@@ -408,7 +528,7 @@
                       },
                       "Resource": {
                         "id": "Resource",
-                        "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/StateMachine/Role/Resource",
+                        "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/StateMachine/Role/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                           "aws:cdk:cloudformation:props": {
@@ -433,11 +553,11 @@
                       },
                       "DefaultPolicy": {
                         "id": "DefaultPolicy",
-                        "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/StateMachine/Role/DefaultPolicy",
+                        "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/StateMachine/Role/DefaultPolicy",
                         "children": {
                           "Resource": {
                             "id": "Resource",
-                            "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/StateMachine/Role/DefaultPolicy/Resource",
+                            "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/StateMachine/Role/DefaultPolicy/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                               "aws:cdk:cloudformation:props": {
@@ -513,7 +633,7 @@
                   },
                   "Resource": {
                     "id": "Resource",
-                    "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/StateMachine/Resource",
+                    "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/StateMachine/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::StepFunctions::StateMachine",
                       "aws:cdk:cloudformation:props": {
@@ -572,11 +692,11 @@
               },
               "ExecutionFailedAlarm": {
                 "id": "ExecutionFailedAlarm",
-                "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/ExecutionFailedAlarm",
+                "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/ExecutionFailedAlarm",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/ExecutionFailedAlarm/Resource",
+                    "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/ExecutionFailedAlarm/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
                       "aws:cdk:cloudformation:props": {
@@ -611,11 +731,11 @@
               },
               "ExecutionThrottledAlarm": {
                 "id": "ExecutionThrottledAlarm",
-                "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/ExecutionThrottledAlarm",
+                "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/ExecutionThrottledAlarm",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/ExecutionThrottledAlarm/Resource",
+                    "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/ExecutionThrottledAlarm/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
                       "aws:cdk:cloudformation:props": {
@@ -650,11 +770,11 @@
               },
               "ExecutionAbortedAlarm": {
                 "id": "ExecutionAbortedAlarm",
-                "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/ExecutionAbortedAlarm",
+                "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/ExecutionAbortedAlarm",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/ExecutionAbortedAlarm/Resource",
+                    "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/ExecutionAbortedAlarm/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
                       "aws:cdk:cloudformation:props": {
@@ -689,11 +809,11 @@
               },
               "PipeRole--test-sqs-pipes-states-construct": {
                 "id": "PipeRole--test-sqs-pipes-states-construct",
-                "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/PipeRole--test-sqs-pipes-states-construct",
+                "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/PipeRole--test-sqs-pipes-states-construct",
                 "children": {
                   "ImportPipeRole--test-sqs-pipes-states-construct": {
                     "id": "ImportPipeRole--test-sqs-pipes-states-construct",
-                    "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/PipeRole--test-sqs-pipes-states-construct/ImportPipeRole--test-sqs-pipes-states-construct",
+                    "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/PipeRole--test-sqs-pipes-states-construct/ImportPipeRole--test-sqs-pipes-states-construct",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
                       "version": "2.161.0"
@@ -701,7 +821,7 @@
                   },
                   "Resource": {
                     "id": "Resource",
-                    "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/PipeRole--test-sqs-pipes-states-construct/Resource",
+                    "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/PipeRole--test-sqs-pipes-states-construct/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                       "aws:cdk:cloudformation:props": {
@@ -769,13 +889,57 @@
                   "version": "2.161.0"
                 }
               },
-              "LogGroup-test-sqs-pipes-states-construct": {
-                "id": "LogGroup-test-sqs-pipes-states-construct",
-                "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/LogGroup-test-sqs-pipes-states-construct",
+              "enrichmentpolicytest-sqs-pipes-states-construct": {
+                "id": "enrichmentpolicytest-sqs-pipes-states-construct",
+                "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/enrichmentpolicytest-sqs-pipes-states-construct",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/LogGroup-test-sqs-pipes-states-construct/Resource",
+                    "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/enrichmentpolicytest-sqs-pipes-states-construct/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "lambda:InvokeFunction",
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "enrichmentfunction84C1BE72",
+                                  "Arn"
+                                ]
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policyName": "testsqspipesstatesconstructenrichmentpolicytestsqspipesstatesconstructC752476A",
+                        "roles": [
+                          {
+                            "Ref": "testsqspipesstatesconstructPipeRoletestsqspipesstatesconstruct2CC9A13C"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                      "version": "2.161.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Policy",
+                  "version": "2.161.0"
+                }
+              },
+              "LogGroup-test-sqs-pipes-states-construct": {
+                "id": "LogGroup-test-sqs-pipes-states-construct",
+                "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/LogGroup-test-sqs-pipes-states-construct",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/LogGroup-test-sqs-pipes-states-construct/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::Logs::LogGroup",
                       "aws:cdk:cloudformation:props": {
@@ -783,7 +947,7 @@
                           "Fn::Join": [
                             "",
                             [
-                              "/aws/vendedlogs/pipes/constructs/sqspstp-no-argumentstest-sqs-pipes-states-constructPipesLog-",
+                              "/aws/vendedlogs/pipes/constructs/sqspstp-lambda-function-enrichmenttest-sqs-pipes-states-constructPipesLog-",
                               {
                                 "Fn::Select": [
                                   2,
@@ -816,10 +980,16 @@
               },
               "pipe-test-sqs-pipes-states-construct": {
                 "id": "pipe-test-sqs-pipes-states-construct",
-                "path": "sqspstp-no-arguments/test-sqs-pipes-states-construct/pipe-test-sqs-pipes-states-construct",
+                "path": "sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/pipe-test-sqs-pipes-states-construct",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::Pipes::Pipe",
                   "aws:cdk:cloudformation:props": {
+                    "enrichment": {
+                      "Fn::GetAtt": [
+                        "enrichmentfunction84C1BE72",
+                        "Arn"
+                      ]
+                    },
                     "logConfiguration": {
                       "cloudwatchLogsLogDestination": {
                         "logGroupArn": {
@@ -829,7 +999,7 @@
                           ]
                         }
                       },
-                      "level": "INFO"
+                      "level": "TRACE"
                     },
                     "roleArn": {
                       "Fn::GetAtt": [
@@ -867,15 +1037,15 @@
           },
           "Integ": {
             "id": "Integ",
-            "path": "sqspstp-no-arguments/Integ",
+            "path": "sqspstp-lambda-function-enrichment/Integ",
             "children": {
               "DefaultTest": {
                 "id": "DefaultTest",
-                "path": "sqspstp-no-arguments/Integ/DefaultTest",
+                "path": "sqspstp-lambda-function-enrichment/Integ/DefaultTest",
                 "children": {
                   "Default": {
                     "id": "Default",
-                    "path": "sqspstp-no-arguments/Integ/DefaultTest/Default",
+                    "path": "sqspstp-lambda-function-enrichment/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
                       "version": "10.4.2"
@@ -883,11 +1053,11 @@
                   },
                   "DeployAssert": {
                     "id": "DeployAssert",
-                    "path": "sqspstp-no-arguments/Integ/DefaultTest/DeployAssert",
+                    "path": "sqspstp-lambda-function-enrichment/Integ/DefaultTest/DeployAssert",
                     "children": {
                       "BootstrapVersion": {
                         "id": "BootstrapVersion",
-                        "path": "sqspstp-no-arguments/Integ/DefaultTest/DeployAssert/BootstrapVersion",
+                        "path": "sqspstp-lambda-function-enrichment/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
                           "version": "2.161.0"
@@ -895,7 +1065,7 @@
                       },
                       "CheckBootstrapVersion": {
                         "id": "CheckBootstrapVersion",
-                        "path": "sqspstp-no-arguments/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
+                        "path": "sqspstp-lambda-function-enrichment/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
                           "version": "2.161.0"
@@ -921,7 +1091,7 @@
           },
           "BootstrapVersion": {
             "id": "BootstrapVersion",
-            "path": "sqspstp-no-arguments/BootstrapVersion",
+            "path": "sqspstp-lambda-function-enrichment/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
               "version": "2.161.0"
@@ -929,7 +1099,7 @@
           },
           "CheckBootstrapVersion": {
             "id": "CheckBootstrapVersion",
-            "path": "sqspstp-no-arguments/CheckBootstrapVersion",
+            "path": "sqspstp-lambda-function-enrichment/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
               "version": "2.161.0"

@@ -40,7 +40,7 @@ export interface BuildPipesProps {
   readonly enrichmentFunction?: lambda.Function,
   readonly enrichmentStateMachine?: sfn.StateMachine,
   readonly clientProps?: any | pipes.CfnPipeProps
-  readonly logLevel?: string,
+  readonly logLevel?: PipesLogLevel,
   readonly pipeLogProps?: logs.LogGroupProps
 }
 
@@ -142,7 +142,7 @@ function createStateMachineEnrichment(scope: Construct, id: string, stateMachine
       statements: [
         new iam.PolicyStatement({
           resources: [stateMachine.stateMachineArn],
-          actions: ['states:StartExecution'],
+          actions: ['states:StartSyncExecution'],
           effect: iam.Effect.ALLOW,
         })
       ]
@@ -164,7 +164,7 @@ function createPipesLogGroupName(scope: Construct, id: string): string {
 // Source and Target code - as new sources and targets are required, implement them
 // here and test the new functions.
 
-export function CreateSqsSource(queue: sqs.IQueue, clientProps?: pipes.CfnPipe.PipeSourceParametersProperty): CreateSourceResponse {
+export function CreateSqsSource(queue: sqs.IQueue, clientProps?: pipes.CfnPipe.PipeSourceParametersProperty | cdk.IResolvable): CreateSourceResponse {
   const sourceParameters: pipes.CfnPipe.PipeSourceParametersProperty = defaults.consolidateProps(defaults.defaultSqsSourceProps(), clientProps);
   return {
     sourceParameters,
@@ -192,7 +192,7 @@ export interface CreateTargetResponse {
 }
 
 export function CreateStateMachineTarget(stateMachine: sfn.IStateMachine,
-  clientProps?: pipes.CfnPipe.PipeTargetParametersProperty): CreateTargetResponse {
+  clientProps?: pipes.CfnPipe.PipeTargetParametersProperty | cdk.IResolvable): CreateTargetResponse {
 
   const targetParameters: pipes.CfnPipe.PipeTargetParametersProperty =
     defaults.consolidateProps(defaults.defaultStateMachineTargetProps(), clientProps);

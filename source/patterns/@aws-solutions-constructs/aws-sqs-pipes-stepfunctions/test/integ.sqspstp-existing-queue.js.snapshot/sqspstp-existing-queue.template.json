@@ -1,5 +1,10 @@
 {
  "Resources": {
+  "existingqueue03D57A53": {
+   "Type": "AWS::SQS::Queue",
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
   "lambdas3stptestServiceRoleF17BB6C7": {
    "Type": "AWS::IAM::Role",
    "Properties": {
@@ -68,173 +73,6 @@
     }
    }
   },
-  "testsqspipesstatesconstructqueuedlq420A82FD": {
-   "Type": "AWS::SQS::Queue",
-   "Properties": {
-    "KmsMasterKeyId": "alias/aws/sqs"
-   },
-   "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete"
-  },
-  "testsqspipesstatesconstructqueuedlqPolicyB1D70483": {
-   "Type": "AWS::SQS::QueuePolicy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "sqs:AddPermission",
-        "sqs:DeleteMessage",
-        "sqs:GetQueueAttributes",
-        "sqs:ReceiveMessage",
-        "sqs:RemovePermission",
-        "sqs:SendMessage",
-        "sqs:SetQueueAttributes"
-       ],
-       "Effect": "Allow",
-       "Principal": {
-        "AWS": {
-         "Fn::Join": [
-          "",
-          [
-           "arn:",
-           {
-            "Ref": "AWS::Partition"
-           },
-           ":iam::",
-           {
-            "Ref": "AWS::AccountId"
-           },
-           ":root"
-          ]
-         ]
-        }
-       },
-       "Resource": {
-        "Fn::GetAtt": [
-         "testsqspipesstatesconstructqueuedlq420A82FD",
-         "Arn"
-        ]
-       },
-       "Sid": "QueueOwnerOnlyAccess"
-      },
-      {
-       "Action": "SQS:*",
-       "Condition": {
-        "Bool": {
-         "aws:SecureTransport": "false"
-        }
-       },
-       "Effect": "Deny",
-       "Principal": {
-        "AWS": "*"
-       },
-       "Resource": {
-        "Fn::GetAtt": [
-         "testsqspipesstatesconstructqueuedlq420A82FD",
-         "Arn"
-        ]
-       },
-       "Sid": "HttpsOnly"
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "Queues": [
-     {
-      "Ref": "testsqspipesstatesconstructqueuedlq420A82FD"
-     }
-    ]
-   }
-  },
-  "testsqspipesstatesconstructqueueA7C76715": {
-   "Type": "AWS::SQS::Queue",
-   "Properties": {
-    "KmsMasterKeyId": "alias/aws/sqs",
-    "RedrivePolicy": {
-     "deadLetterTargetArn": {
-      "Fn::GetAtt": [
-       "testsqspipesstatesconstructqueuedlq420A82FD",
-       "Arn"
-      ]
-     },
-     "maxReceiveCount": 15
-    }
-   },
-   "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete"
-  },
-  "testsqspipesstatesconstructqueuePolicyFD32B562": {
-   "Type": "AWS::SQS::QueuePolicy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "sqs:AddPermission",
-        "sqs:DeleteMessage",
-        "sqs:GetQueueAttributes",
-        "sqs:ReceiveMessage",
-        "sqs:RemovePermission",
-        "sqs:SendMessage",
-        "sqs:SetQueueAttributes"
-       ],
-       "Effect": "Allow",
-       "Principal": {
-        "AWS": {
-         "Fn::Join": [
-          "",
-          [
-           "arn:",
-           {
-            "Ref": "AWS::Partition"
-           },
-           ":iam::",
-           {
-            "Ref": "AWS::AccountId"
-           },
-           ":root"
-          ]
-         ]
-        }
-       },
-       "Resource": {
-        "Fn::GetAtt": [
-         "testsqspipesstatesconstructqueueA7C76715",
-         "Arn"
-        ]
-       },
-       "Sid": "QueueOwnerOnlyAccess"
-      },
-      {
-       "Action": "SQS:*",
-       "Condition": {
-        "Bool": {
-         "aws:SecureTransport": "false"
-        }
-       },
-       "Effect": "Deny",
-       "Principal": {
-        "AWS": "*"
-       },
-       "Resource": {
-        "Fn::GetAtt": [
-         "testsqspipesstatesconstructqueueA7C76715",
-         "Arn"
-        ]
-       },
-       "Sid": "HttpsOnly"
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "Queues": [
-     {
-      "Ref": "testsqspipesstatesconstructqueueA7C76715"
-     }
-    ]
-   }
-  },
   "testsqspipesstatesconstructStateMachineLogGroupADE94F1D": {
    "Type": "AWS::Logs::LogGroup",
    "Properties": {
@@ -242,7 +80,7 @@
      "Fn::Join": [
       "",
       [
-       "/aws/vendedlogs/states/constructs/sqspstp-no-argumentstest-sqs-pipes-states-constructStateMachineLog-",
+       "/aws/vendedlogs/states/constructs/sqspstp-existing-queuetest-sqs-pipes-states-constructStateMachineLog-",
        {
         "Fn::Select": [
          2,
@@ -502,7 +340,7 @@
          "Effect": "Allow",
          "Resource": {
           "Fn::GetAtt": [
-           "testsqspipesstatesconstructqueueA7C76715",
+           "existingqueue03D57A53",
            "Arn"
           ]
          }
@@ -537,7 +375,7 @@
      "Fn::Join": [
       "",
       [
-       "/aws/vendedlogs/pipes/constructs/sqspstp-no-argumentstest-sqs-pipes-states-constructPipesLog-",
+       "/aws/vendedlogs/pipes/constructs/sqspstp-existing-queuetest-sqs-pipes-states-constructPipesLog-",
        {
         "Fn::Select": [
          2,
@@ -581,7 +419,7 @@
     },
     "Source": {
      "Fn::GetAtt": [
-      "testsqspipesstatesconstructqueueA7C76715",
+      "existingqueue03D57A53",
       "Arn"
      ]
     },

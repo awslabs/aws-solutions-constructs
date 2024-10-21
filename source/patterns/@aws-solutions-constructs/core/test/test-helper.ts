@@ -115,7 +115,12 @@ export function getFakeCertificate(scope: Construct, id: string): acm.ICertifica
   );
 }
 
-// Creates a bucket used for testing - minimal properties, destroyed after test
+export function CreateTestStateMachine(scope: Construct, id: string): sfn.StateMachine {
+  return new sfn.StateMachine(scope, id, {
+    definitionBody: defaults.CreateTestStateMachineDefinitionBody(scope, id)
+  });
+}
+
 export function CreateTestStateMachineDefinitionBody(scope: Construct, id: string): sfn.DefinitionBody {
 
   const smStep = new lambda.Function(scope, `lambda${id}`, {

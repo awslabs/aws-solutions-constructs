@@ -1,15 +1,15 @@
 {
   "version": "38.0.1",
   "files": {
-    "721d556654131742f13377dd2b2924254dc9a26a8290b8629b6098e70e1cf54e": {
+    "5d6f37cc258915a44986a531f5b54194adce98596191d7b7490188f1e4e42ee6": {
       "source": {
-        "path": "sqspstp-no-arguments.template.json",
+        "path": "sqspstp-existing-queue.template.json",
         "packaging": "file"
       },
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "721d556654131742f13377dd2b2924254dc9a26a8290b8629b6098e70e1cf54e.json",
+          "objectKey": "5d6f37cc258915a44986a531f5b54194adce98596191d7b7490188f1e4e42ee6.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
