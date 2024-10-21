@@ -8,6 +8,119 @@
         "id": "sqspstp-existing-queue",
         "path": "sqspstp-existing-queue",
         "children": {
+          "existing-queue-dlq": {
+            "id": "existing-queue-dlq",
+            "path": "sqspstp-existing-queue/existing-queue-dlq",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "sqspstp-existing-queue/existing-queue-dlq/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
+                  "aws:cdk:cloudformation:props": {
+                    "kmsMasterKeyId": "alias/aws/sqs"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
+                  "version": "2.161.0"
+                }
+              },
+              "Policy": {
+                "id": "Policy",
+                "path": "sqspstp-existing-queue/existing-queue-dlq/Policy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "sqspstp-existing-queue/existing-queue-dlq/Policy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "sqs:AddPermission",
+                                "sqs:DeleteMessage",
+                                "sqs:GetQueueAttributes",
+                                "sqs:ReceiveMessage",
+                                "sqs:RemovePermission",
+                                "sqs:SendMessage",
+                                "sqs:SetQueueAttributes"
+                              ],
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":iam::",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":root"
+                                    ]
+                                  ]
+                                }
+                              },
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "existingqueuedlq98283DB9",
+                                  "Arn"
+                                ]
+                              },
+                              "Sid": "QueueOwnerOnlyAccess"
+                            },
+                            {
+                              "Action": "SQS:*",
+                              "Condition": {
+                                "Bool": {
+                                  "aws:SecureTransport": "false"
+                                }
+                              },
+                              "Effect": "Deny",
+                              "Principal": {
+                                "AWS": "*"
+                              },
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "existingqueuedlq98283DB9",
+                                  "Arn"
+                                ]
+                              },
+                              "Sid": "HttpsOnly"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "queues": [
+                          {
+                            "Ref": "existingqueuedlq98283DB9"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
+                      "version": "2.161.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
+                  "version": "2.161.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_sqs.Queue",
+              "version": "2.161.0"
+            }
+          },
           "existing-queue": {
             "id": "existing-queue",
             "path": "sqspstp-existing-queue/existing-queue",
@@ -17,10 +130,110 @@
                 "path": "sqspstp-existing-queue/existing-queue/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
-                  "aws:cdk:cloudformation:props": {}
+                  "aws:cdk:cloudformation:props": {
+                    "kmsMasterKeyId": "alias/aws/sqs",
+                    "redrivePolicy": {
+                      "deadLetterTargetArn": {
+                        "Fn::GetAtt": [
+                          "existingqueuedlq98283DB9",
+                          "Arn"
+                        ]
+                      },
+                      "maxReceiveCount": 15
+                    }
+                  }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
+                  "version": "2.161.0"
+                }
+              },
+              "Policy": {
+                "id": "Policy",
+                "path": "sqspstp-existing-queue/existing-queue/Policy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "sqspstp-existing-queue/existing-queue/Policy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "sqs:AddPermission",
+                                "sqs:DeleteMessage",
+                                "sqs:GetQueueAttributes",
+                                "sqs:ReceiveMessage",
+                                "sqs:RemovePermission",
+                                "sqs:SendMessage",
+                                "sqs:SetQueueAttributes"
+                              ],
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":iam::",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":root"
+                                    ]
+                                  ]
+                                }
+                              },
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "existingqueue03D57A53",
+                                  "Arn"
+                                ]
+                              },
+                              "Sid": "QueueOwnerOnlyAccess"
+                            },
+                            {
+                              "Action": "SQS:*",
+                              "Condition": {
+                                "Bool": {
+                                  "aws:SecureTransport": "false"
+                                }
+                              },
+                              "Effect": "Deny",
+                              "Principal": {
+                                "AWS": "*"
+                              },
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "existingqueue03D57A53",
+                                  "Arn"
+                                ]
+                              },
+                              "Sid": "HttpsOnly"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "queues": [
+                          {
+                            "Ref": "existingqueue03D57A53"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
+                      "version": "2.161.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
                   "version": "2.161.0"
                 }
               }

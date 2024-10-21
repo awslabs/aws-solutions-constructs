@@ -17,12 +17,12 @@ import { SqsToPipesToStepfunctions, SqsToPipesToStepfunctionsProps } from "../li
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-const existingQueue = new sqs.Queue(stack, 'existing-queue', {});
+const buildQueueResponse = defaults.buildQueue(stack, 'existing-queue', {});
+const existingQueue = buildQueueResponse.queue;
 
 const props: SqsToPipesToStepfunctionsProps = {
   stateMachineProps: {
