@@ -1,0 +1,19 @@
+{
+  "version": "38.0.1",
+  "files": {
+    "41d8b338f9a9c9b5ee3d4ac8dba4c4ff565841684c143cfe86a343230f4cb394": {
+      "source": {
+        "path": "sqspstp-custom-log-level.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "41d8b338f9a9c9b5ee3d4ac8dba4c4ff565841684c143cfe86a343230f4cb394.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

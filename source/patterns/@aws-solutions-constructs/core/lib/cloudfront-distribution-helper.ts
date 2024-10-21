@@ -26,7 +26,7 @@ import {
   DefaultCloudFrontWebDistributionForApiGatewayProps,
   DefaultCloudFrontDistributionForMediaStoreProps
 } from './cloudfront-distribution-defaults';
-import { addCfnSuppressRules, consolidateProps, generatePhysicalName } from './utils';
+import { addCfnSuppressRules, consolidateProps, generatePhysicalOacName } from './utils';
 import { createCloudFrontLoggingBucket } from './s3-bucket-helper';
 import { DefaultS3Props } from './s3-bucket-defaults';
 import { S3OacOrigin } from './s3-oac-origin';
@@ -145,7 +145,7 @@ export function createCloudFrontDistributionForS3(
   if (!props.sourceBucket.isWebsite) {
     originAccessControl = new cloudfront.CfnOriginAccessControl(scope, 'CloudFrontOac', {
       originAccessControlConfig: {
-        name: generatePhysicalName('aws-cloudfront-s3-', [id], 64),
+        name: generatePhysicalOacName('aws-cloudfront-s3-', [id]),
         originAccessControlOriginType: 's3',
         signingBehavior: 'always',
         signingProtocol: 'sigv4',

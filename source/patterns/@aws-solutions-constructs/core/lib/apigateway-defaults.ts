@@ -21,7 +21,7 @@ import { IntegrationResponse } from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { LogGroup } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
-import { generatePhysicalName } from './utils';
+import { generatePhysicalRestApiName } from './utils';
 
 /**
  * Private function to configure an api.RestApiProps
@@ -124,7 +124,7 @@ export function DefaultSpecRestApiProps(scope: Construct, logGroup: LogGroup): a
       dataTraceEnabled: false,
       tracingEnabled: true
     },
-    restApiName: generatePhysicalName("", [ scope.node.id ], 255),
+    restApiName: generatePhysicalRestApiName("", [ scope.node.id ]),
   };
 }
 
