@@ -180,5 +180,6 @@ export class SqsToPipesToStepfunctions extends Construct {
     });
     this.pipe = buildPipeResponse.pipe;
     this.pipeRole = buildPipeResponse.pipeRole;
+    defaults.addCfnGuardSuppressRules(this.pipeRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
   }
 }

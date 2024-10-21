@@ -366,6 +366,13 @@
       "PolicyName": "targetPolicy"
      }
     ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
    }
   },
   "testsqspipesstatesconstructLogGrouptestsqspipesstatesconstructF827FE15": {
@@ -391,11 +398,24 @@
        }
       ]
      ]
-    },
-    "RetentionInDays": 731
+    }
    },
    "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W86",
+       "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+      },
+      {
+       "id": "W84",
+       "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+      }
+     ]
+    }
+   }
   },
   "testsqspipesstatesconstructpipetestsqspipesstatesconstruct71A64A15": {
    "Type": "AWS::Pipes::Pipe",

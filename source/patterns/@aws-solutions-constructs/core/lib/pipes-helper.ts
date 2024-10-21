@@ -91,7 +91,7 @@ export function BuildPipe(scope: Construct, id: string, props: BuildPipesProps):
         logGroupName: createPipesLogGroupName(scope, id),
       };
       const consolidatedLogGroupProps = defaults.consolidateProps(defaultLogGroupProps, props.pipeLogProps);
-      const newLogGroup = new logs.LogGroup(scope, `LogGroup-${id}`, consolidatedLogGroupProps);
+      const newLogGroup = defaults.buildLogGroup(scope, `LogGroup-${id}`, consolidatedLogGroupProps);
       const logConfiguration = {
         cloudwatchLogsLogDestination: {
           logGroupArn: newLogGroup.logGroupArn
