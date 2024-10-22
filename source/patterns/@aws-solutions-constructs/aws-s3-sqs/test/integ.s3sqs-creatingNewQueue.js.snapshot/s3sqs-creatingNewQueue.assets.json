@@ -1,5 +1,5 @@
 {
-  "version": "36.0.18",
+  "version": "38.0.1",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "source": {
@@ -14,7 +14,7 @@
         }
       }
     },
-    "20d530215759104400ee4d49061d0f3aa3b06c9ee1b9b5868725762e35c49786": {
+    "a9ed54234079edd84c53e3650691d5fde0c96fadaed89bf2b74346bad5b76991": {
       "source": {
         "path": "s3sqs-creatingNewQueue.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "20d530215759104400ee4d49061d0f3aa3b06c9ee1b9b5868725762e35c49786.json",
+          "objectKey": "a9ed54234079edd84c53e3650691d5fde0c96fadaed89bf2b74346bad5b76991.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

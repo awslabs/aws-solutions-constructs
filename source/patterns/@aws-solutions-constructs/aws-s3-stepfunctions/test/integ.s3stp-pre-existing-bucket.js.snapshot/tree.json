@@ -40,7 +40,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                  "version": "2.154.1"
+                  "version": "2.163.0"
                 }
               },
               "Policy": {
@@ -174,13 +174,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                      "version": "2.154.1"
+                      "version": "2.163.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                  "version": "2.154.1"
+                  "version": "2.163.0"
                 }
               },
               "AutoDeleteObjectsCustomResource": {
@@ -192,19 +192,19 @@
                     "path": "s3stp-pre-existing-bucket/scrapBucketLog/AutoDeleteObjectsCustomResource/Default",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnResource",
-                      "version": "2.154.1"
+                      "version": "2.163.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CustomResource",
-                  "version": "2.154.1"
+                  "version": "2.163.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_s3.Bucket",
-              "version": "2.154.1"
+              "version": "2.163.0"
             }
           },
           "LatestNodeRuntimeMap": {
@@ -212,7 +212,7 @@
             "path": "s3stp-pre-existing-bucket/LatestNodeRuntimeMap",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnMapping",
-              "version": "2.154.1"
+              "version": "2.163.0"
             }
           },
           "Custom::S3AutoDeleteObjectsCustomResourceProvider": {
@@ -224,7 +224,7 @@
                 "path": "s3stp-pre-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Staging",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.154.1"
+                  "version": "2.163.0"
                 }
               },
               "Role": {
@@ -232,7 +232,7 @@
                 "path": "s3stp-pre-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.154.1"
+                  "version": "2.163.0"
                 }
               },
               "Handler": {
@@ -240,13 +240,13 @@
                 "path": "s3stp-pre-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.154.1"
+                  "version": "2.163.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResourceProviderBase",
-              "version": "2.154.1"
+              "version": "2.163.0"
             }
           },
           "scrapBucket": {
@@ -286,7 +286,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                  "version": "2.154.1"
+                  "version": "2.163.0"
                 }
               },
               "Policy": {
@@ -384,13 +384,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                      "version": "2.154.1"
+                      "version": "2.163.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                  "version": "2.154.1"
+                  "version": "2.163.0"
                 }
               },
               "AutoDeleteObjectsCustomResource": {
@@ -402,13 +402,13 @@
                     "path": "s3stp-pre-existing-bucket/scrapBucket/AutoDeleteObjectsCustomResource/Default",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnResource",
-                      "version": "2.154.1"
+                      "version": "2.163.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CustomResource",
-                  "version": "2.154.1"
+                  "version": "2.163.0"
                 }
               },
               "Notifications": {
@@ -420,19 +420,19 @@
                     "path": "s3stp-pre-existing-bucket/scrapBucket/Notifications/Resource",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnResource",
-                      "version": "2.154.1"
+                      "version": "2.163.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "constructs.Construct",
-                  "version": "10.3.0"
+                  "version": "10.4.2"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_s3.Bucket",
-              "version": "2.154.1"
+              "version": "2.163.0"
             }
           },
           "BucketNotificationsHandler050a0587b7544547bf325f094a3db834": {
@@ -448,7 +448,7 @@
                     "path": "s3stp-pre-existing-bucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/ImportRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.154.1"
+                      "version": "2.163.0"
                     }
                   },
                   "Resource": {
@@ -487,7 +487,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.154.1"
+                      "version": "2.163.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -503,7 +503,10 @@
                             "policyDocument": {
                               "Statement": [
                                 {
-                                  "Action": "s3:PutBucketNotification",
+                                  "Action": [
+                                    "s3:GetBucketNotification",
+                                    "s3:PutBucketNotification"
+                                  ],
                                   "Effect": "Allow",
                                   "Resource": "*"
                                 }
@@ -520,19 +523,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.154.1"
+                          "version": "2.163.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.154.1"
+                      "version": "2.163.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.154.1"
+                  "version": "2.163.0"
                 }
               },
               "Resource": {
@@ -540,13 +543,13 @@
                 "path": "s3stp-pre-existing-bucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.154.1"
+                  "version": "2.163.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.3.0"
+              "version": "10.4.2"
             }
           },
           "lambdas3stp-test": {
@@ -562,7 +565,7 @@
                     "path": "s3stp-pre-existing-bucket/lambdas3stp-test/ServiceRole/ImportServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.154.1"
+                      "version": "2.163.0"
                     }
                   },
                   "Resource": {
@@ -601,13 +604,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.154.1"
+                      "version": "2.163.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.154.1"
+                  "version": "2.163.0"
                 }
               },
               "Resource": {
@@ -631,13 +634,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                  "version": "2.154.1"
+                  "version": "2.163.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_lambda.Function",
-              "version": "2.154.1"
+              "version": "2.163.0"
             }
           },
           "tasks3stp-test": {
@@ -645,7 +648,7 @@
             "path": "s3stp-pre-existing-bucket/tasks3stp-test",
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_stepfunctions_tasks.LambdaInvoke",
-              "version": "2.154.1"
+              "version": "2.163.0"
             }
           },
           "test-s3-stepfunctions-pre-existing-bucket-construct": {
@@ -691,13 +694,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                          "version": "2.154.1"
+                          "version": "2.163.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                      "version": "2.154.1"
+                      "version": "2.163.0"
                     }
                   },
                   "StateMachine": {
@@ -713,7 +716,7 @@
                             "path": "s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/StateMachine/Role/ImportRole",
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.Resource",
-                              "version": "2.154.1"
+                              "version": "2.163.0"
                             }
                           },
                           "Resource": {
@@ -738,7 +741,7 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                              "version": "2.154.1"
+                              "version": "2.163.0"
                             }
                           },
                           "DefaultPolicy": {
@@ -806,19 +809,19 @@
                                 },
                                 "constructInfo": {
                                   "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                                  "version": "2.154.1"
+                                  "version": "2.163.0"
                                 }
                               }
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.Policy",
-                              "version": "2.154.1"
+                              "version": "2.163.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Role",
-                          "version": "2.154.1"
+                          "version": "2.163.0"
                         }
                       },
                       "Resource": {
@@ -871,13 +874,130 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_stepfunctions.CfnStateMachine",
-                          "version": "2.154.1"
+                          "version": "2.163.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_stepfunctions.StateMachine",
-                      "version": "2.154.1"
+                      "version": "2.163.0"
+                    }
+                  },
+                  "ExecutionFailedAlarm": {
+                    "id": "ExecutionFailedAlarm",
+                    "path": "s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/ExecutionFailedAlarm",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/ExecutionFailedAlarm/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                          "aws:cdk:cloudformation:props": {
+                            "alarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
+                            "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                            "dimensions": [
+                              {
+                                "name": "StateMachineArn",
+                                "value": {
+                                  "Ref": "tests3stepfunctionspreexistingbucketconstructtests3stepfunctionspreexistingbucketconstructeventrulestepfunctionconstructStateMachine326BB1C1"
+                                }
+                              }
+                            ],
+                            "evaluationPeriods": 1,
+                            "metricName": "ExecutionsFailed",
+                            "namespace": "AWS/States",
+                            "period": 300,
+                            "statistic": "Sum",
+                            "threshold": 1
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                          "version": "2.163.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                      "version": "2.163.0"
+                    }
+                  },
+                  "ExecutionThrottledAlarm": {
+                    "id": "ExecutionThrottledAlarm",
+                    "path": "s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/ExecutionThrottledAlarm",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/ExecutionThrottledAlarm/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                          "aws:cdk:cloudformation:props": {
+                            "alarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
+                            "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                            "dimensions": [
+                              {
+                                "name": "StateMachineArn",
+                                "value": {
+                                  "Ref": "tests3stepfunctionspreexistingbucketconstructtests3stepfunctionspreexistingbucketconstructeventrulestepfunctionconstructStateMachine326BB1C1"
+                                }
+                              }
+                            ],
+                            "evaluationPeriods": 1,
+                            "metricName": "ExecutionThrottled",
+                            "namespace": "AWS/States",
+                            "period": 300,
+                            "statistic": "Sum",
+                            "threshold": 1
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                          "version": "2.163.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                      "version": "2.163.0"
+                    }
+                  },
+                  "ExecutionAbortedAlarm": {
+                    "id": "ExecutionAbortedAlarm",
+                    "path": "s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/ExecutionAbortedAlarm",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/ExecutionAbortedAlarm/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                          "aws:cdk:cloudformation:props": {
+                            "alarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
+                            "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                            "dimensions": [
+                              {
+                                "name": "StateMachineArn",
+                                "value": {
+                                  "Ref": "tests3stepfunctionspreexistingbucketconstructtests3stepfunctionspreexistingbucketconstructeventrulestepfunctionconstructStateMachine326BB1C1"
+                                }
+                              }
+                            ],
+                            "evaluationPeriods": 1,
+                            "metricName": "ExecutionsAborted",
+                            "namespace": "AWS/States",
+                            "period": 300,
+                            "statistic": "Maximum",
+                            "threshold": 1
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                          "version": "2.163.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                      "version": "2.163.0"
                     }
                   },
                   "EventsRuleRole": {
@@ -889,7 +1009,7 @@
                         "path": "s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/EventsRuleRole/ImportEventsRuleRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.154.1"
+                          "version": "2.163.0"
                         }
                       },
                       "Resource": {
@@ -914,7 +1034,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                          "version": "2.154.1"
+                          "version": "2.163.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -949,19 +1069,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                              "version": "2.154.1"
+                              "version": "2.163.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Policy",
-                          "version": "2.154.1"
+                          "version": "2.163.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Role",
-                      "version": "2.154.1"
+                      "version": "2.163.0"
                     }
                   },
                   "EventsRule": {
@@ -1010,142 +1130,25 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_events.CfnRule",
-                          "version": "2.154.1"
+                          "version": "2.163.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_events.Rule",
-                      "version": "2.154.1"
-                    }
-                  },
-                  "ExecutionFailedAlarm": {
-                    "id": "ExecutionFailedAlarm",
-                    "path": "s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/ExecutionFailedAlarm",
-                    "children": {
-                      "Resource": {
-                        "id": "Resource",
-                        "path": "s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/ExecutionFailedAlarm/Resource",
-                        "attributes": {
-                          "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
-                          "aws:cdk:cloudformation:props": {
-                            "alarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
-                            "comparisonOperator": "GreaterThanOrEqualToThreshold",
-                            "dimensions": [
-                              {
-                                "name": "StateMachineArn",
-                                "value": {
-                                  "Ref": "tests3stepfunctionspreexistingbucketconstructtests3stepfunctionspreexistingbucketconstructeventrulestepfunctionconstructStateMachine326BB1C1"
-                                }
-                              }
-                            ],
-                            "evaluationPeriods": 1,
-                            "metricName": "ExecutionsFailed",
-                            "namespace": "AWS/States",
-                            "period": 300,
-                            "statistic": "Sum",
-                            "threshold": 1
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                          "version": "2.154.1"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                      "version": "2.154.1"
-                    }
-                  },
-                  "ExecutionThrottledAlarm": {
-                    "id": "ExecutionThrottledAlarm",
-                    "path": "s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/ExecutionThrottledAlarm",
-                    "children": {
-                      "Resource": {
-                        "id": "Resource",
-                        "path": "s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/ExecutionThrottledAlarm/Resource",
-                        "attributes": {
-                          "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
-                          "aws:cdk:cloudformation:props": {
-                            "alarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
-                            "comparisonOperator": "GreaterThanOrEqualToThreshold",
-                            "dimensions": [
-                              {
-                                "name": "StateMachineArn",
-                                "value": {
-                                  "Ref": "tests3stepfunctionspreexistingbucketconstructtests3stepfunctionspreexistingbucketconstructeventrulestepfunctionconstructStateMachine326BB1C1"
-                                }
-                              }
-                            ],
-                            "evaluationPeriods": 1,
-                            "metricName": "ExecutionThrottled",
-                            "namespace": "AWS/States",
-                            "period": 300,
-                            "statistic": "Sum",
-                            "threshold": 1
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                          "version": "2.154.1"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                      "version": "2.154.1"
-                    }
-                  },
-                  "ExecutionAbortedAlarm": {
-                    "id": "ExecutionAbortedAlarm",
-                    "path": "s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/ExecutionAbortedAlarm",
-                    "children": {
-                      "Resource": {
-                        "id": "Resource",
-                        "path": "s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/ExecutionAbortedAlarm/Resource",
-                        "attributes": {
-                          "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
-                          "aws:cdk:cloudformation:props": {
-                            "alarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
-                            "comparisonOperator": "GreaterThanOrEqualToThreshold",
-                            "dimensions": [
-                              {
-                                "name": "StateMachineArn",
-                                "value": {
-                                  "Ref": "tests3stepfunctionspreexistingbucketconstructtests3stepfunctionspreexistingbucketconstructeventrulestepfunctionconstructStateMachine326BB1C1"
-                                }
-                              }
-                            ],
-                            "evaluationPeriods": 1,
-                            "metricName": "ExecutionsAborted",
-                            "namespace": "AWS/States",
-                            "period": 300,
-                            "statistic": "Maximum",
-                            "threshold": 1
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                          "version": "2.154.1"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                      "version": "2.154.1"
+                      "version": "2.163.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-solutions-constructs/aws-eventbridge-stepfunctions.EventbridgeToStepfunctions",
-                  "version": "2.67.1"
+                  "version": "2.73.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-s3-stepfunctions.S3ToStepfunctions",
-              "version": "2.67.1"
+              "version": "2.73.0"
             }
           },
           "Integ": {
@@ -1161,7 +1164,7 @@
                     "path": "s3stp-pre-existing-bucket/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
-                      "version": "10.3.0"
+                      "version": "10.4.2"
                     }
                   },
                   "DeployAssert": {
@@ -1173,7 +1176,7 @@
                         "path": "s3stp-pre-existing-bucket/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.154.1"
+                          "version": "2.163.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -1181,25 +1184,25 @@
                         "path": "s3stp-pre-existing-bucket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.154.1"
+                          "version": "2.163.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.154.1"
+                      "version": "2.163.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.154.1-alpha.0"
+                  "version": "2.163.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.154.1-alpha.0"
+              "version": "2.163.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -1207,7 +1210,7 @@
             "path": "s3stp-pre-existing-bucket/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.154.1"
+              "version": "2.163.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -1215,13 +1218,13 @@
             "path": "s3stp-pre-existing-bucket/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.154.1"
+              "version": "2.163.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.154.1"
+          "version": "2.163.0"
         }
       },
       "Tree": {
@@ -1229,13 +1232,13 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.3.0"
+          "version": "10.4.2"
         }
       }
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.154.1"
+      "version": "2.163.0"
     }
   }
 }
