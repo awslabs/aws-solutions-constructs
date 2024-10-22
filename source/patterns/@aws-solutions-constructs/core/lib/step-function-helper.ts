@@ -167,7 +167,8 @@ export function buildStepFunctionCWAlarms(scope: Construct, id: string | undefin
 }
 
 export interface StateMachineProps {
-  readonly stateMachineProps: sfn.StateMachineProps;
+  readonly stateMachineProps?: sfn.StateMachineProps;
+  readonly existingStateMachineObj?: sfn.StateMachine;
   readonly createCloudWatchAlarms?: boolean;
   readonly cloudWatchAlarmsPrefix?: string
   readonly logGroupProps?: logs.LogGroupProps;
@@ -179,6 +180,16 @@ export function CheckStateMachineProps(propsObject: StateMachineProps | any) {
 
   if ((propsObject.createCloudWatchAlarms === false) && propsObject.cloudWatchAlarmsPrefix) {
     errorMessages += 'Error - cloudWatchAlarmsPrefix is invalid when createCloudWatchAlarms is false\n';
+    errorFound = true;
+  }
+
+  if ((propsObject.existingStateMachineObj) &&
+    (propsObject.stateMachineProps ||
+      (propsObject.createCloudWatchAlarms !== undefined) ||
+      propsObject.cloudWatchAlarmsPrefix ||
+      propsObject.logGroupProps)) {
+
+    errorMessages += 'ERROR - If existingStateMachine is provided, no other state machine props are allowed\n';
     errorFound = true;
   }
 

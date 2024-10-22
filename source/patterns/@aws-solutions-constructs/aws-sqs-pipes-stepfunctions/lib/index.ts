@@ -82,9 +82,13 @@ export interface SqsToPipesToStepfunctionsProps {
   // *******************
 
   /**
-   * 	User provided props for the sfn.StateMachine.
+   * 	User provided props for the sfn.StateMachine. This or existingStateMachine is required
    */
-  readonly stateMachineProps: sfn.StateMachineProps,
+  readonly stateMachineProps?: sfn.StateMachineProps,
+  /**
+   * Optional existing state machine to incorporate into the construct
+   */
+  readonly existingStateMachineObj?: sfn.StateMachine,
   /**
    * Whether to create recommended CloudWatch alarms
    *
@@ -143,7 +147,7 @@ export interface SqsToPipesToStepfunctionsProps {
 
 export class SqsToPipesToStepfunctions extends Construct {
   public readonly stateMachine: sfn.StateMachine;
-  public readonly stateMachineLogGroup: logs.ILogGroup;
+  public readonly stateMachineLogGroup?: logs.ILogGroup;
   public readonly cloudwatchAlarms?: cloudwatch.Alarm[];
   public readonly sqsQueue: sqs.Queue;
   public readonly deadLetterQueue?: sqs.DeadLetterQueue;
@@ -180,14 +184,18 @@ export class SqsToPipesToStepfunctions extends Construct {
     this.deadLetterQueue = buildQueueResponse.dlq;
 
     // Create the State Machine
-    const buildStateMachineResponse = defaults.buildStateMachine(this, defaults.idPlaceholder, {
-      stateMachineProps: props.stateMachineProps,
-      logGroupProps: props.logGroupProps,
-      createCloudWatchAlarms: props.createCloudWatchAlarms,
-    });
-    this.stateMachine = buildStateMachineResponse.stateMachine;
-    this.stateMachineLogGroup = buildStateMachineResponse.logGroup;
-    this.cloudwatchAlarms = buildStateMachineResponse.cloudWatchAlarms;
+    if (!props.existingStateMachineObj) {
+      const buildStateMachineResponse = defaults.buildStateMachine(this, defaults.idPlaceholder, {
+        stateMachineProps: props.stateMachineProps!,  // CheckStateMachineProps ensures this is defined if existingStateMachineObj is not
+        logGroupProps: props.logGroupProps,
+        createCloudWatchAlarms: props.createCloudWatchAlarms,
+      });
+      this.stateMachine = buildStateMachineResponse.stateMachine;
+      this.stateMachineLogGroup = buildStateMachineResponse.logGroup;
+      this.cloudwatchAlarms = buildStateMachineResponse.cloudWatchAlarms;
+    } else {
+      this.stateMachine = props.existingStateMachineObj;
+    }
 
     // Create the pipe to connect the queue and state machine
     const buildPipeResponse = defaults.BuildPipe(this, id, {
