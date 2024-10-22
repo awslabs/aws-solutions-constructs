@@ -15,6 +15,7 @@ import { Stack } from "aws-cdk-lib";
 import { SqsToPipesToStepfunctions, SqsToPipesToStepfunctionsProps } from "../lib";
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { RetentionDays } from "aws-cdk-lib/aws-logs";
@@ -95,6 +96,118 @@ test('Test default behaviors', () => {
     },
     Target: {
       Ref: Match.stringLikeRegexp(`testsqspipesstatesStateMachine.*`),
+    },
+  });
+
+  template.hasResourceProperties('AWS::Pipes::Pipe', {
+    LogConfiguration: {
+      CloudwatchLogsLogDestination: {
+        LogGroupArn: {
+          "Fn::GetAtt": [
+            Match.stringLikeRegexp(`testsqspipesstatesLogGrouptestsqspipesstates.*`),
+            "Arn"
+          ]
+        }
+      },
+      Level: "INFO"
+    }
+  });
+  template.hasResourceProperties('AWS::Logs::LogGroup', {
+    LogGroupName: {
+      "Fn::Join": [
+        "",
+        [
+          Match.stringLikeRegexp('\/aws\/vendedlogs\/pipes\/constructs'),
+          {
+            "Fn::Select": [
+              2,
+              Match.anyValue()
+            ]
+          }
+        ]
+      ]
+    },
+  });
+
+});
+
+test('Test existing state machine', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const stateMachine = defaults.CreateTestStateMachine(stack, 'state-machine');
+  const props: SqsToPipesToStepfunctionsProps = {
+    existingStateMachineObj: stateMachine
+  };
+  const construct = new SqsToPipesToStepfunctions(stack, 'test-sqs-pipes-states', props);
+  const template = Template.fromStack(stack);
+
+  expect(construct.pipe).toBeDefined();
+  expect(construct.pipeRole).toBeDefined();
+
+  template.resourceCountIs("AWS::StepFunctions::StateMachine", 1);
+
+  template.hasResourceProperties('AWS::IAM::Role', {
+    AssumeRolePolicyDocument: {
+      Statement: [
+        {
+          Action: "sts:AssumeRole",
+          Effect: "Allow",
+          Principal: {
+            Service: "pipes.amazonaws.com"
+          }
+        }
+      ],
+      Version: "2012-10-17"
+    },
+    Policies: [
+      {
+        PolicyDocument: {
+          Statement: [
+            {
+              Action: [
+                "sqs:ReceiveMessage",
+                "sqs:DeleteMessage",
+                "sqs:GetQueueAttributes"
+              ],
+              Effect: "Allow",
+              Resource: {
+                "Fn::GetAtt": [
+                  Match.stringLikeRegexp(`testsqspipesstatesqueue.*`),
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          Version: "2012-10-17"
+        },
+        PolicyName: "sourcePolicy"
+      },
+      {
+        PolicyDocument: {
+          Statement: [
+            {
+              Action: "states:StartExecution",
+              Effect: "Allow",
+              Resource: {
+                Ref: Match.stringLikeRegexp(`statemachine.*`)
+              }
+            }
+          ],
+          Version: "2012-10-17"
+        },
+        PolicyName: "targetPolicy"
+      }
+    ]
+  });
+  template.hasResourceProperties('AWS::Pipes::Pipe', {
+    Source: {
+      "Fn::GetAtt": [
+        Match.stringLikeRegexp(`testsqspipesstatesqueue.*`),
+        "Arn"
+      ]
+    },
+    Target: {
+      Ref: Match.stringLikeRegexp(`statemachine.*`),
     },
   });
 
@@ -422,4 +535,23 @@ test('Test setting source parameters like batchSize', () => {
       }
     }
   });
+});
+
+test('Test sending state machine props and existing state machine is an error', () => {
+  // These are all tested in CheckStateMachineProps, so this is just checking that CheckStateMachineProps is called.
+
+  // Stack
+  const stack = new Stack();
+  const props: SqsToPipesToStepfunctionsProps = {
+    stateMachineProps: {
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'pipes-test')
+    },
+    existingStateMachineObj: { pretend: "I'm A State Machine :-)"} as unknown as sfn.StateMachine,
+  };
+
+  const app = () => {
+    new SqsToPipesToStepfunctions(stack, 'test-sqs-pipes-states', props);
+  };
+  // Assertion
+  expect(app).toThrowError('ERROR - If existingStateMachine is provided, no other state machine props are allowed\n');
 });

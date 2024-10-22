@@ -15,6 +15,7 @@
 import { Stack, Aws } from "aws-cdk-lib";
 import * as defaults from '../';
 import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
+import * as logs from 'aws-cdk-lib/aws-logs';
 import * as sfnTasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { buildLogGroup } from '../lib/cloudwatch-log-group-helper';
 import * as iam from 'aws-cdk-lib/aws-iam';
@@ -446,4 +447,44 @@ test('Confirm cloudWatchAlarmsPrefix requires createCloudWatchAlarms', () => {
   };
   // Assertion
   expect(app).toThrowError('Error - cloudWatchAlarmsPrefix is invalid when createCloudWatchAlarms is false\n');
+});
+
+test('Confirm existingStateMachine disables all other state machine props', () => {
+
+  const app = () => {
+    defaults.CheckStateMachineProps({
+      existingStateMachineObj: { pretend: "I'm A State Machine :-)"} as unknown as sfn.StateMachine,
+      cloudWatchAlarmsPrefix: 'prefix'
+    });
+  };
+  // Assertion
+  expect(app).toThrowError('ERROR - If existingStateMachine is provided, no other state machine props are allowed\n');
+
+  const app2 = () => {
+    defaults.CheckStateMachineProps({
+      existingStateMachineObj: { pretend: "I'm A State Machine :-)"} as unknown as sfn.StateMachine,
+      stateMachineProps: { pretend: "I'm State Machine Props :-)"} as unknown as sfn.StateMachineProps,
+    });
+  };
+  // Assertion
+  expect(app2).toThrowError('ERROR - If existingStateMachine is provided, no other state machine props are allowed\n');
+
+  const app3 = () => {
+    defaults.CheckStateMachineProps({
+      existingStateMachineObj: { pretend: "I'm A State Machine :-)"} as unknown as sfn.StateMachine,
+      createCloudWatchAlarms: false
+    });
+  };
+  // Assertion
+  expect(app3).toThrowError('ERROR - If existingStateMachine is provided, no other state machine props are allowed\n');
+
+  const app4 = () => {
+    defaults.CheckStateMachineProps({
+      existingStateMachineObj: { pretend: "I'm A State Machine :-)"} as unknown as sfn.StateMachine,
+      logGroupProps: { pretend: "I'm State Machine Props :-)"} as unknown as logs.LogGroupProps,
+    });
+  };
+  // Assertion
+  expect(app4).toThrowError('ERROR - If existingStateMachine is provided, no other state machine props are allowed\n');
+
 });
