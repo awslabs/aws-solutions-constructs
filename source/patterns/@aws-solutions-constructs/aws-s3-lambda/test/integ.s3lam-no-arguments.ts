@@ -20,7 +20,11 @@ import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as defaults from '@aws-solutions-constructs/core';
 
-const app = new App();
+const app = new App({
+  postCliContext: {
+    '@aws-cdk/aws-s3:keepNotificationInImportedBucket': false,
+  },
+});
 
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
