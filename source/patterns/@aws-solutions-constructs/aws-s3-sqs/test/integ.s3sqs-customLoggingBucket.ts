@@ -18,7 +18,11 @@ import {S3ToSqs} from "../lib";
 import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
-const app = new App();
+const app = new App({
+  postCliContext: {
+    '@aws-cdk/aws-s3:keepNotificationInImportedBucket': false,
+  },
+});
 
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));

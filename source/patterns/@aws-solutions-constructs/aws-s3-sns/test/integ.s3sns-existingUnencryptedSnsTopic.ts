@@ -18,7 +18,11 @@ import { SuppressCfnNagLambdaWarnings, addCfnSuppressRules, generateIntegStackNa
 import * as sns from 'aws-cdk-lib/aws-sns';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
-const app = new App();
+const app = new App({
+  postCliContext: {
+    '@aws-cdk/aws-s3:keepNotificationInImportedBucket': false,
+  },
+});
 const stack = new Stack(app, generateIntegStackName(__filename));
 
 const existingTopicObj = new sns.Topic(stack, 'Topic');
