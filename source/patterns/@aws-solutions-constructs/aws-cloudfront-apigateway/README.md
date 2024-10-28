@@ -33,7 +33,7 @@ import * as api from 'aws-cdk-lib/aws-apigateway';
 
 const lambdaProps: lambda.FunctionProps = {
   code: lambda.Code.fromAsset(`lambda`),
-  runtime: lambda.Runtime.NODEJS_16_X,
+  runtime: lambda.Runtime.NODEJS_20_X,
   handler: 'index.handler'
 };
 
@@ -69,7 +69,7 @@ from constructs import Construct
 lambda_function = _lambda.Function(self, 'LambdaFunction',
                                     code=_lambda.Code.from_asset(
                                         'lambda'),
-                                    runtime=_lambda.Runtime.PYTHON_3_9,
+                                    runtime=_lambda.Runtime.Python_3_11,
                                     handler='index.handler')
 
 api_gateway = api.LambdaRestApi(self, 'LambdaRestApi',
@@ -99,7 +99,7 @@ import software.amazon.awscdk.services.apigateway.*;
 import software.amazon.awsconstructs.services.cloudfrontapigateway.*;
 
 final Function lambdaFunction = Function.Builder.create(this, "IndexHandler")
-        .runtime(Runtime.NODEJS_16_X)
+        .runtime(Runtime.NODEJS_20_X)
         .code(Code.fromAsset("lambda"))
         .handler("index.handler")
         .build();

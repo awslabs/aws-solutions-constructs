@@ -45,7 +45,7 @@ new OpenApiGatewayToLambda(this, 'OpenApiGatewayToLambda', {
     {
       id: 'MessagesHandler',
       lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_18_X,
+        runtime: lambda.Runtime.NODEJS_20_X,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
       }
@@ -72,7 +72,7 @@ class TestStack(Stack):
         api_definition_asset = s3_assets.Asset(self, "ApiDefinitionAsset", path="./openapi/apiDefinition.yaml")
 
         api_integration = ApiIntegration(id="MessagesHandler", lambda_function_props={
-            "runtime": lambda_.Runtime.NODEJS_18_X,
+            "runtime": lambda_.Runtime.NODEJS_20_X,
             "handler": "index.handler",
             "code": lambda_.Code.from_asset("./messages-lambda")
         })
@@ -99,14 +99,14 @@ import software.amazon.awscdk.StackProps;
 
 import java.util.Collections;
 
-import static software.amazon.awscdk.services.lambda.Runtime.NODEJS_18_X;
+import static software.amazon.awscdk.services.lambda.Runtime.NODEJS_20_X;
 
 final Asset apiDefinitionAsset = new Asset(this, "ApiDefinition", AssetProps.builder().path("openapi/apiDefinition.yaml").build());
 
 final ApiIntegration apiIntegration = ApiIntegration.builder()
     .id("MessagesHandler")
     .lambdaFunctionProps(new FunctionProps.Builder()
-        .runtime(NODEJS_18_X)
+        .runtime(NODEJS_20_X)
         .code(Code.fromAsset("messages-lambda"))
         .handler("index.handler")
         .build())
@@ -149,7 +149,7 @@ const apiIntegrations: ApiIntegration[] = [
   {
     id: 'MessagesHandler',
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
     }
@@ -157,7 +157,7 @@ const apiIntegrations: ApiIntegration[] = [
   {
     id: 'PhotosHandler',
     existingLambdaObj: new lambda.Function(this, 'PhotosLambda', {
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),
     })
