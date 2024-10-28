@@ -36,7 +36,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 
 const lambdaProps: lambda.FunctionProps = {
   code: lambda.Code.fromAsset(`lambda`),
-  runtime: lambda.Runtime.NODEJS_16_X,
+  runtime: lambda.Runtime.NODEJS_20_X,
   handler: 'index.handler'
 };
 
@@ -60,7 +60,7 @@ from constructs import Construct
 
 lambda_props = _lambda.FunctionProps(
     code=_lambda.Code.from_asset('lambda'),
-    runtime=_lambda.Runtime.PYTHON_3_9,
+    runtime=_lambda.Runtime.Python_3_11,
     handler='index.handler'
 )
 
@@ -86,7 +86,7 @@ import software.amazon.awsconstructs.services.lambdaopensearch.*;
 new LambdaToOpenSearch(this, "sample",
         new LambdaToOpenSearchProps.Builder()
                 .lambdaFunctionProps(new FunctionProps.Builder()
-                        .runtime(Runtime.NODEJS_16_X)
+                        .runtime(Runtime.NODEJS_20_X)
                         .code(Code.fromAsset("lambda"))
                         .handler("index.handler")
                         .build())

@@ -36,7 +36,7 @@ import * as s3 from "aws-cdk-lib/aws-s3";
 
 const lambdaProps: lambda.FunctionProps = {
   code: lambda.Code.fromAsset(`lambda`),
-  runtime: lambda.Runtime.NODEJS_18_X,
+  runtime: lambda.Runtime.NODEJS_20_X,
   handler: 'index.handler'
 };
 

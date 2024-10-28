@@ -36,7 +36,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 const constructProps: LambdaToSecretsmanagerProps = {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: lambda.Runtime.NODEJS_20_X,
     code: lambda.Code.fromAsset(`lambda`),
     handler: 'index.handler'
   },
@@ -59,7 +59,7 @@ LambdaToSecretsmanager(
     self, 'test-lambda-secretsmanager-stack',
     lambda_function_props=_lambda.FunctionProps(
         code=_lambda.Code.from_asset('lambda'),
-        runtime=_lambda.Runtime.PYTHON_3_9,
+        runtime=_lambda.Runtime.Python_3_11,
         handler='index.handler'
     )
 )
@@ -77,7 +77,7 @@ import software.amazon.awsconstructs.services.lambdasecretsmanager.*;
 
 new LambdaToSecretsmanager(this, "test-lambda-secretsmanager-stack", new LambdaToSecretsmanagerProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_16_X)
+                .runtime(Runtime.NODEJS_20_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())
