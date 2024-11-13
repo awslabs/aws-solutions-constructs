@@ -14,27 +14,27 @@
   },
   "private": true,
   "dependencies": {
-    "@aws-cdk/integ-tests-alpha": "0.0.0-alpha.0",
+    "constructs": "^10.0.0"
+  },
+  "devDependencies": {
+    "@aws-cdk/integ-tests-alpha": "2.163.1-alpha.0",
     "@typescript-eslint/eslint-plugin": "^2.14.0",
     "@typescript-eslint/parser": "^2.14.0",
-    "eslint": "^6.8.0",
-    "eslint-import-resolver-node": "^0.3.2",
-    "eslint-import-resolver-typescript": "^2.0.0",
-    "eslint-plugin-import": "^2.19.1",
-    "eslint-plugin-license-header": "^0.2.0",
     "fs-extra": "^8.1.0",
+    "typescript": "4.7.4",
     "jest": "^27.4.0",
     "jsii": "~5.4.26",
     "jsii-rosetta": "~5.4.25",
     "jsii-pacmak": "^1.92.0",
     "tslint": "^5.20.1",
-    "typescript": "4.7.4",
-    "constructs": "^10.0.0"
-  },
-  "devDependencies": {
     "lerna": "8.1.8",
+    "eslint": "^6.8.0",
+    "eslint-import-resolver-node": "^0.3.2",
+    "eslint-import-resolver-typescript": "^2.0.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-license-header": "^0.2.0",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "0.0.0"
+    "aws-cdk-lib": "2.163.1"
   },
   "workspaces": {
     "packages": [
