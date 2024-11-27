@@ -1,7 +1,9 @@
 
 # Install wget
+cd source
 sudo apt update
 sudo apt-get install wget
+rm /usr/share/keyrings/corretto-keyring.gpg
 wget -O - https://apt.corretto.aws/corretto.key | sudo gpg --dearmor -o /usr/share/keyrings/corretto-keyring.gpg && \
 echo "deb [signed-by=/usr/share/keyrings/corretto-keyring.gpg] https://apt.corretto.aws stable main" | sudo tee /etc/apt/sources.list.d/corretto.list
 sudo dpkg --remove java-20-amazon-corretto-jdk
@@ -14,12 +16,19 @@ wget https://github.com/oss-review-toolkit/ort/releases/download/40.0.1/ort-40.0
 tar -xzf ort-40.0.1.tgz -C /bin
 export PATH=$PATH:/bin/ort-40.0.1/bin
 export ort__analyzer__allowDynamicVersions=true
+export ort__analyzer__skipExcluded=true
+export ort__forceOverwrite=true
 
-# extraneous packages left around by yarn, deleting them until we
-# find a way to suppress yarn from doing this in the future
-rm -rf /Users/biffgaut/Documents/Active/AWS/Constructs/github/OptimizeDependencies/aws-solutions-constructs/source/node_modules/@balena/dockerignore
-rm -rf /Users/biffgaut/Documents/Active/AWS/Constructs/github/OptimizeDependencies/aws-solutions-constructs/source/node_modules/jsonschema
-rm -rf /Users/biffgaut/Documents/Active/AWS/Constructs/github/OptimizeDependencies/aws-solutions-constructs/source/node_modules/lodash.truncate
-rm -rf /Users/biffgaut/Documents/Active/AWS/Constructs/github/OptimizeDependencies/aws-solutions-constructs/source/node_modules/yaml
+# Final configuration
+cd use_cases/aws-s3-static-website
+npm install
+cd ../aws-restaurant-management-system
+npm install
+cd ../..
 
+# Finally - run!
 ort --info analyze -i . -o results -f jSON
+
+node ../deployment/v2/generate-license-csv.js > license-list.csv
+
+ort --info report -i ./results/analyzer-result.json -o ./reports -f PlainTextTemplate,CycloneDx
