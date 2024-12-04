@@ -66,36 +66,9 @@ test('check CR lambda function permissions', () => {
         "Statement": [
           {
             "Action": [
-              "s3:GetObject",
-              "s3:ListBucket"
-            ],
-            "Effect": "Allow",
-            "Resource": [
-              {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:",
-                    {
-                      "Ref": "AWS::Partition"
-                    },
-                    ":s3:::wildrydes-us-east-1"
-                  ]
-                ]
-              },
-              "arn:aws:s3:::wildrydes-us-east-1/WebApplication/1_StaticWebHosting/website/*"
-            ]
-          },
-          {
-            "Action": [
-              "s3:ListBucket",
-              "s3:GetObject",
-              "s3:PutObject",
-              "s3:PutObjectAcl",
-              "s3:PutObjectVersionAcl",
-              "s3:DeleteObject",
-              "s3:DeleteObjectVersion",
-              "s3:CopyObject"
+              "s3:GetObject*",
+              "s3:GetBucket*",
+              "s3:List*"
             ],
             "Effect": "Allow",
             "Resource": [
@@ -109,7 +82,7 @@ test('check CR lambda function permissions', () => {
                     },
                     ":s3:::",
                     {
-                      "Ref": "CloudFrontToS3S3Bucket9CE6AB04"
+                      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
                     }
                   ]
                 ]
@@ -118,9 +91,50 @@ test('check CR lambda function permissions', () => {
                 "Fn::Join": [
                   "",
                   [
-                    "arn:aws:s3:::",
+                    "arn:",
                     {
-                      "Ref": "CloudFrontToS3S3Bucket9CE6AB04"
+                      "Ref": "AWS::Partition"
+                    },
+                    ":s3:::",
+                    {
+                      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "Action": [
+              "s3:GetObject*",
+              "s3:GetBucket*",
+              "s3:List*",
+              "s3:DeleteObject*",
+              "s3:PutObject",
+              "s3:PutObjectLegalHold",
+              "s3:PutObjectRetention",
+              "s3:PutObjectTagging",
+              "s3:PutObjectVersionTagging",
+              "s3:Abort*"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+              {
+                "Fn::GetAtt": [
+                  "CloudFrontToS3S3Bucket9CE6AB04",
+                  "Arn"
+                ]
+              },
+              {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "CloudFrontToS3S3Bucket9CE6AB04",
+                        "Arn"
+                      ]
                     },
                     "/*"
                   ]
@@ -128,14 +142,13 @@ test('check CR lambda function permissions', () => {
               }
             ]
           }
-]
+      ]
     },
-    PolicyName: "copyObjHandlerServiceRoleDefaultPolicyFCA51C18",
-    Roles: [
+    PolicyName: "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+    "Roles": [
       {
-        Ref: "copyObjHandlerServiceRoleA0ECE649"
+        "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
       }
     ]
-  });
 });
-
+});

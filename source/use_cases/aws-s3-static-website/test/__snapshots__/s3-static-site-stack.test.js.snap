@@ -79,18 +79,14 @@ Object {
                 ],
               },
               "Id": "S3StaticWebsiteStackCloudFrontToS3CloudFrontDistributionOrigin1F7C9B507",
+              "OriginAccessControlId": Object {
+                "Fn::GetAtt": Array [
+                  "CloudFrontToS3CloudFrontOacFB5D4E73",
+                  "Id",
+                ],
+              },
               "S3OriginConfig": Object {
-                "OriginAccessIdentity": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "origin-access-identity/cloudfront/",
-                      Object {
-                        "Ref": "CloudFrontToS3CloudFrontDistributionOrigin1S3OriginB0637B8F",
-                      },
-                    ],
-                  ],
-                },
+                "OriginAccessIdentity": "",
               },
             },
           ],
@@ -98,28 +94,89 @@ Object {
       },
       "Type": "AWS::CloudFront::Distribution",
     },
-    "CloudFrontToS3CloudFrontDistributionOrigin1S3OriginB0637B8F": Object {
+    "CloudFrontToS3CloudFrontOacFB5D4E73": Object {
       "Properties": Object {
-        "CloudFrontOriginAccessIdentityConfig": Object {
-          "Comment": "Identity for S3StaticWebsiteStackCloudFrontToS3CloudFrontDistributionOrigin1F7C9B507",
+        "OriginAccessControlConfig": Object {
+          "Description": "Origin access control provisioned by aws-cloudfront-s3",
+          "Name": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "aws-cloudfront-s3-CloutToS3-",
+                Object {
+                  "Fn::Select": Array [
+                    2,
+                    Object {
+                      "Fn::Split": Array [
+                        "/",
+                        Object {
+                          "Ref": "AWS::StackId",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+          "OriginAccessControlOriginType": "s3",
+          "SigningBehavior": "always",
+          "SigningProtocol": "sigv4",
         },
       },
-      "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+      "Type": "AWS::CloudFront::OriginAccessControl",
     },
     "CloudFrontToS3CloudfrontLoggingBucket8350BE9B": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "AccessControl": "LogDeliveryWrite",
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "LoggingConfiguration": Object {
+          "DestinationBucketName": Object {
+            "Ref": "CloudFrontToS3CloudfrontLoggingBucketAccessLog0E3BAD05",
+          },
+        },
+        "OwnershipControls": Object {
+          "Rules": Array [
+            Object {
+              "ObjectOwnership": "ObjectWriter",
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "VersioningConfiguration": Object {
+          "Status": "Enabled",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "CloudFrontToS3CloudfrontLoggingBucketAccessLog0E3BAD05": Object {
       "DeletionPolicy": "Retain",
       "Metadata": Object {
         "cfn_nag": Object {
           "rules_to_suppress": Array [
             Object {
               "id": "W35",
-              "reason": "This S3 bucket is used as the access logging bucket for CloudFront Distribution",
+              "reason": "This S3 bucket is used as the access logging bucket for another bucket",
             },
           ],
         },
       },
       "Properties": Object {
-        "AccessControl": "LogDeliveryWrite",
         "BucketEncryption": Object {
           "ServerSideEncryptionConfiguration": Array [
             Object {
@@ -141,6 +198,89 @@ Object {
       },
       "Type": "AWS::S3::Bucket",
       "UpdateReplacePolicy": "Retain",
+    },
+    "CloudFrontToS3CloudfrontLoggingBucketAccessLogPolicy2AAA13DA": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "CloudFrontToS3CloudfrontLoggingBucketAccessLog0E3BAD05",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "s3:*",
+              "Condition": Object {
+                "Bool": Object {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": Object {
+                "AWS": "*",
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "CloudFrontToS3CloudfrontLoggingBucketAccessLog0E3BAD05",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "CloudFrontToS3CloudfrontLoggingBucketAccessLog0E3BAD05",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": "s3:PutObject",
+              "Condition": Object {
+                "ArnLike": Object {
+                  "aws:SourceArn": Object {
+                    "Fn::GetAtt": Array [
+                      "CloudFrontToS3CloudfrontLoggingBucket8350BE9B",
+                      "Arn",
+                    ],
+                  },
+                },
+                "StringEquals": Object {
+                  "aws:SourceAccount": Object {
+                    "Ref": "AWS::AccountId",
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "logging.s3.amazonaws.com",
+              },
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "CloudFrontToS3CloudfrontLoggingBucketAccessLog0E3BAD05",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
     },
     "CloudFrontToS3CloudfrontLoggingBucketPolicy416B82D9": Object {
       "Properties": Object {
@@ -225,6 +365,12 @@ Object {
           "IgnorePublicAcls": true,
           "RestrictPublicBuckets": true,
         },
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:cr-owned:0ff41d4f",
+            "Value": "true",
+          },
+        ],
         "VersioningConfiguration": Object {
           "Status": "Enabled",
         },
@@ -285,14 +431,32 @@ Object {
             },
             Object {
               "Action": "s3:GetObject",
+              "Condition": Object {
+                "StringEquals": Object {
+                  "AWS:SourceArn": Object {
+                    "Fn::Join": Array [
+                      "",
+                      Array [
+                        "arn:",
+                        Object {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":cloudfront::",
+                        Object {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":distribution/",
+                        Object {
+                          "Ref": "CloudFrontToS3CloudFrontDistribution241D9866",
+                        },
+                      ],
+                    ],
+                  },
+                },
+              },
               "Effect": "Allow",
               "Principal": Object {
-                "CanonicalUser": Object {
-                  "Fn::GetAtt": Array [
-                    "CloudFrontToS3CloudFrontDistributionOrigin1S3OriginB0637B8F",
-                    "S3CanonicalUserId",
-                  ],
-                },
+                "Service": "cloudfront.amazonaws.com",
               },
               "Resource": Object {
                 "Fn::Join": Array [
@@ -328,7 +492,6 @@ Object {
         },
       },
       "Properties": Object {
-        "AccessControl": "LogDeliveryWrite",
         "BucketEncryption": Object {
           "ServerSideEncryptionConfiguration": Array [
             Object {
@@ -392,6 +555,42 @@ Object {
                 },
               ],
             },
+            Object {
+              "Action": "s3:PutObject",
+              "Condition": Object {
+                "ArnLike": Object {
+                  "aws:SourceArn": Object {
+                    "Fn::GetAtt": Array [
+                      "CloudFrontToS3S3Bucket9CE6AB04",
+                      "Arn",
+                    ],
+                  },
+                },
+                "StringEquals": Object {
+                  "aws:SourceAccount": Object {
+                    "Ref": "AWS::AccountId",
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "logging.s3.amazonaws.com",
+              },
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "CloudFrontToS3S3LoggingBucketEF5CD8B2",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
           ],
           "Version": "2012-10-17",
         },
@@ -401,7 +600,7 @@ Object {
     "CloudFrontToS3SetHttpSecurityHeaders9E6088E2": Object {
       "Properties": Object {
         "AutoPublish": true,
-        "FunctionCode": "function handler(event) { var response = event.response;       var headers = response.headers;       headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};       headers['content-security-policy'] = { value: \\"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\\"};       headers['x-content-type-options'] = { value: 'nosniff'};       headers['x-frame-options'] = {value: 'DENY'};       headers['x-xss-protection'] = {value: '1; mode=block'};       return response;     }",
+        "FunctionCode": "function handler(event) { var response = event.response; var headers = response.headers; headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'}; headers['content-security-policy'] = { value: \\"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\\"}; headers['x-content-type-options'] = { value: 'nosniff'}; headers['x-frame-options'] = {value: 'DENY'}; headers['x-xss-protection'] = {value: '1; mode=block'}; return response; }",
         "FunctionConfig": Object {
           "Comment": "SetHttpSecurityHeadersc876981af0ddffc7454da8dcf76a116580471cc611",
           "Runtime": "cloudfront-js-1.0",
@@ -410,60 +609,41 @@ Object {
       },
       "Type": "AWS::CloudFront::Function",
     },
-    "CustomResource": Object {
-      "DeletionPolicy": "Delete",
-      "Properties": Object {
-        "Bucket": Object {
-          "Ref": "CloudFrontToS3S3Bucket9CE6AB04",
-        },
-        "ServiceToken": Object {
-          "Fn::GetAtt": Array [
-            "CustomResourceProviderframeworkonEvent0AA4376C",
-            "Arn",
-          ],
-        },
-        "SourceBucket": "wildrydes-us-east-1",
-        "SourcePrefix": "WebApplication/1_StaticWebHosting/website/",
-      },
-      "Type": "AWS::CloudFormation::CustomResource",
-      "UpdateReplacePolicy": "Delete",
-    },
-    "CustomResourceProviderframeworkonEvent0AA4376C": Object {
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": Object {
       "DependsOn": Array [
-        "CustomResourceProviderframeworkonEventServiceRoleDefaultPolicy93CD1647",
-        "CustomResourceProviderframeworkonEventServiceRole7EBC5835",
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
       ],
       "Properties": Object {
         "Code": Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "e8fea7e029780f03a78580d41b7ffbc4551d6e7d6caa190a451880191c166189.zip",
+          "S3Key": "c6358465bf49dfae556bb430bf9c81fa578c221b82c308e3707901b1dd654762.zip",
         },
-        "Description": "AWS CDK resource provider framework - onEvent (S3StaticWebsiteStack/CustomResourceProvider)",
         "Environment": Object {
           "Variables": Object {
-            "USER_ON_EVENT_FUNCTION_ARN": Object {
-              "Fn::GetAtt": Array [
-                "copyObjHandlerDA1C4669",
-                "Arn",
-              ],
-            },
+            "AWS_CA_BUNDLE": "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem",
           },
         },
-        "Handler": "framework.onEvent",
+        "Handler": "index.handler",
+        "Layers": Array [
+          Object {
+            "Ref": "DeployWebsiteAwsCliLayer17DBC421",
+          },
+        ],
         "Role": Object {
           "Fn::GetAtt": Array [
-            "CustomResourceProviderframeworkonEventServiceRole7EBC5835",
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
             "Arn",
           ],
         },
-        "Runtime": "nodejs14.x",
+        "Runtime": "python3.11",
         "Timeout": 900,
       },
       "Type": "AWS::Lambda::Function",
     },
-    "CustomResourceProviderframeworkonEventServiceRole7EBC5835": Object {
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265": Object {
       "Properties": Object {
         "AssumeRolePolicyDocument": Object {
           "Statement": Array [
@@ -494,139 +674,15 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "CustomResourceProviderframeworkonEventServiceRoleDefaultPolicy93CD1647": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "lambda:InvokeFunction",
-              "Effect": "Allow",
-              "Resource": Array [
-                Object {
-                  "Fn::GetAtt": Array [
-                    "copyObjHandlerDA1C4669",
-                    "Arn",
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Fn::GetAtt": Array [
-                          "copyObjHandlerDA1C4669",
-                          "Arn",
-                        ],
-                      },
-                      ":*",
-                    ],
-                  ],
-                },
-              ],
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "CustomResourceProviderframeworkonEventServiceRoleDefaultPolicy93CD1647",
-        "Roles": Array [
-          Object {
-            "Ref": "CustomResourceProviderframeworkonEventServiceRole7EBC5835",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "copyObjHandlerDA1C4669": Object {
-      "DependsOn": Array [
-        "copyObjHandlerServiceRoleDefaultPolicyFCA51C18",
-        "copyObjHandlerServiceRoleA0ECE649",
-      ],
-      "Properties": Object {
-        "Code": Object {
-          "S3Bucket": Object {
-            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
-          },
-          "S3Key": "2a96a41ef8e6db639865e8dc7826848e60ba75ebdb553c6c9bf2f961ef503deb.zip",
-        },
-        "Handler": "copy_s3_objects.on_event",
-        "Role": Object {
-          "Fn::GetAtt": Array [
-            "copyObjHandlerServiceRoleA0ECE649",
-            "Arn",
-          ],
-        },
-        "Runtime": "python3.8",
-        "Timeout": 300,
-      },
-      "Type": "AWS::Lambda::Function",
-    },
-    "copyObjHandlerServiceRoleA0ECE649": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "lambda.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                "arn:",
-                Object {
-                  "Ref": "AWS::Partition",
-                },
-                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-              ],
-            ],
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "copyObjHandlerServiceRoleDefaultPolicyFCA51C18": Object {
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF": Object {
       "Properties": Object {
         "PolicyDocument": Object {
           "Statement": Array [
             Object {
               "Action": Array [
-                "s3:GetObject",
-                "s3:ListBucket",
-              ],
-              "Effect": "Allow",
-              "Resource": Array [
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      "arn:",
-                      Object {
-                        "Ref": "AWS::Partition",
-                      },
-                      ":s3:::wildrydes-us-east-1",
-                    ],
-                  ],
-                },
-                "arn:aws:s3:::wildrydes-us-east-1/WebApplication/1_StaticWebHosting/website/*",
-              ],
-            },
-            Object {
-              "Action": Array [
-                "s3:ListBucket",
-                "s3:GetObject",
-                "s3:PutObject",
-                "s3:PutObjectAcl",
-                "s3:PutObjectVersionAcl",
-                "s3:DeleteObject",
-                "s3:DeleteObjectVersion",
-                "s3:CopyObject",
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
               ],
               "Effect": "Allow",
               "Resource": Array [
@@ -640,7 +696,7 @@ Object {
                       },
                       ":s3:::",
                       Object {
-                        "Ref": "CloudFrontToS3S3Bucket9CE6AB04",
+                        "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
                       },
                     ],
                   ],
@@ -649,9 +705,50 @@ Object {
                   "Fn::Join": Array [
                     "",
                     Array [
-                      "arn:aws:s3:::",
+                      "arn:",
                       Object {
-                        "Ref": "CloudFrontToS3S3Bucket9CE6AB04",
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject",
+                "s3:PutObjectLegalHold",
+                "s3:PutObjectRetention",
+                "s3:PutObjectTagging",
+                "s3:PutObjectVersionTagging",
+                "s3:Abort*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "CloudFrontToS3S3Bucket9CE6AB04",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "CloudFrontToS3S3Bucket9CE6AB04",
+                          "Arn",
+                        ],
                       },
                       "/*",
                     ],
@@ -662,14 +759,52 @@ Object {
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "copyObjHandlerServiceRoleDefaultPolicyFCA51C18",
+        "PolicyName": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
         "Roles": Array [
           Object {
-            "Ref": "copyObjHandlerServiceRoleA0ECE649",
+            "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "DeployWebsiteAwsCliLayer17DBC421": Object {
+      "Properties": Object {
+        "Content": Object {
+          "S3Bucket": Object {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "eafa2d6c6a55bda16b1603003f1721e2f66a024c0c31d6665ee1c5ff59b565d9.zip",
+        },
+        "Description": "/opt/awscli/aws",
+      },
+      "Type": "AWS::Lambda::LayerVersion",
+    },
+    "DeployWebsiteCustomResourceD116527B": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "DestinationBucketName": Object {
+          "Ref": "CloudFrontToS3S3Bucket9CE6AB04",
+        },
+        "OutputObjectKeys": true,
+        "Prune": true,
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
+            "Arn",
+          ],
+        },
+        "SourceBucketNames": Array [
+          Object {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+        ],
+        "SourceObjectKeys": Array [
+          "6f5c32400d603de86159284615f67a25ad94edc9cdc783b54cb4b1bf2396ea49.zip",
+        ],
+      },
+      "Type": "Custom::CDKBucketDeployment",
+      "UpdateReplacePolicy": "Delete",
     },
   },
   "Rules": Object {
