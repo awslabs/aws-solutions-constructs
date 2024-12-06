@@ -217,7 +217,11 @@
           "Fn::Join": [
            "",
            [
-            "arn:aws:cloudfront::",
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":cloudfront::",
             {
              "Ref": "AWS::AccountId"
             },
@@ -285,13 +289,6 @@
        "ServerSideEncryptionByDefault": {
         "SSEAlgorithm": "AES256"
        }
-      }
-     ]
-    },
-    "OwnershipControls": {
-     "Rules": [
-      {
-       "ObjectOwnership": "ObjectWriter"
       }
      ]
     },
@@ -591,7 +588,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "3322b7049fb0ed2b7cbb644a2ada8d1116ff80c32dca89e6ada846b5de26f961.zip"
+     "S3Key": "eafa2d6c6a55bda16b1603003f1721e2f66a024c0c31d6665ee1c5ff59b565d9.zip"
     },
     "Description": "/opt/awscli/aws"
    }
@@ -616,7 +613,8 @@
     "DestinationBucketName": {
      "Ref": "CloudFrontToS3S3Bucket9CE6AB04"
     },
-    "Prune": true
+    "Prune": true,
+    "OutputObjectKeys": true
    },
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
@@ -753,7 +751,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "e976a796f036a5efbf44b99e44cfb5a961df08d8dbf7cd37e60bf216fb982a00.zip"
+     "S3Key": "c6358465bf49dfae556bb430bf9c81fa578c221b82c308e3707901b1dd654762.zip"
     },
     "Environment": {
      "Variables": {
@@ -772,7 +770,7 @@
       "Arn"
      ]
     },
-    "Runtime": "python3.9",
+    "Runtime": "python3.11",
     "Timeout": 900
    },
    "DependsOn": [
