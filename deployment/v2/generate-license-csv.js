@@ -1,4 +1,6 @@
-const packageTree = require('../../source/results/analyzer-result.json');
+const reportLocation = process.argv[2];
+
+const packageTree = require(reportLocation);
 
 const packages = packageTree.analyzer.result.packages;
 
