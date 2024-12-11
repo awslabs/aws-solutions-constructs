@@ -23,7 +23,7 @@
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.dynamodbstreamslambda`|
 
 ## Overview
-This AWS Solutions Construct implements a pattern Amazon DynamoDB table with stream to invoke the AWS Lambda function  with the least privileged permissions.
+This AWS Solutions Construct implements an Amazon DynamoDB table with stream that invokes an AWS Lambda function  with the least privileged permissions.
 
 Here is a minimal deployable pattern definition:
 
