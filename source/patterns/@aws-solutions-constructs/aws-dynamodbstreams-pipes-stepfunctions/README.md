@@ -70,7 +70,7 @@ import software.amazon.awscdk.services.stepfunctions.*;
 import software.amazon.awsconstructs.services.dynamodbstreamspipesstepfunctions.DynamoDBStreamsToPipesToStepfunctions;
 import software.amazon.awsconstructs.services.dynamodbstreamspipesstepfunctions.DynamoDBStreamsToPipesToStepfunctionsProps;
 
-new DynamoDBStreamsToPipesToStepfunctions(this, "DynamoDBStreamsToLambdaToStepfunctionsPattern",
+new DynamoDBStreamsToPipesToStepfunctions(this, "DynamoDBStreamsToPipesToStepfunctionsPattern",
     DynamoDBStreamsToPipesToStepfunctionsProps.builder()
         .stateMachineProps(StateMachineProps.builder()
             .definitionBody(DefinitionBody.fromChainable(Chain.start(new Pass(scope, "Pass"))))

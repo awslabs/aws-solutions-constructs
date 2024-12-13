@@ -1,0 +1,1054 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "dbspstp-test-dlq": {
+        "id": "dbspstp-test-dlq",
+        "path": "dbspstp-test-dlq",
+        "children": {
+          "bad-function": {
+            "id": "bad-function",
+            "path": "dbspstp-test-dlq/bad-function",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "dbspstp-test-dlq/bad-function/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "dbspstp-test-dlq/bad-function/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.163.1"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dbspstp-test-dlq/bad-function/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.163.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.163.1"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "dbspstp-test-dlq/bad-function/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "zipFile": "exports.handler = async (event) => { console.log(event); throw new Error(\"JUST BREAK\");"
+                    },
+                    "handler": "index.handler",
+                    "role": {
+                      "Fn::GetAtt": [
+                        "badfunctionServiceRoleCA8E6EA9",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs20.x"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.163.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.163.1"
+            }
+          },
+          "lambdadbsstp-test": {
+            "id": "lambdadbsstp-test",
+            "path": "dbspstp-test-dlq/lambdadbsstp-test",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "dbspstp-test-dlq/lambdadbsstp-test/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "dbspstp-test-dlq/lambdadbsstp-test/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.163.1"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dbspstp-test-dlq/lambdadbsstp-test/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.163.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.163.1"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "dbspstp-test-dlq/lambdadbsstp-test/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "zipFile": "exports.handler = async (event) => console.log(event)"
+                    },
+                    "handler": "index.handler",
+                    "role": {
+                      "Fn::GetAtt": [
+                        "lambdadbsstptestServiceRole4515C09E",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs20.x"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.163.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.163.1"
+            }
+          },
+          "taskdbsstp-test": {
+            "id": "taskdbsstp-test",
+            "path": "dbspstp-test-dlq/taskdbsstp-test",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_stepfunctions_tasks.LambdaInvoke",
+              "version": "2.163.1"
+            }
+          },
+          "test-dbs-pipes-states-construct": {
+            "id": "test-dbs-pipes-states-construct",
+            "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct",
+            "children": {
+              "DynamoTable": {
+                "id": "DynamoTable",
+                "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/DynamoTable",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/DynamoTable/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                      "aws:cdk:cloudformation:props": {
+                        "attributeDefinitions": [
+                          {
+                            "attributeName": "id",
+                            "attributeType": "S"
+                          }
+                        ],
+                        "billingMode": "PAY_PER_REQUEST",
+                        "keySchema": [
+                          {
+                            "attributeName": "id",
+                            "keyType": "HASH"
+                          }
+                        ],
+                        "pointInTimeRecoverySpecification": {
+                          "pointInTimeRecoveryEnabled": true
+                        },
+                        "sseSpecification": {
+                          "sseEnabled": true
+                        },
+                        "streamSpecification": {
+                          "streamViewType": "NEW_AND_OLD_IMAGES"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                      "version": "2.163.1"
+                    }
+                  },
+                  "ScalingRole": {
+                    "id": "ScalingRole",
+                    "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/DynamoTable/ScalingRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.163.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+                  "version": "2.163.1"
+                }
+              },
+              "StateMachineLogGroup": {
+                "id": "StateMachineLogGroup",
+                "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/StateMachineLogGroup",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/StateMachineLogGroup/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Logs::LogGroup",
+                      "aws:cdk:cloudformation:props": {
+                        "logGroupName": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "/aws/vendedlogs/states/constructs/dbspstp-test-dlqtest-dbs-pipes-states-constructStateMachineLog-",
+                              {
+                                "Fn::Select": [
+                                  2,
+                                  {
+                                    "Fn::Split": [
+                                      "/",
+                                      {
+                                        "Ref": "AWS::StackId"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          ]
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
+                      "version": "2.163.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.LogGroup",
+                  "version": "2.163.1"
+                }
+              },
+              "StateMachine": {
+                "id": "StateMachine",
+                "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/StateMachine",
+                "children": {
+                  "Role": {
+                    "id": "Role",
+                    "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/StateMachine/Role",
+                    "children": {
+                      "ImportRole": {
+                        "id": "ImportRole",
+                        "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/StateMachine/Role/ImportRole",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.Resource",
+                          "version": "2.163.1"
+                        }
+                      },
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/StateMachine/Role/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "states.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                          "version": "2.163.1"
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/StateMachine/Role/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/StateMachine/Role/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": "lambda:InvokeFunction",
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "lambdadbsstptestE56C39A8",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::GetAtt": [
+                                                  "lambdadbsstptestE56C39A8",
+                                                  "Arn"
+                                                ]
+                                              },
+                                              ":*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "Action": [
+                                        "logs:CreateLogDelivery",
+                                        "logs:DeleteLogDelivery",
+                                        "logs:DescribeLogGroups",
+                                        "logs:DescribeResourcePolicies",
+                                        "logs:GetLogDelivery",
+                                        "logs:ListLogDeliveries",
+                                        "logs:PutResourcePolicy",
+                                        "logs:UpdateLogDelivery"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": "*"
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "testdbspipesstatesconstructStateMachineRoleDefaultPolicy12413F49",
+                                "roles": [
+                                  {
+                                    "Ref": "testdbspipesstatesconstructStateMachineRole802AA550"
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                              "version": "2.163.1"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Policy",
+                          "version": "2.163.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Role",
+                      "version": "2.163.1"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/StateMachine/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::StepFunctions::StateMachine",
+                      "aws:cdk:cloudformation:props": {
+                        "definitionString": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "{\"StartAt\":\"taskdbsstp-test\",\"States\":{\"taskdbsstp-test\":{\"End\":true,\"Retry\":[{\"ErrorEquals\":[\"Lambda.ClientExecutionTimeoutException\",\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"Resource\":\"arn:",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
+                              {
+                                "Fn::GetAtt": [
+                                  "lambdadbsstptestE56C39A8",
+                                  "Arn"
+                                ]
+                              },
+                              "\",\"Payload.$\":\"$\"}}}}"
+                            ]
+                          ]
+                        },
+                        "loggingConfiguration": {
+                          "destinations": [
+                            {
+                              "cloudWatchLogsLogGroup": {
+                                "logGroupArn": {
+                                  "Fn::GetAtt": [
+                                    "testdbspipesstatesconstructStateMachineLogGroup1E17AD86",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            }
+                          ],
+                          "level": "ERROR"
+                        },
+                        "roleArn": {
+                          "Fn::GetAtt": [
+                            "testdbspipesstatesconstructStateMachineRole802AA550",
+                            "Arn"
+                          ]
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_stepfunctions.CfnStateMachine",
+                      "version": "2.163.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_stepfunctions.StateMachine",
+                  "version": "2.163.1"
+                }
+              },
+              "ExecutionFailedAlarm": {
+                "id": "ExecutionFailedAlarm",
+                "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/ExecutionFailedAlarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/ExecutionFailedAlarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "dimensions": [
+                          {
+                            "name": "StateMachineArn",
+                            "value": {
+                              "Ref": "testdbspipesstatesconstructStateMachine9909327F"
+                            }
+                          }
+                        ],
+                        "evaluationPeriods": 1,
+                        "metricName": "ExecutionsFailed",
+                        "namespace": "AWS/States",
+                        "period": 300,
+                        "statistic": "Sum",
+                        "threshold": 1
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.163.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.163.1"
+                }
+              },
+              "ExecutionThrottledAlarm": {
+                "id": "ExecutionThrottledAlarm",
+                "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/ExecutionThrottledAlarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/ExecutionThrottledAlarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "dimensions": [
+                          {
+                            "name": "StateMachineArn",
+                            "value": {
+                              "Ref": "testdbspipesstatesconstructStateMachine9909327F"
+                            }
+                          }
+                        ],
+                        "evaluationPeriods": 1,
+                        "metricName": "ExecutionThrottled",
+                        "namespace": "AWS/States",
+                        "period": 300,
+                        "statistic": "Sum",
+                        "threshold": 1
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.163.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.163.1"
+                }
+              },
+              "ExecutionAbortedAlarm": {
+                "id": "ExecutionAbortedAlarm",
+                "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/ExecutionAbortedAlarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/ExecutionAbortedAlarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "dimensions": [
+                          {
+                            "name": "StateMachineArn",
+                            "value": {
+                              "Ref": "testdbspipesstatesconstructStateMachine9909327F"
+                            }
+                          }
+                        ],
+                        "evaluationPeriods": 1,
+                        "metricName": "ExecutionsAborted",
+                        "namespace": "AWS/States",
+                        "period": 300,
+                        "statistic": "Maximum",
+                        "threshold": 1
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.163.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.163.1"
+                }
+              },
+              "dlq": {
+                "id": "dlq",
+                "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/dlq",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/dlq/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
+                      "aws:cdk:cloudformation:props": {
+                        "kmsMasterKeyId": "alias/aws/sqs"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
+                      "version": "2.163.1"
+                    }
+                  },
+                  "Policy": {
+                    "id": "Policy",
+                    "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/dlq/Policy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/dlq/Policy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "sqs:AddPermission",
+                                    "sqs:DeleteMessage",
+                                    "sqs:GetQueueAttributes",
+                                    "sqs:ReceiveMessage",
+                                    "sqs:RemovePermission",
+                                    "sqs:SendMessage",
+                                    "sqs:SetQueueAttributes"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "AWS": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":iam::",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":root"
+                                        ]
+                                      ]
+                                    }
+                                  },
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "testdbspipesstatesconstructdlqF765E6A0",
+                                      "Arn"
+                                    ]
+                                  },
+                                  "Sid": "QueueOwnerOnlyAccess"
+                                },
+                                {
+                                  "Action": "SQS:*",
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "testdbspipesstatesconstructdlqF765E6A0",
+                                      "Arn"
+                                    ]
+                                  },
+                                  "Sid": "HttpsOnly"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "queues": [
+                              {
+                                "Ref": "testdbspipesstatesconstructdlqF765E6A0"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
+                          "version": "2.163.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
+                      "version": "2.163.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.Queue",
+                  "version": "2.163.1"
+                }
+              },
+              "PipeRole--test-dbs-pipes-states-construct": {
+                "id": "PipeRole--test-dbs-pipes-states-construct",
+                "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/PipeRole--test-dbs-pipes-states-construct",
+                "children": {
+                  "ImportPipeRole--test-dbs-pipes-states-construct": {
+                    "id": "ImportPipeRole--test-dbs-pipes-states-construct",
+                    "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/PipeRole--test-dbs-pipes-states-construct/ImportPipeRole--test-dbs-pipes-states-construct",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.163.1"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/PipeRole--test-dbs-pipes-states-construct/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "pipes.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policies": [
+                          {
+                            "policyName": "sourcePolicy",
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "dynamodb:DescribeStream",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:ListStreams"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "testdbspipesstatesconstructDynamoTable5457FA02",
+                                      "StreamArn"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": "sqs:SendMessage",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "testdbspipesstatesconstructdlqF765E6A0",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          },
+                          {
+                            "policyName": "targetPolicy",
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "states:StartExecution",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Ref": "testdbspipesstatesconstructStateMachine9909327F"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.163.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.163.1"
+                }
+              },
+              "enrichmentpolicytest-dbs-pipes-states-construct": {
+                "id": "enrichmentpolicytest-dbs-pipes-states-construct",
+                "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/enrichmentpolicytest-dbs-pipes-states-construct",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/enrichmentpolicytest-dbs-pipes-states-construct/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "lambda:InvokeFunction",
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "badfunction3559C0E9",
+                                  "Arn"
+                                ]
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policyName": "testdbspipesstatesconstructenrichmentpolicytestdbspipesstatesconstruct28034D11",
+                        "roles": [
+                          {
+                            "Ref": "testdbspipesstatesconstructPipeRoletestdbspipesstatesconstruct4E57732C"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                      "version": "2.163.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Policy",
+                  "version": "2.163.1"
+                }
+              },
+              "LogGroup-test-dbs-pipes-states-construct": {
+                "id": "LogGroup-test-dbs-pipes-states-construct",
+                "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/LogGroup-test-dbs-pipes-states-construct",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/LogGroup-test-dbs-pipes-states-construct/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Logs::LogGroup",
+                      "aws:cdk:cloudformation:props": {
+                        "logGroupName": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "/aws/vendedlogs/pipes/constructs/dbspstp-test-dlqtest-dbs-pipes-states-constructPipesLog-",
+                              {
+                                "Fn::Select": [
+                                  2,
+                                  {
+                                    "Fn::Split": [
+                                      "/",
+                                      {
+                                        "Ref": "AWS::StackId"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          ]
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
+                      "version": "2.163.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.LogGroup",
+                  "version": "2.163.1"
+                }
+              },
+              "pipe-test-dbs-pipes-states-construct": {
+                "id": "pipe-test-dbs-pipes-states-construct",
+                "path": "dbspstp-test-dlq/test-dbs-pipes-states-construct/pipe-test-dbs-pipes-states-construct",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Pipes::Pipe",
+                  "aws:cdk:cloudformation:props": {
+                    "enrichment": {
+                      "Fn::GetAtt": [
+                        "badfunction3559C0E9",
+                        "Arn"
+                      ]
+                    },
+                    "logConfiguration": {
+                      "cloudwatchLogsLogDestination": {
+                        "logGroupArn": {
+                          "Fn::GetAtt": [
+                            "testdbspipesstatesconstructLogGrouptestdbspipesstatesconstructAB6BC73F",
+                            "Arn"
+                          ]
+                        }
+                      },
+                      "level": "TRACE"
+                    },
+                    "roleArn": {
+                      "Fn::GetAtt": [
+                        "testdbspipesstatesconstructPipeRoletestdbspipesstatesconstruct4E57732C",
+                        "Arn"
+                      ]
+                    },
+                    "source": {
+                      "Fn::GetAtt": [
+                        "testdbspipesstatesconstructDynamoTable5457FA02",
+                        "StreamArn"
+                      ]
+                    },
+                    "sourceParameters": {
+                      "dynamoDbStreamParameters": {
+                        "maximumRecordAgeInSeconds": 60,
+                        "maximumRetryAttempts": 1,
+                        "startingPosition": "LATEST",
+                        "deadLetterConfig": {
+                          "arn": {
+                            "Fn::GetAtt": [
+                              "testdbspipesstatesconstructdlqF765E6A0",
+                              "Arn"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "target": {
+                      "Ref": "testdbspipesstatesconstructStateMachine9909327F"
+                    },
+                    "targetParameters": {
+                      "stepFunctionStateMachineParameters": {
+                        "invocationType": "FIRE_AND_FORGET"
+                      }
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_pipes.CfnPipe",
+                  "version": "2.163.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-solutions-constructs/aws-dynamodbstreams-pipes-stepfunctions.DynamoDBStreamsToPipesToStepfunctions",
+              "version": "2.74.0"
+            }
+          },
+          "Integ": {
+            "id": "Integ",
+            "path": "dbspstp-test-dlq/Integ",
+            "children": {
+              "DefaultTest": {
+                "id": "DefaultTest",
+                "path": "dbspstp-test-dlq/Integ/DefaultTest",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "dbspstp-test-dlq/Integ/DefaultTest/Default",
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.4.2"
+                    }
+                  },
+                  "DeployAssert": {
+                    "id": "DeployAssert",
+                    "path": "dbspstp-test-dlq/Integ/DefaultTest/DeployAssert",
+                    "children": {
+                      "BootstrapVersion": {
+                        "id": "BootstrapVersion",
+                        "path": "dbspstp-test-dlq/Integ/DefaultTest/DeployAssert/BootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnParameter",
+                          "version": "2.163.1"
+                        }
+                      },
+                      "CheckBootstrapVersion": {
+                        "id": "CheckBootstrapVersion",
+                        "path": "dbspstp-test-dlq/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnRule",
+                          "version": "2.163.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Stack",
+                      "version": "2.163.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
+                  "version": "2.163.1-alpha.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
+              "version": "2.163.1-alpha.0"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "dbspstp-test-dlq/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.163.1"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "dbspstp-test-dlq/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.163.1"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.163.1"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.4.2"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.163.1"
+    }
+  }
+}

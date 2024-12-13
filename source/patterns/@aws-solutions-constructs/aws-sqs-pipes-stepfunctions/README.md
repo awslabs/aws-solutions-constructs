@@ -32,7 +32,7 @@ import { SqsToPipesToStepfunctions, SqsToPipesToStepfunctionsProps } from "@aws-
 
     const startState = new sfn.Pass(this, 'StartState');
     
-    new SqsToPipesToStepfunctions(this, 'SqsToLambdaToStepfunctionsPattern', {
+    new SqsToPipesToStepfunctions(this, 'SqsToPipesToStepfunctionsPattern', {
       stateMachineProps: {
         definitionBody: sfn.DefinitionBody.fromChainable(sfn.Chain.start(new sfn.Pass(this, 'Pass'))),
       }
@@ -46,10 +46,6 @@ from aws_cdk import (
     aws_stepfunctions as _sfn,
     Stack
 )
-from aws_solutions_constructs import (
-    aws_sqs_pipes_stepfunctions as sqs_pipes_stepfunctions
-)
-
 from aws_solutions_constructs import (
     aws_sqs_pipes_stepfunctions as sqs_pipes_stepfunctions
 )
@@ -80,7 +76,6 @@ new SqsToPipesToStepfunctions(this, "SqsToLambdaToStepfunctionsPattern",
             .definitionBody(DefinitionBody.fromChainable(Chain.start(new Pass(scope, "Pass"))))
             .build())
         .build());
-
 ```
 
 ## Pattern Construct Props

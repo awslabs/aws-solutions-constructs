@@ -15,6 +15,7 @@ import * as pipes from 'aws-cdk-lib/aws-pipes';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as logs from 'aws-cdk-lib/aws-logs';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import * as defaults from "..";
@@ -182,6 +183,67 @@ export function CreateSqsSource(queue: sqs.IQueue, clientProps?: pipes.CfnPipe.P
         })
       ]
     })
+  };
+}
+
+interface CreateDynamoDBStreamsSourceProps {
+  table: dynamodb.ITable,
+  deploySqsDlqQueue?: boolean,
+  sqsDlqQueueProps?: sqs.QueueProps,
+  clientProps?: pipes.CfnPipe.PipeSourceParametersProperty | cdk.IResolvable
+}
+
+export function CreateDynamoDBStreamsSource(
+  scope: Construct, props: CreateDynamoDBStreamsSourceProps): CreateSourceResponse {
+  if (!props.table.tableStreamArn) {
+    throw new Error("ERROR - DynamoDB Table must have an associated stream");
+  }
+  let sourceParameters: pipes.CfnPipe.PipeSourceParametersProperty =
+    defaults.consolidateProps(defaults.defaultDynamoDBStreamsSourceProps(), props.clientProps);
+
+  const sourcePolicy: iam.PolicyDocument = new iam.PolicyDocument({
+    statements: [
+      new iam.PolicyStatement({
+        resources: [props.table.tableStreamArn],
+        actions: [
+          "dynamodb:DescribeStream",
+          "dynamodb:GetRecords",
+          "dynamodb:GetShardIterator",
+          "dynamodb:ListStreams"
+        ],
+        effect: iam.Effect.ALLOW,
+      })
+    ]
+  });
+
+  // Default to setting up DLQ for failed messages
+  if (defaults.CheckBooleanWithDefault(props.deploySqsDlqQueue, true)) {
+    const buildQueueResponse = defaults.buildQueue(scope, 'dlq', {
+      deployDeadLetterQueue: false,
+      queueProps: props.sqsDlqQueueProps
+    });
+    sourceParameters = defaults.consolidateProps(sourceParameters, {
+      dynamoDbStreamParameters: {
+        deadLetterConfig: {
+          arn: buildQueueResponse.queue.queueArn
+        }
+      }
+    });
+    sourcePolicy.addStatements(
+      new iam.PolicyStatement({
+        resources: [buildQueueResponse.queue.queueArn],
+        actions: [
+          "sqs:SendMessage"
+        ],
+        effect: iam.Effect.ALLOW,
+      })
+    );
+  }
+
+  return {
+    sourceParameters,
+    sourceArn: props.table.tableStreamArn!,
+    sourcePolicy
   };
 }
 

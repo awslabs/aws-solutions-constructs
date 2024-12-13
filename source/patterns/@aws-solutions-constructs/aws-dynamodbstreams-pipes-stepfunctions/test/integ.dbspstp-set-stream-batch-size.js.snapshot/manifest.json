@@ -1,0 +1,199 @@
+{
+  "version": "38.0.1",
+  "artifacts": {
+    "dbspstpsetstreambatchsizeIntegDefaultTestDeployAssertC10D846F.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "dbspstpsetstreambatchsizeIntegDefaultTestDeployAssertC10D846F.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "dbspstpsetstreambatchsizeIntegDefaultTestDeployAssertC10D846F": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "dbspstpsetstreambatchsizeIntegDefaultTestDeployAssertC10D846F.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "notificationArns": [],
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "dbspstpsetstreambatchsizeIntegDefaultTestDeployAssertC10D846F.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "dbspstpsetstreambatchsizeIntegDefaultTestDeployAssertC10D846F.assets"
+      ],
+      "metadata": {
+        "/dbspstp-set-stream-batch-size/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/dbspstp-set-stream-batch-size/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "dbspstp-set-stream-batch-size/Integ/DefaultTest/DeployAssert"
+    },
+    "dbspstp-set-stream-batch-size.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "dbspstp-set-stream-batch-size.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "dbspstp-set-stream-batch-size": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "dbspstp-set-stream-batch-size.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "notificationArns": [],
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5008dc7c6a8a6cfe76b46cf5f6a12efd61cb5f9dff849f7a2fa0da6e72912504.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "dbspstp-set-stream-batch-size.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "dbspstp-set-stream-batch-size.assets"
+      ],
+      "metadata": {
+        "/dbspstp-set-stream-batch-size/lambdadbsstp-test/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdadbsstptestServiceRole4515C09E"
+          }
+        ],
+        "/dbspstp-set-stream-batch-size/lambdadbsstp-test/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdadbsstptestE56C39A8"
+          }
+        ],
+        "/dbspstp-set-stream-batch-size/test-sqs-pipes-states-construct/DynamoTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqspipesstatesconstructDynamoTable17AE0B12"
+          }
+        ],
+        "/dbspstp-set-stream-batch-size/test-sqs-pipes-states-construct/StateMachineLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqspipesstatesconstructStateMachineLogGroupADE94F1D"
+          }
+        ],
+        "/dbspstp-set-stream-batch-size/test-sqs-pipes-states-construct/StateMachine/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqspipesstatesconstructStateMachineRoleBF97BFC0"
+          }
+        ],
+        "/dbspstp-set-stream-batch-size/test-sqs-pipes-states-construct/StateMachine/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqspipesstatesconstructStateMachineRoleDefaultPolicyD1BA2BF2"
+          }
+        ],
+        "/dbspstp-set-stream-batch-size/test-sqs-pipes-states-construct/StateMachine/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqspipesstatesconstructStateMachine29272AA9"
+          }
+        ],
+        "/dbspstp-set-stream-batch-size/test-sqs-pipes-states-construct/ExecutionFailedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqspipesstatesconstructExecutionFailedAlarm1002FF55"
+          }
+        ],
+        "/dbspstp-set-stream-batch-size/test-sqs-pipes-states-construct/ExecutionThrottledAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqspipesstatesconstructExecutionThrottledAlarm0242B01A"
+          }
+        ],
+        "/dbspstp-set-stream-batch-size/test-sqs-pipes-states-construct/ExecutionAbortedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqspipesstatesconstructExecutionAbortedAlarm14349A7B"
+          }
+        ],
+        "/dbspstp-set-stream-batch-size/test-sqs-pipes-states-construct/dlq/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqspipesstatesconstructdlq139B810A"
+          }
+        ],
+        "/dbspstp-set-stream-batch-size/test-sqs-pipes-states-construct/dlq/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqspipesstatesconstructdlqPolicyBFC2549A"
+          }
+        ],
+        "/dbspstp-set-stream-batch-size/test-sqs-pipes-states-construct/PipeRole--test-sqs-pipes-states-construct/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqspipesstatesconstructPipeRoletestsqspipesstatesconstruct2CC9A13C"
+          }
+        ],
+        "/dbspstp-set-stream-batch-size/test-sqs-pipes-states-construct/LogGroup-test-sqs-pipes-states-construct/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqspipesstatesconstructLogGrouptestsqspipesstatesconstructF827FE15"
+          }
+        ],
+        "/dbspstp-set-stream-batch-size/test-sqs-pipes-states-construct/pipe-test-sqs-pipes-states-construct": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqspipesstatesconstructpipetestsqspipesstatesconstruct71A64A15"
+          }
+        ],
+        "/dbspstp-set-stream-batch-size/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/dbspstp-set-stream-batch-size/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "dbspstp-set-stream-batch-size"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}
