@@ -33,7 +33,13 @@ test('Test default behaviors', () => {
 
   expect(construct.pipe).toBeDefined();
   expect(construct.pipeRole).toBeDefined();
+  expect(construct.stateMachine).toBeDefined();
+  expect(construct.stateMachineLogGroup).toBeDefined();
+  expect(construct.cloudwatchAlarms).toBeDefined();
+  expect(construct.dynamoTable).toBeDefined();
+  expect(construct.dlq).toBeDefined();
 
+  template.resourceCountIs('AWS::SQS::Queue', 1);
   template.hasResourceProperties('AWS::IAM::Role', {
     AssumeRolePolicyDocument: {
       Statement: [
@@ -108,6 +114,18 @@ test('Test default behaviors', () => {
     Target: {
       Ref: Match.stringLikeRegexp(`testddbspipesstatesStateMachine.*`),
     },
+    SourceParameters: {
+      DynamoDBStreamParameters: {
+        DeadLetterConfig: {
+          Arn: {
+            "Fn::GetAtt": [
+              Match.stringLikeRegexp(`testddbspipesstatesdlq.*`),
+              "Arn"
+            ]
+          }
+        }
+      }
+    },
   });
 
   template.hasResourceProperties('AWS::Pipes::Pipe', {
@@ -140,6 +158,29 @@ test('Test default behaviors', () => {
     },
   });
 
+});
+
+test('Test no DLQ', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const props: DynamoDBStreamsToPipesToStepfunctionsProps = {
+    stateMachineProps: {
+      definitionBody: defaults.CreateTestStateMachineDefinitionBody(stack, 'pipes-test')
+    },
+    deploySqsDlqQueue: false
+  };
+  const construct = new DynamoDBStreamsToPipesToStepfunctions(stack, 'test-ddbs-pipes-states', props);
+  const template = Template.fromStack(stack);
+
+  expect(construct.pipe).toBeDefined();
+  expect(construct.pipeRole).toBeDefined();
+  expect(construct.stateMachine).toBeDefined();
+  expect(construct.stateMachineLogGroup).toBeDefined();
+  expect(construct.cloudwatchAlarms).toBeDefined();
+  expect(construct.dynamoTable).toBeDefined();
+  expect(construct.dlq).toBeUndefined();
+
+  template.resourceCountIs('AWS::SQS::Queue', 0);
 });
 
 test('Test existing state machine', () => {

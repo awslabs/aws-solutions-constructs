@@ -73,8 +73,28 @@ test('Create a default DDB Streams Source', () => {
   expect(tableSource.sourceArn).toEqual(buildTableResponse.tableObject?.tableStreamArn);
   expect(Object.keys(tableSource.sourceParameters).length).toEqual(1);
   expect(tableSource.sourcePolicy.statementCount).toEqual(2);
+  expect(tableSource.dlq).toBeDefined();
   const streamParamters = (tableSource.sourceParameters.dynamoDbStreamParameters! as pipes.CfnPipe.PipeSourceDynamoDBStreamParametersProperty);
   expect(streamParamters.deadLetterConfig).toBeDefined();
+});
+
+test('Confirm that we use custom DLQ props', () => {
+  const queueName = 'something-unique-asdf';
+  // Stack
+  const stack = new Stack();
+
+  const buildTableResponse = buildDynamoDBTableWithStream(stack, {});
+  defaults.CreateDynamoDBStreamsSource(stack, {
+    table: buildTableResponse.tableObject!,
+    sqsDlqQueueProps: {
+      queueName,
+    }
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::SQS::Queue", {
+    QueueName: queueName
+  });
 });
 
 test('Create DDB Streams Source with no DLQ', () => {
@@ -90,6 +110,7 @@ test('Create DDB Streams Source with no DLQ', () => {
   expect(tableSource.sourceArn).toEqual(buildTableResponse.tableObject?.tableStreamArn);
   expect(Object.keys(tableSource.sourceParameters).length).toEqual(1);
   expect(tableSource.sourcePolicy.statementCount).toEqual(1);
+  expect(tableSource.dlq).toBeUndefined();
   const streamParamters = (tableSource.sourceParameters.dynamoDbStreamParameters! as pipes.CfnPipe.PipeSourceDynamoDBStreamParametersProperty);
   expect(streamParamters.deadLetterConfig).toBeUndefined();
 });
@@ -167,6 +188,28 @@ test('Create a Step Functions Target with overrides', () => {
   expect(Object.keys(stateMachineTarget.targetParameters).length).toEqual(1);
   // best we can do here, confirm values when we instantiate the actual pipe
   expect(stateMachineTarget.targetPolicy.statementCount).toEqual(1);
+});
+
+test('Check for error when DLQ is off but max constraint set', () => {
+  // Stack
+  const stack = new Stack();
+
+  const buildTableResponse = buildDynamoDBTableWithStream(stack, {});
+
+  const app = () => {
+    defaults.CreateDynamoDBStreamsSource(stack, {
+      clientProps: {
+        dynamoDbStreamParameters: {
+          startingPosition: 'LATEST',
+          maximumRecordAgeInSeconds: 100
+        }
+      },
+      table: buildTableResponse.tableObject!,
+      deploySqsDlqQueue: false
+    });
+  };
+  // Assertion
+  expect(app).toThrowError('ERROR - retry and record age constraints cannot be specified with no DLQ\n');
 });
 
 // =================================

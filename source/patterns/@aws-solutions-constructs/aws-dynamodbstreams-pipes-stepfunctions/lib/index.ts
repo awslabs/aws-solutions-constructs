@@ -47,8 +47,6 @@ export interface DynamoDBStreamsToPipesToStepfunctionsProps {
    * Whether to deploy a SQS dead letter queue when a data record reaches the Maximum Retry Attempts or Maximum Record Age,
    * its metadata like shard ID and stream ARN will be sent to an SQS queue. The construct will create and configure the DLG,
    * you should set maximumRecordAgeInSeconds and maximumRetryAttempts attempts in pipeProps.sourceParameters.dynamoDbStreamParameters
-   * TODO: Test this
-   * TODO: Test sending max constraints with queue turned off is an error.
    *
    * @default - true.
    */
@@ -137,6 +135,7 @@ export class DynamoDBStreamsToPipesToStepfunctions extends Construct {
   public readonly dynamoTable?: dynamodb.Table;
   public readonly pipe: pipes.CfnPipe;
   public readonly pipeRole: iam.Role;
+  public readonly dlq?: sqs.Queue;
   /**
    * @summary Constructs a new instance of the DynamoDBStreamsToPipesToStepfunctions class.
    * @param {cdk.App} scope - represents the scope for all the resources.
@@ -152,8 +151,8 @@ export class DynamoDBStreamsToPipesToStepfunctions extends Construct {
     defaults.CheckPipesProps(props);
 
     if ((props.deploySqsDlqQueue === false) &&
-      (props.pipeProps.sourceParameters.dynamoDbStreamParameters.maximumRecordAgeInSeconds ||
-        props.pipeProps.sourceParameters.dynamoDbStreamParameters.maximumRetryAttempts)
+      (props.pipeProps?.sourceParameters?.dynamoDbStreamParameters?.maximumRecordAgeInSeconds ||
+        props.pipeProps?.sourceParameters?.dynamoDbStreamParameters?.maximumRetryAttempts)
     ) {
       throw new Error('ERROR - Cannot define maximumRecordAgeInSeconds and maximumRetryAttempts when deploySqsDlqQueue is false\n');
     }
@@ -185,6 +184,7 @@ export class DynamoDBStreamsToPipesToStepfunctions extends Construct {
       sqsDlqQueueProps: props.sqsDlqQueueProps,
       clientProps: props.pipeProps?.sourceParameters
     });
+    this.dlq = ddbStreamsSource.dlq;
 
     // Create the pipe to connect the queue and state machine
     const buildPipeResponse = defaults.BuildPipe(this, id, {
