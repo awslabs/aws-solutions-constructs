@@ -24,15 +24,18 @@
                         "attributeType": "S"
                       }
                     ],
+                    "billingMode": "PAY_PER_REQUEST",
                     "keySchema": [
                       {
                         "attributeName": "id",
                         "keyType": "HASH"
                       }
                     ],
-                    "provisionedThroughput": {
-                      "readCapacityUnits": 5,
-                      "writeCapacityUnits": 5
+                    "pointInTimeRecoverySpecification": {
+                      "pointInTimeRecoveryEnabled": true
+                    },
+                    "sseSpecification": {
+                      "sseEnabled": true
                     },
                     "streamSpecification": {
                       "streamViewType": "NEW_AND_OLD_IMAGES"

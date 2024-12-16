@@ -27,8 +27,14 @@ const existingTable = new dynamodb.Table(stack, 'table', {
     name: 'id',
     type: dynamodb.AttributeType.STRING
   },
-  stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES
+  stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
+  billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+  encryption: dynamodb.TableEncryption.AWS_MANAGED,
+  pointInTimeRecovery: true
 });
+defaults.addCfnGuardSuppressRules(existingTable,
+  [ "DYNAMODB_TABLE_ENCRYPTED_KMS" ]
+);
 
 const props: DynamoDBStreamsToPipesToStepfunctionsProps = {
   stateMachineProps: {
@@ -39,6 +45,8 @@ const props: DynamoDBStreamsToPipesToStepfunctionsProps = {
 
 new DynamoDBStreamsToPipesToStepfunctions(stack, 'test-dbs-pipes-states-construct', props);
 
-new IntegTest(stack, 'Integ', { testCases: [
-  stack
-] });
+new IntegTest(stack, 'Integ', {
+  testCases: [
+    stack
+  ]
+});

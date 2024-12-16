@@ -9,22 +9,32 @@
       "AttributeType": "S"
      }
     ],
+    "BillingMode": "PAY_PER_REQUEST",
     "KeySchema": [
      {
       "AttributeName": "id",
       "KeyType": "HASH"
      }
     ],
-    "ProvisionedThroughput": {
-     "ReadCapacityUnits": 5,
-     "WriteCapacityUnits": 5
+    "PointInTimeRecoverySpecification": {
+     "PointInTimeRecoveryEnabled": true
+    },
+    "SSESpecification": {
+     "SSEEnabled": true
     },
     "StreamSpecification": {
      "StreamViewType": "NEW_AND_OLD_IMAGES"
     }
    },
    "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "DYNAMODB_TABLE_ENCRYPTED_KMS"
+     ]
+    }
+   }
   },
   "lambdadbsstptestServiceRole4515C09E": {
    "Type": "AWS::IAM::Role",
