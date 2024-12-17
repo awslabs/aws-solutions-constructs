@@ -1,0 +1,217 @@
+{
+  "version": "38.0.1",
+  "artifacts": {
+    "dbspstptestdlqIntegDefaultTestDeployAssert93B72886.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "dbspstptestdlqIntegDefaultTestDeployAssert93B72886.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "dbspstptestdlqIntegDefaultTestDeployAssert93B72886": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "dbspstptestdlqIntegDefaultTestDeployAssert93B72886.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "notificationArns": [],
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "dbspstptestdlqIntegDefaultTestDeployAssert93B72886.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "dbspstptestdlqIntegDefaultTestDeployAssert93B72886.assets"
+      ],
+      "metadata": {
+        "/dbspstp-test-dlq/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/dbspstp-test-dlq/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "dbspstp-test-dlq/Integ/DefaultTest/DeployAssert"
+    },
+    "dbspstp-test-dlq.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "dbspstp-test-dlq.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "dbspstp-test-dlq": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "dbspstp-test-dlq.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "notificationArns": [],
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/cbb67a75558e64c020ea7a5739b461757932164c84b09a36054ffe94f3ce2a4a.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "dbspstp-test-dlq.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "dbspstp-test-dlq.assets"
+      ],
+      "metadata": {
+        "/dbspstp-test-dlq/bad-function/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "badfunctionServiceRoleCA8E6EA9"
+          }
+        ],
+        "/dbspstp-test-dlq/bad-function/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "badfunction3559C0E9"
+          }
+        ],
+        "/dbspstp-test-dlq/lambdadbsstp-test/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdadbsstptestServiceRole4515C09E"
+          }
+        ],
+        "/dbspstp-test-dlq/lambdadbsstp-test/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdadbsstptestE56C39A8"
+          }
+        ],
+        "/dbspstp-test-dlq/test-dbs-pipes-states-construct/DynamoTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdbspipesstatesconstructDynamoTable5457FA02"
+          }
+        ],
+        "/dbspstp-test-dlq/test-dbs-pipes-states-construct/StateMachineLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdbspipesstatesconstructStateMachineLogGroup1E17AD86"
+          }
+        ],
+        "/dbspstp-test-dlq/test-dbs-pipes-states-construct/StateMachine/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdbspipesstatesconstructStateMachineRole802AA550"
+          }
+        ],
+        "/dbspstp-test-dlq/test-dbs-pipes-states-construct/StateMachine/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdbspipesstatesconstructStateMachineRoleDefaultPolicy12413F49"
+          }
+        ],
+        "/dbspstp-test-dlq/test-dbs-pipes-states-construct/StateMachine/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdbspipesstatesconstructStateMachine9909327F"
+          }
+        ],
+        "/dbspstp-test-dlq/test-dbs-pipes-states-construct/ExecutionFailedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdbspipesstatesconstructExecutionFailedAlarm6678470E"
+          }
+        ],
+        "/dbspstp-test-dlq/test-dbs-pipes-states-construct/ExecutionThrottledAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdbspipesstatesconstructExecutionThrottledAlarm0286BB10"
+          }
+        ],
+        "/dbspstp-test-dlq/test-dbs-pipes-states-construct/ExecutionAbortedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdbspipesstatesconstructExecutionAbortedAlarmF4C945F2"
+          }
+        ],
+        "/dbspstp-test-dlq/test-dbs-pipes-states-construct/dlq/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdbspipesstatesconstructdlqF765E6A0"
+          }
+        ],
+        "/dbspstp-test-dlq/test-dbs-pipes-states-construct/dlq/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdbspipesstatesconstructdlqPolicyB08573AE"
+          }
+        ],
+        "/dbspstp-test-dlq/test-dbs-pipes-states-construct/PipeRole--test-dbs-pipes-states-construct/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdbspipesstatesconstructPipeRoletestdbspipesstatesconstruct4E57732C"
+          }
+        ],
+        "/dbspstp-test-dlq/test-dbs-pipes-states-construct/enrichmentpolicytest-dbs-pipes-states-construct/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdbspipesstatesconstructenrichmentpolicytestdbspipesstatesconstruct28034D11"
+          }
+        ],
+        "/dbspstp-test-dlq/test-dbs-pipes-states-construct/LogGroup-test-dbs-pipes-states-construct/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdbspipesstatesconstructLogGrouptestdbspipesstatesconstructAB6BC73F"
+          }
+        ],
+        "/dbspstp-test-dlq/test-dbs-pipes-states-construct/pipe-test-dbs-pipes-states-construct": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdbspipesstatesconstructpipetestdbspipesstatesconstruct6F9C482F"
+          }
+        ],
+        "/dbspstp-test-dlq/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/dbspstp-test-dlq/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "dbspstp-test-dlq"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

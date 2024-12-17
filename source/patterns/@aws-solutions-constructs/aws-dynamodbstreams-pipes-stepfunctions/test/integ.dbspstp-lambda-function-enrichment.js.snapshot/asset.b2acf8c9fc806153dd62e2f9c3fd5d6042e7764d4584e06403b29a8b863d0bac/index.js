@@ -11,29 +11,11 @@
  *  and limitations under the License.
  */
 
-// import * as pipes from 'aws-cdk-lib/aws-pipes';
-
-export function defaultPipesProps(): any {
-  return {};
-}
-
-export function defaultSqsSourceProps(): any {
-  return {
-  };
-}
-
-export function defaultDynamoDBStreamsSourceProps(): any {
-  return {
-    dynamoDbStreamParameters: {
-      startingPosition: "LATEST"
-    }
-  };
-}
-
-export function defaultStateMachineTargetProps(): any {
-  return {
-    stepFunctionStateMachineParameters: {
-      invocationType: 'FIRE_AND_FORGET'
-    }
-  };
+exports.handler = async (event) => { 
+  console.log(event); 
+  const response = event.map((x) =>{
+    x.newAttrib = "content";
+    return x;
+  });
+  return response;
 }

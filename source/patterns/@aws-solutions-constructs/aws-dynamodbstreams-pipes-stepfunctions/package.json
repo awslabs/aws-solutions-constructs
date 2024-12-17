@@ -1,0 +1,95 @@
+{
+  "name": "@aws-solutions-constructs/aws-dynamodbstreams-pipes-stepfunctions",
+  "version": "2.74.0",
+  "description": "CDK Constructs for Amazon DynamoDB Streams to AWS Step Functions via Amazon EventBridge Pipes integration.",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awslabs/aws-solutions-constructs.git",
+    "directory": "source/patterns/@aws-solutions-constructs/aws-dynamodbstreams-pipes-stepfunctions"
+  },
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com",
+    "organization": true
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc -b .",
+    "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
+    "lint-fix": "eslint -c ../eslintrc.yml --ext=.js,.ts --fix .",
+    "test": "jest --coverage",
+    "clean": "tsc -b --clean",
+    "watch": "tsc -b -w",
+    "integ": "integ-runner --update-on-failed",
+    "integ-no-clean": "integ-runner --update-on-failed --no-clean",
+    "integ-assert": "integ-runner",
+    "jsii": "jsii",
+    "jsii-pacmak": "jsii-pacmak",
+    "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
+    "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
+  },
+  "jsii": {
+    "outdir": "dist",
+    "targets": {
+      "java": {
+        "package": "software.amazon.awsconstructs.services.dynamodbstreamspipesstepfunctions",
+        "maven": {
+          "groupId": "software.amazon.awsconstructs",
+          "artifactId": "dynamodbstreamspipesstepfunctions"
+        }
+      },
+      "dotnet": {
+        "namespace": "Amazon.SolutionsConstructs.AWS.DynamoDBStreamsPipesStepfunctions",
+        "packageId": "Amazon.SolutionsConstructs.AWS.DynamoDBStreamsPipesStepfunctions",
+        "signAssembly": true,
+        "iconUrl": "https://raw.githubusercontent.com/aws/aws-cdk/master/logo/default-256-dark.png"
+      },
+      "python": {
+        "distName": "aws-solutions-constructs.aws-dynamodbstreams-pipes-stepfunctions",
+        "module": "aws_solutions_constructs.aws_dynamodbstreams_pipes_stepfunctions"
+      }
+    }
+  },
+  "dependencies": {
+    "@aws-solutions-constructs/core": "2.74.0",
+    "@aws-solutions-constructs/resources": "2.74.0",
+    "constructs": "^10.0.0"
+  },
+  "devDependencies": {
+    "@aws-cdk/integ-tests-alpha": "2.163.1-alpha.0",
+    "@types/node": "^10.3.0",
+    "constructs": "^10.0.0",
+    "aws-cdk-lib": "2.163.1"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "coverageReporters": [
+      "text",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../../../"
+        }
+      ]
+    ]
+  },
+  "peerDependencies": {
+    "@aws-solutions-constructs/core": "2.74.0",
+    "@aws-solutions-constructs/resources": "2.74.0",
+    "constructs": "^10.0.0",
+    "aws-cdk-lib": "^2.163.1"
+  },
+  "keywords": [
+    "aws",
+    "cdk",
+    "awscdk",
+    "AWS Solutions Constructs",
+    "Amazon DynamoDB",
+    "AWS Step Functions",
+    "Amazon EventBridge Pipes"
+  ]
+}
