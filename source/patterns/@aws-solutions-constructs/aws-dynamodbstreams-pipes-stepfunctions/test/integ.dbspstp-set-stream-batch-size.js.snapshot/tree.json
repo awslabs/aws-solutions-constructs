@@ -788,6 +788,7 @@
                       "dynamoDbStreamParameters": {
                         "batchSize": 50,
                         "startingPosition": "LATEST",
+                        "maximumRetryAttempts": 3,
                         "deadLetterConfig": {
                           "arn": {
                             "Fn::GetAtt": [

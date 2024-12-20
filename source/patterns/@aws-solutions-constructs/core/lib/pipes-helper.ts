@@ -200,8 +200,9 @@ export function CreateDynamoDBStreamsSource(
   if (!props.table.tableStreamArn) {
     throw new Error("ERROR - DynamoDB Table must have an associated stream");
   }
+  const deployDlq = defaults.CheckBooleanWithDefault(props.deploySqsDlqQueue, true);
   let sourceParameters: pipes.CfnPipe.PipeSourceParametersProperty =
-    defaults.consolidateProps(defaults.defaultDynamoDBStreamsSourceProps(), props.clientProps);
+    defaults.consolidateProps(defaults.defaultDynamoDBStreamsSourceProps(deployDlq), props.clientProps);
 
   const sourcePolicy: iam.PolicyDocument = new iam.PolicyDocument({
     statements: [
@@ -219,7 +220,7 @@ export function CreateDynamoDBStreamsSource(
   });
   let buildQueueResponse: defaults.BuildQueueResponse | undefined;
   // Default to setting up DLQ for failed messages
-  if (defaults.CheckBooleanWithDefault(props.deploySqsDlqQueue, true)) {
+  if (deployDlq) {
     buildQueueResponse = defaults.buildQueue(scope, 'dlq', {
       deployDeadLetterQueue: false,
       queueProps: props.sqsDlqQueueProps

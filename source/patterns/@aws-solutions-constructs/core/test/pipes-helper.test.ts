@@ -112,7 +112,10 @@ test('Create DDB Streams Source with no DLQ', () => {
   expect(tableSource.sourcePolicy.statementCount).toEqual(1);
   expect(tableSource.dlq).toBeUndefined();
   const streamParamters = (tableSource.sourceParameters.dynamoDbStreamParameters! as pipes.CfnPipe.PipeSourceDynamoDBStreamParametersProperty);
+  expect(streamParamters.maximumRetryAttempts).toBeUndefined();
   expect(streamParamters.deadLetterConfig).toBeUndefined();
+  expect(streamParamters.startingPosition).toBeDefined();
+
 });
 
 test('Create an DDB Streams Source with overrides', () => {
@@ -138,6 +141,11 @@ test('Create an DDB Streams Source with overrides', () => {
   expect(batchSizeProp).toEqual(batchSizeValue);
   // best we can do here, confirm values when we instantiate the actual pipe
   expect(tableSource.sourcePolicy.statementCount).toEqual(2);
+
+  const streamParamters = (tableSource.sourceParameters.dynamoDbStreamParameters! as pipes.CfnPipe.PipeSourceDynamoDBStreamParametersProperty);
+  expect(streamParamters.maximumRetryAttempts).toEqual(3);
+  expect(streamParamters.deadLetterConfig).toBeDefined();
+  expect(streamParamters.startingPosition).toBeDefined();
 });
 
 test('Create a default Step Functions Target', () => {
