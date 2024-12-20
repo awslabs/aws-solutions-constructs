@@ -18,7 +18,7 @@
 
 import { DefaultLogGroupProps } from './cloudwatch-log-group-defaults';
 import * as logs from 'aws-cdk-lib/aws-logs';
-import { addCfnSuppressRules, consolidateProps } from './utils';
+import { addL2CfnSuppressRules, consolidateProps } from './utils';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 
@@ -39,7 +39,7 @@ export function buildLogGroup(scope: Construct, logGroupId?: string, logGroupPro
 
   // If required, suppress the Cfn Nag WARNINGS
   if (consolidatedLogGroupProps.retention === logs.RetentionDays.INFINITE) {
-    addCfnSuppressRules( logGroup, [
+    addL2CfnSuppressRules( logGroup, [
       {
         id: 'W86',
         reason: 'Retention period for CloudWatchLogs LogGroups are set to \'Never Expire\' to preserve customer data indefinitely'
@@ -48,7 +48,7 @@ export function buildLogGroup(scope: Construct, logGroupId?: string, logGroupPro
   }
 
   if (!consolidatedLogGroupProps.encryptionKey) {
-    addCfnSuppressRules( logGroup, [
+    addL2CfnSuppressRules( logGroup, [
       {
         id: 'W84',
         reason: 'By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)'

@@ -21,7 +21,7 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { DefaultLambdaFunctionProps } from './lambda-defaults';
 import * as cdk from 'aws-cdk-lib';
-import { overrideProps, addCfnSuppressRules } from './utils';
+import { overrideProps, addL1CfnSuppressRules, addL2CfnSuppressRules } from './utils';
 import { buildSecurityGroup } from "./security-group-helper";
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct, IConstruct } from 'constructs';
@@ -128,7 +128,7 @@ export function deployLambdaFunction(scope: Construct,
     }));
   }
 
-  defaults.addCfnGuardSuppressRules(lambdaServiceRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
+  defaults.addL2CfnGuardSuppressRules(lambdaServiceRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
 
   // Override the DefaultFunctionProps with user provided  lambdaFunctionProps
   let finalLambdaFunctionProps: lambda.FunctionProps = overrideProps(DefaultLambdaFunctionProps(lambdaServiceRole), lambdaFunctionProps);
@@ -162,7 +162,7 @@ export function deployLambdaFunction(scope: Construct,
 
   const cfnLambdafunction: lambda.CfnFunction = lambdafunction.node.findChild('Resource') as lambda.CfnFunction;
 
-  addCfnSuppressRules(lambdafunction, [
+  addL2CfnSuppressRules(lambdafunction, [
     {
       id: 'W58',
       reason: `Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.`
@@ -183,7 +183,7 @@ export function deployLambdaFunction(scope: Construct,
 
     if (cfnLambdafunctionDefPolicy) {
       // Add the CFN NAG suppress to allow for "Resource": "*" for AWS X-Ray
-      addCfnSuppressRules(cfnLambdafunctionDefPolicy, [
+      addL1CfnSuppressRules(cfnLambdafunctionDefPolicy, [
         {
           id: 'W12',
           reason: `Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC.`

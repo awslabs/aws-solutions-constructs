@@ -32,7 +32,7 @@ const existingTable = new dynamodb.Table(stack, 'table', {
   encryption: dynamodb.TableEncryption.AWS_MANAGED,
   pointInTimeRecovery: true
 });
-defaults.addCfnGuardSuppressRules(existingTable,
+defaults.addL2CfnGuardSuppressRules(existingTable,
   [ "DYNAMODB_TABLE_ENCRYPTED_KMS" ]
 );
 

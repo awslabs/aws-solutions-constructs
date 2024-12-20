@@ -19,7 +19,7 @@
 import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cdk from 'aws-cdk-lib';
-import { addCfnGuardSuppressRules, addCfnSuppressRules, consolidateProps } from './utils';
+import { addL2CfnGuardSuppressRules, addL2CfnSuppressRules, consolidateProps } from './utils';
 import { DefaultUserPoolProps, DefaultUserPoolClientProps, DefaultIdentityPoolProps } from './cognito-defaults';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
@@ -51,7 +51,7 @@ export function buildUserPool(scope: Construct, userPoolProps?: cognito.UserPool
   const userPoolSmsRole = userPool.node.tryFindChild('smsRole') as iam.Role;
 
   if (userPoolSmsRole) {
-    addCfnSuppressRules(userPool, [
+    addL2CfnSuppressRules(userPool, [
       {
         id: 'W11',
         reason: `Allowing * resource on permissions policy since its used by Cognito to send SMS messages via sns:Publish`
@@ -127,7 +127,7 @@ export function setupCognitoForSearchService(scope: Construct, domainName: strin
     }
   });
 
-  addCfnGuardSuppressRules(cognitoAuthorizedRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
+  addL2CfnGuardSuppressRules(cognitoAuthorizedRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
 
   // Attach the IAM Role for Cognito Authorized Users
   const props: cognito.CfnIdentityPoolRoleAttachmentProps = {

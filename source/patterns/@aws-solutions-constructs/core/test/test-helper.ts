@@ -17,7 +17,7 @@ import { Bucket, BucketProps, BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { CfnResource, RemovalPolicy, Stack, Aspects, IAspect, Aws, Fn } from "aws-cdk-lib";
 import { buildVpc } from '../lib/vpc-helper';
 import { DefaultPublicPrivateVpcProps, DefaultIsolatedVpcProps } from '../lib/vpc-defaults';
-import { overrideProps, addCfnSuppressRules } from "../lib/utils";
+import { overrideProps, addL1CfnSuppressRules, addL2CfnSuppressRules } from "../lib/utils";
 import * as defaults from '../index';
 import { createCacheSubnetGroup } from "../lib/elasticache-helper";
 import * as path from 'path';
@@ -70,7 +70,7 @@ export function CreateScrapBucket(scope: Construct, id: string, props?: BucketPr
     finalProps
   );
 
-  addCfnSuppressRules(logBucket, [
+  addL2CfnSuppressRules(logBucket, [
     {
       id: "W35",
       reason: "This is a log bucket",
@@ -144,9 +144,9 @@ export function suppressCustomHandlerCfnNagWarnings(stack: Stack, handlerId: str
   stack.node.children.forEach(child => {
     if (child.node.id === handlerId) {
       const handlerFunction = child.node.findChild('Handler') as CfnFunction;
-      addCfnSuppressRules(handlerFunction, [{ id: "W58", reason: "CDK generated custom resource" }]);
-      addCfnSuppressRules(handlerFunction, [{ id: "W89", reason: "CDK generated custom resource" }]);
-      addCfnSuppressRules(handlerFunction, [{ id: "W92", reason: "CDK generated custom resource" }]);
+      addL1CfnSuppressRules(handlerFunction, [{ id: "W58", reason: "CDK generated custom resource" }]);
+      addL1CfnSuppressRules(handlerFunction, [{ id: "W89", reason: "CDK generated custom resource" }]);
+      addL1CfnSuppressRules(handlerFunction, [{ id: "W92", reason: "CDK generated custom resource" }]);
     }
   });
 }
@@ -160,9 +160,9 @@ export function CreateTestCache(scope: Construct, id: string, vpc: ec2.IVpc, por
     vpc,
     allowAllOutbound: true,
   });
-  addCfnSuppressRules(emptySG, [{ id: "W40", reason: "Test Resource" }]);
-  addCfnSuppressRules(emptySG, [{ id: "W5", reason: "Test Resource" }]);
-  addCfnSuppressRules(emptySG, [{ id: "W36", reason: "Test Resource" }]);
+  addL2CfnSuppressRules(emptySG, [{ id: "W40", reason: "Test Resource" }]);
+  addL2CfnSuppressRules(emptySG, [{ id: "W5", reason: "Test Resource" }]);
+  addL2CfnSuppressRules(emptySG, [{ id: "W36", reason: "Test Resource" }]);
 
   const cacheProps = {
     clusterName: `${id}-cdk-cluster`,
@@ -220,7 +220,7 @@ class CfnNagLambdaAspect implements IAspect {
   public visit(node: IConstruct): void {
     const resource = node as CfnResource;
     if (resource.cfnResourceType === 'AWS::Lambda::Function') {
-      addCfnSuppressRules(resource, [
+      addL1CfnSuppressRules(resource, [
         { id: 'W58', reason: 'This Lambda Function is created for integration testing purposes only and is not part of an actual construct' },
         { id: 'W89', reason: 'This Lambda Function is created for integration testing purposes only and is not part of an actual construct' },
         { id: 'W92', reason: 'This Lambda Function is created for integration testing purposes only and is not part of an actual construct' }
@@ -235,9 +235,9 @@ export function CreateTestApi(stack: Stack, id: string): api.LambdaRestApi {
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: ".handler",
   });
-  addCfnSuppressRules(lambdaFunction, [{ id: "W58", reason: "Test Resource" }]);
-  addCfnSuppressRules(lambdaFunction, [{ id: "W89", reason: "Test Resource" }]);
-  addCfnSuppressRules(lambdaFunction, [{ id: "W92", reason: "Test Resource" }]);
+  addL2CfnSuppressRules(lambdaFunction, [{ id: "W58", reason: "Test Resource" }]);
+  addL2CfnSuppressRules(lambdaFunction, [{ id: "W89", reason: "Test Resource" }]);
+  addL2CfnSuppressRules(lambdaFunction, [{ id: "W92", reason: "Test Resource" }]);
 
   const restApi = new api.LambdaRestApi(stack, `${id}Api`, {
     handler: lambdaFunction,
@@ -249,19 +249,19 @@ export function CreateTestApi(stack: Stack, id: string): api.LambdaRestApi {
 
   const newDeployment = restApi.latestDeployment;
   if (newDeployment) {
-    addCfnSuppressRules(newDeployment, [
+    addL2CfnSuppressRules(newDeployment, [
       { id: "W68", reason: "Test Resource" },
     ]);
   }
 
   const newMethod = restApi.methods[0];
-  addCfnSuppressRules(newMethod, [{ id: "W59", reason: "Test Resource" }]);
+  addL2CfnSuppressRules(newMethod, [{ id: "W59", reason: "Test Resource" }]);
   const newMethodTwo = restApi.methods[1];
-  addCfnSuppressRules(newMethodTwo, [{ id: "W59", reason: "Test Resource" }]);
+  addL2CfnSuppressRules(newMethodTwo, [{ id: "W59", reason: "Test Resource" }]);
 
   const newStage = restApi.deploymentStage;
-  addCfnSuppressRules(newStage, [{ id: "W64", reason: "Test Resource" }]);
-  addCfnSuppressRules(newStage, [{ id: "W69", reason: "Test Resource" }]);
+  addL2CfnSuppressRules(newStage, [{ id: "W64", reason: "Test Resource" }]);
+  addL2CfnSuppressRules(newStage, [{ id: "W69", reason: "Test Resource" }]);
 
   return restApi;
 }
@@ -272,9 +272,9 @@ export function CreateApiAuthorizer(stack: Stack, id: string): api.IAuthorizer {
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: ".handler",
   });
-  addCfnSuppressRules(authFn, [{ id: "W58", reason: "Test Resource" }]);
-  addCfnSuppressRules(authFn, [{ id: "W89", reason: "Test Resource" }]);
-  addCfnSuppressRules(authFn, [{ id: "W92", reason: "Test Resource" }]);
+  addL2CfnSuppressRules(authFn, [{ id: "W58", reason: "Test Resource" }]);
+  addL2CfnSuppressRules(authFn, [{ id: "W89", reason: "Test Resource" }]);
+  addL2CfnSuppressRules(authFn, [{ id: "W92", reason: "Test Resource" }]);
 
   const authorizer = new api.RequestAuthorizer(stack, id, {
     handler: authFn,

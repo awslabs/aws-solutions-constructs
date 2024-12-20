@@ -12,7 +12,7 @@
  */
 
 import { Stack } from "aws-cdk-lib";
-import { addCfnSuppressRules } from "@aws-solutions-constructs/core";
+import { addL2CfnSuppressRules } from "@aws-solutions-constructs/core";
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import * as origins from "aws-cdk-lib/aws-cloudfront-origins";
 
@@ -30,7 +30,7 @@ export function CreateTestDistro(
       }),
     },
   });
-  addCfnSuppressRules(newDistro, [{ id: "W10", reason: "Test Resource" }]);
-  addCfnSuppressRules(newDistro, [{ id: "W70", reason: "Test Resource" }]);
+  addL2CfnSuppressRules(newDistro, [{ id: "W10", reason: "Test Resource" }]);
+  addL2CfnSuppressRules(newDistro, [{ id: "W70", reason: "Test Resource" }]);
   return newDistro;
 }

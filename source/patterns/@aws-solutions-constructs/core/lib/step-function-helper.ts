@@ -21,7 +21,7 @@ import * as logs from 'aws-cdk-lib/aws-logs';
 import * as cdk from 'aws-cdk-lib';
 import * as smDefaults from './step-function-defaults';
 import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
-import { overrideProps, addCfnSuppressRules, generatePhysicalLogGroupName } from './utils';
+import { overrideProps, addL1CfnSuppressRules, generatePhysicalLogGroupName } from './utils';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 import { buildLogGroup } from './cloudwatch-log-group-helper';
@@ -102,7 +102,7 @@ export function buildStateMachine(scope: Construct, id: string | undefined, prop
     const role = newStateMachine.node.findChild('Role') as iam.Role;
     const cfnDefaultPolicy = role.node.findChild('DefaultPolicy').node.defaultChild as any;
     // Override Cfn Nag warning W12: IAM policy should not allow * resource
-    addCfnSuppressRules(cfnDefaultPolicy, [
+    addL1CfnSuppressRules(cfnDefaultPolicy, [
       {
         id: 'W12',
         reason: `These are CDK defaults. The 'LogDelivery' actions do not support resource-level authorizations. Any logging is done by State Machine code`

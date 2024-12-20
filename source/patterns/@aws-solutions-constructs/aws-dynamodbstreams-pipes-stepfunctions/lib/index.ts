@@ -198,6 +198,6 @@ export class DynamoDBStreamsToPipesToStepfunctions extends Construct {
     });
     this.pipe = buildPipeResponse.pipe;
     this.pipeRole = buildPipeResponse.pipeRole;
-    defaults.addCfnGuardSuppressRules(this.pipeRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
+    defaults.addL2CfnGuardSuppressRules(this.pipeRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
   }
 }

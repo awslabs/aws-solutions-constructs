@@ -20,7 +20,7 @@ import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { CfnLogGroup } from "aws-cdk-lib/aws-logs";
 import { Construct } from "constructs";
 import { buildSecurityGroup } from "./security-group-helper";
-import { consolidateProps, addCfnSuppressRules, suppressVpcCustomerHandlerRoleWarnings } from "./utils";
+import { consolidateProps, addL1CfnSuppressRules, suppressVpcCustomerHandlerRoleWarnings } from "./utils";
 import * as cdk from 'aws-cdk-lib';
 
 export interface BuildVpcProps {
@@ -208,7 +208,7 @@ function SuppressMapPublicIpWarnings(vpc: ec2.Vpc) {
   // Add Cfn Nag suppression for PUBLIC subnets to suppress WARN W33: EC2 Subnet should not have MapPublicIpOnLaunch set to true
   vpc.publicSubnets.forEach((subnet) => {
     const cfnSubnet = subnet.node.defaultChild as ec2.CfnSubnet;
-    addCfnSuppressRules(cfnSubnet, [
+    addL1CfnSuppressRules(cfnSubnet, [
       {
         id: 'W33',
         reason: 'Allow Public Subnets to have MapPublicIpOnLaunch set to true'
@@ -220,7 +220,7 @@ function SuppressMapPublicIpWarnings(vpc: ec2.Vpc) {
 function SuppressEncryptedLogWarnings(flowLog: ec2.FlowLog) {
   // Add Cfn Nag suppression for CloudWatchLogs LogGroups data is encrypted
   const cfnLogGroup: CfnLogGroup = flowLog.logGroup?.node.defaultChild as CfnLogGroup;
-  addCfnSuppressRules(cfnLogGroup, [
+  addL1CfnSuppressRules(cfnLogGroup, [
     {
       id: 'W84',
       reason: 'By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)'

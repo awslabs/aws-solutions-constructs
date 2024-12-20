@@ -26,7 +26,7 @@ import {
   DefaultCloudFrontWebDistributionForApiGatewayProps,
   DefaultCloudFrontDistributionForMediaStoreProps
 } from './cloudfront-distribution-defaults';
-import { addCfnSuppressRules, consolidateProps, generatePhysicalOacName } from './utils';
+import { addL2CfnSuppressRules, consolidateProps, generatePhysicalOacName } from './utils';
 import { createCloudFrontLoggingBucket } from './s3-bucket-helper';
 import { DefaultS3Props } from './s3-bucket-defaults';
 import { S3OacOrigin } from './s3-oac-origin';
@@ -35,7 +35,7 @@ import { Construct } from 'constructs';
 
 // Override Cfn_Nag rule: Cloudfront TLS-1.2 rule (https://github.com/stelligent/cfn_nag/issues/384)
 function updateSecurityPolicy(cfDistribution: cloudfront.Distribution) {
-  addCfnSuppressRules(cfDistribution, [
+  addL2CfnSuppressRules(cfDistribution, [
     {
       id: 'W70',
       reason: `Since the distribution uses the CloudFront domain name, CloudFront automatically sets the security policy to TLSv1 regardless of the value of MinimumProtocolVersion`
@@ -175,7 +175,7 @@ export function createCloudFrontDistributionForS3(
   const bucketPolicy = props.sourceBucket.policy as s3.BucketPolicy;
   // the lack of a bucketPolicy means the bucket was imported from outside the stack so the lack of cfn_nag suppression is not an issue
   if (bucketPolicy) {
-    addCfnSuppressRules(bucketPolicy, [
+    addL2CfnSuppressRules(bucketPolicy, [
       {
         id: 'F16',
         reason: `Public website bucket policy requires a wildcard principal`

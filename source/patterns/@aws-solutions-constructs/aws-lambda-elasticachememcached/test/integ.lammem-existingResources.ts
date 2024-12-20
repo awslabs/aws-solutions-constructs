@@ -16,7 +16,7 @@ import { App, Stack } from "aws-cdk-lib";
 import { LambdaToElasticachememcached, LambdaToElasticachememcachedProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 // import * as ec2 from '@aws-cdk/aws-ec2';
-import { generateIntegStackName, getTestVpc, CreateTestCache, addCfnSuppressRules, buildSecurityGroup, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, getTestVpc, CreateTestCache, addL2CfnSuppressRules, buildSecurityGroup, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -36,8 +36,8 @@ const testFunction = new lambda.Function(stack, 'test-function', {
   vpc: testVpc,
   securityGroups: [testSG],
 });
-addCfnSuppressRules(testFunction, [{ id: "W58", reason: "Test Resource" }]);
-addCfnSuppressRules(testFunction, [{ id: "W92", reason: "Test Resource" }]);
+addL2CfnSuppressRules(testFunction, [{ id: "W58", reason: "Test Resource" }]);
+addL2CfnSuppressRules(testFunction, [{ id: "W92", reason: "Test Resource" }]);
 
 const testCache = CreateTestCache(stack, 'test-cache', testVpc);
 

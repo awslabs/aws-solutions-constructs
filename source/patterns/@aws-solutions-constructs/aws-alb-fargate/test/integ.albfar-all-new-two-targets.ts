@@ -60,18 +60,18 @@ const testPropsTwo: AlbToFargateProps = {
 
 const albToFargate = new AlbToFargate(stack, 'test-two-construct', testPropsTwo);
 
-defaults.addCfnSuppressRules(albToFargate.listener, [
+defaults.addL2CfnSuppressRules(albToFargate.listener, [
   { id: 'W56', reason: 'All integration tests must be HTTP because of certificate limitations.' },
 ]);
-defaults.addCfnGuardSuppressRules(albToFargate.listener, ["ELBV2_LISTENER_SSL_POLICY_RULE"]);
+defaults.addL2CfnGuardSuppressRules(albToFargate.listener, ["ELBV2_LISTENER_SSL_POLICY_RULE"]);
 
 const newSecurityGroup = albToFargate.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
-defaults.addCfnSuppressRules(newSecurityGroup, [
+defaults.addL1CfnSuppressRules(newSecurityGroup, [
   { id: 'W29', reason: 'CDK created rule that blocks all traffic.'},
   { id: 'W2', reason: 'Rule does not apply for ELB.'},
   { id: 'W9', reason: 'Rule does not apply for ELB.'}
 ]);
-defaults.addCfnGuardSuppressRules(newSecurityGroup, ["SECURITY_GROUP_MISSING_EGRESS_RULE"]);
+defaults.addL1CfnGuardSuppressRules(newSecurityGroup, ["SECURITY_GROUP_MISSING_EGRESS_RULE"]);
 
 defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');

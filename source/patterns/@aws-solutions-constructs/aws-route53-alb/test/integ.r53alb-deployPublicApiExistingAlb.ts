@@ -38,7 +38,7 @@ const existingAlb = new ApplicationLoadBalancer(stack, 'test-alb', {
   vpc: newVpc,
 });
 
-defaults.addCfnSuppressRules(existingAlb, [{ id: 'W52', reason: 'Test ALB only.'}]);
+defaults.addL2CfnSuppressRules(existingAlb, [{ id: 'W52', reason: 'Test ALB only.'}]);
 
 // Definitions
 const props: Route53ToAlbProps = {
@@ -51,7 +51,7 @@ const props: Route53ToAlbProps = {
 const testConstruct = new Route53ToAlb(stack, 'public-api-stack', props);
 
 const newSecurityGroup = testConstruct.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
-defaults.addCfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK created rule that blocks all traffic.'}]);
+defaults.addL1CfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK created rule that blocks all traffic.'}]);
 defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 
 // Synth

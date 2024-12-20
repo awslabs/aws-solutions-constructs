@@ -20,7 +20,7 @@ import * as logs from "aws-cdk-lib/aws-logs";
 import * as sqs from "aws-cdk-lib/aws-sqs";
 import { Construct } from "constructs";
 import { buildLogGroup } from "./cloudwatch-log-group-helper";
-import { addCfnGuardSuppressRules, addCfnSuppressRules, consolidateProps, printWarning } from "./utils";
+import { addL2CfnGuardSuppressRules, addL1CfnSuppressRules, addL2CfnSuppressRules, consolidateProps, printWarning } from "./utils";
 import { connectRouteOptions, DEFAULT_ROUTE_QUEUE_VTL_CONFIG } from "./websocket-api-defaults";
 
 export interface BuildWebSocketQueueApiResponse {
@@ -108,7 +108,7 @@ export function buildWebSocketQueueApi(
     autoDeploy: true,
   });
 
-  addCfnGuardSuppressRules(webSocketStage, ["API_GW_CACHE_ENABLED_AND_ENCRYPTED"]);
+  addL2CfnGuardSuppressRules(webSocketStage, ["API_GW_CACHE_ENABLED_AND_ENCRYPTED"]);
 
   const apiGatewayLogGroup = buildLogGroup(scope, "LogGroup", props.logGroupProps);
   apiGatewayLogGroup.grant(
@@ -133,14 +133,14 @@ export function buildWebSocketQueueApi(
     LoggingLevel: "ERROR",
   });
 
-  addCfnSuppressRules(webSocketStage, [
+  addL2CfnSuppressRules(webSocketStage, [
     {
       id: "AwsSolutions-APIG1",
       reason: "Access logging configuration has been provided as per ApiGateway v2 requirements",
     },
   ]);
 
-  addCfnSuppressRules(
+  addL1CfnSuppressRules(
     apiGatewayRole.node.tryFindChild("DefaultPolicy")?.node.tryFindChild("Resource") as cdk.CfnResource,
     [
       {

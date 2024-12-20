@@ -42,7 +42,7 @@ const props: EventbridgeToKinesisFirehoseToS3Props = {
 const construct = new EventbridgeToKinesisFirehoseToS3(stack, 'evtfhss3-new-bus', props);
 const s3Bucket = construct.s3Bucket as s3.Bucket;
 
-defaults.addCfnSuppressRules(s3Bucket, [
+defaults.addL2CfnSuppressRules(s3Bucket, [
   {
     id: 'W35',
     reason: 'This S3 bucket is created for unit/ integration testing purposes only.'

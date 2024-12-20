@@ -151,7 +151,7 @@ export class LambdaToDynamoDB extends Construct {
 
     // Conditional metadata for cfn_nag
     if (props.dynamoTableProps?.billingMode === dynamodb.BillingMode.PROVISIONED) {
-      defaults.addCfnSuppressRules(this.dynamoTable, [
+      defaults.addL2CfnSuppressRules(this.dynamoTable, [
         {
           id: "W73",
           reason: `PROVISIONED billing mode is a default and is not explicitly applied as a setting.`,

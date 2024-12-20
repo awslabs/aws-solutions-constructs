@@ -139,8 +139,9 @@ export class ApiGatewayToIot extends Construct {
       };
 
       // Create a policy that overrides the default policy that gets created with the construct
-      this.apiGatewayRole = new iam.Role(this, 'apigateway-iot-role', iamRoleProps);
-      defaults.addCfnGuardSuppressRules(this.apiGatewayRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
+      const newGatewayRole = new iam.Role(this, 'apigateway-iot-role', iamRoleProps);
+      this.apiGatewayRole = newGatewayRole;
+      defaults.addL2CfnGuardSuppressRules(newGatewayRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
     }
 
     // Setup the API Gateway
@@ -280,7 +281,7 @@ export class ApiGatewayToIot extends Construct {
 
     if (props.apiGatewayCreateApiKey === true) {
       // cfn Nag doesn't like having a HTTP Method with Authorization Set to None, suppress the warning
-      defaults.addCfnSuppressRules(apiMethod, [
+      defaults.addL2CfnSuppressRules(apiMethod, [
         {
           id: "W59",
           reason:
