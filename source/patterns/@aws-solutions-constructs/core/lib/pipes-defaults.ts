@@ -22,10 +22,11 @@ export function defaultSqsSourceProps(): any {
   };
 }
 
-export function defaultDynamoDBStreamsSourceProps(): any {
+export function defaultDynamoDBStreamsSourceProps(deployDlq: boolean): any {
   return {
     dynamoDbStreamParameters: {
-      startingPosition: "LATEST"
+      startingPosition: "LATEST",
+      maximumRetryAttempts: deployDlq ? 3 : undefined,
     }
   };
 }

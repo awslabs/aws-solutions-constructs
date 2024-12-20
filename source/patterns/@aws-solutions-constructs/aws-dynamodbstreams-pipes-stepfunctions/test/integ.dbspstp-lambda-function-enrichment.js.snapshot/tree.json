@@ -957,6 +957,7 @@
                     "sourceParameters": {
                       "dynamoDbStreamParameters": {
                         "startingPosition": "LATEST",
+                        "maximumRetryAttempts": 3,
                         "deadLetterConfig": {
                           "arn": {
                             "Fn::GetAtt": [
