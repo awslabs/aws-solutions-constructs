@@ -120,7 +120,7 @@ export function CreateFargateService(
       description: 'Construct created security group'
     });
     defaultFargateServiceProps = overrideProps(defaults.DefaultFargateServiceProps(), { securityGroups: [ serviceSecurityGroup ]});
-    defaults.addCfnSuppressRules(serviceSecurityGroup, [
+    defaults.addL2CfnSuppressRules(serviceSecurityGroup, [
       {
         id: 'W5',
         reason: 'Egress of 0.0.0.0/0 is default and generally considered OK',

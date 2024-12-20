@@ -26,7 +26,7 @@ import {
   DefaultSagemakerEndpointProps,
 } from './sagemaker-defaults';
 import * as cdk from 'aws-cdk-lib';
-import { addCfnGuardSuppressRules, addCfnSuppressRules, consolidateProps } from './utils';
+import { addL1CfnGuardSuppressRules, addL2CfnGuardSuppressRules, addL1CfnSuppressRules, consolidateProps } from './utils';
 import { buildVpc } from './vpc-helper';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Aws } from 'aws-cdk-lib';
@@ -207,7 +207,7 @@ function addPermissions(role: iam.Role, props?: BuildSagemakerEndpointProps) {
   // ECR authorization token for custom model images, and elastic inference
   // Add CFN NAG for Complex Role because Sagmaker needs permissions to access several services
   const roleDefaultPolicy = role.node.tryFindChild('DefaultPolicy')?.node.findChild('Resource') as iam.CfnPolicy;
-  addCfnSuppressRules(roleDefaultPolicy, [
+  addL1CfnSuppressRules(roleDefaultPolicy, [
     {
       id: 'W12',
       reason: `Sagemaker needs the following minimum required permissions to access ENIs in a VPC, ECR for custom model images, and elastic inference.`,
@@ -217,7 +217,7 @@ function addPermissions(role: iam.Role, props?: BuildSagemakerEndpointProps) {
       reason: 'Complex role becuase Sagemaker needs permissions to access several services',
     }
   ]);
-  addCfnGuardSuppressRules(roleDefaultPolicy, ["IAM_POLICY_NON_COMPLIANT_ARN"]);
+  addL1CfnGuardSuppressRules(roleDefaultPolicy, ["IAM_POLICY_NON_COMPLIANT_ARN"]);
 }
 
 export interface BuildSagemakerNotebookResponse {
@@ -421,7 +421,7 @@ export function deploySagemakerEndpoint(
       });
       // Add required permissions
       addPermissions(sagemakerRole, props);
-      addCfnGuardSuppressRules(sagemakerRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
+      addL2CfnGuardSuppressRules(sagemakerRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
     }
 
     // Create Sagemaker Model
@@ -465,7 +465,7 @@ export function createSagemakerModel(
     modelDefaultSecurityGroup.addIngressRule(ec2.Peer.ipv4(vpc.vpcCidrBlock), ec2.Port.tcp(443));
 
     const cfnSecurityGroup = modelDefaultSecurityGroup.node.findChild('Resource') as ec2.CfnSecurityGroup;
-    addCfnSuppressRules(cfnSecurityGroup, [
+    addL1CfnSuppressRules(cfnSecurityGroup, [
       {
         id: 'W5',
         reason: 'Egress of 0.0.0.0/0 is default and generally considered OK',

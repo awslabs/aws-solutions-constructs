@@ -62,7 +62,7 @@ const props: S3ToSqsProps = {
 const construct = new S3ToSqs(stack, 'test-s3-sqs', props);
 const s3Bucket = construct.s3Bucket as s3.Bucket;
 
-defaults.addCfnSuppressRules(s3Bucket, [
+defaults.addL2CfnSuppressRules(s3Bucket, [
   { id: 'W35',
     reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
 ]);

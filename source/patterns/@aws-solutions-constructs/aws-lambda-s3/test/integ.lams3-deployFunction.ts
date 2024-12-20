@@ -47,7 +47,7 @@ const construct = new LambdaToS3(stack, 'test-lambda-s3', props);
 defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 const s3Bucket = construct.s3Bucket as s3.Bucket;
 
-defaults.addCfnSuppressRules(s3Bucket, [
+defaults.addL2CfnSuppressRules(s3Bucket, [
   { id: 'W35',
     reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
 ]);

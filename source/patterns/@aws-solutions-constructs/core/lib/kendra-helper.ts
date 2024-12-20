@@ -18,7 +18,8 @@
 
 import * as kendra from 'aws-cdk-lib/aws-kendra';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import { addCfnGuardSuppressRules, addCfnSuppressRules, consolidateProps, generatePhysicalKendraIndexName, overrideProps } from "./utils";
+import * as cdk from 'aws-cdk-lib';
+import { addL2CfnGuardSuppressRules, addL1CfnSuppressRules, consolidateProps, generatePhysicalKendraIndexName, overrideProps } from "./utils";
 import { Aws } from 'aws-cdk-lib';
 
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
@@ -55,7 +56,7 @@ export function buildKendraIndex(scope: Construct, id: string, props: BuildKendr
 
     const consolidatedIndexProperties = consolidateProps(defaultIndexProperties, props.kendraIndexProps);
     const newIndex = new kendra.CfnIndex(scope, `kendra-index-${id}`, consolidatedIndexProperties);
-    addCfnSuppressRules(newIndex, [{
+    addL1CfnSuppressRules(newIndex, [{
       id: "W80",
       reason: "We consulted the Kendra TFC and they confirmed the default encryption is sufficient for general use cases"
     }]);
@@ -173,7 +174,7 @@ function CreateS3DataSource(scope: Construct,
       },
     });
     defaultProps = overrideProps(defaultProps, { roleArn: dataSourceRole.roleArn });
-    addCfnGuardSuppressRules(dataSourceRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
+    addL2CfnGuardSuppressRules(dataSourceRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
   }
 
   const consolidatedProps: kendra.CfnDataSourceProps = consolidateProps(defaultProps, clientProps);
@@ -230,13 +231,13 @@ function CreateKendraIndexLoggingRole(scope: Construct, id: string): string {
       AllowLogging: allowKendraToLogPolicy,
     },
   });
-  addCfnSuppressRules(indexRole, [{
+  addL1CfnSuppressRules(indexRole.node.defaultChild as cdk.CfnResource, [{
     id: "W11",
     reason: "PutMetricData does not allow resource specification, " +
       "scope is narrowed by the namespace condition. " +
       "https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazoncloudwatch.html"
   }]);
-  addCfnGuardSuppressRules(indexRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
+  addL2CfnGuardSuppressRules(indexRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
 
   return indexRole.roleArn;
 }

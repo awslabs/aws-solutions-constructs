@@ -38,17 +38,17 @@ const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
   }
 });
 
-defaults.addCfnSuppressRules(construct.cloudFrontWebDistribution, [
+defaults.addL2CfnSuppressRules(construct.cloudFrontWebDistribution, [
   { id: 'W10',
     reason: 'Test case only' },
 ]);
 
-defaults.addCfnSuppressRules(construct.s3Bucket!, [
+defaults.addL2CfnSuppressRules(construct.s3Bucket!, [
   { id: 'W35',
     reason: 'Test case only' },
 ]);
 
-defaults.addCfnSuppressRules(construct.cloudFrontWebDistribution, [
+defaults.addL2CfnSuppressRules(construct.cloudFrontWebDistribution, [
   { id: 'W35',
     reason: 'Test case only' },
 ]);

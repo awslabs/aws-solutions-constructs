@@ -19,7 +19,7 @@
 import * as opensearch from 'aws-cdk-lib/aws-opensearchservice';
 import { DefaultOpenSearchCfnDomainProps } from './opensearch-defaults';
 import { retrievePrivateSubnetIds } from './vpc-helper';
-import { consolidateProps, addCfnSuppressRules, addCfnGuardSuppressRules } from './utils';
+import { consolidateProps, addL1CfnSuppressRules, addL1CfnGuardSuppressRules } from './utils';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cdk from 'aws-cdk-lib';
 import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
@@ -87,7 +87,7 @@ export function buildOpenSearch(scope: Construct, props: BuildOpenSearchProps): 
   // This is confirmed by the 'Check that TLS 1.2 is the default' test in aws-lambda-opensearch
   const opensearchDomain = new opensearch.CfnDomain(scope, `OpenSearchDomain`, finalCfnDomainProps); // NOSONAR
 
-  addCfnSuppressRules(opensearchDomain, [
+  addL1CfnSuppressRules(opensearchDomain, [
     {
       id: "W28",
       reason: `The OpenSearch Service domain is passed dynamically as as parameter and explicitly specified to ensure that IAM policies are configured to lockdown access to this specific OpenSearch Service instance only`,
@@ -98,7 +98,7 @@ export function buildOpenSearch(scope: Construct, props: BuildOpenSearchProps): 
     },
   ]);
 
-  addCfnGuardSuppressRules(opensearchDomain, ["CFN_NO_EXPLICIT_RESOURCE_NAMES"]);
+  addL1CfnGuardSuppressRules(opensearchDomain, ["CFN_NO_EXPLICIT_RESOURCE_NAMES"]);
 
   return  { domain: opensearchDomain, role: cognitoDashboardConfigureRole };
 }

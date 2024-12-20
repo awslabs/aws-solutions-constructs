@@ -24,7 +24,7 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as apiDefaults from './apigateway-defaults';
 import { buildLogGroup } from './cloudwatch-log-group-helper';
-import { addCfnGuardSuppressRules, addCfnSuppressRules, consolidateProps } from './utils';
+import { addL2CfnGuardSuppressRules, addL1CfnSuppressRules, consolidateProps } from './utils';
 import { IRole } from 'aws-cdk-lib/aws-iam';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
@@ -64,14 +64,14 @@ function configureCloudwatchRoleForApi(scope: Construct, api: apigateway.RestApi
 
   // Suppress Cfn Nag warning for APIG
   const deployment: apigateway.CfnDeployment = api.latestDeployment?.node.findChild('Resource') as apigateway.CfnDeployment;
-  addCfnSuppressRules(deployment, [
+  addL1CfnSuppressRules(deployment, [
     {
       id: 'W45',
       reason: `ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checks for it in AWS::ApiGateway::Deployment resource`
     }
   ]);
 
-  addCfnGuardSuppressRules(restApiCloudwatchRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
+  addL2CfnGuardSuppressRules(restApiCloudwatchRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
   // Return the CW Role
   return restApiCloudwatchRole;
 }
@@ -108,7 +108,7 @@ function configureLambdaRestApi(scope: Construct, defaultApiGatewayProps: apigat
   // Configure API access logging
   const cwRole = (apiGatewayProps?.cloudWatchRole !== false) ? configureCloudwatchRoleForApi(scope, api) : undefined;
 
-  addCfnGuardSuppressRules(api.deploymentStage, ["API_GW_CACHE_ENABLED_AND_ENCRYPTED"]);
+  addL2CfnGuardSuppressRules(api.deploymentStage, ["API_GW_CACHE_ENABLED_AND_ENCRYPTED"]);
 
   // Configure Usage Plan
   const usagePlanProps: apigateway.UsagePlanProps = {
@@ -153,7 +153,7 @@ function configureRestApi(scope: Construct, defaultApiGatewayProps: apigateway.R
   const consolidatedApiGatewayProps = consolidateProps(defaultApiGatewayProps, apiGatewayProps, { cloudWatchRole: false });
   const api = new apigateway.RestApi(scope, 'RestApi', consolidatedApiGatewayProps);
 
-  addCfnGuardSuppressRules(api.deploymentStage, ["API_GW_CACHE_ENABLED_AND_ENCRYPTED"]);
+  addL2CfnGuardSuppressRules(api.deploymentStage, ["API_GW_CACHE_ENABLED_AND_ENCRYPTED"]);
 
   let cwRole;
 
@@ -301,7 +301,7 @@ export function CreateSpecRestApi(
   // Configure API access logging
   const cwRole = (apiGatewayProps?.cloudWatchRole !== false) ? configureCloudwatchRoleForApi(scope, api) : undefined;
 
-  addCfnGuardSuppressRules(api.deploymentStage, ["API_GW_CACHE_ENABLED_AND_ENCRYPTED"]);
+  addL2CfnGuardSuppressRules(api.deploymentStage, ["API_GW_CACHE_ENABLED_AND_ENCRYPTED"]);
 
   // Configure Usage Plan
   const usagePlanProps: apigateway.UsagePlanProps = {

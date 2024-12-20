@@ -342,12 +342,12 @@ test('CheckStringWithDefault', () => {
 
 });
 
-test('test addCfnGuardSuppressRules', () => {
+test('test addL2CfnGuardSuppressRules', () => {
   const stack = new Stack();
 
   const testBucket = new s3.Bucket(stack, 'test-bucket');
-  defaults.addCfnGuardSuppressRules(testBucket, ["ADDED_TO_BUCKET"]);
-  defaults.addCfnGuardSuppressRules(testBucket.node.findChild('Resource') as CfnResource, ["ADDED_TO_CFN_RESOURCE"]);
+  defaults.addL2CfnGuardSuppressRules(testBucket, ["ADDED_TO_BUCKET"]);
+  defaults.addL1CfnGuardSuppressRules(testBucket.node.findChild('Resource') as CfnResource, ["ADDED_TO_CFN_RESOURCE"]);
 
   const template = Template.fromStack(stack);
   const bucket = template.findResources("AWS::S3::Bucket");

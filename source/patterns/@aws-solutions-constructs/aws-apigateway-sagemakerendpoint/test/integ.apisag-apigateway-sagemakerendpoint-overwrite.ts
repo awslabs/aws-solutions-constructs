@@ -15,7 +15,7 @@
 import { App, Stack, Aws } from 'aws-cdk-lib';
 import { ApiGatewayToSageMakerEndpoint, ApiGatewayToSageMakerEndpointProps } from '../lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import { addCfnGuardSuppressRules, generateIntegStackName } from '@aws-solutions-constructs/core';
+import { addL2CfnGuardSuppressRules, generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
@@ -35,7 +35,7 @@ const existingRole = new iam.Role(stack, 'api-gateway-role', {
     })
   }
 });
-addCfnGuardSuppressRules(existingRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
+addL2CfnGuardSuppressRules(existingRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
 
 // Definitions
 const requestTemplate =

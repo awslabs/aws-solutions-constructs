@@ -140,7 +140,7 @@ export class KinesisFirehoseToS3 extends Construct {
     this.kinesisFirehoseRole = new iam.Role(this, "KinesisFirehoseRole", {
       assumedBy: new iam.ServicePrincipal("firehose.amazonaws.com"),
     });
-    defaults.addCfnGuardSuppressRules(this.kinesisFirehoseRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
+    defaults.addL2CfnGuardSuppressRules(this.kinesisFirehoseRole, ["IAM_NO_INLINE_POLICY_CHECK"]);
 
     // Setup the IAM policy for Kinesis Firehose
     const firehosePolicy = new iam.Policy(this, "KinesisFirehosePolicy", {
@@ -212,7 +212,7 @@ export class KinesisFirehoseToS3 extends Construct {
       kinesisFirehoseProps
     );
 
-    defaults.addCfnGuardSuppressRules(this.kinesisFirehose, [
+    defaults.addL1CfnGuardSuppressRules(this.kinesisFirehose, [
       "KINESIS_FIREHOSE_REDSHIFT_DESTINATION_CONFIGURATION_NO_PLAINTEXT_PASSWORD",
       "KINESIS_FIREHOSE_SPLUNK_DESTINATION_CONFIGURATION_NO_PLAINTEXT_PASSWORD"
     ]);

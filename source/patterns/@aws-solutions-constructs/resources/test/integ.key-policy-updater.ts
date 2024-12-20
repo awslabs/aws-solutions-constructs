@@ -19,7 +19,7 @@ import * as kms from "aws-cdk-lib/aws-kms";
 import * as cft from "aws-cdk-lib/aws-cloudfront";
 import * as cfto from "aws-cdk-lib/aws-cloudfront-origins";
 import { createKeyPolicyUpdaterCustomResource } from "../lib/key-policy-updater";
-import { addCfnSuppressRules } from "../../core/lib/utils";
+import { addL2CfnSuppressRules } from "../../core/lib/utils";
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
@@ -35,7 +35,7 @@ const bucket = new s3.Bucket(stack, 'test bucket', {
   encryption: s3.BucketEncryption.S3_MANAGED,
 });
 
-addCfnSuppressRules(bucket, [{
+addL2CfnSuppressRules(bucket, [{
   id: "W35",
   reason: "Test resource"
 }, {
@@ -50,7 +50,7 @@ const distribution = new cft.Distribution(stack, 'test dist', {
   }
 });
 
-addCfnSuppressRules(distribution, [{
+addL2CfnSuppressRules(distribution, [{
   id: "W10",
   reason: "Test resource"
 }, {

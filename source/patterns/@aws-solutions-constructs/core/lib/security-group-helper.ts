@@ -18,7 +18,7 @@
 
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { Construct } from "constructs";
-import { addCfnSuppressRules } from './utils';
+import { addL2CfnSuppressRules } from './utils';
 
 export interface SecurityGroupRuleDefinition {
   readonly peer: ec2.IPeer // example: ec2.Peer.ipV4(vpc.vpcCiderBlock)
@@ -47,7 +47,7 @@ export function buildSecurityGroup(
     newSecurityGroup.addEgressRule(rule.peer, rule.connection, rule.description, rule.remoteRule);
   });
 
-  addCfnSuppressRules(newSecurityGroup, [
+  addL2CfnSuppressRules(newSecurityGroup, [
     {
       id: "W5",
       reason:
@@ -85,7 +85,7 @@ export function CreateSelfReferencingSecurityGroup(scope: Construct, id: string,
   );
   selfReferenceRule.node.addDependency(newCacheSG);
 
-  addCfnSuppressRules(newCacheSG, [
+  addL2CfnSuppressRules(newCacheSG, [
     {
       id: "W5",
       reason: "Egress of 0.0.0.0/0 is default and generally considered OK",

@@ -20,7 +20,7 @@ import * as secrets from 'aws-cdk-lib/aws-secretsmanager';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 import { DefaultSecretProps } from './secretsmanager-defaults';
-import { consolidateProps, addCfnSuppressRules } from './utils';
+import { consolidateProps, addL2CfnSuppressRules } from './utils';
 
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
@@ -37,7 +37,7 @@ export function buildSecretsManagerSecret(scope: Construct, id: string, secretPr
   secret = new secrets.Secret(scope, id, consolidateProps(DefaultSecretProps, secretProps));
 
   // suppress warning on build
-  addCfnSuppressRules(secret, [
+  addL2CfnSuppressRules(secret, [
     {
       id: 'W77',
       reason: `We allow the use of the AWS account default key aws/secretsmanager for secret encryption.`

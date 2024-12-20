@@ -14,7 +14,7 @@
 // Imports
 import { Aws, App, Stack } from "aws-cdk-lib";
 import { FargateToSns, FargateToSnsProps } from "../lib";
-import { generateIntegStackName, getTestVpc, CreateFargateService, addCfnSuppressRules, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, getTestVpc, CreateFargateService, addL2CfnSuppressRules, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
@@ -28,7 +28,7 @@ stack.templateOptions.description = 'Integration Test with existing VPC, Service
 
 const existingVpc = getTestVpc(stack);
 const existingTopic = new sns.Topic(stack, 'test-topic', {});
-addCfnSuppressRules(existingTopic, [ { id: "W47", reason: "Stub topic for placeholder in Integration test" } ]);
+addL2CfnSuppressRules(existingTopic, [ { id: "W47", reason: "Stub topic for placeholder in Integration test" } ]);
 
 const image = ecs.ContainerImage.fromRegistry('nginx');
 

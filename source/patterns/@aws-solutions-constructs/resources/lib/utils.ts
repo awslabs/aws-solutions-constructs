@@ -13,11 +13,11 @@
 
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { Provider } from "aws-cdk-lib/custom-resources";
-import { addCfnSuppressRules } from "@aws-solutions-constructs/core";
+import { addL1CfnSuppressRules } from "@aws-solutions-constructs/core";
 
 export const addCfnSuppressRulesForCustomResourceProvider = (provider: Provider) => {
   const providerFrameworkFunction = provider.node.children[0].node.findChild('Resource') as lambda.CfnFunction;
-  addCfnSuppressRules(providerFrameworkFunction, [
+  addL1CfnSuppressRules(providerFrameworkFunction, [
     {
       id: 'W58',
       reason: `The CDK-provided lambda function that backs their Custom Resource Provider framework has an IAM role with the arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole Managed Policy attached, which grants permission to write to CloudWatch Logs`

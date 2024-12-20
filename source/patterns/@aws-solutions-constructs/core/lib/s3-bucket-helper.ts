@@ -21,7 +21,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cdk from 'aws-cdk-lib';
 import { DefaultS3Props } from './s3-bucket-defaults';
-import { overrideProps, addCfnSuppressRules, consolidateProps, CheckBooleanWithDefault } from './utils';
+import { overrideProps, addL1CfnSuppressRules, addL2CfnSuppressRules, consolidateProps, CheckBooleanWithDefault } from './utils';
 import { StorageClass } from 'aws-cdk-lib/aws-s3';
 import { Duration } from 'aws-cdk-lib';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
@@ -75,7 +75,7 @@ export function createS3AccessLoggingBucket(scope: Construct,
   // Verified by unit test 's3 bucket with default props'
   const loggingBucket: s3.Bucket = new s3.Bucket(scope, bucketId, combinedBucketProps); // NOSONAR
 
-  addCfnSuppressRules(loggingBucket, [
+  addL2CfnSuppressRules(loggingBucket, [
     {
       id: 'W35',
       reason: "This S3 bucket is used as the access logging bucket for another bucket"
@@ -116,7 +116,7 @@ export function createCloudFrontLoggingBucket(scope: Construct,
     if (CheckBooleanWithDefault(props.enableS3AccessLogs, true)) {
       cloudFrontLogAccessLogBucket = new s3.Bucket(scope, `${bucketId}AccessLog`, combinedS3LogBucketProps); // NOSONAR
       combinedBucketProps = overrideProps(combinedBucketProps, { serverAccessLogsBucket: cloudFrontLogAccessLogBucket });
-      addCfnSuppressRules(cloudFrontLogAccessLogBucket, [
+      addL2CfnSuppressRules(cloudFrontLogAccessLogBucket, [
         {
           id: 'W35',
           reason: "This S3 bucket is used as the access logging bucket for another bucket"
@@ -175,7 +175,7 @@ export function createAlbLoggingBucket(scope: Construct,
   // Extract the CfnBucket from the loggingBucket
   const loggingBucketResource = loggingBucket.node.findChild('Resource') as s3.CfnBucket;
 
-  addCfnSuppressRules(loggingBucketResource, [
+  addL1CfnSuppressRules(loggingBucketResource, [
     {
       id: 'W35',
       reason: "This is a log bucket for an Application Load Balancer"
@@ -267,7 +267,7 @@ export function addCfnNagS3BucketNotificationRulesToSuppress(stackRoot: cdk.Stac
 
   // Extract the CfnFunction from the Function
   const fnResource = notificationsResourceHandler.node.findChild('Resource') as lambda.CfnFunction;
-  addCfnSuppressRules(fnResource, [
+  addL1CfnSuppressRules(fnResource, [
     {
       id: 'W58',
       reason: `Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions.`
@@ -284,7 +284,7 @@ export function addCfnNagS3BucketNotificationRulesToSuppress(stackRoot: cdk.Stac
 
   // Extract the CfnPolicy from the iam.Policy
   const policyResource = notificationsResourceHandlerRolePolicy.node.findChild('Resource') as iam.CfnPolicy;
-  addCfnSuppressRules(policyResource, [
+  addL1CfnSuppressRules(policyResource, [
     {
       id: 'W12',
       reason: `Bucket resource is '*' due to circular dependency with bucket and role creation at the same time`

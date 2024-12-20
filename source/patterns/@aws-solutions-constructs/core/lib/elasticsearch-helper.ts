@@ -19,7 +19,7 @@
 import * as elasticsearch from 'aws-cdk-lib/aws-elasticsearch';
 import { DefaultCfnDomainProps } from './elasticsearch-defaults';
 import { retrievePrivateSubnetIds } from './vpc-helper';
-import { consolidateProps, addCfnSuppressRules, addCfnGuardSuppressRules } from './utils';
+import { consolidateProps, addL1CfnSuppressRules, addL1CfnGuardSuppressRules } from './utils';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cdk from 'aws-cdk-lib';
 import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
@@ -88,7 +88,7 @@ export function buildElasticSearch(scope: Construct, props: BuildElasticSearchPr
   // This is confirmed by the 'Check that TLS 1.2 is the default' test in aws-lambda-elasticsearch
   const esDomain = new elasticsearch.CfnDomain(scope, `ElasticsearchDomain`, finalCfnDomainProps); // NOSONAR
 
-  addCfnSuppressRules(esDomain, [
+  addL1CfnSuppressRules(esDomain, [
     {
       id: "W28",
       reason: `The ES Domain is passed dynamically as as parameter and explicitly specified to ensure that IAM policies are configured to lockdown access to this specific ES instance only`,
@@ -99,7 +99,7 @@ export function buildElasticSearch(scope: Construct, props: BuildElasticSearchPr
     },
   ]);
 
-  addCfnGuardSuppressRules(esDomain, ["CFN_NO_EXPLICIT_RESOURCE_NAMES"]);
+  addL1CfnGuardSuppressRules(esDomain, ["CFN_NO_EXPLICIT_RESOURCE_NAMES"]);
 
   return { domain: esDomain, role: cognitoKibanaConfigureRole };
 }

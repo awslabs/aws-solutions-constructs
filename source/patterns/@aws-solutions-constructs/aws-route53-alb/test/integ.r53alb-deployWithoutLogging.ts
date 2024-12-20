@@ -38,9 +38,9 @@ const props: Route53ToAlbProps = {
 const testConstruct = new Route53ToAlb(stack, 'no-logging-stack', props);
 
 const newSecurityGroup = testConstruct.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
-defaults.addCfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK created rule that blocks all traffic.'}]);
+defaults.addL1CfnSuppressRules(newSecurityGroup, [{ id: 'W29', reason: 'CDK created rule that blocks all traffic.'}]);
 
-defaults.addCfnSuppressRules(testConstruct.loadBalancer, [{ id: 'W52', reason: 'This test is explicitly to test the no logging case.'}]);
+defaults.addL2CfnSuppressRules(testConstruct.loadBalancer, [{ id: 'W52', reason: 'This test is explicitly to test the no logging case.'}]);
 
 defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 

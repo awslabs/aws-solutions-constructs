@@ -48,7 +48,7 @@ const streamFirehoseS3 = new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-ex
 
 const s3Bucket = streamFirehoseS3.s3Bucket as s3.Bucket;
 
-defaults.addCfnSuppressRules(s3Bucket, [
+defaults.addL2CfnSuppressRules(s3Bucket, [
   { id: 'W35',
     reason: 'This S3 bucket is created for unit/ integration testing purposes only.' },
 ]);

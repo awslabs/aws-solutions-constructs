@@ -228,15 +228,22 @@ export interface CfnNagSuppressRule {
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  *
- * Adds CFN NAG suppress rules to the CDK resource.
+ * Adds CFN NAG suppress rules to the L2 CDK resource.
  * @param resource The CDK resource
  * @param rules The CFN NAG suppress rules
  */
-export function addCfnSuppressRules(resource: cdk.Resource | cdk.CfnResource, rules: CfnNagSuppressRule[]) {
-  if (resource instanceof cdk.Resource) {
-    resource = resource.node.defaultChild as cdk.CfnResource;
-  }
+export function addL2CfnSuppressRules(resource: cdk.Resource, rules: CfnNagSuppressRule[]) {
+  addL1CfnSuppressRules(resource.node.defaultChild as cdk.CfnResource, rules);
+}
 
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
+ * Adds CFN NAG suppress rules to the L1 CDK resource.
+ * @param resource The CDK resource
+ * @param rules The CFN NAG suppress rules
+ */
+export function addL1CfnSuppressRules(resource: cdk.CfnResource, rules: CfnNagSuppressRule[]) {
   if (resource.cfnOptions.metadata?.cfn_nag?.rules_to_suppress) {
     resource.cfnOptions.metadata?.cfn_nag.rules_to_suppress.push(...rules);
   } else {
@@ -249,16 +256,22 @@ export function addCfnSuppressRules(resource: cdk.Resource | cdk.CfnResource, ru
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  *
- * Adds CfnGuard suppress rules to the CDK resource.
+ * Adds CfnGuard suppress rules to the L2 CDK resource.
  * @param resource The CDK resource
  * @param rules The CfnGaurd rules to suppress
  */
-export function addCfnGuardSuppressRules(resource: any /* cdk.Resource | cdk.CfnResource | IRole */, rules: string[]) {
+export function addL2CfnGuardSuppressRules(resource: cdk.Resource, rules: string[]) {
+  addL1CfnGuardSuppressRules(resource.node.defaultChild as cdk.CfnResource, rules);
+}
 
-  if (resource instanceof cdk.Resource) {
-    resource = resource.node.findChild('Resource') as cdk.CfnResource;
-  }
-
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
+ * Adds CfnGuard suppress rules to the L1 CDK resource.
+ * @param resource The CDK resource
+ * @param rules The CfnGaurd rules to suppress
+ */
+export function addL1CfnGuardSuppressRules(resource: cdk.CfnResource, rules: string[]) {
   if (resource.cfnOptions.metadata?.guard?.SuppressedRules) {
     resource.cfnOptions.metadata?.guard.SuppressedRules.push(...rules);
   } else {
@@ -273,7 +286,7 @@ export function suppressVpcCustomerHandlerRoleWarnings(stack: cdk.Stack) {
     if (child.node.id === "Custom::VpcRestrictDefaultSGCustomResourceProvider") {
       const role = (child as any).role;
       // Turn off all warnings coming from custom resource
-      addCfnGuardSuppressRules(role, []);
+      addL1CfnGuardSuppressRules(role, []);
     }
   });
 }

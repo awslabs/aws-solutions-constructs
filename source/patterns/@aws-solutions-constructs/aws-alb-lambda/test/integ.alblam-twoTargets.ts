@@ -65,13 +65,13 @@ const secondProps: AlbToLambdaProps = {
 };
 new AlbToLambda(stack, 'test-two', secondProps);
 
-defaults.addCfnSuppressRules(firstConstruct.listener, [
+defaults.addL2CfnSuppressRules(firstConstruct.listener, [
   { id: 'W56', reason: 'All integration tests must be HTTP because of certificate limitations.' },
 ]);
-defaults.addCfnGuardSuppressRules(firstConstruct.listener, ["ELBV2_LISTENER_SSL_POLICY_RULE"]);
+defaults.addL2CfnGuardSuppressRules(firstConstruct.listener, ["ELBV2_LISTENER_SSL_POLICY_RULE"]);
 
 const newSecurityGroup = firstConstruct.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
-defaults.addCfnSuppressRules(newSecurityGroup, [
+defaults.addL1CfnSuppressRules(newSecurityGroup, [
   { id: 'W29', reason: 'CDK created rule that blocks all traffic.'},
   { id: 'W2', reason: 'Rule does not apply for ELB.'},
   { id: 'W9', reason: 'Rule does not apply for ELB.'}

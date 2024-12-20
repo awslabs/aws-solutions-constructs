@@ -31,9 +31,9 @@ const existingFunction = new lambda.Function(stack, 'existing-function', {
   handler: "index.handler",
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),
 });
-defaults.addCfnSuppressRules(existingFunction, [{ id: "W58", reason: "Test Resource" }]);
-defaults.addCfnSuppressRules(existingFunction, [{ id: "W89", reason: "Test Resource" }]);
-defaults.addCfnSuppressRules(existingFunction, [{ id: "W92", reason: "Test Resource" }]);
+defaults.addL2CfnSuppressRules(existingFunction, [{ id: "W58", reason: "Test Resource" }]);
+defaults.addL2CfnSuppressRules(existingFunction, [{ id: "W89", reason: "Test Resource" }]);
+defaults.addL2CfnSuppressRules(existingFunction, [{ id: "W92", reason: "Test Resource" }]);
 
 new LambdaToKinesisFirehose(stack, 'test-construct', {
   existingLambdaObj: existingFunction,
