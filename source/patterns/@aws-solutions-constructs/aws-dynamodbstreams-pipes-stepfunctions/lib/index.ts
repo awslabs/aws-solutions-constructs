@@ -45,8 +45,10 @@ export interface DynamoDBStreamsToPipesToStepfunctionsProps {
   readonly existingTableInterface?: dynamodb.ITable,
   /**
    * Whether to deploy a SQS dead letter queue when a data record reaches the Maximum Retry Attempts or Maximum Record Age,
-   * its metadata like shard ID and stream ARN will be sent to an SQS queue. The construct will create and configure the DLG,
-   * you should set maximumRecordAgeInSeconds and maximumRetryAttempts attempts in pipeProps.sourceParameters.dynamoDbStreamParameters
+   * its metadata like shard ID and stream ARN will be sent to an SQS queue. The construct will create and configure the DLQ
+   * with a default maximumRetryAttempts of 2. To customize this, you should set maximumRecordAgeInSeconds and/or
+   * maximumRetryAttempts attempts in pipeProps.sourceParameters.dynamoDbStreamParameters. Default - deploy queue,
+   * MaximumRetryAttempts is set to 3, and maximumRecordAge is left to default (-1, or infinite)
    *
    * @default - true.
    */
