@@ -34,7 +34,7 @@ import * as events from 'aws-cdk-lib/aws-events';
 const constructProps: EventbridgeToLambdaProps = {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: lambda.Runtime.NODEJS_20_X,
     handler: 'index.handler'
   },
   eventRuleProps: {
@@ -59,7 +59,7 @@ from constructs import Construct
 EventbridgeToLambda(self, 'test-eventbridge-lambda',
                     lambda_function_props=_lambda.FunctionProps(
                         code=_lambda.Code.from_asset('lambda'),
-                        runtime=_lambda.Runtime.PYTHON_3_9,
+                        runtime=_lambda.Runtime.Python_3_11,
                         handler='index.handler'
                     ),
                     event_rule_props=events.RuleProps(
@@ -83,7 +83,7 @@ import software.amazon.awsconstructs.services.eventbridgelambda.*;
 new EventbridgeToLambda(this, "test-eventbridge-lambda",
         new EventbridgeToLambdaProps.Builder()
                 .lambdaFunctionProps(new FunctionProps.Builder()
-                        .runtime(Runtime.NODEJS_16_X)
+                        .runtime(Runtime.NODEJS_20_X)
                         .code(Code.fromAsset("lambda"))
                         .handler("index.handler")
                         .build())

@@ -33,7 +33,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 const constructProps: LambdaToDynamoDBProps = {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: lambda.Runtime.NODEJS_20_X,
     handler: 'index.handler'
   },
 };
@@ -54,7 +54,7 @@ LambdaToDynamoDB(self, 'test_lambda_dynamodb_stack',
                     lambda_function_props=_lambda.FunctionProps(
                         code=_lambda.Code.from_asset(
                             'lambda'),
-                        runtime=_lambda.Runtime.PYTHON_3_9,
+                        runtime=_lambda.Runtime.Python_3_11,
                         handler='index.handler'
                     ))
 ```
@@ -71,7 +71,7 @@ import software.amazon.awsconstructs.services.lambdadynamodb.*;
 
 new LambdaToDynamoDB(this, "test_lambda_dynamodb_stack", new LambdaToDynamoDBProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_16_X)
+                .runtime(Runtime.NODEJS_20_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())

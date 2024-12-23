@@ -18,7 +18,11 @@ import { SuppressCfnNagLambdaWarnings, generateIntegStackName } from '@aws-solut
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
-const app = new App();
+const app = new App({
+  postCliContext: {
+    '@aws-cdk/aws-s3:keepNotificationInImportedBucket': false,
+  },
+});
 const stack = new Stack(app, generateIntegStackName(__filename));
 
 new S3ToSns(stack, 'test-s3-sns', {

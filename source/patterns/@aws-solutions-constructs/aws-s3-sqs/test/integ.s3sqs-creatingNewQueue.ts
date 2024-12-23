@@ -21,7 +21,11 @@ import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
-const app = new App();
+const app = new App({
+  postCliContext: {
+    '@aws-cdk/aws-s3:keepNotificationInImportedBucket': false,
+  },
+});
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-s3-sqs with standard Queue';
 

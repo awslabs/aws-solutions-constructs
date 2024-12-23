@@ -27,16 +27,55 @@ Typescript
 ``` typescript
 import { Construct } from 'constructs';
 import { Stack, StackProps } from 'aws-cdk-lib';
-import * as stepfunctions from 'aws-cdk-lib/aws-stepfunctions';
+import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import { SqsToPipesToStepfunctions, SqsToPipesToStepfunctionsProps } from "@aws-solutions-constructs/aws-sqs-pipes-stepfunctions";
 
-const startState = new stepfunctions.Pass(this, 'StartState');
+    const startState = new sfn.Pass(this, 'StartState');
+    
+    new SqsToPipesToStepfunctions(this, 'SqsToPipesToStepfunctionsPattern', {
+      stateMachineProps: {
+        definitionBody: sfn.DefinitionBody.fromChainable(sfn.Chain.start(new sfn.Pass(this, 'Pass'))),
+      }
+    });
+```
 
-new SqsToPipesToStepfunctions(this, 'SqsToLambdaToStepfunctionsPattern', {
-  stateMachineProps: {
-    definition: startState
-  }
-});
+Python
+```python
+from constructs import Construct
+from aws_cdk import (
+    aws_stepfunctions as _sfn,
+    Stack
+)
+from aws_solutions_constructs import (
+    aws_sqs_pipes_stepfunctions as sqs_pipes_stepfunctions
+)
+
+sqs_pipes_stepfunctions.SqsToPipesToStepfunctions(
+    self, 'SqsToPipesToStepfunctions',
+    state_machine_props=_sfn.StateMachineProps(
+        definition_body=_sfn.DefinitionBody.from_chainable(_sfn.Chain.start(_sfn.Pass(self, "pass")))
+    )
+)
+```
+
+Java
+```java
+package com.myorg;
+
+import software.constructs.Construct;
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+
+import software.amazon.awscdk.services.stepfunctions.*;
+import software.amazon.awsconstructs.services.sqspipesstepfunctions.SqsToPipesToStepfunctions;
+import software.amazon.awsconstructs.services.sqspipesstepfunctions.SqsToPipesToStepfunctionsProps;
+
+new SqsToPipesToStepfunctions(this, "SqsToLambdaToStepfunctionsPattern",
+    SqsToPipesToStepfunctionsProps.builder()
+        .stateMachineProps(StateMachineProps.builder()
+            .definitionBody(DefinitionBody.fromChainable(Chain.start(new Pass(scope, "Pass"))))
+            .build())
+        .build());
 ```
 
 ## Pattern Construct Props

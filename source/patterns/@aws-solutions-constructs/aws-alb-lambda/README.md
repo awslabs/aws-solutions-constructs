@@ -45,7 +45,7 @@ const certificate = acm.Certificate.fromCertificateArn(
 const constructProps: AlbToLambdaProps = {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`lambda`),
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: lambda.Runtime.NODEJS_20_X,
     handler: 'index.handler'
   },
   listenerProps: {
@@ -85,7 +85,7 @@ certificate = acm.Certificate.from_certificate_arn(
 # MyStack(app, 'id', env=cdk.Environment(account='123456789012', region='us-east-1'))
 AlbToLambda(self, 'new-construct',
             lambda_function_props=_lambda.FunctionProps(
-                runtime=_lambda.Runtime.PYTHON_3_7,
+                runtime=_lambda.Runtime.Python_3_11,
                 code=_lambda.Code.from_asset('lambda'),
                 handler='index.handler',
             ),
@@ -121,7 +121,7 @@ ListenerCertificate listenerCertificate = ListenerCertificate
 //                 .build());
 new AlbToLambda(this, "AlbToLambdaPattern", new AlbToLambdaProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_16_X)
+                .runtime(Runtime.NODEJS_20_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())

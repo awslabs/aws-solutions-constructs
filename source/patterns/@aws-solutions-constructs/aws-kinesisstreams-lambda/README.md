@@ -36,7 +36,7 @@ new KinesisStreamsToLambda(this, 'KinesisToLambdaPattern', {
     batchSize: 1
   },
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_16_X,
+    runtime: lambda.Runtime.NODEJS_20_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`lambda`)
   }
@@ -60,7 +60,7 @@ KinesisStreamsToLambda(self, 'KinesisToLambdaPattern',
                             batch_size=1
                         ),
                         lambda_function_props=_lambda.FunctionProps(
-                            runtime=_lambda.Runtime.PYTHON_3_9,
+                            runtime=_lambda.Runtime.Python_3_11,
                             handler='index.handler',
                             code=_lambda.Code.from_asset(
                                 'lambda')
@@ -86,7 +86,7 @@ new KinesisStreamsToLambda(this, "KinesisToLambdaPattern", new KinesisStreamsToL
                 .batchSize(1)
                 .build())
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_16_X)
+                .runtime(Runtime.NODEJS_20_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())

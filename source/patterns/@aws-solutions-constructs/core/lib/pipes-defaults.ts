@@ -22,6 +22,15 @@ export function defaultSqsSourceProps(): any {
   };
 }
 
+export function defaultDynamoDBStreamsSourceProps(deployDlq: boolean): any {
+  return {
+    dynamoDbStreamParameters: {
+      startingPosition: "LATEST",
+      maximumRetryAttempts: deployDlq ? 3 : undefined,
+    }
+  };
+}
+
 export function defaultStateMachineTargetProps(): any {
   return {
     stepFunctionStateMachineParameters: {

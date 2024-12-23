@@ -1,0 +1,19 @@
+{
+  "version": "38.0.1",
+  "files": {
+    "7e3f503cab01a51cb5a78839e0be3ad6acf51d18d6303e75b708e3e5674b8dec": {
+      "source": {
+        "path": "dbspstp-set-stream-batch-size.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "7e3f503cab01a51cb5a78839e0be3ad6acf51d18d6303e75b708e3e5674b8dec.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

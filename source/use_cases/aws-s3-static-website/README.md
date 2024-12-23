@@ -26,7 +26,7 @@ cdk deploy
 ```
 
 ## Deployment Verification
-After the stack is deployed successfully, go to the Outputs tab in AWS Cloudformation console, it should show the 'websiteURL', click on the link and enjoy the Wile Rydes Unicorn website.
+After the stack is deployed successfully, go to the Outputs tab in AWS Cloudformation console, it should show the 'websiteURL', click on the link to see the bare bones web site defined in the website-dist folder.
 
 ***
 &copy; Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
