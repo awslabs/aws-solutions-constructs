@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.75.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.74.0...v2.75.0) (2024-12-23)
+
+
+### Features
+
+* **aws-dynamodbstreams-pipes-stepfunctions:**  new construct ([#1238](https://github.com/awslabs/aws-solutions-constructs/issues/1238)) ([7afe6e8](https://github.com/awslabs/aws-solutions-constructs/commit/7afe6e84f81db0a088301e15c8890d454ebf25da))
+* **aws-dynomodbstreams-pipes-stepfunctions:** add default maximum retries ([#1240](https://github.com/awslabs/aws-solutions-constructs/issues/1240)) ([50404c1](https://github.com/awslabs/aws-solutions-constructs/commit/50404c112407119c2dc7e282fe0de37d8ed586d0))
+
 ## [2.74.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.73.0...v2.74.0) (2024-10-22)
 
 Build on CDK v2.161.0
