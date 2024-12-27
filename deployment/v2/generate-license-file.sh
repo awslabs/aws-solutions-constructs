@@ -53,8 +53,7 @@ main() {
   rm -f $RAW_LICENSE_DATA_FILE
   rm -f $FINAL_LICENSE_DATA_FILE
 
-  # Repeat process for both use cases?
-  # Create a list of use cases and loop through it
+  # Create a list of use cases and loop through them, generating licenses for each use case
   export useCases="
     aws-restaurant-management-demo
     aws-s3-static-website"
