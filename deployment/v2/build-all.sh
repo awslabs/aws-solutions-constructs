@@ -24,6 +24,10 @@ echo "running cfn-guard..."
 ~/.guard/bin/cfn-guard validate -r ~/.guard/rules/aws-solutions.guard -d **/**/**/test/**/*.template.json
 
 echo "============================================================================================="
+echo "refresh license files"
+/bin/bash $deployment_dir/generate-license-file.sh
+
+echo "============================================================================================="
 echo "packaging..."
 time lerna run --bail --stream jsii-pacmak || fail
 
