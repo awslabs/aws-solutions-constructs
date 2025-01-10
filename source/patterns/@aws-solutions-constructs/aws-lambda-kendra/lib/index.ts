@@ -28,7 +28,7 @@ export interface LambdaToKendraProps {
    *
    * @default - Optional user provided props to override the default props for the Kendra index. Is this required?
    */
-  readonly kendraIndexProps?: kendra.CfnIndexProps;
+  readonly kendraIndexProps?: kendra.CfnIndexProps | any;
   /**
    * A list of data sources that will provide data to the Kendra index. ?At least 1 must be specified. We will do majority of
    * processing for some data sources (S3 crawler initially), but for others the props must be complete (e.g. proper roleArn, etc.)
@@ -109,10 +109,6 @@ export class LambdaToKendra extends Construct {
 
     if (props.kendraIndexProps && props.existingKendraIndexObj) {
       throw new Error('You may not provide both kendraIndexProps and existingKendraIndexObj');
-    }
-
-    if (props.kendraIndexProps && props.kendraDataSourcesProps) {
-      throw new Error('You may not provide both kendraDataSourcesProps and existingKendraIndexObj');
     }
 
     if (props.deployVpc || props.existingVpc) {

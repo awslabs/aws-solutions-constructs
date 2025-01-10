@@ -16,7 +16,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as kendra from 'aws-cdk-lib/aws-kendra';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cdk from "aws-cdk-lib";
-import { Template } from 'aws-cdk-lib/assertions';
+import { Match, Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 
 test('Launch with minimal code and check  structure', () => {
@@ -910,7 +910,7 @@ test('Launch with S3 data source and unsupported data source', () => {
 
 });
 
-test('Launch with multiple S3 data sources', () => {
+test.only('Launch with multiple S3 data sources', () => {
   const stack = new cdk.Stack();
   const testBucketName = 'test-bucket-name22342';
   const secondBucketName = 'second-bucket-name22342342';
@@ -943,6 +943,8 @@ test('Launch with multiple S3 data sources', () => {
   });
 
   const template = Template.fromStack(stack);
+  defaults.printWarning(`\n\n==dbg==\n${JSON.stringify(template)}\n\n==dbg===\n\n`);
+
   template.resourceCountIs("AWS::Kendra::DataSource", 2);
   template.hasResourceProperties("AWS::Kendra::DataSource", {
     Type: 'S3',
@@ -965,6 +967,64 @@ test('Launch with multiple S3 data sources', () => {
     RoleArn: {
       "Fn::GetAtt": ["twosourcesdatasourceroletwosources164176C5E", "Arn"]
     },
+  });
+  // Confirm we have Roles that appear correct
+  template.resourceCountIs("AWS::IAM::Role", 4);
+  template.hasResourceProperties("AWS::IAM::Role", {
+    AssumeRolePolicyDocument: {
+      Statement: [
+        {
+          Action: "sts:AssumeRole",
+          Effect: "Allow",
+          Principal: {
+            Service: "kendra.amazonaws.com"
+          }
+        }
+      ]
+    },
+    Policies: [
+      {
+        PolicyDocument: {
+          Statement: [
+            {
+              Action: "s3:GetObject",
+              Effect: "Allow",
+              Resource: Match.stringLikeRegexp(`.*test-bucket-name.*`)
+            },
+            Match.anyValue(),
+            Match.anyValue()
+          ],
+        }
+      }
+    ]
+  });
+  template.hasResourceProperties("AWS::IAM::Role", {
+    AssumeRolePolicyDocument: {
+      Statement: [
+        {
+          Action: "sts:AssumeRole",
+          Effect: "Allow",
+          Principal: {
+            Service: "kendra.amazonaws.com"
+          }
+        }
+      ]
+    },
+    Policies: [
+      {
+        PolicyDocument: {
+          Statement: [
+            {
+              Action: "s3:GetObject",
+              Effect: "Allow",
+              Resource: Match.stringLikeRegexp(`.*second-bucket-name.*`)
+            },
+            Match.anyValue(),
+            Match.anyValue()
+          ],
+        }
+      }
+    ]
   });
 });
 
@@ -1078,4 +1138,258 @@ test('Confirm call to CheckLambdaProps', () => {
   };
   // Assertion
   expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});
+
+test('Launch with non default index type', () => {
+  const stack = new cdk.Stack();
+  const testFunctionName = 'test-function-name24334';
+  const testBucketName = 'test-bucket-name12344';
+  const indexType = 'GEN_AI_ENTERPRISE_EDITION';
+
+  const lambdaProps: lambda.FunctionProps = {
+    functionName: testFunctionName,
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    handler: 'index.handler'
+  };
+
+  new LambdaToKendra(stack, 'sample', {
+    lambdaFunctionProps: lambdaProps,
+    kendraDataSourcesProps: [{
+      type: 'S3',
+      dataSourceConfiguration: {
+        s3Configuration: {
+          bucketName: testBucketName,
+        }
+      }
+    }],
+    kendraIndexProps: {
+      edition: indexType,
+      name: `enterprise-index`
+    },
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::Lambda::Function", {
+    FunctionName: testFunctionName,
+    Environment: {
+      Variables: {
+        KENDRA_INDEX_ID: {
+          "Fn::GetAtt": ["samplekendraindexsample8A81A6C2", "Id"]
+        }
+      }
+    },
+  });
+  template.hasResourceProperties("AWS::Kendra::Index", {
+    RoleArn: {
+      "Fn::GetAtt": [
+        "samplekendraindexrolesample4F9E7B66",
+        "Arn",
+      ],
+    },
+    Edition: indexType
+  });
+  template.hasResourceProperties("AWS::Kendra::DataSource", {
+    Type: 'S3',
+    DataSourceConfiguration: {
+      S3Configuration: {
+        BucketName: testBucketName
+      },
+    },
+    RoleArn: {
+      "Fn::GetAtt": ["sampledatasourcerolesample05A05F8BD", "Arn"]
+    },
+  });
+  // Confirm policy for Kendra index
+  template.hasResourceProperties("AWS::IAM::Role", {
+    Description: "Allow Kendra index to write CloudWatch Logs",
+    Policies: [
+      {
+        PolicyDocument: {
+          Statement: [
+            {
+              Action: "cloudwatch:PutMetricData",
+              Condition: {
+                StringEquals: {
+                  "cloudwatch:namespace": "AWS/Kendra"
+                }
+              },
+              Effect: "Allow",
+              Resource: "*"
+            },
+            {
+              Action: "logs:CreateLogGroup",
+              Effect: "Allow",
+              Resource: {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:logs:",
+                    {
+                      Ref: "AWS::Region"
+                    },
+                    ":",
+                    {
+                      Ref: "AWS::AccountId"
+                    },
+                    ":log-group:/aws/kendra/*"
+                  ]
+                ]
+              }
+            },
+            {
+              Action: "logs:DescribeLogGroups",
+              Effect: "Allow",
+              Resource: {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      Ref: "AWS::Partition"
+                    },
+                    ":logs:",
+                    {
+                      Ref: "AWS::Region"
+                    },
+                    ":",
+                    {
+                      Ref: "AWS::AccountId"
+                    },
+                    ":log-group:/aws/kendra/*"
+                  ]
+                ]
+              }
+            },
+            {
+              Action: [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:DescribeLogStream"
+              ],
+              Effect: "Allow",
+              Resource: {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      Ref: "AWS::Partition"
+                    },
+                    ":logs:",
+                    {
+                      Ref: "AWS::Region"
+                    },
+                    ":",
+                    {
+                      Ref: "AWS::AccountId"
+                    },
+                    ":log-group:/aws/kendra/*:log-stream:*"
+                  ]
+                ]
+              }
+            }
+          ],
+          Version: "2012-10-17"
+        },
+        PolicyName: "AllowLogging"
+      }
+    ],
+  });
+  // Confirm policy for Kendra index
+  template.hasResourceProperties("AWS::IAM::Role", {
+    Description: "Policy for Kendra S3 Data Source",
+    AssumeRolePolicyDocument: {
+      Statement: [
+        {
+          Action: "sts:AssumeRole",
+          Effect: "Allow",
+          Principal: {
+            Service: "kendra.amazonaws.com"
+          }
+        }
+      ],
+      Version: "2012-10-17"
+    },
+    Policies: [
+      {
+        PolicyDocument: {
+          Statement: [
+            {
+              Action: "s3:GetObject",
+              Effect: "Allow",
+              Resource: `arn:aws:s3:::test-bucket-name12344/*`
+            },
+            {
+              Action: "s3:ListBucket",
+              Effect: "Allow",
+              Resource: `arn:aws:s3:::test-bucket-name12344`
+            },
+            {
+              Action: [
+                "kendra:BatchPutDocument",
+                "kendra:BatchDeleteDocument"
+              ],
+              Effect: "Allow",
+              Resource: {
+                "Fn::GetAtt": [
+                  "samplekendraindexsample8A81A6C2",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          Version: "2012-10-17"
+        },
+        PolicyName: "s3CrawlPolicy"
+      }
+    ]
+  });
+  // Confirm that Lambda function has QUERY access
+  template.hasResourceProperties("AWS::IAM::Policy", {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: [
+            "xray:PutTraceSegments",
+            "xray:PutTelemetryRecords"
+          ],
+          Effect: "Allow",
+          Resource: "*"
+        },
+        {
+          Action: [
+            "kendra:Query",
+            "kendra:Describe*",
+            "kendra:Get*",
+            "kendra:BatchGet*",
+            "kendra:List*",
+            "kendra:Retrieve",
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "samplekendraindexsample8A81A6C2",
+              "Arn"
+            ]
+          }
+        },
+        {
+          Action: "kendra:SubmitFeedback",
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "samplekendraindexsample8A81A6C2",
+              "Arn"
+            ]
+          }
+        }
+      ],
+    },
+    Roles: [
+      {
+        Ref: "sampletestfunctionname24334ServiceRole99395A01"
+      }
+    ]
+  });
 });

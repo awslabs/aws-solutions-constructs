@@ -1,7 +1,7 @@
 {
  "Description": "Integration Test for aws-lambda-kendra",
  "Resources": {
-  "scrapBucketLog7B53B25C": {
+  "contentBucketLog5B9803A6": {
    "Type": "AWS::S3::Bucket",
    "Properties": {
     "BucketEncryption": {
@@ -36,11 +36,11 @@
     }
    }
   },
-  "scrapBucketLogPolicy2972C573": {
+  "contentBucketLogPolicy52155F9C": {
    "Type": "AWS::S3::BucketPolicy",
    "Properties": {
     "Bucket": {
-     "Ref": "scrapBucketLog7B53B25C"
+     "Ref": "contentBucketLog5B9803A6"
     },
     "PolicyDocument": {
      "Statement": [
@@ -58,7 +58,7 @@
        "Resource": [
         {
          "Fn::GetAtt": [
-          "scrapBucketLog7B53B25C",
+          "contentBucketLog5B9803A6",
           "Arn"
          ]
         },
@@ -68,7 +68,7 @@
           [
            {
             "Fn::GetAtt": [
-             "scrapBucketLog7B53B25C",
+             "contentBucketLog5B9803A6",
              "Arn"
             ]
            },
@@ -97,7 +97,7 @@
        "Resource": [
         {
          "Fn::GetAtt": [
-          "scrapBucketLog7B53B25C",
+          "contentBucketLog5B9803A6",
           "Arn"
          ]
         },
@@ -107,7 +107,7 @@
           [
            {
             "Fn::GetAtt": [
-             "scrapBucketLog7B53B25C",
+             "contentBucketLog5B9803A6",
              "Arn"
             ]
            },
@@ -123,7 +123,7 @@
         "ArnLike": {
          "aws:SourceArn": {
           "Fn::GetAtt": [
-           "scrapBucketB11863B7",
+           "contentBucket356CF7A5",
            "Arn"
           ]
          }
@@ -144,7 +144,7 @@
          [
           {
            "Fn::GetAtt": [
-            "scrapBucketLog7B53B25C",
+            "contentBucketLog5B9803A6",
             "Arn"
            ]
           },
@@ -158,7 +158,7 @@
     }
    }
   },
-  "scrapBucketLogAutoDeleteObjectsCustomResource307F3D47": {
+  "contentBucketLogAutoDeleteObjectsCustomResource533B8207": {
    "Type": "Custom::S3AutoDeleteObjects",
    "Properties": {
     "ServiceToken": {
@@ -168,11 +168,11 @@
      ]
     },
     "BucketName": {
-     "Ref": "scrapBucketLog7B53B25C"
+     "Ref": "contentBucketLog5B9803A6"
     }
    },
    "DependsOn": [
-    "scrapBucketLogPolicy2972C573"
+    "contentBucketLogPolicy52155F9C"
    ],
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
@@ -232,7 +232,7 @@
       [
        "Lambda function for auto-deleting objects in ",
        {
-        "Ref": "scrapBucketLog7B53B25C"
+        "Ref": "contentBucketLog5B9803A6"
        },
        " S3 bucket."
       ]
@@ -261,7 +261,7 @@
     }
    }
   },
-  "scrapBucketB11863B7": {
+  "contentBucket356CF7A5": {
    "Type": "AWS::S3::Bucket",
    "Properties": {
     "BucketEncryption": {
@@ -275,7 +275,7 @@
     },
     "LoggingConfiguration": {
      "DestinationBucketName": {
-      "Ref": "scrapBucketLog7B53B25C"
+      "Ref": "contentBucketLog5B9803A6"
      }
     },
     "Tags": [
@@ -291,11 +291,11 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "scrapBucketPolicy189B0607": {
+  "contentBucketPolicy71256B1B": {
    "Type": "AWS::S3::BucketPolicy",
    "Properties": {
     "Bucket": {
-     "Ref": "scrapBucketB11863B7"
+     "Ref": "contentBucket356CF7A5"
     },
     "PolicyDocument": {
      "Statement": [
@@ -313,7 +313,7 @@
        "Resource": [
         {
          "Fn::GetAtt": [
-          "scrapBucketB11863B7",
+          "contentBucket356CF7A5",
           "Arn"
          ]
         },
@@ -323,7 +323,7 @@
           [
            {
             "Fn::GetAtt": [
-             "scrapBucketB11863B7",
+             "contentBucket356CF7A5",
              "Arn"
             ]
            },
@@ -352,7 +352,7 @@
        "Resource": [
         {
          "Fn::GetAtt": [
-          "scrapBucketB11863B7",
+          "contentBucket356CF7A5",
           "Arn"
          ]
         },
@@ -362,7 +362,7 @@
           [
            {
             "Fn::GetAtt": [
-             "scrapBucketB11863B7",
+             "contentBucket356CF7A5",
              "Arn"
             ]
            },
@@ -377,7 +377,7 @@
     }
    }
   },
-  "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275": {
+  "contentBucketAutoDeleteObjectsCustomResourceD6F9707E": {
    "Type": "Custom::S3AutoDeleteObjects",
    "Properties": {
     "ServiceToken": {
@@ -387,344 +387,16 @@
      ]
     },
     "BucketName": {
-     "Ref": "scrapBucketB11863B7"
+     "Ref": "contentBucket356CF7A5"
     }
    },
    "DependsOn": [
-    "scrapBucketPolicy189B0607"
+    "contentBucketPolicy71256B1B"
    ],
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "secondScrapBucketLog8EF53038": {
-   "Type": "AWS::S3::Bucket",
-   "Properties": {
-    "BucketEncryption": {
-     "ServerSideEncryptionConfiguration": [
-      {
-       "ServerSideEncryptionByDefault": {
-        "SSEAlgorithm": "AES256"
-       }
-      }
-     ]
-    },
-    "Tags": [
-     {
-      "Key": "aws-cdk:auto-delete-objects",
-      "Value": "true"
-     }
-    ],
-    "VersioningConfiguration": {
-     "Status": "Enabled"
-    }
-   },
-   "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete",
-   "Metadata": {
-    "cfn_nag": {
-     "rules_to_suppress": [
-      {
-       "id": "W35",
-       "reason": "This is a log bucket"
-      }
-     ]
-    }
-   }
-  },
-  "secondScrapBucketLogPolicyE1D83D18": {
-   "Type": "AWS::S3::BucketPolicy",
-   "Properties": {
-    "Bucket": {
-     "Ref": "secondScrapBucketLog8EF53038"
-    },
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": "s3:*",
-       "Condition": {
-        "Bool": {
-         "aws:SecureTransport": "false"
-        }
-       },
-       "Effect": "Deny",
-       "Principal": {
-        "AWS": "*"
-       },
-       "Resource": [
-        {
-         "Fn::GetAtt": [
-          "secondScrapBucketLog8EF53038",
-          "Arn"
-         ]
-        },
-        {
-         "Fn::Join": [
-          "",
-          [
-           {
-            "Fn::GetAtt": [
-             "secondScrapBucketLog8EF53038",
-             "Arn"
-            ]
-           },
-           "/*"
-          ]
-         ]
-        }
-       ]
-      },
-      {
-       "Action": [
-        "s3:DeleteObject*",
-        "s3:GetBucket*",
-        "s3:List*",
-        "s3:PutBucketPolicy"
-       ],
-       "Effect": "Allow",
-       "Principal": {
-        "AWS": {
-         "Fn::GetAtt": [
-          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-          "Arn"
-         ]
-        }
-       },
-       "Resource": [
-        {
-         "Fn::GetAtt": [
-          "secondScrapBucketLog8EF53038",
-          "Arn"
-         ]
-        },
-        {
-         "Fn::Join": [
-          "",
-          [
-           {
-            "Fn::GetAtt": [
-             "secondScrapBucketLog8EF53038",
-             "Arn"
-            ]
-           },
-           "/*"
-          ]
-         ]
-        }
-       ]
-      },
-      {
-       "Action": "s3:PutObject",
-       "Condition": {
-        "ArnLike": {
-         "aws:SourceArn": {
-          "Fn::GetAtt": [
-           "secondScrapBucketFC127414",
-           "Arn"
-          ]
-         }
-        },
-        "StringEquals": {
-         "aws:SourceAccount": {
-          "Ref": "AWS::AccountId"
-         }
-        }
-       },
-       "Effect": "Allow",
-       "Principal": {
-        "Service": "logging.s3.amazonaws.com"
-       },
-       "Resource": {
-        "Fn::Join": [
-         "",
-         [
-          {
-           "Fn::GetAtt": [
-            "secondScrapBucketLog8EF53038",
-            "Arn"
-           ]
-          },
-          "/*"
-         ]
-        ]
-       }
-      }
-     ],
-     "Version": "2012-10-17"
-    }
-   }
-  },
-  "secondScrapBucketLogAutoDeleteObjectsCustomResource10C10B13": {
-   "Type": "Custom::S3AutoDeleteObjects",
-   "Properties": {
-    "ServiceToken": {
-     "Fn::GetAtt": [
-      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-      "Arn"
-     ]
-    },
-    "BucketName": {
-     "Ref": "secondScrapBucketLog8EF53038"
-    }
-   },
-   "DependsOn": [
-    "secondScrapBucketLogPolicyE1D83D18"
-   ],
-   "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete"
-  },
-  "secondScrapBucketFC127414": {
-   "Type": "AWS::S3::Bucket",
-   "Properties": {
-    "BucketEncryption": {
-     "ServerSideEncryptionConfiguration": [
-      {
-       "ServerSideEncryptionByDefault": {
-        "SSEAlgorithm": "AES256"
-       }
-      }
-     ]
-    },
-    "LoggingConfiguration": {
-     "DestinationBucketName": {
-      "Ref": "secondScrapBucketLog8EF53038"
-     }
-    },
-    "Tags": [
-     {
-      "Key": "aws-cdk:auto-delete-objects",
-      "Value": "true"
-     }
-    ],
-    "VersioningConfiguration": {
-     "Status": "Enabled"
-    }
-   },
-   "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete"
-  },
-  "secondScrapBucketPolicy8F815CB9": {
-   "Type": "AWS::S3::BucketPolicy",
-   "Properties": {
-    "Bucket": {
-     "Ref": "secondScrapBucketFC127414"
-    },
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": "s3:*",
-       "Condition": {
-        "Bool": {
-         "aws:SecureTransport": "false"
-        }
-       },
-       "Effect": "Deny",
-       "Principal": {
-        "AWS": "*"
-       },
-       "Resource": [
-        {
-         "Fn::GetAtt": [
-          "secondScrapBucketFC127414",
-          "Arn"
-         ]
-        },
-        {
-         "Fn::Join": [
-          "",
-          [
-           {
-            "Fn::GetAtt": [
-             "secondScrapBucketFC127414",
-             "Arn"
-            ]
-           },
-           "/*"
-          ]
-         ]
-        }
-       ]
-      },
-      {
-       "Action": [
-        "s3:DeleteObject*",
-        "s3:GetBucket*",
-        "s3:List*",
-        "s3:PutBucketPolicy"
-       ],
-       "Effect": "Allow",
-       "Principal": {
-        "AWS": {
-         "Fn::GetAtt": [
-          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-          "Arn"
-         ]
-        }
-       },
-       "Resource": [
-        {
-         "Fn::GetAtt": [
-          "secondScrapBucketFC127414",
-          "Arn"
-         ]
-        },
-        {
-         "Fn::Join": [
-          "",
-          [
-           {
-            "Fn::GetAtt": [
-             "secondScrapBucketFC127414",
-             "Arn"
-            ]
-           },
-           "/*"
-          ]
-         ]
-        }
-       ]
-      }
-     ],
-     "Version": "2012-10-17"
-    }
-   }
-  },
-  "secondScrapBucketAutoDeleteObjectsCustomResourceC87751E9": {
-   "Type": "Custom::S3AutoDeleteObjects",
-   "Properties": {
-    "ServiceToken": {
-     "Fn::GetAtt": [
-      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-      "Arn"
-     ]
-    },
-    "BucketName": {
-     "Ref": "secondScrapBucketFC127414"
-    }
-   },
-   "DependsOn": [
-    "secondScrapBucketPolicy8F815CB9"
-   ],
-   "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete"
-  },
-  "existingRole3E995BBA": {
-   "Type": "AWS::IAM::Role",
-   "Properties": {
-    "AssumeRolePolicyDocument": {
-     "Statement": [
-      {
-       "Action": "sts:AssumeRole",
-       "Effect": "Allow",
-       "Principal": {
-        "Service": "kendra.amazonaws.com"
-       }
-      }
-     ],
-     "Version": "2012-10-17"
-    }
-   }
-  },
-  "multiplesourcesLambdaFunctionServiceRole66EC8973": {
+  "genaiindexLambdaFunctionServiceRoleE929EAD8": {
    "Type": "AWS::IAM::Role",
    "Properties": {
     "AssumeRolePolicyDocument": {
@@ -786,7 +458,7 @@
     }
    }
   },
-  "multiplesourcesLambdaFunctionServiceRoleDefaultPolicyF82ADA6A": {
+  "genaiindexLambdaFunctionServiceRoleDefaultPolicy18386D50": {
    "Type": "AWS::IAM::Policy",
    "Properties": {
     "PolicyDocument": {
@@ -812,7 +484,7 @@
        "Effect": "Allow",
        "Resource": {
         "Fn::GetAtt": [
-         "multiplesourceskendraindexmultiplesourcesD8FB1621",
+         "genaiindexkendraindexgenaiindex5FFB72B4",
          "Arn"
         ]
        }
@@ -820,10 +492,10 @@
      ],
      "Version": "2012-10-17"
     },
-    "PolicyName": "multiplesourcesLambdaFunctionServiceRoleDefaultPolicyF82ADA6A",
+    "PolicyName": "genaiindexLambdaFunctionServiceRoleDefaultPolicy18386D50",
     "Roles": [
      {
-      "Ref": "multiplesourcesLambdaFunctionServiceRole66EC8973"
+      "Ref": "genaiindexLambdaFunctionServiceRoleE929EAD8"
      }
     ]
    },
@@ -838,7 +510,7 @@
     }
    }
   },
-  "multiplesourcesLambdaFunction9BDB2DBA": {
+  "genaiindexLambdaFunctionD79F5018": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
     "Code": {
@@ -852,7 +524,7 @@
       "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
       "KENDRA_INDEX_ID": {
        "Fn::GetAtt": [
-        "multiplesourceskendraindexmultiplesourcesD8FB1621",
+        "genaiindexkendraindexgenaiindex5FFB72B4",
         "Id"
        ]
       }
@@ -861,7 +533,7 @@
     "Handler": "index.handler",
     "Role": {
      "Fn::GetAtt": [
-      "multiplesourcesLambdaFunctionServiceRole66EC8973",
+      "genaiindexLambdaFunctionServiceRoleE929EAD8",
       "Arn"
      ]
     },
@@ -871,8 +543,8 @@
     }
    },
    "DependsOn": [
-    "multiplesourcesLambdaFunctionServiceRoleDefaultPolicyF82ADA6A",
-    "multiplesourcesLambdaFunctionServiceRole66EC8973"
+    "genaiindexLambdaFunctionServiceRoleDefaultPolicy18386D50",
+    "genaiindexLambdaFunctionServiceRoleE929EAD8"
    ],
    "Metadata": {
     "cfn_nag": {
@@ -893,7 +565,7 @@
     }
    }
   },
-  "multiplesourceskendraindexrolemultiplesourcesAB2C8779": {
+  "genaiindexkendraindexrolegenaiindex2848B249": {
    "Type": "AWS::IAM::Role",
    "Properties": {
     "AssumeRolePolicyDocument": {
@@ -1018,34 +690,14 @@
     }
    }
   },
-  "multiplesourceskendraindexmultiplesourcesD8FB1621": {
+  "genaiindexkendraindexgenaiindex5FFB72B4": {
    "Type": "AWS::Kendra::Index",
    "Properties": {
-    "Edition": "DEVELOPER_EDITION",
-    "Name": {
-     "Fn::Join": [
-      "",
-      [
-       "KendraIndexmultiple-sources-",
-       {
-        "Fn::Select": [
-         2,
-         {
-          "Fn::Split": [
-           "/",
-           {
-            "Ref": "AWS::StackId"
-           }
-          ]
-         }
-        ]
-       }
-      ]
-     ]
-    },
+    "Edition": "GEN_AI_ENTERPRISE_EDITION",
+    "Name": "genai-index",
     "RoleArn": {
      "Fn::GetAtt": [
-      "multiplesourceskendraindexrolemultiplesourcesAB2C8779",
+      "genaiindexkendraindexrolegenaiindex2848B249",
       "Arn"
      ]
     }
@@ -1061,7 +713,7 @@
     }
    }
   },
-  "multiplesourcesdatasourcerolemultiplesources01396504E": {
+  "genaiindexdatasourcerolegenaiindex0F97D641C": {
    "Type": "AWS::IAM::Role",
    "Properties": {
     "AssumeRolePolicyDocument": {
@@ -1090,7 +742,7 @@
            [
             "arn:aws:s3:::",
             {
-             "Ref": "scrapBucketB11863B7"
+             "Ref": "contentBucket356CF7A5"
             },
             "/*"
            ]
@@ -1106,7 +758,7 @@
            [
             "arn:aws:s3:::",
             {
-             "Ref": "scrapBucketB11863B7"
+             "Ref": "contentBucket356CF7A5"
             }
            ]
           ]
@@ -1120,7 +772,7 @@
          "Effect": "Allow",
          "Resource": {
           "Fn::GetAtt": [
-           "multiplesourceskendraindexmultiplesourcesD8FB1621",
+           "genaiindexkendraindexgenaiindex5FFB72B4",
            "Arn"
           ]
          }
@@ -1140,24 +792,24 @@
     }
    }
   },
-  "multiplesourcesdatasourcemultiplesources0EC508371": {
+  "genaiindexdatasourcegenaiindex07856CA22": {
    "Type": "AWS::Kendra::DataSource",
    "Properties": {
     "DataSourceConfiguration": {
      "S3Configuration": {
       "BucketName": {
-       "Ref": "scrapBucketB11863B7"
+       "Ref": "contentBucket356CF7A5"
       }
      }
     },
     "IndexId": {
-     "Ref": "multiplesourceskendraindexmultiplesourcesD8FB1621"
+     "Ref": "genaiindexkendraindexgenaiindex5FFB72B4"
     },
     "Name": {
      "Fn::Join": [
       "",
       [
-       "s3-datasourcemultiple-sources0-",
+       "s3-datasourcegenai-index0-",
        {
         "Fn::Select": [
          2,
@@ -1176,164 +828,11 @@
     },
     "RoleArn": {
      "Fn::GetAtt": [
-      "multiplesourcesdatasourcerolemultiplesources01396504E",
+      "genaiindexdatasourcerolegenaiindex0F97D641C",
       "Arn"
      ]
     },
     "Type": "S3"
-   }
-  },
-  "multiplesourcesdatasourcerolemultiplesources16A50E028": {
-   "Type": "AWS::IAM::Role",
-   "Properties": {
-    "AssumeRolePolicyDocument": {
-     "Statement": [
-      {
-       "Action": "sts:AssumeRole",
-       "Effect": "Allow",
-       "Principal": {
-        "Service": "kendra.amazonaws.com"
-       }
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "Description": "Policy for Kendra S3 Data Source",
-    "Policies": [
-     {
-      "PolicyDocument": {
-       "Statement": [
-        {
-         "Action": "s3:GetObject",
-         "Effect": "Allow",
-         "Resource": {
-          "Fn::Join": [
-           "",
-           [
-            "arn:aws:s3:::",
-            {
-             "Ref": "secondScrapBucketFC127414"
-            },
-            "/*"
-           ]
-          ]
-         }
-        },
-        {
-         "Action": "s3:ListBucket",
-         "Effect": "Allow",
-         "Resource": {
-          "Fn::Join": [
-           "",
-           [
-            "arn:aws:s3:::",
-            {
-             "Ref": "secondScrapBucketFC127414"
-            }
-           ]
-          ]
-         }
-        },
-        {
-         "Action": [
-          "kendra:BatchDeleteDocument",
-          "kendra:BatchPutDocument"
-         ],
-         "Effect": "Allow",
-         "Resource": {
-          "Fn::GetAtt": [
-           "multiplesourceskendraindexmultiplesourcesD8FB1621",
-           "Arn"
-          ]
-         }
-        }
-       ],
-       "Version": "2012-10-17"
-      },
-      "PolicyName": "s3CrawlPolicy"
-     }
-    ]
-   },
-   "Metadata": {
-    "guard": {
-     "SuppressedRules": [
-      "IAM_NO_INLINE_POLICY_CHECK"
-     ]
-    }
-   }
-  },
-  "multiplesourcesdatasourcemultiplesources1996FC378": {
-   "Type": "AWS::Kendra::DataSource",
-   "Properties": {
-    "DataSourceConfiguration": {
-     "S3Configuration": {
-      "BucketName": {
-       "Ref": "secondScrapBucketFC127414"
-      }
-     }
-    },
-    "IndexId": {
-     "Ref": "multiplesourceskendraindexmultiplesourcesD8FB1621"
-    },
-    "Name": {
-     "Fn::Join": [
-      "",
-      [
-       "s3-datasourcemultiple-sources1-",
-       {
-        "Fn::Select": [
-         2,
-         {
-          "Fn::Split": [
-           "/",
-           {
-            "Ref": "AWS::StackId"
-           }
-          ]
-         }
-        ]
-       }
-      ]
-     ]
-    },
-    "RoleArn": {
-     "Fn::GetAtt": [
-      "multiplesourcesdatasourcerolemultiplesources16A50E028",
-      "Arn"
-     ]
-    },
-    "Type": "S3"
-   }
-  },
-  "multiplesourceskendradatasourcemultiplesources220F30209": {
-   "Type": "AWS::Kendra::DataSource",
-   "Properties": {
-    "DataSourceConfiguration": {
-     "WebCrawlerConfiguration": {
-      "CrawlDepth": 1,
-      "Urls": {
-       "SeedUrlConfiguration": {
-        "SeedUrls": [
-         "https://aws.amazon.com"
-        ]
-       }
-      }
-     }
-    },
-    "IndexId": {
-     "Fn::GetAtt": [
-      "multiplesourceskendraindexmultiplesourcesD8FB1621",
-      "Id"
-     ]
-    },
-    "Name": "web-source",
-    "RoleArn": {
-     "Fn::GetAtt": [
-      "existingRole3E995BBA",
-      "Arn"
-     ]
-    },
-    "Type": "WEBCRAWLER"
    }
   }
  },
