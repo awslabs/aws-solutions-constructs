@@ -15,8 +15,6 @@
 import { App, Stack } from "aws-cdk-lib";
 import { LambdaToKendra } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as iam from 'aws-cdk-lib/aws-iam';
-import * as kendra from 'aws-cdk-lib/aws-kendra';
 import * as defaults from '@aws-solutions-constructs/core';
 import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
@@ -27,31 +25,9 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-lambda-kendra';
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-const testBucket = defaults.CreateScrapBucket(stack, "scrapBucket");
-const secondTestBucket = defaults.CreateScrapBucket(stack, "secondScrapBucket");
-const existingIamRole = new iam.Role(stack, 'existingRole', {
-  assumedBy: new iam.ServicePrincipal('kendra.amazonaws.com')
-});
+const testBucket = defaults.CreateScrapBucket(stack, "contentBucket");
 
-const sourceProps: kendra.CfnDataSource.WebCrawlerConfigurationProperty = {
-  urls: {
-    seedUrlConfiguration: {
-      seedUrls: ["https://aws.amazon.com"]
-    }
-  },
-  crawlDepth: 1,
-};
-
-const webCrawlerSource = {
-  name: "web-source",
-  roleArn: existingIamRole.roleArn,
-  type: "WEBCRAWLER",
-  dataSourceConfiguration: {
-    webCrawlerConfiguration: sourceProps
-  }
-};
-
-new LambdaToKendra(stack, 'multiple-sources', {
+new LambdaToKendra(stack, 'genai-index', {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`lambda`),
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
@@ -64,16 +40,11 @@ new LambdaToKendra(stack, 'multiple-sources', {
         bucketName: testBucket.bucketName,
       }
     }
+  }],
+  kendraIndexProps: {
+    edition: 'GEN_AI_ENTERPRISE_EDITION',
+    name: `genai-index`
   },
-  {
-    type: 'S3',
-    dataSourceConfiguration: {
-      s3Configuration: {
-        bucketName: secondTestBucket.bucketName,
-      }
-    }
-  },
-  webCrawlerSource ],
 });
 
 suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');

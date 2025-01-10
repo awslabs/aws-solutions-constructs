@@ -1,0 +1,209 @@
+{
+  "version": "38.0.1",
+  "artifacts": {
+    "lamkengenaiindexIntegDefaultTestDeployAssert33BD740C.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamkengenaiindexIntegDefaultTestDeployAssert33BD740C.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamkengenaiindexIntegDefaultTestDeployAssert33BD740C": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamkengenaiindexIntegDefaultTestDeployAssert33BD740C.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamkengenaiindexIntegDefaultTestDeployAssert33BD740C.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamkengenaiindexIntegDefaultTestDeployAssert33BD740C.assets"
+      ],
+      "metadata": {
+        "/lamken-genai-index/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamken-genai-index/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamken-genai-index/Integ/DefaultTest/DeployAssert"
+    },
+    "lamken-genai-index.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "lamken-genai-index.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "lamken-genai-index": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "lamken-genai-index.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fbb962ff400d6cb12aa78099ff65822e5d5456a2b526afd38675943c4b497988.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "lamken-genai-index.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "lamken-genai-index.assets"
+      ],
+      "metadata": {
+        "/lamken-genai-index/contentBucketLog/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "contentBucketLog5B9803A6"
+          }
+        ],
+        "/lamken-genai-index/contentBucketLog/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "contentBucketLogPolicy52155F9C"
+          }
+        ],
+        "/lamken-genai-index/contentBucketLog/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "contentBucketLogAutoDeleteObjectsCustomResource533B8207"
+          }
+        ],
+        "/lamken-genai-index/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
+          }
+        ],
+        "/lamken-genai-index/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
+        "/lamken-genai-index/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/lamken-genai-index/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/lamken-genai-index/contentBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "contentBucket356CF7A5"
+          }
+        ],
+        "/lamken-genai-index/contentBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "contentBucketPolicy71256B1B"
+          }
+        ],
+        "/lamken-genai-index/contentBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "contentBucketAutoDeleteObjectsCustomResourceD6F9707E"
+          }
+        ],
+        "/lamken-genai-index/genai-index/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "genaiindexLambdaFunctionServiceRoleE929EAD8"
+          }
+        ],
+        "/lamken-genai-index/genai-index/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "genaiindexLambdaFunctionServiceRoleDefaultPolicy18386D50"
+          }
+        ],
+        "/lamken-genai-index/genai-index/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "genaiindexLambdaFunctionD79F5018"
+          }
+        ],
+        "/lamken-genai-index/genai-index/kendra-index-role-genai-index/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "genaiindexkendraindexrolegenaiindex2848B249"
+          }
+        ],
+        "/lamken-genai-index/genai-index/kendra-index-genai-index": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "genaiindexkendraindexgenaiindex5FFB72B4"
+          }
+        ],
+        "/lamken-genai-index/genai-index/data-source-role-genai-index0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "genaiindexdatasourcerolegenaiindex0F97D641C"
+          }
+        ],
+        "/lamken-genai-index/genai-index/data-source-genai-index0": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "genaiindexdatasourcegenaiindex07856CA22"
+          }
+        ],
+        "/lamken-genai-index/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/lamken-genai-index/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "lamken-genai-index"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

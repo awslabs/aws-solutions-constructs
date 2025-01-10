@@ -17,7 +17,7 @@ export PATH=$source_dir/node_modules/.bin:$PATH
 export NODE_OPTIONS="--max-old-space-size=4096 ${NODE_OPTIONS:-}"
 
 # Install CDK Integration Test Tool
-npm install -g @aws-cdk/integ-runner
+npm install -g @aws-cdk/integ-runner@2.173.4-alpha.0
 npm install -g aws-cdk
 
 # Install cfn-guard and rules
