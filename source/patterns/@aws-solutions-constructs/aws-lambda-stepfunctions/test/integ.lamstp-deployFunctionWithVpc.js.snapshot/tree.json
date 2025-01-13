@@ -21,7 +21,7 @@
                     "path": "lamstp-deployFunctionWithVpc/lambdalamstp-test/ServiceRole/ImportServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   },
                   "Resource": {
@@ -60,13 +60,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.150.0"
+                  "version": "2.174.0"
                 }
               },
               "Resource": {
@@ -90,13 +90,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                  "version": "2.150.0"
+                  "version": "2.174.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_lambda.Function",
-              "version": "2.150.0"
+              "version": "2.174.0"
             }
           },
           "tasklamstp-test": {
@@ -104,7 +104,7 @@
             "path": "lamstp-deployFunctionWithVpc/tasklamstp-test",
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_stepfunctions_tasks.LambdaInvoke",
-              "version": "2.150.0"
+              "version": "2.174.0"
             }
           },
           "test-lambda-stepfunctions": {
@@ -146,13 +146,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                  "version": "2.150.0"
+                  "version": "2.174.0"
                 }
               },
               "StateMachine": {
@@ -168,7 +168,7 @@
                         "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/StateMachine/Role/ImportRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.150.0"
+                          "version": "2.174.0"
                         }
                       },
                       "Resource": {
@@ -193,7 +193,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                          "version": "2.150.0"
+                          "version": "2.174.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -261,19 +261,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                              "version": "2.150.0"
+                              "version": "2.174.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Policy",
-                          "version": "2.150.0"
+                          "version": "2.174.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Role",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   },
                   "Resource": {
@@ -326,13 +326,130 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_stepfunctions.CfnStateMachine",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_stepfunctions.StateMachine",
-                  "version": "2.150.0"
+                  "version": "2.174.0"
+                }
+              },
+              "ExecutionFailedAlarm": {
+                "id": "ExecutionFailedAlarm",
+                "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionFailedAlarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionFailedAlarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "dimensions": [
+                          {
+                            "name": "StateMachineArn",
+                            "value": {
+                              "Ref": "testlambdastepfunctionsStateMachine807F0A77"
+                            }
+                          }
+                        ],
+                        "evaluationPeriods": 1,
+                        "metricName": "ExecutionsFailed",
+                        "namespace": "AWS/States",
+                        "period": 300,
+                        "statistic": "Sum",
+                        "threshold": 1
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.174.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.174.0"
+                }
+              },
+              "ExecutionThrottledAlarm": {
+                "id": "ExecutionThrottledAlarm",
+                "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionThrottledAlarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionThrottledAlarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "dimensions": [
+                          {
+                            "name": "StateMachineArn",
+                            "value": {
+                              "Ref": "testlambdastepfunctionsStateMachine807F0A77"
+                            }
+                          }
+                        ],
+                        "evaluationPeriods": 1,
+                        "metricName": "ExecutionThrottled",
+                        "namespace": "AWS/States",
+                        "period": 300,
+                        "statistic": "Sum",
+                        "threshold": 1
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.174.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.174.0"
+                }
+              },
+              "ExecutionAbortedAlarm": {
+                "id": "ExecutionAbortedAlarm",
+                "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionAbortedAlarm",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionAbortedAlarm/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
+                      "aws:cdk:cloudformation:props": {
+                        "alarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
+                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
+                        "dimensions": [
+                          {
+                            "name": "StateMachineArn",
+                            "value": {
+                              "Ref": "testlambdastepfunctionsStateMachine807F0A77"
+                            }
+                          }
+                        ],
+                        "evaluationPeriods": 1,
+                        "metricName": "ExecutionsAborted",
+                        "namespace": "AWS/States",
+                        "period": 300,
+                        "statistic": "Maximum",
+                        "threshold": 1
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
+                      "version": "2.174.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
+                  "version": "2.174.0"
                 }
               },
               "LambdaFunctionServiceRole": {
@@ -344,7 +461,7 @@
                     "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   },
                   "Resource": {
@@ -407,7 +524,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -455,19 +572,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.150.0"
+                          "version": "2.174.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.150.0"
+                  "version": "2.174.0"
                 }
               },
               "ReplaceDefaultSecurityGroup-security-group": {
@@ -495,13 +612,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
-                  "version": "2.150.0"
+                  "version": "2.174.0"
                 }
               },
               "LambdaFunction": {
@@ -517,7 +634,7 @@
                         "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/LambdaFunction/Code/Stage",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.AssetStaging",
-                          "version": "2.150.0"
+                          "version": "2.174.0"
                         }
                       },
                       "AssetBucket": {
@@ -525,13 +642,13 @@
                         "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/LambdaFunction/Code/AssetBucket",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                          "version": "2.150.0"
+                          "version": "2.174.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   },
                   "Resource": {
@@ -544,7 +661,7 @@
                           "s3Bucket": {
                             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
                           },
-                          "s3Key": "fd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93.zip"
+                          "s3Key": "013657bdb16018cbdc3923aad71a2273f9175e48c3a74e732d41248f0028fbc5.zip"
                         },
                         "environment": {
                           "variables": {
@@ -587,136 +704,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.Function",
-                  "version": "2.150.0"
-                }
-              },
-              "ExecutionFailedAlarm": {
-                "id": "ExecutionFailedAlarm",
-                "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionFailedAlarm",
-                "children": {
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionFailedAlarm/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
-                      "aws:cdk:cloudformation:props": {
-                        "alarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
-                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
-                        "dimensions": [
-                          {
-                            "name": "StateMachineArn",
-                            "value": {
-                              "Ref": "testlambdastepfunctionsStateMachine807F0A77"
-                            }
-                          }
-                        ],
-                        "evaluationPeriods": 1,
-                        "metricName": "ExecutionsFailed",
-                        "namespace": "AWS/States",
-                        "period": 300,
-                        "statistic": "Sum",
-                        "threshold": 1
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                      "version": "2.150.0"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                  "version": "2.150.0"
-                }
-              },
-              "ExecutionThrottledAlarm": {
-                "id": "ExecutionThrottledAlarm",
-                "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionThrottledAlarm",
-                "children": {
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionThrottledAlarm/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
-                      "aws:cdk:cloudformation:props": {
-                        "alarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
-                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
-                        "dimensions": [
-                          {
-                            "name": "StateMachineArn",
-                            "value": {
-                              "Ref": "testlambdastepfunctionsStateMachine807F0A77"
-                            }
-                          }
-                        ],
-                        "evaluationPeriods": 1,
-                        "metricName": "ExecutionThrottled",
-                        "namespace": "AWS/States",
-                        "period": 300,
-                        "statistic": "Sum",
-                        "threshold": 1
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                      "version": "2.150.0"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                  "version": "2.150.0"
-                }
-              },
-              "ExecutionAbortedAlarm": {
-                "id": "ExecutionAbortedAlarm",
-                "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionAbortedAlarm",
-                "children": {
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionAbortedAlarm/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::CloudWatch::Alarm",
-                      "aws:cdk:cloudformation:props": {
-                        "alarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
-                        "comparisonOperator": "GreaterThanOrEqualToThreshold",
-                        "dimensions": [
-                          {
-                            "name": "StateMachineArn",
-                            "value": {
-                              "Ref": "testlambdastepfunctionsStateMachine807F0A77"
-                            }
-                          }
-                        ],
-                        "evaluationPeriods": 1,
-                        "metricName": "ExecutionsAborted",
-                        "namespace": "AWS/States",
-                        "period": 300,
-                        "statistic": "Maximum",
-                        "threshold": 1
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_cloudwatch.CfnAlarm",
-                      "version": "2.150.0"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_cloudwatch.Alarm",
-                  "version": "2.150.0"
+                  "version": "2.174.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-lambda-stepfunctions.LambdaToStepfunctions",
-              "version": "2.63.0"
+              "version": "2.76.0"
             }
           },
           "Vpc": {
@@ -743,7 +743,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.CfnVPC",
-                  "version": "2.150.0"
+                  "version": "2.174.0"
                 }
               },
               "isolatedSubnet1": {
@@ -787,7 +787,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   },
                   "Acl": {
@@ -795,7 +795,7 @@
                     "path": "lamstp-deployFunctionWithVpc/Vpc/isolatedSubnet1/Acl",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   },
                   "RouteTable": {
@@ -817,7 +817,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   },
                   "RouteTableAssociation": {
@@ -836,13 +836,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
-                  "version": "2.150.0"
+                  "version": "2.174.0"
                 }
               },
               "isolatedSubnet2": {
@@ -886,7 +886,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   },
                   "Acl": {
@@ -894,7 +894,7 @@
                     "path": "lamstp-deployFunctionWithVpc/Vpc/isolatedSubnet2/Acl",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   },
                   "RouteTable": {
@@ -916,7 +916,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   },
                   "RouteTableAssociation": {
@@ -935,13 +935,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
-                  "version": "2.150.0"
+                  "version": "2.174.0"
                 }
               },
               "RestrictDefaultSecurityGroupCustomResource": {
@@ -953,13 +953,13 @@
                     "path": "lamstp-deployFunctionWithVpc/Vpc/RestrictDefaultSecurityGroupCustomResource/Default",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnResource",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CustomResource",
-                  "version": "2.150.0"
+                  "version": "2.174.0"
                 }
               },
               "FlowLog": {
@@ -975,7 +975,7 @@
                         "path": "lamstp-deployFunctionWithVpc/Vpc/FlowLog/IAMRole/ImportIAMRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.150.0"
+                          "version": "2.174.0"
                         }
                       },
                       "Resource": {
@@ -1006,7 +1006,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                          "version": "2.150.0"
+                          "version": "2.174.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -1058,19 +1058,19 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                              "version": "2.150.0"
+                              "version": "2.174.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Policy",
-                          "version": "2.150.0"
+                          "version": "2.174.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Role",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   },
                   "LogGroup": {
@@ -1094,13 +1094,13 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
-                          "version": "2.150.0"
+                          "version": "2.174.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_logs.LogGroup",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   },
                   "FlowLog": {
@@ -1134,13 +1134,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnFlowLog",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.FlowLog",
-                  "version": "2.150.0"
+                  "version": "2.174.0"
                 }
               },
               "STEP_FUNCTIONS": {
@@ -1153,6 +1153,12 @@
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::EC2::VPCEndpoint",
                       "aws:cdk:cloudformation:props": {
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "lamstp-deployFunctionWithVpc/Vpc"
+                          }
+                        ],
                         "privateDnsEnabled": true,
                         "securityGroupIds": [
                           {
@@ -1190,19 +1196,19 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_ec2.CfnVPCEndpoint",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.InterfaceVpcEndpoint",
-                  "version": "2.150.0"
+                  "version": "2.174.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_ec2.Vpc",
-              "version": "2.150.0"
+              "version": "2.174.0"
             }
           },
           "LatestNodeRuntimeMap": {
@@ -1210,7 +1216,7 @@
             "path": "lamstp-deployFunctionWithVpc/LatestNodeRuntimeMap",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnMapping",
-              "version": "2.150.0"
+              "version": "2.174.0"
             }
           },
           "Custom::VpcRestrictDefaultSGCustomResourceProvider": {
@@ -1222,7 +1228,7 @@
                 "path": "lamstp-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Staging",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.150.0"
+                  "version": "2.174.0"
                 }
               },
               "Role": {
@@ -1230,7 +1236,7 @@
                 "path": "lamstp-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.150.0"
+                  "version": "2.174.0"
                 }
               },
               "Handler": {
@@ -1238,13 +1244,13 @@
                 "path": "lamstp-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.150.0"
+                  "version": "2.174.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResourceProviderBase",
-              "version": "2.150.0"
+              "version": "2.174.0"
             }
           },
           "lamstp-deployFunctionWithVpc-STEP_FUNCTIONS-security-group": {
@@ -1300,13 +1306,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
-                  "version": "2.150.0"
+                  "version": "2.174.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
-              "version": "2.150.0"
+              "version": "2.174.0"
             }
           },
           "Integ": {
@@ -1322,7 +1328,7 @@
                     "path": "lamstp-deployFunctionWithVpc/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
-                      "version": "10.3.0"
+                      "version": "10.4.2"
                     }
                   },
                   "DeployAssert": {
@@ -1334,7 +1340,7 @@
                         "path": "lamstp-deployFunctionWithVpc/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.150.0"
+                          "version": "2.174.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -1342,25 +1348,25 @@
                         "path": "lamstp-deployFunctionWithVpc/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.150.0"
+                          "version": "2.174.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.150.0"
+                      "version": "2.174.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.150.0-alpha.0"
+                  "version": "2.174.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.150.0-alpha.0"
+              "version": "2.174.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -1368,7 +1374,7 @@
             "path": "lamstp-deployFunctionWithVpc/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.150.0"
+              "version": "2.174.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -1376,13 +1382,13 @@
             "path": "lamstp-deployFunctionWithVpc/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.150.0"
+              "version": "2.174.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.150.0"
+          "version": "2.174.0"
         }
       },
       "Tree": {
@@ -1390,13 +1396,13 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.3.0"
+          "version": "10.4.2"
         }
       }
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.150.0"
+      "version": "2.174.0"
     }
   }
 }
