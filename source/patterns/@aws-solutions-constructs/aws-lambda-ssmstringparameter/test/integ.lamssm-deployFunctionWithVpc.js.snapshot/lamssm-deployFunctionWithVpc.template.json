@@ -171,7 +171,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "0c3255e93ffe7a906c7422e9f0e9cc4c7fd86ee996ee3bb302e2f134b38463c8.zip"
+     "S3Key": "a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c.zip"
     },
     "Environment": {
      "Variables": {
@@ -539,6 +539,12 @@
       "Ref": "VpcisolatedSubnet2Subnet39217055"
      }
     ],
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "lamssm-deployFunctionWithVpc/Vpc"
+     }
+    ],
     "VpcEndpointType": "Interface",
     "VpcId": {
      "Ref": "Vpc8378EB38"
@@ -626,7 +632,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a.zip"
+     "S3Key": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip"
     },
     "Timeout": 900,
     "MemorySize": 128,
