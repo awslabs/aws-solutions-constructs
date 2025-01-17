@@ -127,7 +127,7 @@ new OpenApiGatewayToLambda(this, "OpenApiGatewayToLambda", OpenApiGatewayToLambd
 |apiDefinitionKey?|`string`|S3 Object name of the OpenAPI spec file. When specifying this property, `apiDefinitionBucket` must also be specified.|
 |apiDefinitionAsset?|[`aws_s3_assets.Asset`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html)|Local file asset of the OpenAPI spec file.|
 |apiDefinitionJson?|any|OpenAPI specification represented in a JSON object to be embedded in the CloudFormation template. IMPORTANT - Including the spec in the template introduces a risk of the template growing too big, but there are some use cases that require an embedded spec. Unless your use case explicitly requires an embedded spec you should pass your spec as an S3 asset.|
-|apiIntegrations|`ApiIntegration[]`|One or more key-value pairs that contain an id for the api integration and either an existing lambda function or an instance of the LambdaProps. Please see the `Overview of how the OpenAPI file transformation works` section below for more usage details.|
+|apiIntegrations|`ApiIntegration[]`|One or more ApiIntegration objects that map an handler id for the api integration (from the API spec) to the appropriate Lambda resource. Please see the `Overview of how the OpenAPI file transformation works` section below for more usage details.|
 |logGroupProps?|[`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)|User provided props to override the default props for for the CloudWatchLogs LogGroup.|
 
 ## Pattern Properties
@@ -145,6 +145,42 @@ This construct automatically transforms an incoming OpenAPI Definition (residing
 Looking at an example - a user creates an instantiation of `apiIntegrations` that specifies one integration named `MessagesHandler` that passes in a set of `lambda.FunctionProps` and a second integration named `PhotosHandler` that passes in an existing `lambda.Function`: 
 
 ```typescript
+// Interface definition
+interface ApiIntegration {
+  /**
+   * Id of the ApiIntegration, used to correlate this lambda function to the api integration in the open api definition.
+   *
+   * Note this is not a CDK Construct ID, and is instead a client defined string used to map the resolved lambda resource with the OpenAPI definition.
+   */
+  readonly id: string;
+  /**
+   * The Lambda function to associate with the API method in the OpenAPI file matched by id.
+   *
+   * One and only one of existingLambdaObj or lambdaFunctionProps must be specified, any other combination will cause an error.
+   * 
+   * The existingLambdaObj must have been created in this stack, as it will be updated by this construct with a resource policy. If
+   * you need to reference an external lambda function, you can hardcode the function information in the spec (and reference an appropriate
+   * IAM role in the "Credentials" property)
+   */
+  readonly existingLambdaObj?: lambda.Function;
+  /**
+   * Optional published version number for Lambda function/
+   *
+   * To use an Alias, you must have provide an existingLambdaObj that was created in the current stack
+   */
+  readonly functionAlias?: lambda.Alias;
+  /**
+   * Properties for the Lambda function to create and associate with the API method in the OpenAPI file matched by id.
+   *
+   * One and only one of existingLambdaObj or lambdaFunctionProps must be specified, any other combination will cause an error.
+   */
+  readonly lambdaFunctionProps?: lambda.FunctionProps;
+}
+
+```
+
+```typescript
+// Usage
 const apiIntegrations: ApiIntegration[] = [
   {
     id: 'MessagesHandler',
