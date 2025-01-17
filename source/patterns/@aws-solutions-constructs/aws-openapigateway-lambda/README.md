@@ -164,7 +164,9 @@ interface ApiIntegration {
    */
   readonly existingLambdaObj?: lambda.Function;
   /**
-   * Optional published version number for Lambda function/
+   * Optional Alias built around a version of the function
+   * https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Version.html
+   * https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Alias.html
    *
    * To use an Alias, you must have provide an existingLambdaObj that was created in the current stack
    */
