@@ -15,7 +15,7 @@ import * as cdk from 'aws-cdk-lib';
 import { EventbridgeToSqs, EventbridgeToSqsProps } from '../lib';
 import * as events from "aws-cdk-lib/aws-events";
 import * as sqs from "aws-cdk-lib/aws-sqs";
-import { Template } from 'aws-cdk-lib/assertions';
+import { Match, Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 
 function deployNewStack(stack: cdk.Stack) {
@@ -495,7 +495,7 @@ test('Queue purging flag grants correct permissions', () => {
         },
         {
           Action: [
-            "sqs:PurgeQueue",
+            "sqs:SendMessage",
             "sqs:GetQueueAttributes",
             "sqs:GetQueueUrl"
           ],
@@ -512,7 +512,7 @@ test('Queue purging flag grants correct permissions', () => {
         },
         {
           Action: [
-            "sqs:SendMessage",
+            "sqs:PurgeQueue",
             "sqs:GetQueueAttributes",
             "sqs:GetQueueUrl"
           ],
@@ -558,4 +558,52 @@ test('check that CheckSqsProps is being called', () => {
     new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
   };
   expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
+});
+
+test.only('Check that rule dlq is not created by default', () => {
+  const stack = new cdk.Stack();
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    }
+  };
+  new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::SQS::Queue", 2);
+  template.hasResourceProperties("AWS::Events::Rule", {
+    Targets: [
+      {
+        Id: "Target0",
+        DeadLetterConfig: Match.absent(),
+      }
+    ]
+  });
+});
+
+test.only('Check that rule dlq is created when requested', () => {
+  const stack = new cdk.Stack();
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    deployRuleDlq: true
+  };
+  new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::SQS::Queue", 3);
+  template.hasResourceProperties("AWS::Events::Rule", {
+    Targets: [
+      {
+        Id: "Target0",
+        DeadLetterConfig: {
+          Arn: {
+            "Fn::GetAtt": [
+              Match.stringLikeRegexp("testeventbridgesqsruleDlq.*"),
+              "Arn"
+            ]
+          }
+        },
+      }
+    ]
+  });
 });

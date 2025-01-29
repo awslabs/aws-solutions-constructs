@@ -4,21 +4,21 @@
     "id": "App",
     "path": "",
     "children": {
-      "evtsqs-no-arg": {
-        "id": "evtsqs-no-arg",
-        "path": "evtsqs-no-arg",
+      "evtsqs-rule-dlq": {
+        "id": "evtsqs-rule-dlq",
+        "path": "evtsqs-rule-dlq",
         "children": {
           "construct": {
             "id": "construct",
-            "path": "evtsqs-no-arg/construct",
+            "path": "evtsqs-rule-dlq/construct",
             "children": {
               "queue-dlq": {
                 "id": "queue-dlq",
-                "path": "evtsqs-no-arg/construct/queue-dlq",
+                "path": "evtsqs-rule-dlq/construct/queue-dlq",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "evtsqs-no-arg/construct/queue-dlq/Resource",
+                    "path": "evtsqs-rule-dlq/construct/queue-dlq/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
                       "aws:cdk:cloudformation:props": {
@@ -32,11 +32,11 @@
                   },
                   "Policy": {
                     "id": "Policy",
-                    "path": "evtsqs-no-arg/construct/queue-dlq/Policy",
+                    "path": "evtsqs-rule-dlq/construct/queue-dlq/Policy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "evtsqs-no-arg/construct/queue-dlq/Policy/Resource",
+                        "path": "evtsqs-rule-dlq/construct/queue-dlq/Policy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
                           "aws:cdk:cloudformation:props": {
@@ -125,94 +125,17 @@
                   "version": "2.175.1"
                 }
               },
-              "'queueKey'": {
-                "id": "'queueKey'",
-                "path": "evtsqs-no-arg/construct/'queueKey'",
-                "children": {
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "evtsqs-no-arg/construct/'queueKey'/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::KMS::Key",
-                      "aws:cdk:cloudformation:props": {
-                        "enableKeyRotation": true,
-                        "keyPolicy": {
-                          "Statement": [
-                            {
-                              "Action": "kms:*",
-                              "Effect": "Allow",
-                              "Principal": {
-                                "AWS": {
-                                  "Fn::Join": [
-                                    "",
-                                    [
-                                      "arn:",
-                                      {
-                                        "Ref": "AWS::Partition"
-                                      },
-                                      ":iam::",
-                                      {
-                                        "Ref": "AWS::AccountId"
-                                      },
-                                      ":root"
-                                    ]
-                                  ]
-                                }
-                              },
-                              "Resource": "*"
-                            },
-                            {
-                              "Action": [
-                                "kms:Decrypt",
-                                "kms:Encrypt",
-                                "kms:GenerateDataKey*",
-                                "kms:ReEncrypt*"
-                              ],
-                              "Condition": {
-                                "StringEquals": {
-                                  "aws:SourceAccount": {
-                                    "Ref": "AWS::AccountId"
-                                  }
-                                }
-                              },
-                              "Effect": "Allow",
-                              "Principal": {
-                                "Service": "events.amazonaws.com"
-                              },
-                              "Resource": "*"
-                            }
-                          ],
-                          "Version": "2012-10-17"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_kms.CfnKey",
-                      "version": "2.175.1"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_kms.Key",
-                  "version": "2.175.1"
-                }
-              },
               "queue": {
                 "id": "queue",
-                "path": "evtsqs-no-arg/construct/queue",
+                "path": "evtsqs-rule-dlq/construct/queue",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "evtsqs-no-arg/construct/queue/Resource",
+                    "path": "evtsqs-rule-dlq/construct/queue/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
                       "aws:cdk:cloudformation:props": {
-                        "kmsMasterKeyId": {
-                          "Fn::GetAtt": [
-                            "constructqueueKey0638E1FB",
-                            "Arn"
-                          ]
-                        },
+                        "kmsMasterKeyId": "alias/aws/sqs",
                         "redrivePolicy": {
                           "deadLetterTargetArn": {
                             "Fn::GetAtt": [
@@ -231,11 +154,11 @@
                   },
                   "Policy": {
                     "id": "Policy",
-                    "path": "evtsqs-no-arg/construct/queue/Policy",
+                    "path": "evtsqs-rule-dlq/construct/queue/Policy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "evtsqs-no-arg/construct/queue/Policy/Resource",
+                        "path": "evtsqs-rule-dlq/construct/queue/Policy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
                           "aws:cdk:cloudformation:props": {
@@ -304,9 +227,12 @@
                                     "sqs:SendMessage"
                                   ],
                                   "Condition": {
-                                    "StringEquals": {
-                                      "aws:SourceAccount": {
-                                        "Ref": "AWS::AccountId"
+                                    "ArnEquals": {
+                                      "aws:SourceArn": {
+                                        "Fn::GetAtt": [
+                                          "constructEventsRule43880ADB",
+                                          "Arn"
+                                        ]
                                       }
                                     }
                                   },
@@ -348,17 +274,154 @@
                   "version": "2.175.1"
                 }
               },
-              "EventsRule": {
-                "id": "EventsRule",
-                "path": "evtsqs-no-arg/construct/EventsRule",
+              "ruleDlq": {
+                "id": "ruleDlq",
+                "path": "evtsqs-rule-dlq/construct/ruleDlq",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "evtsqs-no-arg/construct/EventsRule/Resource",
+                    "path": "evtsqs-rule-dlq/construct/ruleDlq/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
+                      "aws:cdk:cloudformation:props": {
+                        "kmsMasterKeyId": "alias/aws/sqs"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
+                      "version": "2.175.1"
+                    }
+                  },
+                  "Policy": {
+                    "id": "Policy",
+                    "path": "evtsqs-rule-dlq/construct/ruleDlq/Policy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "evtsqs-rule-dlq/construct/ruleDlq/Policy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "sqs:AddPermission",
+                                    "sqs:DeleteMessage",
+                                    "sqs:GetQueueAttributes",
+                                    "sqs:ReceiveMessage",
+                                    "sqs:RemovePermission",
+                                    "sqs:SendMessage",
+                                    "sqs:SetQueueAttributes"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "AWS": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":iam::",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":root"
+                                        ]
+                                      ]
+                                    }
+                                  },
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "constructruleDlq7D359AE9",
+                                      "Arn"
+                                    ]
+                                  },
+                                  "Sid": "QueueOwnerOnlyAccess"
+                                },
+                                {
+                                  "Action": "SQS:*",
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "constructruleDlq7D359AE9",
+                                      "Arn"
+                                    ]
+                                  },
+                                  "Sid": "HttpsOnly"
+                                },
+                                {
+                                  "Action": "sqs:SendMessage",
+                                  "Condition": {
+                                    "ArnEquals": {
+                                      "aws:SourceArn": {
+                                        "Fn::GetAtt": [
+                                          "constructEventsRule43880ADB",
+                                          "Arn"
+                                        ]
+                                      }
+                                    }
+                                  },
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "events.amazonaws.com"
+                                  },
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "constructruleDlq7D359AE9",
+                                      "Arn"
+                                    ]
+                                  },
+                                  "Sid": "AllowEventRuleevtsqsruledlqconstructEventsRule62503343"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "queues": [
+                              {
+                                "Ref": "constructruleDlq7D359AE9"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
+                          "version": "2.175.1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
+                      "version": "2.175.1"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.Queue",
+                  "version": "2.175.1"
+                }
+              },
+              "EventsRule": {
+                "id": "EventsRule",
+                "path": "evtsqs-rule-dlq/construct/EventsRule",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "evtsqs-rule-dlq/construct/EventsRule/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::Events::Rule",
                       "aws:cdk:cloudformation:props": {
-                        "scheduleExpression": "rate(5 minutes)",
+                        "scheduleExpression": "rate(1 minute)",
                         "state": "ENABLED",
                         "targets": [
                           {
@@ -368,6 +431,14 @@
                                 "constructqueue481DC1EC",
                                 "Arn"
                               ]
+                            },
+                            "deadLetterConfig": {
+                              "arn": {
+                                "Fn::GetAtt": [
+                                  "constructruleDlq7D359AE9",
+                                  "Arn"
+                                ]
+                              }
                             }
                           }
                         ]
@@ -386,21 +457,21 @@
               }
             },
             "constructInfo": {
-              "fqn": "constructs.Construct",
-              "version": "10.4.2"
+              "fqn": "@aws-solutions-constructs/aws-eventbridge-sqs.EventbridgeToSqs",
+              "version": "2.76.0"
             }
           },
           "Integ": {
             "id": "Integ",
-            "path": "evtsqs-no-arg/Integ",
+            "path": "evtsqs-rule-dlq/Integ",
             "children": {
               "DefaultTest": {
                 "id": "DefaultTest",
-                "path": "evtsqs-no-arg/Integ/DefaultTest",
+                "path": "evtsqs-rule-dlq/Integ/DefaultTest",
                 "children": {
                   "Default": {
                     "id": "Default",
-                    "path": "evtsqs-no-arg/Integ/DefaultTest/Default",
+                    "path": "evtsqs-rule-dlq/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
                       "version": "10.4.2"
@@ -408,11 +479,11 @@
                   },
                   "DeployAssert": {
                     "id": "DeployAssert",
-                    "path": "evtsqs-no-arg/Integ/DefaultTest/DeployAssert",
+                    "path": "evtsqs-rule-dlq/Integ/DefaultTest/DeployAssert",
                     "children": {
                       "BootstrapVersion": {
                         "id": "BootstrapVersion",
-                        "path": "evtsqs-no-arg/Integ/DefaultTest/DeployAssert/BootstrapVersion",
+                        "path": "evtsqs-rule-dlq/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
                           "version": "2.175.1"
@@ -420,7 +491,7 @@
                       },
                       "CheckBootstrapVersion": {
                         "id": "CheckBootstrapVersion",
-                        "path": "evtsqs-no-arg/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
+                        "path": "evtsqs-rule-dlq/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
                           "version": "2.175.1"
@@ -446,7 +517,7 @@
           },
           "BootstrapVersion": {
             "id": "BootstrapVersion",
-            "path": "evtsqs-no-arg/BootstrapVersion",
+            "path": "evtsqs-rule-dlq/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
               "version": "2.175.1"
@@ -454,7 +525,7 @@
           },
           "CheckBootstrapVersion": {
             "id": "CheckBootstrapVersion",
-            "path": "evtsqs-no-arg/CheckBootstrapVersion",
+            "path": "evtsqs-rule-dlq/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
               "version": "2.175.1"
