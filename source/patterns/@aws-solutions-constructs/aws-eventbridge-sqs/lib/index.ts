@@ -70,11 +70,11 @@ export interface EventbridgeToSqsProps {
   readonly enableQueuePurging?: boolean;
   /**
    * Optional user provided properties to define the SQS target on the Event Rule
-   * 
+   *
    * If you specify a deadLetterQueue for the rule here, you are responsible for adding a resource policy
    * to the queue allowing events.amazonaws.com permission to SendMessage, GetQueueUrl and GetQueueAttributes. You
    * cannot send a DLQ in this property and set deployRuleDlq to true
-   * 
+   *
    * @default - undefined (all default values are used)
    */
   readonly targetProps?: eventtargets.SqsQueueProps;

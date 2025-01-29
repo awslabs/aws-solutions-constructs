@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-restaurant-management-demo",
-  "version": "0.0.0",
+  "version": "2.76.0",
   "description": "Use case pattern for deploying a complex business system and reference architecture.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -32,7 +32,7 @@
     "@types/jest": "^27.4.0",
     "@types/node": "^10.3.0",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "0.0.0"
+    "aws-cdk-lib": "2.177.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -40,19 +40,19 @@
     ]
   },
   "dependencies": {
-    "@aws-cdk/integ-tests-alpha": "0.0.0-alpha.0",
-    "@aws-solutions-constructs/aws-cognito-apigateway-lambda": "0.0.0",
-    "@aws-solutions-constructs/aws-eventbridge-lambda": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-dynamodb": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-s3": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-sns": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-stepfunctions": "0.0.0",
+    "@aws-cdk/integ-tests-alpha": "2.177.0-alpha.0",
+    "@aws-solutions-constructs/aws-cognito-apigateway-lambda": "2.76.0",
+    "@aws-solutions-constructs/aws-eventbridge-lambda": "2.76.0",
+    "@aws-solutions-constructs/aws-lambda-dynamodb": "2.76.0",
+    "@aws-solutions-constructs/aws-lambda-s3": "2.76.0",
+    "@aws-solutions-constructs/aws-lambda-sns": "2.76.0",
+    "@aws-solutions-constructs/aws-lambda-stepfunctions": "2.76.0",
     "source-map-support": "^0.5.16",
     "typescript": "^4.2.4",
     "constructs": "^10.0.0"
   },
   "peerDependencies": {
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "^0.0.0"
+    "aws-cdk-lib": "^2.177.0"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-dynamodbstreams-pipes-stepfunctions",
-  "version": "0.0.0",
+  "version": "2.76.0",
   "description": "CDK Constructs for Amazon DynamoDB Streams to AWS Step Functions via Amazon EventBridge Pipes integration.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -53,15 +53,15 @@
     }
   },
   "dependencies": {
-    "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/resources": "0.0.0",
+    "@aws-solutions-constructs/core": "2.76.0",
+    "@aws-solutions-constructs/resources": "2.76.0",
     "constructs": "^10.0.0"
   },
   "devDependencies": {
     "@aws-cdk/integ-tests-alpha": "2.163.1-alpha.0",
     "@types/node": "^10.3.0",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "0.0.0"
+    "aws-cdk-lib": "2.177.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -78,8 +78,8 @@
     ]
   },
   "peerDependencies": {
-    "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/resources": "0.0.0",
+    "@aws-solutions-constructs/core": "2.76.0",
+    "@aws-solutions-constructs/resources": "2.76.0",
     "constructs": "^10.0.0",
     "aws-cdk-lib": "^2.163.1"
   },
