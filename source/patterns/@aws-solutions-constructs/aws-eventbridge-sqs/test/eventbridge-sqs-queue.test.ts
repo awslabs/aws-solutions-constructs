@@ -609,3 +609,48 @@ test('Check that rule dlq is created when requested', () => {
     ]
   });
 });
+
+test('Check that rule dlq is created when requested', () => {
+  const testMaxAge = cdk.Duration.seconds(47);
+  const stack = new cdk.Stack();
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    targetProps: {
+      maxEventAge: testMaxAge
+    }
+  };
+  new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties("AWS::Events::Rule", {
+    Targets: [
+      {
+        Id: "Target0",
+        RetryPolicy: {
+          MaximumEventAgeInSeconds: 47
+        }
+      }
+    ]
+  });
+});
+
+test('Check that client cannot submit their own Rule DLQ and ask for a DLQ to be created', () => {
+  // This may be enabled in the future, but first release
+  // is minimum viable product and takes full ownership of the Rule DLQ
+  const stack = new cdk.Stack();
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    deployRuleDlq: true,
+    targetProps: {
+      deadLetterQueue: {} as sqs.Queue
+    }
+  };
+  const app = () => {
+    new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+  };
+  expect(app).toThrowError('Cannot specify both targetProps.deadLetterQueue and deployDeadLetterQueue ==  true\n');
+});

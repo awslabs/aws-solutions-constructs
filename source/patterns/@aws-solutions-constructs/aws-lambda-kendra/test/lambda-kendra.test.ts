@@ -910,7 +910,7 @@ test('Launch with S3 data source and unsupported data source', () => {
 
 });
 
-test.only('Launch with multiple S3 data sources', () => {
+test('Launch with multiple S3 data sources', () => {
   const stack = new cdk.Stack();
   const testBucketName = 'test-bucket-name22342';
   const secondBucketName = 'second-bucket-name22342342';

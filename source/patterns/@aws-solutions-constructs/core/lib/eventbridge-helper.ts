@@ -52,8 +52,8 @@ export function buildEventBus(scope: Construct, props: BuildEventBusProps): even
 }
 
 export interface EventBridgeProps {
-  readonly existingEventBusInterface: events.IEventBus,
-  readonly eventBusProps: events.EventBusProps
+  readonly existingEventBusInterface?: events.IEventBus,
+  readonly eventBusProps?: events.EventBusProps
 }
 
 export function CheckEventBridgeProps(propsObject: EventBridgeProps | any) {

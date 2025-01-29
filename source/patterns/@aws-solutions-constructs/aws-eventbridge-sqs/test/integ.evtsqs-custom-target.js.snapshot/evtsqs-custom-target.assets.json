@@ -1,0 +1,19 @@
+{
+  "version": "39.0.0",
+  "files": {
+    "8221310775997696fa75dec2375830f8d37a0d9d424ea6d55a03f453d4bec94c": {
+      "source": {
+        "path": "evtsqs-custom-target.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "8221310775997696fa75dec2375830f8d37a0d9d424ea6d55a03f453d4bec94c.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
