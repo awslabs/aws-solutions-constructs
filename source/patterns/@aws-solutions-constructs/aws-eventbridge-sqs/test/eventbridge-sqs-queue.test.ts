@@ -560,14 +560,15 @@ test('check that CheckSqsProps is being called', () => {
   expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });
 
-test.only('Check that rule dlq is not created by default', () => {
+test('Check that rule dlq is not created by default', () => {
   const stack = new cdk.Stack();
   const props: EventbridgeToSqsProps = {
     eventRuleProps: {
       schedule: events.Schedule.rate(cdk.Duration.minutes(5))
     }
   };
-  new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+  const testConstruct = new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+  expect(testConstruct.eventRuleDlq).toBeUndefined();
   const template = Template.fromStack(stack);
   template.resourceCountIs("AWS::SQS::Queue", 2);
   template.hasResourceProperties("AWS::Events::Rule", {
@@ -580,7 +581,7 @@ test.only('Check that rule dlq is not created by default', () => {
   });
 });
 
-test.only('Check that rule dlq is created when requested', () => {
+test('Check that rule dlq is created when requested', () => {
   const stack = new cdk.Stack();
   const props: EventbridgeToSqsProps = {
     eventRuleProps: {
@@ -588,7 +589,8 @@ test.only('Check that rule dlq is created when requested', () => {
     },
     deployRuleDlq: true
   };
-  new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+  const testConstruct = new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+  expect(testConstruct.eventRuleDlq).toBeDefined();
   const template = Template.fromStack(stack);
   template.resourceCountIs("AWS::SQS::Queue", 3);
   template.hasResourceProperties("AWS::Events::Rule", {
