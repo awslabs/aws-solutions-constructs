@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-s3-static-website",
-  "version": "2.76.0",
+  "version": "0.0.0",
   "description": "Use case pattern for deploying a S3 static website.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -28,9 +28,9 @@
     "build+lint+test": "npm run build && npm run lint && npm test && npm run integ-assert"
   },
   "dependencies": {
-    "@aws-cdk/integ-tests-alpha": "2.177.0-alpha.0",
-    "@aws-solutions-constructs/aws-cloudfront-s3": "2.76.0",
-    "@aws-solutions-constructs/core": "2.76.0",
+    "@aws-cdk/integ-tests-alpha": "0.0.0-alpha.0",
+    "@aws-solutions-constructs/aws-cloudfront-s3": "0.0.0",
+    "@aws-solutions-constructs/core": "0.0.0",
     "source-map-support": "^0.5.16",
     "constructs": "^10.0.0"
   },
@@ -38,7 +38,7 @@
     "@types/jest": "^27.4.0",
     "@types/node": "^10.3.0",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "2.177.0"
+    "aws-cdk-lib": "0.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -47,6 +47,6 @@
   },
   "peerDependencies": {
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "^2.177.0"
+    "aws-cdk-lib": "^0.0.0"
   }
 }
