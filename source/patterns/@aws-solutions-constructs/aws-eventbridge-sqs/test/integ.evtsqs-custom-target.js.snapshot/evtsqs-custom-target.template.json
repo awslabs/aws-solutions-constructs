@@ -252,23 +252,10 @@
     ]
    }
   },
-  "constructCustomEventBusA674C94A": {
-   "Type": "AWS::Events::EventBus",
-   "Properties": {
-    "Name": "evtsqsnewbusconstructCustomEventBus3025C22E"
-   }
-  },
   "constructEventsRule43880ADB": {
    "Type": "AWS::Events::Rule",
    "Properties": {
-    "EventBusName": {
-     "Ref": "constructCustomEventBusA674C94A"
-    },
-    "EventPattern": {
-     "source": [
-      "solutionsconstructs"
-     ]
-    },
+    "ScheduleExpression": "rate(5 minutes)",
     "State": "ENABLED",
     "Targets": [
      {
@@ -278,7 +265,11 @@
         "Arn"
        ]
       },
-      "Id": "Target0"
+      "Id": "Target0",
+      "RetryPolicy": {
+       "MaximumEventAgeInSeconds": 3600,
+       "MaximumRetryAttempts": 2
+      }
      }
     ]
    }

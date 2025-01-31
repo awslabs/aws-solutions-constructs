@@ -58,7 +58,7 @@ export interface BuildQueueProps {
      *
      * @default - None
      */
-    readonly encryptionKey?: kms.Key;
+    readonly encryptionKey?: kms.IKey;
     /**
      * Optional user provided properties to override the default properties for the KMS encryption key used to encrypt the SQS Queue with.
      *

@@ -4,21 +4,21 @@
     "id": "App",
     "path": "",
     "children": {
-      "evtsqs-no-arg": {
-        "id": "evtsqs-no-arg",
-        "path": "evtsqs-no-arg",
+      "evtsqs-custom-target": {
+        "id": "evtsqs-custom-target",
+        "path": "evtsqs-custom-target",
         "children": {
           "construct": {
             "id": "construct",
-            "path": "evtsqs-no-arg/construct",
+            "path": "evtsqs-custom-target/construct",
             "children": {
               "queue-dlq": {
                 "id": "queue-dlq",
-                "path": "evtsqs-no-arg/construct/queue-dlq",
+                "path": "evtsqs-custom-target/construct/queue-dlq",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "evtsqs-no-arg/construct/queue-dlq/Resource",
+                    "path": "evtsqs-custom-target/construct/queue-dlq/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
                       "aws:cdk:cloudformation:props": {
@@ -32,11 +32,11 @@
                   },
                   "Policy": {
                     "id": "Policy",
-                    "path": "evtsqs-no-arg/construct/queue-dlq/Policy",
+                    "path": "evtsqs-custom-target/construct/queue-dlq/Policy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "evtsqs-no-arg/construct/queue-dlq/Policy/Resource",
+                        "path": "evtsqs-custom-target/construct/queue-dlq/Policy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
                           "aws:cdk:cloudformation:props": {
@@ -127,11 +127,11 @@
               },
               "'queueKey'": {
                 "id": "'queueKey'",
-                "path": "evtsqs-no-arg/construct/'queueKey'",
+                "path": "evtsqs-custom-target/construct/'queueKey'",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "evtsqs-no-arg/construct/'queueKey'/Resource",
+                    "path": "evtsqs-custom-target/construct/'queueKey'/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::KMS::Key",
                       "aws:cdk:cloudformation:props": {
@@ -199,11 +199,11 @@
               },
               "queue": {
                 "id": "queue",
-                "path": "evtsqs-no-arg/construct/queue",
+                "path": "evtsqs-custom-target/construct/queue",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "evtsqs-no-arg/construct/queue/Resource",
+                    "path": "evtsqs-custom-target/construct/queue/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
                       "aws:cdk:cloudformation:props": {
@@ -231,11 +231,11 @@
                   },
                   "Policy": {
                     "id": "Policy",
-                    "path": "evtsqs-no-arg/construct/queue/Policy",
+                    "path": "evtsqs-custom-target/construct/queue/Policy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "evtsqs-no-arg/construct/queue/Policy/Resource",
+                        "path": "evtsqs-custom-target/construct/queue/Policy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::SQS::QueuePolicy",
                           "aws:cdk:cloudformation:props": {
@@ -350,11 +350,11 @@
               },
               "EventsRule": {
                 "id": "EventsRule",
-                "path": "evtsqs-no-arg/construct/EventsRule",
+                "path": "evtsqs-custom-target/construct/EventsRule",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "evtsqs-no-arg/construct/EventsRule/Resource",
+                    "path": "evtsqs-custom-target/construct/EventsRule/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::Events::Rule",
                       "aws:cdk:cloudformation:props": {
@@ -368,6 +368,10 @@
                                 "constructqueue481DC1EC",
                                 "Arn"
                               ]
+                            },
+                            "retryPolicy": {
+                              "maximumRetryAttempts": 2,
+                              "maximumEventAgeInSeconds": 3600
                             }
                           }
                         ]
@@ -386,21 +390,21 @@
               }
             },
             "constructInfo": {
-              "fqn": "constructs.Construct",
-              "version": "10.4.2"
+              "fqn": "@aws-solutions-constructs/aws-eventbridge-sqs.EventbridgeToSqs",
+              "version": "2.76.0"
             }
           },
           "Integ": {
             "id": "Integ",
-            "path": "evtsqs-no-arg/Integ",
+            "path": "evtsqs-custom-target/Integ",
             "children": {
               "DefaultTest": {
                 "id": "DefaultTest",
-                "path": "evtsqs-no-arg/Integ/DefaultTest",
+                "path": "evtsqs-custom-target/Integ/DefaultTest",
                 "children": {
                   "Default": {
                     "id": "Default",
-                    "path": "evtsqs-no-arg/Integ/DefaultTest/Default",
+                    "path": "evtsqs-custom-target/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
                       "version": "10.4.2"
@@ -408,11 +412,11 @@
                   },
                   "DeployAssert": {
                     "id": "DeployAssert",
-                    "path": "evtsqs-no-arg/Integ/DefaultTest/DeployAssert",
+                    "path": "evtsqs-custom-target/Integ/DefaultTest/DeployAssert",
                     "children": {
                       "BootstrapVersion": {
                         "id": "BootstrapVersion",
-                        "path": "evtsqs-no-arg/Integ/DefaultTest/DeployAssert/BootstrapVersion",
+                        "path": "evtsqs-custom-target/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
                           "version": "2.175.1"
@@ -420,7 +424,7 @@
                       },
                       "CheckBootstrapVersion": {
                         "id": "CheckBootstrapVersion",
-                        "path": "evtsqs-no-arg/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
+                        "path": "evtsqs-custom-target/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
                           "version": "2.175.1"
@@ -446,7 +450,7 @@
           },
           "BootstrapVersion": {
             "id": "BootstrapVersion",
-            "path": "evtsqs-no-arg/BootstrapVersion",
+            "path": "evtsqs-custom-target/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
               "version": "2.175.1"
@@ -454,7 +458,7 @@
           },
           "CheckBootstrapVersion": {
             "id": "CheckBootstrapVersion",
-            "path": "evtsqs-no-arg/CheckBootstrapVersion",
+            "path": "evtsqs-custom-target/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
               "version": "2.175.1"

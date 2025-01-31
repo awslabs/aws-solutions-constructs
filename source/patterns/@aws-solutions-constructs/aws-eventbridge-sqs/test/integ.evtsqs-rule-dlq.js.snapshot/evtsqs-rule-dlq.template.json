@@ -252,23 +252,179 @@
     ]
    }
   },
-  "constructCustomEventBusA674C94A": {
-   "Type": "AWS::Events::EventBus",
+  "constructruleDlqKey4F9EAB36": {
+   "Type": "AWS::KMS::Key",
    "Properties": {
-    "Name": "evtsqsnewbusconstructCustomEventBus3025C22E"
+    "EnableKeyRotation": true,
+    "KeyPolicy": {
+     "Statement": [
+      {
+       "Action": "kms:*",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey*",
+        "kms:ReEncrypt*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "events.amazonaws.com"
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
+  "constructruleDlqKeyAliasF2A45A01": {
+   "Type": "AWS::KMS::Alias",
+   "Properties": {
+    "AliasName": "alias/test-alias",
+    "TargetKeyId": {
+     "Fn::GetAtt": [
+      "constructruleDlqKey4F9EAB36",
+      "Arn"
+     ]
+    }
+   }
+  },
+  "constructruleDlq7D359AE9": {
+   "Type": "AWS::SQS::Queue",
+   "Properties": {
+    "KmsMasterKeyId": {
+     "Fn::GetAtt": [
+      "constructruleDlqKey4F9EAB36",
+      "Arn"
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "constructruleDlqPolicyE4AB8569": {
+   "Type": "AWS::SQS::QueuePolicy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "sqs:AddPermission",
+        "sqs:DeleteMessage",
+        "sqs:GetQueueAttributes",
+        "sqs:ReceiveMessage",
+        "sqs:RemovePermission",
+        "sqs:SendMessage",
+        "sqs:SetQueueAttributes"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       },
+       "Resource": {
+        "Fn::GetAtt": [
+         "constructruleDlq7D359AE9",
+         "Arn"
+        ]
+       },
+       "Sid": "QueueOwnerOnlyAccess"
+      },
+      {
+       "Action": "SQS:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": {
+        "Fn::GetAtt": [
+         "constructruleDlq7D359AE9",
+         "Arn"
+        ]
+       },
+       "Sid": "HttpsOnly"
+      },
+      {
+       "Action": "sqs:SendMessage",
+       "Condition": {
+        "ArnEquals": {
+         "aws:SourceArn": {
+          "Fn::GetAtt": [
+           "constructEventsRule43880ADB",
+           "Arn"
+          ]
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "events.amazonaws.com"
+       },
+       "Resource": {
+        "Fn::GetAtt": [
+         "constructruleDlq7D359AE9",
+         "Arn"
+        ]
+       },
+       "Sid": "AllowEventRuleevtsqsruledlqconstructEventsRule62503343"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Queues": [
+     {
+      "Ref": "constructruleDlq7D359AE9"
+     }
+    ]
    }
   },
   "constructEventsRule43880ADB": {
    "Type": "AWS::Events::Rule",
    "Properties": {
-    "EventBusName": {
-     "Ref": "constructCustomEventBusA674C94A"
-    },
-    "EventPattern": {
-     "source": [
-      "solutionsconstructs"
-     ]
-    },
+    "ScheduleExpression": "rate(1 minute)",
     "State": "ENABLED",
     "Targets": [
      {
@@ -277,6 +433,14 @@
         "constructqueue481DC1EC",
         "Arn"
        ]
+      },
+      "DeadLetterConfig": {
+       "Arn": {
+        "Fn::GetAtt": [
+         "constructruleDlq7D359AE9",
+         "Arn"
+        ]
+       }
       },
       "Id": "Target0"
      }

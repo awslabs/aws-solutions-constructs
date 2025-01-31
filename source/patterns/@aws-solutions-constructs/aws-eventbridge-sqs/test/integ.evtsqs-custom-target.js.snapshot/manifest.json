@@ -1,19 +1,19 @@
 {
   "version": "39.0.0",
   "artifacts": {
-    "evtsqsnewbusIntegDefaultTestDeployAssertA45AD5F2.assets": {
+    "evtsqscustomtargetIntegDefaultTestDeployAssertD220243E.assets": {
       "type": "cdk:asset-manifest",
       "properties": {
-        "file": "evtsqsnewbusIntegDefaultTestDeployAssertA45AD5F2.assets.json",
+        "file": "evtsqscustomtargetIntegDefaultTestDeployAssertD220243E.assets.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
       }
     },
-    "evtsqsnewbusIntegDefaultTestDeployAssertA45AD5F2": {
+    "evtsqscustomtargetIntegDefaultTestDeployAssertD220243E": {
       "type": "aws:cloudformation:stack",
       "environment": "aws://unknown-account/unknown-region",
       "properties": {
-        "templateFile": "evtsqsnewbusIntegDefaultTestDeployAssertA45AD5F2.template.json",
+        "templateFile": "evtsqscustomtargetIntegDefaultTestDeployAssertD220243E.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
@@ -22,7 +22,7 @@
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
-          "evtsqsnewbusIntegDefaultTestDeployAssertA45AD5F2.assets"
+          "evtsqscustomtargetIntegDefaultTestDeployAssertD220243E.assets"
         ],
         "lookupRole": {
           "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
@@ -31,46 +31,46 @@
         }
       },
       "dependencies": [
-        "evtsqsnewbusIntegDefaultTestDeployAssertA45AD5F2.assets"
+        "evtsqscustomtargetIntegDefaultTestDeployAssertD220243E.assets"
       ],
       "metadata": {
-        "/evtsqs-new-bus/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+        "/evtsqs-custom-target/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BootstrapVersion"
           }
         ],
-        "/evtsqs-new-bus/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+        "/evtsqs-custom-target/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
         ]
       },
-      "displayName": "evtsqs-new-bus/Integ/DefaultTest/DeployAssert"
+      "displayName": "evtsqs-custom-target/Integ/DefaultTest/DeployAssert"
     },
-    "evtsqs-new-bus.assets": {
+    "evtsqs-custom-target.assets": {
       "type": "cdk:asset-manifest",
       "properties": {
-        "file": "evtsqs-new-bus.assets.json",
+        "file": "evtsqs-custom-target.assets.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
       }
     },
-    "evtsqs-new-bus": {
+    "evtsqs-custom-target": {
       "type": "aws:cloudformation:stack",
       "environment": "aws://unknown-account/unknown-region",
       "properties": {
-        "templateFile": "evtsqs-new-bus.template.json",
+        "templateFile": "evtsqs-custom-target.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/27199aa6c7c08a4ce1c5f93749614c11dfbcaf1cf107c511259e8990949b1eef.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8221310775997696fa75dec2375830f8d37a0d9d424ea6d55a03f453d4bec94c.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
-          "evtsqs-new-bus.assets"
+          "evtsqs-custom-target.assets"
         ],
         "lookupRole": {
           "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
@@ -79,71 +79,65 @@
         }
       },
       "dependencies": [
-        "evtsqs-new-bus.assets"
+        "evtsqs-custom-target.assets"
       ],
       "metadata": {
-        "/evtsqs-new-bus/construct/queue-dlq/Resource": [
+        "/evtsqs-custom-target/construct/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "constructqueuedlq6B66D1E6"
           }
         ],
-        "/evtsqs-new-bus/construct/queue-dlq/Policy/Resource": [
+        "/evtsqs-custom-target/construct/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "constructqueuedlqPolicy3B6CC54E"
           }
         ],
-        "/evtsqs-new-bus/construct/'queueKey'/Resource": [
+        "/evtsqs-custom-target/construct/'queueKey'/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "constructqueueKey0638E1FB"
           }
         ],
-        "/evtsqs-new-bus/construct/queue": [
+        "/evtsqs-custom-target/construct/queue": [
           {
             "type": "aws:cdk:warning",
             "data": "encryption: Automatically changed to QueueEncryption.KMS, was: QueueEncryption.KMS_MANAGED\nWhen encryptionMasterKey is provided, always set `encryption: QueueEncryption.KMS` [ack: @aws-cdk/aws-sqs:queueEncryptionChangedToKMS]"
           }
         ],
-        "/evtsqs-new-bus/construct/queue/Resource": [
+        "/evtsqs-custom-target/construct/queue/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "constructqueue481DC1EC"
           }
         ],
-        "/evtsqs-new-bus/construct/queue/Policy/Resource": [
+        "/evtsqs-custom-target/construct/queue/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "constructqueuePolicy5B0256B1"
           }
         ],
-        "/evtsqs-new-bus/construct/CustomEventBus/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "constructCustomEventBusA674C94A"
-          }
-        ],
-        "/evtsqs-new-bus/construct/EventsRule/Resource": [
+        "/evtsqs-custom-target/construct/EventsRule/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "constructEventsRule43880ADB"
           }
         ],
-        "/evtsqs-new-bus/BootstrapVersion": [
+        "/evtsqs-custom-target/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BootstrapVersion"
           }
         ],
-        "/evtsqs-new-bus/CheckBootstrapVersion": [
+        "/evtsqs-custom-target/CheckBootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
         ]
       },
-      "displayName": "evtsqs-new-bus"
+      "displayName": "evtsqs-custom-target"
     },
     "Tree": {
       "type": "cdk:tree",

@@ -13,6 +13,7 @@
 
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as events from 'aws-cdk-lib/aws-events';
+import * as eventtargets from 'aws-cdk-lib/aws-events-targets';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import * as defaults from '@aws-solutions-constructs/core';
 import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
@@ -43,6 +44,20 @@ export interface EventbridgeToSqsProps {
    */
   readonly eventRuleProps: events.RuleProps;
   /**
+   * Whether to deploy a DLQ for the Event Rule. If set to `true`, this DLQ will
+   * receive any messages that can't be delivered to the target SQS queue.
+   *
+   * @default - false
+   */
+  readonly deployEventRuleDlq?: boolean;
+  /**
+   * Properties to define the key created to protect the ruleDlq
+   * Only valid if deployEventRuleDlq is set to true
+   *
+   * @default - default props are used
+   */
+  readonly eventRuleDlqKeyProps?: kms.KeyProps;
+  /**
    * Existing instance of SQS queue object, providing both this and queueProps will cause an error.
    *
    * @default - None
@@ -60,6 +75,16 @@ export interface EventbridgeToSqsProps {
    * @default - "false", disabled by default.
    */
   readonly enableQueuePurging?: boolean;
+  /**
+   * Optional user provided properties to define the SQS target on the Event Rule
+   *
+   * If you specify a deadLetterQueue for the rule here, you are responsible for adding a resource policy
+   * to the queue allowing events.amazonaws.com permission to SendMessage, GetQueueUrl and GetQueueAttributes. You
+   * cannot send a DLQ in this property and set deployRuleDlq to true
+   *
+   * @default - undefined (all default values are used)
+   */
+  readonly targetProps?: eventtargets.SqsQueueProps;
   /**
    * Optional user provided properties for the dead letter queue
    *
@@ -105,6 +130,8 @@ export class EventbridgeToSqs extends Construct {
   public readonly eventBus?: events.IEventBus;
   public readonly eventsRule: events.Rule;
   public readonly encryptionKey?: kms.IKey;
+  public readonly eventRuleDlq?: sqs.Queue;
+  public readonly eventRuleDlqKey?: kms.IKey;
 
   /**
    * @summary Constructs a new instance of the EventbridgeToSqs class.
@@ -118,6 +145,14 @@ export class EventbridgeToSqs extends Construct {
     super(scope, id);
     defaults.CheckSqsProps(props);
     defaults.CheckEventBridgeProps(props);
+    // SqsQueueProps does not implement any common interface, so is unique to this construct,
+    // so we will check it here rather than in core
+    if ((props.targetProps?.deadLetterQueue) && (props.deployEventRuleDlq)) {
+      throw new Error('Cannot specify both targetProps.deadLetterQueue and deployDeadLetterQueue ==  true\n');
+    }
+    if (props.eventRuleDlqKeyProps && !props.deployEventRuleDlq) {
+      throw new Error('Cannot specify eventRuleDlqKeyProps without setting deployEventRuleDlq=true\n');
+    }
 
     let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
     if (props.enableEncryptionWithCustomerManagedKey === undefined ||
@@ -140,12 +175,26 @@ export class EventbridgeToSqs extends Construct {
     this.encryptionKey = buildQueueResponse.key;
     this.deadLetterQueue = buildQueueResponse.dlq;
 
-    const sqsEventTarget: events.IRuleTarget = {
-      bind: () => ({
-        id: this.sqsQueue.queueName,
-        arn: this.sqsQueue.queueArn
-      })
-    };
+    let constructEventTargetProps: eventtargets.SqsQueueProps = {};
+
+    if (defaults.CheckBooleanWithDefault(props.deployEventRuleDlq, false)) {
+
+      const buildRuleDlqResponse = defaults.buildQueue(this, 'ruleDlq', {
+        deployDeadLetterQueue: false,
+        enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
+        encryptionKeyProps: props.eventRuleDlqKeyProps
+      });
+
+      this.eventRuleDlq = buildRuleDlqResponse.queue;
+      const ruleDlqKey = buildRuleDlqResponse.key;
+      ruleDlqKey?.grantEncryptDecrypt(new ServicePrincipal('events.amazonaws.com'));
+      this.eventRuleDlqKey = ruleDlqKey;
+
+      constructEventTargetProps = defaults.consolidateProps(constructEventTargetProps, { deadLetterQueue: this.eventRuleDlq });
+    }
+
+    const sqsEventTargetProps = defaults.consolidateProps({}, props.targetProps, constructEventTargetProps);
+    const sqsEventTarget = new eventtargets.SqsQueue(this.sqsQueue, sqsEventTargetProps);
 
     // build an event bus if existingEventBus is provided or eventBusProps are provided
     this.eventBus = defaults.buildEventBus(this, {
@@ -163,7 +212,5 @@ export class EventbridgeToSqs extends Construct {
       this.sqsQueue.grantPurge(new ServicePrincipal('events.amazonaws.com'));
     }
 
-    // Policy for event to be able to send messages to the queue and Grant Event Bridge service access to the SQS queue encryption key
-    this.sqsQueue.grantSendMessages(new ServicePrincipal('events.amazonaws.com'));
   }
 }
