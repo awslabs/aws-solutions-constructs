@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.77.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.76.0...v2.77.0) (2025-01-31)
 
+Build on CDK v2.177.0
+
+### Bug Fixes
+* **aws-lamba-kendra:** address index issues ([#1248](https://github.com/awslabs/aws-solutions-constructs/pull/1248))
 
 ### Features
 
