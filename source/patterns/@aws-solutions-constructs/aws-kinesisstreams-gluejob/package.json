@@ -28,6 +28,7 @@
     "jsii": "jsii",
     "jsii-pacmak": "jsii-pacmak",
     "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
+    "blt": "npm run build+lint+test",
     "snapshot-update": "npm run jsii && npm test -- -u && npm run integ-assert"
   },
   "jsii": {
