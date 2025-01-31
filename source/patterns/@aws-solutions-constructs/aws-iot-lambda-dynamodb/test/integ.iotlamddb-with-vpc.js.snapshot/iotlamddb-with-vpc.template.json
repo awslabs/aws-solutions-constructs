@@ -166,7 +166,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c.zip"
+     "S3Key": "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f.zip"
     },
     "Environment": {
      "Variables": {
@@ -574,6 +574,12 @@
       ]
      ]
     },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc"
+     }
+    ],
     "VpcEndpointType": "Gateway",
     "VpcId": {
      "Ref": "testiotlambdadynamodbstackVpc1986A4BB"
@@ -683,7 +689,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a.zip"
+     "S3Key": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip"
     },
     "Timeout": 900,
     "MemorySize": 128,

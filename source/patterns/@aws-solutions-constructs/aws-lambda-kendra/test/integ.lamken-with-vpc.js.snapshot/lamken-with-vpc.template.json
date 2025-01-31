@@ -552,7 +552,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "e0128dd6e376c58a74b37bd6178ded8a5909d414a6891c26547b9778ac25679b.zip"
+     "S3Key": "d89f058f5194cced1bbf251642417472160658c64061bd045f1e3635f5abae3f.zip"
     },
     "Environment": {
      "Variables": {
@@ -1206,6 +1206,12 @@
       "Ref": "VpcisolatedSubnet2Subnet39217055"
      }
     ],
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "lamken-with-vpc/Vpc"
+     }
+    ],
     "VpcEndpointType": "Interface",
     "VpcId": {
      "Ref": "Vpc8378EB38"
@@ -1293,7 +1299,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a.zip"
+     "S3Key": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip"
     },
     "Timeout": 900,
     "MemorySize": 128,

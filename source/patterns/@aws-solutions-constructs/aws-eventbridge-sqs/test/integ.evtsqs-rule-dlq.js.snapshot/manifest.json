@@ -1,0 +1,179 @@
+{
+  "version": "39.0.0",
+  "artifacts": {
+    "evtsqsruledlqIntegDefaultTestDeployAssertE0D1E1C2.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "evtsqsruledlqIntegDefaultTestDeployAssertE0D1E1C2.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "evtsqsruledlqIntegDefaultTestDeployAssertE0D1E1C2": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "evtsqsruledlqIntegDefaultTestDeployAssertE0D1E1C2.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "evtsqsruledlqIntegDefaultTestDeployAssertE0D1E1C2.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "evtsqsruledlqIntegDefaultTestDeployAssertE0D1E1C2.assets"
+      ],
+      "metadata": {
+        "/evtsqs-rule-dlq/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/evtsqs-rule-dlq/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "evtsqs-rule-dlq/Integ/DefaultTest/DeployAssert"
+    },
+    "evtsqs-rule-dlq.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "evtsqs-rule-dlq.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "evtsqs-rule-dlq": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "evtsqs-rule-dlq.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1b987658e020bc5bb91c28188d302de48a98e534e39808f44580279068526530.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "evtsqs-rule-dlq.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "evtsqs-rule-dlq.assets"
+      ],
+      "metadata": {
+        "/evtsqs-rule-dlq/construct/queue-dlq/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructqueuedlq6B66D1E6"
+          }
+        ],
+        "/evtsqs-rule-dlq/construct/queue-dlq/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructqueuedlqPolicy3B6CC54E"
+          }
+        ],
+        "/evtsqs-rule-dlq/construct/'queueKey'/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructqueueKey0638E1FB"
+          }
+        ],
+        "/evtsqs-rule-dlq/construct/queue": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "encryption: Automatically changed to QueueEncryption.KMS, was: QueueEncryption.KMS_MANAGED\nWhen encryptionMasterKey is provided, always set `encryption: QueueEncryption.KMS` [ack: @aws-cdk/aws-sqs:queueEncryptionChangedToKMS]"
+          }
+        ],
+        "/evtsqs-rule-dlq/construct/queue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructqueue481DC1EC"
+          }
+        ],
+        "/evtsqs-rule-dlq/construct/queue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructqueuePolicy5B0256B1"
+          }
+        ],
+        "/evtsqs-rule-dlq/construct/'ruleDlqKey'/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructruleDlqKey4F9EAB36"
+          }
+        ],
+        "/evtsqs-rule-dlq/construct/'ruleDlqKey'/Alias/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructruleDlqKeyAliasF2A45A01"
+          }
+        ],
+        "/evtsqs-rule-dlq/construct/ruleDlq": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "encryption: Automatically changed to QueueEncryption.KMS, was: QueueEncryption.KMS_MANAGED\nWhen encryptionMasterKey is provided, always set `encryption: QueueEncryption.KMS` [ack: @aws-cdk/aws-sqs:queueEncryptionChangedToKMS]"
+          }
+        ],
+        "/evtsqs-rule-dlq/construct/ruleDlq/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructruleDlq7D359AE9"
+          }
+        ],
+        "/evtsqs-rule-dlq/construct/ruleDlq/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructruleDlqPolicyE4AB8569"
+          }
+        ],
+        "/evtsqs-rule-dlq/construct/EventsRule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructEventsRule43880ADB"
+          }
+        ],
+        "/evtsqs-rule-dlq/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/evtsqs-rule-dlq/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "evtsqs-rule-dlq"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

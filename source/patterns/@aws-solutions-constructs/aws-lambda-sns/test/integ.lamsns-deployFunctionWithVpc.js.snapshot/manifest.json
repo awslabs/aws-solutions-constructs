@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "39.0.0",
   "artifacts": {
     "lamsnsdeployFunctionWithVpcIntegDefaultTestDeployAssertEDF33408.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/556d2d0ecdf6753499c3fc70b8288c30484b747e14ff0aef391e75a48a41fd6b.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fa852462691caa3089915c8467f5bdcc5c8099c50c63ef472c5b033840c25574.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -200,6 +200,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "LatestNodeRuntimeMap"
+          }
+        ],
+        "/lamsns-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
           }
         ],
         "/lamsns-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [

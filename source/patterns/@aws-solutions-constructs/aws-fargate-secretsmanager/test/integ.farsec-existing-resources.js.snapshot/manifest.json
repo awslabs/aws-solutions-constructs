@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "39.0.0",
   "artifacts": {
     "farsecexistingresourcesIntegDefaultTestDeployAssert0D91D517.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/d9d96082898e09cd2da4248997427639fd9ae771c184cbbeb9c6e2ecbb4b2568.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/3521e1e155228b3149d1780235a5cc140218c213db6282a15f7e319a11e1d33d.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -272,6 +272,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "VpcSECRETSMANAGERF52907C2"
+          }
+        ],
+        "/farsec-existing-resources/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
           }
         ],
         "/farsec-existing-resources/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [

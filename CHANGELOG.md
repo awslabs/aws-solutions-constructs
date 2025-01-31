@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.77.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.76.0...v2.77.0) (2025-01-31)
+
+Build on CDK v2.177.0
+
+### Bug Fixes
+* **aws-lamba-kendra:** address index issues ([#1248](https://github.com/awslabs/aws-solutions-constructs/pull/1248))
+
+### Features
+
+* **aww-eventbridge-sqs:** add a dlq for the event rule ([#1253](https://github.com/awslabs/aws-solutions-constructs/issues/1253)) ([0db79b3](https://github.com/awslabs/aws-solutions-constructs/commit/0db79b3df7634ca866f7f2939e7012cd035905da))
+
 ## [2.76.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.75.0...v2.76.0) (2024-12-24)
 
 Built on CDK v2.173.2

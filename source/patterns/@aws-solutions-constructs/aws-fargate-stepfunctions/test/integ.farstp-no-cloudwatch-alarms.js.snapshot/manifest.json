@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "39.0.0",
   "artifacts": {
     "farstpnocloudwatchalarmsIntegDefaultTestDeployAssertC4578F22.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/3ba1c511c2b6ee3e7c0ab76e808edfe0a0b9c111b2dc2147b9839c3bee113597.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/e2fa1aa6cc3567daf95f84993c353ae65d2f591ea1a1b4663714316adb6704b2.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -272,6 +272,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "VpcSTEPFUNCTIONS550F8CB6"
+          }
+        ],
+        "/farstp-no-cloudwatch-alarms/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
           }
         ],
         "/farstp-no-cloudwatch-alarms/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [

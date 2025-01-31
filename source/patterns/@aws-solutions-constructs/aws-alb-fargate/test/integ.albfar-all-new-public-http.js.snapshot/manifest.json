@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "39.0.0",
   "artifacts": {
     "albfarallnewpublichttpIntegDefaultTestDeployAssert3D1DD975.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/52e66f8f7e2932d1b3c6534b5f3c26f7f008952ad1692748ee46f1d18d960260.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/cffffb9405636d715f40e955965c38c0a176961ae1a4ec88b2e9a76ac091090e.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -274,6 +274,12 @@
             "data": "VpcS3A5408339"
           }
         ],
+        "/albfar-all-new-public-http/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
         "/albfar-all-new-public-http/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
           {
             "type": "aws:cdk:logicalId",
@@ -320,6 +326,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testconstructlbAutoDeleteObjectsCustomResource581A2B9F"
+          }
+        ],
+        "/albfar-all-new-public-http/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
           }
         ],
         "/albfar-all-new-public-http/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [

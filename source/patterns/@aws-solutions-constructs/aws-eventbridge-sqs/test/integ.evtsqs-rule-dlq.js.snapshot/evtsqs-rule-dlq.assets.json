@@ -1,0 +1,19 @@
+{
+  "version": "39.0.0",
+  "files": {
+    "1b987658e020bc5bb91c28188d302de48a98e534e39808f44580279068526530": {
+      "source": {
+        "path": "evtsqs-rule-dlq.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "1b987658e020bc5bb91c28188d302de48a98e534e39808f44580279068526530.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

@@ -28,6 +28,7 @@ stack.templateOptions.description = 'Integration Test for aws-lambda-kendra';
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
 const testBucket = defaults.CreateScrapBucket(stack, "scrapBucket");
+const secondTestBucket = defaults.CreateScrapBucket(stack, "secondScrapBucket");
 const existingIamRole = new iam.Role(stack, 'existingRole', {
   assumedBy: new iam.ServicePrincipal('kendra.amazonaws.com')
 });
@@ -50,7 +51,7 @@ const webCrawlerSource = {
   }
 };
 
-new LambdaToKendra(stack, 'minimal-arguments', {
+new LambdaToKendra(stack, 'multiple-sources', {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`lambda`),
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
@@ -61,6 +62,14 @@ new LambdaToKendra(stack, 'minimal-arguments', {
     dataSourceConfiguration: {
       s3Configuration: {
         bucketName: testBucket.bucketName,
+      }
+    }
+  },
+  {
+    type: 'S3',
+    dataSourceConfiguration: {
+      s3Configuration: {
+        bucketName: secondTestBucket.bucketName,
       }
     }
   },
