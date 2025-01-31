@@ -49,7 +49,14 @@ export interface EventbridgeToSqsProps {
    *
    * @default - false
    */
-  readonly deployRuleDlq?: boolean;
+  readonly deployEventRuleDlq?: boolean;
+  /**
+   * Properties to define the key created to protect the ruleDlq
+   * Only valid if deployRuleDlq is set to true
+   *
+   * @default - default props are used
+   */
+  readonly eventRuleDlqKeyProps?: kms.KeyProps;
   /**
    * Existing instance of SQS queue object, providing both this and queueProps will cause an error.
    *
@@ -124,6 +131,7 @@ export class EventbridgeToSqs extends Construct {
   public readonly eventsRule: events.Rule;
   public readonly encryptionKey?: kms.IKey;
   public readonly eventRuleDlq?: sqs.Queue;
+  public readonly eventRuleDlqKey?: kms.IKey;
 
   /**
    * @summary Constructs a new instance of the EventbridgeToSqs class.
@@ -139,8 +147,11 @@ export class EventbridgeToSqs extends Construct {
     defaults.CheckEventBridgeProps(props);
     // SqsQueueProps does not implement any common interface, so is unique to this construct,
     // so we will check it here rather than in core
-    if ((props.targetProps?.deadLetterQueue) && (props.deployRuleDlq)) {
+    if ((props.targetProps?.deadLetterQueue) && (props.deployEventRuleDlq)) {
       throw new Error('Cannot specify both targetProps.deadLetterQueue and deployDeadLetterQueue ==  true\n');
+    }
+    if (props.eventRuleDlqKeyProps && !props.deployEventRuleDlq) {
+      throw new Error('Cannot specify eventRuleDlqKeyProps without setting deployEventRuleDlq=true\n');
     }
 
     let enableEncryptionParam = props.enableEncryptionWithCustomerManagedKey;
@@ -165,14 +176,21 @@ export class EventbridgeToSqs extends Construct {
     this.deadLetterQueue = buildQueueResponse.dlq;
 
     let constructEventTargetProps: eventtargets.SqsQueueProps = {};
-    // TODO: Add a check that we not deploying a new one and using a provided one (DLQ)
 
-    if (defaults.CheckBooleanWithDefault(props.deployRuleDlq, false)) {
-      this.eventRuleDlq = defaults.buildQueue(this, 'ruleDlq', {
+    if (defaults.CheckBooleanWithDefault(props.deployEventRuleDlq, false)) {
+
+      const buildRuleDlqResponse = defaults.buildQueue(this, 'ruleDlq', {
         deployDeadLetterQueue: false,
         enableEncryptionWithCustomerManagedKey: enableEncryptionParam,
-        encryptionKey: this.encryptionKey,
-      }).queue;
+        encryptionKeyProps: props.eventRuleDlqKeyProps
+      });
+
+      this.eventRuleDlq = buildRuleDlqResponse.queue;
+      const ruleDlqKey = buildRuleDlqResponse.key;
+      ruleDlqKey?.grantEncryptDecrypt(new ServicePrincipal('events.amazonaws.com'));
+      this.eventRuleDlqKey = ruleDlqKey;
+
+      // TODO: Update docs on encrpytWithCustomerMasterKey
 
       constructEventTargetProps = defaults.consolidateProps(constructEventTargetProps, { deadLetterQueue: this.eventRuleDlq });
     }

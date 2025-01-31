@@ -79,10 +79,71 @@
     ]
    }
   },
+  "constructqueueKey0638E1FB": {
+   "Type": "AWS::KMS::Key",
+   "Properties": {
+    "EnableKeyRotation": true,
+    "KeyPolicy": {
+     "Statement": [
+      {
+       "Action": "kms:*",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey*",
+        "kms:ReEncrypt*"
+       ],
+       "Condition": {
+        "StringEquals": {
+         "aws:SourceAccount": {
+          "Ref": "AWS::AccountId"
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "events.amazonaws.com"
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
   "constructqueue481DC1EC": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
-    "KmsMasterKeyId": "alias/aws/sqs",
+    "KmsMasterKeyId": {
+     "Fn::GetAtt": [
+      "constructqueueKey0638E1FB",
+      "Arn"
+     ]
+    },
     "RedrivePolicy": {
      "deadLetterTargetArn": {
       "Fn::GetAtt": [
@@ -164,12 +225,9 @@
         "sqs:SendMessage"
        ],
        "Condition": {
-        "ArnEquals": {
-         "aws:SourceArn": {
-          "Fn::GetAtt": [
-           "constructEventsRule43880ADB",
-           "Arn"
-          ]
+        "StringEquals": {
+         "aws:SourceAccount": {
+          "Ref": "AWS::AccountId"
          }
         }
        },
@@ -194,10 +252,76 @@
     ]
    }
   },
+  "constructruleDlqKey4F9EAB36": {
+   "Type": "AWS::KMS::Key",
+   "Properties": {
+    "EnableKeyRotation": true,
+    "KeyPolicy": {
+     "Statement": [
+      {
+       "Action": "kms:*",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey*",
+        "kms:ReEncrypt*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "events.amazonaws.com"
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
+  "constructruleDlqKeyAliasF2A45A01": {
+   "Type": "AWS::KMS::Alias",
+   "Properties": {
+    "AliasName": "alias/test-alias",
+    "TargetKeyId": {
+     "Fn::GetAtt": [
+      "constructruleDlqKey4F9EAB36",
+      "Arn"
+     ]
+    }
+   }
+  },
   "constructruleDlq7D359AE9": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
-    "KmsMasterKeyId": "alias/aws/sqs"
+    "KmsMasterKeyId": {
+     "Fn::GetAtt": [
+      "constructruleDlqKey4F9EAB36",
+      "Arn"
+     ]
+    }
    },
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"

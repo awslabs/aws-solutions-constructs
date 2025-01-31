@@ -25,8 +25,10 @@ const props: EventbridgeToSqsProps = {
   eventRuleProps: {
     schedule: events.Schedule.rate(Duration.minutes(1))
   },
-  deployRuleDlq: true,
-  enableEncryptionWithCustomerManagedKey: false
+  deployEventRuleDlq: true,
+  eventRuleDlqKeyProps: {
+    alias: 'test-alias'
+  }
 };
 
 new EventbridgeToSqs(stack, 'construct', props);

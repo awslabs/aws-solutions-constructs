@@ -587,7 +587,7 @@ test('Check that rule dlq is created when requested', () => {
     eventRuleProps: {
       schedule: events.Schedule.rate(cdk.Duration.minutes(5))
     },
-    deployRuleDlq: true
+    deployEventRuleDlq: true
   };
   const testConstruct = new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
   expect(testConstruct.eventRuleDlq).toBeDefined();
@@ -644,7 +644,7 @@ test('Check that client cannot submit their own Rule DLQ and ask for a DLQ to be
     eventRuleProps: {
       schedule: events.Schedule.rate(cdk.Duration.minutes(5))
     },
-    deployRuleDlq: true,
+    deployEventRuleDlq: true,
     targetProps: {
       deadLetterQueue: {} as sqs.Queue
     }
@@ -653,4 +653,56 @@ test('Check that client cannot submit their own Rule DLQ and ask for a DLQ to be
     new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
   };
   expect(app).toThrowError('Cannot specify both targetProps.deadLetterQueue and deployDeadLetterQueue ==  true\n');
+});
+
+test('Test that the construct uses provided eventRuleDlgKey properties', () => {
+  const stack = new cdk.Stack();
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    eventRuleDlqKeyProps: {
+      alias: 'test-alias'
+    },
+    deployEventRuleDlq: true,
+  };
+  new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::KMS::Alias", {
+    AliasName: "alias/test-alias",
+    TargetKeyId: {
+      "Fn::GetAtt": [
+        Match.stringLikeRegexp("testeventbridgesqsruleDlqKey.*"),
+        "Arn"
+      ]
+    }
+  });
+});
+
+test('Thest that the eventRuleDlqKey is exposed as a property', () => {
+  const stack = new cdk.Stack();
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    deployEventRuleDlq: true,
+  };
+  const testConstruct = new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+  expect(testConstruct.eventRuleDlqKey).toBeDefined();
+});
+
+test('Test that an error is thrown when eventRuleDlqKeyProps are provided but deployEventRuleDlq is not true', () => {
+  const stack = new cdk.Stack();
+  const props: EventbridgeToSqsProps = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    eventRuleDlqKeyProps: {
+      alias: 'test-alias'
+    },
+  };
+  const app = () => {
+    new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
+  };
+  expect(app).toThrowError('Cannot specify eventRuleDlqKeyProps without setting deployEventRuleDlq=true\n');
 });

@@ -1,7 +1,7 @@
 {
   "version": "39.0.0",
   "files": {
-    "c8bcea9c40e35cbce6c3f7b2773147c387557f313756f0cd69e7f9dda062ceab": {
+    "1b987658e020bc5bb91c28188d302de48a98e534e39808f44580279068526530": {
       "source": {
         "path": "evtsqs-rule-dlq.template.json",
         "packaging": "file"
@@ -9,7 +9,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "c8bcea9c40e35cbce6c3f7b2773147c387557f313756f0cd69e7f9dda062ceab.json",
+          "objectKey": "1b987658e020bc5bb91c28188d302de48a98e534e39808f44580279068526530.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

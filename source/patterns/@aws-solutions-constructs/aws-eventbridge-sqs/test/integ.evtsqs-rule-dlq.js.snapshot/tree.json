@@ -27,7 +27,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
-                      "version": "2.175.1"
+                      "version": "2.177.0"
                     }
                   },
                   "Policy": {
@@ -110,19 +110,91 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
-                          "version": "2.175.1"
+                          "version": "2.177.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
-                      "version": "2.175.1"
+                      "version": "2.177.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_sqs.Queue",
-                  "version": "2.175.1"
+                  "version": "2.177.0"
+                }
+              },
+              "'queueKey'": {
+                "id": "'queueKey'",
+                "path": "evtsqs-rule-dlq/construct/'queueKey'",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "evtsqs-rule-dlq/construct/'queueKey'/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::KMS::Key",
+                      "aws:cdk:cloudformation:props": {
+                        "enableKeyRotation": true,
+                        "keyPolicy": {
+                          "Statement": [
+                            {
+                              "Action": "kms:*",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":iam::",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":root"
+                                    ]
+                                  ]
+                                }
+                              },
+                              "Resource": "*"
+                            },
+                            {
+                              "Action": [
+                                "kms:Decrypt",
+                                "kms:Encrypt",
+                                "kms:GenerateDataKey*",
+                                "kms:ReEncrypt*"
+                              ],
+                              "Condition": {
+                                "StringEquals": {
+                                  "aws:SourceAccount": {
+                                    "Ref": "AWS::AccountId"
+                                  }
+                                }
+                              },
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "events.amazonaws.com"
+                              },
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_kms.CfnKey",
+                      "version": "2.177.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_kms.Key",
+                  "version": "2.177.0"
                 }
               },
               "queue": {
@@ -135,7 +207,12 @@
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
                       "aws:cdk:cloudformation:props": {
-                        "kmsMasterKeyId": "alias/aws/sqs",
+                        "kmsMasterKeyId": {
+                          "Fn::GetAtt": [
+                            "constructqueueKey0638E1FB",
+                            "Arn"
+                          ]
+                        },
                         "redrivePolicy": {
                           "deadLetterTargetArn": {
                             "Fn::GetAtt": [
@@ -149,7 +226,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
-                      "version": "2.175.1"
+                      "version": "2.177.0"
                     }
                   },
                   "Policy": {
@@ -227,12 +304,9 @@
                                     "sqs:SendMessage"
                                   ],
                                   "Condition": {
-                                    "ArnEquals": {
-                                      "aws:SourceArn": {
-                                        "Fn::GetAtt": [
-                                          "constructEventsRule43880ADB",
-                                          "Arn"
-                                        ]
+                                    "StringEquals": {
+                                      "aws:SourceAccount": {
+                                        "Ref": "AWS::AccountId"
                                       }
                                     }
                                   },
@@ -259,19 +333,114 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
-                          "version": "2.175.1"
+                          "version": "2.177.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
-                      "version": "2.175.1"
+                      "version": "2.177.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_sqs.Queue",
-                  "version": "2.175.1"
+                  "version": "2.177.0"
+                }
+              },
+              "'ruleDlqKey'": {
+                "id": "'ruleDlqKey'",
+                "path": "evtsqs-rule-dlq/construct/'ruleDlqKey'",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "evtsqs-rule-dlq/construct/'ruleDlqKey'/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::KMS::Key",
+                      "aws:cdk:cloudformation:props": {
+                        "enableKeyRotation": true,
+                        "keyPolicy": {
+                          "Statement": [
+                            {
+                              "Action": "kms:*",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":iam::",
+                                      {
+                                        "Ref": "AWS::AccountId"
+                                      },
+                                      ":root"
+                                    ]
+                                  ]
+                                }
+                              },
+                              "Resource": "*"
+                            },
+                            {
+                              "Action": [
+                                "kms:Decrypt",
+                                "kms:Encrypt",
+                                "kms:GenerateDataKey*",
+                                "kms:ReEncrypt*"
+                              ],
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "events.amazonaws.com"
+                              },
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_kms.CfnKey",
+                      "version": "2.177.0"
+                    }
+                  },
+                  "Alias": {
+                    "id": "Alias",
+                    "path": "evtsqs-rule-dlq/construct/'ruleDlqKey'/Alias",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "evtsqs-rule-dlq/construct/'ruleDlqKey'/Alias/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::KMS::Alias",
+                          "aws:cdk:cloudformation:props": {
+                            "aliasName": "alias/test-alias",
+                            "targetKeyId": {
+                              "Fn::GetAtt": [
+                                "constructruleDlqKey4F9EAB36",
+                                "Arn"
+                              ]
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_kms.CfnAlias",
+                          "version": "2.177.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_kms.Alias",
+                      "version": "2.177.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_kms.Key",
+                  "version": "2.177.0"
                 }
               },
               "ruleDlq": {
@@ -284,12 +453,17 @@
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
                       "aws:cdk:cloudformation:props": {
-                        "kmsMasterKeyId": "alias/aws/sqs"
+                        "kmsMasterKeyId": {
+                          "Fn::GetAtt": [
+                            "constructruleDlqKey4F9EAB36",
+                            "Arn"
+                          ]
+                        }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
-                      "version": "2.175.1"
+                      "version": "2.177.0"
                     }
                   },
                   "Policy": {
@@ -396,19 +570,19 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_sqs.CfnQueuePolicy",
-                          "version": "2.175.1"
+                          "version": "2.177.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_sqs.QueuePolicy",
-                      "version": "2.175.1"
+                      "version": "2.177.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_sqs.Queue",
-                  "version": "2.175.1"
+                  "version": "2.177.0"
                 }
               },
               "EventsRule": {
@@ -446,13 +620,13 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_events.CfnRule",
-                      "version": "2.175.1"
+                      "version": "2.177.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_events.Rule",
-                  "version": "2.175.1"
+                  "version": "2.177.0"
                 }
               }
             },
@@ -486,7 +660,7 @@
                         "path": "evtsqs-rule-dlq/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.175.1"
+                          "version": "2.177.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -494,25 +668,25 @@
                         "path": "evtsqs-rule-dlq/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.175.1"
+                          "version": "2.177.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.175.1"
+                      "version": "2.177.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.175.1-alpha.0"
+                  "version": "2.177.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.175.1-alpha.0"
+              "version": "2.177.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -520,7 +694,7 @@
             "path": "evtsqs-rule-dlq/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.175.1"
+              "version": "2.177.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -528,13 +702,13 @@
             "path": "evtsqs-rule-dlq/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.175.1"
+              "version": "2.177.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.175.1"
+          "version": "2.177.0"
         }
       },
       "Tree": {
@@ -548,7 +722,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.175.1"
+      "version": "2.177.0"
     }
   }
 }

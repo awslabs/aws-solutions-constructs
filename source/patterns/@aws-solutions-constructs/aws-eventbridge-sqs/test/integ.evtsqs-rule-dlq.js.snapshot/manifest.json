@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c8bcea9c40e35cbce6c3f7b2773147c387557f313756f0cd69e7f9dda062ceab.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1b987658e020bc5bb91c28188d302de48a98e534e39808f44580279068526530.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -94,6 +94,18 @@
             "data": "constructqueuedlqPolicy3B6CC54E"
           }
         ],
+        "/evtsqs-rule-dlq/construct/'queueKey'/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructqueueKey0638E1FB"
+          }
+        ],
+        "/evtsqs-rule-dlq/construct/queue": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "encryption: Automatically changed to QueueEncryption.KMS, was: QueueEncryption.KMS_MANAGED\nWhen encryptionMasterKey is provided, always set `encryption: QueueEncryption.KMS` [ack: @aws-cdk/aws-sqs:queueEncryptionChangedToKMS]"
+          }
+        ],
         "/evtsqs-rule-dlq/construct/queue/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -104,6 +116,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "constructqueuePolicy5B0256B1"
+          }
+        ],
+        "/evtsqs-rule-dlq/construct/'ruleDlqKey'/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructruleDlqKey4F9EAB36"
+          }
+        ],
+        "/evtsqs-rule-dlq/construct/'ruleDlqKey'/Alias/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructruleDlqKeyAliasF2A45A01"
+          }
+        ],
+        "/evtsqs-rule-dlq/construct/ruleDlq": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "encryption: Automatically changed to QueueEncryption.KMS, was: QueueEncryption.KMS_MANAGED\nWhen encryptionMasterKey is provided, always set `encryption: QueueEncryption.KMS` [ack: @aws-cdk/aws-sqs:queueEncryptionChangedToKMS]"
           }
         ],
         "/evtsqs-rule-dlq/construct/ruleDlq/Resource": [
@@ -134,15 +164,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "constructqueueKey0638E1FB": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "constructqueueKey0638E1FB",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },
