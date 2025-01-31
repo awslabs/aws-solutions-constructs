@@ -52,7 +52,7 @@ export interface EventbridgeToSqsProps {
   readonly deployEventRuleDlq?: boolean;
   /**
    * Properties to define the key created to protect the ruleDlq
-   * Only valid if deployRuleDlq is set to true
+   * Only valid if deployEventRuleDlq is set to true
    *
    * @default - default props are used
    */
@@ -189,8 +189,6 @@ export class EventbridgeToSqs extends Construct {
       const ruleDlqKey = buildRuleDlqResponse.key;
       ruleDlqKey?.grantEncryptDecrypt(new ServicePrincipal('events.amazonaws.com'));
       this.eventRuleDlqKey = ruleDlqKey;
-
-      // TODO: Update docs on encrpytWithCustomerMasterKey
 
       constructEventTargetProps = defaults.consolidateProps(constructEventTargetProps, { deadLetterQueue: this.eventRuleDlq });
     }
