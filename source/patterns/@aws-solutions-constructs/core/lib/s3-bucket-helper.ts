@@ -21,7 +21,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cdk from 'aws-cdk-lib';
 import { DefaultS3Props } from './s3-bucket-defaults';
-import { overrideProps, addCfnSuppressRules, consolidateProps, CheckBooleanWithDefault } from './utils';
+import { overrideProps, addCfnSuppressRules, consolidateProps, CheckBooleanWithDefault, printWarning } from './utils';
 import { StorageClass } from 'aws-cdk-lib/aws-s3';
 import { Duration } from 'aws-cdk-lib';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
@@ -323,6 +323,13 @@ export function CheckS3Props(propsObject: S3Props | any) {
   if (propsObject.existingBucketObj && (propsObject.loggingBucketProps || propsObject.logS3AccessLogs)) {
     errorMessages += 'Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is an error.\n';
     errorFound = true;
+  }
+
+  if (propsObject?.bucketProps?.encryption == s3.BucketEncryption.KMS_MANAGED) {
+    if (!propsObject.bucketProps.bucketKeyEnabled) {
+      printWarning("When using SSE-KMS Bucket Encryption, set bucketKeyEnabled to true to lower costs");
+      printWarning('https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucket-key.html');
+    }
   }
 
   if (errorFound) {
