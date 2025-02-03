@@ -325,7 +325,7 @@ export function CheckS3Props(propsObject: S3Props | any) {
     errorFound = true;
   }
 
-  if (propsObject?.bucketProps?.encryption == s3.BucketEncryption.KMS_MANAGED) {
+  if (propsObject?.bucketProps?.encryption === s3.BucketEncryption.KMS_MANAGED) {
     if (!propsObject.bucketProps.bucketKeyEnabled) {
       printWarning("When using SSE-KMS Bucket Encryption, set bucketKeyEnabled to true to lower costs");
       printWarning('https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucket-key.html');
