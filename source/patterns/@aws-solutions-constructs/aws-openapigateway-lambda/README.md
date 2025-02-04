@@ -200,7 +200,7 @@ When the construct is created or updated, it will overwrite the `MessagesHandler
 For more information on specifying an API with OpenAPI, please see the [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
 
 ## ApiIntegration Details
-This construct defines a custom type, `ApiIntegration`, that is specified as a required prop. The type has a required property, `id`, and two optional properties `existingLambdaObj` and `lambdaFunctionProps`. The `id` property is used to map the corresponding lambda function being defined with the placeholder string in the OpenAPI template file, and is not a CDK construct ID. Exactly one of `existingLambdaObj` or `lambdaFunctionProps` must be specified or the construct will throw an error.
+This construct defines a custom type, `ApiIntegration`, that is specified as a required prop. The type has a required property, `id`, and three optional properties `existingLambdaObj`, `existingFunctionAlias` and `lambdaFunctionProps`. The `id` property is used to map the corresponding lambda function being defined with the placeholder string in the OpenAPI template file, and is not a CDK construct ID. Exactly one of `existingLambdaObj` or `lambdaFunctionProps` must be specified or the construct will throw an error.
 
 ## Default settings
 

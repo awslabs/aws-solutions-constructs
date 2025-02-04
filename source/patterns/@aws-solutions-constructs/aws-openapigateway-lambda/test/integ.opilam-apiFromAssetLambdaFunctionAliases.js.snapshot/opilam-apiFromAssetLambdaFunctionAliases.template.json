@@ -1,0 +1,1181 @@
+{
+ "Description": "Integration Test for aws-openapigateway-lambda",
+ "Resources": {
+  "LambdaFunctionServiceRole0C4CDE0B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":logs:",
+            {
+             "Ref": "AWS::Region"
+            },
+            ":",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":log-group:/aws/lambda/*"
+           ]
+          ]
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "LambdaFunctionServiceRolePolicy"
+     }
+    ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
+   }
+  },
+  "LambdaFunctionServiceRoleDefaultPolicy126C8897": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+    "Roles": [
+     {
+      "Ref": "LambdaFunctionServiceRole0C4CDE0B"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
+  "LambdaFunctionBF21E41F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "0ac0535f48d1ada09cde7f11fc72195d9d32da75a2719aeb20c4e5c45b28e62e.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
+    },
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaFunctionServiceRole0C4CDE0B",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+    "LambdaFunctionServiceRole0C4CDE0B"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+      },
+      {
+       "id": "W89",
+       "reason": "This is not a rule for the general case, just for specific use cases/industries"
+      },
+      {
+       "id": "W92",
+       "reason": "Impossible for us to define the correct concurrency for clients"
+      }
+     ]
+    }
+   }
+  },
+  "LambdaFunctionCurrentVersion7D5C86E3e1fbde6f17ee9d8a6083dfbb39f7780b": {
+   "Type": "AWS::Lambda::Version",
+   "Properties": {
+    "FunctionName": {
+     "Ref": "LambdaFunctionBF21E41F"
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
+  "PhotosLambdaTestFromAssetServiceRoleE0B4776B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":logs:",
+            {
+             "Ref": "AWS::Region"
+            },
+            ":",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":log-group:/aws/lambda/*"
+           ]
+          ]
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "LambdaFunctionServiceRolePolicy"
+     }
+    ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
+   }
+  },
+  "PhotosLambdaTestFromAssetServiceRoleDefaultPolicy240F3F29": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "PhotosLambdaTestFromAssetServiceRoleDefaultPolicy240F3F29",
+    "Roles": [
+     {
+      "Ref": "PhotosLambdaTestFromAssetServiceRoleE0B4776B"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
+  "PhotosLambdaTestFromAssetB776E3C5": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "654d49d4ea47a6be417d57b94dc0310933d0e971a3e48a3080c3e48487af3e50.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
+    },
+    "FunctionName": "PhotosLambdaTestFromAsset",
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "PhotosLambdaTestFromAssetServiceRoleE0B4776B",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "PhotosLambdaTestFromAssetServiceRoleDefaultPolicy240F3F29",
+    "PhotosLambdaTestFromAssetServiceRoleE0B4776B"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+      },
+      {
+       "id": "W89",
+       "reason": "This is not a rule for the general case, just for specific use cases/industries"
+      },
+      {
+       "id": "W92",
+       "reason": "Impossible for us to define the correct concurrency for clients"
+      }
+     ]
+    }
+   }
+  },
+  "PhotosLambdaTestFromAssetOpenApiGatewayToLambdaPermitAPIGInvocationA0D5D04E": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "PhotosLambdaTestFromAssetB776E3C5",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
+       },
+       "/*/*/*"
+      ]
+     ]
+    }
+   }
+  },
+  "messagesalias73FA2C12": {
+   "Type": "AWS::Lambda::Alias",
+   "Properties": {
+    "FunctionName": {
+     "Ref": "LambdaFunctionBF21E41F"
+    },
+    "FunctionVersion": {
+     "Fn::GetAtt": [
+      "LambdaFunctionCurrentVersion7D5C86E3e1fbde6f17ee9d8a6083dfbb39f7780b",
+      "Version"
+     ]
+    },
+    "Name": "messagesAlias"
+   }
+  },
+  "messagesaliasOpenApiGatewayToLambdaPermitAPIGInvocation4D73221A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Ref": "messagesalias73FA2C12"
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
+       },
+       "/*/*/*"
+      ]
+     ]
+    }
+   }
+  },
+  "OpenApiGatewayToLambdaLambdaFunctionServiceRoleACE09A85": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":logs:",
+            {
+             "Ref": "AWS::Region"
+            },
+            ":",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":log-group:/aws/lambda/*"
+           ]
+          ]
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "LambdaFunctionServiceRolePolicy"
+     }
+    ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
+   }
+  },
+  "OpenApiGatewayToLambdaLambdaFunctionServiceRoleDefaultPolicy90DFA0A8": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "OpenApiGatewayToLambdaLambdaFunctionServiceRoleDefaultPolicy90DFA0A8",
+    "Roles": [
+     {
+      "Ref": "OpenApiGatewayToLambdaLambdaFunctionServiceRoleACE09A85"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
+  "OpenApiGatewayToLambdaLambdaFunctionC7227471": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "37a6f0964e9c5c4133e01db00bbcaebc6da2a25a21e27aa0f87add1eb65546e7.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
+    },
+    "Handler": "index.handler",
+    "MemorySize": 1024,
+    "Role": {
+     "Fn::GetAtt": [
+      "OpenApiGatewayToLambdaLambdaFunctionServiceRoleACE09A85",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Timeout": 60,
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "OpenApiGatewayToLambdaLambdaFunctionServiceRoleDefaultPolicy90DFA0A8",
+    "OpenApiGatewayToLambdaLambdaFunctionServiceRoleACE09A85"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+      },
+      {
+       "id": "W89",
+       "reason": "This is not a rule for the general case, just for specific use cases/industries"
+      },
+      {
+       "id": "W92",
+       "reason": "Impossible for us to define the correct concurrency for clients"
+      }
+     ]
+    }
+   }
+  },
+  "OpenApiGatewayToLambdaApiTemplateWriterPolicy5B3085E5": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:GetObject",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":s3:::",
+          {
+           "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "/c2b362b5f0d6d8f56ac2c011288aebd095499d839b130a932427f74232de2a32.yaml"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": "s3:PutObject",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":s3:::",
+          {
+           "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "OpenApiGatewayToLambdaApiTemplateWriterPolicy5B3085E5",
+    "Roles": [
+     {
+      "Ref": "OpenApiGatewayToLambdaLambdaFunctionServiceRoleACE09A85"
+     }
+    ]
+   }
+  },
+  "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventServiceRoleFEE201A1": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventServiceRoleDefaultPolicyB630DBDA": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "lambda:InvokeFunction",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "OpenApiGatewayToLambdaLambdaFunctionC7227471",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "OpenApiGatewayToLambdaLambdaFunctionC7227471",
+             "Arn"
+            ]
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventServiceRoleDefaultPolicyB630DBDA",
+    "Roles": [
+     {
+      "Ref": "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventServiceRoleFEE201A1"
+     }
+    ]
+   }
+  },
+  "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventEF37D730": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "bdc104ed9cab1b5b6421713c8155f0b753380595356f710400609664d3635eca.zip"
+    },
+    "Description": "AWS CDK resource provider framework - onEvent (opilam-apiFromAssetLambdaFunctionAliases/OpenApiGatewayToLambda/ApiTemplateWriterProvider)",
+    "Environment": {
+     "Variables": {
+      "USER_ON_EVENT_FUNCTION_ARN": {
+       "Fn::GetAtt": [
+        "OpenApiGatewayToLambdaLambdaFunctionC7227471",
+        "Arn"
+       ]
+      }
+     }
+    },
+    "Handler": "framework.onEvent",
+    "Role": {
+     "Fn::GetAtt": [
+      "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventServiceRoleFEE201A1",
+      "Arn"
+     ]
+    },
+    "Runtime": {
+     "Fn::FindInMap": [
+      "LatestNodeRuntimeMap",
+      {
+       "Ref": "AWS::Region"
+      },
+      "value"
+     ]
+    },
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventServiceRoleDefaultPolicyB630DBDA",
+    "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventServiceRoleFEE201A1"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "The CDK-provided lambda function that backs their Custom Resource Provider framework has an IAM role with the arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole Managed Policy attached, which grants permission to write to CloudWatch Logs"
+      },
+      {
+       "id": "W89",
+       "reason": "The CDK-provided lambda function that backs their Custom Resource Provider framework does not access VPC resources"
+      },
+      {
+       "id": "W92",
+       "reason": "The CDK-provided lambda function that backs their Custom Resource Provider framework does not define ReservedConcurrentExecutions"
+      }
+     ]
+    }
+   }
+  },
+  "OpenApiGatewayToLambdaApiTemplateWriterCustomResource957D1BA4": {
+   "Type": "Custom::TemplateWriter",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventEF37D730",
+      "Arn"
+     ]
+    },
+    "TemplateValues": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"templateValues\":[{\"id\":\"MessagesHandler\",\"value\":\"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":apigateway:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":lambda:path/2015-03-31/functions/",
+       {
+        "Ref": "messagesalias73FA2C12"
+       },
+       "/invocations\"},{\"id\":\"PhotosHandler\",\"value\":\"arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":apigateway:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":lambda:path/2015-03-31/functions/",
+       {
+        "Fn::GetAtt": [
+         "PhotosLambdaTestFromAssetB776E3C5",
+         "Arn"
+        ]
+       },
+       "/invocations\"}]}"
+      ]
+     ]
+    },
+    "TemplateInputBucket": {
+     "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+    },
+    "TemplateInputKey": "c2b362b5f0d6d8f56ac2c011288aebd095499d839b130a932427f74232de2a32.yaml",
+    "TemplateOutputBucket": {
+     "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+    }
+   },
+   "DependsOn": [
+    "OpenApiGatewayToLambdaApiTemplateWriterPolicy5B3085E5"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "OpenApiGatewayToLambdaApiAccessLogGroupE21284EC": {
+   "Type": "AWS::Logs::LogGroup",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W86",
+       "reason": "Retention period for CloudWatchLogs LogGroups are set to 'Never Expire' to preserve customer data indefinitely"
+      },
+      {
+       "id": "W84",
+       "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+      }
+     ]
+    }
+   }
+  },
+  "OpenApiGatewayToLambdaSpecRestApi27C18064": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "BodyS3Location": {
+     "Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "Key": {
+      "Fn::GetAtt": [
+       "OpenApiGatewayToLambdaApiTemplateWriterCustomResource957D1BA4",
+       "TemplateOutputKey"
+      ]
+     }
+    },
+    "Name": {
+     "Fn::Join": [
+      "",
+      [
+       "OpenApiGatewayToLambda-",
+       {
+        "Fn::Select": [
+         2,
+         {
+          "Fn::Split": [
+           "/",
+           {
+            "Ref": "AWS::StackId"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     ]
+    }
+   }
+  },
+  "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775114a8d1d0c9bf9b9d904a22f099d1d64": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Automatically created by the RestApi construct",
+    "RestApiId": {
+     "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
+    }
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W45",
+       "reason": "ApiGateway has AccessLogging enabled in AWS::ApiGateway::Stage resource, but cfn_nag checks for it in AWS::ApiGateway::Deployment resource"
+      }
+     ]
+    }
+   }
+  },
+  "OpenApiGatewayToLambdaSpecRestApiDeploymentStageprodB962CBBB": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "AccessLogSetting": {
+     "DestinationArn": {
+      "Fn::GetAtt": [
+       "OpenApiGatewayToLambdaApiAccessLogGroupE21284EC",
+       "Arn"
+      ]
+     },
+     "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
+    },
+    "DeploymentId": {
+     "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775114a8d1d0c9bf9b9d904a22f099d1d64"
+    },
+    "MethodSettings": [
+     {
+      "DataTraceEnabled": false,
+      "HttpMethod": "*",
+      "LoggingLevel": "INFO",
+      "ResourcePath": "/*"
+     }
+    ],
+    "RestApiId": {
+     "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
+    },
+    "StageName": "prod",
+    "TracingEnabled": true
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "API_GW_CACHE_ENABLED_AND_ENCRYPTED"
+     ]
+    }
+   }
+  },
+  "OpenApiGatewayToLambdaSpecRestApiUsagePlan44F6F5C6": {
+   "Type": "AWS::ApiGateway::UsagePlan",
+   "Properties": {
+    "ApiStages": [
+     {
+      "ApiId": {
+       "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
+      },
+      "Stage": {
+       "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentStageprodB962CBBB"
+      },
+      "Throttle": {}
+     }
+    ]
+   }
+  },
+  "OpenApiGatewayToLambdaLambdaRestApiCloudWatchRoleBC7E6D95": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams",
+          "logs:FilterLogEvents",
+          "logs:GetLogEvents",
+          "logs:PutLogEvents"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":logs:",
+            {
+             "Ref": "AWS::Region"
+            },
+            ":",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":*"
+           ]
+          ]
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "LambdaRestApiCloudWatchRolePolicy"
+     }
+    ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
+   }
+  },
+  "OpenApiGatewayToLambdaLambdaRestApiAccount71EC7DA6": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "OpenApiGatewayToLambdaLambdaRestApiCloudWatchRoleBC7E6D95",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "OpenApiGatewayToLambdaSpecRestApi27C18064"
+   ]
+  }
+ },
+ "Outputs": {
+  "OpenApiGatewayToLambdaSpecRestApiEndpointD1FA5E3A": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "OpenApiGatewayToLambdaSpecRestApi27C18064"
+      },
+      ".execute-api.",
+      {
+       "Ref": "AWS::Region"
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentStageprodB962CBBB"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Mappings": {
+  "LatestNodeRuntimeMap": {
+   "af-south-1": {
+    "value": "nodejs20.x"
+   },
+   "ap-east-1": {
+    "value": "nodejs20.x"
+   },
+   "ap-northeast-1": {
+    "value": "nodejs20.x"
+   },
+   "ap-northeast-2": {
+    "value": "nodejs20.x"
+   },
+   "ap-northeast-3": {
+    "value": "nodejs20.x"
+   },
+   "ap-south-1": {
+    "value": "nodejs20.x"
+   },
+   "ap-south-2": {
+    "value": "nodejs20.x"
+   },
+   "ap-southeast-1": {
+    "value": "nodejs20.x"
+   },
+   "ap-southeast-2": {
+    "value": "nodejs20.x"
+   },
+   "ap-southeast-3": {
+    "value": "nodejs20.x"
+   },
+   "ap-southeast-4": {
+    "value": "nodejs20.x"
+   },
+   "ap-southeast-5": {
+    "value": "nodejs20.x"
+   },
+   "ap-southeast-7": {
+    "value": "nodejs20.x"
+   },
+   "ca-central-1": {
+    "value": "nodejs20.x"
+   },
+   "ca-west-1": {
+    "value": "nodejs20.x"
+   },
+   "cn-north-1": {
+    "value": "nodejs18.x"
+   },
+   "cn-northwest-1": {
+    "value": "nodejs18.x"
+   },
+   "eu-central-1": {
+    "value": "nodejs20.x"
+   },
+   "eu-central-2": {
+    "value": "nodejs20.x"
+   },
+   "eu-isoe-west-1": {
+    "value": "nodejs18.x"
+   },
+   "eu-north-1": {
+    "value": "nodejs20.x"
+   },
+   "eu-south-1": {
+    "value": "nodejs20.x"
+   },
+   "eu-south-2": {
+    "value": "nodejs20.x"
+   },
+   "eu-west-1": {
+    "value": "nodejs20.x"
+   },
+   "eu-west-2": {
+    "value": "nodejs20.x"
+   },
+   "eu-west-3": {
+    "value": "nodejs20.x"
+   },
+   "il-central-1": {
+    "value": "nodejs20.x"
+   },
+   "me-central-1": {
+    "value": "nodejs20.x"
+   },
+   "me-south-1": {
+    "value": "nodejs20.x"
+   },
+   "mx-central-1": {
+    "value": "nodejs20.x"
+   },
+   "sa-east-1": {
+    "value": "nodejs20.x"
+   },
+   "us-east-1": {
+    "value": "nodejs20.x"
+   },
+   "us-east-2": {
+    "value": "nodejs20.x"
+   },
+   "us-gov-east-1": {
+    "value": "nodejs18.x"
+   },
+   "us-gov-west-1": {
+    "value": "nodejs18.x"
+   },
+   "us-iso-east-1": {
+    "value": "nodejs18.x"
+   },
+   "us-iso-west-1": {
+    "value": "nodejs18.x"
+   },
+   "us-isob-east-1": {
+    "value": "nodejs18.x"
+   },
+   "us-west-1": {
+    "value": "nodejs20.x"
+   },
+   "us-west-2": {
+    "value": "nodejs20.x"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
