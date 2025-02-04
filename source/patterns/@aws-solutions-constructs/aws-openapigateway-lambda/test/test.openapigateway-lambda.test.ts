@@ -12,14 +12,14 @@
  */
 
 // Imports
-import { Stack, Duration } from "aws-cdk-lib";
+import { Stack, Duration, RemovalPolicy } from "aws-cdk-lib";
 import { OpenApiGatewayToLambda } from "../lib";
 import { ObtainApiDefinition, CheckOpenApiProps } from "../lib/openapi-helper";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import * as path from 'path';
-import { Template } from "aws-cdk-lib/assertions";
+import { Match, Template } from "aws-cdk-lib/assertions";
 import { CreateScrapBucket } from "@aws-solutions-constructs/core";
 import * as defaults from '@aws-solutions-constructs/core';
 import * as inlineJsonApiDefinition from './openapi/apiDefinition.json';
@@ -184,6 +184,7 @@ test('Multiple Lambda Functions can be specified', () => {
 
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::Lambda::Function', 4);
+  template.resourceCountIs("AWS::Lambda::Alias", 0);
 });
 
 test('Existing lambda function can be specified', () => {
@@ -747,4 +748,85 @@ test('Shared lambda function works', () => {
   expect(construct.apiLambdaFunctions[0].id).toEqual('MessagesHandler');
   expect(construct.apiLambdaFunctions[0].lambdaFunction).toBeDefined();
   expect(construct.apiLambdaFunctions[0].lambdaFunction.functionArn).toEqual(constructTwo.apiLambdaFunctions[0].lambdaFunction.functionArn);
+});
+
+test('Deploys API based on Alias correctluy', () => {
+  const stack = new Stack();
+
+  const apiDefinitionAsset = new Asset(stack, 'ApiDefinitionAsset', {
+    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
+  });
+
+  const messagesLambda = defaults.buildLambdaFunction(stack, {
+    lambdaFunctionProps: {
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+      currentVersionOptions: {
+        removalPolicy: RemovalPolicy.RETAIN,
+      },
+    }
+  });
+
+  const photosLambda = defaults.buildLambdaFunction(stack, {
+    lambdaFunctionProps: {
+      functionName: 'PhotosLambdaTestFromAsset',
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),
+    }
+  });
+
+  const messagesAlias = new lambda.Alias(stack, 'messages-alias', {
+    version: messagesLambda.currentVersion,
+    aliasName: 'messagesAlias',
+  });
+
+  new OpenApiGatewayToLambda(stack, 'OpenApiGatewayToLambda', {
+    apiDefinitionAsset,
+    apiIntegrations: [
+      {
+        id: 'MessagesHandler',
+        existingLambdaObj: messagesLambda,
+        existingFunctionAlias: messagesAlias
+      },
+      {
+        id: 'PhotosHandler',
+        existingLambdaObj: photosLambda
+      }
+    ]
+  });
+
+  const template = Template.fromStack(stack);
+  defaults.printWarning(`\n\n==dbg==\n${JSON.stringify(template)}\n\n==dbg===\n\n`);
+
+  template.resourceCountIs("AWS::Lambda::Alias", 1);
+  template.resourceCountIs("AWS::Lambda::Version", 1);
+  template.hasResourceProperties("AWS::Lambda::Alias", {
+    FunctionName: {
+      Ref: Match.stringLikeRegexp("LambdaFunction.*")
+    },
+    FunctionVersion: {
+      "Fn::GetAtt": [
+        Match.stringLikeRegexp("LambdaFunctionCurrentVersion.*"),
+        "Version"
+      ]
+    },
+    Name: "messagesAlias"
+  });
+  // Confirm we've granted permission the the Alias and not the Lambda
+  template.hasResourceProperties("AWS::Lambda::Permission", {
+    Action: "lambda:InvokeFunction",
+    FunctionName: {
+      Ref: Match.stringLikeRegexp("messagesalias.*")
+    },
+    Principal: "apigateway.amazonaws.com",
+  });
+  template.resourcePropertiesCountIs("AWS::Lambda::Permission", {
+    Action: "lambda:InvokeFunction",
+    FunctionName: {
+      Ref: Match.stringLikeRegexp("LambdaFunction.*")
+    },
+    Principal: "apigateway.amazonaws.com",
+  }, 0);
 });

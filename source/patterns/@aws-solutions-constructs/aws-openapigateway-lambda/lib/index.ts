@@ -126,14 +126,15 @@ export class OpenApiGatewayToLambda extends Construct {
           lambdaFunction: defaults.buildLambdaFunction(this, {
             existingLambdaObj: apiIntegration.existingLambdaObj,
             lambdaFunctionProps: apiIntegration.lambdaFunctionProps
-          }, `${apiIntegration.id}ApiFunction${lambdaCounter++}`)
+          }, `${apiIntegration.id}ApiFunction${lambdaCounter++}`),
+          functionAlias: apiIntegration.existingFunctionAlias
         };
       } else {
         throw new Error(`One of existingLambdaObj or lambdaFunctionProps must be specified for the api integration with id: ${apiIntegration.id}`);
       }
     });
 
-    const definition = ObtainApiDefinition(this,  {
+    const definition = ObtainApiDefinition(this, {
       tokenToFunctionMap: this.apiLambdaFunctions,
       apiDefinitionBucket: props.apiDefinitionBucket,
       apiDefinitionKey: props.apiDefinitionKey,
@@ -157,11 +158,19 @@ export class OpenApiGatewayToLambda extends Construct {
     this.apiLambdaFunctions.forEach(apiLambdaFunction => {
       // Redeploy the API any time one of the lambda functions changes
       this.apiGateway.latestDeployment?.addToLogicalId(apiLambdaFunction.lambdaFunction.functionArn);
-      // Grant APIGW invocation rights for each lambda function
-      apiLambdaFunction.lambdaFunction.addPermission(`${id}PermitAPIGInvocation`, {
-        principal: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-        sourceArn: this.apiGateway.arnForExecuteApi('*')
-      });
+      if (apiLambdaFunction.functionAlias) {
+        // Grant APIGW invocation rights for each lambda function
+        apiLambdaFunction.functionAlias.addPermission(`${id}PermitAPIGInvocation`, {
+          principal: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+          sourceArn: this.apiGateway.arnForExecuteApi('*')
+        });
+      } else {
+        // Grant APIGW invocation rights for each lambda function
+        apiLambdaFunction.lambdaFunction.addPermission(`${id}PermitAPIGInvocation`, {
+          principal: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+          sourceArn: this.apiGateway.arnForExecuteApi('*')
+        });
+      }
     });
   }
 }
