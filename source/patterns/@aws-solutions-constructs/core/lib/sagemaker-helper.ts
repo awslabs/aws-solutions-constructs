@@ -228,6 +228,11 @@ export interface BuildSagemakerNotebookResponse {
 
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
+ * The constructs deploying Sagemaker services only deploy Sagemaker Endpoints, Endpoint
+ * Configurations and (already developed) Models. There are no Constructs that deploy Notebooks.
+ * There doesn't appear to be any references to this function outside the unit test file - so
+ * this function is unneccessary.
  */
 export function buildSagemakerNotebook(
   scope: Construct,
