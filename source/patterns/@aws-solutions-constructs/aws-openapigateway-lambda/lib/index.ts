@@ -16,6 +16,7 @@ import { Construct } from 'constructs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
 import { RestApiBaseProps } from 'aws-cdk-lib/aws-apigateway';
@@ -116,21 +117,37 @@ export class OpenApiGatewayToLambda extends Construct {
     // store a counter to be able to uniquely name lambda functions to avoid naming collisions
     let lambdaCounter = 0;
 
-    this.apiLambdaFunctions = props.apiIntegrations.map(apiIntegration => {
-      if (apiIntegration.existingLambdaObj && apiIntegration.lambdaFunctionProps) {
-        throw new Error(`Error - Cannot provide both lambdaFunctionProps and existingLambdaObj in an ApiIntegrationfor the api integration with id: ${apiIntegration.id}`);
-      }
-      if (apiIntegration.existingLambdaObj || apiIntegration.lambdaFunctionProps) {
+    // TODO: Should this functionality be moved to openapi-helper.ts?
+    this.apiLambdaFunctions = props.apiIntegrations.map(rawApiIntegration => {
+      // let updatedIntegration: ApiIntegration;
+      // if (rawApiIntegration.alternateType) {
+      //   if ((rawApiIntegration.alternateType as lambda.Alias).aliasName) {
+      //     updatedIntegration = {
+      //       ...rawApiIntegration,
+      //       existingFunctionAlias: rawApiIntegration.alternateType as lambda.Alias
+      //     };
+      //   } else {
+      //     updatedIntegration = {
+      //       ...rawApiIntegration,
+      //       existingLambdaObj: rawApiIntegration.alternateType as lambda.Function
+      //     };
+      //   }
+      // } else {
+      //   updatedIntegration = rawApiIntegration;
+      // }
+      if (rawApiIntegration.existingLambdaObj && this.isResourceAnAlias(rawApiIntegration.existingLambdaObj)) {
         return {
-          id: apiIntegration.id,
-          lambdaFunction: defaults.buildLambdaFunction(this, {
-            existingLambdaObj: apiIntegration.existingLambdaObj,
-            lambdaFunctionProps: apiIntegration.lambdaFunctionProps
-          }, `${apiIntegration.id}ApiFunction${lambdaCounter++}`),
-          functionAlias: apiIntegration.existingFunctionAlias
+          id: rawApiIntegration.id,
+          functionAlias: rawApiIntegration.existingLambdaObj as lambda.Alias
         };
       } else {
-        throw new Error(`One of existingLambdaObj or lambdaFunctionProps must be specified for the api integration with id: ${apiIntegration.id}`);
+        return {
+          id: rawApiIntegration.id,
+          lambdaFunction: defaults.buildLambdaFunction(this, {
+            existingLambdaObj: rawApiIntegration.existingLambdaObj as lambda.Function,
+            lambdaFunctionProps: rawApiIntegration.lambdaFunctionProps
+          }, `${rawApiIntegration.id}ApiFunction${lambdaCounter++}`),
+        };
       }
     });
 
@@ -156,8 +173,11 @@ export class OpenApiGatewayToLambda extends Construct {
     // Redeploy the API any time a decoupled (non-inline) API definition changes (from asset or s3 object)
     this.apiGateway.latestDeployment?.addToLogicalId(props.apiDefinitionKey ?? props.apiDefinitionAsset?.s3ObjectKey);
     this.apiLambdaFunctions.forEach(apiLambdaFunction => {
+      // We confirm upstream that one of these two values exists, so we can cast away Typescripts doubt
+      const targetInterface: lambda.IFunction = (apiLambdaFunction.lambdaFunction ?? apiLambdaFunction.functionAlias) as lambda.IFunction;
+
       // Redeploy the API any time one of the lambda functions changes
-      this.apiGateway.latestDeployment?.addToLogicalId(apiLambdaFunction.lambdaFunction.functionArn);
+      this.apiGateway.latestDeployment?.addToLogicalId(targetInterface.functionArn);
       if (apiLambdaFunction.functionAlias) {
         // Grant APIGW invocation rights for each lambda function
         apiLambdaFunction.functionAlias.addPermission(`${id}PermitAPIGInvocation`, {
@@ -166,11 +186,15 @@ export class OpenApiGatewayToLambda extends Construct {
         });
       } else {
         // Grant APIGW invocation rights for each lambda function
-        apiLambdaFunction.lambdaFunction.addPermission(`${id}PermitAPIGInvocation`, {
+        targetInterface.addPermission(`${id}PermitAPIGInvocation`, {
           principal: new iam.ServicePrincipal('apigateway.amazonaws.com'),
           sourceArn: this.apiGateway.arnForExecuteApi('*')
         });
       }
     });
+  }
+
+  private isResourceAnAlias(lambdaResource: lambda.Function | lambda.Alias): boolean {
+    return (lambdaResource as lambda.Alias).aliasName !== undefined;
   }
 }

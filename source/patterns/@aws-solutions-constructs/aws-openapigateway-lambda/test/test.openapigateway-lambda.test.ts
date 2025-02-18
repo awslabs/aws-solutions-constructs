@@ -248,7 +248,7 @@ test('Throws error when neither existingLambdaObj or lambdaFunctionProps is spec
       ]
     });
   };
-  expect(app).toThrowError('One of existingLambdaObj or lambdaFunctionProps must be specified for the api integration with id: MessagesHandler');
+  expect(app).toThrowError(`ApiIntegration id:MessagesHandler must have exactly one of lambdaFunctionProps or existingLambdaObj\n`);
 });
 
 test('Two Constructs create APIs with different names', () => {
@@ -368,40 +368,6 @@ test('Confirm API definition uri is added to function name', () => {
     return element.includes("MessagesHandler");
   })).toBeTruthy();
 
-});
-
-test('Confirm that providing both lambdaFunction and functionProps is an error', () => {
-  const stack = new Stack();
-  const existingLambdaObj = new lambda.Function(stack, 'ExistingLambda', {
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
-    handler: 'index.handler',
-    functionName: 'ExistingLambdaFunction',
-    code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
-  });
-
-  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
-    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
-  });
-
-  const props = {
-    apiDefinitionAsset,
-    apiIntegrations: [
-      {
-        id: 'MessagesHandler',
-        lambdaFunctionProps: {
-          runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
-          handler: 'index.handler',
-          code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
-        },
-        existingLambdaObj
-      }
-    ]
-  };
-
-  const app = () => {
-    new OpenApiGatewayToLambda(stack, 'test', props);
-  };
-  expect(app).toThrowError(`Error - Cannot provide both lambdaFunctionProps and existingLambdaObj in an ApiIntegrationfor the api integration with id: MessagesHandler`);
 });
 
 /*
@@ -747,10 +713,10 @@ test('Shared lambda function works', () => {
   expect(construct.apiLambdaFunctions.length).toEqual(1);
   expect(construct.apiLambdaFunctions[0].id).toEqual('MessagesHandler');
   expect(construct.apiLambdaFunctions[0].lambdaFunction).toBeDefined();
-  expect(construct.apiLambdaFunctions[0].lambdaFunction.functionArn).toEqual(constructTwo.apiLambdaFunctions[0].lambdaFunction.functionArn);
+  expect(construct.apiLambdaFunctions[0].lambdaFunction!.functionArn).toEqual(constructTwo.apiLambdaFunctions[0].lambdaFunction!.functionArn);
 });
 
-test('Deploys API based on Alias correctluy', () => {
+test('Deploys API based on Alias correctly', () => {
   const stack = new Stack();
 
   const apiDefinitionAsset = new Asset(stack, 'ApiDefinitionAsset', {
@@ -787,8 +753,7 @@ test('Deploys API based on Alias correctluy', () => {
     apiIntegrations: [
       {
         id: 'MessagesHandler',
-        existingLambdaObj: messagesLambda,
-        existingFunctionAlias: messagesAlias
+        existingLambdaObj: messagesAlias
       },
       {
         id: 'PhotosHandler',

@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/612d2d6d1d4300f28e6d6d9d00dbf05384b632eb7e6ab071b251e70c6086594a.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/90e62a6fcf8b3c3369d639d53ad7ae48d7a7b571c06fd65356e6c844754bb19d.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -205,7 +205,7 @@
         "/opilam-apiFromAssetLambdaFunctionAliases/OpenApiGatewayToLambda/SpecRestApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775114a8d1d0c9bf9b9d904a22f099d1d64"
+            "data": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD077506cc115d2977eccc01a7a14e0a95492a"
           }
         ],
         "/opilam-apiFromAssetLambdaFunctionAliases/OpenApiGatewayToLambda/SpecRestApi/DeploymentStage.prod/Resource": [
@@ -254,15 +254,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "LambdaFunctionCurrentVersion7D5C86E363f0ff02d21229f6578ddc05f60b9083": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LambdaFunctionCurrentVersion7D5C86E363f0ff02d21229f6578ddc05f60b9083",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },

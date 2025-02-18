@@ -57,8 +57,7 @@ new OpenApiGatewayToLambda(stack, 'OpenApiGatewayToLambda', {
   apiIntegrations: [
     {
       id: 'MessagesHandler',
-      existingLambdaObj: messagesLambda,
-      existingFunctionAlias: messagesAlias
+      existingLambdaObj: messagesAlias
     },
     {
       id: 'PhotosHandler',

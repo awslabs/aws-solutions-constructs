@@ -47,13 +47,7 @@ export interface ApiIntegration {
    *
    * One and only one of existingLambdaObj or lambdaFunctionProps must be specified, any other combination will cause an error.
    */
-  readonly existingLambdaObj?: lambda.Function;
-  /**
-   * An Alias to the provided existingLambdbaObj that should be used in the integration with the API
-   *
-   * This is only valid if and existingLambdaObj is specified
-   */
-  readonly existingFunctionAlias?: lambda.Alias;
+  readonly existingLambdaObj?: lambda.Function | lambda.Alias;
   /**
    * Properties for the Lambda function to create and associate with the API method in the OpenAPI file matched by id.
    *
@@ -71,12 +65,10 @@ export interface ApiLambdaFunction {
    */
   readonly id: string;
   /**
-   * The instantiated lambda.Function.
+   * The function the API method will integrate with -
+   * Must be defined in lambdaFunction or functionAlias (but not both)
    */
-  readonly lambdaFunction: lambda.Function;
-  /**
-   * Optional Alias to the function - if provided, it will be used instead of the function whereever possible.
-   */
+  readonly lambdaFunction?: lambda.Function;
   readonly functionAlias?: lambda.Alias;
 }
 
@@ -114,6 +106,20 @@ export function CheckOpenApiProps(props: OpenApiProps) {
   if (props.apiIntegrations === undefined || props.apiIntegrations.length < 1) {
     errorMessages += 'At least one ApiIntegration must be specified in the apiIntegrations property\n';
     errorFound = true;
+  } else {
+    props.apiIntegrations.forEach((apiIntegration: ApiIntegration) => {
+      if (!apiIntegration.id) {
+        errorMessages += 'Each ApiIntegration must have a non-empty id property\n';
+        errorFound = true;
+      }
+      let functionDefCount = 0;
+      if (apiIntegration.lambdaFunctionProps) { functionDefCount++; }
+      if (apiIntegration.existingLambdaObj) { functionDefCount++; }
+      if (functionDefCount !== 1) {
+        errorMessages += `ApiIntegration id:${apiIntegration.id} must have exactly one of lambdaFunctionProps or existingLambdaObj\n`;
+        errorFound = true;
+      }
+    });
   }
 
   if (errorFound) {
@@ -146,7 +152,8 @@ export function ObtainApiDefinition(scope: Construct, props: ObtainApiDefinition
     const uriPlaceholderString = apiLambdaFunction.id;
     // the endpoint URI of the backing lambda function, as defined in the API Gateway extensions for OpenAPI here:
     // https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions-integration.html
-    const targetArn = apiLambdaFunction.functionAlias ? apiLambdaFunction.functionAlias.functionArn : apiLambdaFunction.lambdaFunction.functionArn;
+    // We know that either functionAlias or lambdaFunction must be defined, so we can use ! to satisfy Typescript
+    const targetArn = apiLambdaFunction.functionAlias ? apiLambdaFunction.functionAlias.functionArn : apiLambdaFunction.lambdaFunction!.functionArn;
     const uriResolvedValue = `arn:${Aws.PARTITION}:apigateway:${Aws.REGION}:lambda:path/2015-03-31/functions/${targetArn}/invocations`;
 
     return {
