@@ -17,7 +17,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "build": "tsc -b .",
-    "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
+    "lint": "eslint --config ../eslintrc.config.mjs . && tslint --project .",
     "lint-fix": "eslint -c ../eslintrc.yml --ext=.js,.ts --fix .",
     "test": "jest --coverage",
     "clean": "tsc -b --clean",
@@ -26,7 +26,7 @@
     "integ-assert": "integ-runner",
     "jsii": "jsii",
     "jsii-pacmak": "jsii-pacmak",
-    "build+lint+test": "npm run jsii && npm test && npm run integ-assert",
+    "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
     "blt": "npm run build+lint+test",
     "snapshot-update": "npm test -- -u"
   },
