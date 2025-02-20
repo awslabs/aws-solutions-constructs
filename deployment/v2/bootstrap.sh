@@ -33,8 +33,12 @@ chmod +x  ~/.guard/bin/cfn-guard
 # Why no PATH update? Because it would be lost when the script exits
 curl -tlsv1.3 -sSf https://$RULE_BUCKET.s3.amazonaws.com/cfn-guard-rules/latest/$RULE_FILE_NAME -o ~/.guard/rules/aws-solutions.guard
 
+# echo "============================================================================================="
+# echo "installing..."
+# yarn install --frozen-lockfile
+
 echo "============================================================================================="
 echo "installing..."
-yarn install --frozen-lockfile
+npm install --legacy-peer-deps
 
 cd $starting_dir
