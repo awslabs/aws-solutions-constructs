@@ -26,10 +26,7 @@ import { Construct } from 'constructs';
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function buildLogGroup(scope: Construct, logGroupId?: string, logGroupProps?: logs.LogGroupProps): logs.LogGroup {
-  let consolidatedLogGroupProps: logs.LogGroupProps;
-
-  // Override user provided CW LogGroup props with the DefaultLogGroupProps
-  consolidatedLogGroupProps = consolidateProps(DefaultLogGroupProps(), logGroupProps);
+  const consolidatedLogGroupProps: logs.LogGroupProps = consolidateProps(DefaultLogGroupProps(), logGroupProps);
 
   // Set the LogGroup Id
   const adjustedLogGroupId = logGroupId ? logGroupId : 'CloudWatchLogGroup';

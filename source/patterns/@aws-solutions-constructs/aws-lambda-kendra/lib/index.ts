@@ -35,7 +35,7 @@ export interface LambdaToKendraProps {
    *
    * @default - empty list (no data sources)
    */
-  readonly kendraDataSourcesProps: Array<kendra.CfnDataSourceProps | any>;
+  readonly kendraDataSourcesProps: (kendra.CfnDataSourceProps | any)[];
   /**
    * Optional - index permissions to grant to the Lambda function. One or more of the following
    * may be specified: `Read`, `SubmitFeedback` and `Write`. Default is `["Read", "SubmitFeedback"]`. Read is
