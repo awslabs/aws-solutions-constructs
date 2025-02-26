@@ -20,7 +20,7 @@ import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as cdk from 'aws-cdk-lib';
 import { addCfnGuardSuppressRules, addCfnSuppressRules, consolidateProps } from './utils';
-import { DefaultUserPoolProps, DefaultUserPoolClientProps, DefaultIdentityPoolProps } from './cognito-defaults';
+import { defaultUserPoolProps, DefaultUserPoolClientProps, DefaultIdentityPoolProps } from './cognito-defaults';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 
@@ -34,9 +34,7 @@ export interface CognitoOptions {
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function buildUserPool(scope: Construct, userPoolProps?: cognito.UserPoolProps): cognito.UserPool {
-  let cognitoUserPoolProps: cognito.UserPoolProps;
-
-  cognitoUserPoolProps = consolidateProps(DefaultUserPoolProps, userPoolProps);
+  const cognitoUserPoolProps = consolidateProps(defaultUserPoolProps, userPoolProps);
 
   const userPool = new cognito.UserPool(scope, 'CognitoUserPool', cognitoUserPoolProps);
 
@@ -68,9 +66,7 @@ export function buildUserPool(scope: Construct, userPoolProps?: cognito.UserPool
 export function buildUserPoolClient(scope: Construct, userPool: cognito.UserPool,
   cognitoUserPoolClientProps?: cognito.UserPoolClientProps): cognito.UserPoolClient {
 
-  let userPoolClientProps: cognito.UserPoolClientProps;
-
-  userPoolClientProps = consolidateProps(DefaultUserPoolClientProps(userPool), cognitoUserPoolClientProps);
+  const userPoolClientProps = consolidateProps(DefaultUserPoolClientProps(userPool), cognitoUserPoolClientProps);
 
   return new cognito.UserPoolClient(scope, 'CognitoUserPoolClient', userPoolClientProps);
 }

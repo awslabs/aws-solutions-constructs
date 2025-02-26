@@ -34,7 +34,7 @@ export interface EventSourceProps {
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function DynamoEventSourceProps(scope: Construct, _dynamoEventSourceProps?: EventSourceProps): DynamoEventSourceProps {
+export function DefaultDynamoEventSourceProps(scope: Construct, dynamoEventSourceProps?: EventSourceProps): DynamoEventSourceProps {
 
   const baseProps: DynamoEventSourceProps = {
     startingPosition: lambda.StartingPosition.TRIM_HORIZON,
@@ -45,10 +45,10 @@ export function DynamoEventSourceProps(scope: Construct, _dynamoEventSourceProps
 
   let extraProps = {};
 
-  if (_dynamoEventSourceProps === undefined || _dynamoEventSourceProps?.deploySqsDlqQueue === undefined
-    || _dynamoEventSourceProps.deploySqsDlqQueue) {
+  if (dynamoEventSourceProps === undefined || dynamoEventSourceProps?.deploySqsDlqQueue === undefined
+    || dynamoEventSourceProps.deploySqsDlqQueue) {
     const buildQueueResponse = buildQueue(scope, 'SqsDlqQueue', {
-      queueProps: _dynamoEventSourceProps?.sqsDlqQueueProps,
+      queueProps: dynamoEventSourceProps?.sqsDlqQueueProps,
       deployDeadLetterQueue: false   // This is already a DLQ for the stream, it doesn't need it's own DLQS
     });
 
@@ -59,25 +59,25 @@ export function DynamoEventSourceProps(scope: Construct, _dynamoEventSourceProps
 
   const defaultDynamoEventSourceProps = Object.assign(baseProps, extraProps);
 
-  return consolidateProps(defaultDynamoEventSourceProps, _dynamoEventSourceProps?.eventSourceProps);
+  return consolidateProps(defaultDynamoEventSourceProps, dynamoEventSourceProps?.eventSourceProps);
 }
 
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function S3EventSourceProps(_s3EventSourceProps?: S3EventSourceProps) {
+export function DefaultS3EventSourceProps(s3EventSourceProps?: S3EventSourceProps) {
 
   const defaultS3EventSourceProps: S3EventSourceProps = {
     events: [s3.EventType.OBJECT_CREATED]
   };
 
-  return consolidateProps(defaultS3EventSourceProps, _s3EventSourceProps);
+  return consolidateProps(defaultS3EventSourceProps, s3EventSourceProps);
 }
 
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function KinesisEventSourceProps(scope: Construct, _kinesisEventSourceProps?: EventSourceProps): KinesisEventSourceProps {
+export function DefaultKinesisEventSourceProps(scope: Construct, kinesisEventSourceProps?: EventSourceProps): KinesisEventSourceProps {
   const baseProps: KinesisEventSourceProps = {
     startingPosition: lambda.StartingPosition.TRIM_HORIZON,
     bisectBatchOnError: true,
@@ -87,10 +87,10 @@ export function KinesisEventSourceProps(scope: Construct, _kinesisEventSourcePro
 
   let extraProps = {};
 
-  if (_kinesisEventSourceProps === undefined || _kinesisEventSourceProps?.deploySqsDlqQueue === undefined
-    || _kinesisEventSourceProps.deploySqsDlqQueue) {
+  if (kinesisEventSourceProps === undefined || kinesisEventSourceProps?.deploySqsDlqQueue === undefined
+    || kinesisEventSourceProps.deploySqsDlqQueue) {
     const buildQueueResponse = buildQueue(scope, 'SqsDlqQueue', {
-      queueProps: _kinesisEventSourceProps?.sqsDlqQueueProps,
+      queueProps: kinesisEventSourceProps?.sqsDlqQueueProps,
       deployDeadLetterQueue: false // Don't create SQS DLQ for Kinesis DLQ
     });
 
@@ -101,5 +101,5 @@ export function KinesisEventSourceProps(scope: Construct, _kinesisEventSourcePro
 
   const defaultKinesisEventSourceProps = Object.assign(baseProps, extraProps);
 
-  return consolidateProps(defaultKinesisEventSourceProps, _kinesisEventSourceProps?.eventSourceProps);
+  return consolidateProps(defaultKinesisEventSourceProps, kinesisEventSourceProps?.eventSourceProps);
 }

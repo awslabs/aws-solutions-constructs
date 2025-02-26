@@ -522,9 +522,7 @@ export function createSagemakerEndpointConfig(
   modelName: string,
   endpointConfigProps?: sagemaker.CfnEndpointConfigProps
 ): sagemaker.CfnEndpointConfig {
-  let finalEndpointConfigProps: sagemaker.CfnEndpointConfigProps;
   let kmsKeyId: string;
-  let endpointConfig: sagemaker.CfnEndpointConfig;
 
   // Create encryption key if one is not provided
   if (endpointConfigProps && endpointConfigProps.kmsKeyId) {
@@ -534,10 +532,11 @@ export function createSagemakerEndpointConfig(
   }
 
   // Overwrite default EndpointConfig properties
-  finalEndpointConfigProps = consolidateProps(DefaultSagemakerEndpointConfigProps(modelName, kmsKeyId), endpointConfigProps);
+  const finalEndpointConfigProps: sagemaker.CfnEndpointConfigProps =
+    consolidateProps(DefaultSagemakerEndpointConfigProps(modelName, kmsKeyId), endpointConfigProps);
 
   // Create the Sagemaker's EndpointConfig
-  endpointConfig = new sagemaker.CfnEndpointConfig(scope, 'SagemakerEndpointConfig', finalEndpointConfigProps);
+  const endpointConfig: sagemaker.CfnEndpointConfig = new sagemaker.CfnEndpointConfig(scope, 'SagemakerEndpointConfig', finalEndpointConfigProps);
 
   return endpointConfig;
 }
@@ -550,14 +549,12 @@ export function createSagemakerEndpoint(
   endpointConfigName: string,
   endpointProps?: sagemaker.CfnEndpointProps
 ): sagemaker.CfnEndpoint {
-  let finalEndpointProps: sagemaker.CfnEndpointProps;
-  let endpoint: sagemaker.CfnEndpoint;
 
   // Overwrite default Endpoint properties
-  finalEndpointProps = consolidateProps(DefaultSagemakerEndpointProps(endpointConfigName), endpointProps);
+  const finalEndpointProps: sagemaker.CfnEndpointProps = consolidateProps(DefaultSagemakerEndpointProps(endpointConfigName), endpointProps);
 
   // Create the Sagemaker's Endpoint
-  endpoint = new sagemaker.CfnEndpoint(scope, 'SagemakerEndpoint', finalEndpointProps);
+  const endpoint : sagemaker.CfnEndpoint= new sagemaker.CfnEndpoint(scope, 'SagemakerEndpoint', finalEndpointProps);
 
   return endpoint;
 }

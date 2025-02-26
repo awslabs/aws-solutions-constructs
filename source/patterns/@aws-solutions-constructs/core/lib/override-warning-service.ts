@@ -50,12 +50,15 @@ export function flagOverriddenDefaults(defaultProps: object, userProps: object) 
  * 'deep-diff' library, whenever it encounters a Duration object, it throws the exception
  * 'Argument to Intrinsic must be a plain value object', so such props are excluded from the diff check.
  */
-function _prefilter(_path: any[], _key: string): boolean {
+// This function is called from within deep-diff with 2 arguments, but we only use one of them, so we have to
+// disable the "is never read" typescript error
+// @ts-ignore
+function prefilter(path: any[], key: string): boolean {
   const prefilters = ['maxRecordAge', 'expiration', 'transitionAfter', 'destination', 'timeout', 'period', 'node'];
 
-  if (prefilters.indexOf(_key) >= 0) {
-    if (_key !== 'node') {
-      printWarning(`Possible override of ${_key} value.`);
+  if (prefilters.indexOf(key) >= 0) {
+    if (key !== 'node') {
+      printWarning(`Possible override of ${key} value.`);
     }
     return true;
   }
@@ -69,7 +72,7 @@ function _prefilter(_path: any[], _key: string): boolean {
  * @return {Array} an array containing the overridden values.
  */
 function findOverrides(defaultProps: object, userProps: object) {
-  const diff = deepdiff.diff(defaultProps, userProps, _prefilter);
+  const diff = deepdiff.diff(defaultProps, userProps, prefilter);
   // Filter the results
   return (diff !== undefined) ? diff?.filter((e) => (
     e.kind === 'E' && // only return overrides

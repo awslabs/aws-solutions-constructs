@@ -18,8 +18,8 @@
 
 import * as kinesisanalytics from 'aws-cdk-lib/aws-kinesisanalytics';
 
-const DefaultCfnApplicationProps: kinesisanalytics.CfnApplicationProps = {
+const defaultCfnApplicationProps: kinesisanalytics.CfnApplicationProps = {
   inputs: []
 };
 
-export { DefaultCfnApplicationProps };
+export { defaultCfnApplicationProps };

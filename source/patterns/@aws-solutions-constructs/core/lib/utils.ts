@@ -28,7 +28,7 @@ export const COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME = lambda.Runtime.NODEJS_20_X;
 export const COMMERCIAL_REGION_LAMBDA_NODE_STRING = "nodejs20.x";
 
 function isObject(val: object) {
-  return val != null && typeof val === 'object'
+  return val !== null && typeof val === 'object'
         && Object.prototype.toString.call(val) === '[object Object]';
 }
 
@@ -65,7 +65,7 @@ function isPlainObject(o: object) {
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function overrideProps(DefaultProps: object, userProps: object, concatArray: boolean = false, suppressWarnings?: boolean): any {
+export function overrideProps(defaultProps: object, userProps: object, concatArray: boolean = false, suppressWarnings?: boolean): any {
   // Notify the user via console output if defaults are overridden
 
   let overrideWarningsEnabled: boolean;
@@ -75,17 +75,19 @@ export function overrideProps(DefaultProps: object, userProps: object, concatArr
     overrideWarningsEnabled = true;
   }
   if (overrideWarningsEnabled) {
-    flagOverriddenDefaults(DefaultProps, userProps);
+    flagOverriddenDefaults(defaultProps, userProps);
   }
   // Override the sensible defaults with user provided props
   if (concatArray) {
-    return deepmerge(DefaultProps, userProps, {
+    return deepmerge(defaultProps, userProps, {
       arrayMerge: (destinationArray, sourceArray) =>  destinationArray.concat(sourceArray),
       isMergeableObject: isPlainObject
     });
   } else {
-    return deepmerge(DefaultProps, userProps, {
-      arrayMerge: (_destinationArray, sourceArray) => sourceArray, // underscore allows arg to be ignored
+    return deepmerge(defaultProps, userProps, {
+      // Ignoring error pointing out that destinationArray is never read
+      // @ts-ignore
+      arrayMerge: (destinationArray, sourceArray) => sourceArray,
       isMergeableObject: isPlainObject
     });
   }

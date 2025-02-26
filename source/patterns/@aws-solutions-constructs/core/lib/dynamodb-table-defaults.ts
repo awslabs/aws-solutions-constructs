@@ -18,7 +18,7 @@
 
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 
-const DefaultTableProps: dynamodb.TableProps = {
+const defaultTableProps: dynamodb.TableProps = {
   billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
   encryption: dynamodb.TableEncryption.AWS_MANAGED,
   pointInTimeRecovery: true,
@@ -28,7 +28,7 @@ const DefaultTableProps: dynamodb.TableProps = {
   }
 };
 
-const DefaultTableWithStreamProps: dynamodb.TableProps = {
+const defaultTableWithStreamProps: dynamodb.TableProps = {
   billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
   encryption: dynamodb.TableEncryption.AWS_MANAGED,
   pointInTimeRecovery: true,
@@ -39,4 +39,4 @@ const DefaultTableWithStreamProps: dynamodb.TableProps = {
   stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES
 };
 
-export { DefaultTableProps, DefaultTableWithStreamProps };
+export { defaultTableProps, defaultTableWithStreamProps };
