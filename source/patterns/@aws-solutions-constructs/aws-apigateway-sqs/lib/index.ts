@@ -262,7 +262,7 @@ export class ApiGatewayToSqs extends Construct {
   public readonly sqsQueue: sqs.Queue;
   public readonly deadLetterQueue?: sqs.DeadLetterQueue;
 
-  private readonly defaultCreateRequestTemplate = 'Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")';
+  private readonly defaultCreateRequestTemplate = 'Action=SendMessage&MessageBody=$util.urlEncode("$input.body")';
   private readonly defaultReadRequestTemplate = 'Action=ReceiveMessage';
   private readonly defaultDeleteRequestTemplate = "Action=DeleteMessage&ReceiptHandle=$util.urlEncode($input.params('receiptHandle'))";
 

@@ -8,7 +8,7 @@ import licenseHeader from 'eslint-plugin-license-header';
 
 export default [
   {
-    ignores: ['**/*.js', '**/*.js', '**/*.d.ts'],
+    ignores: ['**/*.js', '**/*.js', '**/*.d.ts', '**/integ.*.js.snapshot/*'],
   },
   {
     files: ["**/*.ts"],
@@ -42,7 +42,6 @@ export default [
         trailingUnderscore: "forbid"
       }],
       "@stylisticJs/spaced-comment": ["error", "always" ],
-      "@typescript-eslint/no-for-in-array": "error",
       "no-labels": "error",
       "@stylisticJs/new-parens": "error",
       "@typescript-eslint/consistent-type-assertions": "error",

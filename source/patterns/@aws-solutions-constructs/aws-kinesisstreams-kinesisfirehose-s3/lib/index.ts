@@ -155,7 +155,7 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
       }
     }
 
-    const _kinesisFirehoseProps: kinesisfirehose.CfnDeliveryStreamProps = {
+    const kinesisFirehoseProps: kinesisfirehose.CfnDeliveryStreamProps = {
       deliveryStreamType: 'KinesisStreamAsSource',
       kinesisStreamSourceConfiguration: {
         kinesisStreamArn: this.kinesisStream.streamArn,
@@ -164,7 +164,7 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
     };
 
     const kdfToS3Construct = new kdfToS3.KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {
-      kinesisFirehoseProps: overrideProps(props.kinesisFirehoseProps, _kinesisFirehoseProps),
+      kinesisFirehoseProps: overrideProps(props.kinesisFirehoseProps, kinesisFirehoseProps),
       existingBucketObj: props.existingBucketObj,
       existingLoggingBucketObj: props.existingLoggingBucketObj,
       bucketProps: props.bucketProps,

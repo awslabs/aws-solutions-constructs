@@ -65,7 +65,7 @@ export interface DynamoDBStreamsToPipesToStepfunctionsProps {
   // *******************
 
   /**
-   * 	User provided props for the sfn.StateMachine. This or existingStateMachine is required
+   * User provided props for the sfn.StateMachine. This or existingStateMachine is required
    */
   readonly stateMachineProps?: sfn.StateMachineProps,
   /**

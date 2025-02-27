@@ -668,7 +668,7 @@ test('Test providing certificateArns is an error', () => {
       handler: 'index.handler'
     },
     listenerProps: {
-      certificateArns: ['	arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012']
+      certificateArns: ['arn:aws:acm:us-east-1:123456789012:certificate/11112222-3333-1234-1234-123456789012']
     },
     targetProps: {
       targetGroupName: 'different-name'
@@ -754,6 +754,7 @@ test('Test new ALB with no listenerProps is an error', () => {
     new AlbToLambda(stack, 'test-one', props);
   };
   // Assertion
+  // eslint-disable-next-line
   expect(app).toThrowError(/When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP/);
 });
 
@@ -783,6 +784,7 @@ test('Test existing ALB with no listener with no listenerProps is an error', () 
     new AlbToLambda(stack, 'test-one', props);
   };
   // Assertion
+  // eslint-disable-next-line
   expect(app).toThrowError(/When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP/);
 });
 

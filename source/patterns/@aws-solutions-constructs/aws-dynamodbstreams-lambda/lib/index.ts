@@ -100,7 +100,7 @@ export class DynamoDBStreamsToLambda extends Construct {
     this.dynamoTableInterface.grantStreamRead(this.lambdaFunction.grantPrincipal);
 
     // Add the Lambda event source mapping
-    const eventSourceProps = defaults.DynamoEventSourceProps(this, {
+    const eventSourceProps = defaults.DefaultDynamoEventSourceProps(this, {
       eventSourceProps: props.dynamoEventSourceProps,
       deploySqsDlqQueue: props.deploySqsDlqQueue,
       sqsDlqQueueProps: props.sqsDlqQueueProps

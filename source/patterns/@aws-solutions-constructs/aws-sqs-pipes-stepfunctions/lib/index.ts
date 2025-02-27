@@ -58,7 +58,7 @@ export interface SqsToPipesToStepfunctionsProps {
    */
   readonly queueEncryptionKeyProps?: kms.KeyProps,
   /**
-   * 	An optional CMK that will be used by the construct to encrypt the new SQS queue.
+   * An optional CMK that will be used by the construct to encrypt the new SQS queue.
    */
   readonly existingQueueEncryptionKey?: kms.Key,
   /**
@@ -82,7 +82,7 @@ export interface SqsToPipesToStepfunctionsProps {
   // *******************
 
   /**
-   * 	User provided props for the sfn.StateMachine. This or existingStateMachine is required
+   * User provided props for the sfn.StateMachine. This or existingStateMachine is required
    */
   readonly stateMachineProps?: sfn.StateMachineProps,
   /**

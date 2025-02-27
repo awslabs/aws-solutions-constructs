@@ -117,7 +117,7 @@ export class S3ToLambda extends Construct {
 
     // Create S3 trigger to invoke lambda function
     this.lambdaFunction.addEventSource(new S3EventSource(bucket,
-      defaults.S3EventSourceProps(props.s3EventSourceProps)));
+      defaults.DefaultS3EventSourceProps(props.s3EventSourceProps)));
 
     // Suppress cfn-nag rules that generate warns for S3 bucket notification CDK resources
     addCfnNagS3BucketNotificationRulesToSuppress(Stack.of(this), 'BucketNotificationsHandler050a0587b7544547bf325f094a3db834');
