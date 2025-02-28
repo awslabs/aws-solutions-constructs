@@ -18,7 +18,6 @@
 
 import * as deepmerge from 'deepmerge';
 import { flagOverriddenDefaults } from './override-warning-service';
-import * as log from 'npmlog';
 import * as crypto from 'crypto';
 import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -29,7 +28,7 @@ export const COMMERCIAL_REGION_LAMBDA_NODE_STRING = "nodejs20.x";
 
 function isObject(val: object) {
   return val !== null && typeof val === 'object'
-        && Object.prototype.toString.call(val) === '[object Object]';
+    && Object.prototype.toString.call(val) === '[object Object]';
 }
 
 function isPlainObject(o: object) {
@@ -71,7 +70,7 @@ export function overrideProps(defaultProps: object, userProps: object, concatArr
   let overrideWarningsEnabled: boolean;
   if ((process.env.overrideWarningsEnabled === 'false') || (suppressWarnings === true)) {
     overrideWarningsEnabled = false;
-  } else  {
+  } else {
     overrideWarningsEnabled = true;
   }
   if (overrideWarningsEnabled) {
@@ -80,7 +79,7 @@ export function overrideProps(defaultProps: object, userProps: object, concatArr
   // Override the sensible defaults with user provided props
   if (concatArray) {
     return deepmerge(defaultProps, userProps, {
-      arrayMerge: (destinationArray, sourceArray) =>  destinationArray.concat(sourceArray),
+      arrayMerge: (destinationArray, sourceArray) => destinationArray.concat(sourceArray),
       isMergeableObject: isPlainObject
     });
   } else {
@@ -98,10 +97,11 @@ export function overrideProps(defaultProps: object, userProps: object, concatArr
  */
 export function printWarning(message: string) {
   // Style the log output
-  log.prefixStyle.bold = true;
-  log.prefixStyle.fg = 'red';
-  log.enableColor();
-  log.warn('AWS_SOLUTIONS_CONSTRUCTS_WARNING: ', message);
+  const WARNING = "\u001b[103;30m";   // Black on yellow
+  const LABEL = "\u001b[31;1m";   // Bold red
+  const RESET = "\u001b[22;49;39m";
+  // eslint-disable-next-line no-console
+  console.log(`${WARNING}WARN${RESET}${LABEL} AWS_SOLUTIONS_CONSTRUCTS_WARNING:${RESET}  ${message}`);
 }
 
 /**
@@ -124,7 +124,7 @@ export function generateResourceName(
   const hashLength = 12;
   const randomizor: string = randomize ? (new Date()).getTime().toString() : "";
 
-  const maxPartLength = Math.floor( (maxLength -  hashLength - randomizor.length) / parts.length);
+  const maxPartLength = Math.floor((maxLength - hashLength - randomizor.length) / parts.length);
 
   const sha256 = crypto.createHash("sha256");
   let finalName: string = '';
@@ -207,7 +207,7 @@ export function generatePhysicalName(
     allParts = allParts.substring(0, subStringLength) + allParts.substring(allParts.length - subStringLength);
   }
 
-  const finalName  = prefix.toLowerCase() + allParts + '-' + uniqueStackIdPart;
+  const finalName = prefix.toLowerCase() + allParts + '-' + uniqueStackIdPart;
   return finalName;
 }
 
