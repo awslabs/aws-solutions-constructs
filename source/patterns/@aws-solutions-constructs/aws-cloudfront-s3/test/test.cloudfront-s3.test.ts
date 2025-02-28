@@ -780,7 +780,8 @@ test('Providing cloudFrontLoggingBucketAccessLogBucketProps and cloudFrontLoggin
     });
   };
 
-  expect(app).toThrowError(/Error - an existing CloudFront log bucket S3 access log bucket and cloudFrontLoggingBucketAccessLogBucketProps were provided\n/);
+  expect(app).toThrowError(
+    /Error - an existing CloudFront log bucket S3 access log bucket and cloudFrontLoggingBucketAccessLogBucketProps were provided\n/);
 });
 test('Providing cloudFrontLoggingBucketAccessLogBucketProps and logCloudFrontAccessLog=false is an error', () => {
   const stack = new cdk.Stack();

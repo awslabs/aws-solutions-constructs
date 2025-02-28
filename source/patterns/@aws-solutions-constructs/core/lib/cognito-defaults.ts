@@ -18,7 +18,7 @@
 
 import * as cognito from 'aws-cdk-lib/aws-cognito';
 
-const DefaultUserPoolProps: cognito.UserPoolProps = {
+const defaultUserPoolProps: cognito.UserPoolProps = {
 };
 
 /**
@@ -44,4 +44,4 @@ export function DefaultUserPoolClientProps(userpool: cognito.UserPool): cognito.
   } as cognito.UserPoolClientProps;
 }
 
-export { DefaultUserPoolProps };
+export { defaultUserPoolProps };

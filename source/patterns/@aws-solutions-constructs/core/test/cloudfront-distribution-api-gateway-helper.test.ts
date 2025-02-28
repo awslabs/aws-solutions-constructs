@@ -13,7 +13,7 @@
 
 import { Stack } from 'aws-cdk-lib';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
-import * as api from 'aws-cdk-lib/aws-apigateway';
+import * as apigw from 'aws-cdk-lib/aws-apigateway';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '../index';
 import * as s3 from 'aws-cdk-lib/aws-s3';
@@ -40,11 +40,11 @@ test('test cloudfront for Api Gateway with user provided logging bucket', () => 
 
   const func = defaults.deployLambdaFunction(stack, inProps);
 
-  const _api = new api.LambdaRestApi(stack, 'RestApi1', {
+  const api = new apigw.LambdaRestApi(stack, 'RestApi1', {
     handler: func
   });
 
-  CloudFrontDistributionForApiGateway(stack, _api, cfdProps);
+  CloudFrontDistributionForApiGateway(stack, api, cfdProps);
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
@@ -154,13 +154,13 @@ test('test cloudfront for Api Gateway override properties', () => {
 
   const func = defaults.deployLambdaFunction(stack, inProps);
 
-  const _api = new api.LambdaRestApi(stack, 'RestApi1', {
+  const api = new apigw.LambdaRestApi(stack, 'RestApi1', {
     handler: func
   });
 
   const props: cloudfront.DistributionProps = {
     defaultBehavior: {
-      origin: new origins.HttpOrigin(_api.url, {
+      origin: new origins.HttpOrigin(api.url, {
         protocolPolicy: cloudfront.OriginProtocolPolicy.HTTP_ONLY
       }),
       allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
@@ -168,7 +168,7 @@ test('test cloudfront for Api Gateway override properties', () => {
     },
   };
 
-  CloudFrontDistributionForApiGateway(stack, _api, props);
+  CloudFrontDistributionForApiGateway(stack, api, props);
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
@@ -268,10 +268,10 @@ test('test override cloudfront add custom cloudfront function', () => {
   };
 
   const func = new lambda.Function(stack, 'LambdaFunction', lambdaFunctionProps);
-  const _api = new api.LambdaRestApi(stack, 'RestApi', {
+  const api = new apigw.LambdaRestApi(stack, 'RestApi', {
     handler: func
   });
-  CloudFrontDistributionForApiGateway(stack, _api, {
+  CloudFrontDistributionForApiGateway(stack, api, {
     defaultBehavior: {
       functionAssociations: [
         {
@@ -406,10 +406,10 @@ test('test override cloudfront replace custom lambda@edge', () => {
   };
 
   const func = new lambda.Function(stack, 'LambdaFunction', lambdaFunctionProps);
-  const _api = new api.LambdaRestApi(stack, 'RestApi', {
+  const api = new apigw.LambdaRestApi(stack, 'RestApi', {
     handler: func
   });
-  CloudFrontDistributionForApiGateway(stack, _api, {
+  CloudFrontDistributionForApiGateway(stack, api, {
     defaultBehavior: {
       edgeLambdas: [
         {

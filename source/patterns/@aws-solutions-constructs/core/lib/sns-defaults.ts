@@ -18,6 +18,6 @@
 
 import * as sns from 'aws-cdk-lib/aws-sns';
 
-const DefaultSnsTopicProps: sns.TopicProps = {};
+const defaultSnsTopicProps: sns.TopicProps = {};
 
-export { DefaultSnsTopicProps };
+export { defaultSnsTopicProps };

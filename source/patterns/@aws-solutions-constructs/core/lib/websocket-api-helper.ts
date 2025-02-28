@@ -191,7 +191,6 @@ export function buildWebSocketApiProps(
   }
 
   // prettier-ignore
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // Sonar exception reason: - typescript:S6571 - required because we are not passing all values. Using partial may cause @jsii to not work.
   const websocketApiProps: apigwv2.WebSocketApiProps = { // NOSONAR
     defaultRouteOptions: createDefaultRoute ? buildWebSocketQueueRouteOptions(role!, sqsQueue!, '$default', requestTemplate) : undefined,

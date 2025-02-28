@@ -373,8 +373,8 @@ test('Confirm format of name', () => {
   });
 
   // Perform some fancy stuff to examine the specifics of the LogGroupName
-  const LogGroup = template.findResources("AWS::Logs::LogGroup");
-  const logName = LogGroup.StateMachineLogGroup15B91BCB.Properties.LogGroupName;
+  const logGroup = template.findResources("AWS::Logs::LogGroup");
+  const logName = logGroup.StateMachineLogGroup15B91BCB.Properties.LogGroupName;
 
   expect(logName['Fn::Join']).toBeDefined();
   expect(logName['Fn::Join'].length).toEqual(2);
@@ -397,8 +397,8 @@ test('Confirm format of name with ID provided', () => {
   template.hasResourceProperties("AWS::StepFunctions::StateMachine", {});
 
   // Perform some fancy stuff to examine the specifics of the LogGroupName
-  const LogGroup = template.findResources("AWS::Logs::LogGroup");
-  const logName = LogGroup.StateMachineLogGroupzxz98C28BF8.Properties.LogGroupName;
+  const logGroup = template.findResources("AWS::Logs::LogGroup");
+  const logName = logGroup.StateMachineLogGroupzxz98C28BF8.Properties.LogGroupName;
   expect(logName['Fn::Join'][1][0].includes('zxz')).toBeTruthy();
 
   expect(logName['Fn::Join']).toBeDefined();

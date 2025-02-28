@@ -148,7 +148,7 @@ export class CloudFrontToMediaStore extends Construct {
       this.mediaStoreContainer = defaults.MediaStoreContainer(this, mediaStoreProps);
     }
 
-    const DistributionResponse = defaults.CloudFrontDistributionForMediaStore(
+    const distributionResponse = defaults.CloudFrontDistributionForMediaStore(
       this,
       this.mediaStoreContainer,
       cloudFrontDistributionProps,
@@ -156,9 +156,9 @@ export class CloudFrontToMediaStore extends Construct {
       props.cloudFrontLoggingBucketProps,
       props.responseHeadersPolicyProps
     );
-    this.cloudFrontWebDistribution = DistributionResponse.distribution;
-    this.cloudFrontLoggingBucket = DistributionResponse.loggingBucket;
-    this.cloudFrontOriginRequestPolicy = DistributionResponse.requestPolicy;
-    this.cloudFrontFunction = DistributionResponse.cloudfrontFunction;
+    this.cloudFrontWebDistribution = distributionResponse.distribution;
+    this.cloudFrontLoggingBucket = distributionResponse.loggingBucket;
+    this.cloudFrontOriginRequestPolicy = distributionResponse.requestPolicy;
+    this.cloudFrontFunction = distributionResponse.cloudfrontFunction;
   }
 }

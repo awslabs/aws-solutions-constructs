@@ -41,9 +41,7 @@ export function buildWebacl(scope: Construct, webaclScope: string, props: BuildW
   if (props.existingWebaclObj && !props.webaclProps) { // Existing WAF web ACL
     webAcl = props.existingWebaclObj;
   } else { // Create a new WAF web ACL
-    let finalWebaclProps: waf.CfnWebACLProps;
-
-    finalWebaclProps = consolidateProps(DefaultWafwebaclProps(webaclScope), props.webaclProps);
+    const finalWebaclProps: waf.CfnWebACLProps = consolidateProps(DefaultWafwebaclProps(webaclScope), props.webaclProps);
 
     webAcl = new waf.CfnWebACL(scope, `${scope.node.id}-WebACL`, finalWebaclProps);
   }
@@ -53,7 +51,7 @@ export function buildWebacl(scope: Construct, webaclScope: string, props: BuildW
 
 export interface WafWebAclProps {
   readonly existingWebaclObj: waf.CfnWebACL,
-  readonly webaclProps:	waf.CfnWebACLProps,
+  readonly webaclProps: waf.CfnWebACLProps,
 }
 
 export function CheckWafWebAclProps(propsObject: WafWebAclProps | any) {

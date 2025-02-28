@@ -22,27 +22,27 @@ import { IKey } from 'aws-cdk-lib/aws-kms';
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function DefaultCfnDeliveryStreamProps(_bucketArn: string, _roleArn: string,
-  _logGroupName: string, _logStreamName: string, _kms: IKey, deliveryStreamName?: string): CfnDeliveryStreamProps {
+export function DefaultCfnDeliveryStreamProps(bucketArn: string, roleArn: string,
+  logGroupName: string, logStreamName: string, kms: IKey, deliveryStreamName?: string): CfnDeliveryStreamProps {
 
   return {
     deliveryStreamName,
     extendedS3DestinationConfiguration : {
-      bucketArn: _bucketArn,
+      bucketArn,
       bufferingHints: {
         intervalInSeconds: 300,
         sizeInMBs: 5
       },
       compressionFormat: 'GZIP',
-      roleArn: _roleArn,
+      roleArn,
       cloudWatchLoggingOptions: {
         enabled: true,
-        logGroupName: _logGroupName,
-        logStreamName: _logStreamName
+        logGroupName,
+        logStreamName
       },
       encryptionConfiguration: {
         kmsEncryptionConfig: {
-          awskmsKeyArn: _kms.keyArn
+          awskmsKeyArn: kms.keyArn
         }
       }
     },

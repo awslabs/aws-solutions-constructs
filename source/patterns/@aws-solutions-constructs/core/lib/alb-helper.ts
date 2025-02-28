@@ -78,9 +78,7 @@ export function AddListener(
   loadBalancer: elb.ApplicationLoadBalancer,
   listenerProps: elb.ApplicationListenerProps | any
 ): elb.ApplicationListener {
-  let consolidatedListenerProps: elb.ApplicationListenerProps;
-
-  consolidatedListenerProps = consolidateProps(DefaultListenerProps(loadBalancer), listenerProps);
+  const consolidatedListenerProps: elb.ApplicationListenerProps = consolidateProps(DefaultListenerProps(loadBalancer), listenerProps);
 
   //  create the listener
   const listener = new elb.ApplicationListener(

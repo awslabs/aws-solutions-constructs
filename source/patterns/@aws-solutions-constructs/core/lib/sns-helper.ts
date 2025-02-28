@@ -19,7 +19,7 @@
 // Imports
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as kms from 'aws-cdk-lib/aws-kms';
-import { DefaultSnsTopicProps } from './sns-defaults';
+import { defaultSnsTopicProps } from './sns-defaults';
 import { buildEncryptionKey } from './kms-helper';
 import { consolidateProps } from './utils';
 import { PolicyStatement, AnyPrincipal, Effect, AccountPrincipal } from 'aws-cdk-lib/aws-iam';
@@ -142,7 +142,7 @@ export interface BuildTopicResponse {
 export function buildTopic(scope: Construct, id: string, props: BuildTopicProps): BuildTopicResponse {
   if (!props.existingTopicObj) {
     // Setup the topic properties
-    const snsTopicProps = consolidateProps(DefaultSnsTopicProps, props.topicProps);
+    const snsTopicProps = consolidateProps(defaultSnsTopicProps, props.topicProps);
 
     // Set encryption properties
     if (props.topicProps?.masterKey) {

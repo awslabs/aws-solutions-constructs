@@ -135,14 +135,14 @@ export class LambdaToDynamoDB extends Construct {
 
     // Add the requested or default table permissions
     if (props.tablePermissions) {
-      const _permissions = props.tablePermissions.toUpperCase();
-      if (_permissions === 'ALL') {
+      const permissions = props.tablePermissions.toUpperCase();
+      if (permissions === 'ALL') {
         this.dynamoTable.grantFullAccess(this.lambdaFunction.grantPrincipal);
-      } else if (_permissions  ===  'READ') {
+      } else if (permissions  ===  'READ') {
         this.dynamoTable.grantReadData(this.lambdaFunction.grantPrincipal);
-      } else if (_permissions  ===  'READWRITE') {
+      } else if (permissions  ===  'READWRITE') {
         this.dynamoTable.grantReadWriteData(this.lambdaFunction.grantPrincipal);
-      } else if (_permissions  ===  'WRITE') {
+      } else if (permissions  ===  'WRITE') {
         this.dynamoTable.grantWriteData(this.lambdaFunction.grantPrincipal);
       }
     } else {

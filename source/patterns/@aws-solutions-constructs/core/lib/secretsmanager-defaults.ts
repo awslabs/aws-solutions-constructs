@@ -19,8 +19,8 @@
 import { SecretProps } from 'aws-cdk-lib/aws-secretsmanager';
 import { RemovalPolicy } from 'aws-cdk-lib';
 
-const DefaultSecretProps: SecretProps = {
+const defaultSecretProps: SecretProps = {
   removalPolicy: RemovalPolicy.RETAIN
 };
 
-export { DefaultSecretProps };
+export { defaultSecretProps };

@@ -86,7 +86,6 @@ export function CreateFargateService(
   }
 
   // Create the Fargate Service
-  let newContainerDefinition;
   const createTaskDefinitionResponse = CreateTaskDefinition(
     scope,
     id,
@@ -95,7 +94,7 @@ export function CreateFargateService(
     constructContainerDefinitionProps
   );
   constructFargateServiceDefinitionProps.taskDefinition = createTaskDefinitionResponse.taskDefinition;
-  newContainerDefinition = createTaskDefinitionResponse.containerDefinition;
+  const newContainerDefinition = createTaskDefinitionResponse.containerDefinition;
 
   if (!props.clientFargateServiceProps?.vpcSubnets) {
     if (props.constructVpc.isolatedSubnets.length) {

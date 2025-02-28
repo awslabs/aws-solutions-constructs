@@ -28,9 +28,7 @@ import { Construct } from 'constructs';
  */
 export function MediaStoreContainer(scope: Construct, mediaStoreContainerProps?: mediastore.CfnContainerProps): mediastore.CfnContainer {
   const defaultprops: mediastore.CfnContainerProps = MediaStoreContainerProps();
-  let mediaStoreProps: mediastore.CfnContainerProps;
-
-  mediaStoreProps = consolidateProps(defaultprops, mediaStoreContainerProps);
+  const mediaStoreProps = consolidateProps(defaultprops, mediaStoreContainerProps);
 
   // Create the MediaStore Container
   const mediaStoreContainer = new mediastore.CfnContainer(scope, 'MediaStoreContainer', mediaStoreProps);

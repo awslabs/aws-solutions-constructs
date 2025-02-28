@@ -50,7 +50,7 @@ export interface BuildOpenSearchResponse {
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function buildOpenSearch(scope: Construct, props: BuildOpenSearchProps): BuildOpenSearchResponse {
-  let subnetIds: string[] = [];
+  let subnetIds: string[];
   const constructDrivenProps: any = {};
 
   // Setup the IAM Role & policy for the OpenSearch Service to configure Cognito User pool and Identity pool

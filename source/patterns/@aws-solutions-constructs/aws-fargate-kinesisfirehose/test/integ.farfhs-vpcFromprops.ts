@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
 import { App, Stack } from "aws-cdk-lib";
 import { FargateToKinesisFirehose } from "../lib";
 import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';

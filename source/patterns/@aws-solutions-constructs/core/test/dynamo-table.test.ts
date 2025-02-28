@@ -21,7 +21,7 @@ import { getPartitionKeyNameFromTable } from '../lib/dynamodb-table-helper';
 test('test TableProps change billing mode', () => {
   const stack = new Stack();
 
-  const defaultProps: dynamodb.TableProps = defaults.DefaultTableProps;
+  const defaultProps: dynamodb.TableProps = defaults.defaultTableProps;
 
   const inProps: dynamodb.TableProps = {
     billingMode: dynamodb.BillingMode.PROVISIONED,
@@ -63,7 +63,7 @@ test('test TableProps change billing mode', () => {
 test('test TableProps override add sort key', () => {
   const stack = new Stack();
 
-  const defaultProps: dynamodb.TableProps = defaults.DefaultTableProps;
+  const defaultProps: dynamodb.TableProps = defaults.defaultTableProps;
 
   const inProps: dynamodb.TableProps = {
     partitionKey: {
@@ -111,7 +111,7 @@ test('test TableProps override add sort key', () => {
 test('test TableWithStreamProps override stream view type', () => {
   const stack = new Stack();
 
-  const defaultProps: dynamodb.TableProps = defaults.DefaultTableWithStreamProps;
+  const defaultProps: dynamodb.TableProps = defaults.defaultTableWithStreamProps;
 
   const inProps: dynamodb.TableProps = {
     partitionKey: {
@@ -400,7 +400,7 @@ test('test getPartitionKeyNameFromTable()', () => {
 
   const stack = new Stack();
 
-  const defaultProps: dynamodb.TableProps = defaults.DefaultTableProps;
+  const defaultProps: dynamodb.TableProps = defaults.defaultTableProps;
 
   const inProps: dynamodb.TableProps = {
     partitionKey: {
@@ -428,8 +428,8 @@ test('Test fail DynamoDB table check', () => {
   const stack = new Stack();
 
   const props: defaults.DynamoDBProps = {
-    existingTableObj: new dynamodb.Table(stack, 'placeholder', defaults.DefaultTableProps),
-    dynamoTableProps: defaults.DefaultTableProps,
+    existingTableObj: new dynamodb.Table(stack, 'placeholder', defaults.defaultTableProps),
+    dynamoTableProps: defaults.defaultTableProps,
   };
 
   const app = () => {
@@ -444,8 +444,8 @@ test('Test fail DynamoDB table check (for interface AND obj)', () => {
   const stack = new Stack();
 
   const props: defaults.DynamoDBProps = {
-    existingTableInterface: new dynamodb.Table(stack, 'placeholder', defaults.DefaultTableProps),
-    existingTableObj: new dynamodb.Table(stack, 'placeholderobj', defaults.DefaultTableProps),
+    existingTableInterface: new dynamodb.Table(stack, 'placeholder', defaults.defaultTableProps),
+    existingTableObj: new dynamodb.Table(stack, 'placeholderobj', defaults.defaultTableProps),
   };
 
   const app = () => {
