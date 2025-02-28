@@ -62,7 +62,7 @@ function setupRestApi(stack: Stack, apiProps?: any): void {
         }
       ]
     },
-    path: '11112222' + "/" + 'thisqueuequeueName'
+    path: '11112222/thisqueuequeueName'
   });
   // Setup the API Gateway method(s)
   apiGatewayResource.addMethod('POST', apiGatewayIntegration, {
@@ -263,7 +263,7 @@ test('Test addMethodToApiResource with action', () => {
 
   // Add Method
   defaults.addProxyMethodToApiResource({
-    path: '11112222' + "/" + 'thisqueuequeueName',
+    path: '11112222/thisqueuequeueName',
     service: "sqs",
     apiResource: apiGatewayResource,
     apiGatewayRole,

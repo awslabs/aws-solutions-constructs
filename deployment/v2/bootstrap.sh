@@ -35,6 +35,6 @@ curl -tlsv1.3 -sSf https://$RULE_BUCKET.s3.amazonaws.com/cfn-guard-rules/latest/
 
 echo "============================================================================================="
 echo "installing..."
-yarn install --frozen-lockfile
+npm install --legacy-peer-deps
 
 cd $starting_dir

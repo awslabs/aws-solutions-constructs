@@ -252,9 +252,7 @@ export function CloudFrontDistributionForMediaStore(scope: Construct,
     responseHeadersPolicyProps ? new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', responseHeadersPolicyProps) : undefined
   );
 
-  let cfprops: cloudfront.DistributionProps;
-
-  cfprops = consolidateProps(defaultprops, cloudFrontDistributionProps);
+  const cfprops: cloudfront.DistributionProps = consolidateProps(defaultprops, cloudFrontDistributionProps);
 
   // Create the CloudFront Distribution
   const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);

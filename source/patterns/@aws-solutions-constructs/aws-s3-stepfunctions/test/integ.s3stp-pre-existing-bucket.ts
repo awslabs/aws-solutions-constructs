@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { S3ToStepfunctions, S3ToStepfunctionsProps } from "../lib";
 import * as defaults from '@aws-solutions-constructs/core';

@@ -183,10 +183,10 @@ export class FargateToSsmstringparameter extends Construct {
     this.stringParameter.grantRead(this.service.taskDefinition.taskRole);
 
     if (props.stringParameterPermissions) {
-      const _permissions = props.stringParameterPermissions.toUpperCase();
+      const permissions = props.stringParameterPermissions.toUpperCase();
 
       // Add the requested string parameter permission
-      if (_permissions === 'READWRITE') {
+      if (permissions === 'READWRITE') {
         this.stringParameter.grantWrite(this.service.taskDefinition.taskRole);
       }
     }

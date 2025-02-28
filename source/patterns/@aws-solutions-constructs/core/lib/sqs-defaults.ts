@@ -22,10 +22,10 @@ import * as sqs from 'aws-cdk-lib/aws-sqs';
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function DefaultQueueProps() {
-  const _DefaultQueueProps: sqs.QueueProps = {
+  const defaultQueueProps: sqs.QueueProps = {
     encryption: sqs.QueueEncryption.KMS_MANAGED
   };
-  return _DefaultQueueProps;
+  return defaultQueueProps;
 }
 
 // Default value for the max receive count of a dead letter queue

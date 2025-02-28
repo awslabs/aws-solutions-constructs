@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
 import { App, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { CloudFrontToApiGateway } from "../lib";
 import * as defaults from '@aws-solutions-constructs/core';

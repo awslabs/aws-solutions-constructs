@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
 import { App, Stack } from "aws-cdk-lib";
 import { WafwebaclToApiGateway } from "../lib";
 import { generateIntegStackName, CreateTestApi } from "@aws-solutions-constructs/core";

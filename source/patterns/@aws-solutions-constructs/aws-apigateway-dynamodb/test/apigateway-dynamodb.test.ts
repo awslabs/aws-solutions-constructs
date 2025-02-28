@@ -11,6 +11,9 @@
  *  and limitations under the License.
  */
 
+// The regex strings for error messages all blow past max-len
+/* eslint-disable @stylisticJs/max-len */
+
 // Imports
 import { Stack } from "aws-cdk-lib";
 import { ApiGatewayToDynamoDB, ApiGatewayToDynamoDBProps } from "../lib";

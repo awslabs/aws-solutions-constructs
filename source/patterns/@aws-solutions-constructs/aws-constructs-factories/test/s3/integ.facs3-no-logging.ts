@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { ConstructsFactories } from "../../lib";
 import { generateIntegStackName, addCfnSuppressRules, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';

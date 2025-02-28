@@ -117,7 +117,7 @@ test('Test default behaviors', () => {
       "Fn::Join": [
         "",
         [
-          Match.stringLikeRegexp('\/aws\/vendedlogs\/pipes\/constructs'),
+          Match.stringLikeRegexp('/aws/vendedlogs/pipes/constructs'),
           {
             "Fn::Select": [
               2,
@@ -229,7 +229,7 @@ test('Test existing state machine', () => {
       "Fn::Join": [
         "",
         [
-          Match.stringLikeRegexp('\/aws\/vendedlogs\/pipes\/constructs'),
+          Match.stringLikeRegexp('/aws/vendedlogs/pipes/constructs'),
           {
             "Fn::Select": [
               2,

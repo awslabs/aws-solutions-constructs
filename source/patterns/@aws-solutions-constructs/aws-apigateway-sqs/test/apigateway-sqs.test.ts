@@ -11,6 +11,9 @@
  *  and limitations under the License.
  */
 
+// The regex strings for error messages all blow past max-len
+/* eslint-disable @stylisticJs/max-len */
+
 // Imports
 import { RemovalPolicy, Stack } from "aws-cdk-lib";
 import { ApiGatewayToSqs, ApiGatewayToSqsProps } from '../lib';
@@ -337,7 +340,7 @@ test('Construct accepts additional create request templates', () => {
     HttpMethod: 'POST',
     Integration: {
       RequestTemplates: {
-        'application/json': 'Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")',
+        'application/json': 'Action=SendMessage&MessageBody=$util.urlEncode("$input.body")',
         'text/plain': 'Hello'
       }
     }

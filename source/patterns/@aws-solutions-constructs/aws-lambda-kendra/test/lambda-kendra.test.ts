@@ -943,7 +943,6 @@ test('Launch with multiple S3 data sources', () => {
   });
 
   const template = Template.fromStack(stack);
-  defaults.printWarning(`\n\n==dbg==\n${JSON.stringify(template)}\n\n==dbg===\n\n`);
 
   template.resourceCountIs("AWS::Kendra::DataSource", 2);
   template.hasResourceProperties("AWS::Kendra::DataSource", {

@@ -18,8 +18,8 @@
 
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 
-const DefaultStreamProps: kinesis.StreamProps = {
+const defaultStreamProps: kinesis.StreamProps = {
   encryption: kinesis.StreamEncryption.MANAGED
 };
 
-export { DefaultStreamProps };
+export { defaultStreamProps };

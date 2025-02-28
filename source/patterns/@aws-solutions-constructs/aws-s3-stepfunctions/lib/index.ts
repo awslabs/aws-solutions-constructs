@@ -135,13 +135,13 @@ export class S3ToStepfunctions extends Construct {
 
     this.s3BucketInterface = bucket;
 
-    let _eventRuleProps = {};
+    let eventRuleProps;
     if (props.eventRuleProps) {
-      _eventRuleProps = props.eventRuleProps;
+      eventRuleProps = props.eventRuleProps;
     } else {
       // By default the EventBridge Rule will filter any PutObject, POST Object, CopyObject,
       // or CompleteMultipartUpload events for the S3 Bucket
-      _eventRuleProps = {
+      eventRuleProps = {
         eventPattern: {
           source: ['aws.s3'],
           detailType: ["Object Created"],
@@ -156,7 +156,7 @@ export class S3ToStepfunctions extends Construct {
 
     const eventbridgeToStepfunctions = new EventbridgeToStepfunctions(this, `${id}-event-rule-step-function-construct`, {
       stateMachineProps: props.stateMachineProps,
-      eventRuleProps: _eventRuleProps,
+      eventRuleProps,
       createCloudWatchAlarms: props.createCloudWatchAlarms,
       logGroupProps: props.logGroupProps
     });

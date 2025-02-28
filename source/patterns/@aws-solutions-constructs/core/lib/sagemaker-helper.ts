@@ -228,6 +228,11 @@ export interface BuildSagemakerNotebookResponse {
 
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ *
+ * The constructs deploying Sagemaker services only deploy Sagemaker Endpoints, Endpoint
+ * Configurations and (already developed) Models. There are no Constructs that deploy Notebooks.
+ * There doesn't appear to be any references to this function outside the unit test file - so
+ * this function is unneccessary.
  */
 export function buildSagemakerNotebook(
   scope: Construct,
@@ -517,9 +522,7 @@ export function createSagemakerEndpointConfig(
   modelName: string,
   endpointConfigProps?: sagemaker.CfnEndpointConfigProps
 ): sagemaker.CfnEndpointConfig {
-  let finalEndpointConfigProps: sagemaker.CfnEndpointConfigProps;
   let kmsKeyId: string;
-  let endpointConfig: sagemaker.CfnEndpointConfig;
 
   // Create encryption key if one is not provided
   if (endpointConfigProps && endpointConfigProps.kmsKeyId) {
@@ -529,10 +532,11 @@ export function createSagemakerEndpointConfig(
   }
 
   // Overwrite default EndpointConfig properties
-  finalEndpointConfigProps = consolidateProps(DefaultSagemakerEndpointConfigProps(modelName, kmsKeyId), endpointConfigProps);
+  const finalEndpointConfigProps: sagemaker.CfnEndpointConfigProps =
+    consolidateProps(DefaultSagemakerEndpointConfigProps(modelName, kmsKeyId), endpointConfigProps);
 
   // Create the Sagemaker's EndpointConfig
-  endpointConfig = new sagemaker.CfnEndpointConfig(scope, 'SagemakerEndpointConfig', finalEndpointConfigProps);
+  const endpointConfig: sagemaker.CfnEndpointConfig = new sagemaker.CfnEndpointConfig(scope, 'SagemakerEndpointConfig', finalEndpointConfigProps);
 
   return endpointConfig;
 }
@@ -545,14 +549,12 @@ export function createSagemakerEndpoint(
   endpointConfigName: string,
   endpointProps?: sagemaker.CfnEndpointProps
 ): sagemaker.CfnEndpoint {
-  let finalEndpointProps: sagemaker.CfnEndpointProps;
-  let endpoint: sagemaker.CfnEndpoint;
 
   // Overwrite default Endpoint properties
-  finalEndpointProps = consolidateProps(DefaultSagemakerEndpointProps(endpointConfigName), endpointProps);
+  const finalEndpointProps: sagemaker.CfnEndpointProps = consolidateProps(DefaultSagemakerEndpointProps(endpointConfigName), endpointProps);
 
   // Create the Sagemaker's Endpoint
-  endpoint = new sagemaker.CfnEndpoint(scope, 'SagemakerEndpoint', finalEndpointProps);
+  const endpoint : sagemaker.CfnEndpoint= new sagemaker.CfnEndpoint(scope, 'SagemakerEndpoint', finalEndpointProps);
 
   return endpoint;
 }

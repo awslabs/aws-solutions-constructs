@@ -20,7 +20,7 @@ import { Duration, Stack } from 'aws-cdk-lib';
 
 test('test DynamoEventSourceProps with defaults', () => {
   const stack = new Stack();
-  const props = defaults.DynamoEventSourceProps(stack);
+  const props = defaults.DefaultDynamoEventSourceProps(stack);
 
   expect(props.onFailure).toBeInstanceOf(SqsDlq);
   expect(props.startingPosition).toEqual("TRIM_HORIZON");
@@ -31,7 +31,7 @@ test('test DynamoEventSourceProps with defaults', () => {
 
 test('test DynamoEventSourceProps with deployDeadLetterQueue: false', () => {
   const stack = new Stack();
-  const props = defaults.DynamoEventSourceProps(stack, {
+  const props = defaults.DefaultDynamoEventSourceProps(stack, {
     deploySqsDlqQueue: false
   });
 
@@ -51,7 +51,7 @@ test('test DynamoEventSourceProps override', () => {
     retryAttempts: 3
   };
 
-  const props = defaults.DynamoEventSourceProps(stack, {
+  const props = defaults.DefaultDynamoEventSourceProps(stack, {
     eventSourceProps: myProps,
     deploySqsDlqQueue: false
   });
@@ -66,7 +66,7 @@ test('test DynamoEventSourceProps override', () => {
 });
 
 test('test S3EventSourceProps w/ default props', () => {
-  const props = defaults.S3EventSourceProps();
+  const props = defaults.DefaultS3EventSourceProps();
   expect(props).toEqual({
     events: ["s3:ObjectCreated:*"]
   });
@@ -78,7 +78,7 @@ test('test S3EventSourceProps w/ user props', () => {
       s3.EventType.OBJECT_CREATED_POST
     ]
   };
-  const props = defaults.S3EventSourceProps(s3EventSourceProps);
+  const props = defaults.DefaultS3EventSourceProps(s3EventSourceProps);
   expect(props).toEqual({
     events: ["s3:ObjectCreated:Post"]
   });
@@ -86,7 +86,7 @@ test('test S3EventSourceProps w/ user props', () => {
 
 test('test KinesisEventSourceProps with defaults', () => {
   const stack = new Stack();
-  const props = defaults.KinesisEventSourceProps(stack);
+  const props = defaults.DefaultKinesisEventSourceProps(stack);
 
   expect(props.onFailure).toBeInstanceOf(SqsDlq);
   expect(props.startingPosition).toEqual("TRIM_HORIZON");
@@ -97,7 +97,7 @@ test('test KinesisEventSourceProps with defaults', () => {
 
 test('test KinesisEventSourceProps with deployDeadLetterQueue: false', () => {
   const stack = new Stack();
-  const props = defaults.KinesisEventSourceProps(stack, {
+  const props = defaults.DefaultKinesisEventSourceProps(stack, {
     deploySqsDlqQueue: false
   });
 
@@ -117,7 +117,7 @@ test('test KinesisEventSourceProps override', () => {
     retryAttempts: 3
   };
 
-  const props = defaults.KinesisEventSourceProps(stack, {
+  const props = defaults.DefaultKinesisEventSourceProps(stack, {
     eventSourceProps: myProps,
     deploySqsDlqQueue: false
   });
@@ -134,7 +134,7 @@ test('test KinesisEventSourceProps override', () => {
 test('test sqsDlqQueueProps override', () => {
   const stack = new Stack();
 
-  defaults.KinesisEventSourceProps(stack, {
+  defaults.DefaultKinesisEventSourceProps(stack, {
     sqsDlqQueueProps: {
       queueName: 'hello-world',
       visibilityTimeout: Duration.seconds(50)
