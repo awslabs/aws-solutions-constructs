@@ -147,8 +147,6 @@ Maps a Lambda function to the id string used as a placeholder in the OpenAPI spe
 `ApiLambdaFunction`
 This interface returns the Lambda objects used when launching the construct. The `id` property will always be set, if an existing function was provided in the props or this construct created a new Lambda function, then that function will be in the `lambdaFunction` property. If a Lambda Alias was provided in the props, then that value will be specified in the `functionAlias` property. At no time will `lambdaFunction` and `functionAlias` be set on the same ApiLambdaFunction object. The construct exposes an array of these objects as a property.
 
-
-
 ## Overview of how the OpenAPI file transformation works
 This construct automatically transforms an incoming OpenAPI Definition (residing locally or in S3) by auto-populating the `uri` fields of the `x-amazon-apigateway-integration` integrations with the resolved value of the backing lambda functions. It does so by allowing the user to specify the `apiIntegrations` property and then correlates it with the api definition. 
 
