@@ -763,7 +763,6 @@ test('Deploys API based on Alias correctly', () => {
   });
 
   const template = Template.fromStack(stack);
-  defaults.printWarning(`\n\n==dbg==\n${JSON.stringify(template)}\n\n==dbg===\n\n`);
 
   template.resourceCountIs("AWS::Lambda::Alias", 1);
   template.resourceCountIs("AWS::Lambda::Version", 1);

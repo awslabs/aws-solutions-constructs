@@ -29,6 +29,7 @@ import { Asset } from 'aws-cdk-lib/aws-s3-assets';
 import { Aws, Duration } from "aws-cdk-lib";
 import { Construct } from 'constructs';
 import * as resources from '@aws-solutions-constructs/resources';
+import * as defaults from '@aws-solutions-constructs/core';
 
 /**
  * The ApiIntegration interface is used to correlate a user-specified id with either a existing lambda function or set of lambda props.
@@ -200,3 +201,34 @@ function InlineTemplateWriter(rawInlineSpec: any, templateValues: resources.Temp
 
   return new apigateway.InlineApiDefinition(JSON.parse(template));
 }
+
+export function MapApiIntegrationsToApiFunction(scope: Construct, apiIntegrations: ApiIntegration[]): ApiLambdaFunction[] {
+    // store a counter to be able to uniquely name lambda functions to avoid naming collisions
+    let lambdaCounter = 0;
+
+    return apiIntegrations.map(rawApiIntegration => {
+      if (rawApiIntegration.existingLambdaObj && isResourceAnAlias(rawApiIntegration.existingLambdaObj)) {
+        return {
+          id: rawApiIntegration.id,
+          functionAlias: rawApiIntegration.existingLambdaObj as lambda.Alias
+        };
+      } else {
+        return {
+          id: rawApiIntegration.id,
+          lambdaFunction: defaults.buildLambdaFunction(scope, {
+            existingLambdaObj: rawApiIntegration.existingLambdaObj as lambda.Function,
+            lambdaFunctionProps: rawApiIntegration.lambdaFunctionProps
+          }, `${rawApiIntegration.id}ApiFunction${lambdaCounter++}`),
+        };
+      }
+    });
+}
+
+export function ExtractFunctionInterface(apiFunction: ApiLambdaFunction): lambda.IFunction {
+  return (apiFunction.lambdaFunction ?? apiFunction.functionAlias) as lambda.IFunction;
+}
+
+function isResourceAnAlias(lambdaResource: lambda.Function | lambda.Alias): boolean {
+  return (lambdaResource as lambda.Alias).aliasName !== undefined;
+}
+

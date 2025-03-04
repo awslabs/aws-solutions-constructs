@@ -21,7 +21,7 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
 import { RestApiBaseProps } from 'aws-cdk-lib/aws-apigateway';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
-import { ApiIntegration, CheckOpenApiProps, ApiLambdaFunction, ObtainApiDefinition } from './openapi-helper';
+import { ApiIntegration, CheckOpenApiProps, ApiLambdaFunction, ObtainApiDefinition, MapApiIntegrationsToApiFunction, ExtractFunctionInterface } from './openapi-helper';
 // openapi-helper is on its way to core, so these interfaces must be exported here
 export { ApiIntegration, ApiLambdaFunction } from './openapi-helper';
 
@@ -114,42 +114,7 @@ export class OpenApiGatewayToLambda extends Construct {
     super(scope, id);
     CheckOpenApiProps(props);
 
-    // store a counter to be able to uniquely name lambda functions to avoid naming collisions
-    let lambdaCounter = 0;
-
-    // TODO: Should this functionality be moved to openapi-helper.ts?
-    this.apiLambdaFunctions = props.apiIntegrations.map(rawApiIntegration => {
-      // let updatedIntegration: ApiIntegration;
-      // if (rawApiIntegration.alternateType) {
-      //   if ((rawApiIntegration.alternateType as lambda.Alias).aliasName) {
-      //     updatedIntegration = {
-      //       ...rawApiIntegration,
-      //       existingFunctionAlias: rawApiIntegration.alternateType as lambda.Alias
-      //     };
-      //   } else {
-      //     updatedIntegration = {
-      //       ...rawApiIntegration,
-      //       existingLambdaObj: rawApiIntegration.alternateType as lambda.Function
-      //     };
-      //   }
-      // } else {
-      //   updatedIntegration = rawApiIntegration;
-      // }
-      if (rawApiIntegration.existingLambdaObj && this.isResourceAnAlias(rawApiIntegration.existingLambdaObj)) {
-        return {
-          id: rawApiIntegration.id,
-          functionAlias: rawApiIntegration.existingLambdaObj as lambda.Alias
-        };
-      } else {
-        return {
-          id: rawApiIntegration.id,
-          lambdaFunction: defaults.buildLambdaFunction(this, {
-            existingLambdaObj: rawApiIntegration.existingLambdaObj as lambda.Function,
-            lambdaFunctionProps: rawApiIntegration.lambdaFunctionProps
-          }, `${rawApiIntegration.id}ApiFunction${lambdaCounter++}`),
-        };
-      }
-    });
+    this.apiLambdaFunctions = MapApiIntegrationsToApiFunction(this, props.apiIntegrations);
 
     const definition = ObtainApiDefinition(this, {
       tokenToFunctionMap: this.apiLambdaFunctions,
@@ -173,28 +138,15 @@ export class OpenApiGatewayToLambda extends Construct {
     // Redeploy the API any time a decoupled (non-inline) API definition changes (from asset or s3 object)
     this.apiGateway.latestDeployment?.addToLogicalId(props.apiDefinitionKey ?? props.apiDefinitionAsset?.s3ObjectKey);
     this.apiLambdaFunctions.forEach(apiLambdaFunction => {
-      // We confirm upstream that one of these two values exists, so we can cast away Typescripts doubt
-      const targetInterface: lambda.IFunction = (apiLambdaFunction.lambdaFunction ?? apiLambdaFunction.functionAlias) as lambda.IFunction;
+      const targetInterface: lambda.IFunction = ExtractFunctionInterface(apiLambdaFunction);
 
       // Redeploy the API any time one of the lambda functions changes
       this.apiGateway.latestDeployment?.addToLogicalId(targetInterface.functionArn);
-      if (apiLambdaFunction.functionAlias) {
-        // Grant APIGW invocation rights for each lambda function
-        apiLambdaFunction.functionAlias.addPermission(`${id}PermitAPIGInvocation`, {
-          principal: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-          sourceArn: this.apiGateway.arnForExecuteApi('*')
-        });
-      } else {
-        // Grant APIGW invocation rights for each lambda function
-        targetInterface.addPermission(`${id}PermitAPIGInvocation`, {
-          principal: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-          sourceArn: this.apiGateway.arnForExecuteApi('*')
-        });
-      }
-    });
-  }
 
-  private isResourceAnAlias(lambdaResource: lambda.Function | lambda.Alias): boolean {
-    return (lambdaResource as lambda.Alias).aliasName !== undefined;
+      targetInterface.addPermission(`${id}PermitAPIGInvocation`, {
+        principal: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+        sourceArn: this.apiGateway.arnForExecuteApi('*')
+      });
+    });
   }
 }
