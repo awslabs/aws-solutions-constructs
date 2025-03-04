@@ -139,6 +139,16 @@ new OpenApiGatewayToLambda(this, "OpenApiGatewayToLambda", OpenApiGatewayToLambd
 |apiGatewayCloudWatchRole?|[`iam.Role`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html)|Returns an instance of the iam.Role created by the construct for API Gateway for CloudWatch access.|
 |apiGatewayLogGroup|[`logs.LogGroup`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroup.html)|Returns an instance of the LogGroup created by the construct for API Gateway access logging to CloudWatch.|
 
+## Interfaces defined by this construct
+
+`ApiIntegration`
+Maps a Lambda function to the id string used as a placeholder in the OpenAPI spec. The type has a required property, `id`, and two optional properties `existingLambdaObj`, and `lambdaFunctionProps`. The `id` property is used to map the corresponding lambda function being defined with the placeholder string in the OpenAPI template file, and is not a CDK construct ID. Exactly one of `existingLambdaObj` or `lambdaFunctionProps` must be specified or the construct will throw an error. The `existingLambaObj` property will accept a lambda.Function object OR a lambda.Alias object. The property `ApiIntegrations` is an array of this interface and is a required property when launching this construct.
+
+`ApiLambdaFunction`
+This interface returns the Lambda objects used when launching the construct. The `id` property will always be set, if an existing function was provided in the props or this construct created a new Lambda function, then that function will be in the `lambdaFunction` property. If a Lambda Alias was provided in the props, then that value will be specified in the `functionAlias` property. At no time will `lambdaFunction` and `functionAlias` be set on the same ApiLambdaFunction object. The construct exposes an array of these objects as a property.
+
+
+
 ## Overview of how the OpenAPI file transformation works
 This construct automatically transforms an incoming OpenAPI Definition (residing locally or in S3) by auto-populating the `uri` fields of the `x-amazon-apigateway-integration` integrations with the resolved value of the backing lambda functions. It does so by allowing the user to specify the `apiIntegrations` property and then correlates it with the api definition. 
 
@@ -198,9 +208,6 @@ paths:
 When the construct is created or updated, it will overwrite the `MessagesHandler` string with the fully resolved lambda proxy uri of the `MessagesHandlerLambdaFunction`, e.g., `arn:${Aws.PARTITION}:apigateway:${Aws.REGION}:lambda:path/2015-03-31/functions/${messagesLambda.functionArn}/invocations`, and similarly for the `PhotosHandler` string and `PhotosHandlerLambdaFunction`, resulting in a valid OpenAPI spec file that is then passed to the `SpecRestApi` construct.
 
 For more information on specifying an API with OpenAPI, please see the [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-
-## ApiIntegration Details
-This construct defines a custom type, `ApiIntegration`, that is specified as a required prop. The type has a required property, `id`, and three optional properties `existingLambdaObj`, `existingFunctionAlias` and `lambdaFunctionProps`. The `id` property is used to map the corresponding lambda function being defined with the placeholder string in the OpenAPI template file, and is not a CDK construct ID. Exactly one of `existingLambdaObj` or `lambdaFunctionProps` must be specified or the construct will throw an error.
 
 ## Default settings
 
