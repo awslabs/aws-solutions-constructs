@@ -1,7 +1,7 @@
 {
  "Description": "Integration Test for aws-openapigateway-lambda",
  "Resources": {
-  "OpenApiGatewayToLambdaMessagesHandlerApiFunction0ServiceRoleB5DC63A9": {
+  "LambdaFunctionServiceRole0C4CDE0B": {
    "Type": "AWS::IAM::Role",
    "Properties": {
     "AssumeRolePolicyDocument": {
@@ -63,7 +63,7 @@
     }
    }
   },
-  "OpenApiGatewayToLambdaMessagesHandlerApiFunction0ServiceRoleDefaultPolicy4563083B": {
+  "LambdaFunctionServiceRoleDefaultPolicy126C8897": {
    "Type": "AWS::IAM::Policy",
    "Properties": {
     "PolicyDocument": {
@@ -79,10 +79,10 @@
      ],
      "Version": "2012-10-17"
     },
-    "PolicyName": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0ServiceRoleDefaultPolicy4563083B",
+    "PolicyName": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
     "Roles": [
      {
-      "Ref": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0ServiceRoleB5DC63A9"
+      "Ref": "LambdaFunctionServiceRole0C4CDE0B"
      }
     ]
    },
@@ -97,7 +97,7 @@
     }
    }
   },
-  "OpenApiGatewayToLambdaMessagesHandlerApiFunction0E78C5307": {
+  "LambdaFunctionBF21E41F": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
     "Code": {
@@ -114,7 +114,7 @@
     "Handler": "index.handler",
     "Role": {
      "Fn::GetAtt": [
-      "OpenApiGatewayToLambdaMessagesHandlerApiFunction0ServiceRoleB5DC63A9",
+      "LambdaFunctionServiceRole0C4CDE0B",
       "Arn"
      ]
     },
@@ -124,8 +124,8 @@
     }
    },
    "DependsOn": [
-    "OpenApiGatewayToLambdaMessagesHandlerApiFunction0ServiceRoleDefaultPolicy4563083B",
-    "OpenApiGatewayToLambdaMessagesHandlerApiFunction0ServiceRoleB5DC63A9"
+    "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+    "LambdaFunctionServiceRole0C4CDE0B"
    ],
    "Metadata": {
     "cfn_nag": {
@@ -146,13 +146,169 @@
     }
    }
   },
-  "OpenApiGatewayToLambdaMessagesHandlerApiFunction0OpenApiGatewayToLambdaPermitAPIGInvocationC5ACBCDF": {
+  "LambdaFunctionCurrentVersion7D5C86E3e1fbde6f17ee9d8a6083dfbb39f7780b": {
+   "Type": "AWS::Lambda::Version",
+   "Properties": {
+    "FunctionName": {
+     "Ref": "LambdaFunctionBF21E41F"
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
+  "PhotosLambdaTestFromAssetServiceRoleE0B4776B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":logs:",
+            {
+             "Ref": "AWS::Region"
+            },
+            ":",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":log-group:/aws/lambda/*"
+           ]
+          ]
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "LambdaFunctionServiceRolePolicy"
+     }
+    ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
+   }
+  },
+  "PhotosLambdaTestFromAssetServiceRoleDefaultPolicy240F3F29": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "PhotosLambdaTestFromAssetServiceRoleDefaultPolicy240F3F29",
+    "Roles": [
+     {
+      "Ref": "PhotosLambdaTestFromAssetServiceRoleE0B4776B"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
+  "PhotosLambdaTestFromAssetB776E3C5": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "654d49d4ea47a6be417d57b94dc0310933d0e971a3e48a3080c3e48487af3e50.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
+    },
+    "FunctionName": "PhotosLambdaTestFromAsset",
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "PhotosLambdaTestFromAssetServiceRoleE0B4776B",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "PhotosLambdaTestFromAssetServiceRoleDefaultPolicy240F3F29",
+    "PhotosLambdaTestFromAssetServiceRoleE0B4776B"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+      },
+      {
+       "id": "W89",
+       "reason": "This is not a rule for the general case, just for specific use cases/industries"
+      },
+      {
+       "id": "W92",
+       "reason": "Impossible for us to define the correct concurrency for clients"
+      }
+     ]
+    }
+   }
+  },
+  "PhotosLambdaTestFromAssetOpenApiGatewayToLambdaPermitAPIGInvocationA0D5D04E": {
    "Type": "AWS::Lambda::Permission",
    "Properties": {
     "Action": "lambda:InvokeFunction",
     "FunctionName": {
      "Fn::GetAtt": [
-      "OpenApiGatewayToLambdaMessagesHandlerApiFunction0E78C5307",
+      "PhotosLambdaTestFromAssetB776E3C5",
       "Arn"
      ]
     },
@@ -183,160 +339,27 @@
     }
    }
   },
-  "OpenApiGatewayToLambdaPhotosHandlerApiFunction1ServiceRoleA572C749": {
-   "Type": "AWS::IAM::Role",
+  "messagesalias73FA2C12": {
+   "Type": "AWS::Lambda::Alias",
    "Properties": {
-    "AssumeRolePolicyDocument": {
-     "Statement": [
-      {
-       "Action": "sts:AssumeRole",
-       "Effect": "Allow",
-       "Principal": {
-        "Service": "lambda.amazonaws.com"
-       }
-      }
-     ],
-     "Version": "2012-10-17"
+    "FunctionName": {
+     "Ref": "LambdaFunctionBF21E41F"
     },
-    "Policies": [
-     {
-      "PolicyDocument": {
-       "Statement": [
-        {
-         "Action": [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents"
-         ],
-         "Effect": "Allow",
-         "Resource": {
-          "Fn::Join": [
-           "",
-           [
-            "arn:",
-            {
-             "Ref": "AWS::Partition"
-            },
-            ":logs:",
-            {
-             "Ref": "AWS::Region"
-            },
-            ":",
-            {
-             "Ref": "AWS::AccountId"
-            },
-            ":log-group:/aws/lambda/*"
-           ]
-          ]
-         }
-        }
-       ],
-       "Version": "2012-10-17"
-      },
-      "PolicyName": "LambdaFunctionServiceRolePolicy"
-     }
-    ]
-   },
-   "Metadata": {
-    "guard": {
-     "SuppressedRules": [
-      "IAM_NO_INLINE_POLICY_CHECK"
-     ]
-    }
-   }
-  },
-  "OpenApiGatewayToLambdaPhotosHandlerApiFunction1ServiceRoleDefaultPolicy389AA3BA": {
-   "Type": "AWS::IAM::Policy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "PolicyName": "OpenApiGatewayToLambdaPhotosHandlerApiFunction1ServiceRoleDefaultPolicy389AA3BA",
-    "Roles": [
-     {
-      "Ref": "OpenApiGatewayToLambdaPhotosHandlerApiFunction1ServiceRoleA572C749"
-     }
-    ]
-   },
-   "Metadata": {
-    "cfn_nag": {
-     "rules_to_suppress": [
-      {
-       "id": "W12",
-       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
-      }
-     ]
-    }
-   }
-  },
-  "OpenApiGatewayToLambdaPhotosHandlerApiFunction1C42C52E8": {
-   "Type": "AWS::Lambda::Function",
-   "Properties": {
-    "Code": {
-     "S3Bucket": {
-      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-     },
-     "S3Key": "654d49d4ea47a6be417d57b94dc0310933d0e971a3e48a3080c3e48487af3e50.zip"
-    },
-    "Environment": {
-     "Variables": {
-      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
-     }
-    },
-    "Handler": "index.handler",
-    "Role": {
+    "FunctionVersion": {
      "Fn::GetAtt": [
-      "OpenApiGatewayToLambdaPhotosHandlerApiFunction1ServiceRoleA572C749",
-      "Arn"
+      "LambdaFunctionCurrentVersion7D5C86E3e1fbde6f17ee9d8a6083dfbb39f7780b",
+      "Version"
      ]
     },
-    "Runtime": "nodejs20.x",
-    "TracingConfig": {
-     "Mode": "Active"
-    }
-   },
-   "DependsOn": [
-    "OpenApiGatewayToLambdaPhotosHandlerApiFunction1ServiceRoleDefaultPolicy389AA3BA",
-    "OpenApiGatewayToLambdaPhotosHandlerApiFunction1ServiceRoleA572C749"
-   ],
-   "Metadata": {
-    "cfn_nag": {
-     "rules_to_suppress": [
-      {
-       "id": "W58",
-       "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
-      },
-      {
-       "id": "W89",
-       "reason": "This is not a rule for the general case, just for specific use cases/industries"
-      },
-      {
-       "id": "W92",
-       "reason": "Impossible for us to define the correct concurrency for clients"
-      }
-     ]
-    }
+    "Name": "messagesAlias"
    }
   },
-  "OpenApiGatewayToLambdaPhotosHandlerApiFunction1OpenApiGatewayToLambdaPermitAPIGInvocation5B0B1DC7": {
+  "messagesaliasOpenApiGatewayToLambdaPermitAPIGInvocation4D73221A": {
    "Type": "AWS::Lambda::Permission",
    "Properties": {
     "Action": "lambda:InvokeFunction",
     "FunctionName": {
-     "Fn::GetAtt": [
-      "OpenApiGatewayToLambdaPhotosHandlerApiFunction1C42C52E8",
-      "Arn"
-     ]
+     "Ref": "messagesalias73FA2C12"
     },
     "Principal": "apigateway.amazonaws.com",
     "SourceArn": {
@@ -650,7 +673,7 @@
      },
      "S3Key": "bdc104ed9cab1b5b6421713c8155f0b753380595356f710400609664d3635eca.zip"
     },
-    "Description": "AWS CDK resource provider framework - onEvent (opilam-apiFromAssetNewLambdaFunctions/OpenApiGatewayToLambda/ApiTemplateWriterProvider)",
+    "Description": "AWS CDK resource provider framework - onEvent (opilam-apiFromAssetLambdaFunctionAliases/OpenApiGatewayToLambda/ApiTemplateWriterProvider)",
     "Environment": {
      "Variables": {
       "USER_ON_EVENT_FUNCTION_ARN": {
@@ -725,10 +748,7 @@
        },
        ":lambda:path/2015-03-31/functions/",
        {
-        "Fn::GetAtt": [
-         "OpenApiGatewayToLambdaMessagesHandlerApiFunction0E78C5307",
-         "Arn"
-        ]
+        "Ref": "messagesalias73FA2C12"
        },
        "/invocations\"},{\"id\":\"PhotosHandler\",\"value\":\"arn:",
        {
@@ -741,7 +761,7 @@
        ":lambda:path/2015-03-31/functions/",
        {
         "Fn::GetAtt": [
-         "OpenApiGatewayToLambdaPhotosHandlerApiFunction1C42C52E8",
+         "PhotosLambdaTestFromAssetB776E3C5",
          "Arn"
         ]
        },
@@ -819,7 +839,7 @@
     }
    }
   },
-  "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775c586d865ce613dde0b09710274a96485": {
+  "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD077506cc115d2977eccc01a7a14e0a95492a": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Automatically created by the RestApi construct",
@@ -851,7 +871,7 @@
      "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
     },
     "DeploymentId": {
-     "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775c586d865ce613dde0b09710274a96485"
+     "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD077506cc115d2977eccc01a7a14e0a95492a"
     },
     "MethodSettings": [
      {
