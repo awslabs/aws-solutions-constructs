@@ -113,7 +113,7 @@ export class KinesisStreamsToLambda extends Construct {
       this.kinesisStream.grantRead(this.lambdaFunction.grantPrincipal);
 
       // Add the Lambda event source mapping
-      const eventSourceProps = defaults.KinesisEventSourceProps(this, {
+      const eventSourceProps = defaults.DefaultKinesisEventSourceProps(this, {
         eventSourceProps: props.kinesisEventSourceProps,
         deploySqsDlqQueue: props.deploySqsDlqQueue,
         sqsDlqQueueProps: props.sqsDlqQueueProps

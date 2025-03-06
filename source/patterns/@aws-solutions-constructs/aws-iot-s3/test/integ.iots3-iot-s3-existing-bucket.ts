@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
 import { App, Stack } from "aws-cdk-lib";
 import { IotToS3, IotToS3Props } from "../lib";
 import * as defaults from '@aws-solutions-constructs/core';

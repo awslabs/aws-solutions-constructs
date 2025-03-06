@@ -18,8 +18,8 @@
   "scripts": {
     "postinstall": "cd lib/lambda/service-staff/create-order && npm install && cd ../../../..",
     "build": "tsc",
-    "lint": "eslint -c ../eslintrc.yml --ext=.js,.ts . && tslint --project .",
-    "lint-fix": "eslint -c ../eslintrc.yml --ext=.js,.ts --fix .",
+    "lint": "eslint --config ../eslintrc.config.mjs --no-warn-ignored .",
+    "lint-fix": "eslint --config ../eslintrc.config.mjs --ext=.js,.ts --fix .",
     "test": "jest --coverage",
     "clean": "tsc -b --clean",
     "watch": "tsc -b -w",

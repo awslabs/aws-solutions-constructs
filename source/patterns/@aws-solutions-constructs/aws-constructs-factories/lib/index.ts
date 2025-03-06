@@ -134,9 +134,6 @@ export interface SqsQueueFactoryResponse {
 }
 
 export class ConstructsFactories extends Construct {
-  constructor(scope: Construct, id: string) {
-    super(scope, id);
-  }
 
   public s3BucketFactory(id: string, props: S3BucketFactoryProps): S3BucketFactoryResponse {
     defaults.CheckS3Props(props);

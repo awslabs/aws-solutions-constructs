@@ -245,6 +245,69 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
+  "testlambdastepfunctionsExecutionFailedAlarm41073C3F": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "StateMachineArn",
+      "Value": {
+       "Ref": "testlambdastepfunctionsStateMachine807F0A77"
+      }
+     }
+    ],
+    "EvaluationPeriods": 1,
+    "MetricName": "ExecutionsFailed",
+    "Namespace": "AWS/States",
+    "Period": 300,
+    "Statistic": "Sum",
+    "Threshold": 1
+   }
+  },
+  "testlambdastepfunctionsExecutionThrottledAlarm62EABDFD": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "StateMachineArn",
+      "Value": {
+       "Ref": "testlambdastepfunctionsStateMachine807F0A77"
+      }
+     }
+    ],
+    "EvaluationPeriods": 1,
+    "MetricName": "ExecutionThrottled",
+    "Namespace": "AWS/States",
+    "Period": 300,
+    "Statistic": "Sum",
+    "Threshold": 1
+   }
+  },
+  "testlambdastepfunctionsExecutionAbortedAlarmC9CB5C2D": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "StateMachineArn",
+      "Value": {
+       "Ref": "testlambdastepfunctionsStateMachine807F0A77"
+      }
+     }
+    ],
+    "EvaluationPeriods": 1,
+    "MetricName": "ExecutionsAborted",
+    "Namespace": "AWS/States",
+    "Period": 300,
+    "Statistic": "Maximum",
+    "Threshold": 1
+   }
+  },
   "testlambdastepfunctionsLambdaFunctionServiceRoleA33E2E9C": {
    "Type": "AWS::IAM::Role",
    "Properties": {
@@ -390,7 +453,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "fd7a741674eeef7951675d2a57f0459376e046d88e5bee9aab601d8f5a704c93.zip"
+     "S3Key": "013657bdb16018cbdc3923aad71a2273f9175e48c3a74e732d41248f0028fbc5.zip"
     },
     "Environment": {
      "Variables": {
@@ -465,69 +528,6 @@
       }
      ]
     }
-   }
-  },
-  "testlambdastepfunctionsExecutionFailedAlarm41073C3F": {
-   "Type": "AWS::CloudWatch::Alarm",
-   "Properties": {
-    "AlarmDescription": "Alarm for the number of executions that failed exceeded the threshold of 1. ",
-    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
-    "Dimensions": [
-     {
-      "Name": "StateMachineArn",
-      "Value": {
-       "Ref": "testlambdastepfunctionsStateMachine807F0A77"
-      }
-     }
-    ],
-    "EvaluationPeriods": 1,
-    "MetricName": "ExecutionsFailed",
-    "Namespace": "AWS/States",
-    "Period": 300,
-    "Statistic": "Sum",
-    "Threshold": 1
-   }
-  },
-  "testlambdastepfunctionsExecutionThrottledAlarm62EABDFD": {
-   "Type": "AWS::CloudWatch::Alarm",
-   "Properties": {
-    "AlarmDescription": "Alarm for the number of executions that throttled exceeded the threshold of 1. ",
-    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
-    "Dimensions": [
-     {
-      "Name": "StateMachineArn",
-      "Value": {
-       "Ref": "testlambdastepfunctionsStateMachine807F0A77"
-      }
-     }
-    ],
-    "EvaluationPeriods": 1,
-    "MetricName": "ExecutionThrottled",
-    "Namespace": "AWS/States",
-    "Period": 300,
-    "Statistic": "Sum",
-    "Threshold": 1
-   }
-  },
-  "testlambdastepfunctionsExecutionAbortedAlarmC9CB5C2D": {
-   "Type": "AWS::CloudWatch::Alarm",
-   "Properties": {
-    "AlarmDescription": "Alarm for the number of executions that aborted exceeded the threshold of 1. ",
-    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
-    "Dimensions": [
-     {
-      "Name": "StateMachineArn",
-      "Value": {
-       "Ref": "testlambdastepfunctionsStateMachine807F0A77"
-      }
-     }
-    ],
-    "EvaluationPeriods": 1,
-    "MetricName": "ExecutionsAborted",
-    "Namespace": "AWS/States",
-    "Period": 300,
-    "Statistic": "Maximum",
-    "Threshold": 1
    }
   },
   "Vpc8378EB38": {
@@ -826,6 +826,12 @@
       "Ref": "VpcisolatedSubnet2Subnet39217055"
      }
     ],
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "lamstp-deployFunctionWithVpc/Vpc"
+     }
+    ],
     "VpcEndpointType": "Interface",
     "VpcId": {
      "Ref": "Vpc8378EB38"
@@ -913,7 +919,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a.zip"
+     "S3Key": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip"
     },
     "Timeout": 900,
     "MemorySize": 128,

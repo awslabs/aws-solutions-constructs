@@ -695,14 +695,14 @@ test('Old interface use with feature flag enabled', () => {
   });
 });
 
-/*******************************
+/**
  *
  * Input tests - these tests check that invalid inputs are caught
  * before any processing is attempted. Having both SNS and SQS in the same
  * Construct means the associated properties have unique names in the construct to
  * avoid collisions, so the standard checks will not find these.
  *
- *******************************/
+ **/
 
 test('Confirm that CheckSqsProps is called', () => {
   // Stack
@@ -1007,9 +1007,9 @@ test('Catch queueProps.encryption on new interface', () => {
   expect(app).toThrowError();
 });
 
-/*******************************
+/**
  * Tests for CreateRequiredKeys()
- *******************************/
+ **/
 
 test('test CreateRequiredKeys for no arguments', () => {
   const stack = new Stack();

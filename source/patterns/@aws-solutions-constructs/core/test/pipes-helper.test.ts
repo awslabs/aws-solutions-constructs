@@ -907,7 +907,7 @@ function CheckLogGroup(template: Template) {
       "Fn::Join": [
         "",
         [
-          Match.stringLikeRegexp('\/aws\/vendedlogs\/pipes\/constructs'),
+          Match.stringLikeRegexp('/aws/vendedlogs/pipes/constructs'),
           {
             "Fn::Select": [
               2,

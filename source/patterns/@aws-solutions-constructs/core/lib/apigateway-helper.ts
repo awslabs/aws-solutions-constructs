@@ -56,11 +56,11 @@ function configureCloudwatchRoleForApi(scope: Construct, api: apigateway.RestApi
     }
   });
   // Create and configure AWS::ApiGateway::Account with CloudWatch Role for ApiGateway
-  const CfnApi = api.node.findChild('Resource') as apigateway.CfnRestApi;
+  const cfnApi = api.node.findChild('Resource') as apigateway.CfnRestApi;
   const cfnAccount: apigateway.CfnAccount = new apigateway.CfnAccount(scope, 'LambdaRestApiAccount', {
     cloudWatchRoleArn: restApiCloudwatchRole.roleArn
   });
-  cfnAccount.addDependency(CfnApi);
+  cfnAccount.addDependency(cfnApi);
 
   // Suppress Cfn Nag warning for APIG
   const deployment: apigateway.CfnDeployment = api.latestDeployment?.node.findChild('Resource') as apigateway.CfnDeployment;
@@ -194,15 +194,15 @@ export interface GlobalLambdaRestApiResponse {
  *
  * Builds and returns a global api.RestApi designed to be used with an AWS Lambda function.
  * @param scope - the construct to which the RestApi should be attached to.
- * @param _existingLambdaObj - an existing AWS Lambda function.
+ * @param existingLambdaObj - an existing AWS Lambda function.
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
-export function GlobalLambdaRestApi(scope: Construct, _existingLambdaObj: lambda.Function,
+export function GlobalLambdaRestApi(scope: Construct, existingLambdaObj: lambda.Function,
   apiGatewayProps?: apigateway.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): GlobalLambdaRestApiResponse {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
-  const defaultProps = apiDefaults.DefaultGlobalLambdaRestApiProps(_existingLambdaObj, logGroup);
+  const defaultProps = apiDefaults.DefaultGlobalLambdaRestApiProps(existingLambdaObj, logGroup);
   const configureLambdaRestApiResponse = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
   return { api: configureLambdaRestApiResponse.api, role: configureLambdaRestApiResponse.role, group: logGroup};
 }
@@ -294,10 +294,10 @@ export function CreateSpecRestApi(
   const defaultProps = apiDefaults.DefaultSpecRestApiProps(scope, logGroup);
 
   // Define the API object
-  let api: apigateway.SpecRestApi;
   // If property overrides have been provided, incorporate them and deploy
   const consolidatedApiGatewayProps = consolidateProps(defaultProps, apiGatewayProps, { cloudWatchRole: false });
-  api = new apigateway.SpecRestApi(scope, 'SpecRestApi', consolidatedApiGatewayProps);
+
+  const api: apigateway.SpecRestApi = new apigateway.SpecRestApi(scope, 'SpecRestApi', consolidatedApiGatewayProps);
   // Configure API access logging
   const cwRole = (apiGatewayProps?.cloudWatchRole !== false) ? configureCloudwatchRoleForApi(scope, api) : undefined;
 
@@ -379,10 +379,9 @@ export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceI
   // Setup the API Gateway AWS Integration
   baseProps = Object.assign(baseProps, extraProps);
 
-  let apiGatewayIntegration;
   const newProps = consolidateProps(baseProps, params.awsIntegrationProps);
 
-  apiGatewayIntegration = new apigateway.AwsIntegration(newProps);
+  const apiGatewayIntegration = new apigateway.AwsIntegration(newProps);
 
   const defaultMethodOptions = {
     methodResponses: [

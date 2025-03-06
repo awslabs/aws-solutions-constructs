@@ -56,13 +56,13 @@ function DefaultRestApiProps(endpointType: api.EndpointType[], logGroup: LogGrou
  * Provides the default set of properties for Edge/Global Lambda backed RestApi
  * @param scope - the construct to which the RestApi should be attached to.
  * @param _endpointType - endpoint type for Api Gateway e.g. Regional, Global, Private
- * @param _logGroup - CW Log group for Api Gateway access logging
+ * @param logGroup - CW Log group for Api Gateway access logging
  */
-export function DefaultGlobalLambdaRestApiProps(_existingLambdaObj: lambda.Function, _logGroup: LogGroup): api.LambdaRestApiProps {
-  const baseProps: api.RestApiProps = DefaultRestApiProps([api.EndpointType.EDGE], _logGroup);
+export function DefaultGlobalLambdaRestApiProps(existingLambdaObj: lambda.Function, logGroup: LogGroup): api.LambdaRestApiProps {
+  const baseProps: api.RestApiProps = DefaultRestApiProps([api.EndpointType.EDGE], logGroup);
 
   const extraProps: api.LambdaRestApiProps = {
-    handler: _existingLambdaObj,
+    handler: existingLambdaObj,
   };
 
   return Object.assign(baseProps, extraProps);
@@ -92,20 +92,20 @@ export function DefaultRegionalLambdaRestApiProps(existingLambdaObj: lambda.Func
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  *
  * Provides the default set of properties for Edge/Global RestApi
- * @param _logGroup - CW Log group for Api Gateway access logging
+ * @param logGroup - CW Log group for Api Gateway access logging
  */
-export function DefaultGlobalRestApiProps(_logGroup: LogGroup) {
-  return DefaultRestApiProps([api.EndpointType.EDGE], _logGroup);
+export function DefaultGlobalRestApiProps(logGroup: LogGroup) {
+  return DefaultRestApiProps([api.EndpointType.EDGE], logGroup);
 }
 
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  *
  * Provides the default set of properties for Regional RestApi
- * @param _logGroup - CW Log group for Api Gateway access logging
+ * @param logGroup - CW Log group for Api Gateway access logging
  */
-export function DefaultRegionalRestApiProps(_logGroup: LogGroup) {
-  return DefaultRestApiProps([api.EndpointType.REGIONAL], _logGroup);
+export function DefaultRegionalRestApiProps(logGroup: LogGroup) {
+  return DefaultRestApiProps([api.EndpointType.REGIONAL], logGroup);
 }
 
 /**

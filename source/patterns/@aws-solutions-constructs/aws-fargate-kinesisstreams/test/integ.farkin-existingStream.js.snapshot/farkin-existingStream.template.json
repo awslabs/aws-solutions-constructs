@@ -619,6 +619,12 @@
       "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
      }
     ],
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "farkin-existingStream/Vpc"
+     }
+    ],
     "VpcEndpointType": "Interface",
     "VpcId": {
      "Ref": "Vpc8378EB38"
@@ -655,6 +661,12 @@
      },
      {
       "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "farkin-existingStream/Vpc"
      }
     ],
     "VpcEndpointType": "Interface",
@@ -695,6 +707,12 @@
       "Ref": "VpcPrivateSubnet2Subnet3788AAA1"
      }
     ],
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "farkin-existingStream/Vpc"
+     }
+    ],
     "VpcEndpointType": "Interface",
     "VpcId": {
      "Ref": "Vpc8378EB38"
@@ -730,6 +748,12 @@
       ]
      ]
     },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "farkin-existingStream/Vpc"
+     }
+    ],
     "VpcEndpointType": "Gateway",
     "VpcId": {
      "Ref": "Vpc8378EB38"
@@ -817,7 +841,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a.zip"
+     "S3Key": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip"
     },
     "Timeout": 900,
     "MemorySize": 128,

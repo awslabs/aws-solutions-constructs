@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "39.0.0",
   "artifacts": {
     "lamstpdeployFunctionWithVpcIntegDefaultTestDeployAssertAD49954F.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a4dfb3c004a1438aa3cfd2ed65f1056a867dd967860bb588dc560b5373da9328.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/2d2203c058ae2e39f7bb9e6232dbcba1bf08e6885fef1814cb6f3f74bda6025f.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -118,6 +118,24 @@
             "data": "testlambdastepfunctionsStateMachine807F0A77"
           }
         ],
+        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionFailedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsExecutionFailedAlarm41073C3F"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionThrottledAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsExecutionThrottledAlarm62EABDFD"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionAbortedAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsExecutionAbortedAlarmC9CB5C2D"
+          }
+        ],
         "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/LambdaFunctionServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -140,24 +158,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdastepfunctionsLambdaFunctionFC1F0FAE"
-          }
-        ],
-        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionFailedAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdastepfunctionsExecutionFailedAlarm41073C3F"
-          }
-        ],
-        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionThrottledAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdastepfunctionsExecutionThrottledAlarm62EABDFD"
-          }
-        ],
-        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/ExecutionAbortedAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdastepfunctionsExecutionAbortedAlarmC9CB5C2D"
           }
         ],
         "/lamstp-deployFunctionWithVpc/Vpc/Resource": [
@@ -242,6 +242,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "LatestNodeRuntimeMap"
+          }
+        ],
+        "/lamstp-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
           }
         ],
         "/lamstp-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [

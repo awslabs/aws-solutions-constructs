@@ -44,16 +44,16 @@ export function buildEventBus(scope: Construct, props: BuildEventBusProps): even
     return props.existingEventBusInterface;
   } else if (props.eventBusProps) {
     // eventBusProps is provided, create a new EventBus
-    const _eventBusName = props.eventBusProps.eventBusName || 'CustomEventBus';
-    return new events.EventBus(scope, _eventBusName, props.eventBusProps);
+    const eventBusName = props.eventBusProps.eventBusName || 'CustomEventBus';
+    return new events.EventBus(scope, eventBusName, props.eventBusProps);
   }
-  // ESLint requires this return statement, so disabling SonarQube warning
+  // Typescript requires this return statement, so disabling SonarQube warning
   return; // NOSONAR
 }
 
 export interface EventBridgeProps {
-  readonly existingEventBusInterface: events.IEventBus,
-  readonly eventBusProps: events.EventBusProps
+  readonly existingEventBusInterface?: events.IEventBus,
+  readonly eventBusProps?: events.EventBusProps
 }
 
 export function CheckEventBridgeProps(propsObject: EventBridgeProps | any) {

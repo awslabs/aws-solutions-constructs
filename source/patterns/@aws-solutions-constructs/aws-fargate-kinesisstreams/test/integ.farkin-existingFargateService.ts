@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
 import { App, Stack } from "aws-cdk-lib";
 import { FargateToKinesisStreams } from "../lib";
 import { CreateFargateService, generateIntegStackName, getTestVpc, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';

@@ -62,25 +62,25 @@ export class ServiceStaffStack extends Stack {
 
     // Setup the service staff API with Cognito user pool
     const serviceStaffApi = new CognitoToApiGatewayToLambda(this, 'service-staff-api', {
-    	existingLambdaObj: createOrder.lambdaFunction,
-		  apiGatewayProps: {
-	      proxy: false,
+      existingLambdaObj: createOrder.lambdaFunction,
+      apiGatewayProps: {
+        proxy: false,
         description: 'Demo: Service staff API'
-	    }
+      }
     });
 
     // Add a resource to the API for creating a new order
     const createOrderResource = serviceStaffApi.apiGateway.root.addResource('create-order');
     createOrderResource.addProxy({
-    	defaultIntegration: new apigateway.LambdaIntegration(serviceStaffApi.lambdaFunction),
-    	anyMethod: true
+      defaultIntegration: new apigateway.LambdaIntegration(serviceStaffApi.lambdaFunction),
+      anyMethod: true
     });
 
     // Add a resource to the API for handling payments and marking orders as paid
     const processPaymentResource = serviceStaffApi.apiGateway.root.addResource('process-payment');
     processPaymentResource.addProxy({
-    	defaultIntegration: new apigateway.LambdaIntegration(processPayment.lambdaFunction),
-    	anyMethod: true
+      defaultIntegration: new apigateway.LambdaIntegration(processPayment.lambdaFunction),
+      anyMethod: true
     });
 
     // Add the authorizers to the API

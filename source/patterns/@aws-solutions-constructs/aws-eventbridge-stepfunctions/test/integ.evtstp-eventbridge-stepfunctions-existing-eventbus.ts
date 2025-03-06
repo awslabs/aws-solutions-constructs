@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { EventbridgeToStepfunctions, EventbridgeToStepfunctionsProps } from "../lib";
 import { Duration } from 'aws-cdk-lib';

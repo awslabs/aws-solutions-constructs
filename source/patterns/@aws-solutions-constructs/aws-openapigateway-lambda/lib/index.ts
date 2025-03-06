@@ -16,11 +16,12 @@ import { Construct } from 'constructs';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
 import { RestApiBaseProps } from 'aws-cdk-lib/aws-apigateway';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
-import { ApiIntegration, CheckOpenApiProps, ApiLambdaFunction, ObtainApiDefinition } from './openapi-helper';
+import { ApiIntegration, CheckOpenApiProps, ApiLambdaFunction, ObtainApiDefinition, MapApiIntegrationsToApiFunction, ExtractFunctionInterface } from './openapi-helper';
 // openapi-helper is on its way to core, so these interfaces must be exported here
 export { ApiIntegration, ApiLambdaFunction } from './openapi-helper';
 
@@ -113,27 +114,9 @@ export class OpenApiGatewayToLambda extends Construct {
     super(scope, id);
     CheckOpenApiProps(props);
 
-    // store a counter to be able to uniquely name lambda functions to avoid naming collisions
-    let lambdaCounter = 0;
+    this.apiLambdaFunctions = MapApiIntegrationsToApiFunction(this, props.apiIntegrations);
 
-    this.apiLambdaFunctions = props.apiIntegrations.map(apiIntegration => {
-      if (apiIntegration.existingLambdaObj && apiIntegration.lambdaFunctionProps) {
-        throw new Error(`Error - Cannot provide both lambdaFunctionProps and existingLambdaObj in an ApiIntegrationfor the api integration with id: ${apiIntegration.id}`);
-      }
-      if (apiIntegration.existingLambdaObj || apiIntegration.lambdaFunctionProps) {
-        return {
-          id: apiIntegration.id,
-          lambdaFunction: defaults.buildLambdaFunction(this, {
-            existingLambdaObj: apiIntegration.existingLambdaObj,
-            lambdaFunctionProps: apiIntegration.lambdaFunctionProps
-          }, `${apiIntegration.id}ApiFunction${lambdaCounter++}`)
-        };
-      } else {
-        throw new Error(`One of existingLambdaObj or lambdaFunctionProps must be specified for the api integration with id: ${apiIntegration.id}`);
-      }
-    });
-
-    const definition = ObtainApiDefinition(this,  {
+    const definition = ObtainApiDefinition(this, {
       tokenToFunctionMap: this.apiLambdaFunctions,
       apiDefinitionBucket: props.apiDefinitionBucket,
       apiDefinitionKey: props.apiDefinitionKey,
@@ -155,10 +138,12 @@ export class OpenApiGatewayToLambda extends Construct {
     // Redeploy the API any time a decoupled (non-inline) API definition changes (from asset or s3 object)
     this.apiGateway.latestDeployment?.addToLogicalId(props.apiDefinitionKey ?? props.apiDefinitionAsset?.s3ObjectKey);
     this.apiLambdaFunctions.forEach(apiLambdaFunction => {
+      const targetInterface: lambda.IFunction = ExtractFunctionInterface(apiLambdaFunction);
+
       // Redeploy the API any time one of the lambda functions changes
-      this.apiGateway.latestDeployment?.addToLogicalId(apiLambdaFunction.lambdaFunction.functionArn);
-      // Grant APIGW invocation rights for each lambda function
-      apiLambdaFunction.lambdaFunction.addPermission(`${id}PermitAPIGInvocation`, {
+      this.apiGateway.latestDeployment?.addToLogicalId(targetInterface.functionArn);
+
+      targetInterface.addPermission(`${id}PermitAPIGInvocation`, {
         principal: new iam.ServicePrincipal('apigateway.amazonaws.com'),
         sourceArn: this.apiGateway.arnForExecuteApi('*')
       });

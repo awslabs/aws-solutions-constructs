@@ -18,8 +18,8 @@
 
 import { KeyProps } from 'aws-cdk-lib/aws-kms';
 
-const DefaultEncryptionProps: KeyProps = {
+const defaultEncryptionProps: KeyProps = {
   enableKeyRotation: true
 };
 
-export { DefaultEncryptionProps };
+export { defaultEncryptionProps };

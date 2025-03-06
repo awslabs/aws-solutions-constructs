@@ -99,7 +99,7 @@ test('Test deployment w/ existing stream', () => {
     RetentionPeriodHours: 96
   });
 
-  expect(construct.cloudwatchAlarms == null);
+  expect(construct.cloudwatchAlarms === null);
 
   // Since createCloudWatchAlarm is set to false, no Alarm should exist
   template.resourceCountIs('AWS::CloudWatch::Alarm', 0);

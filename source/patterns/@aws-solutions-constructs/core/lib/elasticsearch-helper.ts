@@ -28,7 +28,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 
-const MaximumAzsInElasticsearchDomain = 3;
+const maximumAzsInElasticsearchDomain = 3;
 
 export interface BuildElasticSearchProps {
   readonly identitypool: cognito.CfnIdentityPool;
@@ -51,7 +51,7 @@ export interface BuildElasticSearchResponse {
  */
 export function buildElasticSearch(scope: Construct, props: BuildElasticSearchProps): BuildElasticSearchResponse {
 
-  let subnetIds: string[] = [];
+  let subnetIds: string[];
   const constructDrivenProps: any = {};
 
   // Setup the IAM Role & policy for ES to configure Cognito User pool and Identity pool
@@ -60,8 +60,8 @@ export function buildElasticSearch(scope: Construct, props: BuildElasticSearchPr
   if (props.vpc) {
     subnetIds = retrievePrivateSubnetIds(props.vpc);
 
-    if (subnetIds.length > MaximumAzsInElasticsearchDomain) {
-      subnetIds = subnetIds.slice(0, MaximumAzsInElasticsearchDomain);
+    if (subnetIds.length > maximumAzsInElasticsearchDomain) {
+      subnetIds = subnetIds.slice(0, maximumAzsInElasticsearchDomain);
     }
 
     constructDrivenProps.vpcOptions = {

@@ -25,7 +25,7 @@ stack.templateOptions.description = 'Integration Test for aws-apigateway-sqs';
 new ApiGatewayToSqs(stack, 'test-api-gateway-sqs-default', {
   allowCreateOperation: true,
   additionalCreateRequestTemplates: {
-    'text/plain': 'Action=SendMessage&MessageBody=$util.urlEncode(\"$input.body\")'
+    'text/plain': 'Action=SendMessage&MessageBody=$util.urlEncode("$input.body")'
   }
 });
 

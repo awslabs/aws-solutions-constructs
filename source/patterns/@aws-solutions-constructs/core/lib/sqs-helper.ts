@@ -58,7 +58,7 @@ export interface BuildQueueProps {
      *
      * @default - None
      */
-    readonly encryptionKey?: kms.Key;
+    readonly encryptionKey?: kms.IKey;
     /**
      * Optional user provided properties to override the default properties for the KMS encryption key used to encrypt the SQS Queue with.
      *
@@ -239,7 +239,7 @@ export function buildDeadLetterQueue(scope: Construct, id: string, props: BuildD
     // Return the dead letter queue interface
     return deadLetterQueueObject;
   }
-  // ESLint requires this return statement, so disabling SonarQube warning
+  // Typescript requires this return statement, so disabling SonarQube warning
   return; // NOSONAR
 }
 

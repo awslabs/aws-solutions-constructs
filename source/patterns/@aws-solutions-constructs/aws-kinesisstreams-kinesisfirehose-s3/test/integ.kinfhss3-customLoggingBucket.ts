@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
 import { App, Stack, RemovalPolicy, Duration } from "aws-cdk-lib";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import { KinesisStreamsToKinesisFirehoseToS3 } from "../lib";

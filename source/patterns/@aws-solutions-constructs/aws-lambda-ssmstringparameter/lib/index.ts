@@ -140,9 +140,9 @@ export class LambdaToSsmstringparameter extends Construct {
     // Add the requested or default SSM String parameter permissions
     this.stringParameter.grantRead(this.lambdaFunction);
     if (props.stringParameterPermissions) {
-      const _permissions = props.stringParameterPermissions.toUpperCase();
+      const permissions = props.stringParameterPermissions.toUpperCase();
 
-      if (_permissions === 'READWRITE') {
+      if (permissions === 'READWRITE') {
         this.stringParameter.grantWrite(this.lambdaFunction);
       }
     }

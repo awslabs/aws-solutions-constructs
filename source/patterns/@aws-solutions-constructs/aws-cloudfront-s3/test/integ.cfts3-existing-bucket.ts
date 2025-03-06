@@ -13,7 +13,6 @@
 
 // Imports
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
-import * as s3 from "aws-cdk-lib/aws-s3";
 import * as defaults from "@aws-solutions-constructs/core";
 import { CloudFrontToS3 } from "../lib";
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
@@ -27,13 +26,12 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
-let mybucket: s3.Bucket;
-mybucket = defaults.CreateScrapBucket(stack, "scrapBucket", {
+const mybucket = defaults.CreateScrapBucket(stack, "scrapBucket", {
   removalPolicy: RemovalPolicy.DESTROY,
   autoDeleteObjects: true
 });
 
-const _construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+const s3BucketConstruct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
   existingBucketObj: mybucket,
   cloudFrontLoggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
@@ -54,7 +52,7 @@ const myCachePolicy = new cloudfront.CachePolicy(stack, 'myCachePolicy', {
 });
 
 // Add behavior
-_construct.cloudFrontWebDistribution.addBehavior('/images/*.jpg', new origins.S3Origin(mybucket), {
+s3BucketConstruct.cloudFrontWebDistribution.addBehavior('/images/*.jpg', new origins.S3Origin(mybucket), {
   cachePolicy: myCachePolicy
 });
 

@@ -1,0 +1,149 @@
+{
+  "version": "39.0.0",
+  "artifacts": {
+    "evtsqscustomtargetIntegDefaultTestDeployAssertD220243E.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "evtsqscustomtargetIntegDefaultTestDeployAssertD220243E.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "evtsqscustomtargetIntegDefaultTestDeployAssertD220243E": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "evtsqscustomtargetIntegDefaultTestDeployAssertD220243E.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "evtsqscustomtargetIntegDefaultTestDeployAssertD220243E.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "evtsqscustomtargetIntegDefaultTestDeployAssertD220243E.assets"
+      ],
+      "metadata": {
+        "/evtsqs-custom-target/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/evtsqs-custom-target/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "evtsqs-custom-target/Integ/DefaultTest/DeployAssert"
+    },
+    "evtsqs-custom-target.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "evtsqs-custom-target.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "evtsqs-custom-target": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "evtsqs-custom-target.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8221310775997696fa75dec2375830f8d37a0d9d424ea6d55a03f453d4bec94c.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "evtsqs-custom-target.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "evtsqs-custom-target.assets"
+      ],
+      "metadata": {
+        "/evtsqs-custom-target/construct/queue-dlq/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructqueuedlq6B66D1E6"
+          }
+        ],
+        "/evtsqs-custom-target/construct/queue-dlq/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructqueuedlqPolicy3B6CC54E"
+          }
+        ],
+        "/evtsqs-custom-target/construct/'queueKey'/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructqueueKey0638E1FB"
+          }
+        ],
+        "/evtsqs-custom-target/construct/queue": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "encryption: Automatically changed to QueueEncryption.KMS, was: QueueEncryption.KMS_MANAGED\nWhen encryptionMasterKey is provided, always set `encryption: QueueEncryption.KMS` [ack: @aws-cdk/aws-sqs:queueEncryptionChangedToKMS]"
+          }
+        ],
+        "/evtsqs-custom-target/construct/queue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructqueue481DC1EC"
+          }
+        ],
+        "/evtsqs-custom-target/construct/queue/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructqueuePolicy5B0256B1"
+          }
+        ],
+        "/evtsqs-custom-target/construct/EventsRule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "constructEventsRule43880ADB"
+          }
+        ],
+        "/evtsqs-custom-target/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/evtsqs-custom-target/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "evtsqs-custom-target"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}
