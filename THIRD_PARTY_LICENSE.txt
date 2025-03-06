@@ -26,9 +26,9 @@ Apache-2.0: @ampproject/remapping@2.3.0
 Apache-2.0: @aws-cdk/asset-awscli-v1@2.2.216
 Apache-2.0: @aws-cdk/asset-kubectl-v20@2.1.3
 Apache-2.0: @aws-cdk/asset-node-proxy-agent-v6@2.1.0
-Apache-2.0: @aws-cdk/cloud-assembly-schema@38.0.1
+Apache-2.0: @aws-cdk/cloud-assembly-schema@39.2.20
 Apache-2.0: @aws-cdk/integ-tests-alpha@2.163.1-alpha.0
-Apache-2.0: @aws-cdk/integ-tests-alpha@2.173.2-alpha.0
+Apache-2.0: @aws-cdk/integ-tests-alpha@2.177.0-alpha.0
 Apache-2.0: @aws-crypto/crc32@5.2.0
 Apache-2.0: @aws-crypto/crc32c@5.2.0
 Apache-2.0: @aws-crypto/sha1-browser@5.2.0
@@ -70,10 +70,20 @@ Apache-2.0: @aws-sdk/util-user-agent-browser@3.714.0
 Apache-2.0: @aws-sdk/util-user-agent-node@3.716.0
 Apache-2.0: @aws-sdk/xml-builder@3.709.0
 Apache-2.0: @balena/dockerignore@1.0.2
+Apache-2.0: @eslint/compat@1.2.7
+Apache-2.0: @eslint/config-array@0.19.2
+Apache-2.0: @eslint/core@0.12.0
+Apache-2.0: @eslint/object-schema@2.1.6
+Apache-2.0: @eslint/plugin-kit@0.2.7
+Apache-2.0: @humanfs/core@0.19.1
+Apache-2.0: @humanfs/node@0.16.6
+Apache-2.0: @humanwhocodes/module-importer@1.0.1
+Apache-2.0: @humanwhocodes/retry@0.3.1
+Apache-2.0: @humanwhocodes/retry@0.4.2
 Apache-2.0: @hutson/parse-repository-url@3.0.2
-Apache-2.0: @jsii/check-node@1.105.0
 Apache-2.0: @jsii/check-node@1.106.0
-Apache-2.0: @jsii/spec@1.106.0
+Apache-2.0: @jsii/check-node@1.108.0
+Apache-2.0: @jsii/spec@1.108.0
 Apache-2.0: @sigstore/bundle@2.3.2
 Apache-2.0: @sigstore/core@1.1.0
 Apache-2.0: @sigstore/protobuf-specs@0.3.2
@@ -133,16 +143,15 @@ Apache-2.0: @smithy/util-uri-escape@3.0.0
 Apache-2.0: @smithy/util-utf8@2.3.0
 Apache-2.0: @smithy/util-utf8@3.0.0
 Apache-2.0: @smithy/util-waiter@3.2.0
-Apache-2.0: aws-cdk-lib@2.173.2
+Apache-2.0: aws-cdk-lib@2.177.0
 Apache-2.0: before-after-hook@2.2.3
 Apache-2.0: bser@2.1.1
 Apache-2.0: codemaker@1.106.0
 Apache-2.0: constructs@10.4.2
 Apache-2.0: doctrine@2.1.0
-Apache-2.0: doctrine@3.0.0
 Apache-2.0: ejs@3.1.10
-Apache-2.0: eslint-visitor-keys@1.3.0
-Apache-2.0: eslint-visitor-keys@2.1.0
+Apache-2.0: eslint-visitor-keys@3.4.3
+Apache-2.0: eslint-visitor-keys@4.2.0
 Apache-2.0: exponential-backoff@3.1.1
 Apache-2.0: fb-watchman@2.0.2
 Apache-2.0: filelist@1.0.4
@@ -150,20 +159,17 @@ Apache-2.0: human-signals@2.1.0
 Apache-2.0: jake@10.9.2
 Apache-2.0: jsii-pacmak@1.106.0
 Apache-2.0: jsii-reflect@1.106.0
-Apache-2.0: jsii-rosetta@5.4.50
-Apache-2.0: jsii@5.4.46
+Apache-2.0: jsii-rosetta@5.7.2
+Apache-2.0: jsii@5.7.7
 Apache-2.0: log4js@6.9.1
 Apache-2.0: oo-ascii-tree@1.106.0
-Apache-2.0: rxjs@6.6.7
 Apache-2.0: rxjs@7.8.1
 Apache-2.0: sigstore@2.3.1
 Apache-2.0: spdx-correct@3.2.0
 Apache-2.0: strong-log-transformer@2.1.0
-Apache-2.0: tslint@5.20.1
 Apache-2.0: typescript@4.7.4
-Apache-2.0: typescript@5.4.5
 Apache-2.0: typescript@5.7.2
-Apache-2.0: typescript@5.8.0-dev.20241227
+Apache-2.0: typescript@5.7.3
 Apache-2.0: validate-npm-package-license@3.0.4
 Apache-2.0: walker@1.0.8
 Apache-2.0: workerpool@6.5.1
@@ -208,6 +214,10 @@ MIT: @bcoe/v8-coverage@0.2.3
 MIT: @emnapi/core@1.3.1
 MIT: @emnapi/runtime@1.3.1
 MIT: @emnapi/wasi-threads@1.0.1
+MIT: @eslint-community/eslint-utils@4.4.1
+MIT: @eslint-community/regexpp@4.12.1
+MIT: @eslint/eslintrc@3.3.0
+MIT: @eslint/js@9.21.0
 MIT: @istanbuljs/schema@0.1.3
 MIT: @jest/console@27.5.1
 MIT: @jest/core@27.5.1
@@ -254,6 +264,9 @@ MIT: @octokit/types@9.3.2
 MIT: @pkgjs/parseargs@0.11.0
 MIT: @rtsao/scc@1.1.0
 MIT: @sinclair/typebox@0.27.8
+MIT: @stylistic/eslint-plugin-js@4.2.0
+MIT: @stylistic/eslint-plugin-ts@4.2.0
+MIT: @stylistic/eslint-plugin@4.2.0
 MIT: @tootallnate/once@1.1.2
 MIT: @tufjs/canonical-json@2.0.0
 MIT: @tufjs/models@2.0.1
@@ -264,6 +277,7 @@ MIT: @types/babel__generator@7.6.8
 MIT: @types/babel__template@7.4.4
 MIT: @types/babel__traverse@7.18.2
 MIT: @types/deep-diff@1.0.5
+MIT: @types/estree@1.0.6
 MIT: @types/graceful-fs@4.1.9
 MIT: @types/istanbul-lib-coverage@2.0.6
 MIT: @types/istanbul-lib-report@3.0.3
@@ -284,11 +298,14 @@ MIT: @types/sinonjs__fake-timers@8.1.5
 MIT: @types/stack-utils@2.0.3
 MIT: @types/yargs-parser@21.0.3
 MIT: @types/yargs@16.0.9
-MIT: @typescript-eslint/eslint-plugin@4.33.0
-MIT: @typescript-eslint/experimental-utils@4.33.0
-MIT: @typescript-eslint/scope-manager@4.33.0
-MIT: @typescript-eslint/types@4.33.0
-MIT: @typescript-eslint/visitor-keys@4.33.0
+MIT: @typescript-eslint/eslint-plugin@8.26.0
+MIT: @typescript-eslint/parser@8.26.0
+MIT: @typescript-eslint/scope-manager@8.26.0
+MIT: @typescript-eslint/type-utils@8.26.0
+MIT: @typescript-eslint/types@8.26.0
+MIT: @typescript-eslint/typescript-estree@8.26.0
+MIT: @typescript-eslint/utils@8.26.0
+MIT: @typescript-eslint/visitor-keys@8.26.0
 MIT: @xmldom/xmldom@0.9.6
 MIT: @zkochan/js-yaml@0.0.7
 MIT: acorn-globals@6.0.0
@@ -296,6 +313,7 @@ MIT: acorn-jsx@5.3.2
 MIT: acorn-walk@7.2.0
 MIT: acorn@7.4.1
 MIT: acorn@8.14.0
+MIT: acorn@8.14.1
 MIT: add-stream@1.0.0
 MIT: agent-base@6.0.2
 MIT: agent-base@7.1.3
@@ -304,10 +322,8 @@ MIT: ajv@6.12.6
 MIT: ajv@8.17.1
 MIT: ansi-colors@4.1.3
 MIT: ansi-escapes@4.3.2
-MIT: ansi-regex@4.1.1
 MIT: ansi-regex@5.0.1
 MIT: ansi-regex@6.1.0
-MIT: ansi-styles@3.2.1
 MIT: ansi-styles@4.3.0
 MIT: ansi-styles@5.2.0
 MIT: ansi-styles@6.2.1
@@ -323,7 +339,6 @@ MIT: array.prototype.flatmap@1.3.3
 MIT: arraybuffer.prototype.slice@1.0.4
 MIT: arrify@1.0.1
 MIT: arrify@2.0.1
-MIT: astral-regex@1.0.0
 MIT: astral-regex@2.0.0
 MIT: async@3.2.6
 MIT: asynckit@0.4.0
@@ -344,7 +359,6 @@ MIT: braces@3.0.3
 MIT: browserslist@4.24.3
 MIT: buffer-from@1.1.2
 MIT: buffer@5.7.1
-MIT: builtin-modules@1.1.1
 MIT: byte-size@8.1.1
 MIT: call-bind-apply-helpers@1.0.1
 MIT: call-bind@1.0.8
@@ -353,7 +367,6 @@ MIT: callsites@3.1.0
 MIT: camelcase-keys@6.2.2
 MIT: camelcase@5.3.1
 MIT: camelcase@6.3.0
-MIT: chalk@2.4.2
 MIT: chalk@4.1.0
 MIT: chalk@4.1.2
 MIT: char-regex@1.0.2
@@ -370,13 +383,10 @@ MIT: clone@1.0.4
 MIT: clone@2.1.2
 MIT: co@4.6.0
 MIT: collect-v8-coverage@1.0.2
-MIT: color-convert@1.9.3
 MIT: color-convert@2.0.1
-MIT: color-name@1.1.3
 MIT: color-name@1.1.4
 MIT: columnify@1.6.0
 MIT: combined-stream@1.0.8
-MIT: commander@2.20.3
 MIT: compare-func@2.0.0
 MIT: concat-map@0.0.1
 MIT: concat-stream@2.0.0
@@ -390,7 +400,6 @@ MIT: convert-source-map@1.9.0
 MIT: convert-source-map@2.0.0
 MIT: core-util-is@1.0.3
 MIT: cosmiconfig@8.3.6
-MIT: cross-spawn@6.0.6
 MIT: cross-spawn@7.0.6
 MIT: cssesc@3.0.0
 MIT: cssom@0.3.8
@@ -427,12 +436,10 @@ MIT: diff-sequences@29.6.3
 MIT: dir-glob@3.0.1
 MIT: domexception@2.0.1
 MIT: dot-prop@5.3.0
-MIT: downlevel-dts@0.11.0
 MIT: dunder-proto@1.0.1
 MIT: duplexer@0.1.2
 MIT: eastasianwidth@0.2.0
 MIT: emittery@0.8.1
-MIT: emoji-regex@7.0.3
 MIT: emoji-regex@8.0.0
 MIT: emoji-regex@9.2.2
 MIT: encoding@0.1.13
@@ -456,10 +463,9 @@ MIT: escape-string-regexp@4.0.0
 MIT: eslint-import-resolver-node@0.3.9
 MIT: eslint-module-utils@2.12.0
 MIT: eslint-plugin-import@2.31.0
-MIT: eslint-plugin-license-header@0.2.1
-MIT: eslint-utils@1.4.3
-MIT: eslint-utils@3.0.0
-MIT: eslint@6.8.0
+MIT: eslint-plugin-license-header@0.8.0
+MIT: eslint-plugin-prefer-arrow@1.2.3
+MIT: eslint@9.21.0
 MIT: eventemitter3@4.0.7
 MIT: execa@5.0.0
 MIT: execa@5.1.1
@@ -472,11 +478,12 @@ MIT: fast-json-stable-stringify@2.1.0
 MIT: fast-levenshtein@2.0.6
 MIT: fast-xml-parser@4.4.1
 MIT: figures@3.2.0
-MIT: file-entry-cache@5.0.1
+MIT: file-entry-cache@8.0.0
 MIT: fill-range@7.1.1
 MIT: find-up@2.1.0
 MIT: find-up@4.1.0
-MIT: flat-cache@2.0.1
+MIT: find-up@5.0.0
+MIT: flat-cache@4.0.1
 MIT: follow-redirects@1.15.9
 MIT: for-each@0.3.3
 MIT: form-data@3.0.2
@@ -488,7 +495,6 @@ MIT: fs-extra@11.2.0
 MIT: fs-extra@8.1.0
 MIT: function-bind@1.1.2
 MIT: function.prototype.name@1.1.8
-MIT: functional-red-black-tree@1.0.1
 MIT: functions-have-names@1.2.3
 MIT: gensync@1.0.0-beta.2
 MIT: get-intrinsic@1.2.6
@@ -504,14 +510,14 @@ MIT: git-semver-tags@5.0.1
 MIT: git-up@7.0.0
 MIT: git-url-parse@14.0.0
 MIT: globals@11.12.0
-MIT: globals@12.4.0
+MIT: globals@14.0.0
 MIT: globalthis@1.0.4
 MIT: globby@11.1.0
 MIT: gopd@1.2.0
+MIT: graphemer@1.4.0
 MIT: handlebars@4.7.8
 MIT: hard-rejection@2.1.0
 MIT: has-bigints@1.1.0
-MIT: has-flag@3.0.0
 MIT: has-flag@4.0.0
 MIT: has-property-descriptors@1.0.2
 MIT: has-proto@1.2.0
@@ -526,17 +532,14 @@ MIT: https-proxy-agent@5.0.1
 MIT: https-proxy-agent@7.0.6
 MIT: iconv-lite@0.4.24
 MIT: iconv-lite@0.6.3
-MIT: ignore@4.0.6
 MIT: ignore@5.3.2
 MIT: import-fresh@3.3.0
 MIT: import-local@3.1.0
 MIT: import-local@3.2.0
 MIT: imurmurhash@0.1.4
 MIT: indent-string@4.0.0
-MIT: inquirer@7.3.3
 MIT: inquirer@8.2.6
 MIT: internal-slot@1.1.0
-MIT: interpret@1.4.0
 MIT: ip-address@9.0.5
 MIT: is-array-buffer@3.0.5
 MIT: is-arrayish@0.2.1
@@ -551,7 +554,6 @@ MIT: is-date-object@1.1.0
 MIT: is-docker@2.2.1
 MIT: is-extglob@2.1.1
 MIT: is-finalizationregistry@1.1.1
-MIT: is-fullwidth-code-point@2.0.0
 MIT: is-fullwidth-code-point@3.0.0
 MIT: is-generator-fn@2.1.0
 MIT: is-generator-function@1.0.10
@@ -622,6 +624,7 @@ MIT: js-yaml@4.1.0
 MIT: jsbn@1.1.0
 MIT: jsdom@16.7.0
 MIT: jsesc@3.1.0
+MIT: json-buffer@3.0.1
 MIT: json-parse-better-errors@1.0.2
 MIT: json-parse-even-better-errors@2.3.1
 MIT: json-parse-even-better-errors@3.0.2
@@ -638,19 +641,22 @@ MIT: jsonschema@1.4.1
 MIT: just-diff-apply@5.5.0
 MIT: just-diff@6.0.2
 MIT: just-extend@6.2.0
+MIT: keyv@4.5.4
 MIT: kind-of@6.0.3
 MIT: kleur@3.0.3
 MIT: lerna@8.1.8
 MIT: leven@3.1.0
-MIT: levn@0.3.0
+MIT: levn@0.4.1
 MIT: lines-and-columns@1.2.4
 MIT: lines-and-columns@2.0.3
 MIT: load-json-file@4.0.0
 MIT: load-json-file@6.2.0
 MIT: locate-path@2.0.0
 MIT: locate-path@5.0.0
+MIT: locate-path@6.0.0
 MIT: lodash.get@4.4.2
 MIT: lodash.ismatch@4.4.0
+MIT: lodash.merge@4.6.2
 MIT: lodash.truncate@4.4.2
 MIT: lodash@4.17.21
 MIT: log-symbols@4.1.0
@@ -672,7 +678,6 @@ MIT: minimist-options@4.1.0
 MIT: minimist@1.2.8
 MIT: minipass-fetch@3.0.5
 MIT: minizlib@2.1.2
-MIT: mkdirp@0.5.6
 MIT: mkdirp@1.0.4
 MIT: modify-values@1.0.1
 MIT: ms@2.1.3
@@ -680,7 +685,6 @@ MIT: multimatch@5.0.0
 MIT: natural-compare@1.4.0
 MIT: negotiator@0.6.4
 MIT: neo-async@2.6.2
-MIT: nice-try@1.0.5
 MIT: node-fetch@2.6.7
 MIT: node-fetch@2.7.0
 MIT: node-gyp@10.3.1
@@ -699,15 +703,17 @@ MIT: object.groupby@1.0.3
 MIT: object.values@1.2.1
 MIT: onetime@5.1.2
 MIT: open@8.4.2
-MIT: optionator@0.8.3
+MIT: optionator@0.9.4
 MIT: ora@5.3.0
 MIT: ora@5.4.1
 MIT: os-tmpdir@1.0.2
 MIT: p-finally@1.0.0
 MIT: p-limit@1.3.0
 MIT: p-limit@2.3.0
+MIT: p-limit@3.1.0
 MIT: p-locate@2.0.0
 MIT: p-locate@4.1.0
+MIT: p-locate@5.0.0
 MIT: p-map-series@2.1.0
 MIT: p-map@4.0.0
 MIT: p-pipe@3.1.0
@@ -726,13 +732,13 @@ MIT: parse5@6.0.1
 MIT: path-exists@3.0.0
 MIT: path-exists@4.0.0
 MIT: path-is-absolute@1.0.1
-MIT: path-key@2.0.1
 MIT: path-key@3.1.1
 MIT: path-parse@1.0.7
 MIT: path-to-regexp@6.3.0
 MIT: path-type@3.0.0
 MIT: path-type@4.0.0
 MIT: picomatch@2.3.1
+MIT: picomatch@4.0.2
 MIT: pify@2.3.0
 MIT: pify@3.0.0
 MIT: pify@4.0.1
@@ -741,11 +747,10 @@ MIT: pirates@4.0.6
 MIT: pkg-dir@4.2.0
 MIT: possible-typed-array-names@1.0.0
 MIT: postcss-selector-parser@6.1.2
-MIT: prelude-ls@1.1.2
+MIT: prelude-ls@1.2.1
 MIT: pretty-format@27.5.1
 MIT: pretty-format@29.7.0
 MIT: process-nextick-args@2.0.1
-MIT: progress@2.0.3
 MIT: promise-retry@2.0.1
 MIT: prompts@2.4.2
 MIT: protocols@2.0.1
@@ -763,12 +768,9 @@ MIT: read-pkg@3.0.0
 MIT: read-pkg@5.2.0
 MIT: readable-stream@2.3.8
 MIT: readable-stream@3.6.2
-MIT: rechoir@0.6.2
 MIT: redent@3.0.0
 MIT: reflect.getprototypeof@1.0.9
 MIT: regexp.prototype.flags@1.5.3
-MIT: regexpp@2.0.1
-MIT: regexpp@3.2.0
 MIT: require-directory@2.1.1
 MIT: require-from-string@2.0.2
 MIT: requireindex@1.2.0
@@ -793,9 +795,7 @@ MIT: semver-intersect@1.5.0
 MIT: set-function-length@1.2.2
 MIT: set-function-name@2.0.2
 MIT: shallow-clone@3.0.1
-MIT: shebang-command@1.2.0
 MIT: shebang-command@2.0.0
-MIT: shebang-regex@1.0.0
 MIT: shebang-regex@3.0.0
 MIT: side-channel-list@1.0.0
 MIT: side-channel-map@1.0.1
@@ -803,7 +803,6 @@ MIT: side-channel-weakmap@1.0.2
 MIT: side-channel@1.1.0
 MIT: sisteransi@1.0.5
 MIT: slash@3.0.0
-MIT: slice-ansi@2.1.0
 MIT: slice-ansi@4.0.0
 MIT: smart-buffer@4.2.0
 MIT: socks-proxy-agent@8.0.5
@@ -816,7 +815,6 @@ MIT: split@1.0.1
 MIT: stack-utils@2.0.6
 MIT: streamroller@3.1.5
 MIT: string-length@4.0.2
-MIT: string-width@3.1.0
 MIT: string-width@4.2.3
 MIT: string-width@5.1.2
 MIT: string.prototype.trim@1.2.10
@@ -824,7 +822,6 @@ MIT: string.prototype.trimend@1.0.9
 MIT: string.prototype.trimstart@1.0.8
 MIT: string_decoder@1.1.1
 MIT: string_decoder@1.3.0
-MIT: strip-ansi@5.2.0
 MIT: strip-ansi@6.0.1
 MIT: strip-ansi@7.1.0
 MIT: strip-bom@3.0.0
@@ -833,7 +830,6 @@ MIT: strip-final-newline@2.0.0
 MIT: strip-indent@3.0.0
 MIT: strip-json-comments@3.1.1
 MIT: strnum@1.0.5
-MIT: supports-color@5.5.0
 MIT: supports-color@7.2.0
 MIT: supports-color@8.1.1
 MIT: supports-hyperlinks@2.3.0
@@ -843,7 +839,6 @@ MIT: tar-stream@2.2.0
 MIT: temp-dir@1.0.0
 MIT: terminal-link@2.1.1
 MIT: text-extensions@1.9.0
-MIT: text-table@0.2.0
 MIT: throat@6.0.2
 MIT: through2@2.0.5
 MIT: through@2.3.8
@@ -853,12 +848,11 @@ MIT: to-regex-range@5.0.1
 MIT: tr46@0.0.3
 MIT: tr46@2.1.0
 MIT: trim-newlines@3.0.1
+MIT: ts-api-utils@2.0.1
 MIT: tsconfig-paths@3.15.0
 MIT: tsconfig-paths@4.2.0
-MIT: tsutils@2.29.0
-MIT: tsutils@3.21.0
 MIT: tuf-js@2.2.1
-MIT: type-check@0.3.2
+MIT: type-check@0.4.0
 MIT: type-detect@4.0.8
 MIT: type-detect@4.1.0
 MIT: typed-array-buffer@1.0.3
@@ -867,6 +861,7 @@ MIT: typed-array-byte-offset@1.0.4
 MIT: typed-array-length@1.0.7
 MIT: typedarray-to-buffer@3.1.5
 MIT: typedarray@0.0.6
+MIT: typescript-eslint@8.26.0
 MIT: unbox-primitive@1.1.0
 MIT: undici-types@6.20.0
 MIT: universalify@0.1.2
@@ -878,7 +873,6 @@ MIT: url-parse@1.5.10
 MIT: util-deprecate@1.0.2
 MIT: uuid@10.0.0
 MIT: uuid@9.0.1
-MIT: v8-compile-cache@2.4.0
 MIT: w3c-hr-time@1.0.2
 MIT: w3c-xmlserializer@2.0.0
 MIT: wcwidth@1.0.1
@@ -897,13 +891,13 @@ MIT: wrap-ansi@7.0.0
 MIT: wrap-ansi@8.1.0
 MIT: write-json-file@3.2.0
 MIT: write-pkg@4.0.0
-MIT: write@1.0.3
 MIT: ws@7.5.10
 MIT: xmlbuilder@15.1.1
 MIT: xmlchars@2.2.0
 MIT: xtend@4.0.2
 MIT: yargs@16.2.0
 MIT: yargs@17.7.2
+MIT: yocto-queue@0.1.0
 
 *******************
 License: ISC
@@ -943,9 +937,7 @@ ISC: console-control-strings@1.1.0
 ISC: conventional-changelog-angular@7.0.0
 ISC: deprecation@2.3.1
 ISC: electron-to-chromium@1.5.76
-ISC: eslint-import-resolver-typescript@2.7.1
 ISC: fastq@1.18.0
-ISC: flatted@2.0.2
 ISC: flatted@3.3.2
 ISC: foreground-child@3.3.0
 ISC: fs-minipass@2.1.0
@@ -1017,13 +1009,13 @@ ISC: promzard@1.0.2
 ISC: read-cmd-shim@4.0.0
 ISC: read-package-json-fast@3.0.2
 ISC: read@3.0.1
-ISC: rimraf@2.6.3
 ISC: rimraf@3.0.2
 ISC: rimraf@4.4.1
 ISC: saxes@5.0.1
 ISC: semver@5.7.2
 ISC: semver@6.3.1
 ISC: semver@7.6.3
+ISC: semver@7.7.1
 ISC: set-blocking@2.0.0
 ISC: signal-exit@3.0.7
 ISC: signal-exit@4.1.0
@@ -1038,7 +1030,6 @@ ISC: universal-user-agent@6.0.1
 ISC: v8-to-istanbul@8.1.1
 ISC: validate-npm-package-name@5.0.1
 ISC: walk-up-path@3.0.1
-ISC: which@1.3.1
 ISC: which@2.0.2
 ISC: which@4.0.0
 ISC: wide-align@1.1.5
@@ -1064,7 +1055,6 @@ BSD-3-Clause: @sinonjs/fake-timers@8.1.0
 BSD-3-Clause: @sinonjs/samsam@8.0.2
 BSD-3-Clause: abab@2.0.6
 BSD-3-Clause: babel-plugin-istanbul@6.1.1
-BSD-3-Clause: diff@4.0.2
 BSD-3-Clause: diff@5.2.0
 BSD-3-Clause: esquery@1.6.0
 BSD-3-Clause: fast-uri@3.0.3
@@ -1077,7 +1067,6 @@ BSD-3-Clause: istanbul-lib-source-maps@4.0.1
 BSD-3-Clause: istanbul-reports@3.1.7
 BSD-3-Clause: makeerror@1.0.12
 BSD-3-Clause: nise@5.1.9
-BSD-3-Clause: shelljs@0.8.5
 BSD-3-Clause: sinon@16.1.3
 BSD-3-Clause: source-map@0.6.1
 BSD-3-Clause: source-map@0.7.4
@@ -1085,7 +1074,6 @@ BSD-3-Clause: sprintf-js@1.0.3
 BSD-3-Clause: sprintf-js@1.1.3
 BSD-3-Clause: stream-chain@2.2.5
 BSD-3-Clause: stream-json@1.9.1
-BSD-3-Clause: table@5.4.6
 BSD-3-Clause: table@6.8.2
 BSD-3-Clause: tmpl@1.0.5
 BSD-3-Clause: tough-cookie@4.1.4
@@ -1098,8 +1086,6 @@ License: (Unlicense OR Apache-2.0)
 *******************
 License: BSD-2-Clause
 *******************
-BSD-2-Clause: @typescript-eslint/parser@4.33.0
-BSD-2-Clause: @typescript-eslint/typescript-estree@4.33.0
 BSD-2-Clause: @yarnpkg/lockfile@1.1.0
 BSD-2-Clause: @yarnpkg/parsers@3.0.0-rc.46
 BSD-2-Clause: browser-process-hrtime@1.0.0
@@ -1108,11 +1094,10 @@ BSD-2-Clause: dotenv-expand@11.0.7
 BSD-2-Clause: dotenv@16.4.7
 BSD-2-Clause: entities@3.0.1
 BSD-2-Clause: escodegen@2.1.0
-BSD-2-Clause: eslint-scope@5.1.1
-BSD-2-Clause: espree@6.2.1
+BSD-2-Clause: eslint-scope@8.2.0
+BSD-2-Clause: espree@10.3.0
 BSD-2-Clause: esprima@4.0.1
 BSD-2-Clause: esrecurse@4.3.0
-BSD-2-Clause: estraverse@4.3.0
 BSD-2-Clause: estraverse@5.3.0
 BSD-2-Clause: esutils@2.0.3
 BSD-2-Clause: http-cache-semantics@4.1.1
@@ -1172,7 +1157,6 @@ CC0-1.0: spdx-license-list@6.9.0
 *******************
 License: 0BSD
 *******************
-0BSD: tslib@1.14.1
 0BSD: tslib@2.8.1
 
 *******************
@@ -1184,5 +1168,24 @@ License: (MIT OR CC0-1.0)
 (MIT OR CC0-1.0): type-fest@0.6.0
 (MIT OR CC0-1.0): type-fest@0.8.1
 
-Total libraries: 1101
+Total libraries: 1085
+
+*******************
+Specific Blue Oak License attributions
+*******************
+
+—— Jackspeak @ 3.4.3 ———
+Copyright Isaac Z. Schlueter <i@izs.me>
+https://github.com/isaacs/jackspeak
+Blue Oak Model License - https://blueoakcouncil.org/license/1.0.0
+
+—— package-json-from-dist @ 1.0.1 ———
+Copyright Isaac Z. Schlueter <i@izs.me>
+https://github.com/isaacs/package-json-from-dist
+Blue Oak Model License - https://blueoakcouncil.org/license/1.0.0
+
+—— path-scurry @ 1.11.1 ———
+Copyright Isaac Z. Schlueter <i@izs.me>
+https://github.com/isaacs/path-scurry
+Blue Oak Model License - https://blueoakcouncil.org/license/1.0.0
 

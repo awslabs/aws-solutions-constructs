@@ -1,12 +1,15 @@
-# This script uses npm-license-crawler to generate a list of all licenses
-# included in the build of AWS Solutions Constructs.
+# This script uses npm-license-crawler to generate a list of all
+# licenses included in the build of AWS Solutions Constructs.
 
-# This is the body of the function - it's wrapped in a function called from the bottom of
-# so this code can be up top but avoid forward references of functions
-main() {
+# This is the body of the function - it's wrapped in a function 
+# called from the bottom of so this code can be up top but avoid
+# forward references of functions
+
+generate_license_list() {
   local RAW_LICENSE_DATA_FILE=raw-license-data.json
   local FINAL_LICENSE_DATA_FILE=THIRD_PARTY_LICENSE.txt
   local USE_CASES_FOLDER=use_cases
+  local PARSE_LICENSE_FILE_SCRIPT=parse-raw-license-data.js
 
   #***************
   # Check initial conditions:
@@ -15,7 +18,7 @@ main() {
   #   -Are we in the source folder
   checkCurrentDirectory source
 
-  #   -Has yarn been run? (is there a node_modules folder?)
+  #   -Has npm install been run? (is there a node_modules folder?)
   checkFolderExistence 'node_modules'
 
   #***************
@@ -35,13 +38,13 @@ main() {
   checkFileSize $RAW_LICENSE_DATA_FILE 100000
 
   # Run parse-raw-licenses-data.js to create final license file
-  local LOCAL_FULL_FILE_NAME=$(getAbsoluteFilespec $RAW_LICENSE_DATA_FILE)
 
   # We need to call a script in the same directory as this script, regardless
   # of the working directory when this script was invoked.
-  local RELATIVE_PARSE_SCRIPT_SPEC=$(dirname "$0")/parse-raw-license-data.js
-  local PARSE_SCRIPT_SPEC=$(getAbsoluteFilespec $RELATIVE_PARSE_SCRIPT_SPEC)
-  node $PARSE_SCRIPT_SPEC $LOCAL_FULL_FILE_NAME >$FINAL_LICENSE_DATA_FILE
+  local LOCAL_FULL_FILE_NAME=$(getAbsoluteFilespec $RAW_LICENSE_DATA_FILE)
+  local RELATIVE_PARSE_SCRIPT_SPEC=$(dirname "$0")/$PARSE_LICENSE_FILE_SCRIPT
+  local PARSE_SCRIPT_ABSOLUTE_SPEC=$(getAbsoluteFilespec $RELATIVE_PARSE_SCRIPT_SPEC)
+  node $PARSE_SCRIPT_ABSOLUTE_SPEC $LOCAL_FULL_FILE_NAME >$FINAL_LICENSE_DATA_FILE
   
   # Quick sanity check that the parsed output was created and is of reasonable size
   checkFileSize $FINAL_LICENSE_DATA_FILE 10000
@@ -75,14 +78,12 @@ main() {
     # Quick sanity check that the raw data was created and is of reasonable size
     checkFileSize $RAW_LICENSE_DATA_FILE 10000
 
-    # Run parse-raw-licenses-data.js to create final license file
-    local LOCAL_FULL_FILE_NAME=$(getAbsoluteFilespec $RAW_LICENSE_DATA_FILE)
-
     # We need to call a script in the same directory as this script, regardless
     # of the working directory when this script was invoked.
-    echo $PARSE_SCRIPT_SPEC
-    node $PARSE_SCRIPT_SPEC $LOCAL_FULL_FILE_NAME >$FINAL_LICENSE_DATA_FILE
-    
+    local LOCAL_FULL_FILE_NAME=$(getAbsoluteFilespec $RAW_LICENSE_DATA_FILE)
+    echo $PARSE_SCRIPT_ABSOLUTE_SPEC
+    node $PARSE_SCRIPT_ABSOLUTE_SPEC $LOCAL_FULL_FILE_NAME >$FINAL_LICENSE_DATA_FILE
+
     # Quick sanity check that the parsed output was created and is of reasonable size
     checkFileSize $FINAL_LICENSE_DATA_FILE 1000
 
@@ -149,6 +150,6 @@ getAbsoluteFilespec() {
   echo "$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
 }
 
-# This is the actual code that kicks off the script. The $@ argument passes the command line
-# arguments so main can access them
-main "$@"
+# This is the actual code that kicks off the script. The $@ argument passes the
+# command line arguments so generate_license_list can access them
+generate_license_list "$@"
