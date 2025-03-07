@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.78.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.77.0...v2.78.0) (2025-03-07)
+
+
+### Features
+
+* **aws-openapigatway-lamba:** accept lambda function aliases ([#1260](https://github.com/awslabs/aws-solutions-constructs/issues/1260)) ([91476c5](https://github.com/awslabs/aws-solutions-constructs/commit/91476c58c4d15f15fe45f4dba2cf46e7e6f42010))
+
 ## [2.77.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.76.0...v2.77.0) (2025-01-31)
 
 Build on CDK v2.177.0
