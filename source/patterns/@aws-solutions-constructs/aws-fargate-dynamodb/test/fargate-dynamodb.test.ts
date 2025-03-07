@@ -331,7 +331,7 @@ test('New service/existing table, private API, existing VPC', () => {
     },
   });
 
-  expect(construct.dynamoTable == null);
+  expect(construct.dynamoTable === null);
 
   // Confirm we created an Isolated VPC
   defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});
@@ -482,7 +482,7 @@ test('Existing service/new table, public API, existing VPC', () => {
     },
   });
 
-  expect(construct.dynamoTable == null);
+  expect(construct.dynamoTable === null);
 
   // Confirm we created a Public/Private VPC
   template.hasResourceProperties('AWS::EC2::InternetGateway', {});
@@ -624,7 +624,7 @@ test('Existing service/existing table, private API, existing VPC', () => {
     },
   });
 
-  expect(construct.dynamoTable == null);
+  expect(construct.dynamoTable === null);
 
   // Confirm we created an Isolated VPC
   defaults.expectNonexistence(stack, 'AWS::EC2::InternetGateway', {});

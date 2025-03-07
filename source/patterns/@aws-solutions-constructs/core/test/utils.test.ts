@@ -15,7 +15,6 @@
 import * as defaults from '../';
 import * as cdk from 'aws-cdk-lib';
 import { CfnResource, Stack } from 'aws-cdk-lib';
-import * as log from 'npmlog';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Template } from 'aws-cdk-lib/assertions';
 
@@ -116,7 +115,7 @@ test('Test consolidate props with all args', () => {
     val1: 31,
   };
 
-  const warn = jest.spyOn(log, 'warn');
+  const consoleLogSpy = jest.spyOn(console, 'log');
   const result = defaults.consolidateProps(arg1, arg2, arg3);
 
   expect(result).toEqual({
@@ -125,7 +124,7 @@ test('Test consolidate props with all args', () => {
     val3: 13,
   });
 
-  expect(warn).toBeCalledTimes(2);
+  expect(consoleLogSpy).toBeCalledTimes(2);
 
 });
 
@@ -144,7 +143,7 @@ test('Test consolidate props with first and third args', () => {
     val1: 31,
   };
 
-  const warn = jest.spyOn(log, 'warn');
+  const consoleLogSpy = jest.spyOn(console, 'log');
   const result = defaults.consolidateProps(arg1, undefined, arg3);
 
   expect(result).toEqual({
@@ -153,7 +152,7 @@ test('Test consolidate props with first and third args', () => {
     val3: 13,
   });
 
-  expect(warn).toBeCalledTimes(0);
+  expect(consoleLogSpy).toBeCalledTimes(0);
 
 });
 
@@ -173,7 +172,7 @@ test('Test consolidate props with first and second args', () => {
     val2: 22,
   };
 
-  const warn = jest.spyOn(log, 'warn');
+  const consoleLogSpy = jest.spyOn(console, 'log');
   const result = defaults.consolidateProps(arg1, arg2);
 
   expect(result).toEqual({
@@ -182,7 +181,7 @@ test('Test consolidate props with first and second args', () => {
     val3: 13,
   });
 
-  expect(warn).toBeCalledTimes(2);
+  expect(consoleLogSpy).toBeCalledTimes(2);
 
 });
 
@@ -197,12 +196,12 @@ test('Test consolidate props with one arg', () => {
     val3: 13,
   };
 
-  const warn = jest.spyOn(log, 'warn');
+  const consoleLogSpy = jest.spyOn(console, 'log');
   const result = defaults.consolidateProps(arg1);
 
   expect(result).toEqual(arg1);
 
-  expect(warn).toBeCalledTimes(0);
+  expect(consoleLogSpy).toBeCalledTimes(0);
 
 });
 
@@ -299,11 +298,11 @@ test('ConsolidateProps does not generate warnings for construct props overrides'
     val2: 'four'
   };
 
-  const warn = jest.spyOn(log, 'warn');
+  const consoleLogSpy = jest.spyOn(console, 'log');
   defaults.consolidateProps(defaultProps, clientProps,  constructProps);
 
   // Assert
-  expect(warn).toBeCalledTimes(1);
+  expect(consoleLogSpy).toBeCalledTimes(1);
 
 });
 

@@ -70,7 +70,7 @@ export function buildKendraIndex(scope: Construct, id: string, props: BuildKendr
 export function AddMultipleKendraDataSources(scope: Construct,
   id: string,
   kendraIndex: kendra.CfnIndex,
-  clientDataSourceProps: Array<Partial<kendra.CfnDataSourceProps>>): kendra.CfnDataSource[] {
+  clientDataSourceProps: Partial<kendra.CfnDataSourceProps>[]): kendra.CfnDataSource[] {
 
   const returnDataSources: kendra.CfnDataSource[] = [];
   clientDataSourceProps.forEach((props, index) => {

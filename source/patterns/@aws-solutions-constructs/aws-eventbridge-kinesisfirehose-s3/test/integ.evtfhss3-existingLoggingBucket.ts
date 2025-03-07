@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
 import { App, Stack, RemovalPolicy, Duration } from "aws-cdk-lib";
 import { EventbridgeToKinesisFirehoseToS3 } from "../lib";
 import { generateIntegStackName } from '@aws-solutions-constructs/core';

@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-import * as log from 'npmlog';
 import * as process from 'process';
 import { flagOverriddenDefaults } from '../lib/override-warning-service';
 import { overrideProps } from '../';
@@ -35,10 +34,10 @@ test('Test override detection: positive, not-nested', () => {
     keyD: 'valueD'
   };
   // Act
-  const warn = jest.spyOn(log, 'warn');
+  const consoleLogSpy = jest.spyOn(console, 'log');
   flagOverriddenDefaults(a, b);
   // Assert
-  expect(warn).toBeCalledTimes(1);
+  expect(consoleLogSpy).toBeCalledTimes(1);
 });
 
 test('Test override detection: negative, not-nested', () => {
@@ -52,10 +51,10 @@ test('Test override detection: negative, not-nested', () => {
     keyD: 'valueD'
   };
   // Act
-  const warn = jest.spyOn(log, 'warn');
+  const consoleLogSpy = jest.spyOn(console, 'log');
   flagOverriddenDefaults(a, b);
   // Assert
-  expect(warn).toBeCalledTimes(0);
+  expect(consoleLogSpy).toBeCalledTimes(0);
 });
 
 test('Test override detection: positive, nested', () => {
@@ -76,10 +75,10 @@ test('Test override detection: positive, nested', () => {
     }
   };
   // Act
-  const warn = jest.spyOn(log, 'warn');
+  const consoleLogSpy = jest.spyOn(console, 'log');
   flagOverriddenDefaults(a, b);
   // Assert
-  expect(warn).toBeCalledTimes(2);
+  expect(consoleLogSpy).toBeCalledTimes(2);
 });
 
 test('Test override detection: negative, nested', () => {
@@ -99,10 +98,10 @@ test('Test override detection: negative, nested', () => {
     }
   };
   // Act
-  const warn = jest.spyOn(log, 'warn');
+  const consoleLogSpy = jest.spyOn(console, 'log');
   flagOverriddenDefaults(a, b);
   // Assert
-  expect(warn).toBeCalledTimes(0);
+  expect(consoleLogSpy).toBeCalledTimes(0);
 });
 
 test('Test override warning on/off: default on', () => {
@@ -117,10 +116,10 @@ test('Test override warning on/off: default on', () => {
     keyD: 'valueD'
   };
   // Act
-  const warn = jest.spyOn(log, 'warn');
+  const consoleLogSpy = jest.spyOn(console, 'log');
   overrideProps(a, b);
   // Assert
-  expect(warn).toBeCalledTimes(1);
+  expect(consoleLogSpy).toBeCalledTimes(1);
 });
 
 test('Test override warning on/off: explicit on', () => {
@@ -136,10 +135,10 @@ test('Test override warning on/off: explicit on', () => {
   };
   process.env.overrideWarningsEnabled = 'true';
   // Act
-  const warn = jest.spyOn(log, 'warn');
+  const consoleLogSpy = jest.spyOn(console, 'log');
   overrideProps(a, b);
   // Assert
-  expect(warn).toBeCalledTimes(1);
+  expect(consoleLogSpy).toBeCalledTimes(1);
 });
 
 test('Test override warning on/off: explicit off', () => {
@@ -154,11 +153,11 @@ test('Test override warning on/off: explicit off', () => {
     keyD: 'valueD'
   };
   // Act
-  const warn = jest.spyOn(log, 'warn');
+  const consoleLogSpy = jest.spyOn(console, 'log');
   process.env.overrideWarningsEnabled = 'false';
   const result = overrideProps(a, b);
   // Assert
-  expect(warn).toBeCalledTimes(0);
+  expect(consoleLogSpy).toBeCalledTimes(0);
 
   expect(result).toEqual({
     keyA: 'new-valueA',
@@ -181,11 +180,11 @@ test('Test override warning on/off: undefined on', () => {
     keyD: 'valueD'
   };
   // Act
-  const warn = jest.spyOn(log, 'warn');
+  const consoleLogSpy = jest.spyOn(console, 'log');
   process.env.overrideWarningsEnabled = undefined;
   const result = overrideProps(a, b);
   // Assert
-  expect(warn).toBeCalledTimes(1);
+  expect(consoleLogSpy).toBeCalledTimes(1);
 
   expect(result).toEqual({
     keyA: 'new-valueA',
@@ -217,11 +216,11 @@ test('Test current prefilters', () => {
     node: 'sampleNodeA'
   };
   // Act
-  const warn = jest.spyOn(log, 'warn');
+  const consoleLogSpy = jest.spyOn(console, 'log');
   process.env.overrideWarningsEnabled = undefined;
   const result = overrideProps(a, b);
   // Assert
-  expect(warn).toBeCalledTimes(6);
+  expect(consoleLogSpy).toBeCalledTimes(6);
   expect(result).toEqual({
     destination: 'sampleDestinationValueB',
     maxRecordAge: 'sampleMaxRecordAgeValueB',
@@ -245,10 +244,10 @@ test('Test overrideProps with warnings disabled in argument', () => {
     keyD: 'valueD'
   };
   // Act
-  const warn = jest.spyOn(log, 'warn');
+  const consoleLogSpy = jest.spyOn(console, 'log');
   overrideProps(a, b, undefined, true);
   // Assert
-  expect(warn).toBeCalledTimes(0);
+  expect(consoleLogSpy).toBeCalledTimes(0);
 
 });
 
@@ -274,10 +273,10 @@ test('Test overrideProps with deep arguments', () => {
     }
   };
   // Act
-  const warn = jest.spyOn(log, 'warn');
+  const consoleLogSpy = jest.spyOn(console, 'log');
   overrideProps(a, b);
   // Assert
-  expect(warn).toBeCalledTimes(3);
+  expect(consoleLogSpy).toBeCalledTimes(3);
 });
 
 test('Confirm node stops circular reference traversal', () => {
@@ -296,8 +295,8 @@ test('Confirm node stops circular reference traversal', () => {
   };
   b.keyE.node = b;
 
-  const warn = jest.spyOn(log, 'warn');
+  const consoleLogSpy = jest.spyOn(console, 'log');
   flagOverriddenDefaults(a, b);
   // Assert
-  expect(warn).toBeCalledTimes(1);
+  expect(consoleLogSpy).toBeCalledTimes(1);
 });

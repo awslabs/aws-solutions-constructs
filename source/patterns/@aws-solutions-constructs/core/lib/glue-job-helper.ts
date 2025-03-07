@@ -263,9 +263,9 @@ export function createGlueTable(scope: Construct, database: glue.CfnDatabase, ta
  * @param databaseProps
  */
 export function createGlueDatabase(scope: Construct,  databaseProps?: glue.CfnDatabaseProps): glue.CfnDatabase {
-  const _mergedDBProps: glue.CfnDatabaseProps = (databaseProps !== undefined) ? overrideProps(defaults.DefaultGlueDatabaseProps(), databaseProps) :
+  const mergedDBProps: glue.CfnDatabaseProps = (databaseProps !== undefined) ? overrideProps(defaults.DefaultGlueDatabaseProps(), databaseProps) :
     defaults.DefaultGlueDatabaseProps();
-  return defaults.DefaultGlueDatabase(scope, _mergedDBProps);
+  return defaults.DefaultGlueDatabase(scope, mergedDBProps);
 }
 
 /**

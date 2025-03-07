@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
 import { App, Stack } from "aws-cdk-lib";
 import { LambdaToDynamoDB } from "../lib";
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';

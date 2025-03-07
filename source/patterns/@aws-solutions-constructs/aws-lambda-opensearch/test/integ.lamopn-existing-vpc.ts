@@ -16,7 +16,6 @@
  * the transition, it's disabled and we will dig deeper into it in the future
  */
 
-/// !cdk-integ *
 import { App, Aws, Stack } from "aws-cdk-lib";
 import { LambdaToOpenSearch } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';

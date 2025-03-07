@@ -22,11 +22,11 @@ import { ILogGroup } from 'aws-cdk-lib/aws-logs';
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function DefaultStateMachineProps(_logGroup: ILogGroup): sfn.StateMachineProps | any {
+export function DefaultStateMachineProps(logGroup: ILogGroup): sfn.StateMachineProps | any {
 
   const stateMachineProps: sfn.StateMachineProps | any = {
     logs: {
-      destination: _logGroup,
+      destination: logGroup,
       level: sfn.LogLevel.ERROR
     }
   };

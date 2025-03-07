@@ -85,16 +85,16 @@ it('Should update the key policy if the proper params are given', async () => {
   });
   kmsMock.on(GetKeyPolicyCommand).resolves({
     Policy: `{\n
-      \"Version\" : \"2012-10-17\",\n
-      \"Id\" : \"sample-key-id\",\n
-      \"Statement\" : [ {\n
-          \"Sid\" : \"Grant-CloudFront-Distribution-Key-Usage\",\n
-          \"Effect\" : \"Allow\",\n
-          \"Principal\" : {\n
-              \"AWS\" : \"arn:aws:iam::111122223333:root\"\n
+      "Version" : "2012-10-17",\n
+      "Id" : "sample-key-id",\n
+      "Statement" : [ {\n
+          "Sid" : "Grant-CloudFront-Distribution-Key-Usage",\n
+          "Effect" : "Allow",\n
+          "Principal" : {\n
+              "AWS" : "arn:aws:iam::111122223333:root"\n
           },\n
-          \"Action\" : \"kms:*\",\n
-          \"Resource\" : \"*\"\n
+          "Action" : "kms:*",\n
+          "Resource" : "*"\n
       } ]\n
     }`
   });
@@ -125,16 +125,16 @@ it('Should fail if an error occurs with putting the new key policy, all other in
   });
   kmsMock.on(GetKeyPolicyCommand).resolves({
     Policy: `{\n
-      \"Version\" : \"2012-10-17\",\n
-      \"Id\" : \"key-default-1\",\n
-      \"Statement\" : [ {\n
-          \"Sid\" : \"Grant-CloudFront-Distribution-Key-Usage\",\n
-          \"Effect\" : \"Allow\",\n
-          \"Principal\" : {\n
-              \"AWS\" : \"arn:aws:iam::111122223333:root\"\n
+      "Version" : "2012-10-17",\n
+      "Id" : "key-default-1",\n
+      "Statement" : [ {\n
+          "Sid" : "Grant-CloudFront-Distribution-Key-Usage",\n
+          "Effect" : "Allow",\n
+          "Principal" : {\n
+              "AWS" : "arn:aws:iam::111122223333:root"\n
           },\n
-          \"Action\" : \"kms:*\",\n
-          \"Resource\" : \"*\"\n
+          "Action" : "kms:*",\n
+          "Resource" : "*"\n
       } ]\n
     }`
   });
@@ -165,16 +165,16 @@ it('Should fail if the key policy has already been applied in a previous stack u
   });
   kmsMock.on(GetKeyPolicyCommand).resolves({
     Policy: `{\n
-      \"Version\" : \"2012-10-17\",\n
-      \"Id\" : \"key-default-1\",\n
-      \"Statement\" : [ {\n
-          \"Sid\" : \"Grant-CloudFront-Distribution-Key-Usage\",\n
-          \"Effect\" : \"Allow\",\n
-          \"Principal\" : {\n
-              \"AWS\" : \"arn:aws:iam::111122223333:root\"\n
+      "Version" : "2012-10-17",\n
+      "Id" : "key-default-1",\n
+      "Statement" : [ {\n
+          "Sid" : "Grant-CloudFront-Distribution-Key-Usage",\n
+          "Effect" : "Allow",\n
+          "Principal" : {\n
+              "AWS" : "arn:aws:iam::111122223333:root"\n
           },\n
-          \"Action\" : \"kms:*\",\n
-          \"Resource\" : \"*\"\n
+          "Action" : "kms:*",\n
+          "Resource" : "*"\n
       } ]\n
     }`
   });

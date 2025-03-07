@@ -66,7 +66,7 @@ export function buildKinesisAnalyticsApp(scope: Construct, props: BuildKinesisAn
   analyticsPolicy.attachToRole(analyticsRole);
 
   // Setup the Kinesis application properties
-  const kinesisAnalyticsProps = overrideProps(defaults.DefaultCfnApplicationProps, props.kinesisAnalyticsProps);
+  const kinesisAnalyticsProps = overrideProps(defaults.defaultCfnApplicationProps, props.kinesisAnalyticsProps);
   kinesisAnalyticsProps.inputs[0].kinesisFirehoseInput = {
     resourceArn: props.kinesisFirehose.attrArn,
     roleArn: analyticsRole.roleArn

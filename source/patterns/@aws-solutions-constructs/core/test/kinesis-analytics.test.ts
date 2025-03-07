@@ -34,7 +34,7 @@ test("test kinesisanalytics override inputProperty", () => {
   };
 
   const defaultProps: kinesisanalytics.CfnApplicationProps =
-    defaults.DefaultCfnApplicationProps;
+    defaults.defaultCfnApplicationProps;
 
   const inProps: kinesisanalytics.CfnApplicationProps = {
     inputs: [inputProperty],

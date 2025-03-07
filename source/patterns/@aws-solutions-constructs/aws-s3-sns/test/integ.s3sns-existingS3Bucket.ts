@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
 import { App, Stack } from "aws-cdk-lib";
 import { S3ToSns } from "../lib";
 import { CreateScrapBucket, generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';

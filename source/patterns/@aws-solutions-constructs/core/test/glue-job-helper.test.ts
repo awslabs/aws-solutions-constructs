@@ -543,11 +543,11 @@ test('Cannot use maxCapacity and WorkerType, so error out', () => {
 test('Test fail Glue job check', () => {
   const stack = new Stack();
 
-  const _jobRole = new iam.Role(stack, 'CustomETLJobRole', {
+  const jobRole = new iam.Role(stack, 'CustomETLJobRole', {
     assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
   });
 
-  const jobProps: CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, {
+  const jobProps: CfnJobProps = defaults.DefaultGlueJobProps(jobRole, {
     command: {
       name: 'glueetl',
       pythonVersion: '3',
@@ -576,11 +576,11 @@ test('Test fail Glue job check', () => {
 test('Test bad Glue script location', () => {
   const stack = new Stack();
 
-  const _jobRole = new iam.Role(stack, 'CustomETLJobRole', {
+  const jobRole = new iam.Role(stack, 'CustomETLJobRole', {
     assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
   });
 
-  const jobProps: CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, {
+  const jobProps: CfnJobProps = defaults.DefaultGlueJobProps(jobRole, {
     command: {
       name: 'glueetl',
       pythonVersion: '3',
@@ -606,11 +606,11 @@ test('Test bad Glue script location', () => {
 test('Test missing Glue script location', () => {
   const stack = new Stack();
 
-  const _jobRole = new iam.Role(stack, 'CustomETLJobRole', {
+  const jobRole = new iam.Role(stack, 'CustomETLJobRole', {
     assumedBy: new iam.ServicePrincipal('glue.amazonaws.com')
   });
 
-  const jobProps: CfnJobProps = defaults.DefaultGlueJobProps(_jobRole, {
+  const jobProps: CfnJobProps = defaults.DefaultGlueJobProps(jobRole, {
     command: {
       name: 'glueetl',
       pythonVersion: '3',

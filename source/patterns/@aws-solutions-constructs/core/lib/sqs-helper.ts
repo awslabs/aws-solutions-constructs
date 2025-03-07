@@ -239,7 +239,7 @@ export function buildDeadLetterQueue(scope: Construct, id: string, props: BuildD
     // Return the dead letter queue interface
     return deadLetterQueueObject;
   }
-  // ESLint requires this return statement, so disabling SonarQube warning
+  // Typescript requires this return statement, so disabling SonarQube warning
   return; // NOSONAR
 }
 

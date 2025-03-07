@@ -73,7 +73,7 @@ export class ManagerStack extends Stack {
 
     // Create an S3 bucket for storing generated reports
     const reports = new LambdaToS3(this, 'reports-bucket', {
-    	existingLambdaObj: createReport.lambdaFunction,
+      existingLambdaObj: createReport.lambdaFunction,
     });
 
     // Create a Lambda function that will calculate tips based on orders in the database
@@ -115,22 +115,22 @@ export class ManagerStack extends Stack {
     // 1. Add a task for invoking the create-report function
     const createReportTask = new tasks.LambdaInvoke(this, 'create-reports-task', {
       lambdaFunction: createReport.lambdaFunction
-    })
+    });
 
     // 2. Add a task for invoking the calculate-tips function
     const calculateTipsTask = new tasks.LambdaInvoke(this, 'calculate-tips-task', {
       lambdaFunction: calculateTips.lambdaFunction
-    })
+    });
 
     // 3. Add a task for invoking the archive-orders function
     const archiveOrdersTask = new tasks.LambdaInvoke(this, 'archive-orders-task', {
       lambdaFunction: archiveOrders.lambdaFunction
-    })
+    });
 
     // 4. Setup the chain
     const chain = sfn.Chain.start(createReportTask)
-    	.next(calculateTipsTask)
-    	.next(archiveOrdersTask);
+      .next(calculateTipsTask)
+      .next(archiveOrdersTask);
     // 5. Setup the Step Functions integration with Lambda trigger
     const closeOutService = new LambdaToStepfunctions(this, 'close-out-service', {
       lambdaFunctionProps: {
@@ -140,7 +140,7 @@ export class ManagerStack extends Stack {
         timeout: Duration.seconds(15)
       },
       stateMachineProps: {
-    	  definition: chain
+        definition: chain
       }
     });
 
@@ -157,32 +157,32 @@ export class ManagerStack extends Stack {
 
     // Setup the manager API with Cognito user pool
     const managerApi = new CognitoToApiGatewayToLambda(this, 'manager-api', {
-    	existingLambdaObj: getAllOrders.lambdaFunction,
-		  apiGatewayProps: {
-	      proxy: false,
+      existingLambdaObj: getAllOrders.lambdaFunction,
+      apiGatewayProps: {
+        proxy: false,
         description: 'Demo: Manager API'
-	    }
+      }
     });
 
     // Add a resource to the API for listing all orders
     const listOrdersResource = managerApi.apiGateway.root.addResource('get-all-orders');
     listOrdersResource.addProxy({
-    	defaultIntegration: new apigateway.LambdaIntegration(managerApi.lambdaFunction),
-    	anyMethod: true
+      defaultIntegration: new apigateway.LambdaIntegration(managerApi.lambdaFunction),
+      anyMethod: true
     });
 
     // Add a resource to the API for triggering the close-out process
     const closeOutServiceResource = managerApi.apiGateway.root.addResource('close-out-service');
     closeOutServiceResource.addProxy({
-    	defaultIntegration: new apigateway.LambdaIntegration(closeOutService.lambdaFunction),
-    	anyMethod: true
+      defaultIntegration: new apigateway.LambdaIntegration(closeOutService.lambdaFunction),
+      anyMethod: true
     });
 
     // Add a resource to the API for viewing reports
     const getReportResource = managerApi.apiGateway.root.addResource('get-report');
     getReportResource.addProxy({
-    	defaultIntegration: new apigateway.LambdaIntegration(getReport.lambdaFunction),
-    	anyMethod: true
+      defaultIntegration: new apigateway.LambdaIntegration(getReport.lambdaFunction),
+      anyMethod: true
     });
 
     // Add the authorizers to the API
@@ -204,15 +204,15 @@ export class ManagerStack extends Stack {
 
     // Create a CloudWatch Events rule to check for late orders every minute
     new EventbridgeToLambda(this, 'check-late-orders-scheduler', {
-    	existingLambdaObj: checkLateOrders.lambdaFunction,
-    	eventRuleProps: {
-	      schedule: events.Schedule.rate(Duration.minutes(1))
-	    }
+      existingLambdaObj: checkLateOrders.lambdaFunction,
+      eventRuleProps: {
+        schedule: events.Schedule.rate(Duration.minutes(1))
+      }
     });
 
     // Create an SNS topic to send notifications to the manager when one or more orders are late
     new LambdaToSns(this, 'check-late-orders-notifier', {
-    	existingLambdaObj: checkLateOrders.lambdaFunction
+      existingLambdaObj: checkLateOrders.lambdaFunction
     });
   }
 }

@@ -65,9 +65,9 @@ export interface KinesisstreamsToGluejobProps {
   /**
    * Structure of the records in the Amazon Kinesis Data Streams. An example of such a  definition is as below.
    * Either @table or @fieldSchema is mandatory. If @table is provided then @fieldSchema is ignored
-   * 	"FieldSchema": [{
-   *  	"name": "id",
-   *  	"type": "int",
+   *  "FieldSchema": [{
+   *    "name": "id",
+   *    "type": "int",
    *    "comment": "Identifier for the record"
    *  }, {
    *    "name": "name",
@@ -230,7 +230,7 @@ export class KinesisstreamsToGluejob extends Construct {
    */
   private buildRolePolicy(scope: Construct, id: string, glueDatabase: glue.CfnDatabase, glueTable: glue.CfnTable,
     glueJob: glue.CfnJob, role: IRole): IRole {
-    const _glueJobPolicy = new Policy(scope, `${id}GlueJobPolicy`, {
+    const glueJobPolicy = new Policy(scope, `${id}GlueJobPolicy`, {
       statements: [ new PolicyStatement({
         effect: Effect.ALLOW,
         actions: ["glue:GetJob"],
@@ -273,14 +273,14 @@ export class KinesisstreamsToGluejob extends Construct {
       })],
     });
 
-    defaults.addCfnSuppressRules(_glueJobPolicy, [
+    defaults.addCfnSuppressRules(glueJobPolicy, [
       {
         id: "W12",
         reason: "Glue Security Configuration does not have an ARN, and the policy only allows reading the configuration.            CloudWatch metrics also do not have an ARN but adding a namespace condition to the policy to allow it to            publish metrics only for AWS Glue",
       },
     ]);
 
-    role.attachInlinePolicy(_glueJobPolicy);
+    role.attachInlinePolicy(glueJobPolicy);
     return role;
   }
 }

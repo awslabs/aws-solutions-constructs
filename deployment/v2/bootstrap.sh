@@ -19,6 +19,7 @@ export NODE_OPTIONS="--max-old-space-size=4096 ${NODE_OPTIONS:-}"
 # Install CDK Integration Test Tool
 npm install -g @aws-cdk/integ-runner
 npm install -g aws-cdk
+npm install -g npm-license-crawler
 
 # Install cfn-guard and rules
 export RULE_BUCKET=solutions-build-assets
@@ -35,6 +36,6 @@ curl -tlsv1.3 -sSf https://$RULE_BUCKET.s3.amazonaws.com/cfn-guard-rules/latest/
 
 echo "============================================================================================="
 echo "installing..."
-yarn install --frozen-lockfile
+npm install --legacy-peer-deps
 
 cd $starting_dir

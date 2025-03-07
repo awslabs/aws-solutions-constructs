@@ -148,7 +148,7 @@ export class EventbridgeToKinesisFirehoseToS3 extends Construct {
     eventsPolicy.attachToRole(this.eventsRole);
 
     // Set up the Kinesis Firehose as the target for event rule
-    const KinesisFirehoseEventTarget: events.IRuleTarget = {
+    const kinesisFirehoseEventTarget: events.IRuleTarget = {
       bind: () => ({
         id: '',
         arn: this.kinesisFirehose.attrArn,
@@ -163,7 +163,7 @@ export class EventbridgeToKinesisFirehoseToS3 extends Construct {
     });
 
     // Set up the events rule props
-    const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([KinesisFirehoseEventTarget], this.eventBus);
+    const defaultEventsRuleProps = defaults.DefaultEventsRuleProps([kinesisFirehoseEventTarget], this.eventBus);
     const eventsRuleProps = overrideProps(defaultEventsRuleProps, props.eventRuleProps, true);
 
     this.eventsRule = new events.Rule(this, 'EventsRule', eventsRuleProps);

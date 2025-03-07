@@ -19,7 +19,7 @@
 import * as secrets from 'aws-cdk-lib/aws-secretsmanager';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
-import { DefaultSecretProps } from './secretsmanager-defaults';
+import { defaultSecretProps } from './secretsmanager-defaults';
 import { consolidateProps, addCfnSuppressRules } from './utils';
 
 /**
@@ -32,9 +32,7 @@ import { consolidateProps, addCfnSuppressRules } from './utils';
  * @param secretProps
  */
 export function buildSecretsManagerSecret(scope: Construct, id: string, secretProps?: secrets.SecretProps): secrets.Secret {
-  let secret: secrets.Secret;
-
-  secret = new secrets.Secret(scope, id, consolidateProps(DefaultSecretProps, secretProps));
+  const secret: secrets.Secret = new secrets.Secret(scope, id, consolidateProps(defaultSecretProps, secretProps));
 
   // suppress warning on build
   addCfnSuppressRules(secret, [

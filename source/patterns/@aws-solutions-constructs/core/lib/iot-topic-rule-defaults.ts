@@ -21,15 +21,15 @@ import * as iot from 'aws-cdk-lib/aws-iot';
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function DefaultCfnTopicRuleProps(_actions: iot.CfnTopicRule.ActionProperty[], _sql: string = '') {
-  const _topicRulePayload: iot.CfnTopicRule.TopicRulePayloadProperty = {
+export function DefaultCfnTopicRuleProps(actions: iot.CfnTopicRule.ActionProperty[], sql: string = '') {
+  const topicRulePayload: iot.CfnTopicRule.TopicRulePayloadProperty = {
     ruleDisabled: false,
-    actions: _actions,
-    sql: _sql
+    actions,
+    sql
   };
 
   const defaultCfnTopicRuleProps: iot.CfnTopicRuleProps = {
-    topicRulePayload: _topicRulePayload
+    topicRulePayload
   };
 
   return defaultCfnTopicRuleProps;

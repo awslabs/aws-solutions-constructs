@@ -24,16 +24,16 @@ import { Aws } from "aws-cdk-lib";
  */
 export function DefaultGlueTableProps(database: glue.CfnDatabase, fieldSchema: glue.CfnTable.ColumnProperty[],
   sourceType?: string, parameters?: any): glue.CfnTableProps | any {
-  let _tableProps: glue.CfnTableProps;
+  let tableProps: glue.CfnTableProps;
 
   if (sourceType === 'kinesis') {
     const kinesisStreamName = parameters.STREAM_NAME;
 
-    const _paths: string = fieldSchema.map((item) => {
+    const paths: string = fieldSchema.map((item) => {
       return item.name;
     }).join(',');
 
-    _tableProps = {
+    tableProps = {
       catalogId: database.catalogId,
       databaseName: database.ref,
       tableInput: {
@@ -47,7 +47,7 @@ export function DefaultGlueTableProps(database: glue.CfnDatabase, fieldSchema: g
           serdeInfo: {
             serializationLibrary: "org.openx.data.jsonserde.JsonSerDe",
             parameters: {
-              paths: _paths
+              paths
             }
           },
           parameters: {
@@ -63,7 +63,7 @@ export function DefaultGlueTableProps(database: glue.CfnDatabase, fieldSchema: g
       }
     };
 
-    return _tableProps;
+    return tableProps;
   } else {
     throw Error('Source Type not Supported. Valid Source Type not provided');
   }

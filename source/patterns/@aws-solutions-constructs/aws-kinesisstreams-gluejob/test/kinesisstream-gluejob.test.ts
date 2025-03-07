@@ -273,14 +273,14 @@ test('Pattern minimal deployment', () => {
 test('Test if existing Glue Job is provided', () => {
   // Initial setup
   const stack = new Stack();
-  const _jobRole = defaults.createGlueJobRole(stack);
+  const jobRole = defaults.createGlueJobRole(stack);
   const existingCfnJob = new CfnJob(stack, 'ExistingJob', {
     command: {
       name: 'glueetl',
       pythonVersion: '3',
       scriptLocation: 's3://fakebucket/fakepath/fakepath/fakefile.py'
     },
-    role: _jobRole.roleArn,
+    role: jobRole.roleArn,
     securityConfiguration: 'testSecConfig'
   });
 
@@ -325,13 +325,13 @@ test('Test if existing Glue Job is provided', () => {
 test('When S3 bucket location for script exists', () => {
   // Initial setup
   const stack = new Stack();
-  const _s3ObjectUrl: string = 's3://fakelocation/etl/fakefile.py';
+  const s3ObjectUrl: string = 's3://fakelocation/etl/fakefile.py';
   const props: KinesisstreamsToGluejobProps = {
     glueJobProps: {
       command: {
         name: 'pythonshell',
         pythonVersion: '3',
-        scriptLocation: _s3ObjectUrl
+        scriptLocation: s3ObjectUrl
       }
     },
     fieldSchema: [{
@@ -376,7 +376,7 @@ test('When S3 bucket location for script exists', () => {
 
 test('create glue job with existing kinesis stream', () => {
   const stack = new Stack();
-  const _kinesisStream = new Stream(stack, 'FakeStream', {
+  const kinesisStream = new Stream(stack, 'FakeStream', {
     streamName: 'fakename',
     encryption: StreamEncryption.UNENCRYPTED,
     shardCount: 3,
@@ -391,7 +391,7 @@ test('create glue job with existing kinesis stream', () => {
         scriptLocation: 's3://fakes3bucket/fakepath/fakefile.py'
       }
     },
-    existingStreamObj: _kinesisStream,
+    existingStreamObj: kinesisStream,
     fieldSchema: [{
       name: "id",
       type: "int",
@@ -428,7 +428,7 @@ test('create glue job with existing kinesis stream', () => {
 test('Do not pass s3ObjectUrlForScript or scriptLocationPath, error out', () => {
   const stack = new Stack();
   try {
-    const _kinesisStream = defaults.buildKinesisStream(stack, {});
+    const kinesisStream = defaults.buildKinesisStream(stack, {});
     new KinesisstreamsToGluejob(stack, 'existingStreamJob', {
       glueJobProps: {
         command: {
@@ -436,7 +436,7 @@ test('Do not pass s3ObjectUrlForScript or scriptLocationPath, error out', () => 
           scriptLocation: 's3://fakebucket/fakepath/fakefile.py'
         }
       },
-      existingStreamObj: _kinesisStream,
+      existingStreamObj: kinesisStream,
       fieldSchema: [{
         name: "id",
         type: "int",
@@ -488,7 +488,7 @@ test('Do not pass fieldSchame or table (CfnTable), error out', () => {
 test('When database and table are provided', () => {
   // Initial setup
   const stack = new Stack();
-  const _database = new CfnDatabase(stack, 'fakedb', {
+  const database = new CfnDatabase(stack, 'fakedb', {
     catalogId: 'fakecatalogId',
     databaseInput: {
       description: 'a fake glue db'
@@ -502,8 +502,8 @@ test('When database and table are provided', () => {
         scriptLocation: 's3://fakebucket/fakefolder/fakefolder/fakefile.py'
       }
     },
-    existingDatabase: _database,
-    existingTable: defaults.createGlueTable(stack, _database, undefined, [{
+    existingDatabase: database,
+    existingTable: defaults.createGlueTable(stack, database, undefined, [{
       name: "id",
       type: "int",
       comment: "Identifier for the record"

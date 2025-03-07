@@ -20,7 +20,7 @@ import { Template } from 'aws-cdk-lib/assertions';
 test('test kinesisstream override RetentionPeriodHours', () => {
   const stack = new Stack();
 
-  const defaultProps = defaults.DefaultStreamProps;
+  const defaultProps = defaults.defaultStreamProps;
 
   const inProps: kinesis.StreamProps = {
     retentionPeriod: Duration.hours(48)

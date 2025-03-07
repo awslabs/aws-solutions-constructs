@@ -11,7 +11,6 @@
  *  and limitations under the License.
  */
 
-/// !cdk-integ *
 import { App, RemovalPolicy, Stack } from "aws-cdk-lib";
 import * as kms from 'aws-cdk-lib/aws-kms';
 import { IotToS3, IotToS3Props } from "../lib";
