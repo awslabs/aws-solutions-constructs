@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.78.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.78.0...v2.78.1) (2025-03-11)
+
+
+### Bug Fixes
+
+* **core:** ensure required libraries are included in the distribution package ([9289db5](https://github.com/awslabs/aws-solutions-constructs/commit/9289db5e5f23e1a8e637a92ed5eedc7784274957))
+
 ## [2.78.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.77.0...v2.78.0) (2025-03-07)
 
 Build on CDK v2.177.0
