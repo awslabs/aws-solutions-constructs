@@ -26,7 +26,8 @@
     "integ-assert": "integ-runner",
     "jsii": "jsii",
     "jsii-pacmak": "jsii-pacmak",
-    "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert",
+    "nohoist": "./nohoist.sh",
+    "build+lint+test": "npm run jsii && npm run lint && npm test && npm run integ-assert && npm run nohoist",
     "blt": "npm run build+lint+test",
     "snapshot-update": "npm test -- -u"
   },
