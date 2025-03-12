@@ -61,12 +61,12 @@ LambdaToSqsToLambda(
     self, 'LambdaToSqsToLambdaPattern',
     producer_lambda_function_props=_lambda.FunctionProps(
         code=_lambda.Code.from_asset('producer_lambda'),
-        runtime=_lambda.Runtime.Python_3_11,
+        runtime=_lambda.Runtime.PYTHON_3_11,
         handler='index.handler'
     ),
     consumer_lambda_function_props=_lambda.FunctionProps(
         code=_lambda.Code.from_asset('consumer_lambda'),
-        runtime=_lambda.Runtime.Python_3_11,
+        runtime=_lambda.Runtime.PYTHON_3_11,
         handler='index.handler'
     )
 )

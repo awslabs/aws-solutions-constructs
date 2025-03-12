@@ -54,7 +54,7 @@ LambdaToDynamoDB(self, 'test_lambda_dynamodb_stack',
                     lambda_function_props=_lambda.FunctionProps(
                         code=_lambda.Code.from_asset(
                             'lambda'),
-                        runtime=_lambda.Runtime.Python_3_11,
+                        runtime=_lambda.Runtime.PYTHON_3_11,
                         handler='index.handler'
                     ))
 ```

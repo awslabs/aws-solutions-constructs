@@ -69,7 +69,7 @@ from constructs import Construct
 lambda_function = _lambda.Function(self, 'LambdaFunction',
                                     code=_lambda.Code.from_asset(
                                         'lambda'),
-                                    runtime=_lambda.Runtime.Python_3_11,
+                                    runtime=_lambda.Runtime.PYTHON_3_11,
                                     handler='index.handler')
 
 api_gateway = api.LambdaRestApi(self, 'LambdaRestApi',
