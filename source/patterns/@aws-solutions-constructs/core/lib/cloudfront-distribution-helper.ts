@@ -221,9 +221,10 @@ export function createCloudFrontOaiDistributionForS3(
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
   if (props.sourceBucket.isWebsite) {
-    throw new Error(`aws-cloudfront-oai-s3 has been provided a source bucket with website hosting enabled.
-        This requires both the bucket and its objects to be public. AWS strongly recommends against configuring buckets
-        and objects for public access, this construct does not support this configuration`);
+    throw new Error(`aws-cloudfront-oai-s3 has been provided a source bucket with website hosting enabled, which this construct
+        does not support. This requires both the bucket and its objects to be public. AWS strongly recommends against configuring
+        buckets and objects for public access. As such a configuration uses neither OAC nor OAI, it can be launched with the
+        aws-cloudfron-s3 construct in any region.`);
    }
 
   const getLoggingBucketResponse = getLoggingBucket(scope, {
