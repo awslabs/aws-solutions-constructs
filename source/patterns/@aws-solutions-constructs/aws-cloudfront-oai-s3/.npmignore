@@ -1,0 +1,21 @@
+# Exclude typescript source and config
+*.ts
+tsconfig.json
+coverage
+.nyc_output
+*.tgz
+*.snk
+*.tsbuildinfo
+
+# Include javascript files and typescript declarations
+!*.js
+!*.d.ts
+
+# Exclude jsii outdir
+dist
+
+# Include .jsii
+!.jsii
+
+# Include .jsii
+!.jsii

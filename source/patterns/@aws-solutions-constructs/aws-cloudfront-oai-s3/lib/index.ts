@@ -14,17 +14,17 @@
 import { Aws } from 'aws-cdk-lib';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import * as kms from 'aws-cdk-lib/aws-kms';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
-import * as resources from '@aws-solutions-constructs/resources';
+// import * as resources from '@aws-solutions-constructs/resources';
+// import * as kms from 'aws-cdk-lib/aws-kms';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 
 /**
- * @summary The properties for the CloudFrontToS3 Construct
+ * @summary The properties for the CloudFrontToOaiToS3 Construct
  */
-export interface CloudFrontToS3Props {
+export interface CloudFrontToOaiToS3Props {
   /**
    * Optional user provided props to override the default props
    *
@@ -121,7 +121,7 @@ export interface CloudFrontToS3Props {
   readonly cloudFrontLoggingBucketAccessLogBucketProps?: s3.BucketProps,
 }
 
-export class CloudFrontToS3 extends Construct {
+export class CloudFrontToOaiToS3 extends Construct {
   public readonly cloudFrontWebDistribution: cloudfront.Distribution;
   public readonly cloudFrontFunction?: cloudfront.Function;
   public readonly cloudFrontLoggingBucket?: s3.Bucket;
@@ -132,15 +132,19 @@ export class CloudFrontToS3 extends Construct {
   public readonly originAccessControl?: cloudfront.CfnOriginAccessControl;
 
   /**
-   * @summary Constructs a new instance of the CloudFrontToS3 class.
+   * @summary Constructs a new instance of the CloudFrontToOaiToS3 class.
    * @param {Construct} scope - represents the scope for all the resources.
    * @param {string} id - this is a a scope-unique id.
-   * @param {CloudFrontToS3Props} props - user provided props for the construct
+   * @param {CloudFrontToOaiToS3Props} props - user provided props for the construct
    * @since 0.8.0
    * @access public
    */
-  constructor(scope: Construct, id: string, props: CloudFrontToS3Props) {
+  constructor(scope: Construct, id: string, props: CloudFrontToOaiToS3Props) {
     super(scope, id);
+
+    defaults.printWarning(`This construct deploys a Cloudfront/S3 pattern connected with an Origin Access Identity,
+      the recommended architecture is to use an Origin Access Connector (provided in aws-cloudfront-s3). This construct
+      is provided only for use in China regions, where OACs are not available.`);
 
     // All our tests are based upon this behavior being on, so we're setting
     // context here rather than assuming the client will set it
@@ -149,6 +153,7 @@ export class CloudFrontToS3 extends Construct {
     defaults.CheckS3Props(props);
     defaults.CheckCloudFrontProps(props);
     defaults.CheckCloudfrontS3Props(props);
+    this.checkForKmsKey(props);
 
     let originBucket: s3.IBucket;
 
@@ -168,7 +173,8 @@ export class CloudFrontToS3 extends Construct {
     this.s3BucketInterface = originBucket;
 
     // Define the CloudFront Distribution
-    const cloudFrontDistributionForS3Props: defaults.CreateCloudFrontDistributionForS3Props = {
+    const cloudFrontOaiDistributionForS3Props: defaults.CreateCloudFrontOaiDistributionForS3Props = {
+      originPath: props.originPath,
       sourceBucket: this.s3BucketInterface,
       cloudFrontDistributionProps: props.cloudFrontDistributionProps,
       httpSecurityHeaders: props.insertHttpSecurityHeaders,
@@ -177,19 +183,11 @@ export class CloudFrontToS3 extends Construct {
       cloudFrontLoggingBucketS3AccessLogBucketProps: props.cloudFrontLoggingBucketAccessLogBucketProps,
       logCloudFrontAccessLog: props.logCloudFrontAccessLog
     };
-    const cloudFrontDistributionForS3Response = defaults.createCloudFrontDistributionForS3(this, id, cloudFrontDistributionForS3Props);
+    const cloudFrontDistributionForS3Response = defaults.createCloudFrontOaiDistributionForS3(this, cloudFrontOaiDistributionForS3Props);
     this.cloudFrontWebDistribution = cloudFrontDistributionForS3Response.distribution;
     this.cloudFrontFunction = cloudFrontDistributionForS3Response.cloudfrontFunction;
     this.cloudFrontLoggingBucket = cloudFrontDistributionForS3Response.loggingBucket;
-    this.originAccessControl = cloudFrontDistributionForS3Response.originAccessControl;
     this.cloudFrontLoggingBucketAccessLogBucket = cloudFrontDistributionForS3Response.loggingBucketS3AccesssLogBucket;
-
-    // Attach the OriginAccessControl to the CloudFront Distribution, and remove the OriginAccessIdentity
-    const l1CloudFrontDistribution = this.cloudFrontWebDistribution.node.defaultChild as cloudfront.CfnDistribution;
-    l1CloudFrontDistribution.addPropertyOverride('DistributionConfig.Origins.0.OriginAccessControlId', this.originAccessControl?.attrId);
-    if (props.originPath) {
-      l1CloudFrontDistribution.addPropertyOverride('DistributionConfig.Origins.0.OriginPath', props.originPath);
-    }
 
     // Grant CloudFront permission to get the objects from the s3 bucket origin
     originBucket.addToResourcePolicy(
@@ -206,25 +204,20 @@ export class CloudFrontToS3 extends Construct {
       })
     );
 
-    // We need to create a custom resource to introduce the indirection necessary to avoid
-    // a circular dependency when granting the CloudFront distribution access to use the
-    // KMS key to decrypt objects. Without this indirection, it is not possible to reference
-    // the CloudFront distribution ID in the KMS key policy because -
-    //   * The S3 bucket references the KMS key
-    //   * The CloudFront distribution references the bucket
-    //   * The KMS key references the CloudFront distribution
-    let encryptionKey: kms.IKey | undefined;
-    if (props.bucketProps && props.bucketProps.encryptionKey) {
-      encryptionKey = props.bucketProps.encryptionKey;
-    } else if (props.existingBucketObj && props.existingBucketObj.encryptionKey) {
-      encryptionKey = props.existingBucketObj.encryptionKey;
+  }
+
+  private checkForKmsKey(props: CloudFrontToOaiToS3Props) {
+    let errorMessages = '';
+    let errorFound = false;
+
+    if ((props.bucketProps && props.bucketProps.encryptionKey) ||
+      (props.existingBucketObj && props.existingBucketObj.encryptionKey)) {
+      errorMessages += 'Error - buckets cannot use CMKs with OAIs\n';
+      errorFound = true;
     }
 
-    if (encryptionKey) {
-      resources.createKeyPolicyUpdaterCustomResource(this, id,  {
-        distribution: this.cloudFrontWebDistribution,
-        encryptionKey
-      });
+    if (errorFound) {
+      throw new Error(errorMessages);
     }
   }
 }
