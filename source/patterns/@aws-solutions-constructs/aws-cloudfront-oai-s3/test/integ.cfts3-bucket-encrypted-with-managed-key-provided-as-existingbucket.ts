@@ -17,7 +17,6 @@ import { CloudFrontToOaiToS3, CloudFrontToOaiToS3Props } from "../lib";
 import { buildS3Bucket, generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
-import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
 
 // Setup
 const app = new App();
@@ -53,11 +52,6 @@ const props: CloudFrontToOaiToS3Props = {
 
 new CloudFrontToOaiToS3(stack, 'test-cloudfront-s3-managed-key', props);
 
-new s3deploy.BucketDeployment(stack, 'web-content', {
-    sources: [s3deploy.Source.data('index.html', '<html><body><h1>Web Page</h1>Content for testing</body></html>')
-  ],
-  destinationBucket: existingBucketObj,
-});
 suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 
 // Synth
