@@ -52,7 +52,7 @@ import software.amazon.awscdk.StackProps;
 import software.amazon.awsconstructs.services.cloudfrontoais3.*;
 
 new CloudFrontToOaiToS3(this, "test-cloudfront-oai-s3", new CloudFrontToOaiToS3Props.Builder()
-        .build());
+  .build());
 ```
 
 ## Pattern Construct Props
