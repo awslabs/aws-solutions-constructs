@@ -55,7 +55,7 @@ from constructs import Construct
 CognitoToApiGatewayToLambda(self, 'test-cognito-apigateway-lambda',
                             lambda_function_props=_lambda.FunctionProps(
                                 code=_lambda.Code.from_asset('lambda'),
-                                runtime=_lambda.Runtime.Python_3_11,
+                                runtime=_lambda.Runtime.PYTHON_3_11,
                                 handler='index.handler'
                             )
                             )
@@ -127,7 +127,7 @@ construct = CognitoToApiGatewayToLambda(self, 'test-cognito-apigateway-lambda',
                                         lambda_function_props=_lambda.FunctionProps(
                                             code=_lambda.Code.from_asset(
                                                 'lambda'),
-                                            runtime=_lambda.Runtime.Python_3_11,
+                                            runtime=_lambda.Runtime.PYTHON_3_11,
                                             handler='index.handler'
                                         ),
                                         api_gateway_props=gateway_props(

@@ -57,7 +57,7 @@ from constructs import Construct
         CloudFrontToApiGatewayToLambda(
             self, 'CloudFrontApiGatewayToLambda',
             lambda_function_props=_lambda.FunctionProps(
-                runtime=_lambda.Runtime.Python_3_11,
+                runtime=_lambda.Runtime.PYTHON_3_11,
                 code=_lambda.Code.from_asset('lambda'),
                 handler='hello.handler',
             ),
