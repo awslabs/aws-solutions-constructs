@@ -143,7 +143,7 @@ export class CloudFrontToOaiToS3 extends Construct {
     super(scope, id);
 
     defaults.printWarning(`This construct deploys a Cloudfront/S3 pattern connected with an Origin Access Identity,
-      the recommended architecture is to use an Origin Access Connector (provided in aws-cloudfront-s3). This construct
+      the recommended architecture is to use an Origin Access Connector (provided in aws-cloudfront-oai-s3). This construct
       is provided only for use in China regions, where OACs are not available.`);
 
     // All our tests are based upon this behavior being on, so we're setting

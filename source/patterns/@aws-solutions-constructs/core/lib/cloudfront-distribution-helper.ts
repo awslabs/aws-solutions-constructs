@@ -242,7 +242,8 @@ export function createCloudFrontOaiDistributionForS3(
     origin = origins.S3BucketOrigin.withOriginAccessIdentity(props.sourceBucket);
   }
 
-  const defaultprops = DefaultCloudFrontWebDistributionForS3Props(origin,
+  const defaultprops = DefaultCloudFrontWebDistributionForS3Props(
+    origin,
     getLoggingBucketResponse.logBucket,
     httpSecurityHeaders,
     cloudfrontFunction,

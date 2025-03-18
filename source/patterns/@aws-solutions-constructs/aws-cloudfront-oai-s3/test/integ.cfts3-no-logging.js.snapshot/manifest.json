@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9887a917bdafe690ee795c5b433d5436c44ffd9cb9e0a4e7820455502006e935.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/32c9dac74223a89de6f0ec53ca9043e206b50a09a9bb2c2e5355d386305acfdb.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,40 +82,40 @@
         "cfts3-no-logging.assets"
       ],
       "metadata": {
-        "/cfts3-no-logging/test-cloudfront-s3/S3Bucket/Resource": [
+        "/cfts3-no-logging/test-cloudfront-oai-s3/S3Bucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3S3BucketE0C5F76E"
+            "data": "testcloudfrontoais3S3Bucket578AB9F3"
           }
         ],
-        "/cfts3-no-logging/test-cloudfront-s3/S3Bucket/Policy/Resource": [
+        "/cfts3-no-logging/test-cloudfront-oai-s3/S3Bucket/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3S3BucketPolicy250F1F61"
+            "data": "testcloudfrontoais3S3BucketPolicyD2322CC3"
           }
         ],
-        "/cfts3-no-logging/test-cloudfront-s3/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
+        "/cfts3-no-logging/test-cloudfront-oai-s3/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3S3BucketAutoDeleteObjectsCustomResourceA13DD8F7"
+            "data": "testcloudfrontoais3S3BucketAutoDeleteObjectsCustomResourceA2545EE1"
           }
         ],
-        "/cfts3-no-logging/test-cloudfront-s3/SetHttpSecurityHeaders/Resource": [
+        "/cfts3-no-logging/test-cloudfront-oai-s3/SetHttpSecurityHeaders/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3SetHttpSecurityHeaders6C5A1E69"
+            "data": "testcloudfrontoais3SetHttpSecurityHeaders4EB3C97B"
           }
         ],
-        "/cfts3-no-logging/test-cloudfront-s3/CloudFrontDistribution/Origin1/S3Origin/Resource": [
+        "/cfts3-no-logging/test-cloudfront-oai-s3/CloudFrontDistribution/Origin1/S3Origin/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3CloudFrontDistributionOrigin1S3Origin4695F058"
+            "data": "testcloudfrontoais3CloudFrontDistributionOrigin1S3OriginF57A3CB1"
           }
         ],
-        "/cfts3-no-logging/test-cloudfront-s3/CloudFrontDistribution/Resource": [
+        "/cfts3-no-logging/test-cloudfront-oai-s3/CloudFrontDistribution/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3CloudFrontDistribution0565DEE8"
+            "data": "testcloudfrontoais3CloudFrontDistribution0E089CC5"
           }
         ],
         "/cfts3-no-logging/LatestNodeRuntimeMap": [
@@ -152,6 +152,60 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testcloudfronts3S3BucketE0C5F76E": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3S3BucketE0C5F76E",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testcloudfronts3S3BucketPolicy250F1F61": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3S3BucketPolicy250F1F61",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testcloudfronts3S3BucketAutoDeleteObjectsCustomResourceA13DD8F7": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3S3BucketAutoDeleteObjectsCustomResourceA13DD8F7",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testcloudfronts3SetHttpSecurityHeaders6C5A1E69": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3SetHttpSecurityHeaders6C5A1E69",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testcloudfronts3CloudFrontDistributionOrigin1S3Origin4695F058": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3CloudFrontDistributionOrigin1S3Origin4695F058",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testcloudfronts3CloudFrontDistribution0565DEE8": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfronts3CloudFrontDistribution0565DEE8",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

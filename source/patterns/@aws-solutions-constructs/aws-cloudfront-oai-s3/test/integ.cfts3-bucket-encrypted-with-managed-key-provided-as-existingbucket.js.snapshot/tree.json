@@ -408,7 +408,7 @@
                               "Principal": {
                                 "CanonicalUser": {
                                   "Fn::GetAtt": [
-                                    "testcloudfronts3managedkeyCloudFrontDistributionOrigin1S3Origin6A70DD8A",
+                                    "testcloudfrontoais3managedkeyCloudFrontDistributionOrigin1S3OriginFC894C0D",
                                     "S3CanonicalUserId"
                                   ]
                                 }
@@ -446,7 +446,7 @@
                                         },
                                         ":distribution/",
                                         {
-                                          "Ref": "testcloudfronts3managedkeyCloudFrontDistributionE6431C62"
+                                          "Ref": "testcloudfrontoais3managedkeyCloudFrontDistributionD7203FE7"
                                         }
                                       ]
                                     ]
@@ -512,17 +512,17 @@
               "version": "2.177.0"
             }
           },
-          "test-cloudfront-s3-managed-key": {
-            "id": "test-cloudfront-s3-managed-key",
-            "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key",
+          "test-cloudfront-oai-s3-managed-key": {
+            "id": "test-cloudfront-oai-s3-managed-key",
+            "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key",
             "children": {
               "CloudfrontLoggingBucketAccessLog": {
                 "id": "CloudfrontLoggingBucketAccessLog",
-                "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucketAccessLog",
+                "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudfrontLoggingBucketAccessLog",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucketAccessLog/Resource",
+                    "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudfrontLoggingBucketAccessLog/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
                       "aws:cdk:cloudformation:props": {
@@ -559,16 +559,16 @@
                   },
                   "Policy": {
                     "id": "Policy",
-                    "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucketAccessLog/Policy",
+                    "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudfrontLoggingBucketAccessLog/Policy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucketAccessLog/Policy/Resource",
+                        "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudfrontLoggingBucketAccessLog/Policy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
                           "aws:cdk:cloudformation:props": {
                             "bucket": {
-                              "Ref": "testcloudfronts3managedkeyCloudfrontLoggingBucketAccessLog09A44955"
+                              "Ref": "testcloudfrontoais3managedkeyCloudfrontLoggingBucketAccessLog2E3935E9"
                             },
                             "policyDocument": {
                               "Statement": [
@@ -586,7 +586,7 @@
                                   "Resource": [
                                     {
                                       "Fn::GetAtt": [
-                                        "testcloudfronts3managedkeyCloudfrontLoggingBucketAccessLog09A44955",
+                                        "testcloudfrontoais3managedkeyCloudfrontLoggingBucketAccessLog2E3935E9",
                                         "Arn"
                                       ]
                                     },
@@ -596,7 +596,7 @@
                                         [
                                           {
                                             "Fn::GetAtt": [
-                                              "testcloudfronts3managedkeyCloudfrontLoggingBucketAccessLog09A44955",
+                                              "testcloudfrontoais3managedkeyCloudfrontLoggingBucketAccessLog2E3935E9",
                                               "Arn"
                                             ]
                                           },
@@ -625,7 +625,7 @@
                                   "Resource": [
                                     {
                                       "Fn::GetAtt": [
-                                        "testcloudfronts3managedkeyCloudfrontLoggingBucketAccessLog09A44955",
+                                        "testcloudfrontoais3managedkeyCloudfrontLoggingBucketAccessLog2E3935E9",
                                         "Arn"
                                       ]
                                     },
@@ -635,7 +635,7 @@
                                         [
                                           {
                                             "Fn::GetAtt": [
-                                              "testcloudfronts3managedkeyCloudfrontLoggingBucketAccessLog09A44955",
+                                              "testcloudfrontoais3managedkeyCloudfrontLoggingBucketAccessLog2E3935E9",
                                               "Arn"
                                             ]
                                           },
@@ -651,7 +651,7 @@
                                     "ArnLike": {
                                       "aws:SourceArn": {
                                         "Fn::GetAtt": [
-                                          "testcloudfronts3managedkeyCloudfrontLoggingBucket4F6525D7",
+                                          "testcloudfrontoais3managedkeyCloudfrontLoggingBucketE6FDAA72",
                                           "Arn"
                                         ]
                                       }
@@ -672,7 +672,7 @@
                                       [
                                         {
                                           "Fn::GetAtt": [
-                                            "testcloudfronts3managedkeyCloudfrontLoggingBucketAccessLog09A44955",
+                                            "testcloudfrontoais3managedkeyCloudfrontLoggingBucketAccessLog2E3935E9",
                                             "Arn"
                                           ]
                                         },
@@ -699,11 +699,11 @@
                   },
                   "AutoDeleteObjectsCustomResource": {
                     "id": "AutoDeleteObjectsCustomResource",
-                    "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource",
+                    "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource",
                     "children": {
                       "Default": {
                         "id": "Default",
-                        "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource/Default",
+                        "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
                           "version": "2.177.0"
@@ -723,11 +723,11 @@
               },
               "CloudfrontLoggingBucket": {
                 "id": "CloudfrontLoggingBucket",
-                "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucket",
+                "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudfrontLoggingBucket",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucket/Resource",
+                    "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudfrontLoggingBucket/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
                       "aws:cdk:cloudformation:props": {
@@ -742,7 +742,7 @@
                         },
                         "loggingConfiguration": {
                           "destinationBucketName": {
-                            "Ref": "testcloudfronts3managedkeyCloudfrontLoggingBucketAccessLog09A44955"
+                            "Ref": "testcloudfrontoais3managedkeyCloudfrontLoggingBucketAccessLog2E3935E9"
                           }
                         },
                         "ownershipControls": {
@@ -776,16 +776,16 @@
                   },
                   "Policy": {
                     "id": "Policy",
-                    "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucket/Policy",
+                    "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudfrontLoggingBucket/Policy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucket/Policy/Resource",
+                        "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudfrontLoggingBucket/Policy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
                           "aws:cdk:cloudformation:props": {
                             "bucket": {
-                              "Ref": "testcloudfronts3managedkeyCloudfrontLoggingBucket4F6525D7"
+                              "Ref": "testcloudfrontoais3managedkeyCloudfrontLoggingBucketE6FDAA72"
                             },
                             "policyDocument": {
                               "Statement": [
@@ -803,7 +803,7 @@
                                   "Resource": [
                                     {
                                       "Fn::GetAtt": [
-                                        "testcloudfronts3managedkeyCloudfrontLoggingBucket4F6525D7",
+                                        "testcloudfrontoais3managedkeyCloudfrontLoggingBucketE6FDAA72",
                                         "Arn"
                                       ]
                                     },
@@ -813,7 +813,7 @@
                                         [
                                           {
                                             "Fn::GetAtt": [
-                                              "testcloudfronts3managedkeyCloudfrontLoggingBucket4F6525D7",
+                                              "testcloudfrontoais3managedkeyCloudfrontLoggingBucketE6FDAA72",
                                               "Arn"
                                             ]
                                           },
@@ -842,7 +842,7 @@
                                   "Resource": [
                                     {
                                       "Fn::GetAtt": [
-                                        "testcloudfronts3managedkeyCloudfrontLoggingBucket4F6525D7",
+                                        "testcloudfrontoais3managedkeyCloudfrontLoggingBucketE6FDAA72",
                                         "Arn"
                                       ]
                                     },
@@ -852,7 +852,7 @@
                                         [
                                           {
                                             "Fn::GetAtt": [
-                                              "testcloudfronts3managedkeyCloudfrontLoggingBucket4F6525D7",
+                                              "testcloudfrontoais3managedkeyCloudfrontLoggingBucketE6FDAA72",
                                               "Arn"
                                             ]
                                           },
@@ -880,11 +880,11 @@
                   },
                   "AutoDeleteObjectsCustomResource": {
                     "id": "AutoDeleteObjectsCustomResource",
-                    "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource",
+                    "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource",
                     "children": {
                       "Default": {
                         "id": "Default",
-                        "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource/Default",
+                        "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
                           "version": "2.177.0"
@@ -904,24 +904,24 @@
               },
               "CloudFrontDistribution": {
                 "id": "CloudFrontDistribution",
-                "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudFrontDistribution",
+                "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudFrontDistribution",
                 "children": {
                   "Origin1": {
                     "id": "Origin1",
-                    "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudFrontDistribution/Origin1",
+                    "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudFrontDistribution/Origin1",
                     "children": {
                       "S3Origin": {
                         "id": "S3Origin",
-                        "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudFrontDistribution/Origin1/S3Origin",
+                        "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudFrontDistribution/Origin1/S3Origin",
                         "children": {
                           "Resource": {
                             "id": "Resource",
-                            "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudFrontDistribution/Origin1/S3Origin/Resource",
+                            "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudFrontDistribution/Origin1/S3Origin/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
                               "aws:cdk:cloudformation:props": {
                                 "cloudFrontOriginAccessIdentityConfig": {
-                                  "comment": "Identity for cfts3bucketencryptedwithmanagedkeyprovidedasexistingbuckettestcloudfronts3managedkeyCloudFrontDistributionOrigin17C"
+                                  "comment": "Identity for cfts3bucketencryptedwithmanagedkeyprovidedasexistingbuckettestcloudfrontoais3managedkeyCloudFrontDistributionOrigin"
                                 }
                               }
                             },
@@ -944,7 +944,7 @@
                   },
                   "Resource": {
                     "id": "Resource",
-                    "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudFrontDistribution/Resource",
+                    "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudFrontDistribution/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::CloudFront::Distribution",
                       "aws:cdk:cloudformation:props": {
@@ -958,7 +958,7 @@
                                   "RegionalDomainName"
                                 ]
                               },
-                              "id": "cfts3bucketencryptedwithmanagedkeyprovidedasexistingbuckettestcloudfronts3managedkeyCloudFrontDistributionOrigin17C5092B4",
+                              "id": "cfts3bucketencryptedwithmanagedkeyprovidedasexistingbuckettestcloudfrontoais3managedkeyCloudFrontDistributionOrigin11D8CDF6B",
                               "s3OriginConfig": {
                                 "originAccessIdentity": {
                                   "Fn::Join": [
@@ -966,7 +966,7 @@
                                     [
                                       "origin-access-identity/cloudfront/",
                                       {
-                                        "Ref": "testcloudfronts3managedkeyCloudFrontDistributionOrigin1S3Origin6A70DD8A"
+                                        "Ref": "testcloudfrontoais3managedkeyCloudFrontDistributionOrigin1S3OriginFC894C0D"
                                       }
                                     ]
                                   ]
@@ -976,7 +976,7 @@
                           ],
                           "defaultCacheBehavior": {
                             "pathPattern": "*",
-                            "targetOriginId": "cfts3bucketencryptedwithmanagedkeyprovidedasexistingbuckettestcloudfronts3managedkeyCloudFrontDistributionOrigin17C5092B4",
+                            "targetOriginId": "cfts3bucketencryptedwithmanagedkeyprovidedasexistingbuckettestcloudfrontoais3managedkeyCloudFrontDistributionOrigin11D8CDF6B",
                             "cachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
                             "compress": true,
                             "viewerProtocolPolicy": "redirect-to-https"
@@ -987,7 +987,7 @@
                           "logging": {
                             "bucket": {
                               "Fn::GetAtt": [
-                                "testcloudfronts3managedkeyCloudfrontLoggingBucket4F6525D7",
+                                "testcloudfrontoais3managedkeyCloudfrontLoggingBucketE6FDAA72",
                                 "RegionalDomainName"
                               ]
                             }

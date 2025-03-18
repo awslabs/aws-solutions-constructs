@@ -29,14 +29,14 @@ Typescript
 ``` typescript
 import { Construct } from 'constructs';
 import { Stack, StackProps } from 'aws-cdk-lib';
-import { CloudFrontToS3 } from '@aws-solutions-constructs/aws-cloudfront-s3';
+import { CloudFrontToOaiToS3 } from '@aws-solutions-constructs/aws-cloudfront-oai-s3';
 
-new CloudFrontToS3(this, 'test-cloudfront-oai-s3', {});
+new CloudFrontToOaiToS3(this, 'test-cloudfront-oai-s3', {});
 ```
 
 Python
 ``` python
-from aws_solutions_constructs.aws_cloudfront_s3 import CloudFrontToOaiToS3
+from aws_solutions_constructs.aws_cloudfront_oai_s3 import CloudFrontToOaiToS3
 from aws_cdk import Stack
 from constructs import Construct
 
@@ -49,7 +49,7 @@ import software.constructs.Construct;
 
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
-import software.amazon.awsconstructs.services.cloudfronts3.*;
+import software.amazon.awsconstructs.services.cloudfrontoais3.*;
 
 new CloudFrontToOaiToS3(this, "test-cloudfront-oai-s3", new CloudFrontToOaiToS3Props.Builder()
         .build());
@@ -91,13 +91,14 @@ Out of the box implementation of the Construct without any override will set the
 * Configure Access logging for CloudFront Distribution
 * Enable automatic injection of best practice HTTP security headers in all responses from CloudFront Distribution
 * CloudFront originPath set to `'/'`
+* Create an Origin Access Identity to access S3 bucket
 
 ### Amazon S3 Bucket
 * Configure Access logging for S3 Bucket
 * Enable server-side encryption for S3 Bucket using AWS managed KMS Key
 * Enforce encryption of data in transit
 * Turn on the versioning for S3 Bucket
-* Don't allow public access for S3 Bucket
+* Block public access for S3 Bucket
 * Retain the S3 Bucket when deleting the CloudFormation stack
 * Applies Lifecycle rule to move noncurrent object versions to Glacier storage after 90 days
 

@@ -21,7 +21,7 @@ import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
-stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
+stack.templateOptions.description = 'Integration Test for aws-cloudfront-oai-s3';
 
 // custom cloudfront function
 const cloudfrontFunction = new cloudfront.Function(stack, "MyFunction", {
@@ -37,7 +37,7 @@ const cloudfrontFunction = new cloudfront.Function(stack, "MyFunction", {
   }")
 });
 
-new CloudFrontToOaiToS3(stack, 'test-cloudfront-s3', {
+new CloudFrontToOaiToS3(stack, 'test-cloudfront-oai-s3', {
   cloudFrontLoggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true

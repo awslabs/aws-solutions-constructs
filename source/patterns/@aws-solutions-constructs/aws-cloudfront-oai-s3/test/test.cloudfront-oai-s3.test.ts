@@ -21,7 +21,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 import { Key } from "aws-cdk-lib/aws-kms";
 
 function deploy(stack: cdk.Stack, props?: CloudFrontToOaiToS3Props) {
-  return new CloudFrontToOaiToS3(stack, 'test-cloudfront-s3', {
+  return new CloudFrontToOaiToS3(stack, 'test-cloudfront-oai-s3', {
     bucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     },
@@ -31,7 +31,7 @@ function deploy(stack: cdk.Stack, props?: CloudFrontToOaiToS3Props) {
 
 test('construct defaults set properties correctly', () => {
   const stack = new cdk.Stack();
-  const construct = new CloudFrontToOaiToS3(stack, 'test-cloudfront-s3', {});
+  const construct = new CloudFrontToOaiToS3(stack, 'test-cloudfront-oai-s3', {});
 
   expect(construct.cloudFrontWebDistribution).toBeDefined();
   expect(construct.cloudFrontFunction).toBeDefined();
@@ -118,7 +118,7 @@ test('test s3Bucket override publicAccessBlockConfiguration', () => {
     }
   };
 
-  new CloudFrontToOaiToS3(stack, 'test-cloudfront-s3', props);
+  new CloudFrontToOaiToS3(stack, 'test-cloudfront-oai-s3', props);
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::S3::Bucket", {
@@ -132,9 +132,10 @@ test('test s3Bucket override publicAccessBlockConfiguration', () => {
 });
 
 test('check existing bucket', () => {
+  const bucketName = "my-bucket";
   const stack = new cdk.Stack();
 
-  const existingBucket = new s3.Bucket(stack, 'my-bucket', {
+  const existingBucket = new s3.Bucket(stack, bucketName, {
     bucketName: 'my-bucket'
   });
 
@@ -142,22 +143,12 @@ test('check existing bucket', () => {
     existingBucketObj: existingBucket
   };
 
-  new CloudFrontToOaiToS3(stack, 'test-cloudfront-s3', props);
+  new CloudFrontToOaiToS3(stack, 'test-cloudfront-oai-s3', props);
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::S3::Bucket", {
-    BucketName: "my-bucket"
+    BucketName: bucketName
   });
-});
-
-test('check exception for Missing existingObj from props for deploy = false', () => {
-  const stack = new cdk.Stack();
-
-  try {
-    new CloudFrontToOaiToS3(stack, 'test-cloudfront-s3', {});
-  } catch (e) {
-    expect(e).toBeInstanceOf(Error);
-  }
 });
 
 test('check properties', () => {
@@ -197,7 +188,7 @@ test("Test existingBucketObj", () => {
   // Assertion
   expect(construct.cloudFrontWebDistribution).toBeDefined();
   const template = Template.fromStack(stack);
-
+  template.resourceCountIs("AWS::S3::Bucket", 2);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
     DistributionConfig: {
       Origins: [
@@ -239,7 +230,7 @@ test('test cloudfront with custom domain names', () => {
     }
   };
 
-  new CloudFrontToOaiToS3(stack, 'test-cloudfront-s3', props);
+  new CloudFrontToOaiToS3(stack, 'test-cloudfront-oai-s3', props);
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties("AWS::CloudFront::Distribution", {
@@ -293,7 +284,7 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
   const stack = new cdk.Stack();
 
   const cloudfrontLogBucketName = 'cf-log-bucket';
-  new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+  new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
     cloudFrontLoggingBucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
@@ -315,7 +306,7 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
       ]
     },
     BucketName: {
-      Ref: "cloudfronts3CloudfrontLoggingBucket5B845143"
+      Ref: Match.stringLikeRegexp("cloudfrontoais3CloudfrontLoggingBucket")
     }
   });
 });
@@ -323,7 +314,7 @@ test('Cloudfront logging bucket with destroy removal policy and auto delete obje
 test('s3 bucket with one content bucket and no access logging of CONTENT bucket', () => {
   const stack = new cdk.Stack();
 
-  const construct = new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+  const construct = new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
     bucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     },
@@ -340,7 +331,7 @@ test('s3 bucket with one content bucket and no access logging of CONTENT bucket'
 test('CloudFront origin path present when provided', () => {
   const stack = new cdk.Stack();
 
-  new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+  new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
     originPath: '/testPath'
   });
 
@@ -360,7 +351,7 @@ test('CloudFront origin path present when provided', () => {
 test('CloudFront origin path should not be present if not provided', () => {
   const stack = new cdk.Stack();
 
-  new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {});
+  new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {});
 
   defaults.expectNonexistence(stack, "AWS::CloudFront::Distribution", {
     DistributionConfig:
@@ -377,7 +368,7 @@ test('CloudFront origin path should not be present if not provided', () => {
 test('Test the deployment with securityHeadersBehavior instead of HTTP security headers', () => {
   // Initial setup
   const stack = new Stack();
-  const testConstruct = new CloudFrontToOaiToS3(stack, 'test-cloudfront-s3', {
+  const testConstruct = new CloudFrontToOaiToS3(stack, 'test-cloudfront-oai-s3', {
     insertHttpSecurityHeaders: false,
     responseHeadersPolicyProps: {
       securityHeadersBehavior: {
@@ -420,7 +411,7 @@ test("throw exception if insertHttpSecurityHeaders and responseHeadersPolicyProp
   const stack = new cdk.Stack();
 
   expect(() => {
-    new CloudFrontToOaiToS3(stack, "test-cloudfront-s3", {
+    new CloudFrontToOaiToS3(stack, "test-cloudfront-oai-s3", {
       insertHttpSecurityHeaders: true,
       responseHeadersPolicyProps: {
         securityHeadersBehavior: {
@@ -459,7 +450,7 @@ test("Confirm CheckCloudFrontProps is being called", () => {
 test('Test that we do not create an Access Log bucket for CF logs if one is provided', () => {
   const stack = new cdk.Stack();
   const cfS3AccessLogBucket = new s3.Bucket(stack, 'cf-s3-access-logs');
-  new CloudFrontToOaiToS3(stack, 'test-cloudfront-s3', {
+  new CloudFrontToOaiToS3(stack, 'test-cloudfront-oai-s3', {
     cloudFrontLoggingBucketProps: {
       serverAccessLogsBucket: cfS3AccessLogBucket
     }
@@ -478,7 +469,7 @@ test('Providing loggingBucketProps and existingLoggingBucket is an error', () =>
   const logBucket = new s3.Bucket(stack, 'log-bucket', {});
 
   const app = () => {
-    new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+    new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
       bucketProps: {
         serverAccessLogsBucket: logBucket,
       },
@@ -495,7 +486,7 @@ test('Providing existingLoggingBucket and logS3AccessLogs=false is an error', ()
   const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
 
   const app = () => {
-    new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+    new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
       bucketProps: {
         serverAccessLogsBucket: logBucket,
       },
@@ -509,7 +500,7 @@ test('Providing loggingBucketProps and logS3AccessLogs=false is an error', () =>
   const stack = new cdk.Stack();
 
   const app = () => {
-    new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+    new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
       loggingBucketProps: {
         bucketName: 'anything'
       },
@@ -525,7 +516,7 @@ test('loggingBucketProps is supplied is integrated into architecture correctly',
   const stack = new cdk.Stack();
 
   const testName = "test-name";
-  const construct = new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+  const construct = new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
     bucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     },
@@ -548,7 +539,7 @@ test('loggingBucketProps is supplied is integrated into architecture correctly',
   template.hasResourceProperties("AWS::S3::Bucket", {
     LoggingConfiguration: {
       DestinationBucketName: {
-        Ref: "cloudfronts3S3LoggingBucket52EEB708"
+        Ref: Match.stringLikeRegexp('cloudfrontoais3S3LoggingBucket')
       }
     }
   });
@@ -560,7 +551,7 @@ test('bucketProps:serverAccessLogsBucket is supplied is integrated into architec
     bucketName: testName,
   });
 
-  const construct = new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+  const construct = new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
     bucketProps: {
       serverAccessLogsBucket: logBucket,
     },
@@ -587,7 +578,7 @@ test('Providing cloudFrontLoggingBucketProps and a log bucket in cloudFrontDistr
   const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
 
   const app = () => {
-    new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+    new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
       cloudFrontDistributionProps: {
         logBucket
       },
@@ -604,7 +595,7 @@ test('cloudFrontLoggingBucketProps are used correctly', () => {
   const stack = new cdk.Stack();
 
   const testName = "test-name";
-  const construct = new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+  const construct = new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
     cloudFrontLoggingBucketProps: {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
@@ -647,7 +638,7 @@ test('No new CloudFrontLoggingBucket is created if cloudFrontLoggingBucketProps:
   });
 
   // const construct =
-  const construct = new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+  const construct = new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
     cloudFrontDistributionProps: {
       logBucket
     },
@@ -683,7 +674,7 @@ test('Providing cloudFrontLoggingBucketAccessLogBucketProps and cloudFrontLoggin
   const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
 
   const app = () => {
-    new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+    new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
       cloudFrontLoggingBucketProps: {
         serverAccessLogsBucket: logBucket,
         removalPolicy: cdk.RemovalPolicy.DESTROY,
@@ -702,7 +693,7 @@ test('Providing cloudFrontLoggingBucketAccessLogBucketProps and logCloudFrontAcc
   const stack = new cdk.Stack();
 
   const app = () => {
-    new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+    new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
       logCloudFrontAccessLog: false,
       cloudFrontLoggingBucketAccessLogBucketProps: {
         bucketName: 'specfic-name-is-inconsequential'
@@ -717,7 +708,7 @@ test('Providing logCloudFrontAccessLog=false and cloudFrontLoggingBucketProps:se
   const logBucket = new s3.Bucket(stack, 'cloudfront-log-bucket', {});
 
   const app = () => {
-    new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+    new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
       cloudFrontLoggingBucketProps: {
         serverAccessLogsBucket: logBucket,
         removalPolicy: cdk.RemovalPolicy.DESTROY,
@@ -732,7 +723,7 @@ test('Providing logCloudFrontAccessLog=false and cloudFrontLoggingBucketProps:se
 test('cloudFrontLoggingBucketAccessLogBucketProps are used correctly', () => {
   const stack = new cdk.Stack();
 
-  new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+  new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
     cloudFrontLoggingBucketAccessLogBucketProps: {
       websiteErrorDocument: 'placeholder',
       websiteIndexDocument: 'placeholde-two'
@@ -758,7 +749,7 @@ test('If existing CloudFront Log bucket S3 Access Logging bucket is provided, it
     bucketName: testName
   });
 
-  new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+  new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
     cloudFrontLoggingBucketProps: {
       serverAccessLogsBucket: cfLogS3AccessLogBucket
     }
@@ -786,7 +777,7 @@ test('If existing CloudFront Log bucket S3 Access Logging bucket is provided, it
 test('cloudFrontLoggingBucketAccessLogBucket property is set correctly', () => {
   const stack = new cdk.Stack();
 
-  const construct = new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+  const construct = new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
     cloudFrontLoggingBucketAccessLogBucketProps: {
       websiteErrorDocument: 'placeholder',
       websiteIndexDocument: 'placeholde-two'
@@ -810,7 +801,7 @@ test('cloudFrontLoggingBucketAccessLogBucket property is set correctly', () => {
 test('logCloudFrontAccessLog property is used correctly', () => {
   const stack = new cdk.Stack();
 
-  const construct = new CloudFrontToOaiToS3(stack, 'cloudfront-s3', {
+  const construct = new CloudFrontToOaiToS3(stack, 'cloudfront-oai-s3', {
     logCloudFrontAccessLog: false
   });
 

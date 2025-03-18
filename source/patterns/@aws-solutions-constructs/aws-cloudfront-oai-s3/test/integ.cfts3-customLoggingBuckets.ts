@@ -22,7 +22,7 @@ const app = new App();
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
 
-new CloudFrontToOaiToS3(stack, 'test-cloudfront-s3', {
+new CloudFrontToOaiToS3(stack, 'test-cloudfront-oai-s3', {
   bucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true

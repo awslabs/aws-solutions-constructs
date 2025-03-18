@@ -20,7 +20,7 @@ import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
-stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
+stack.templateOptions.description = 'Integration Test for aws-cloudfront-oai-s3';
 
 // Definitions
 const props: CloudFrontToOaiToS3Props = {
@@ -43,7 +43,7 @@ const props: CloudFrontToOaiToS3Props = {
   },
 };
 
-new CloudFrontToOaiToS3(stack, 'test-cloudfront-s3-no-security-headers', props);
+new CloudFrontToOaiToS3(stack, 'test-cloudfront-oai-s3-no-security-headers', props);
 
 suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 // Synth

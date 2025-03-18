@@ -20,9 +20,9 @@ import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
-stack.templateOptions.description = 'Integration Test for originPath with aws-cloudfront-s3';
+stack.templateOptions.description = 'Integration Test for originPath with aws-cloudfront-oai-s3';
 
-new CloudFrontToOaiToS3(stack, 'test-cloudfront-s3', {
+new CloudFrontToOaiToS3(stack, 'test-cloudfront-oai-s3', {
   cloudFrontLoggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true

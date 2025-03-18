@@ -22,9 +22,9 @@ import * as defaults from '@aws-solutions-constructs/core';
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
-stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
+stack.templateOptions.description = 'Integration Test for aws-cloudfront-oai-s3';
 
-const construct = new CloudFrontToOaiToS3(stack, 'test-cloudfront-s3', {
+const construct = new CloudFrontToOaiToS3(stack, 'test-cloudfront-oai-s3', {
   cloudFrontLoggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true

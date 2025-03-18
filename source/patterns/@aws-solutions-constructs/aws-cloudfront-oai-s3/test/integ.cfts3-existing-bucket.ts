@@ -31,7 +31,7 @@ const mybucket = defaults.CreateScrapBucket(stack, "scrapBucket", {
   autoDeleteObjects: true
 });
 
-const s3BucketConstruct = new CloudFrontToOaiToS3(stack, 'test-cloudfront-s3', {
+const s3BucketConstruct = new CloudFrontToOaiToS3(stack, 'test-cloudfront-oai-s3', {
   existingBucketObj: mybucket,
   cloudFrontLoggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,

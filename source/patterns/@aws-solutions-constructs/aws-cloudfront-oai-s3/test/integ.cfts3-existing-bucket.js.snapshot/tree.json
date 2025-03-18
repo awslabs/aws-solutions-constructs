@@ -384,13 +384,13 @@
                                 "CanonicalUser": [
                                   {
                                     "Fn::GetAtt": [
-                                      "testcloudfronts3CloudFrontDistributionOrigin1S3Origin4695F058",
+                                      "testcloudfrontoais3CloudFrontDistributionOrigin1S3OriginF57A3CB1",
                                       "S3CanonicalUserId"
                                     ]
                                   },
                                   {
                                     "Fn::GetAtt": [
-                                      "testcloudfronts3CloudFrontDistributionOrigin2S3OriginC54B5C65",
+                                      "testcloudfrontoais3CloudFrontDistributionOrigin2S3Origin226F4E91",
                                       "S3CanonicalUserId"
                                     ]
                                   }
@@ -429,7 +429,7 @@
                                         },
                                         ":distribution/",
                                         {
-                                          "Ref": "testcloudfronts3CloudFrontDistribution0565DEE8"
+                                          "Ref": "testcloudfrontoais3CloudFrontDistribution0E089CC5"
                                         }
                                       ]
                                     ]
@@ -495,27 +495,27 @@
               "version": "2.177.0"
             }
           },
-          "test-cloudfront-s3": {
-            "id": "test-cloudfront-s3",
-            "path": "cfts3-existing-bucket/test-cloudfront-s3",
+          "test-cloudfront-oai-s3": {
+            "id": "test-cloudfront-oai-s3",
+            "path": "cfts3-existing-bucket/test-cloudfront-oai-s3",
             "children": {
               "SetHttpSecurityHeaders": {
                 "id": "SetHttpSecurityHeaders",
-                "path": "cfts3-existing-bucket/test-cloudfront-s3/SetHttpSecurityHeaders",
+                "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/SetHttpSecurityHeaders",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "cfts3-existing-bucket/test-cloudfront-s3/SetHttpSecurityHeaders/Resource",
+                    "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/SetHttpSecurityHeaders/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::CloudFront::Function",
                       "aws:cdk:cloudformation:props": {
                         "autoPublish": true,
                         "functionCode": "function handler(event) { var response = event.response; var headers = response.headers; headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'}; headers['content-security-policy'] = { value: \"default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'\"}; headers['x-content-type-options'] = { value: 'nosniff'}; headers['x-frame-options'] = {value: 'DENY'}; headers['x-xss-protection'] = {value: '1; mode=block'}; return response; }",
                         "functionConfig": {
-                          "comment": "SetHttpSecurityHeadersc8321a2c9fa54d380831d390bfbd7aff27f99fd427",
+                          "comment": "SetHttpSecurityHeadersc8d7eea0d56da348e691edb7abc9aa2ab2e268db75",
                           "runtime": "cloudfront-js-1.0"
                         },
-                        "name": "SetHttpSecurityHeadersc8321a2c9fa54d380831d390bfbd7aff27f99fd427"
+                        "name": "SetHttpSecurityHeadersc8d7eea0d56da348e691edb7abc9aa2ab2e268db75"
                       }
                     },
                     "constructInfo": {
@@ -531,11 +531,11 @@
               },
               "CloudfrontLoggingBucketAccessLog": {
                 "id": "CloudfrontLoggingBucketAccessLog",
-                "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudfrontLoggingBucketAccessLog",
+                "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudfrontLoggingBucketAccessLog",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudfrontLoggingBucketAccessLog/Resource",
+                    "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudfrontLoggingBucketAccessLog/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
                       "aws:cdk:cloudformation:props": {
@@ -572,16 +572,16 @@
                   },
                   "Policy": {
                     "id": "Policy",
-                    "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudfrontLoggingBucketAccessLog/Policy",
+                    "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudfrontLoggingBucketAccessLog/Policy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudfrontLoggingBucketAccessLog/Policy/Resource",
+                        "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudfrontLoggingBucketAccessLog/Policy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
                           "aws:cdk:cloudformation:props": {
                             "bucket": {
-                              "Ref": "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58"
+                              "Ref": "testcloudfrontoais3CloudfrontLoggingBucketAccessLogBF5AAF80"
                             },
                             "policyDocument": {
                               "Statement": [
@@ -599,7 +599,7 @@
                                   "Resource": [
                                     {
                                       "Fn::GetAtt": [
-                                        "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58",
+                                        "testcloudfrontoais3CloudfrontLoggingBucketAccessLogBF5AAF80",
                                         "Arn"
                                       ]
                                     },
@@ -609,7 +609,7 @@
                                         [
                                           {
                                             "Fn::GetAtt": [
-                                              "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58",
+                                              "testcloudfrontoais3CloudfrontLoggingBucketAccessLogBF5AAF80",
                                               "Arn"
                                             ]
                                           },
@@ -638,7 +638,7 @@
                                   "Resource": [
                                     {
                                       "Fn::GetAtt": [
-                                        "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58",
+                                        "testcloudfrontoais3CloudfrontLoggingBucketAccessLogBF5AAF80",
                                         "Arn"
                                       ]
                                     },
@@ -648,7 +648,7 @@
                                         [
                                           {
                                             "Fn::GetAtt": [
-                                              "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58",
+                                              "testcloudfrontoais3CloudfrontLoggingBucketAccessLogBF5AAF80",
                                               "Arn"
                                             ]
                                           },
@@ -664,7 +664,7 @@
                                     "ArnLike": {
                                       "aws:SourceArn": {
                                         "Fn::GetAtt": [
-                                          "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                                          "testcloudfrontoais3CloudfrontLoggingBucket55AA79FC",
                                           "Arn"
                                         ]
                                       }
@@ -685,7 +685,7 @@
                                       [
                                         {
                                           "Fn::GetAtt": [
-                                            "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58",
+                                            "testcloudfrontoais3CloudfrontLoggingBucketAccessLogBF5AAF80",
                                             "Arn"
                                           ]
                                         },
@@ -712,11 +712,11 @@
                   },
                   "AutoDeleteObjectsCustomResource": {
                     "id": "AutoDeleteObjectsCustomResource",
-                    "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource",
+                    "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource",
                     "children": {
                       "Default": {
                         "id": "Default",
-                        "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource/Default",
+                        "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
                           "version": "2.177.0"
@@ -736,11 +736,11 @@
               },
               "CloudfrontLoggingBucket": {
                 "id": "CloudfrontLoggingBucket",
-                "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudfrontLoggingBucket",
+                "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudfrontLoggingBucket",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudfrontLoggingBucket/Resource",
+                    "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudfrontLoggingBucket/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
                       "aws:cdk:cloudformation:props": {
@@ -755,7 +755,7 @@
                         },
                         "loggingConfiguration": {
                           "destinationBucketName": {
-                            "Ref": "testcloudfronts3CloudfrontLoggingBucketAccessLog2E738D58"
+                            "Ref": "testcloudfrontoais3CloudfrontLoggingBucketAccessLogBF5AAF80"
                           }
                         },
                         "ownershipControls": {
@@ -789,16 +789,16 @@
                   },
                   "Policy": {
                     "id": "Policy",
-                    "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudfrontLoggingBucket/Policy",
+                    "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudfrontLoggingBucket/Policy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudfrontLoggingBucket/Policy/Resource",
+                        "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudfrontLoggingBucket/Policy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
                           "aws:cdk:cloudformation:props": {
                             "bucket": {
-                              "Ref": "testcloudfronts3CloudfrontLoggingBucket985C0FE8"
+                              "Ref": "testcloudfrontoais3CloudfrontLoggingBucket55AA79FC"
                             },
                             "policyDocument": {
                               "Statement": [
@@ -816,7 +816,7 @@
                                   "Resource": [
                                     {
                                       "Fn::GetAtt": [
-                                        "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                                        "testcloudfrontoais3CloudfrontLoggingBucket55AA79FC",
                                         "Arn"
                                       ]
                                     },
@@ -826,7 +826,7 @@
                                         [
                                           {
                                             "Fn::GetAtt": [
-                                              "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                                              "testcloudfrontoais3CloudfrontLoggingBucket55AA79FC",
                                               "Arn"
                                             ]
                                           },
@@ -855,7 +855,7 @@
                                   "Resource": [
                                     {
                                       "Fn::GetAtt": [
-                                        "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                                        "testcloudfrontoais3CloudfrontLoggingBucket55AA79FC",
                                         "Arn"
                                       ]
                                     },
@@ -865,7 +865,7 @@
                                         [
                                           {
                                             "Fn::GetAtt": [
-                                              "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                                              "testcloudfrontoais3CloudfrontLoggingBucket55AA79FC",
                                               "Arn"
                                             ]
                                           },
@@ -893,11 +893,11 @@
                   },
                   "AutoDeleteObjectsCustomResource": {
                     "id": "AutoDeleteObjectsCustomResource",
-                    "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource",
+                    "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource",
                     "children": {
                       "Default": {
                         "id": "Default",
-                        "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource/Default",
+                        "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
                           "version": "2.177.0"
@@ -917,24 +917,24 @@
               },
               "CloudFrontDistribution": {
                 "id": "CloudFrontDistribution",
-                "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudFrontDistribution",
+                "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudFrontDistribution",
                 "children": {
                   "Origin1": {
                     "id": "Origin1",
-                    "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudFrontDistribution/Origin1",
+                    "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudFrontDistribution/Origin1",
                     "children": {
                       "S3Origin": {
                         "id": "S3Origin",
-                        "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudFrontDistribution/Origin1/S3Origin",
+                        "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudFrontDistribution/Origin1/S3Origin",
                         "children": {
                           "Resource": {
                             "id": "Resource",
-                            "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudFrontDistribution/Origin1/S3Origin/Resource",
+                            "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudFrontDistribution/Origin1/S3Origin/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
                               "aws:cdk:cloudformation:props": {
                                 "cloudFrontOriginAccessIdentityConfig": {
-                                  "comment": "Identity for cfts3existingbuckettestcloudfronts3CloudFrontDistributionOrigin10617473F"
+                                  "comment": "Identity for cfts3existingbuckettestcloudfrontoais3CloudFrontDistributionOrigin18C1DC245"
                                 }
                               }
                             },
@@ -957,7 +957,7 @@
                   },
                   "Resource": {
                     "id": "Resource",
-                    "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudFrontDistribution/Resource",
+                    "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudFrontDistribution/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::CloudFront::Distribution",
                       "aws:cdk:cloudformation:props": {
@@ -971,7 +971,7 @@
                                   "RegionalDomainName"
                                 ]
                               },
-                              "id": "cfts3existingbuckettestcloudfronts3CloudFrontDistributionOrigin10617473F",
+                              "id": "cfts3existingbuckettestcloudfrontoais3CloudFrontDistributionOrigin18C1DC245",
                               "s3OriginConfig": {
                                 "originAccessIdentity": {
                                   "Fn::Join": [
@@ -979,7 +979,7 @@
                                     [
                                       "origin-access-identity/cloudfront/",
                                       {
-                                        "Ref": "testcloudfronts3CloudFrontDistributionOrigin1S3Origin4695F058"
+                                        "Ref": "testcloudfrontoais3CloudFrontDistributionOrigin1S3OriginF57A3CB1"
                                       }
                                     ]
                                   ]
@@ -993,7 +993,7 @@
                                   "RegionalDomainName"
                                 ]
                               },
-                              "id": "cfts3existingbuckettestcloudfronts3CloudFrontDistributionOrigin28690577F",
+                              "id": "cfts3existingbuckettestcloudfrontoais3CloudFrontDistributionOrigin2CA6FC138",
                               "s3OriginConfig": {
                                 "originAccessIdentity": {
                                   "Fn::Join": [
@@ -1001,7 +1001,7 @@
                                     [
                                       "origin-access-identity/cloudfront/",
                                       {
-                                        "Ref": "testcloudfronts3CloudFrontDistributionOrigin2S3OriginC54B5C65"
+                                        "Ref": "testcloudfrontoais3CloudFrontDistributionOrigin2S3Origin226F4E91"
                                       }
                                     ]
                                   ]
@@ -1011,7 +1011,7 @@
                           ],
                           "defaultCacheBehavior": {
                             "pathPattern": "*",
-                            "targetOriginId": "cfts3existingbuckettestcloudfronts3CloudFrontDistributionOrigin10617473F",
+                            "targetOriginId": "cfts3existingbuckettestcloudfrontoais3CloudFrontDistributionOrigin18C1DC245",
                             "cachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
                             "compress": true,
                             "viewerProtocolPolicy": "redirect-to-https",
@@ -1019,7 +1019,7 @@
                               {
                                 "functionArn": {
                                   "Fn::GetAtt": [
-                                    "testcloudfronts3SetHttpSecurityHeaders6C5A1E69",
+                                    "testcloudfrontoais3SetHttpSecurityHeaders4EB3C97B",
                                     "FunctionARN"
                                   ]
                                 },
@@ -1030,7 +1030,7 @@
                           "cacheBehaviors": [
                             {
                               "pathPattern": "/images/*.jpg",
-                              "targetOriginId": "cfts3existingbuckettestcloudfronts3CloudFrontDistributionOrigin28690577F",
+                              "targetOriginId": "cfts3existingbuckettestcloudfrontoais3CloudFrontDistributionOrigin2CA6FC138",
                               "cachePolicyId": {
                                 "Ref": "myCachePolicy16CE2FCF"
                               },
@@ -1044,7 +1044,7 @@
                           "logging": {
                             "bucket": {
                               "Fn::GetAtt": [
-                                "testcloudfronts3CloudfrontLoggingBucket985C0FE8",
+                                "testcloudfrontoais3CloudfrontLoggingBucket55AA79FC",
                                 "RegionalDomainName"
                               ]
                             }
@@ -1059,20 +1059,20 @@
                   },
                   "Origin2": {
                     "id": "Origin2",
-                    "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudFrontDistribution/Origin2",
+                    "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudFrontDistribution/Origin2",
                     "children": {
                       "S3Origin": {
                         "id": "S3Origin",
-                        "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudFrontDistribution/Origin2/S3Origin",
+                        "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudFrontDistribution/Origin2/S3Origin",
                         "children": {
                           "Resource": {
                             "id": "Resource",
-                            "path": "cfts3-existing-bucket/test-cloudfront-s3/CloudFrontDistribution/Origin2/S3Origin/Resource",
+                            "path": "cfts3-existing-bucket/test-cloudfront-oai-s3/CloudFrontDistribution/Origin2/S3Origin/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
                               "aws:cdk:cloudformation:props": {
                                 "cloudFrontOriginAccessIdentityConfig": {
-                                  "comment": "Identity for cfts3existingbuckettestcloudfronts3CloudFrontDistributionOrigin28690577F"
+                                  "comment": "Identity for cfts3existingbuckettestcloudfrontoais3CloudFrontDistributionOrigin2CA6FC138"
                                 }
                               }
                             },

@@ -22,7 +22,7 @@ import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
-stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
+stack.templateOptions.description = 'Integration Test for aws-cloudfront-oai-s3';
 
 // Definitions
 const existingBucketObj = buildS3Bucket(stack, {
@@ -50,7 +50,7 @@ const props: CloudFrontToOaiToS3Props = {
   insertHttpSecurityHeaders: false
 };
 
-new CloudFrontToOaiToS3(stack, 'test-cloudfront-s3-managed-key', props);
+new CloudFrontToOaiToS3(stack, 'test-cloudfront-oai-s3-managed-key', props);
 
 suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 
