@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.79.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.78.1...v2.79.0) (2025-03-18)
+
+
+### Features
+
+* **aws-cloudfront-oai-s3:** new construct ([#1271](https://github.com/awslabs/aws-solutions-constructs/issues/1271)) ([0bd918e](https://github.com/awslabs/aws-solutions-constructs/commit/0bd918ee1cff35a385d30b2fd5ca32b69006ff07))
+
 ## [2.78.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.78.0...v2.78.1) (2025-03-11)
 
 Build on CDK v2.177.0
