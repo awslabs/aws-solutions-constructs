@@ -17,6 +17,7 @@
  */
 
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cdk from 'aws-cdk-lib';
 import * as api from 'aws-cdk-lib/aws-apigateway';
@@ -190,6 +191,91 @@ export function createCloudFrontDistributionForS3(
     originAccessControl};
 }
 
+export interface CreateCloudFrontOaiDistributionForS3Props {
+  readonly originPath?:  string,
+  readonly sourceBucket: s3.IBucket,
+  readonly cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
+  readonly httpSecurityHeaders?: boolean,
+  readonly cloudFrontLoggingBucketProps?: s3.BucketProps,
+  readonly  cloudFrontLoggingBucketS3AccessLogBucketProps?: s3.BucketProps,
+  readonly responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
+  readonly logCloudFrontAccessLog?: boolean
+}
+
+export interface CreateCloudFrontOaiDistributionForS3Response {
+  readonly distribution: cloudfront.Distribution,
+  readonly loggingBucket?: s3.Bucket,
+  readonly loggingBucketS3AccesssLogBucket?: s3.Bucket,
+  readonly cloudfrontFunction?: cloudfront.Function,
+}
+
+/**
+ * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
+ */
+export function createCloudFrontOaiDistributionForS3(
+  scope: Construct,
+  props: CreateCloudFrontOaiDistributionForS3Props
+): CreateCloudFrontOaiDistributionForS3Response {
+
+  const httpSecurityHeaders = props.httpSecurityHeaders ?? true;
+  const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
+
+  if (props.sourceBucket.isWebsite) {
+    throw new Error(`aws-cloudfront-oai-s3 has been provided a source bucket with website hosting enabled, which this construct
+        does not support. This requires both the bucket and its objects to be public. AWS strongly recommends against configuring
+        buckets and objects for public access. As such a configuration uses neither OAC nor OAI, it can be launched with the
+        aws-cloudfron-s3 construct in any region.`);
+   }
+
+  const getLoggingBucketResponse = getLoggingBucket(scope, {
+    cloudFrontDistributionProps: props.cloudFrontDistributionProps,
+    cloudFrontLoggingBucketProps: props.cloudFrontLoggingBucketProps,
+    cloudFrontLoggingBucketS3AccessLogBucketProps: props.cloudFrontLoggingBucketS3AccessLogBucketProps,
+    enableS3AccessLogs: props.logCloudFrontAccessLog
+  });
+
+  let origin: cloudfront.IOrigin;
+
+  if (props.originPath) {
+    origin = origins.S3BucketOrigin.withOriginAccessIdentity(props.sourceBucket, { originPath: props.originPath });
+  } else {
+    origin = origins.S3BucketOrigin.withOriginAccessIdentity(props.sourceBucket);
+  }
+
+  const defaultprops = DefaultCloudFrontWebDistributionForS3Props(
+    origin,
+    getLoggingBucketResponse.logBucket,
+    httpSecurityHeaders,
+    cloudfrontFunction,
+    props.responseHeadersPolicyProps ?
+      new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', props.responseHeadersPolicyProps) :
+      undefined
+  );
+
+  const cfprops = consolidateProps(defaultprops, props.cloudFrontDistributionProps);
+  // Create the Cloudfront Distribution
+  const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
+  updateSecurityPolicy(cfDistribution);
+
+  // Extract the CfnBucketPolicy from the sourceBucket
+  const bucketPolicy = props.sourceBucket.policy as s3.BucketPolicy;
+  // the lack of a bucketPolicy means the bucket was imported from outside the stack so the lack of cfn_nag suppression is not an issue
+  if (bucketPolicy) {
+    addCfnSuppressRules(bucketPolicy, [
+      {
+        id: 'F16',
+        reason: `Public website bucket policy requires a wildcard principal`
+      }
+    ]);
+  }
+  return {
+    distribution: cfDistribution,
+    cloudfrontFunction,
+    loggingBucket: getLoggingBucketResponse.logBucket,
+    loggingBucketS3AccesssLogBucket: getLoggingBucketResponse.logBucketAccessLogBucket,
+  };
+}
+
 export interface CloudFrontDistributionForMediaStoreResponse {
   readonly distribution: cloudfront.Distribution,
   readonly loggingBucket?: s3.Bucket,
@@ -334,6 +420,49 @@ export function CheckCloudFrontProps(propsObject: CloudFrontProps | any) {
 
   if (propsObject.insertHttpSecurityHeaders !== false && propsObject.responseHeadersPolicyProps?.securityHeadersBehavior) {
     errorMessages += 'responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}
+
+export interface CloudfrontS3Props {
+  readonly bucketProps?: s3.BucketProps,
+  readonly logS3AccessLogs?: boolean,
+  readonly loggingBucketProps?: s3.BucketProps,
+  readonly cloudFrontLoggingBucketProps?: s3.BucketProps,
+  readonly logCloudFrontAccessLog?: boolean,
+  readonly cloudFrontLoggingBucketAccessLogBucketProps?: s3.BucketProps,
+}
+
+export function CheckCloudfrontS3Props(props: CloudfrontS3Props) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if ((props.logS3AccessLogs === false) && props.bucketProps?.serverAccessLogsBucket) {
+    errorMessages += 'Error - logS3AccessLogs is false, but a log bucket was provided in bucketProps.\n';
+    errorFound = true;
+  }
+
+  if (props.loggingBucketProps && props.bucketProps?.serverAccessLogsBucket) {
+    errorMessages += 'Error - bothlog bucket props and an existing log bucket were provided.\n';
+    errorFound = true;
+  }
+
+  if (props.cloudFrontLoggingBucketAccessLogBucketProps && props.cloudFrontLoggingBucketProps?.serverAccessLogsBucket) {
+    errorMessages += 'Error - an existing CloudFront log bucket S3 access log bucket and cloudFrontLoggingBucketAccessLogBucketProps were provided\n';
+    errorFound = true;
+  }
+
+  if (props.cloudFrontLoggingBucketAccessLogBucketProps && props.logCloudFrontAccessLog === false) {
+    errorMessages += 'Error - cloudFrontLoggingBucketAccessLogBucketProps were provided but logCloudFrontAccessLog was false\n';
+    errorFound = true;
+  }
+
+  if (props.cloudFrontLoggingBucketProps?.serverAccessLogsBucket && props.logCloudFrontAccessLog === false) {
+    errorMessages += 'Error - props.cloudFrontLoggingBucketProps.serverAccessLogsBucket was provided but logCloudFrontAccessLog was false\n';
     errorFound = true;
   }
 

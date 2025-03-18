@@ -148,7 +148,7 @@ export class CloudFrontToS3 extends Construct {
 
     defaults.CheckS3Props(props);
     defaults.CheckCloudFrontProps(props);
-    this.CheckConstructSpecificProps(props);
+    defaults.CheckCloudfrontS3Props(props);
 
     let originBucket: s3.IBucket;
 
@@ -225,40 +225,6 @@ export class CloudFrontToS3 extends Construct {
         distribution: this.cloudFrontWebDistribution,
         encryptionKey
       });
-    }
-  }
-
-  private CheckConstructSpecificProps(props: CloudFrontToS3Props) {
-    let errorMessages = '';
-    let errorFound = false;
-
-    if ((props.logS3AccessLogs === false) && props.bucketProps?.serverAccessLogsBucket) {
-      errorMessages += 'Error - logS3AccessLogs is false, but a log bucket was provided in bucketProps.\n';
-      errorFound = true;
-    }
-
-    if (props.loggingBucketProps && props.bucketProps?.serverAccessLogsBucket) {
-      errorMessages += 'Error - bothlog bucket props and an existing log bucket were provided.\n';
-      errorFound = true;
-    }
-
-    if (props.cloudFrontLoggingBucketAccessLogBucketProps && props.cloudFrontLoggingBucketProps?.serverAccessLogsBucket) {
-      errorMessages += 'Error - an existing CloudFront log bucket S3 access log bucket and cloudFrontLoggingBucketAccessLogBucketProps were provided\n';
-      errorFound = true;
-    }
-
-    if (props.cloudFrontLoggingBucketAccessLogBucketProps && props.logCloudFrontAccessLog === false) {
-      errorMessages += 'Error - cloudFrontLoggingBucketAccessLogBucketProps were provided but logCloudFrontAccessLog was false\n';
-      errorFound = true;
-    }
-
-    if (props.cloudFrontLoggingBucketProps?.serverAccessLogsBucket && props.logCloudFrontAccessLog === false) {
-      errorMessages += 'Error - props.cloudFrontLoggingBucketProps.serverAccessLogsBucket was provided but logCloudFrontAccessLog was false\n';
-      errorFound = true;
-    }
-
-    if (errorFound) {
-      throw new Error(errorMessages);
     }
   }
 }
