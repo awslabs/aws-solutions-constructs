@@ -142,7 +142,7 @@
        "Principal": {
         "CanonicalUser": {
          "Fn::GetAtt": [
-          "testcloudfrontoais3CloudFrontDistributionOrigin1S3OriginF57A3CB1",
+          "testcloudfrontoais3constructsGeneratedOaiA468F478",
           "S3CanonicalUserId"
          ]
         }
@@ -252,11 +252,11 @@
     "Name": "SetHttpSecurityHeadersc8ef3112652a2611d5eff9255f981ddb83b0566ae4"
    }
   },
-  "testcloudfrontoais3CloudFrontDistributionOrigin1S3OriginF57A3CB1": {
+  "testcloudfrontoais3constructsGeneratedOaiA468F478": {
    "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
    "Properties": {
     "CloudFrontOriginAccessIdentityConfig": {
-     "Comment": "Identity for cftoais3nologgingtestcloudfrontoais3CloudFrontDistributionOrigin18473615C"
+     "Comment": "Allows CloudFront to reach the bucket"
     }
    }
   },
@@ -301,7 +301,7 @@
           [
            "origin-access-identity/cloudfront/",
            {
-            "Ref": "testcloudfrontoais3CloudFrontDistributionOrigin1S3OriginF57A3CB1"
+            "Ref": "testcloudfrontoais3constructsGeneratedOaiA468F478"
            }
           ]
          ]

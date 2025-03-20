@@ -129,7 +129,7 @@ export class CloudFrontToOaiToS3 extends Construct {
   public readonly s3BucketInterface: s3.IBucket;
   public readonly s3Bucket?: s3.Bucket;
   public readonly s3LoggingBucket?: s3.Bucket;
-  public readonly originAccessControl?: cloudfront.CfnOriginAccessControl;
+  public readonly originAccessIdentity: cloudfront.OriginAccessIdentity;
 
   /**
    * @summary Constructs a new instance of the CloudFrontToOaiToS3 class.
@@ -188,6 +188,7 @@ export class CloudFrontToOaiToS3 extends Construct {
     this.cloudFrontFunction = cloudFrontDistributionForS3Response.cloudfrontFunction;
     this.cloudFrontLoggingBucket = cloudFrontDistributionForS3Response.loggingBucket;
     this.cloudFrontLoggingBucketAccessLogBucket = cloudFrontDistributionForS3Response.loggingBucketS3AccesssLogBucket;
+    this.originAccessIdentity = cloudFrontDistributionForS3Response.originAccessIdentity;
 
     // Grant CloudFront permission to get the objects from the s3 bucket origin
     originBucket.addToResourcePolicy(

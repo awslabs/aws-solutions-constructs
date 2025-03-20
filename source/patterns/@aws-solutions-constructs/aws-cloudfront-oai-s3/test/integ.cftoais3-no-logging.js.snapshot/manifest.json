@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0c7d8cce0facd93ab3c22e880d1eded43e781b59978f0dd485f728ac02cc0596.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ef44108a79ee7dbfc3cdcc4184aec4db83d34781e3c065027d1281849d81b221.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -106,10 +106,10 @@
             "data": "testcloudfrontoais3SetHttpSecurityHeaders4EB3C97B"
           }
         ],
-        "/cftoais3-no-logging/test-cloudfront-oai-s3/CloudFrontDistribution/Origin1/S3Origin/Resource": [
+        "/cftoais3-no-logging/test-cloudfront-oai-s3/constructsGeneratedOai/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testcloudfrontoais3CloudFrontDistributionOrigin1S3OriginF57A3CB1"
+            "data": "testcloudfrontoais3constructsGeneratedOaiA468F478"
           }
         ],
         "/cftoais3-no-logging/test-cloudfront-oai-s3/CloudFrontDistribution/Resource": [
@@ -152,6 +152,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testcloudfrontoais3CloudFrontDistributionOrigin1S3OriginF57A3CB1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfrontoais3CloudFrontDistributionOrigin1S3OriginF57A3CB1",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c6f263d1d587d3fa02193c83a894803b8173973079863ee6d4b173e96e779a60.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ff39a6648b6638582b85c731c927e0136f99c99b3978c62c876010a893228a93.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -160,10 +160,10 @@
             "data": "testcloudfrontoais3CloudfrontLoggingBucketAutoDeleteObjectsCustomResourceE88BD625"
           }
         ],
-        "/cftoais3-customLoggingBuckets/test-cloudfront-oai-s3/CloudFrontDistribution/Origin1/S3Origin/Resource": [
+        "/cftoais3-customLoggingBuckets/test-cloudfront-oai-s3/constructsGeneratedOai/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testcloudfrontoais3CloudFrontDistributionOrigin1S3OriginF57A3CB1"
+            "data": "testcloudfrontoais3constructsGeneratedOaiA468F478"
           }
         ],
         "/cftoais3-customLoggingBuckets/test-cloudfront-oai-s3/CloudFrontDistribution/Resource": [
@@ -206,6 +206,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testcloudfrontoais3CloudFrontDistributionOrigin1S3OriginF57A3CB1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfrontoais3CloudFrontDistributionOrigin1S3OriginF57A3CB1",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

@@ -496,6 +496,20 @@ test('check bucket policy metadata - oai', () => {
   });
 });
 
+test('check createCloudFrontOaiDistributionForS3 response', () => {
+  const stack = new Stack();
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
+  const response = createCloudFrontOaiDistributionForS3(stack, {
+    sourceBucket: buildS3BucketResponse.bucket
+  });
+
+  expect(response.originAccessIdentity).toBeDefined();
+  expect(response.distribution).toBeDefined();
+  expect(response.loggingBucket).toBeDefined();
+  expect(response.cloudfrontFunction).toBeDefined();
+  expect(response.loggingBucketS3AccesssLogBucket).toBeDefined();
+});
+
 test('test cloudfront check bucket policy - oai', () => {
   const stack = new Stack();
   const buildS3BucketResponse = buildS3Bucket(stack, {});
@@ -504,6 +518,7 @@ test('test cloudfront check bucket policy - oai', () => {
   });
 
   const template = Template.fromStack(stack);
+
   template.hasResourceProperties("AWS::S3::BucketPolicy", {
     PolicyDocument: {
       Statement: [
@@ -547,7 +562,7 @@ test('test cloudfront check bucket policy - oai', () => {
           Principal: {
             CanonicalUser: {
               "Fn::GetAtt": [
-                "CloudFrontDistributionOrigin1S3Origin3D9CA0E9",
+                "constructsGeneratedOai6A430BBF",
                 "S3CanonicalUserId"
               ]
             }

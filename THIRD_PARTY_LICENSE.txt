@@ -23,7 +23,7 @@ CC0-1.0
 License: Apache-2.0
 *******************
 Apache-2.0: @ampproject/remapping@2.3.0
-Apache-2.0: @aws-cdk/asset-awscli-v1@2.2.227
+Apache-2.0: @aws-cdk/asset-awscli-v1@2.2.228
 Apache-2.0: @aws-cdk/asset-kubectl-v20@2.1.4
 Apache-2.0: @aws-cdk/asset-node-proxy-agent-v6@2.1.0
 Apache-2.0: @aws-cdk/cloud-assembly-schema@39.2.20
@@ -82,9 +82,9 @@ Apache-2.0: @humanwhocodes/retry@0.3.1
 Apache-2.0: @humanwhocodes/retry@0.4.2
 Apache-2.0: @hutson/parse-repository-url@3.0.2
 Apache-2.0: @jsii/check-node@1.106.0
-Apache-2.0: @jsii/check-node@1.108.0
 Apache-2.0: @jsii/check-node@1.109.0
-Apache-2.0: @jsii/spec@1.109.0
+Apache-2.0: @jsii/check-node@1.110.0
+Apache-2.0: @jsii/spec@1.110.0
 Apache-2.0: @sigstore/bundle@2.3.2
 Apache-2.0: @sigstore/core@1.1.0
 Apache-2.0: @sigstore/protobuf-specs@0.3.3
@@ -147,7 +147,7 @@ Apache-2.0: @smithy/util-waiter@4.0.2
 Apache-2.0: aws-cdk-lib@2.177.0
 Apache-2.0: before-after-hook@2.2.3
 Apache-2.0: bser@2.1.1
-Apache-2.0: codemaker@1.109.0
+Apache-2.0: codemaker@1.110.0
 Apache-2.0: constructs@10.4.2
 Apache-2.0: doctrine@2.1.0
 Apache-2.0: ejs@3.1.10
@@ -158,12 +158,12 @@ Apache-2.0: fb-watchman@2.0.2
 Apache-2.0: filelist@1.0.4
 Apache-2.0: human-signals@2.1.0
 Apache-2.0: jake@10.9.2
-Apache-2.0: jsii-pacmak@1.109.0
-Apache-2.0: jsii-reflect@1.109.0
+Apache-2.0: jsii-pacmak@1.110.0
+Apache-2.0: jsii-reflect@1.110.0
 Apache-2.0: jsii-rosetta@5.7.2
-Apache-2.0: jsii@5.7.8
+Apache-2.0: jsii@5.7.9
 Apache-2.0: log4js@6.9.1
-Apache-2.0: oo-ascii-tree@1.109.0
+Apache-2.0: oo-ascii-tree@1.110.0
 Apache-2.0: rxjs@7.8.2
 Apache-2.0: sigstore@2.3.1
 Apache-2.0: spdx-correct@3.2.0
@@ -244,9 +244,7 @@ MIT: @nodelib/fs.walk@1.2.8
 MIT: @nrwl/devkit@19.8.14
 MIT: @nrwl/tao@19.8.14
 MIT: @nx/devkit@19.8.14
-MIT: @nx/nx-darwin-arm64@19.8.14
 MIT: @nx/nx-linux-x64-gnu@19.8.14
-MIT: @nx/nx-linux-x64-musl@19.8.14
 MIT: @octokit/auth-token@3.0.4
 MIT: @octokit/core@4.2.4
 MIT: @octokit/endpoint@7.0.6
@@ -298,14 +296,14 @@ MIT: @types/sinonjs__fake-timers@8.1.5
 MIT: @types/stack-utils@2.0.3
 MIT: @types/yargs-parser@21.0.3
 MIT: @types/yargs@16.0.9
-MIT: @typescript-eslint/eslint-plugin@8.26.1
-MIT: @typescript-eslint/parser@8.26.1
-MIT: @typescript-eslint/scope-manager@8.26.1
-MIT: @typescript-eslint/type-utils@8.26.1
-MIT: @typescript-eslint/types@8.26.1
-MIT: @typescript-eslint/typescript-estree@8.26.1
-MIT: @typescript-eslint/utils@8.26.1
-MIT: @typescript-eslint/visitor-keys@8.26.1
+MIT: @typescript-eslint/eslint-plugin@8.27.0
+MIT: @typescript-eslint/parser@8.27.0
+MIT: @typescript-eslint/scope-manager@8.27.0
+MIT: @typescript-eslint/type-utils@8.27.0
+MIT: @typescript-eslint/types@8.27.0
+MIT: @typescript-eslint/typescript-estree@8.27.0
+MIT: @typescript-eslint/utils@8.27.0
+MIT: @typescript-eslint/visitor-keys@8.27.0
 MIT: @xmldom/xmldom@0.9.8
 MIT: @zkochan/js-yaml@0.0.7
 MIT: acorn-globals@6.0.0
@@ -332,7 +330,7 @@ MIT: array-differ@3.0.0
 MIT: array-ify@1.0.0
 MIT: array-includes@3.1.8
 MIT: array-union@2.1.0
-MIT: array.prototype.findlastindex@1.2.5
+MIT: array.prototype.findlastindex@1.2.6
 MIT: array.prototype.flat@1.3.3
 MIT: array.prototype.flatmap@1.3.3
 MIT: arraybuffer.prototype.slice@1.0.4
@@ -344,7 +342,7 @@ MIT: async@3.2.6
 MIT: asynckit@0.4.0
 MIT: available-typed-arrays@1.0.7
 MIT: aws-sdk-client-mock@3.1.0
-MIT: axios@1.8.3
+MIT: axios@1.8.4
 MIT: babel-jest@27.5.1
 MIT: babel-plugin-jest-hoist@27.5.1
 MIT: babel-preset-current-node-syntax@1.1.0
@@ -493,7 +491,6 @@ MIT: fs-extra@10.1.0
 MIT: fs-extra@11.2.0
 MIT: fs-extra@11.3.0
 MIT: fs-extra@8.1.0
-MIT: fsevents@2.3.3
 MIT: function-bind@1.1.2
 MIT: function.prototype.name@1.1.8
 MIT: functions-have-names@1.2.3
@@ -694,7 +691,7 @@ MIT: node-machine-id@1.1.12
 MIT: node-releases@2.0.19
 MIT: normalize-path@3.0.0
 MIT: npm-run-path@4.0.1
-MIT: nwsapi@2.2.18
+MIT: nwsapi@2.2.19
 MIT: nx@19.8.14
 MIT: object-inspect@1.13.4
 MIT: object-keys@1.1.1
@@ -852,7 +849,7 @@ MIT: to-regex-range@5.0.1
 MIT: tr46@0.0.3
 MIT: tr46@2.1.0
 MIT: trim-newlines@3.0.1
-MIT: ts-api-utils@2.0.1
+MIT: ts-api-utils@2.1.0
 MIT: tsconfig-paths@3.15.0
 MIT: tsconfig-paths@4.2.0
 MIT: tuf-js@2.2.1
@@ -865,7 +862,7 @@ MIT: typed-array-byte-offset@1.0.4
 MIT: typed-array-length@1.0.7
 MIT: typedarray-to-buffer@3.1.5
 MIT: typedarray@0.0.6
-MIT: typescript-eslint@8.26.1
+MIT: typescript-eslint@8.27.0
 MIT: unbox-primitive@1.1.0
 MIT: universalify@0.1.2
 MIT: universalify@0.2.0
@@ -938,7 +935,7 @@ ISC: common-ancestor-path@1.0.1
 ISC: console-control-strings@1.1.0
 ISC: conventional-changelog-angular@7.0.0
 ISC: deprecation@2.3.1
-ISC: electron-to-chromium@1.5.116
+ISC: electron-to-chromium@1.5.123
 ISC: fastq@1.19.1
 ISC: flatted@3.3.3
 ISC: foreground-child@3.3.1
@@ -1126,7 +1123,7 @@ Python-2.0: argparse@2.0.1
 *******************
 License: CC-BY-4.0
 *******************
-CC-BY-4.0: caniuse-lite@1.0.30001704
+CC-BY-4.0: caniuse-lite@1.0.30001706
 
 *******************
 License: (MIT OR GPL-3.0-or-later)
@@ -1170,7 +1167,7 @@ License: (MIT OR CC0-1.0)
 (MIT OR CC0-1.0): type-fest@0.6.0
 (MIT OR CC0-1.0): type-fest@0.8.1
 
-Total libraries: 1087
+Total libraries: 1084
 
 *******************
 Specific Blue Oak License attributions

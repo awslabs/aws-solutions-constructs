@@ -403,7 +403,7 @@
        "Principal": {
         "CanonicalUser": {
          "Fn::GetAtt": [
-          "testcloudfrontoais3managedkeyCloudFrontDistributionOrigin1S3OriginFC894C0D",
+          "testcloudfrontoais3managedkeyconstructsGeneratedOai89C0D4F8",
           "S3CanonicalUserId"
          ]
         }
@@ -832,11 +832,11 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "testcloudfrontoais3managedkeyCloudFrontDistributionOrigin1S3OriginFC894C0D": {
+  "testcloudfrontoais3managedkeyconstructsGeneratedOai89C0D4F8": {
    "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
    "Properties": {
     "CloudFrontOriginAccessIdentityConfig": {
-     "Comment": "Identity for cftoais3bucketencryptedwithmanagedkeyprovidedasexistingbuckettestcloudfrontoais3managedkeyCloudFrontDistributionOri"
+     "Comment": "Allows CloudFront to reach the bucket"
     }
    }
   },
@@ -878,7 +878,7 @@
           [
            "origin-access-identity/cloudfront/",
            {
-            "Ref": "testcloudfrontoais3managedkeyCloudFrontDistributionOrigin1S3OriginFC894C0D"
+            "Ref": "testcloudfrontoais3managedkeyconstructsGeneratedOai89C0D4F8"
            }
           ]
          ]

@@ -40,6 +40,7 @@ test('construct defaults set properties correctly', () => {
   expect(construct.s3LoggingBucket).toBeDefined();
   expect(construct.s3BucketInterface).toBeDefined();
   expect(construct.cloudFrontLoggingBucketAccessLogBucket).toBeDefined();
+  expect(construct.originAccessIdentity).toBeDefined();
 });
 
 test('check s3Bucket default encryption', () => {
