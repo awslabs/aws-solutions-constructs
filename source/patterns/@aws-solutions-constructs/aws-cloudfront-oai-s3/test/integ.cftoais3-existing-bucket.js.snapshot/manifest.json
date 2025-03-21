@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/2fb62f0305993adb3e5ddddf7ac6799dc451ca2fe34741bd296f4151a103e386.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b072c13f676427b1d3d3212f1aa8536f06b488711cc9a8308f4aa4e3b76ebb34.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -184,10 +184,10 @@
             "data": "testcloudfrontoais3CloudfrontLoggingBucketAutoDeleteObjectsCustomResourceE88BD625"
           }
         ],
-        "/cftoais3-existing-bucket/test-cloudfront-oai-s3/CloudFrontDistribution/Origin1/S3Origin/Resource": [
+        "/cftoais3-existing-bucket/test-cloudfront-oai-s3/constructsGeneratedOai/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testcloudfrontoais3CloudFrontDistributionOrigin1S3OriginF57A3CB1"
+            "data": "testcloudfrontoais3constructsGeneratedOaiA468F478"
           }
         ],
         "/cftoais3-existing-bucket/test-cloudfront-oai-s3/CloudFrontDistribution/Resource": [
@@ -218,6 +218,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testcloudfrontoais3CloudFrontDistributionOrigin1S3OriginF57A3CB1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfrontoais3CloudFrontDistributionOrigin1S3OriginF57A3CB1",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

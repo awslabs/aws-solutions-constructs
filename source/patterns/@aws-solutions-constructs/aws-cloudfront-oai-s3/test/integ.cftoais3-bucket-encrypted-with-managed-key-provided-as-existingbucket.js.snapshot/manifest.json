@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/273b549d5f2d60c470693f400d06f286190b06247ddd3868a46a3ff76654c6b8.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8f7b642401ea19f4fab194c1173e27ef16748395633af43bd6bbceddec104777.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -178,10 +178,10 @@
             "data": "testcloudfrontoais3managedkeyCloudfrontLoggingBucketAutoDeleteObjectsCustomResourceD8646547"
           }
         ],
-        "/cftoais3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudFrontDistribution/Origin1/S3Origin/Resource": [
+        "/cftoais3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/constructsGeneratedOai/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testcloudfrontoais3managedkeyCloudFrontDistributionOrigin1S3OriginFC894C0D"
+            "data": "testcloudfrontoais3managedkeyconstructsGeneratedOai89C0D4F8"
           }
         ],
         "/cftoais3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-oai-s3-managed-key/CloudFrontDistribution/Resource": [
@@ -200,6 +200,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testcloudfrontoais3managedkeyCloudFrontDistributionOrigin1S3OriginFC894C0D": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfrontoais3managedkeyCloudFrontDistributionOrigin1S3OriginFC894C0D",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },
