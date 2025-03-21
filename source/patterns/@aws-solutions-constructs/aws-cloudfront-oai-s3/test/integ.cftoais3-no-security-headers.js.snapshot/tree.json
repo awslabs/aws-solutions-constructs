@@ -370,7 +370,7 @@
                                   "Principal": {
                                     "CanonicalUser": {
                                       "Fn::GetAtt": [
-                                        "testcloudfrontoais3nosecurityheadersCloudFrontDistributionOrigin1S3OriginED98FCA5",
+                                        "testcloudfrontoais3nosecurityheadersconstructsGeneratedOai5E216A52",
                                         "S3CanonicalUserId"
                                       ]
                                     }
@@ -860,6 +860,32 @@
                   "version": "2.177.0"
                 }
               },
+              "constructsGeneratedOai": {
+                "id": "constructsGeneratedOai",
+                "path": "cftoais3-no-security-headers/test-cloudfront-oai-s3-no-security-headers/constructsGeneratedOai",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "cftoais3-no-security-headers/test-cloudfront-oai-s3-no-security-headers/constructsGeneratedOai/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+                      "aws:cdk:cloudformation:props": {
+                        "cloudFrontOriginAccessIdentityConfig": {
+                          "comment": "Allows CloudFront to reach the bucket"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudfront.CfnCloudFrontOriginAccessIdentity",
+                      "version": "2.177.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.OriginAccessIdentity",
+                  "version": "2.177.0"
+                }
+              },
               "CloudFrontDistribution": {
                 "id": "CloudFrontDistribution",
                 "path": "cftoais3-no-security-headers/test-cloudfront-oai-s3-no-security-headers/CloudFrontDistribution",
@@ -867,34 +893,6 @@
                   "Origin1": {
                     "id": "Origin1",
                     "path": "cftoais3-no-security-headers/test-cloudfront-oai-s3-no-security-headers/CloudFrontDistribution/Origin1",
-                    "children": {
-                      "S3Origin": {
-                        "id": "S3Origin",
-                        "path": "cftoais3-no-security-headers/test-cloudfront-oai-s3-no-security-headers/CloudFrontDistribution/Origin1/S3Origin",
-                        "children": {
-                          "Resource": {
-                            "id": "Resource",
-                            "path": "cftoais3-no-security-headers/test-cloudfront-oai-s3-no-security-headers/CloudFrontDistribution/Origin1/S3Origin/Resource",
-                            "attributes": {
-                              "aws:cdk:cloudformation:type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
-                              "aws:cdk:cloudformation:props": {
-                                "cloudFrontOriginAccessIdentityConfig": {
-                                  "comment": "Identity for cftoais3nosecurityheaderstestcloudfrontoais3nosecurityheadersCloudFrontDistributionOrigin1006A2B62"
-                                }
-                              }
-                            },
-                            "constructInfo": {
-                              "fqn": "aws-cdk-lib.aws_cloudfront.CfnCloudFrontOriginAccessIdentity",
-                              "version": "2.177.0"
-                            }
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "aws-cdk-lib.aws_cloudfront.OriginAccessIdentity",
-                          "version": "2.177.0"
-                        }
-                      }
-                    },
                     "constructInfo": {
                       "fqn": "constructs.Construct",
                       "version": "10.4.2"
@@ -924,7 +922,7 @@
                                     [
                                       "origin-access-identity/cloudfront/",
                                       {
-                                        "Ref": "testcloudfrontoais3nosecurityheadersCloudFrontDistributionOrigin1S3OriginED98FCA5"
+                                        "Ref": "testcloudfrontoais3nosecurityheadersconstructsGeneratedOai5E216A52"
                                       }
                                     ]
                                   ]
@@ -967,7 +965,7 @@
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-cloudfront-oai-s3.CloudFrontToOaiToS3",
-              "version": "2.78.1"
+              "version": "2.79.0"
             }
           },
           "LatestNodeRuntimeMap": {

@@ -207,6 +207,7 @@ export interface CreateCloudFrontOaiDistributionForS3Response {
   readonly loggingBucket?: s3.Bucket,
   readonly loggingBucketS3AccesssLogBucket?: s3.Bucket,
   readonly cloudfrontFunction?: cloudfront.Function,
+  readonly originAccessIdentity: cloudfront.OriginAccessIdentity
 }
 
 /**
@@ -235,11 +236,15 @@ export function createCloudFrontOaiDistributionForS3(
   });
 
   let origin: cloudfront.IOrigin;
+  const constructOai = new cloudfront.OriginAccessIdentity(scope, 'constructsGeneratedOai', {});
 
   if (props.originPath) {
-    origin = origins.S3BucketOrigin.withOriginAccessIdentity(props.sourceBucket, { originPath: props.originPath });
+    origin = origins.S3BucketOrigin.withOriginAccessIdentity(props.sourceBucket, {
+      originPath: props.originPath,
+      originAccessIdentity: constructOai
+    });
   } else {
-    origin = origins.S3BucketOrigin.withOriginAccessIdentity(props.sourceBucket);
+    origin = origins.S3BucketOrigin.withOriginAccessIdentity(props.sourceBucket, { originAccessIdentity: constructOai });
   }
 
   const defaultprops = DefaultCloudFrontWebDistributionForS3Props(
@@ -273,6 +278,7 @@ export function createCloudFrontOaiDistributionForS3(
     cloudfrontFunction,
     loggingBucket: getLoggingBucketResponse.logBucket,
     loggingBucketS3AccesssLogBucket: getLoggingBucketResponse.logBucketAccessLogBucket,
+    originAccessIdentity: constructOai
   };
 }
 

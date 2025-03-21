@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/cf28050d9f6dca28e44fd59eaa742a1bf2f11c4f650e9be09a9eb80fcf0ee709.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6261d23fc963ec2841f829412721889013c162d9384a1d5ebb0e9ebb2392df91.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -154,10 +154,10 @@
             "data": "testcloudfrontoais3nosecurityheadersCloudfrontLoggingBucketAutoDeleteObjectsCustomResource0C7072C4"
           }
         ],
-        "/cftoais3-no-security-headers/test-cloudfront-oai-s3-no-security-headers/CloudFrontDistribution/Origin1/S3Origin/Resource": [
+        "/cftoais3-no-security-headers/test-cloudfront-oai-s3-no-security-headers/constructsGeneratedOai/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testcloudfrontoais3nosecurityheadersCloudFrontDistributionOrigin1S3OriginED98FCA5"
+            "data": "testcloudfrontoais3nosecurityheadersconstructsGeneratedOai5E216A52"
           }
         ],
         "/cftoais3-no-security-headers/test-cloudfront-oai-s3-no-security-headers/CloudFrontDistribution/Resource": [
@@ -200,6 +200,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testcloudfrontoais3nosecurityheadersCloudFrontDistributionOrigin1S3OriginED98FCA5": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfrontoais3nosecurityheadersCloudFrontDistributionOrigin1S3OriginED98FCA5",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

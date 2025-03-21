@@ -82,6 +82,7 @@ new CloudFrontToOaiToS3(this, "test-cloudfront-oai-s3", new CloudFrontToOaiToS3P
 |s3LoggingBucket?|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html)|Returns an instance of s3.Bucket created by the construct as the logging bucket for the primary bucket.|
 |cloudFrontLoggingBucket?|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html)|The S3 bucket created by the construct to hold CloudFront logs. Only populated if the construct creates the bucket (not if an existing bucket is passed in via DistributionProps)|
 |cloudFrontLoggingBucketAccessLogBucket?|[`s3.Bucket`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html)|The S3 bucket containing the S3 access logs for the CloudFront log bucket. Only populated if the construct creates the bucket (not if the bucket is passed in via `cloudFrontLoggingBucketProps::serverAccessLogBucket`|
+|originaAccessIdentity?|[`cloudfront.OriginAccessIdentity`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudfront.OriginAccessIdentity.html)| The Origina Access Identity created to connect the CloudFront distribution to the S3 bucket (only suitable for use in regions without OAC, such as China)|
 
 ## Default settings
 
