@@ -1,5 +1,5 @@
 {
-  "version": "38.0.1",
+  "version": "39.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "source": {
@@ -14,7 +14,7 @@
         }
       }
     },
-    "36f73632392bd60fb7b2cfd26aeb8f9d4d487c848d656446ef62e096c8d04947": {
+    "a9e65bdae370d8c2643ea481dbe8cf96a5c1ec11e2413604b76553dfdcf21384": {
       "source": {
         "path": "cfts3-customLoggingBuckets.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "36f73632392bd60fb7b2cfd26aeb8f9d4d487c848d656446ef62e096c8d04947.json",
+          "objectKey": "a9e65bdae370d8c2643ea481dbe8cf96a5c1ec11e2413604b76553dfdcf21384.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

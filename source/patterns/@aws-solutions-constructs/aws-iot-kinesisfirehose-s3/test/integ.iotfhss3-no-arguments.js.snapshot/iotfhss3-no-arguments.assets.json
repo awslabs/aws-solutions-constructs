@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "39.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "source": {
@@ -14,7 +14,7 @@
         }
       }
     },
-    "3af89789b0402372993993836dbe5f626352c78096083fb1f0f383126ade3bf8": {
+    "b0c1b51b13f3d712ee3b8d67d658108c1a11cee398ee589a38e6f5039bd99064": {
       "source": {
         "path": "iotfhss3-no-arguments.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "3af89789b0402372993993836dbe5f626352c78096083fb1f0f383126ade3bf8.json",
+          "objectKey": "b0c1b51b13f3d712ee3b8d67d658108c1a11cee398ee589a38e6f5039bd99064.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

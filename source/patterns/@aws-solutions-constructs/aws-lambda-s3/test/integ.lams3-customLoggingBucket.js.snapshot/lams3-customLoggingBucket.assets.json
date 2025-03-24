@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "39.0.0",
   "files": {
     "0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f": {
       "source": {
@@ -27,7 +27,7 @@
         }
       }
     },
-    "6177b617cd01d127da07f52cfeeba3daf506a3dc34ee5569fc989708822d7687": {
+    "3a7d34659a4e8c0254d5e43089322758e0bfec961635b17c972c85894a17935c": {
       "source": {
         "path": "lams3-customLoggingBucket.template.json",
         "packaging": "file"
@@ -35,7 +35,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "6177b617cd01d127da07f52cfeeba3daf506a3dc34ee5569fc989708822d7687.json",
+          "objectKey": "3a7d34659a4e8c0254d5e43089322758e0bfec961635b17c972c85894a17935c.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

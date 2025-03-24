@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "39.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "source": {
@@ -14,7 +14,7 @@
         }
       }
     },
-    "9cd510647b1fd17da1fa8abc9c4030e52a02db65f4a60aae1cd8774ea804dd34": {
+    "e8a16521ecddf918d5d3a57bc935ef1a2d87aaf321cf48807d6c82dd5f7b2014": {
       "source": {
         "path": "kinfhss3-customLoggingBucket.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "9cd510647b1fd17da1fa8abc9c4030e52a02db65f4a60aae1cd8774ea804dd34.json",
+          "objectKey": "e8a16521ecddf918d5d3a57bc935ef1a2d87aaf321cf48807d6c82dd5f7b2014.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

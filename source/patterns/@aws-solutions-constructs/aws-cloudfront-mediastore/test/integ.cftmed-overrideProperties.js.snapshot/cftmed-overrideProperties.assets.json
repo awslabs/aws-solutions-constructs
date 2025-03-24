@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "39.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "source": {
@@ -14,7 +14,7 @@
         }
       }
     },
-    "8624b25369da22ed558a838b32cda00dd7fc6f181cc9f55861544a6a96db9a5b": {
+    "659f0533212b20dc3094aa392590ede201503860deaa61acbfbd71e18ea19c6f": {
       "source": {
         "path": "cftmed-overrideProperties.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "8624b25369da22ed558a838b32cda00dd7fc6f181cc9f55861544a6a96db9a5b.json",
+          "objectKey": "659f0533212b20dc3094aa392590ede201503860deaa61acbfbd71e18ea19c6f.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

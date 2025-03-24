@@ -40,7 +40,7 @@ const messagesLambda = defaults.buildLambdaFunction(stack, {
 
 const photosLambda = defaults.buildLambdaFunction(stack, {
   lambdaFunctionProps: {
-    functionName: 'PhotosLambdaTestFromAsset',
+    functionName: 'PhotosLambdaAliasTestFromAsset',
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),

@@ -1,5 +1,5 @@
 {
-  "version": "38.0.1",
+  "version": "40.0.0",
   "artifacts": {
     "cfts3bucketencryptedwithmanagedkeyprovidedasexistingbucketIntegDefaultTestDeployAssert03A82C16.assets": {
       "type": "cdk:asset-manifest",
@@ -16,7 +16,6 @@
         "templateFile": "cfts3bucketencryptedwithmanagedkeyprovidedasexistingbucketIntegDefaultTestDeployAssert03A82C16.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
-        "notificationArns": [],
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
         "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
@@ -65,10 +64,9 @@
         "templateFile": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
-        "notificationArns": [],
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a19c7e27a7bb089090dde0e096b4e31a89bdb3b94abe033041e486d6029d6829.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8981fc8dc36cf5ee318e5a7785f4485015a4625e519a3fc48a393846172d39ea.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -84,16 +82,43 @@
         "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket.assets"
       ],
       "metadata": {
+        "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/existing-s3-bucket-encrypted-with-s3-managed-keyS3LoggingBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "autoDeleteObjects": true
+            }
+          }
+        ],
         "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/existing-s3-bucket-encrypted-with-s3-managed-keyS3LoggingBucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "existings3bucketencryptedwiths3managedkeyS3LoggingBucketF861F6B7"
           }
         ],
+        "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/existing-s3-bucket-encrypted-with-s3-managed-keyS3LoggingBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/existing-s3-bucket-encrypted-with-s3-managed-keyS3LoggingBucket/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "existings3bucketencryptedwiths3managedkeyS3LoggingBucketPolicy4358229C"
+          }
+        ],
+        "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/existing-s3-bucket-encrypted-with-s3-managed-keyS3LoggingBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/existing-s3-bucket-encrypted-with-s3-managed-keyS3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
@@ -126,10 +151,57 @@
             "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
           }
         ],
+        "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/existing-s3-bucket-encrypted-with-s3-managed-keyS3Bucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "lifecycleRules": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                }
+              ],
+              "serverAccessLogsBucket": "*",
+              "autoDeleteObjects": true
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addLifecycleRule": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                },
+                "*",
+                "*"
+              ]
+            }
+          }
+        ],
         "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/existing-s3-bucket-encrypted-with-s3-managed-keyS3Bucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "existings3bucketencryptedwiths3managedkeyS3BucketA8C4BE9A"
+          }
+        ],
+        "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/existing-s3-bucket-encrypted-with-s3-managed-keyS3Bucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
           }
         ],
         "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/existing-s3-bucket-encrypted-with-s3-managed-keyS3Bucket/Policy/Resource": [
@@ -138,10 +210,29 @@
             "data": "existings3bucketencryptedwiths3managedkeyS3BucketPolicyFDA85248"
           }
         ],
+        "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/existing-s3-bucket-encrypted-with-s3-managed-keyS3Bucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/existing-s3-bucket-encrypted-with-s3-managed-keyS3Bucket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "existings3bucketencryptedwiths3managedkeyS3BucketAutoDeleteObjectsCustomResourceE3B1946C"
+          }
+        ],
+        "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucketAccessLog": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "autoDeleteObjects": true
+            }
           }
         ],
         "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucketAccessLog/Resource": [
@@ -150,10 +241,24 @@
             "data": "testcloudfronts3managedkeyCloudfrontLoggingBucketAccessLog09A44955"
           }
         ],
+        "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucketAccessLog/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucketAccessLog/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfronts3managedkeyCloudfrontLoggingBucketAccessLogPolicy08C15592"
+          }
+        ],
+        "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource/Default": [
@@ -162,16 +267,45 @@
             "data": "testcloudfronts3managedkeyCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResource57833AF4"
           }
         ],
+        "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "autoDeleteObjects": true,
+              "objectOwnership": "ObjectWriter",
+              "serverAccessLogsBucket": "*"
+            }
+          }
+        ],
         "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfronts3managedkeyCloudfrontLoggingBucket4F6525D7"
           }
         ],
+        "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucket/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfronts3managedkeyCloudfrontLoggingBucketPolicy8952C83B"
+          }
+        ],
+        "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource/Default": [
@@ -184,6 +318,20 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfronts3managedkeyCloudFrontOac1422B0A1"
+          }
+        ],
+        "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudFrontDistribution": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "defaultBehavior": {
+                "origin": "*",
+                "viewerProtocolPolicy": "redirect-to-https"
+              },
+              "enableLogging": true,
+              "logBucket": "*",
+              "defaultRootObject": "*"
+            }
           }
         ],
         "/cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/test-cloudfront-s3-managed-key/CloudFrontDistribution/Resource": [

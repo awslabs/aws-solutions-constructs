@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "40.0.0",
   "artifacts": {
     "fhss3customLoggingBucketIntegDefaultTestDeployAssertA125B70A.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5dcc5e5466f9e5a9823a3516560a78348094a636d92f53d202e953495b043723.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b8e1228b0d17a947c8b628fd716247e79cb8a686e64d711300c8697dafd68425.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,10 +82,50 @@
         "fhss3-customLoggingBucket.assets"
       ],
       "metadata": {
+        "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/S3LoggingBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "autoDeleteObjects": true,
+              "lifecycleRules": [
+                {
+                  "enabled": true,
+                  "transitions": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addLifecycleRule": [
+                {
+                  "enabled": true,
+                  "transitions": "*"
+                },
+                "*",
+                "*"
+              ]
+            }
+          }
+        ],
         "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/S3LoggingBucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testkinesisfirehoses3S3LoggingBucketDD0F9F56"
+          }
+        ],
+        "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/S3LoggingBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
           }
         ],
         "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/S3LoggingBucket/Policy/Resource": [
@@ -94,10 +134,54 @@
             "data": "testkinesisfirehoses3S3LoggingBucketPolicyE1990698"
           }
         ],
+        "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/S3LoggingBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testkinesisfirehoses3S3LoggingBucketAutoDeleteObjectsCustomResource043732C2"
+          }
+        ],
+        "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/S3Bucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "lifecycleRules": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                }
+              ],
+              "serverAccessLogsBucket": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addLifecycleRule": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                },
+                "*",
+                "*"
+              ]
+            }
           }
         ],
         "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/S3Bucket/Resource": [
@@ -106,10 +190,26 @@
             "data": "testkinesisfirehoses3S3BucketA8942735"
           }
         ],
+        "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/S3Bucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/S3Bucket/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testkinesisfirehoses3S3BucketPolicy506CD3DD"
+          }
+        ],
+        "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/firehose-log-group": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "retention": 9999
+            }
           }
         ],
         "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/firehose-log-group/Resource": [
@@ -118,16 +218,89 @@
             "data": "testkinesisfirehoses3firehoseloggroup3D11FB0D"
           }
         ],
+        "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/firehose-log-group/firehose-log-stream": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroup": "*"
+            }
+          }
+        ],
         "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/firehose-log-group/firehose-log-stream/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testkinesisfirehoses3firehoseloggroupfirehoselogstream3C52AF00"
           }
         ],
+        "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/KinesisFirehoseRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/KinesisFirehoseRole/ImportKinesisFirehoseRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/KinesisFirehoseRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testkinesisfirehoses3KinesisFirehoseRoleB23C3E93"
+          }
+        ],
+        "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/KinesisFirehosePolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
           }
         ],
         "/fhss3-customLoggingBucket/test-kinesisfirehose-s3/KinesisFirehosePolicy/Resource": [
@@ -146,6 +319,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "LatestNodeRuntimeMap"
+          }
+        ],
+        "/fhss3-customLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
           }
         ],
         "/fhss3-customLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [

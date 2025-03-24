@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "40.0.0",
   "artifacts": {
     "evtfhss3neweventbusIntegDefaultTestDeployAssertA9CF88C8.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e2160355e23fd1ca5c5031407938070bb164cc0693ab284c1abe6a261eff89a6.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b39aeb62692a3e92076268b7bba314e2ed69530784da8d6f7c10a904018dea53.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,10 +82,56 @@
         "evtfhss3-new-eventbus.assets"
       ],
       "metadata": {
+        "/evtfhss3-new-eventbus/evtfhss3-new-bus/KinesisFirehoseToS3/S3Bucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "lifecycleRules": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                }
+              ],
+              "autoDeleteObjects": true
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addLifecycleRule": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                },
+                "*",
+                "*"
+              ]
+            }
+          }
+        ],
         "/evtfhss3-new-eventbus/evtfhss3-new-bus/KinesisFirehoseToS3/S3Bucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "evtfhss3newbusKinesisFirehoseToS3S3Bucket7852316F"
+          }
+        ],
+        "/evtfhss3-new-eventbus/evtfhss3-new-bus/KinesisFirehoseToS3/S3Bucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
           }
         ],
         "/evtfhss3-new-eventbus/evtfhss3-new-bus/KinesisFirehoseToS3/S3Bucket/Policy/Resource": [
@@ -94,10 +140,25 @@
             "data": "evtfhss3newbusKinesisFirehoseToS3S3BucketPolicy1DB04E4C"
           }
         ],
+        "/evtfhss3-new-eventbus/evtfhss3-new-bus/KinesisFirehoseToS3/S3Bucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/evtfhss3-new-eventbus/evtfhss3-new-bus/KinesisFirehoseToS3/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "evtfhss3newbusKinesisFirehoseToS3S3BucketAutoDeleteObjectsCustomResourceF47E05EB"
+          }
+        ],
+        "/evtfhss3-new-eventbus/evtfhss3-new-bus/KinesisFirehoseToS3/firehose-log-group": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "retention": 9999,
+              "removalPolicy": "destroy"
+            }
           }
         ],
         "/evtfhss3-new-eventbus/evtfhss3-new-bus/KinesisFirehoseToS3/firehose-log-group/Resource": [
@@ -106,16 +167,89 @@
             "data": "evtfhss3newbusKinesisFirehoseToS3firehoseloggroup3A050464"
           }
         ],
+        "/evtfhss3-new-eventbus/evtfhss3-new-bus/KinesisFirehoseToS3/firehose-log-group/firehose-log-stream": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroup": "*"
+            }
+          }
+        ],
         "/evtfhss3-new-eventbus/evtfhss3-new-bus/KinesisFirehoseToS3/firehose-log-group/firehose-log-stream/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "evtfhss3newbusKinesisFirehoseToS3firehoseloggroupfirehoselogstream3F3D7EB2"
           }
         ],
+        "/evtfhss3-new-eventbus/evtfhss3-new-bus/KinesisFirehoseToS3/KinesisFirehoseRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/evtfhss3-new-eventbus/evtfhss3-new-bus/KinesisFirehoseToS3/KinesisFirehoseRole/ImportKinesisFirehoseRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/evtfhss3-new-eventbus/evtfhss3-new-bus/KinesisFirehoseToS3/KinesisFirehoseRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "evtfhss3newbusKinesisFirehoseToS3KinesisFirehoseRole0D6F5A2A"
+          }
+        ],
+        "/evtfhss3-new-eventbus/evtfhss3-new-bus/KinesisFirehoseToS3/KinesisFirehosePolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
           }
         ],
         "/evtfhss3-new-eventbus/evtfhss3-new-bus/KinesisFirehoseToS3/KinesisFirehosePolicy/Resource": [
@@ -130,10 +264,68 @@
             "data": "evtfhss3newbusKinesisFirehoseToS3KinesisFirehose0103145F"
           }
         ],
+        "/evtfhss3-new-eventbus/evtfhss3-new-bus/EventsRuleInvokeKinesisFirehoseRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "description": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/evtfhss3-new-eventbus/evtfhss3-new-bus/EventsRuleInvokeKinesisFirehoseRole/ImportEventsRuleInvokeKinesisFirehoseRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/evtfhss3-new-eventbus/evtfhss3-new-bus/EventsRuleInvokeKinesisFirehoseRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "evtfhss3newbusEventsRuleInvokeKinesisFirehoseRoleE0C3E7F4"
+          }
+        ],
+        "/evtfhss3-new-eventbus/evtfhss3-new-bus/EventsRuleInvokeKinesisFirehosePolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
           }
         ],
         "/evtfhss3-new-eventbus/evtfhss3-new-bus/EventsRuleInvokeKinesisFirehosePolicy/Resource": [
@@ -142,10 +334,46 @@
             "data": "evtfhss3newbusEventsRuleInvokeKinesisFirehosePolicyF9AC0857"
           }
         ],
+        "/evtfhss3-new-eventbus/evtfhss3-new-bus/evtfhss3-new-eventbus": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {}
+          }
+        ],
         "/evtfhss3-new-eventbus/evtfhss3-new-bus/evtfhss3-new-eventbus/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "evtfhss3newbusevtfhss3neweventbusDF98CF38"
+          }
+        ],
+        "/evtfhss3-new-eventbus/evtfhss3-new-bus/EventsRule": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "targets": "*",
+              "eventBus": "*",
+              "eventPattern": {
+                "source": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEventPattern": [
+                {
+                  "source": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addTarget": [
+                {}
+              ]
+            }
           }
         ],
         "/evtfhss3-new-eventbus/evtfhss3-new-bus/EventsRule/Resource": [
@@ -158,6 +386,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "LatestNodeRuntimeMap"
+          }
+        ],
+        "/evtfhss3-new-eventbus/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
           }
         ],
         "/evtfhss3-new-eventbus/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [

@@ -1,5 +1,5 @@
 {
-  "version": "38.0.1",
+  "version": "40.0.0",
   "artifacts": {
     "lamkenmultiplesourcesIntegDefaultTestDeployAssertDE50B828.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e4b3ddf4d570fc26869f0a279914f40550ca2813315b4961ca12c20cf83fbe02.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f9478e41d9d3727181ce94d5b1a546a27baec2af9425ef6d068a6c397183bdbc.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,16 +82,42 @@
         "lamken-multiple-sources.assets"
       ],
       "metadata": {
+        "/lamken-multiple-sources/scrapBucketLog": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "versioned": true,
+              "removalPolicy": "destroy",
+              "autoDeleteObjects": true,
+              "encryption": "S3_MANAGED",
+              "enforceSSL": true
+            }
+          }
+        ],
         "/lamken-multiple-sources/scrapBucketLog/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "scrapBucketLog7B53B25C"
           }
         ],
+        "/lamken-multiple-sources/scrapBucketLog/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/lamken-multiple-sources/scrapBucketLog/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "scrapBucketLogPolicy2972C573"
+          }
+        ],
+        "/lamken-multiple-sources/scrapBucketLog/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/lamken-multiple-sources/scrapBucketLog/AutoDeleteObjectsCustomResource/Default": [
@@ -124,10 +150,31 @@
             "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
           }
         ],
+        "/lamken-multiple-sources/scrapBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "versioned": true,
+              "removalPolicy": "destroy",
+              "autoDeleteObjects": true,
+              "encryption": "S3_MANAGED",
+              "enforceSSL": true,
+              "serverAccessLogsBucket": "*"
+            }
+          }
+        ],
         "/lamken-multiple-sources/scrapBucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "scrapBucketB11863B7"
+          }
+        ],
+        "/lamken-multiple-sources/scrapBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
           }
         ],
         "/lamken-multiple-sources/scrapBucket/Policy/Resource": [
@@ -136,10 +183,28 @@
             "data": "scrapBucketPolicy189B0607"
           }
         ],
+        "/lamken-multiple-sources/scrapBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamken-multiple-sources/scrapBucket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275"
+          }
+        ],
+        "/lamken-multiple-sources/secondScrapBucketLog": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "versioned": true,
+              "removalPolicy": "destroy",
+              "autoDeleteObjects": true,
+              "encryption": "S3_MANAGED",
+              "enforceSSL": true
+            }
           }
         ],
         "/lamken-multiple-sources/secondScrapBucketLog/Resource": [
@@ -148,10 +213,24 @@
             "data": "secondScrapBucketLog8EF53038"
           }
         ],
+        "/lamken-multiple-sources/secondScrapBucketLog/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/lamken-multiple-sources/secondScrapBucketLog/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "secondScrapBucketLogPolicyE1D83D18"
+          }
+        ],
+        "/lamken-multiple-sources/secondScrapBucketLog/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/lamken-multiple-sources/secondScrapBucketLog/AutoDeleteObjectsCustomResource/Default": [
@@ -160,10 +239,31 @@
             "data": "secondScrapBucketLogAutoDeleteObjectsCustomResource10C10B13"
           }
         ],
+        "/lamken-multiple-sources/secondScrapBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "versioned": true,
+              "removalPolicy": "destroy",
+              "autoDeleteObjects": true,
+              "encryption": "S3_MANAGED",
+              "enforceSSL": true,
+              "serverAccessLogsBucket": "*"
+            }
+          }
+        ],
         "/lamken-multiple-sources/secondScrapBucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "secondScrapBucketFC127414"
+          }
+        ],
+        "/lamken-multiple-sources/secondScrapBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
           }
         ],
         "/lamken-multiple-sources/secondScrapBucket/Policy/Resource": [
@@ -172,10 +272,33 @@
             "data": "secondScrapBucketPolicy8F815CB9"
           }
         ],
+        "/lamken-multiple-sources/secondScrapBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamken-multiple-sources/secondScrapBucket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "secondScrapBucketAutoDeleteObjectsCustomResourceC87751E9"
+          }
+        ],
+        "/lamken-multiple-sources/existingRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          }
+        ],
+        "/lamken-multiple-sources/existingRole/ImportexistingRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/lamken-multiple-sources/existingRole/Resource": [
@@ -184,10 +307,114 @@
             "data": "existingRole3E995BBA"
           }
         ],
+        "/lamken-multiple-sources/multiple-sources/LambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/lamken-multiple-sources/multiple-sources/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamken-multiple-sources/multiple-sources/LambdaFunctionServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "multiplesourcesLambdaFunctionServiceRole66EC8973"
+          }
+        ],
+        "/lamken-multiple-sources/multiple-sources/LambdaFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/lamken-multiple-sources/multiple-sources/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
@@ -196,10 +423,62 @@
             "data": "multiplesourcesLambdaFunctionServiceRoleDefaultPolicyF82ADA6A"
           }
         ],
+        "/lamken-multiple-sources/multiple-sources/LambdaFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*"
+              ]
+            }
+          }
+        ],
         "/lamken-multiple-sources/multiple-sources/LambdaFunction/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "multiplesourcesLambdaFunction9BDB2DBA"
+          }
+        ],
+        "/lamken-multiple-sources/multiple-sources/kendra-index-role-multiple-sources": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "description": "*",
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/lamken-multiple-sources/multiple-sources/kendra-index-role-multiple-sources/Importkendra-index-role-multiple-sources": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/lamken-multiple-sources/multiple-sources/kendra-index-role-multiple-sources/Resource": [
@@ -214,6 +493,25 @@
             "data": "multiplesourceskendraindexmultiplesourcesD8FB1621"
           }
         ],
+        "/lamken-multiple-sources/multiple-sources/data-source-role-multiple-sources0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "description": "*",
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/lamken-multiple-sources/multiple-sources/data-source-role-multiple-sources0/Importdata-source-role-multiple-sources0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamken-multiple-sources/multiple-sources/data-source-role-multiple-sources0/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -224,6 +522,25 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "multiplesourcesdatasourcemultiplesources0EC508371"
+          }
+        ],
+        "/lamken-multiple-sources/multiple-sources/data-source-role-multiple-sources1": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "description": "*",
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/lamken-multiple-sources/multiple-sources/data-source-role-multiple-sources1/Importdata-source-role-multiple-sources1": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/lamken-multiple-sources/multiple-sources/data-source-role-multiple-sources1/Resource": [
@@ -254,96 +571,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "minimalargumentsLambdaFunctionServiceRole73B77FF7": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "minimalargumentsLambdaFunctionServiceRole73B77FF7",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "minimalargumentsLambdaFunctionServiceRoleDefaultPolicy59EC60ED": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "minimalargumentsLambdaFunctionServiceRoleDefaultPolicy59EC60ED",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "minimalargumentsLambdaFunctionC19CFAAC": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "minimalargumentsLambdaFunctionC19CFAAC",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "minimalargumentskendraindexroleminimalargumentsB1DBDF7D": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "minimalargumentskendraindexroleminimalargumentsB1DBDF7D",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "minimalargumentskendraindexminimalarguments5CBDD236": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "minimalargumentskendraindexminimalarguments5CBDD236",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "minimalargumentsdatasourceroleminimalarguments00EAC5006": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "minimalargumentsdatasourceroleminimalarguments00EAC5006",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "minimalargumentsdatasourceminimalarguments05A02FF3B": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "minimalargumentsdatasourceminimalarguments05A02FF3B",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "minimalargumentsdatasourceroleminimalarguments170BEA8FA": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "minimalargumentsdatasourceroleminimalarguments170BEA8FA",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "minimalargumentsdatasourceminimalarguments12CE59405": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "minimalargumentsdatasourceminimalarguments12CE59405",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "minimalargumentskendradatasourceminimalarguments23C422502": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "minimalargumentskendradatasourceminimalarguments23C422502",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },

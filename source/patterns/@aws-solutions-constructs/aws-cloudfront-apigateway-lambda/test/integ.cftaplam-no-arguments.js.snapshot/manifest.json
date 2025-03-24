@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "40.0.0",
   "artifacts": {
     "cftaplamnoargumentsIntegDefaultTestDeployAssertACC32F59.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/577fb0269f1ba232d32dc733bf37f611e1d1baff76f8ed773daede11e602c7cf.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/25319f5f0f1c09613cbde90803d0da6a0c4ed4f0bcb6c4436b363827ef529413.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,6 +82,38 @@
         "cftaplam-no-arguments.assets"
       ],
       "metadata": {
+        "/cftaplam-no-arguments/cftaplam-no-arguments-authorizerAuthFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          }
+        ],
+        "/cftaplam-no-arguments/cftaplam-no-arguments-authorizerAuthFunction/ServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "managedPolicies": [
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          }
+        ],
+        "/cftaplam-no-arguments/cftaplam-no-arguments-authorizerAuthFunction/ServiceRole/ImportServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/cftaplam-no-arguments/cftaplam-no-arguments-authorizerAuthFunction/ServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -100,10 +132,58 @@
             "data": "cftaplamnoargumentsauthorizerAuthFunctioncftaplamnoargumentscftaplamnoargumentsauthorizer14876A7BPermissionsE711C432"
           }
         ],
+        "/cftaplam-no-arguments/cftaplam-no-arguments-authorizer": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/cftaplam-no-arguments/cftaplam-no-arguments-authorizer/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "cftaplamnoargumentsauthorizerD7B341B1"
+          }
+        ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaFunctionServiceRole/Resource": [
@@ -112,10 +192,64 @@
             "data": "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleCB74590F"
           }
         ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyDB7FF8EB"
+          }
+        ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
           }
         ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaFunction/Resource": [
@@ -124,10 +258,67 @@
             "data": "testcloudfrontapigatewaylambdaLambdaFunction17A55E65"
           }
         ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/ApiAccessLogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "retention": 9999
+            }
+          }
+        ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/ApiAccessLogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfrontapigatewaylambdaApiAccessLogGroup97EB2E40"
+          }
+        ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApi": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "defaultIntegration": "*",
+              "endpointConfiguration": {
+                "types": [
+                  "REGIONAL"
+                ]
+              },
+              "cloudWatchRole": false,
+              "deployOptions": {
+                "accessLogDestination": "*",
+                "accessLogFormat": "*",
+                "loggingLevel": "INFO",
+                "dataTraceEnabled": false,
+                "tracingEnabled": true
+              },
+              "defaultMethodOptions": {
+                "authorizationType": "*",
+                "authorizer": "*"
+              },
+              "handler": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "endpointConfiguration": {
+                "types": [
+                  "REGIONAL"
+                ]
+              },
+              "cloudWatchRole": false,
+              "deployOptions": {
+                "accessLogDestination": "*",
+                "accessLogFormat": "*",
+                "loggingLevel": "INFO",
+                "dataTraceEnabled": false,
+                "tracingEnabled": true
+              },
+              "defaultMethodOptions": {
+                "authorizationType": "*",
+                "authorizer": "*"
+              },
+              "handler": "*"
+            }
           }
         ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApi/Resource": [
@@ -136,10 +327,73 @@
             "data": "testcloudfrontapigatewaylambdaLambdaRestApi6A4CBD44"
           }
         ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApi/Deployment": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "description": "*",
+              "api": "*",
+              "retainDeployments": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          }
+        ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfrontapigatewaylambdaLambdaRestApiDeployment0C4661C0449e768de84d9b01b952d7f0c0a787fe"
+          }
+        ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApi/DeploymentStage.prod": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "deployment": "*",
+              "accessLogDestination": "*",
+              "accessLogFormat": "*",
+              "loggingLevel": "INFO",
+              "dataTraceEnabled": false,
+              "tracingEnabled": true
+            }
           }
         ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApi/DeploymentStage.prod/Resource": [
@@ -154,10 +408,51 @@
             "data": "testcloudfrontapigatewaylambdaLambdaRestApiEndpoint83FD8F0F"
           }
         ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApi/Default": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApi/Default/{proxy+}": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*",
+              "defaultIntegration": "*",
+              "defaultMethodOptions": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethod": [
+                "*"
+              ]
+            }
+          }
+        ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApi/Default/{proxy+}/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfrontapigatewaylambdaLambdaRestApiproxyBC09D86F"
+          }
+        ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApi/Default/{proxy+}/ANY": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": "*"
+            }
           }
         ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApi/Default/{proxy+}/ANY/ApiPermission.cftaplamnoargumentstestcloudfrontapigatewaylambdaLambdaRestApiF14A7709.ANY..{proxy+}": [
@@ -178,6 +473,17 @@
             "data": "testcloudfrontapigatewaylambdaLambdaRestApiproxyANYAE500A13"
           }
         ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApi/Default/ANY": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": "*"
+            }
+          }
+        ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApi/Default/ANY/ApiPermission.cftaplamnoargumentstestcloudfrontapigatewaylambdaLambdaRestApiF14A7709.ANY..": [
           {
             "type": "aws:cdk:logicalId",
@@ -196,10 +502,40 @@
             "data": "testcloudfrontapigatewaylambdaLambdaRestApiANYBC435DFD"
           }
         ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApi/UsagePlan": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "apiStages": [
+                {
+                  "api": "*"
+                }
+              ]
+            }
+          }
+        ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApi/UsagePlan/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfrontapigatewaylambdaLambdaRestApiUsagePlan59548A66"
+          }
+        ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApiCloudWatchRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/LambdaRestApiCloudWatchRole/Resource": [
@@ -214,10 +550,31 @@
             "data": "testcloudfrontapigatewaylambdaLambdaRestApiAccount1A4578BB"
           }
         ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/SetHttpSecurityHeaders": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "functionName": "*",
+              "code": "*"
+            }
+          }
+        ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/SetHttpSecurityHeaders/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewaySetHttpSecurityHeaders6945414A"
+          }
+        ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucketAccessLog": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "retain",
+              "enforceSSL": true
+            }
           }
         ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucketAccessLog/Resource": [
@@ -226,10 +583,33 @@
             "data": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLog347EED57"
           }
         ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucketAccessLog/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucketAccessLog/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAccessLogPolicy521355D8"
+          }
+        ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "autoDeleteObjects": true,
+              "objectOwnership": "ObjectWriter",
+              "serverAccessLogsBucket": "*"
+            }
           }
         ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucket/Resource": [
@@ -238,16 +618,49 @@
             "data": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucket7F467421"
           }
         ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucket/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketPolicy4A551B79"
           }
         ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudfrontLoggingBucketAutoDeleteObjectsCustomResourceD4126D01"
+          }
+        ],
+        "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/CloudFrontDistribution": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "defaultBehavior": {
+                "origin": "*",
+                "functionAssociations": [
+                  {
+                    "eventType": "viewer-response",
+                    "function": "*"
+                  }
+                ],
+                "viewerProtocolPolicy": "redirect-to-https"
+              },
+              "enableLogging": true,
+              "logBucket": "*"
+            }
           }
         ],
         "/cftaplam-no-arguments/test-cloudfront-apigateway-lambda/CloudFrontToApiGateway/CloudFrontDistribution/Resource": [
@@ -260,6 +673,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "LatestNodeRuntimeMap"
+          }
+        ],
+        "/cftaplam-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
           }
         ],
         "/cftaplam-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [

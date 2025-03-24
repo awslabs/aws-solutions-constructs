@@ -1,22 +1,17 @@
 # How to use this script
 #
-# This script will refresh integration tests for multiple
+# This script will refresh integration tests for all
 # Solutions Constructs sequentially and unattended. If you're 
 # doing a release and have to update many integration tests, this is
 # for you.
-
-# Open a docker build environment
-# List all the constructs whose integration tests you want to refresh in the
-#   export constructs list (you can delete the examples that are there)
-# Run this script from the top level aws-solutions-constructs folder.
 #
-# Options to accelerate
-# * adding --no-clean to the cdk-integ command will allow it to 
-#   finish without destroying the stack. You can then destroy the stack manually
-#   from the console or command line so the stack destruction does not slow the process
-# * adding & to the end of the cdk-integ command will execute it asynchronously. This 
-#   allows you to refresh MANY constructs' tests simultaneously. Probably good to add
-#   a sleep 10 command before the end of the loop to keep from overwhelming CloudFormation
+# The account where you run this must have the following quota increases:
+#
+# VPC: VPCs per Region: 250
+# VPC: NAT Gateways per Availability Zone: 50
+# EC2: VPC Elastic IP Addresses: 100
+# VPC: Gateway VPC endpoints per Region: 100
+# VPC: Interface VPC endpoints per VPC: 150
 
 export constructs="
 aws-alb-fargate
@@ -113,7 +108,7 @@ export NODE_OPTIONS="--max-old-space-size=4096 ${NODE_OPTIONS:-}"
 
 echo "============================================================================================="
 echo "installing..."
-yarn install --frozen-lockfile
+npm install --legacy-peer-deps
 
 # echo "============================================================================================="
 # echo "updating Import statements for CDK v2..."
