@@ -26,6 +26,7 @@ aws-cloudfront-apigateway
 aws-cloudfront-apigateway-lambda
 aws-cloudfront-mediastore
 aws-cloudfront-s3
+aws-cloudfront-oai-s3
 aws-cognito-apigateway-lambda
 aws-constructs-factories
 aws-dynamodbstreams-lambda
