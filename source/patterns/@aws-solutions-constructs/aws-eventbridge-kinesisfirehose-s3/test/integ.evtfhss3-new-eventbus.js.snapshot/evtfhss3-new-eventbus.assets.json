@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "39.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "source": {
@@ -14,7 +14,7 @@
         }
       }
     },
-    "e2160355e23fd1ca5c5031407938070bb164cc0693ab284c1abe6a261eff89a6": {
+    "b39aeb62692a3e92076268b7bba314e2ed69530784da8d6f7c10a904018dea53": {
       "source": {
         "path": "evtfhss3-new-eventbus.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "e2160355e23fd1ca5c5031407938070bb164cc0693ab284c1abe6a261eff89a6.json",
+          "objectKey": "b39aeb62692a3e92076268b7bba314e2ed69530784da8d6f7c10a904018dea53.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

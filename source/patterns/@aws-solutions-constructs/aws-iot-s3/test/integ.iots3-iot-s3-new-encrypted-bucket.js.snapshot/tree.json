@@ -51,13 +51,19 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_kms.CfnKey",
-                  "version": "2.149.0"
+                  "version": "2.179.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_kms.Key",
-              "version": "2.149.0"
+              "version": "2.179.0",
+              "metadata": [
+                {
+                  "enableKeyRotation": true,
+                  "removalPolicy": "destroy"
+                }
+              ]
             }
           },
           "test-iot-s3-integration": {
@@ -102,7 +108,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                      "version": "2.149.0"
+                      "version": "2.179.0"
                     }
                   },
                   "Policy": {
@@ -236,13 +242,18 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                          "version": "2.149.0"
+                          "version": "2.179.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                      "version": "2.149.0"
+                      "version": "2.179.0",
+                      "metadata": [
+                        {
+                          "bucket": "*"
+                        }
+                      ]
                     }
                   },
                   "AutoDeleteObjectsCustomResource": {
@@ -254,19 +265,32 @@
                         "path": "iots3-iot-s3-new-encrypted-bucket/test-iot-s3-integration/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnResource",
-                          "version": "2.149.0"
+                          "version": "2.179.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CustomResource",
-                      "version": "2.149.0"
+                      "version": "2.179.0",
+                      "metadata": [
+                        "*"
+                      ]
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.Bucket",
-                  "version": "2.149.0"
+                  "version": "2.179.0",
+                  "metadata": [
+                    {
+                      "encryption": "KMS_MANAGED",
+                      "versioned": true,
+                      "blockPublicAccess": "*",
+                      "removalPolicy": "destroy",
+                      "enforceSSL": true,
+                      "autoDeleteObjects": true
+                    }
+                  ]
                 }
               },
               "S3Bucket": {
@@ -325,7 +349,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                      "version": "2.149.0"
+                      "version": "2.179.0"
                     }
                   },
                   "Policy": {
@@ -384,19 +408,57 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                          "version": "2.149.0"
+                          "version": "2.179.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                      "version": "2.149.0"
+                      "version": "2.179.0",
+                      "metadata": [
+                        {
+                          "bucket": "*"
+                        }
+                      ]
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.Bucket",
-                  "version": "2.149.0"
+                  "version": "2.179.0",
+                  "metadata": [
+                    {
+                      "encryption": "KMS",
+                      "versioned": true,
+                      "blockPublicAccess": "*",
+                      "removalPolicy": "destroy",
+                      "enforceSSL": true,
+                      "lifecycleRules": [
+                        {
+                          "noncurrentVersionTransitions": [
+                            {
+                              "storageClass": "*"
+                            }
+                          ]
+                        }
+                      ],
+                      "serverAccessLogsBucket": "*",
+                      "encryptionKey": "*"
+                    },
+                    {
+                      "addLifecycleRule": [
+                        {
+                          "noncurrentVersionTransitions": [
+                            {
+                              "storageClass": "*"
+                            }
+                          ]
+                        },
+                        "*",
+                        "*"
+                      ]
+                    }
+                  ]
                 }
               },
               "iot-actions-role": {
@@ -408,7 +470,10 @@
                     "path": "iots3-iot-s3-new-encrypted-bucket/test-iot-s3-integration/iot-actions-role/Importiot-actions-role",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.149.0"
+                      "version": "2.179.0",
+                      "metadata": [
+                        "*"
+                      ]
                     }
                   },
                   "Resource": {
@@ -433,7 +498,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.149.0"
+                      "version": "2.179.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -510,19 +575,80 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.149.0"
+                          "version": "2.179.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.149.0"
+                      "version": "2.179.0",
+                      "metadata": [
+                        "*",
+                        {
+                          "attachToRole": [
+                            "*"
+                          ]
+                        },
+                        {
+                          "attachToRole": [
+                            "*"
+                          ]
+                        },
+                        {
+                          "addStatements": [
+                            {}
+                          ]
+                        },
+                        {
+                          "addStatements": [
+                            {}
+                          ]
+                        },
+                        {
+                          "addStatements": [
+                            {}
+                          ]
+                        }
+                      ]
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.149.0"
+                  "version": "2.179.0",
+                  "metadata": [
+                    {
+                      "assumedBy": {
+                        "principalAccount": "*",
+                        "assumeRoleAction": "*"
+                      }
+                    },
+                    {
+                      "addToPrincipalPolicy": [
+                        {}
+                      ]
+                    },
+                    {
+                      "attachInlinePolicy": [
+                        "*"
+                      ]
+                    },
+                    {
+                      "attachInlinePolicy": [
+                        "*"
+                      ]
+                    },
+                    {
+                      "addToPrincipalPolicy": [
+                        {}
+                      ]
+                    },
+                    {
+                      "addToPrincipalPolicy": [
+                        {}
+                      ]
+                    }
+                  ]
                 }
               },
               "IotTopicRule": {
@@ -556,13 +682,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iot.CfnTopicRule",
-                  "version": "2.149.0"
+                  "version": "2.179.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-iot-s3.IotToS3",
-              "version": "2.62.0"
+              "version": "2.79.1"
             }
           },
           "LatestNodeRuntimeMap": {
@@ -570,7 +696,7 @@
             "path": "iots3-iot-s3-new-encrypted-bucket/LatestNodeRuntimeMap",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnMapping",
-              "version": "2.149.0"
+              "version": "2.179.0"
             }
           },
           "Custom::S3AutoDeleteObjectsCustomResourceProvider": {
@@ -582,7 +708,7 @@
                 "path": "iots3-iot-s3-new-encrypted-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Staging",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.149.0"
+                  "version": "2.179.0"
                 }
               },
               "Role": {
@@ -590,7 +716,7 @@
                 "path": "iots3-iot-s3-new-encrypted-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.149.0"
+                  "version": "2.179.0"
                 }
               },
               "Handler": {
@@ -598,13 +724,13 @@
                 "path": "iots3-iot-s3-new-encrypted-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.149.0"
+                  "version": "2.179.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResourceProviderBase",
-              "version": "2.149.0"
+              "version": "2.179.0"
             }
           },
           "Integ": {
@@ -620,7 +746,7 @@
                     "path": "iots3-iot-s3-new-encrypted-bucket/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
-                      "version": "10.3.0"
+                      "version": "10.4.2"
                     }
                   },
                   "DeployAssert": {
@@ -632,7 +758,7 @@
                         "path": "iots3-iot-s3-new-encrypted-bucket/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.149.0"
+                          "version": "2.179.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -640,25 +766,25 @@
                         "path": "iots3-iot-s3-new-encrypted-bucket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.149.0"
+                          "version": "2.179.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.149.0"
+                      "version": "2.179.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.149.0-alpha.0"
+                  "version": "2.179.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.149.0-alpha.0"
+              "version": "2.179.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -666,7 +792,7 @@
             "path": "iots3-iot-s3-new-encrypted-bucket/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.149.0"
+              "version": "2.179.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -674,13 +800,13 @@
             "path": "iots3-iot-s3-new-encrypted-bucket/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.149.0"
+              "version": "2.179.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.149.0"
+          "version": "2.179.0"
         }
       },
       "Tree": {
@@ -688,13 +814,13 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.3.0"
+          "version": "10.4.2"
         }
       }
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.149.0"
+      "version": "2.179.0"
     }
   }
 }

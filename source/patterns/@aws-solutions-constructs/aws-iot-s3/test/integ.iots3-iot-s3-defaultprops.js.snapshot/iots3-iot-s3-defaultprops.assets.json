@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "39.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "source": {
@@ -14,7 +14,7 @@
         }
       }
     },
-    "3ed6b5221019194b6e48aa2024fc474c4d5d0cff1dbcf245904d869e12084765": {
+    "e0be72ae45b4b5d3072f7b10add316ebcb5803ba4ed676459451ca8a8244adb8": {
       "source": {
         "path": "iots3-iot-s3-defaultprops.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "3ed6b5221019194b6e48aa2024fc474c4d5d0cff1dbcf245904d869e12084765.json",
+          "objectKey": "e0be72ae45b4b5d3072f7b10add316ebcb5803ba4ed676459451ca8a8244adb8.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

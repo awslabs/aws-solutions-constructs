@@ -104,7 +104,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "8ce85d10dcd7b8e6d43ffd909827afc76802ad40fcd7908886ff825cbe8e15df.zip"
+     "S3Key": "0ac0535f48d1ada09cde7f11fc72195d9d32da75a2719aeb20c4e5c45b28e62e.zip"
     },
     "Environment": {
      "Variables": {
@@ -183,7 +183,7 @@
     }
    }
   },
-  "PhotosLambdaTestFromAssetServiceRoleE0B4776B": {
+  "PhotosExistingLambdaTestFromAssetServiceRoleA2E1C415": {
    "Type": "AWS::IAM::Role",
    "Properties": {
     "AssumeRolePolicyDocument": {
@@ -245,7 +245,7 @@
     }
    }
   },
-  "PhotosLambdaTestFromAssetServiceRoleDefaultPolicy240F3F29": {
+  "PhotosExistingLambdaTestFromAssetServiceRoleDefaultPolicy429BC741": {
    "Type": "AWS::IAM::Policy",
    "Properties": {
     "PolicyDocument": {
@@ -261,10 +261,10 @@
      ],
      "Version": "2012-10-17"
     },
-    "PolicyName": "PhotosLambdaTestFromAssetServiceRoleDefaultPolicy240F3F29",
+    "PolicyName": "PhotosExistingLambdaTestFromAssetServiceRoleDefaultPolicy429BC741",
     "Roles": [
      {
-      "Ref": "PhotosLambdaTestFromAssetServiceRoleE0B4776B"
+      "Ref": "PhotosExistingLambdaTestFromAssetServiceRoleA2E1C415"
      }
     ]
    },
@@ -279,7 +279,7 @@
     }
    }
   },
-  "PhotosLambdaTestFromAssetB776E3C5": {
+  "PhotosExistingLambdaTestFromAsset4EFFFFEE": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
     "Code": {
@@ -293,11 +293,11 @@
       "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
      }
     },
-    "FunctionName": "PhotosLambdaTestFromAsset",
+    "FunctionName": "PhotosExistingLambdaTestFromAsset",
     "Handler": "index.handler",
     "Role": {
      "Fn::GetAtt": [
-      "PhotosLambdaTestFromAssetServiceRoleE0B4776B",
+      "PhotosExistingLambdaTestFromAssetServiceRoleA2E1C415",
       "Arn"
      ]
     },
@@ -307,8 +307,8 @@
     }
    },
    "DependsOn": [
-    "PhotosLambdaTestFromAssetServiceRoleDefaultPolicy240F3F29",
-    "PhotosLambdaTestFromAssetServiceRoleE0B4776B"
+    "PhotosExistingLambdaTestFromAssetServiceRoleDefaultPolicy429BC741",
+    "PhotosExistingLambdaTestFromAssetServiceRoleA2E1C415"
    ],
    "Metadata": {
     "cfn_nag": {
@@ -329,13 +329,13 @@
     }
    }
   },
-  "PhotosLambdaTestFromAssetOpenApiGatewayToLambdaPermitAPIGInvocationA0D5D04E": {
+  "PhotosExistingLambdaTestFromAssetOpenApiGatewayToLambdaPermitAPIGInvocationF5E0ECB8": {
    "Type": "AWS::Lambda::Permission",
    "Properties": {
     "Action": "lambda:InvokeFunction",
     "FunctionName": {
      "Fn::GetAtt": [
-      "PhotosLambdaTestFromAssetB776E3C5",
+      "PhotosExistingLambdaTestFromAsset4EFFFFEE",
       "Arn"
      ]
     },
@@ -630,6 +630,16 @@
          ]
         }
        ]
+      },
+      {
+       "Action": "lambda:GetFunction",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "OpenApiGatewayToLambdaLambdaFunctionC7227471",
+         "Arn"
+        ]
+       }
       }
      ],
      "Version": "2012-10-17"
@@ -649,7 +659,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "4dc48ffba382f93077a1e6824599bbd4ceb6f91eb3d9442eca3b85bdb1a20b1e.zip"
+     "S3Key": "bdc104ed9cab1b5b6421713c8155f0b753380595356f710400609664d3635eca.zip"
     },
     "Description": "AWS CDK resource provider framework - onEvent (opilam-apiFromAssetExistingLambdaFunctions/OpenApiGatewayToLambda/ApiTemplateWriterProvider)",
     "Environment": {
@@ -742,7 +752,7 @@
        ":lambda:path/2015-03-31/functions/",
        {
         "Fn::GetAtt": [
-         "PhotosLambdaTestFromAssetB776E3C5",
+         "PhotosExistingLambdaTestFromAsset4EFFFFEE",
          "Arn"
         ]
        },
@@ -820,7 +830,7 @@
     }
    }
   },
-  "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775114a8d1d0c9bf9b9d904a22f099d1d64": {
+  "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD07750681eaf13350b64ce202e1d0dcfd0e03": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Automatically created by the RestApi construct",
@@ -852,7 +862,7 @@
      "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
     },
     "DeploymentId": {
-     "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775114a8d1d0c9bf9b9d904a22f099d1d64"
+     "Ref": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD07750681eaf13350b64ce202e1d0dcfd0e03"
     },
     "MethodSettings": [
      {
@@ -1049,10 +1059,10 @@
     "value": "nodejs20.x"
    },
    "cn-north-1": {
-    "value": "nodejs18.x"
+    "value": "nodejs20.x"
    },
    "cn-northwest-1": {
-    "value": "nodejs18.x"
+    "value": "nodejs20.x"
    },
    "eu-central-1": {
     "value": "nodejs20.x"
@@ -1103,10 +1113,10 @@
     "value": "nodejs20.x"
    },
    "us-gov-east-1": {
-    "value": "nodejs18.x"
+    "value": "nodejs20.x"
    },
    "us-gov-west-1": {
-    "value": "nodejs18.x"
+    "value": "nodejs20.x"
    },
    "us-iso-east-1": {
     "value": "nodejs18.x"

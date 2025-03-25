@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "40.0.0",
   "artifacts": {
     "iots3iots3newencryptedbucketIntegDefaultTestDeployAssert23A40EAB.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/27dd5b6db29b7370650616c45500275edf9fa4aa326adc3648791c4bb0590f5a.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a694b84553b582eb4c65683443d9a109e765d7e3440197fd4f69eba6e8a33c98.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,10 +82,32 @@
         "iots3-iot-s3-new-encrypted-bucket.assets"
       ],
       "metadata": {
+        "/iots3-iot-s3-new-encrypted-bucket/existingKey": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "enableKeyRotation": true,
+              "removalPolicy": "destroy"
+            }
+          }
+        ],
         "/iots3-iot-s3-new-encrypted-bucket/existingKey/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "existingKeyB52D6AF1"
+          }
+        ],
+        "/iots3-iot-s3-new-encrypted-bucket/test-iot-s3-integration/S3LoggingBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "KMS_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "autoDeleteObjects": true
+            }
           }
         ],
         "/iots3-iot-s3-new-encrypted-bucket/test-iot-s3-integration/S3LoggingBucket/Resource": [
@@ -94,10 +116,24 @@
             "data": "testiots3integrationS3LoggingBucket606446CC"
           }
         ],
+        "/iots3-iot-s3-new-encrypted-bucket/test-iot-s3-integration/S3LoggingBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/iots3-iot-s3-new-encrypted-bucket/test-iot-s3-integration/S3LoggingBucket/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testiots3integrationS3LoggingBucketPolicy2DB45D12"
+          }
+        ],
+        "/iots3-iot-s3-new-encrypted-bucket/test-iot-s3-integration/S3LoggingBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/iots3-iot-s3-new-encrypted-bucket/test-iot-s3-integration/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
@@ -106,10 +142,57 @@
             "data": "testiots3integrationS3LoggingBucketAutoDeleteObjectsCustomResource98F8BDFE"
           }
         ],
+        "/iots3-iot-s3-new-encrypted-bucket/test-iot-s3-integration/S3Bucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "KMS",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "lifecycleRules": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                }
+              ],
+              "serverAccessLogsBucket": "*",
+              "encryptionKey": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addLifecycleRule": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                },
+                "*",
+                "*"
+              ]
+            }
+          }
+        ],
         "/iots3-iot-s3-new-encrypted-bucket/test-iot-s3-integration/S3Bucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testiots3integrationS3Bucket9B8B180C"
+          }
+        ],
+        "/iots3-iot-s3-new-encrypted-bucket/test-iot-s3-integration/S3Bucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
           }
         ],
         "/iots3-iot-s3-new-encrypted-bucket/test-iot-s3-integration/S3Bucket/Policy/Resource": [
@@ -118,10 +201,113 @@
             "data": "testiots3integrationS3BucketPolicy18905375"
           }
         ],
+        "/iots3-iot-s3-new-encrypted-bucket/test-iot-s3-integration/iot-actions-role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/iots3-iot-s3-new-encrypted-bucket/test-iot-s3-integration/iot-actions-role/Importiot-actions-role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/iots3-iot-s3-new-encrypted-bucket/test-iot-s3-integration/iot-actions-role/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testiots3integrationiotactionsrole04473665"
+          }
+        ],
+        "/iots3-iot-s3-new-encrypted-bucket/test-iot-s3-integration/iot-actions-role/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/iots3-iot-s3-new-encrypted-bucket/test-iot-s3-integration/iot-actions-role/DefaultPolicy/Resource": [
@@ -140,6 +326,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "LatestNodeRuntimeMap"
+          }
+        ],
+        "/iots3-iot-s3-new-encrypted-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
           }
         ],
         "/iots3-iot-s3-new-encrypted-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [

@@ -17,7 +17,7 @@
                 "path": "template-writer-from-large-asset/TemplateAsset/Stage",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.150.0"
+                  "version": "2.179.0"
                 }
               },
               "AssetBucket": {
@@ -25,13 +25,14 @@
                 "path": "template-writer-from-large-asset/TemplateAsset/AssetBucket",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                  "version": "2.150.0"
+                  "version": "2.179.0",
+                  "metadata": []
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-              "version": "2.150.0"
+              "version": "2.179.0"
             }
           },
           "TestOutputAsset": {
@@ -43,7 +44,7 @@
                 "path": "template-writer-from-large-asset/TestOutputAsset/Stage",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.150.0"
+                  "version": "2.179.0"
                 }
               },
               "AssetBucket": {
@@ -51,13 +52,14 @@
                 "path": "template-writer-from-large-asset/TestOutputAsset/AssetBucket",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                  "version": "2.150.0"
+                  "version": "2.179.0",
+                  "metadata": []
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-              "version": "2.150.0"
+              "version": "2.179.0"
             }
           },
           "LambdaFunctionServiceRole": {
@@ -69,7 +71,10 @@
                 "path": "template-writer-from-large-asset/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.Resource",
-                  "version": "2.150.0"
+                  "version": "2.179.0",
+                  "metadata": [
+                    "*"
+                  ]
                 }
               },
               "Resource": {
@@ -132,7 +137,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                  "version": "2.150.0"
+                  "version": "2.179.0"
                 }
               },
               "DefaultPolicy": {
@@ -168,19 +173,71 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                      "version": "2.150.0"
+                      "version": "2.179.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Policy",
-                  "version": "2.150.0"
+                  "version": "2.179.0",
+                  "metadata": [
+                    "*",
+                    {
+                      "attachToRole": [
+                        "*"
+                      ]
+                    },
+                    {
+                      "attachToRole": [
+                        "*"
+                      ]
+                    },
+                    {
+                      "addStatements": [
+                        {}
+                      ]
+                    }
+                  ]
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_iam.Role",
-              "version": "2.150.0"
+              "version": "2.179.0",
+              "metadata": [
+                {
+                  "assumedBy": {
+                    "principalAccount": "*",
+                    "assumeRoleAction": "*"
+                  },
+                  "inlinePolicies": "*"
+                },
+                {
+                  "addToPrincipalPolicy": [
+                    {}
+                  ]
+                },
+                {
+                  "attachInlinePolicy": [
+                    "*"
+                  ]
+                },
+                {
+                  "attachInlinePolicy": [
+                    "*"
+                  ]
+                },
+                {
+                  "attachInlinePolicy": [
+                    "*"
+                  ]
+                },
+                {
+                  "attachInlinePolicy": [
+                    "*"
+                  ]
+                }
+              ]
             }
           },
           "LambdaFunction": {
@@ -196,7 +253,7 @@
                     "path": "template-writer-from-large-asset/LambdaFunction/Code/Stage",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.AssetStaging",
-                      "version": "2.150.0"
+                      "version": "2.179.0"
                     }
                   },
                   "AssetBucket": {
@@ -204,13 +261,14 @@
                     "path": "template-writer-from-large-asset/LambdaFunction/Code/AssetBucket",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                      "version": "2.150.0"
+                      "version": "2.179.0",
+                      "metadata": []
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                  "version": "2.150.0"
+                  "version": "2.179.0"
                 }
               },
               "Resource": {
@@ -247,13 +305,33 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                  "version": "2.150.0"
+                  "version": "2.179.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_lambda.Function",
-              "version": "2.150.0"
+              "version": "2.179.0",
+              "metadata": [
+                {
+                  "role": "*",
+                  "tracing": "Active",
+                  "runtime": "*",
+                  "handler": "*",
+                  "code": "*",
+                  "timeout": "*",
+                  "memorySize": "*"
+                },
+                {
+                  "addEnvironment": [
+                    "*",
+                    "*",
+                    {
+                      "removeInEdge": true
+                    }
+                  ]
+                }
+              ]
             }
           },
           "TestTemplateWriterPolicy": {
@@ -321,13 +399,38 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                  "version": "2.150.0"
+                  "version": "2.179.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_iam.Policy",
-              "version": "2.150.0"
+              "version": "2.179.0",
+              "metadata": [
+                {
+                  "statements": "*"
+                },
+                {
+                  "addStatements": [
+                    {}
+                  ]
+                },
+                {
+                  "addStatements": [
+                    {}
+                  ]
+                },
+                {
+                  "attachToRole": [
+                    "*"
+                  ]
+                },
+                {
+                  "attachToRole": [
+                    "*"
+                  ]
+                }
+              ]
             }
           },
           "TestTemplateWriterProvider": {
@@ -347,7 +450,10 @@
                         "path": "template-writer-from-large-asset/TestTemplateWriterProvider/framework-onEvent/ServiceRole/ImportServiceRole",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.Resource",
-                          "version": "2.150.0"
+                          "version": "2.179.0",
+                          "metadata": [
+                            "*"
+                          ]
                         }
                       },
                       "Resource": {
@@ -386,7 +492,7 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                          "version": "2.150.0"
+                          "version": "2.179.0"
                         }
                       },
                       "DefaultPolicy": {
@@ -426,6 +532,16 @@
                                           ]
                                         }
                                       ]
+                                    },
+                                    {
+                                      "Action": "lambda:GetFunction",
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::GetAtt": [
+                                          "LambdaFunctionBF21E41F",
+                                          "Arn"
+                                        ]
+                                      }
                                     }
                                   ],
                                   "Version": "2012-10-17"
@@ -440,19 +556,75 @@
                             },
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                              "version": "2.150.0"
+                              "version": "2.179.0"
                             }
                           }
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.Policy",
-                          "version": "2.150.0"
+                          "version": "2.179.0",
+                          "metadata": [
+                            "*",
+                            {
+                              "attachToRole": [
+                                "*"
+                              ]
+                            },
+                            {
+                              "attachToRole": [
+                                "*"
+                              ]
+                            },
+                            {
+                              "addStatements": [
+                                {}
+                              ]
+                            },
+                            {
+                              "addStatements": [
+                                {}
+                              ]
+                            }
+                          ]
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Role",
-                      "version": "2.150.0"
+                      "version": "2.179.0",
+                      "metadata": [
+                        {
+                          "assumedBy": {
+                            "principalAccount": "*",
+                            "assumeRoleAction": "*"
+                          },
+                          "managedPolicies": [
+                            {
+                              "managedPolicyArn": "*"
+                            }
+                          ]
+                        },
+                        {
+                          "addToPrincipalPolicy": [
+                            {}
+                          ]
+                        },
+                        {
+                          "attachInlinePolicy": [
+                            "*"
+                          ]
+                        },
+                        {
+                          "attachInlinePolicy": [
+                            "*"
+                          ]
+                        },
+                        {
+                          "addToPrincipalPolicy": [
+                            {}
+                          ]
+                        }
+                      ]
                     }
                   },
                   "Code": {
@@ -464,7 +636,7 @@
                         "path": "template-writer-from-large-asset/TestTemplateWriterProvider/framework-onEvent/Code/Stage",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.AssetStaging",
-                          "version": "2.150.0"
+                          "version": "2.179.0"
                         }
                       },
                       "AssetBucket": {
@@ -472,13 +644,14 @@
                         "path": "template-writer-from-large-asset/TestTemplateWriterProvider/framework-onEvent/Code/AssetBucket",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                          "version": "2.150.0"
+                          "version": "2.179.0",
+                          "metadata": []
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                      "version": "2.150.0"
+                      "version": "2.179.0"
                     }
                   },
                   "Resource": {
@@ -491,7 +664,7 @@
                           "s3Bucket": {
                             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
                           },
-                          "s3Key": "d9861ea7a45affd23e47a614acb2fddc6e45c20a891284c958187dafbf9ee36b.zip"
+                          "s3Key": "bdc104ed9cab1b5b6421713c8155f0b753380595356f710400609664d3635eca.zip"
                         },
                         "description": "AWS CDK resource provider framework - onEvent (template-writer-from-large-asset/TestTemplateWriterProvider)",
                         "environment": {
@@ -525,19 +698,41 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                      "version": "2.150.0"
+                      "version": "2.179.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.Function",
-                  "version": "2.150.0"
+                  "version": "2.179.0",
+                  "metadata": [
+                    {
+                      "code": "*",
+                      "description": "*",
+                      "runtime": "*",
+                      "handler": "*",
+                      "timeout": "*",
+                      "logGroup": "*",
+                      "vpc": "*",
+                      "vpcSubnets": "*",
+                      "securityGroups": "*",
+                      "role": "*",
+                      "functionName": "*",
+                      "environmentEncryption": "*"
+                    },
+                    {
+                      "addEnvironment": [
+                        "*",
+                        "*"
+                      ]
+                    }
+                  ]
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.custom_resources.Provider",
-              "version": "2.150.0"
+              "version": "2.179.0"
             }
           },
           "LatestNodeRuntimeMap": {
@@ -545,7 +740,7 @@
             "path": "template-writer-from-large-asset/LatestNodeRuntimeMap",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnMapping",
-              "version": "2.150.0"
+              "version": "2.179.0"
             }
           },
           "TestTemplateWriterCustomResource": {
@@ -557,13 +752,18 @@
                 "path": "template-writer-from-large-asset/TestTemplateWriterCustomResource/Default",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.150.0"
+                  "version": "2.179.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResource",
-              "version": "2.150.0"
+              "version": "2.179.0",
+              "metadata": [
+                "*",
+                "*",
+                "*"
+              ]
             }
           },
           "Integ": {
@@ -579,7 +779,7 @@
                     "path": "template-writer-from-large-asset/Integ/DefaultTest/Default",
                     "constructInfo": {
                       "fqn": "constructs.Construct",
-                      "version": "10.3.0"
+                      "version": "10.4.2"
                     }
                   },
                   "DeployAssert": {
@@ -591,7 +791,7 @@
                         "path": "template-writer-from-large-asset/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.150.0"
+                          "version": "2.179.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -599,25 +799,25 @@
                         "path": "template-writer-from-large-asset/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.150.0"
+                          "version": "2.179.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.150.0"
+                      "version": "2.179.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.150.0-alpha.0"
+                  "version": "2.179.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.150.0-alpha.0"
+              "version": "2.179.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -625,7 +825,7 @@
             "path": "template-writer-from-large-asset/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.150.0"
+              "version": "2.179.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -633,13 +833,13 @@
             "path": "template-writer-from-large-asset/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.150.0"
+              "version": "2.179.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.150.0"
+          "version": "2.179.0"
         }
       },
       "Tree": {
@@ -647,13 +847,13 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.3.0"
+          "version": "10.4.2"
         }
       }
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.150.0"
+      "version": "2.179.0"
     }
   }
 }

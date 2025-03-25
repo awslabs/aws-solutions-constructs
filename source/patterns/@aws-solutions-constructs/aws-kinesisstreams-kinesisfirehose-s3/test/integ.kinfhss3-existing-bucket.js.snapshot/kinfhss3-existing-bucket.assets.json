@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "39.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "source": {
@@ -14,7 +14,7 @@
         }
       }
     },
-    "93ecf765f39440e9d97a2b69932f618dcd063345a91de47c0174f02faae082d0": {
+    "5d281b143e3e977a4927e91d3a386f43026feffc8eefba5ebec4fd88d71ec51f": {
       "source": {
         "path": "kinfhss3-existing-bucket.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "93ecf765f39440e9d97a2b69932f618dcd063345a91de47c0174f02faae082d0.json",
+          "objectKey": "5d281b143e3e977a4927e91d3a386f43026feffc8eefba5ebec4fd88d71ec51f.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

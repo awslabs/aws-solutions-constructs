@@ -1,5 +1,5 @@
 {
-  "version": "38.0.1",
+  "version": "39.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "source": {
@@ -14,7 +14,7 @@
         }
       }
     },
-    "3f70e7db831d98e4b725ad3c2d2771e42f24629f4702c27cd89a5e22a77f797a": {
+    "e7a58bb9eab7613a54be89183326ac832bddb45ff53a47447efb5471b08f1ca3": {
       "source": {
         "path": "cfts3-no-cloudfront-s3-access-logs.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "3f70e7db831d98e4b725ad3c2d2771e42f24629f4702c27cd89a5e22a77f797a.json",
+          "objectKey": "e7a58bb9eab7613a54be89183326ac832bddb45ff53a47447efb5471b08f1ca3.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

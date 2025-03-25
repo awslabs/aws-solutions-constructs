@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "40.0.0",
   "artifacts": {
     "fhss3preexistingloggingbucketIntegDefaultTestDeployAssert92015BF9.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b7d8cfc24d13272765620f69f6bd2c7226118d5419c2e96d9cf887c958b4b589.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/04ffecd1b88a690789d750a30309ace8ae547192967b2913a07bf2554be73157.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,16 +82,42 @@
         "fhss3-pre-existing-logging-bucket.assets"
       ],
       "metadata": {
+        "/fhss3-pre-existing-logging-bucket/scrapBucketLog": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "versioned": true,
+              "removalPolicy": "destroy",
+              "autoDeleteObjects": true,
+              "encryption": "S3_MANAGED",
+              "enforceSSL": true
+            }
+          }
+        ],
         "/fhss3-pre-existing-logging-bucket/scrapBucketLog/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "scrapBucketLog7B53B25C"
           }
         ],
+        "/fhss3-pre-existing-logging-bucket/scrapBucketLog/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/fhss3-pre-existing-logging-bucket/scrapBucketLog/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "scrapBucketLogPolicy2972C573"
+          }
+        ],
+        "/fhss3-pre-existing-logging-bucket/scrapBucketLog/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/fhss3-pre-existing-logging-bucket/scrapBucketLog/AutoDeleteObjectsCustomResource/Default": [
@@ -106,6 +132,12 @@
             "data": "LatestNodeRuntimeMap"
           }
         ],
+        "/fhss3-pre-existing-logging-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
         "/fhss3-pre-existing-logging-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
           {
             "type": "aws:cdk:logicalId",
@@ -118,10 +150,31 @@
             "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
           }
         ],
+        "/fhss3-pre-existing-logging-bucket/scrapBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "versioned": true,
+              "removalPolicy": "destroy",
+              "autoDeleteObjects": true,
+              "encryption": "S3_MANAGED",
+              "enforceSSL": true,
+              "serverAccessLogsBucket": "*"
+            }
+          }
+        ],
         "/fhss3-pre-existing-logging-bucket/scrapBucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "scrapBucketB11863B7"
+          }
+        ],
+        "/fhss3-pre-existing-logging-bucket/scrapBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
           }
         ],
         "/fhss3-pre-existing-logging-bucket/scrapBucket/Policy/Resource": [
@@ -130,10 +183,55 @@
             "data": "scrapBucketPolicy189B0607"
           }
         ],
+        "/fhss3-pre-existing-logging-bucket/scrapBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/fhss3-pre-existing-logging-bucket/scrapBucket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275"
+          }
+        ],
+        "/fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stack/S3Bucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "lifecycleRules": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                }
+              ],
+              "serverAccessLogsBucket": "*",
+              "autoDeleteObjects": true
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addLifecycleRule": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                },
+                "*",
+                "*"
+              ]
+            }
           }
         ],
         "/fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stack/S3Bucket/Resource": [
@@ -142,10 +240,24 @@
             "data": "testfirehoses3preexistingloggingbucketstackS3BucketD14D0F4F"
           }
         ],
+        "/fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stack/S3Bucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stack/S3Bucket/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testfirehoses3preexistingloggingbucketstackS3BucketPolicyB1086848"
+          }
+        ],
+        "/fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stack/S3Bucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stack/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
@@ -154,10 +266,26 @@
             "data": "testfirehoses3preexistingloggingbucketstackS3BucketAutoDeleteObjectsCustomResourceB90405F0"
           }
         ],
+        "/fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stack/firehose-log-group": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "retention": 9999
+            }
+          }
+        ],
         "/fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stack/firehose-log-group/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testfirehoses3preexistingloggingbucketstackfirehoseloggroup38D768AE"
+          }
+        ],
+        "/fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stack/firehose-log-group/firehose-log-stream": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroup": "*"
+            }
           }
         ],
         "/fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stack/firehose-log-group/firehose-log-stream/Resource": [
@@ -166,10 +294,75 @@
             "data": "testfirehoses3preexistingloggingbucketstackfirehoseloggroupfirehoselogstream5A7CB78B"
           }
         ],
+        "/fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stack/KinesisFirehoseRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stack/KinesisFirehoseRole/ImportKinesisFirehoseRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stack/KinesisFirehoseRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testfirehoses3preexistingloggingbucketstackKinesisFirehoseRole797DD1B0"
+          }
+        ],
+        "/fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stack/KinesisFirehosePolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
           }
         ],
         "/fhss3-pre-existing-logging-bucket/test-firehose-s3-pre-existing-logging-bucket-stack/KinesisFirehosePolicy/Resource": [
