@@ -50,6 +50,13 @@ export interface ApiGatewayToIotProps {
    */
   readonly apiGatewayProps?: api.RestApiProps,
   /**
+   * Whether to create a Usage Plan attached to the API. Must be true if
+   * apiGatewayProps.defaultMethodOptions.apiKeyRequired is true
+   *
+   * @default - true (to match legacy behavior)
+   */
+  readonly createUsagePlan?: boolean
+  /**
    * User provided props to override the default props for the CloudWatchLogs LogGroup.
    *
    * @default - Default props are used
@@ -82,6 +89,7 @@ export class ApiGatewayToIot extends Construct {
    */
   constructor(scope: Construct, id: string, props: ApiGatewayToIotProps) {
     super(scope, id);
+    defaults.CheckApiProps(props);
 
     // Assignment to local member variables to make these available to all member methods of the class.
     // (Split the string just in case user supplies fully qualified endpoint eg. ab123cdefghij4l-ats.iot.ap-south-1.amazonaws.com)
@@ -144,7 +152,7 @@ export class ApiGatewayToIot extends Construct {
     }
 
     // Setup the API Gateway
-    const globalRestApiResponse = defaults.GlobalRestApi(this, extraApiGwProps, props.logGroupProps);
+    const globalRestApiResponse = defaults.GlobalRestApi(this, extraApiGwProps, props.logGroupProps, props.createUsagePlan);
     this.apiGateway = globalRestApiResponse.api;
     this.apiGatewayCloudWatchRole = globalRestApiResponse.role;
     this.apiGatewayLogGroup = globalRestApiResponse.logGroup;

@@ -47,7 +47,14 @@ export interface ApiGatewayToLambdaProps {
    *
    * @default - Default props are used
    */
-  readonly logGroupProps?: logs.LogGroupProps
+  readonly logGroupProps?: logs.LogGroupProps,
+  /**
+   * Whether to create a Usage Plan attached to the API. Must be true if
+   * apiGatewayProps.defaultMethodOptions.apiKeyRequired is true
+   *
+   * @default - true (to match legacy behavior)
+   */
+  readonly createUsagePlan?: boolean
 }
 
 /**
@@ -70,6 +77,7 @@ export class ApiGatewayToLambda extends Construct {
   constructor(scope: Construct, id: string, props: ApiGatewayToLambdaProps) {
     super(scope, id);
     defaults.CheckLambdaProps(props);
+    defaults.CheckApiProps(props);
 
     // Setup the Lambda function
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
@@ -78,7 +86,12 @@ export class ApiGatewayToLambda extends Construct {
     });
 
     // Setup the API Gateway
-    const globalRestApiResponse = defaults.GlobalLambdaRestApi(this, this.lambdaFunction, props.apiGatewayProps, props.logGroupProps);
+    const globalRestApiResponse = defaults.GlobalLambdaRestApi(
+      this,
+      this.lambdaFunction,
+      props.apiGatewayProps,
+      props.logGroupProps,
+      props.createUsagePlan);
     this.apiGateway = globalRestApiResponse.api;
     this.apiGatewayCloudWatchRole = globalRestApiResponse.role;
     this.apiGatewayLogGroup = globalRestApiResponse.group;

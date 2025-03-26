@@ -58,6 +58,7 @@ test('Test with lambdaFunctionProps', () => {
       }
     }
   });
+  template.resourceCountIs('AWS::ApiGateway::UsagePlan', 1);
 });
 
 test('Test properties', () => {
@@ -161,4 +162,46 @@ test('Confirm call to CheckLambdaProps', () => {
   };
   // Assertion
   expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});
+
+test('Confirm call to CheckApiProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: ApiGatewayToLambdaProps = {
+    existingLambdaObj: lambdaFunction,
+    apiGatewayProps: {
+      defaultMethodOptions: {
+        apiKeyRequired: true
+      },
+    },
+    createUsagePlan: false,
+  };
+  const app = () => {
+    new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - if API key is required, then the Usage plan must be created\n');
+});
+
+test('Confirm suppression of Usage Plan', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const props: ApiGatewayToLambdaProps = {
+    lambdaFunctionProps: {
+       code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {\'statusCode\': 200, \'body\': \'\'}; }'),
+       runtime: lambda.Runtime.NODEJS_20_X,
+       handler: 'index.handler',
+    },
+    createUsagePlan: false
+  };
+  new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::ApiGateway::UsagePlan', 0);
 });

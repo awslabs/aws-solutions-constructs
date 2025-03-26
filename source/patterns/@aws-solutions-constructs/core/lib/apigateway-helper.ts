@@ -24,7 +24,7 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as apiDefaults from './apigateway-defaults';
 import { buildLogGroup } from './cloudwatch-log-group-helper';
-import { addCfnGuardSuppressRules, addCfnSuppressRules, consolidateProps } from './utils';
+import { addCfnGuardSuppressRules, addCfnSuppressRules, CheckBooleanWithDefault, consolidateProps } from './utils';
 import { IRole } from 'aws-cdk-lib/aws-iam';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
@@ -88,7 +88,7 @@ interface ConfigureLambdaRestApiResponse {
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 function configureLambdaRestApi(scope: Construct, defaultApiGatewayProps: apigateway.LambdaRestApiProps,
-  apiGatewayProps?: apigateway.LambdaRestApiProps): ConfigureLambdaRestApiResponse {
+  apiGatewayProps?: apigateway.LambdaRestApiProps, createUsagePlan?: boolean): ConfigureLambdaRestApiResponse {
 
   // API Gateway doesn't allow both endpointTypes and endpointConfiguration, check whether endPointTypes exists
   if (apiGatewayProps?.endpointTypes) {
@@ -110,25 +110,27 @@ function configureLambdaRestApi(scope: Construct, defaultApiGatewayProps: apigat
 
   addCfnGuardSuppressRules(api.deploymentStage, ["API_GW_CACHE_ENABLED_AND_ENCRYPTED"]);
 
-  // Configure Usage Plan
-  const usagePlanProps: apigateway.UsagePlanProps = {
-    apiStages: [{
-      api,
-      stage: api.deploymentStage
-    }]
-  };
+  if (CheckBooleanWithDefault(createUsagePlan, true)) {
+    // Configure Usage Plan
+    const usagePlanProps: apigateway.UsagePlanProps = {
+      apiStages: [{
+        api,
+        stage: api.deploymentStage
+      }]
+    };
 
-  const plan = api.addUsagePlan('UsagePlan', usagePlanProps);
+    const plan = api.addUsagePlan('UsagePlan', usagePlanProps);
 
-  // If requireApiKey param is set to true, create a api key & associate to Usage Plan
-  if (apiGatewayProps?.defaultMethodOptions?.apiKeyRequired === true) {
-    // Configure Usage Plan with API Key
-    const key = api.addApiKey('ApiKey');
-    plan.addApiKey(key);
+    // If requireApiKey param is set to true, create a api key & associate to Usage Plan
+    if (apiGatewayProps?.defaultMethodOptions?.apiKeyRequired === true) {
+      // Configure Usage Plan with API Key
+      const key = api.addApiKey('ApiKey');
+      plan.addApiKey(key);
+    }
   }
 
   // Return the API and CW Role
-  return { api, role: cwRole};
+  return { api, role: cwRole };
 }
 
 interface ConfigureRestApiResponse {
@@ -143,7 +145,7 @@ interface ConfigureRestApiResponse {
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 function configureRestApi(scope: Construct, defaultApiGatewayProps: apigateway.RestApiProps,
-  apiGatewayProps?: apigateway.RestApiProps): ConfigureRestApiResponse {
+  apiGatewayProps?: apigateway.RestApiProps, createUsagePlan?: boolean): ConfigureRestApiResponse {
 
   // API Gateway doesn't allow both endpointTypes and endpointConfiguration, check whether endPointTypes exists
   if (apiGatewayProps?.endpointTypes) {
@@ -162,21 +164,22 @@ function configureRestApi(scope: Construct, defaultApiGatewayProps: apigateway.R
     cwRole = configureCloudwatchRoleForApi(scope, api);
   }
 
-  // Configure Usage Plan
-  const usagePlanProps: apigateway.UsagePlanProps = {
-    apiStages: [{
-      api,
-      stage: api.deploymentStage
-    }]
-  };
+  if (CheckBooleanWithDefault(createUsagePlan, true)) {
+    // Configure Usage Plan
+    const usagePlanProps: apigateway.UsagePlanProps = {
+      apiStages: [{
+        api,
+        stage: api.deploymentStage
+      }]
+    };
 
-  const plan = api.addUsagePlan('UsagePlan', usagePlanProps);
-
-  // If requireApiKey param is set to true, create a api key & associate to Usage Plan
-  if (apiGatewayProps?.defaultMethodOptions?.apiKeyRequired === true) {
-    // Configure Usage Plan with API Key
-    const key = api.addApiKey('ApiKey');
-    plan.addApiKey(key);
+    const plan = api.addUsagePlan('UsagePlan', usagePlanProps);
+    // If requireApiKey param is set to true, create a api key & associate to Usage Plan
+    if (apiGatewayProps?.defaultMethodOptions?.apiKeyRequired === true) {
+      // Configure Usage Plan with API Key
+      const key = api.addApiKey('ApiKey');
+      plan.addApiKey(key);
+    }
   }
 
   // Return the API and CW Role
@@ -198,13 +201,13 @@ export interface GlobalLambdaRestApiResponse {
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function GlobalLambdaRestApi(scope: Construct, existingLambdaObj: lambda.Function,
-  apiGatewayProps?: apigateway.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps): GlobalLambdaRestApiResponse {
+  apiGatewayProps?: apigateway.LambdaRestApiProps, logGroupProps?: logs.LogGroupProps, createUsagePlan?: boolean): GlobalLambdaRestApiResponse {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
   const defaultProps = apiDefaults.DefaultGlobalLambdaRestApiProps(existingLambdaObj, logGroup);
-  const configureLambdaRestApiResponse = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
-  return { api: configureLambdaRestApiResponse.api, role: configureLambdaRestApiResponse.role, group: logGroup};
+  const configureLambdaRestApiResponse = configureLambdaRestApi(scope, defaultProps, apiGatewayProps, createUsagePlan);
+  return { api: configureLambdaRestApiResponse.api, role: configureLambdaRestApiResponse.role, group: logGroup };
 }
 
 export interface RegionalLambdaRestApiResponse {
@@ -224,13 +227,14 @@ export interface RegionalLambdaRestApiResponse {
 export function RegionalLambdaRestApi(scope: Construct, existingLambdaObj: lambda.Function,
   apiGatewayProps?: apigateway.LambdaRestApiProps,
   logGroupProps?: logs.LogGroupProps,
+  createUsagePlan?: boolean,
   useDefaultAuth: boolean = true): RegionalLambdaRestApiResponse {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
   const defaultProps = apiDefaults.DefaultRegionalLambdaRestApiProps(existingLambdaObj, logGroup, useDefaultAuth);
-  const configureLambdaRestApiResponse = configureLambdaRestApi(scope, defaultProps, apiGatewayProps);
-  return { api: configureLambdaRestApiResponse.api, role: configureLambdaRestApiResponse.role, group: logGroup};
+  const configureLambdaRestApiResponse = configureLambdaRestApi(scope, defaultProps, apiGatewayProps, createUsagePlan);
+  return { api: configureLambdaRestApiResponse.api, role: configureLambdaRestApiResponse.role, group: logGroup };
 }
 
 export interface GlobalRestApiResponse {
@@ -247,12 +251,12 @@ export interface GlobalRestApiResponse {
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function GlobalRestApi(scope: Construct, apiGatewayProps?: apigateway.RestApiProps,
-  logGroupProps?: logs.LogGroupProps): GlobalRestApiResponse {
+  logGroupProps?: logs.LogGroupProps, createUsagePlan?: boolean): GlobalRestApiResponse {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
   const defaultProps = apiDefaults.DefaultGlobalRestApiProps(logGroup);
-  const configureRestApiResponse = configureRestApi(scope, defaultProps, apiGatewayProps);
+  const configureRestApiResponse = configureRestApi(scope, defaultProps, apiGatewayProps, createUsagePlan);
   return { api: configureRestApiResponse.api, role: configureRestApiResponse.role, logGroup };
 }
 
@@ -270,12 +274,12 @@ export interface RegionalRestApiResponse {
  * @param apiGatewayProps - (optional) user-specified properties to override the default properties.
  */
 export function RegionalRestApi(scope: Construct, apiGatewayProps?: apigateway.RestApiProps,
-  logGroupProps?: logs.LogGroupProps): RegionalRestApiResponse {
+  logGroupProps?: logs.LogGroupProps, createUsagePlan?: boolean): RegionalRestApiResponse {
   // Configure log group for API Gateway AccessLogging
   const logGroup = buildLogGroup(scope, 'ApiAccessLogGroup', logGroupProps);
 
   const defaultProps = apiDefaults.DefaultRegionalRestApiProps(logGroup);
-  const configureRestApiResponse = configureRestApi(scope, defaultProps, apiGatewayProps);
+  const configureRestApiResponse = configureRestApi(scope, defaultProps, apiGatewayProps, createUsagePlan);
   return { api: configureRestApiResponse.api, role: configureRestApiResponse.role, logGroup };
 }
 
@@ -313,7 +317,7 @@ export function CreateSpecRestApi(
 
   api.addUsagePlan('UsagePlan', usagePlanProps);
 
-  return { api, role: cwRole, logGroup};
+  return { api, role: cwRole, logGroup };
 }
 
 export interface AddProxyMethodToApiResourceInputParams {
@@ -403,4 +407,23 @@ export function addProxyMethodToApiResource(params: AddProxyMethodToApiResourceI
   // Setup the API Gateway method
   const overriddenProps = consolidateProps(defaultMethodOptions, params.methodOptions);
   return params.apiResource.addMethod(params.apiMethod, apiGatewayIntegration, overriddenProps);
+}
+
+export interface ApiProps {
+  readonly createUsagePlan?: boolean,
+  readonly apiGatewayProps?: apigateway.LambdaRestApiProps
+}
+
+export function CheckApiProps(propsObject: ApiProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (!propsObject.createUsagePlan && propsObject.apiGatewayProps?.defaultMethodOptions?.apiKeyRequired) {
+    errorMessages += 'Error - if API key is required, then the Usage plan must be created\n';
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
 }

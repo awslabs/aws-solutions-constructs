@@ -33,6 +33,13 @@ export interface ApiGatewayToSqsProps {
    */
   readonly apiGatewayProps?: api.RestApiProps | any;
   /**
+   * Whether to create a Usage Plan attached to the API. Must be true if
+   * apiGatewayProps.defaultMethodOptions.apiKeyRequired is true
+   *
+   * @default - true (to match legacy behavior)
+   */
+  readonly createUsagePlan?: boolean
+  /**
    * Existing instance of SQS queue object, providing both this  and queueProps will cause an error
    *
    * @default - None
@@ -277,6 +284,7 @@ export class ApiGatewayToSqs extends Construct {
   constructor(scope: Construct, id: string, props: ApiGatewayToSqsProps) {
     super(scope, id);
     defaults.CheckSqsProps(props);
+    defaults.CheckApiProps(props);
 
     if (this.CheckCreateRequestProps(props)) {
       throw new Error(`The 'allowCreateOperation' property must be set to true when setting any of the following: ` +
@@ -306,7 +314,7 @@ export class ApiGatewayToSqs extends Construct {
     this.deadLetterQueue = buildQueueResponse.dlq;
 
     // Setup the API Gateway
-    const globalRestApiResponse = defaults.GlobalRestApi(this, props.apiGatewayProps, props.logGroupProps);
+    const globalRestApiResponse = defaults.GlobalRestApi(this, props.apiGatewayProps, props.logGroupProps, props.createUsagePlan);
     this.apiGateway = globalRestApiResponse.api;
     this.apiGatewayCloudWatchRole = globalRestApiResponse.role;
     this.apiGatewayLogGroup = globalRestApiResponse.logGroup;

@@ -111,6 +111,9 @@ test("check allow CRUD operations", () => {
   template.hasResourceProperties("AWS::ApiGateway::Resource", {
     PathPart: "{id}",
   });
+
+  template.resourceCountIs('AWS::ApiGateway::UsagePlan', 1);
+
 });
 
 test("check allow read and update only", () => {
@@ -885,4 +888,35 @@ test("provide deleteMethodResponses", () => {
       }
     ]
   });
+});
+
+test('Confirm call to CheckApiProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const props: ApiGatewayToDynamoDBProps = {
+    apiGatewayProps: {
+      defaultMethodOptions: {
+        apiKeyRequired: true
+      },
+    },
+    createUsagePlan: false,
+  };
+  const app = () => {
+    new ApiGatewayToDynamoDB(stack, 'test-apigateway-lambda', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - if API key is required, then the Usage plan must be created\n');
+});
+
+test('Confirm suppression of Usage Plan', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const props: ApiGatewayToDynamoDBProps = {
+    createUsagePlan: false
+  };
+  new ApiGatewayToDynamoDB(stack, 'test-apigateway-lambda', props);
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::ApiGateway::UsagePlan', 0);
 });
