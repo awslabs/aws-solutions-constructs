@@ -48,6 +48,13 @@ export interface CloudFrontToApiGatewayToLambdaProps {
    */
   readonly apiGatewayProps: api.LambdaRestApiProps | any
   /**
+   * Whether to create a Usage Plan attached to the API. Must be true if
+   * apiGatewayProps.defaultMethodOptions.apiKeyRequired is true
+   *
+   * @default - true (to match legacy behavior)
+   */
+  readonly createUsagePlan?: boolean
+  /**
    * Optional user provided props to override the default props
    *
    * @default - Default props are used
@@ -108,6 +115,8 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
   constructor(scope: Construct, id: string, props: CloudFrontToApiGatewayToLambdaProps) {
     super(scope, id);
     defaults.CheckLambdaProps(props);
+    defaults.CheckApiProps(props);
+
     // CheckCloudFrontProps() is called by internal aws-cloudfront-apigateway construct
     if (!props.apiGatewayProps?.defaultMethodOptions?.authorizationType) {
       defaults.printWarning('As of v2.48.0, apiGatewayProps.defaultMethodOptions.authorizationType is\
@@ -133,6 +142,7 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
       this.lambdaFunction,
       props.apiGatewayProps,
       props.logGroupProps,
+      props.createUsagePlan,
       false);
     this.apiGateway = regionalLambdaRestApiResponse.api;
     this.apiGatewayCloudWatchRole = regionalLambdaRestApiResponse.role;

@@ -80,6 +80,7 @@ test('check lambda function properties for deploy: true', () => {
       }
     }
   });
+  template.resourceCountIs('AWS::ApiGateway::UsagePlan', 1);
 });
 
 test('check lambda function role for deploy: false', () => {
@@ -362,4 +363,48 @@ test('confirm error thrown for unspecified authorization', () => {
     new CloudFrontToApiGatewayToLambda(stack, 'test-one', props);
   };
   expect(app).toThrowError(/As of v2.48.0, an explicit authorization type is required for CloudFront\/API Gateway patterns/);
+});
+
+test('Confirm call to CheckApiProps', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const lambdaFunction = new lambda.Function(stack, 'a-function', {
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  });
+
+  const props: CloudFrontToApiGatewayToLambdaProps = {
+    existingLambdaObj: lambdaFunction,
+    apiGatewayProps: {
+      defaultMethodOptions: {
+        authorizationType: 'AWS_NONE',
+        apiKeyRequired: true
+      },
+    },
+    createUsagePlan: false,
+  };
+  const app = () => {
+    new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - if API key is required, then the Usage plan must be created\n');
+});
+
+test('Confirm suppression of Usage Plan', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const props: CloudFrontToApiGatewayToLambdaProps = {
+    apiGatewayProps: { defaultMethodOptions: { authorizationType: 'AWS_NONE' }},
+    lambdaFunctionProps: {
+       code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {\'statusCode\': 200, \'body\': \'\'}; }'),
+       runtime: lambda.Runtime.NODEJS_20_X,
+       handler: 'index.handler',
+    },
+    createUsagePlan: false
+  };
+  new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', props);
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::ApiGateway::UsagePlan', 0);
 });
