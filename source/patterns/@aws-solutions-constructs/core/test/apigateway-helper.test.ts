@@ -16,7 +16,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as api from 'aws-cdk-lib/aws-apigateway';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '../index';
-import { Template } from 'aws-cdk-lib/assertions';
+import { Match, Template } from 'aws-cdk-lib/assertions';
 
 function deployRegionalApiGateway(stack: Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
@@ -898,4 +898,24 @@ test('Test CheckApiProps', () => {
     });
   };
   expect(app).toThrowError('Error - if API key is required, then the Usage plan must be created\n');
+});
+
+test('Correctly generate a SpecRestApi', () => {
+  const stack = new Stack();
+
+  const myApiDefinition = api.ApiDefinition.fromAsset('./test/openapi/apiDefinition.json');
+
+  defaults.CreateSpecRestApi(stack, {
+    apiDefinition: myApiDefinition
+  });
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::ApiGateway::RestApi", 1);
+  template.resourceCountIs("AWS::ApiGateway::Deployment", 1);
+  template.resourceCountIs("AWS::ApiGateway::Stage", 1);
+  template.resourceCountIs("AWS::ApiGateway::UsagePlan", 1);
+  template.hasResourceProperties("AWS::ApiGateway::RestApi", {
+    BodyS3Location: {
+      Bucket: Match.anyValue()
+    }
+  });
 });
