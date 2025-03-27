@@ -39,6 +39,14 @@ new OpenApiGatewayToLambda(stack, 'OpenApiGatewayToLambda', {
       }
     },
     {
+      id: 'MessagesHandlerPost',
+      lambdaFunctionProps: {
+        runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+        handler: 'index.handler',
+        code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+      }
+    },
+    {
       id: 'DeleteMessagesHandler',
       lambdaFunctionProps: {
         runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
