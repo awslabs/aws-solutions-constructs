@@ -38,10 +38,7 @@ export const handler = async (event: any, context: any) => {
       let template = await getObjectResponse.Body?.transformToString();
 
       templateValues.forEach((templateValue: any) => {
-        template = template?.replace(
-          new RegExp(templateValue.id, 'g'),
-          templateValue.value
-        );
+        template = replaceTarget(template, templateValue);
       });
 
       await s3Client.send(new PutObjectCommand({
@@ -71,3 +68,11 @@ export const handler = async (event: any, context: any) => {
     Data: responseData,
   };
 };
+
+export function replaceTarget(template: string | undefined, templateValue: any) {
+  template = template?.replace(
+    new RegExp(`\\b${templateValue.id}\\b`, 'g'),
+    templateValue.value
+  );
+  return template;
+}
