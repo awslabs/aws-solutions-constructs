@@ -43,6 +43,13 @@ export interface ApiGatewayToDynamoDBProps {
    */
   readonly apiGatewayProps?: api.RestApiProps;
   /**
+   * Whether to create a Usage Plan attached to the API. Must be true if
+   * apiGatewayProps.defaultMethodOptions.apiKeyRequired is true
+   *
+   * @default - true (to match legacy behavior)
+   */
+  readonly createUsagePlan?: boolean
+  /**
    * Optional resource name on the API
    * This property is useful if your integration does not directly use the partition key name
    *
@@ -280,6 +287,7 @@ export class ApiGatewayToDynamoDB extends Construct {
   constructor(scope: Construct, id: string, props: ApiGatewayToDynamoDBProps) {
     super(scope, id);
     defaults.CheckDynamoDBProps(props);
+    defaults.CheckApiProps(props);
 
     if (this.CheckCreateRequestProps(props)) {
       throw new Error(`The 'allowCreateOperation' property must be set to true when setting any of the following: ` +
@@ -318,7 +326,7 @@ export class ApiGatewayToDynamoDB extends Construct {
     this.dynamoTable = buildDynamoDBTableResponse.tableObject!;
 
     // Setup the API Gateway
-    const globalRestApiResponse = defaults.GlobalRestApi(this, props.apiGatewayProps, props.logGroupProps);
+    const globalRestApiResponse = defaults.GlobalRestApi(this, props.apiGatewayProps, props.logGroupProps, props.createUsagePlan);
     this.apiGateway = globalRestApiResponse.api;
     this.apiGatewayCloudWatchRole = globalRestApiResponse.role;
     this.apiGatewayLogGroup = globalRestApiResponse.logGroup;

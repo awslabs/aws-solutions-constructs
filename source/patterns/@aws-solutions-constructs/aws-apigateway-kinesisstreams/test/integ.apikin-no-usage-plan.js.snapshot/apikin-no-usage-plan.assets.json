@@ -1,0 +1,19 @@
+{
+  "version": "39.0.0",
+  "files": {
+    "68d9ba98f4058997e1b228d1826af3ee05255d45f318f9152fa8c197a9d97e8c": {
+      "source": {
+        "path": "apikin-no-usage-plan.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "68d9ba98f4058997e1b228d1826af3ee05255d45f318f9152fa8c197a9d97e8c.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

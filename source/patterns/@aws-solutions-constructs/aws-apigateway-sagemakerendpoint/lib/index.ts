@@ -30,6 +30,13 @@ export interface ApiGatewayToSageMakerEndpointProps {
    */
   readonly apiGatewayProps?: api.RestApiProps,
   /**
+   * Whether to create a Usage Plan attached to the API. Must be true if
+   * apiGatewayProps.defaultMethodOptions.apiKeyRequired is true
+   *
+   * @default - true (to match legacy behavior)
+   */
+  readonly createUsagePlan?: boolean
+  /**
    * Optional IAM role that is used by API Gateway to invoke the SageMaker endpoint.
    *
    * @default - An IAM role with sagemaker:InvokeEndpoint access to `endpointName` is created.
@@ -100,10 +107,11 @@ export class ApiGatewayToSageMakerEndpoint extends Construct {
    */
   constructor(scope: Construct, id: string, props: ApiGatewayToSageMakerEndpointProps) {
     super(scope, id);
+    defaults.CheckApiProps(props);
     // CheckSagemakerProps is not called because this construct can't create a Sagemaker resource
 
     // Setup the API Gateway
-    const globalRestApiResponse = defaults.GlobalRestApi(this, props.apiGatewayProps, props.logGroupProps);
+    const globalRestApiResponse = defaults.GlobalRestApi(this, props.apiGatewayProps, props.logGroupProps, props.createUsagePlan);
     this.apiGateway = globalRestApiResponse.api;
     this.apiGatewayCloudWatchRole = globalRestApiResponse.role;
     this.apiGatewayLogGroup =  globalRestApiResponse.logGroup;

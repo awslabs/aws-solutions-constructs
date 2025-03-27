@@ -34,6 +34,7 @@ test('Test deployment w/o DLQ', () => {
     HttpMethod: "GET",
     AuthorizationType: "AWS_IAM"
   });
+  template.resourceCountIs('AWS::ApiGateway::UsagePlan', 1);
 });
 
 test('Test deployment w/o allowReadOperation', () => {
@@ -886,4 +887,35 @@ test('Construct uses mulitple custom messageSchema', () => {
       }
     }
   });
+});
+
+test('Confirm call to CheckApiProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const props: ApiGatewayToSqsProps = {
+    apiGatewayProps: {
+      defaultMethodOptions: {
+        apiKeyRequired: true
+      },
+    },
+    createUsagePlan: false,
+  };
+  const app = () => {
+    new ApiGatewayToSqs(stack, 'test-apigateway-sqs', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - if API key is required, then the Usage plan must be created\n');
+});
+
+test('Confirm suppression of Usage Plan', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const props: ApiGatewayToSqsProps = {
+    createUsagePlan: false
+  };
+  new ApiGatewayToSqs(stack, 'test-apigateway-sqs', props);
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::ApiGateway::UsagePlan', 0);
 });

@@ -114,6 +114,7 @@ test('Test for default IAM Role', () => {
       }
     ]
   });
+  template.resourceCountIs('AWS::ApiGateway::UsagePlan', 1);
 });
 
 test('Test for default Params request validator', () => {
@@ -510,4 +511,37 @@ test('Test for handling fully qualified iotEndpoint', () => {
         ]
       } }
   });
+});
+
+test('Confirm call to CheckApiProps', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+
+  const props: ApiGatewayToIotProps = {
+    iotEndpoint: `a1234567890123-ats`,
+    apiGatewayProps: {
+      defaultMethodOptions: {
+        apiKeyRequired: true
+      },
+    },
+    createUsagePlan: false,
+  };
+  const app = () => {
+    new ApiGatewayToIot(stack, 'test-apigateway-iot', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - if API key is required, then the Usage plan must be created\n');
+});
+
+test('Confirm suppression of Usage Plan', () => {
+  // Initial Setup
+  const stack = new cdk.Stack();
+  const props: ApiGatewayToIotProps = {
+    iotEndpoint: `a1234567890123-ats`,
+    createUsagePlan: false
+  };
+  new ApiGatewayToIot(stack, 'test-apigateway-iot', props);
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::ApiGateway::UsagePlan', 0);
 });

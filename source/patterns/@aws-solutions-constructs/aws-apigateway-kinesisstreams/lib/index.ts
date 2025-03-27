@@ -32,6 +32,13 @@ export interface ApiGatewayToKinesisStreamsProps {
    */
   readonly apiGatewayProps?: api.RestApiProps,
   /**
+   * Whether to create a Usage Plan attached to the API. Must be true if
+   * apiGatewayProps.defaultMethodOptions.apiKeyRequired is true
+   *
+   * @default - true (to match legacy behavior)
+   */
+  readonly createUsagePlan?: boolean
+  /**
    * API Gateway request template for the PutRecord action.
    * If not provided, a default one will be used.
    *
@@ -176,6 +183,7 @@ export class ApiGatewayToKinesisStreams extends Construct {
   constructor(scope: Construct, id: string, props: ApiGatewayToKinesisStreamsProps) {
     super(scope, id);
     defaults.CheckKinesisStreamProps(props);
+    defaults.CheckApiProps(props);
 
     // Setup the Kinesis stream
     this.kinesisStream = defaults.buildKinesisStream(scope, {
@@ -184,7 +192,7 @@ export class ApiGatewayToKinesisStreams extends Construct {
     });
 
     // Setup the API Gateway
-    const globalRestApiResponse = defaults.GlobalRestApi(this, props.apiGatewayProps, props.logGroupProps);
+    const globalRestApiResponse = defaults.GlobalRestApi(this, props.apiGatewayProps, props.logGroupProps, props.createUsagePlan);
     this.apiGateway = globalRestApiResponse.api;
     this.apiGatewayCloudWatchRole = globalRestApiResponse.role;
     this.apiGatewayLogGroup = globalRestApiResponse.logGroup;

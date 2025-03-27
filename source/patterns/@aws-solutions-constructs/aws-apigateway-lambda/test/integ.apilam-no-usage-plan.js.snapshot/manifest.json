@@ -1,0 +1,478 @@
+{
+  "version": "42.0.0",
+  "artifacts": {
+    "apilamnousageplanIntegDefaultTestDeployAssertFA088EA5.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "apilamnousageplanIntegDefaultTestDeployAssertFA088EA5.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "apilamnousageplanIntegDefaultTestDeployAssertFA088EA5": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "apilamnousageplanIntegDefaultTestDeployAssertFA088EA5.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "apilamnousageplanIntegDefaultTestDeployAssertFA088EA5.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "apilamnousageplanIntegDefaultTestDeployAssertFA088EA5.assets"
+      ],
+      "metadata": {
+        "/apilam-no-usage-plan/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/apilam-no-usage-plan/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "apilam-no-usage-plan/Integ/DefaultTest/DeployAssert"
+    },
+    "apilam-no-usage-plan.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "apilam-no-usage-plan.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "apilam-no-usage-plan": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "apilam-no-usage-plan.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d7a812c73fac26597e55611517dbb9588a71baffe20f246ee4b5eebd55ff2ec7.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "apilam-no-usage-plan.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "apilam-no-usage-plan.assets"
+      ],
+      "metadata": {
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaFunctionServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaFunctionServiceRole5CD2E9F7"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyA5D0BE32"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "runtime": "*",
+              "handler": "*",
+              "code": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaFunction18FF222F"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/ApiAccessLogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "retention": 9999
+            }
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/ApiAccessLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaApiAccessLogGroupEB3253A2"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "defaultIntegration": "*",
+              "endpointConfiguration": {
+                "types": [
+                  "EDGE"
+                ]
+              },
+              "cloudWatchRole": false,
+              "deployOptions": {
+                "accessLogDestination": "*",
+                "accessLogFormat": "*",
+                "loggingLevel": "INFO",
+                "dataTraceEnabled": false,
+                "tracingEnabled": true
+              },
+              "defaultMethodOptions": {
+                "authorizationType": "*"
+              },
+              "handler": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "endpointConfiguration": {
+                "types": [
+                  "EDGE"
+                ]
+              },
+              "cloudWatchRole": false,
+              "deployOptions": {
+                "accessLogDestination": "*",
+                "accessLogFormat": "*",
+                "loggingLevel": "INFO",
+                "dataTraceEnabled": false,
+                "tracingEnabled": true
+              },
+              "defaultMethodOptions": {
+                "authorizationType": "*"
+              },
+              "handler": "*"
+            }
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiE957E944"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi/Deployment": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "description": "*",
+              "api": "*",
+              "retainDeployments": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiDeployment85334BB3a1765c45928980e423727978265730d1"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi/DeploymentStage.prod": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "deployment": "*",
+              "accessLogDestination": "*",
+              "accessLogFormat": "*",
+              "loggingLevel": "INFO",
+              "dataTraceEnabled": false,
+              "tracingEnabled": true
+            }
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiDeploymentStageprod4EBF7247"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiEndpoint2EF0B753"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi/Default": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi/Default/{proxy+}": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*",
+              "defaultIntegration": "*",
+              "defaultMethodOptions": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethod": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi/Default/{proxy+}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiproxy2C2C544E"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi/Default/{proxy+}/ANY": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": "*"
+            }
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi/Default/{proxy+}/ANY/ApiPermission.apilamnousageplantestapigatewaylambdaLambdaRestApi37AE5E45.ANY..{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiproxyANYApiPermissionapilamnousageplantestapigatewaylambdaLambdaRestApi37AE5E45ANYproxy7C37E473"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi/Default/{proxy+}/ANY/ApiPermission.Test.apilamnousageplantestapigatewaylambdaLambdaRestApi37AE5E45.ANY..{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiproxyANYApiPermissionTestapilamnousageplantestapigatewaylambdaLambdaRestApi37AE5E45ANYproxyB8D448C2"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi/Default/{proxy+}/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiproxyANYF6150927"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi/Default/ANY": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": "*"
+            }
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi/Default/ANY/ApiPermission.apilamnousageplantestapigatewaylambdaLambdaRestApi37AE5E45.ANY..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiANYApiPermissionapilamnousageplantestapigatewaylambdaLambdaRestApi37AE5E45ANY0C9BD547"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi/Default/ANY/ApiPermission.Test.apilamnousageplantestapigatewaylambdaLambdaRestApi37AE5E45.ANY..": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiANYApiPermissionTestapilamnousageplantestapigatewaylambdaLambdaRestApi37AE5E45ANY7510A235"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApi/Default/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiANY1FACA749"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApiCloudWatchRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApiCloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiCloudWatchRole6D45E039"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaRestApiAccount": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaRestApiAccount0D88B6B8"
+          }
+        ],
+        "/apilam-no-usage-plan/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/apilam-no-usage-plan/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "apilam-no-usage-plan"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  },
+  "minimumCliVersion": "2.1006.0"
+}

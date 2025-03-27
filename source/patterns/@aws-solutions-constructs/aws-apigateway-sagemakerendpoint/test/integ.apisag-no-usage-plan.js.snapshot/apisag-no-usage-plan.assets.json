@@ -1,0 +1,19 @@
+{
+  "version": "39.0.0",
+  "files": {
+    "7c2150d1f0ed20f31f0c7bd3e0d446225384266c0d34c3223e1cd2b4d9bb2cf6": {
+      "source": {
+        "path": "apisag-no-usage-plan.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "7c2150d1f0ed20f31f0c7bd3e0d446225384266c0d34c3223e1cd2b4d9bb2cf6.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
