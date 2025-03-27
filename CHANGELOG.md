@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.80.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.79.1...v2.80.0) (2025-03-27)
+
+Build on CDK v2.179.0
+
+### Features
+
+* **aws-apigateway-lambda:** allow suppression of usage plan ([#1285](https://github.com/awslabs/aws-solutions-constructs/issues/1285)) ([85796ad](https://github.com/awslabs/aws-solutions-constructs/commit/85796ad74aa004e5b758c94559f211ae6c2b9877))
+
 ## [2.79.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.79.0...v2.79.1) (2025-03-21)
 
 Build on CDK v2.177.0
