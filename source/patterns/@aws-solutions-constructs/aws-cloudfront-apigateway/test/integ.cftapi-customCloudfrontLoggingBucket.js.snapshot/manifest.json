@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "40.0.0",
   "artifacts": {
     "cftapicustomCloudfrontLoggingBucketIntegDefaultTestDeployAssertE1E3B6E7.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5d1b8a0f2e26c42fceb4ccd7c7b20cf2110abdc814e4e2dcacedaa99045feaa9.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/15dc8b12f119777116329d4edfc06cd9cd5877d355ce1d4d0c62b1d6cfaed8ef.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,6 +82,38 @@
         "cftapi-customCloudfrontLoggingBucket.assets"
       ],
       "metadata": {
+        "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-apiFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          }
+        ],
+        "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-apiFunction/ServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "managedPolicies": [
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          }
+        ],
+        "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-apiFunction/ServiceRole/ImportServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-apiFunction/ServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -92,6 +124,38 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "cftapicustomCloudfrontLoggingBucketapiFunctionA537178D"
+          }
+        ],
+        "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-api-authorizerAuthFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          }
+        ],
+        "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-api-authorizerAuthFunction/ServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "managedPolicies": [
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          }
+        ],
+        "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-api-authorizerAuthFunction/ServiceRole/ImportServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-api-authorizerAuthFunction/ServiceRole/Resource": [
@@ -112,10 +176,39 @@
             "data": "cftapicustomCloudfrontLoggingBucketapiauthorizerAuthFunctioncftapicustomCloudfrontLoggingBucketcftapicustomCloudfrontLoggingBucketapiauthorizerFD948D42Permissions5BB59610"
           }
         ],
+        "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-api-authorizer": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-api-authorizer/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "cftapicustomCloudfrontLoggingBucketapiauthorizerEDC48D75"
+          }
+        ],
+        "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-apiApi": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "defaultIntegration": "*",
+              "handler": "*",
+              "defaultMethodOptions": {
+                "authorizationType": "*",
+                "authorizer": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "handler": "*",
+              "defaultMethodOptions": {
+                "authorizationType": "*",
+                "authorizer": "*"
+              }
+            }
           }
         ],
         "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-apiApi/Resource": [
@@ -124,10 +217,68 @@
             "data": "cftapicustomCloudfrontLoggingBucketapiApiBB89469A"
           }
         ],
+        "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-apiApi/Deployment": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "description": "*",
+              "api": "*",
+              "retainDeployments": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          }
+        ],
         "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-apiApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "cftapicustomCloudfrontLoggingBucketapiApiDeploymentDB7FF03997dbc838d7f12d245d020a7a30e625fd"
+          }
+        ],
+        "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-apiApi/DeploymentStage.prod": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "deployment": "*"
+            }
           }
         ],
         "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-apiApi/DeploymentStage.prod/Resource": [
@@ -142,10 +293,51 @@
             "data": "cftapicustomCloudfrontLoggingBucketapiApiEndpoint6E0D4DE8"
           }
         ],
+        "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-apiApi/Default": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-apiApi/Default/{proxy+}": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*",
+              "defaultIntegration": "*",
+              "defaultMethodOptions": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethod": [
+                "*"
+              ]
+            }
+          }
+        ],
         "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-apiApi/Default/{proxy+}/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "cftapicustomCloudfrontLoggingBucketapiApiproxy98487F5F"
+          }
+        ],
+        "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-apiApi/Default/{proxy+}/ANY": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": "*"
+            }
           }
         ],
         "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-apiApi/Default/{proxy+}/ANY/ApiPermission.cftapicustomCloudfrontLoggingBucketcftapicustomCloudfrontLoggingBucketapiApi78AFA9D9.ANY..{proxy+}": [
@@ -166,6 +358,17 @@
             "data": "cftapicustomCloudfrontLoggingBucketapiApiproxyANYEA322D75"
           }
         ],
+        "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-apiApi/Default/ANY": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": "*"
+            }
+          }
+        ],
         "/cftapi-customCloudfrontLoggingBucket/cftapi-customCloudfrontLoggingBucket-apiApi/Default/ANY/ApiPermission.cftapicustomCloudfrontLoggingBucketcftapicustomCloudfrontLoggingBucketapiApi78AFA9D9.ANY..": [
           {
             "type": "aws:cdk:logicalId",
@@ -184,10 +387,31 @@
             "data": "cftapicustomCloudfrontLoggingBucketapiApiANYCCBB70F0"
           }
         ],
+        "/cftapi-customCloudfrontLoggingBucket/cf-apigw/SetHttpSecurityHeaders": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "functionName": "*",
+              "code": "*"
+            }
+          }
+        ],
         "/cftapi-customCloudfrontLoggingBucket/cf-apigw/SetHttpSecurityHeaders/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "cfapigwSetHttpSecurityHeaders07A0F0C0"
+          }
+        ],
+        "/cftapi-customCloudfrontLoggingBucket/cf-apigw/CloudfrontLoggingBucketAccessLog": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "retain",
+              "enforceSSL": true
+            }
           }
         ],
         "/cftapi-customCloudfrontLoggingBucket/cf-apigw/CloudfrontLoggingBucketAccessLog/Resource": [
@@ -196,10 +420,33 @@
             "data": "cfapigwCloudfrontLoggingBucketAccessLog6DDE9754"
           }
         ],
+        "/cftapi-customCloudfrontLoggingBucket/cf-apigw/CloudfrontLoggingBucketAccessLog/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/cftapi-customCloudfrontLoggingBucket/cf-apigw/CloudfrontLoggingBucketAccessLog/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "cfapigwCloudfrontLoggingBucketAccessLogPolicyDB63EA7B"
+          }
+        ],
+        "/cftapi-customCloudfrontLoggingBucket/cf-apigw/CloudfrontLoggingBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "autoDeleteObjects": true,
+              "objectOwnership": "ObjectWriter",
+              "serverAccessLogsBucket": "*"
+            }
           }
         ],
         "/cftapi-customCloudfrontLoggingBucket/cf-apigw/CloudfrontLoggingBucket/Resource": [
@@ -208,16 +455,49 @@
             "data": "cfapigwCloudfrontLoggingBucket79FE4195"
           }
         ],
+        "/cftapi-customCloudfrontLoggingBucket/cf-apigw/CloudfrontLoggingBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/cftapi-customCloudfrontLoggingBucket/cf-apigw/CloudfrontLoggingBucket/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "cfapigwCloudfrontLoggingBucketPolicyF5181F4F"
           }
         ],
+        "/cftapi-customCloudfrontLoggingBucket/cf-apigw/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/cftapi-customCloudfrontLoggingBucket/cf-apigw/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "cfapigwCloudfrontLoggingBucketAutoDeleteObjectsCustomResource86A970AB"
+          }
+        ],
+        "/cftapi-customCloudfrontLoggingBucket/cf-apigw/CloudFrontDistribution": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "defaultBehavior": {
+                "origin": "*",
+                "functionAssociations": [
+                  {
+                    "eventType": "viewer-response",
+                    "function": "*"
+                  }
+                ],
+                "viewerProtocolPolicy": "redirect-to-https"
+              },
+              "enableLogging": true,
+              "logBucket": "*"
+            }
           }
         ],
         "/cftapi-customCloudfrontLoggingBucket/cf-apigw/CloudFrontDistribution/Resource": [
@@ -230,6 +510,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "LatestNodeRuntimeMap"
+          }
+        ],
+        "/cftapi-customCloudfrontLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
           }
         ],
         "/cftapi-customCloudfrontLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [

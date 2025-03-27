@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "40.0.0",
   "artifacts": {
     "lamkenminimalargumentsIntegDefaultTestDeployAssert70C0F38A.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f75c511c74d8ebbc34e82280d32dacd63efd1806d8df4fe14fc2c8cdb4ddf13d.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/29483f2f1123e166c8dd712afe7641ee5e19d815d58ee02084e330ab89f9bdf5.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,16 +82,42 @@
         "lamken-minimal-arguments.assets"
       ],
       "metadata": {
+        "/lamken-minimal-arguments/contentBucketLog": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "versioned": true,
+              "removalPolicy": "destroy",
+              "autoDeleteObjects": true,
+              "encryption": "S3_MANAGED",
+              "enforceSSL": true
+            }
+          }
+        ],
         "/lamken-minimal-arguments/contentBucketLog/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "contentBucketLog5B9803A6"
           }
         ],
+        "/lamken-minimal-arguments/contentBucketLog/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/lamken-minimal-arguments/contentBucketLog/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "contentBucketLogPolicy52155F9C"
+          }
+        ],
+        "/lamken-minimal-arguments/contentBucketLog/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/lamken-minimal-arguments/contentBucketLog/AutoDeleteObjectsCustomResource/Default": [
@@ -106,6 +132,12 @@
             "data": "LatestNodeRuntimeMap"
           }
         ],
+        "/lamken-minimal-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
         "/lamken-minimal-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
           {
             "type": "aws:cdk:logicalId",
@@ -118,10 +150,31 @@
             "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
           }
         ],
+        "/lamken-minimal-arguments/contentBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "versioned": true,
+              "removalPolicy": "destroy",
+              "autoDeleteObjects": true,
+              "encryption": "S3_MANAGED",
+              "enforceSSL": true,
+              "serverAccessLogsBucket": "*"
+            }
+          }
+        ],
         "/lamken-minimal-arguments/contentBucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "contentBucket356CF7A5"
+          }
+        ],
+        "/lamken-minimal-arguments/contentBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
           }
         ],
         "/lamken-minimal-arguments/contentBucket/Policy/Resource": [
@@ -130,10 +183,74 @@
             "data": "contentBucketPolicy71256B1B"
           }
         ],
+        "/lamken-minimal-arguments/contentBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamken-minimal-arguments/contentBucket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "contentBucketAutoDeleteObjectsCustomResourceD6F9707E"
+          }
+        ],
+        "/lamken-minimal-arguments/minimal-arguments/LambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/lamken-minimal-arguments/minimal-arguments/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/lamken-minimal-arguments/minimal-arguments/LambdaFunctionServiceRole/Resource": [
@@ -142,16 +259,114 @@
             "data": "minimalargumentsLambdaFunctionServiceRole73B77FF7"
           }
         ],
+        "/lamken-minimal-arguments/minimal-arguments/LambdaFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
         "/lamken-minimal-arguments/minimal-arguments/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "minimalargumentsLambdaFunctionServiceRoleDefaultPolicy59EC60ED"
           }
         ],
+        "/lamken-minimal-arguments/minimal-arguments/LambdaFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*"
+              ]
+            }
+          }
+        ],
         "/lamken-minimal-arguments/minimal-arguments/LambdaFunction/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "minimalargumentsLambdaFunctionC19CFAAC"
+          }
+        ],
+        "/lamken-minimal-arguments/minimal-arguments/kendra-index-role-minimal-arguments": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "description": "*",
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/lamken-minimal-arguments/minimal-arguments/kendra-index-role-minimal-arguments/Importkendra-index-role-minimal-arguments": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/lamken-minimal-arguments/minimal-arguments/kendra-index-role-minimal-arguments/Resource": [
@@ -164,6 +379,25 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "minimalargumentskendraindexminimalarguments5CBDD236"
+          }
+        ],
+        "/lamken-minimal-arguments/minimal-arguments/data-source-role-minimal-arguments0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "description": "*",
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/lamken-minimal-arguments/minimal-arguments/data-source-role-minimal-arguments0/Importdata-source-role-minimal-arguments0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/lamken-minimal-arguments/minimal-arguments/data-source-role-minimal-arguments0/Resource": [

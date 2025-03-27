@@ -1,5 +1,5 @@
 {
-  "version": "38.0.1",
+  "version": "40.0.0",
   "artifacts": {
     "cfts3nologgingIntegDefaultTestDeployAssert18393DDB.assets": {
       "type": "cdk:asset-manifest",
@@ -16,7 +16,6 @@
         "templateFile": "cfts3nologgingIntegDefaultTestDeployAssert18393DDB.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
-        "notificationArns": [],
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
         "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
@@ -65,10 +64,9 @@
         "templateFile": "cfts3-no-logging.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
-        "notificationArns": [],
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4604590b01528cf1d9e964991f75867b9bfe0a55b2be090ae95f630a5ff064e.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4663ba5b253d9190787b2392dc645cff6625f7c2bace35a6a78d46c42a8390ff.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -84,10 +82,56 @@
         "cfts3-no-logging.assets"
       ],
       "metadata": {
+        "/cfts3-no-logging/test-cloudfront-s3/S3Bucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "lifecycleRules": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                }
+              ],
+              "autoDeleteObjects": true
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addLifecycleRule": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                },
+                "*",
+                "*"
+              ]
+            }
+          }
+        ],
         "/cfts3-no-logging/test-cloudfront-s3/S3Bucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfronts3S3BucketE0C5F76E"
+          }
+        ],
+        "/cfts3-no-logging/test-cloudfront-s3/S3Bucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
           }
         ],
         "/cfts3-no-logging/test-cloudfront-s3/S3Bucket/Policy/Resource": [
@@ -96,10 +140,25 @@
             "data": "testcloudfronts3S3BucketPolicy250F1F61"
           }
         ],
+        "/cfts3-no-logging/test-cloudfront-s3/S3Bucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/cfts3-no-logging/test-cloudfront-s3/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfronts3S3BucketAutoDeleteObjectsCustomResourceA13DD8F7"
+          }
+        ],
+        "/cfts3-no-logging/test-cloudfront-s3/SetHttpSecurityHeaders": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "functionName": "*",
+              "code": "*"
+            }
           }
         ],
         "/cfts3-no-logging/test-cloudfront-s3/SetHttpSecurityHeaders/Resource": [
@@ -112,6 +171,26 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfronts3CloudFrontOac7A951AA6"
+          }
+        ],
+        "/cfts3-no-logging/test-cloudfront-s3/CloudFrontDistribution": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "defaultBehavior": {
+                "origin": "*",
+                "viewerProtocolPolicy": "redirect-to-https",
+                "functionAssociations": [
+                  {
+                    "eventType": "viewer-response",
+                    "function": "*"
+                  }
+                ]
+              },
+              "enableLogging": false,
+              "logBucket": "*",
+              "defaultRootObject": "*"
+            }
           }
         ],
         "/cfts3-no-logging/test-cloudfront-s3/CloudFrontDistribution/Resource": [

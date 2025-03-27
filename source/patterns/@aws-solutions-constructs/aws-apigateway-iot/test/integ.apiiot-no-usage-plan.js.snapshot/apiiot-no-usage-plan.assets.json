@@ -1,0 +1,19 @@
+{
+  "version": "39.0.0",
+  "files": {
+    "0eb1a026b96b25dfde96ac56cbdf47c2dfe228f8b76107ee2ebdbfd7d7717c42": {
+      "source": {
+        "path": "apiiot-no-usage-plan.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "0eb1a026b96b25dfde96ac56cbdf47c2dfe228f8b76107ee2ebdbfd7d7717c42.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

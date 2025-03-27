@@ -1,5 +1,5 @@
 {
-  "version": "38.0.1",
+  "version": "40.0.0",
   "artifacts": {
     "s3sqsexistingLoggingBucketIntegDefaultTestDeployAssert9EECE2F2.assets": {
       "type": "cdk:asset-manifest",
@@ -16,7 +16,6 @@
         "templateFile": "s3sqsexistingLoggingBucketIntegDefaultTestDeployAssert9EECE2F2.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
-        "notificationArns": [],
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
         "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
@@ -65,10 +64,9 @@
         "templateFile": "s3sqs-existingLoggingBucket.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
-        "notificationArns": [],
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1da0fcde55fe48e08358103eb891427ceb279d9e10f709570cd310fedc8a126e.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0eac7a4408e90a9b65958d11d0d6b8d1266e0b0070bc93db8e1a8c287a479b4c.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -84,16 +82,42 @@
         "s3sqs-existingLoggingBucket.assets"
       ],
       "metadata": {
+        "/s3sqs-existingLoggingBucket/scrapBucketLog": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "versioned": true,
+              "removalPolicy": "destroy",
+              "autoDeleteObjects": true,
+              "encryption": "S3_MANAGED",
+              "enforceSSL": true
+            }
+          }
+        ],
         "/s3sqs-existingLoggingBucket/scrapBucketLog/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "scrapBucketLog7B53B25C"
           }
         ],
+        "/s3sqs-existingLoggingBucket/scrapBucketLog/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/s3sqs-existingLoggingBucket/scrapBucketLog/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "scrapBucketLogPolicy2972C573"
+          }
+        ],
+        "/s3sqs-existingLoggingBucket/scrapBucketLog/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/s3sqs-existingLoggingBucket/scrapBucketLog/AutoDeleteObjectsCustomResource/Default": [
@@ -126,10 +150,31 @@
             "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
           }
         ],
+        "/s3sqs-existingLoggingBucket/scrapBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "versioned": true,
+              "removalPolicy": "destroy",
+              "autoDeleteObjects": true,
+              "encryption": "S3_MANAGED",
+              "enforceSSL": true,
+              "serverAccessLogsBucket": "*"
+            }
+          }
+        ],
         "/s3sqs-existingLoggingBucket/scrapBucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "scrapBucketB11863B7"
+          }
+        ],
+        "/s3sqs-existingLoggingBucket/scrapBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
           }
         ],
         "/s3sqs-existingLoggingBucket/scrapBucket/Policy/Resource": [
@@ -138,10 +183,55 @@
             "data": "scrapBucketPolicy189B0607"
           }
         ],
+        "/s3sqs-existingLoggingBucket/scrapBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/s3sqs-existingLoggingBucket/scrapBucket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275"
+          }
+        ],
+        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/S3Bucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "lifecycleRules": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                }
+              ],
+              "serverAccessLogsBucket": "*",
+              "autoDeleteObjects": true
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addLifecycleRule": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                },
+                "*",
+                "*"
+              ]
+            }
           }
         ],
         "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/S3Bucket/Resource": [
@@ -150,10 +240,24 @@
             "data": "tests3sqstempS3Bucket579C3000"
           }
         ],
+        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/S3Bucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/S3Bucket/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "tests3sqstempS3BucketPolicy1DE71896"
+          }
+        ],
+        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/S3Bucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
@@ -168,16 +272,43 @@
             "data": "tests3sqstempS3BucketNotificationsE2A27A09"
           }
         ],
+        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue-dlq": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "KMS_MANAGED",
+              "fifo": "*"
+            }
+          }
+        ],
         "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "tests3sqstempqueuedlq19A93E90"
           }
         ],
+        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue-dlq/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "queues": [
+                "*"
+              ]
+            }
+          }
+        ],
         "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue-dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "tests3sqstempqueuedlqPolicyBD207BAA"
+          }
+        ],
+        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/'queueKey'": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "enableKeyRotation": true
+            }
           }
         ],
         "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/'queueKey'/Resource": [
@@ -187,6 +318,17 @@
           }
         ],
         "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "KMS_MANAGED",
+              "deadLetterQueue": {
+                "maxReceiveCount": "*",
+                "queue": "*"
+              },
+              "encryptionMasterKey": "*"
+            }
+          },
           {
             "type": "aws:cdk:warning",
             "data": "encryption: Automatically changed to QueueEncryption.KMS, was: QueueEncryption.KMS_MANAGED\nWhen encryptionMasterKey is provided, always set `encryption: QueueEncryption.KMS` [ack: @aws-cdk/aws-sqs:queueEncryptionChangedToKMS]"
@@ -198,16 +340,107 @@
             "data": "tests3sqstempqueueE6526813"
           }
         ],
+        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "queues": [
+                "*"
+              ]
+            }
+          }
+        ],
         "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "tests3sqstempqueuePolicy6C62431A"
           }
         ],
+        "/s3sqs-existingLoggingBucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addManagedPolicy": [
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/s3sqs-existingLoggingBucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/ImportRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/s3sqs-existingLoggingBucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
+          }
+        ],
+        "/s3sqs-existingLoggingBucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/s3sqs-existingLoggingBucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource": [

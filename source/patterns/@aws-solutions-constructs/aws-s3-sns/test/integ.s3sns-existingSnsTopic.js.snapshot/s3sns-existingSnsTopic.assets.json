@@ -1,5 +1,5 @@
 {
-  "version": "38.0.1",
+  "version": "39.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "source": {
@@ -14,7 +14,7 @@
         }
       }
     },
-    "ff97926298bf30510586b6f2826ab76fc7d4769421ffd2a08dbf374127965fa1": {
+    "209af2bb6c64634d970253648a5b9a370e024580251e78f2ceac38111574c6c3": {
       "source": {
         "path": "s3sns-existingSnsTopic.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "ff97926298bf30510586b6f2826ab76fc7d4769421ffd2a08dbf374127965fa1.json",
+          "objectKey": "209af2bb6c64634d970253648a5b9a370e024580251e78f2ceac38111574c6c3.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

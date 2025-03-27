@@ -13,7 +13,7 @@
 
 // Imports
 import { Stack, Aws } from 'aws-cdk-lib';
-import { ApiGatewayToSageMakerEndpoint } from '../lib';
+import { ApiGatewayToSageMakerEndpoint, ApiGatewayToSageMakerEndpointProps } from '../lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Template } from 'aws-cdk-lib/assertions';
 
@@ -119,6 +119,8 @@ test('Test deployment w/ overwritten properties', () => {
   template.hasResourceProperties('AWS::IAM::Role', {
     Description: 'existing role for SageMaker integration'
   });
+
+  template.resourceCountIs('AWS::ApiGateway::UsagePlan', 1);
 });
 
 test('Construct accepts additional read request templates', () => {
@@ -142,4 +144,41 @@ test('Construct accepts additional read request templates', () => {
       }
     }
   });
+});
+
+test('Confirm call to CheckApiProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const props: ApiGatewayToSageMakerEndpointProps = {
+    apiGatewayProps: {
+      defaultMethodOptions: {
+        apiKeyRequired: true
+      },
+    },
+    endpointName: 'my-endpoint',
+    resourcePath: '{my_param}',
+    requestMappingTemplate: 'my-request-vtl-template',
+    createUsagePlan: false,
+  };
+  const app = () => {
+    new ApiGatewayToSageMakerEndpoint(stack, 'test-apigateway-sagemaker', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - if API key is required, then the Usage plan must be created\n');
+});
+
+test('Confirm suppression of Usage Plan', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const props: ApiGatewayToSageMakerEndpointProps = {
+    endpointName: 'my-endpoint',
+    resourcePath: '{my_param}',
+    requestMappingTemplate: 'my-request-vtl-template',
+    createUsagePlan: false
+  };
+  new ApiGatewayToSageMakerEndpoint(stack, 'test-apigateway-sagemaker', props);
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::ApiGateway::UsagePlan', 0);
 });

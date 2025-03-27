@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "40.0.0",
   "artifacts": {
     "lamfhsexistingfunctionIntegDefaultTestDeployAssertF673254D.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/90f91fb99aff55a8a04315bb7552d4acd35d9297dea630e68e1cc1acb978ab02.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/da30e006d97c98bad4899c751ea01e892925053e20d23f00fbb22fc0cc4af209.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,10 +82,31 @@
         "lamfhs-existing-function.assets"
       ],
       "metadata": {
+        "/lamfhs-existing-function/destination-firehose/S3LoggingBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "autoDeleteObjects": true
+            }
+          }
+        ],
         "/lamfhs-existing-function/destination-firehose/S3LoggingBucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "destinationfirehoseS3LoggingBucket19A32AC0"
+          }
+        ],
+        "/lamfhs-existing-function/destination-firehose/S3LoggingBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
           }
         ],
         "/lamfhs-existing-function/destination-firehose/S3LoggingBucket/Policy/Resource": [
@@ -94,10 +115,55 @@
             "data": "destinationfirehoseS3LoggingBucketPolicyE4970A90"
           }
         ],
+        "/lamfhs-existing-function/destination-firehose/S3LoggingBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamfhs-existing-function/destination-firehose/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "destinationfirehoseS3LoggingBucketAutoDeleteObjectsCustomResourceDE2506F2"
+          }
+        ],
+        "/lamfhs-existing-function/destination-firehose/S3Bucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "lifecycleRules": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                }
+              ],
+              "serverAccessLogsBucket": "*",
+              "autoDeleteObjects": true
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addLifecycleRule": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                },
+                "*",
+                "*"
+              ]
+            }
           }
         ],
         "/lamfhs-existing-function/destination-firehose/S3Bucket/Resource": [
@@ -106,10 +172,24 @@
             "data": "destinationfirehoseS3BucketEC05EE08"
           }
         ],
+        "/lamfhs-existing-function/destination-firehose/S3Bucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/lamfhs-existing-function/destination-firehose/S3Bucket/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "destinationfirehoseS3BucketPolicy19ACA86F"
+          }
+        ],
+        "/lamfhs-existing-function/destination-firehose/S3Bucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/lamfhs-existing-function/destination-firehose/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
@@ -118,10 +198,26 @@
             "data": "destinationfirehoseS3BucketAutoDeleteObjectsCustomResource87C9D64B"
           }
         ],
+        "/lamfhs-existing-function/destination-firehose/firehose-log-group": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "retention": 9999
+            }
+          }
+        ],
         "/lamfhs-existing-function/destination-firehose/firehose-log-group/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "destinationfirehosefirehoseloggroup874764AF"
+          }
+        ],
+        "/lamfhs-existing-function/destination-firehose/firehose-log-group/firehose-log-stream": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroup": "*"
+            }
           }
         ],
         "/lamfhs-existing-function/destination-firehose/firehose-log-group/firehose-log-stream/Resource": [
@@ -130,10 +226,75 @@
             "data": "destinationfirehosefirehoseloggroupfirehoselogstreamC03C78F6"
           }
         ],
+        "/lamfhs-existing-function/destination-firehose/KinesisFirehoseRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamfhs-existing-function/destination-firehose/KinesisFirehoseRole/ImportKinesisFirehoseRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamfhs-existing-function/destination-firehose/KinesisFirehoseRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "destinationfirehoseKinesisFirehoseRole5542AE95"
+          }
+        ],
+        "/lamfhs-existing-function/destination-firehose/KinesisFirehosePolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
           }
         ],
         "/lamfhs-existing-function/destination-firehose/KinesisFirehosePolicy/Resource": [
@@ -154,6 +315,12 @@
             "data": "LatestNodeRuntimeMap"
           }
         ],
+        "/lamfhs-existing-function/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
         "/lamfhs-existing-function/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
           {
             "type": "aws:cdk:logicalId",
@@ -166,10 +333,105 @@
             "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
           }
         ],
+        "/lamfhs-existing-function/existing-function": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "runtime": "*",
+              "handler": "*",
+              "code": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamfhs-existing-function/existing-function/ServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "managedPolicies": [
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamfhs-existing-function/existing-function/ServiceRole/ImportServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamfhs-existing-function/existing-function/ServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "existingfunctionServiceRole90E818C0"
+          }
+        ],
+        "/lamfhs-existing-function/existing-function/ServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/lamfhs-existing-function/existing-function/ServiceRole/DefaultPolicy/Resource": [

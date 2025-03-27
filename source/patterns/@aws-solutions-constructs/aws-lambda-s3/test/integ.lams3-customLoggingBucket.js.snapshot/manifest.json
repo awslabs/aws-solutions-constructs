@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "40.0.0",
   "artifacts": {
     "lams3customLoggingBucketIntegDefaultTestDeployAssert3299F98C.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6177b617cd01d127da07f52cfeeba3daf506a3dc34ee5569fc989708822d7687.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3a7d34659a4e8c0254d5e43089322758e0bfec961635b17c972c85894a17935c.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,10 +82,98 @@
         "lams3-customLoggingBucket.assets"
       ],
       "metadata": {
+        "/lams3-customLoggingBucket/test-lambda-s3/LambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/lams3-customLoggingBucket/test-lambda-s3/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lams3-customLoggingBucket/test-lambda-s3/LambdaFunctionServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdas3LambdaFunctionServiceRole72E20379"
+          }
+        ],
+        "/lams3-customLoggingBucket/test-lambda-s3/LambdaFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/lams3-customLoggingBucket/test-lambda-s3/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
@@ -94,10 +182,75 @@
             "data": "testlambdas3LambdaFunctionServiceRoleDefaultPolicyB6FC6493"
           }
         ],
+        "/lams3-customLoggingBucket/test-lambda-s3/LambdaFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "runtime": "*",
+              "handler": "*",
+              "code": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*"
+              ]
+            }
+          }
+        ],
         "/lams3-customLoggingBucket/test-lambda-s3/LambdaFunction/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdas3LambdaFunction1B8788C9"
+          }
+        ],
+        "/lams3-customLoggingBucket/test-lambda-s3/S3LoggingBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "autoDeleteObjects": true,
+              "lifecycleRules": [
+                {
+                  "enabled": true,
+                  "transitions": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addLifecycleRule": [
+                {
+                  "enabled": true,
+                  "transitions": "*"
+                },
+                "*",
+                "*"
+              ]
+            }
           }
         ],
         "/lams3-customLoggingBucket/test-lambda-s3/S3LoggingBucket/Resource": [
@@ -106,10 +259,24 @@
             "data": "testlambdas3S3LoggingBucketD42FC73D"
           }
         ],
+        "/lams3-customLoggingBucket/test-lambda-s3/S3LoggingBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/lams3-customLoggingBucket/test-lambda-s3/S3LoggingBucket/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdas3S3LoggingBucketPolicyCEAFB213"
+          }
+        ],
+        "/lams3-customLoggingBucket/test-lambda-s3/S3LoggingBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/lams3-customLoggingBucket/test-lambda-s3/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
@@ -118,10 +285,56 @@
             "data": "testlambdas3S3LoggingBucketAutoDeleteObjectsCustomResource9AE70F3A"
           }
         ],
+        "/lams3-customLoggingBucket/test-lambda-s3/S3Bucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "lifecycleRules": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                }
+              ],
+              "serverAccessLogsBucket": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addLifecycleRule": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                },
+                "*",
+                "*"
+              ]
+            }
+          }
+        ],
         "/lams3-customLoggingBucket/test-lambda-s3/S3Bucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdas3S3Bucket179A52E6"
+          }
+        ],
+        "/lams3-customLoggingBucket/test-lambda-s3/S3Bucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
           }
         ],
         "/lams3-customLoggingBucket/test-lambda-s3/S3Bucket/Policy/Resource": [
@@ -134,6 +347,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "LatestNodeRuntimeMap"
+          }
+        ],
+        "/lams3-customLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
           }
         ],
         "/lams3-customLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [

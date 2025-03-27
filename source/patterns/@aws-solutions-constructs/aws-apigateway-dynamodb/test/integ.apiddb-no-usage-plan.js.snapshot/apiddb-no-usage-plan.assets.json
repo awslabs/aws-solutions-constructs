@@ -1,0 +1,19 @@
+{
+  "version": "39.0.0",
+  "files": {
+    "6396a620559de14918b7f11d203855130808261a63198c6db6548fc873772096": {
+      "source": {
+        "path": "apiddb-no-usage-plan.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "6396a620559de14918b7f11d203855130808261a63198c6db6548fc873772096.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

@@ -1,5 +1,5 @@
 {
-  "version": "38.0.1",
+  "version": "40.0.0",
   "artifacts": {
     "lamkengenaiindexIntegDefaultTestDeployAssert33BD740C.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fbb962ff400d6cb12aa78099ff65822e5d5456a2b526afd38675943c4b497988.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/71cf352ab46b79d489cb20e232caa6c1da514cae992f4fd4255e631dc6cc5b39.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,16 +82,42 @@
         "lamken-genai-index.assets"
       ],
       "metadata": {
+        "/lamken-genai-index/contentBucketLog": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "versioned": true,
+              "removalPolicy": "destroy",
+              "autoDeleteObjects": true,
+              "encryption": "S3_MANAGED",
+              "enforceSSL": true
+            }
+          }
+        ],
         "/lamken-genai-index/contentBucketLog/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "contentBucketLog5B9803A6"
           }
         ],
+        "/lamken-genai-index/contentBucketLog/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/lamken-genai-index/contentBucketLog/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "contentBucketLogPolicy52155F9C"
+          }
+        ],
+        "/lamken-genai-index/contentBucketLog/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/lamken-genai-index/contentBucketLog/AutoDeleteObjectsCustomResource/Default": [
@@ -124,10 +150,31 @@
             "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
           }
         ],
+        "/lamken-genai-index/contentBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "versioned": true,
+              "removalPolicy": "destroy",
+              "autoDeleteObjects": true,
+              "encryption": "S3_MANAGED",
+              "enforceSSL": true,
+              "serverAccessLogsBucket": "*"
+            }
+          }
+        ],
         "/lamken-genai-index/contentBucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "contentBucket356CF7A5"
+          }
+        ],
+        "/lamken-genai-index/contentBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
           }
         ],
         "/lamken-genai-index/contentBucket/Policy/Resource": [
@@ -136,10 +183,74 @@
             "data": "contentBucketPolicy71256B1B"
           }
         ],
+        "/lamken-genai-index/contentBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamken-genai-index/contentBucket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "contentBucketAutoDeleteObjectsCustomResourceD6F9707E"
+          }
+        ],
+        "/lamken-genai-index/genai-index/LambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/lamken-genai-index/genai-index/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/lamken-genai-index/genai-index/LambdaFunctionServiceRole/Resource": [
@@ -148,16 +259,114 @@
             "data": "genaiindexLambdaFunctionServiceRoleE929EAD8"
           }
         ],
+        "/lamken-genai-index/genai-index/LambdaFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
         "/lamken-genai-index/genai-index/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "genaiindexLambdaFunctionServiceRoleDefaultPolicy18386D50"
           }
         ],
+        "/lamken-genai-index/genai-index/LambdaFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*"
+              ]
+            }
+          }
+        ],
         "/lamken-genai-index/genai-index/LambdaFunction/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "genaiindexLambdaFunctionD79F5018"
+          }
+        ],
+        "/lamken-genai-index/genai-index/kendra-index-role-genai-index": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "description": "*",
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/lamken-genai-index/genai-index/kendra-index-role-genai-index/Importkendra-index-role-genai-index": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/lamken-genai-index/genai-index/kendra-index-role-genai-index/Resource": [
@@ -170,6 +379,25 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "genaiindexkendraindexgenaiindex5FFB72B4"
+          }
+        ],
+        "/lamken-genai-index/genai-index/data-source-role-genai-index0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "description": "*",
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/lamken-genai-index/genai-index/data-source-role-genai-index0/Importdata-source-role-genai-index0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/lamken-genai-index/genai-index/data-source-role-genai-index0/Resource": [

@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "39.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "source": {
@@ -14,7 +14,7 @@
         }
       }
     },
-    "92879621a1e0e1e39eac7ca197289b00bd8c86bb722c9c8c5ed4e139e3747c23": {
+    "17885dc17d6e088381b430e27d4236a4897ab3ecdba037e25e3cbd3e73bef01e": {
       "source": {
         "path": "cftmed-withoutHttpSecurityHeaders.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "92879621a1e0e1e39eac7ca197289b00bd8c86bb722c9c8c5ed4e139e3747c23.json",
+          "objectKey": "17885dc17d6e088381b430e27d4236a4897ab3ecdba037e25e3cbd3e73bef01e.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

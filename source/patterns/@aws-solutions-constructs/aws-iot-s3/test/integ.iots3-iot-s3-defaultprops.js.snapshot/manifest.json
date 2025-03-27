@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "40.0.0",
   "artifacts": {
     "iots3iots3defaultpropsIntegDefaultTestDeployAssertE298357C.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3ed6b5221019194b6e48aa2024fc474c4d5d0cff1dbcf245904d869e12084765.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e0be72ae45b4b5d3072f7b10add316ebcb5803ba4ed676459451ca8a8244adb8.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,10 +82,31 @@
         "iots3-iot-s3-defaultprops.assets"
       ],
       "metadata": {
+        "/iots3-iot-s3-defaultprops/test-iot-s3-integration/S3LoggingBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "autoDeleteObjects": true
+            }
+          }
+        ],
         "/iots3-iot-s3-defaultprops/test-iot-s3-integration/S3LoggingBucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testiots3integrationS3LoggingBucket606446CC"
+          }
+        ],
+        "/iots3-iot-s3-defaultprops/test-iot-s3-integration/S3LoggingBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
           }
         ],
         "/iots3-iot-s3-defaultprops/test-iot-s3-integration/S3LoggingBucket/Policy/Resource": [
@@ -94,10 +115,54 @@
             "data": "testiots3integrationS3LoggingBucketPolicy2DB45D12"
           }
         ],
+        "/iots3-iot-s3-defaultprops/test-iot-s3-integration/S3LoggingBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/iots3-iot-s3-defaultprops/test-iot-s3-integration/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testiots3integrationS3LoggingBucketAutoDeleteObjectsCustomResource98F8BDFE"
+          }
+        ],
+        "/iots3-iot-s3-defaultprops/test-iot-s3-integration/S3Bucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "lifecycleRules": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                }
+              ],
+              "serverAccessLogsBucket": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addLifecycleRule": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                },
+                "*",
+                "*"
+              ]
+            }
           }
         ],
         "/iots3-iot-s3-defaultprops/test-iot-s3-integration/S3Bucket/Resource": [
@@ -106,16 +171,95 @@
             "data": "testiots3integrationS3Bucket9B8B180C"
           }
         ],
+        "/iots3-iot-s3-defaultprops/test-iot-s3-integration/S3Bucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
         "/iots3-iot-s3-defaultprops/test-iot-s3-integration/S3Bucket/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testiots3integrationS3BucketPolicy18905375"
           }
         ],
+        "/iots3-iot-s3-defaultprops/test-iot-s3-integration/iot-actions-role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/iots3-iot-s3-defaultprops/test-iot-s3-integration/iot-actions-role/Importiot-actions-role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/iots3-iot-s3-defaultprops/test-iot-s3-integration/iot-actions-role/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testiots3integrationiotactionsrole04473665"
+          }
+        ],
+        "/iots3-iot-s3-defaultprops/test-iot-s3-integration/iot-actions-role/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/iots3-iot-s3-defaultprops/test-iot-s3-integration/iot-actions-role/DefaultPolicy/Resource": [
@@ -134,6 +278,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "LatestNodeRuntimeMap"
+          }
+        ],
+        "/iots3-iot-s3-defaultprops/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
           }
         ],
         "/iots3-iot-s3-defaultprops/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [

@@ -79,6 +79,7 @@ test('Test deployment w/ overwritten properties', () => {
 
   // Test for Cloudwatch Alarms
   template.resourceCountIs('AWS::CloudWatch::Alarm', 2);
+  template.resourceCountIs('AWS::ApiGateway::UsagePlan', 1);
 });
 
 test('Test deployment w/ existing stream', () => {
@@ -309,4 +310,35 @@ test('Construct uses custom putRecordsMethodResponses property', () => {
       StatusCode: "200"
     }]
   });
+});
+
+test('Confirm call to CheckApiProps', () => {
+  // Initial Setup
+  const stack = new Stack();
+
+  const props: ApiGatewayToKinesisStreamsProps = {
+    apiGatewayProps: {
+      defaultMethodOptions: {
+        apiKeyRequired: true
+      },
+    },
+    createUsagePlan: false,
+  };
+  const app = () => {
+    new ApiGatewayToKinesisStreams(stack, 'test-apigateway-kinesis', props);
+  };
+  // Assertion
+  expect(app).toThrowError('Error - if API key is required, then the Usage plan must be created\n');
+});
+
+test('Confirm suppression of Usage Plan', () => {
+  // Initial Setup
+  const stack = new Stack();
+  const props: ApiGatewayToKinesisStreamsProps = {
+    createUsagePlan: false
+  };
+  new ApiGatewayToKinesisStreams(stack, 'test-apigateway-kinesis', props);
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::ApiGateway::UsagePlan', 0);
 });

@@ -40,7 +40,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                  "version": "2.173.2"
+                  "version": "2.179.0"
                 }
               },
               "Policy": {
@@ -174,13 +174,18 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                      "version": "2.173.2"
+                      "version": "2.179.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                  "version": "2.173.2"
+                  "version": "2.179.0",
+                  "metadata": [
+                    {
+                      "bucket": "*"
+                    }
+                  ]
                 }
               },
               "AutoDeleteObjectsCustomResource": {
@@ -192,19 +197,31 @@
                     "path": "lamken-genai-index/contentBucketLog/AutoDeleteObjectsCustomResource/Default",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnResource",
-                      "version": "2.173.2"
+                      "version": "2.179.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CustomResource",
-                  "version": "2.173.2"
+                  "version": "2.179.0",
+                  "metadata": [
+                    "*"
+                  ]
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_s3.Bucket",
-              "version": "2.173.2"
+              "version": "2.179.0",
+              "metadata": [
+                {
+                  "versioned": true,
+                  "removalPolicy": "destroy",
+                  "autoDeleteObjects": true,
+                  "encryption": "S3_MANAGED",
+                  "enforceSSL": true
+                }
+              ]
             }
           },
           "LatestNodeRuntimeMap": {
@@ -212,7 +229,7 @@
             "path": "lamken-genai-index/LatestNodeRuntimeMap",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnMapping",
-              "version": "2.173.2"
+              "version": "2.179.0"
             }
           },
           "Custom::S3AutoDeleteObjectsCustomResourceProvider": {
@@ -224,7 +241,7 @@
                 "path": "lamken-genai-index/Custom::S3AutoDeleteObjectsCustomResourceProvider/Staging",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.AssetStaging",
-                  "version": "2.173.2"
+                  "version": "2.179.0"
                 }
               },
               "Role": {
@@ -232,7 +249,7 @@
                 "path": "lamken-genai-index/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.173.2"
+                  "version": "2.179.0"
                 }
               },
               "Handler": {
@@ -240,13 +257,13 @@
                 "path": "lamken-genai-index/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.173.2"
+                  "version": "2.179.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.CustomResourceProviderBase",
-              "version": "2.173.2"
+              "version": "2.179.0"
             }
           },
           "contentBucket": {
@@ -286,7 +303,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
-                  "version": "2.173.2"
+                  "version": "2.179.0"
                 }
               },
               "Policy": {
@@ -384,13 +401,18 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
-                      "version": "2.173.2"
+                      "version": "2.179.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
-                  "version": "2.173.2"
+                  "version": "2.179.0",
+                  "metadata": [
+                    {
+                      "bucket": "*"
+                    }
+                  ]
                 }
               },
               "AutoDeleteObjectsCustomResource": {
@@ -402,19 +424,32 @@
                     "path": "lamken-genai-index/contentBucket/AutoDeleteObjectsCustomResource/Default",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.CfnResource",
-                      "version": "2.173.2"
+                      "version": "2.179.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CustomResource",
-                  "version": "2.173.2"
+                  "version": "2.179.0",
+                  "metadata": [
+                    "*"
+                  ]
                 }
               }
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_s3.Bucket",
-              "version": "2.173.2"
+              "version": "2.179.0",
+              "metadata": [
+                {
+                  "versioned": true,
+                  "removalPolicy": "destroy",
+                  "autoDeleteObjects": true,
+                  "encryption": "S3_MANAGED",
+                  "enforceSSL": true,
+                  "serverAccessLogsBucket": "*"
+                }
+              ]
             }
           },
           "genai-index": {
@@ -430,7 +465,10 @@
                     "path": "lamken-genai-index/genai-index/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.173.2"
+                      "version": "2.179.0",
+                      "metadata": [
+                        "*"
+                      ]
                     }
                   },
                   "Resource": {
@@ -493,7 +531,7 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.173.2"
+                      "version": "2.179.0"
                     }
                   },
                   "DefaultPolicy": {
@@ -547,19 +585,81 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.173.2"
+                          "version": "2.179.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.173.2"
+                      "version": "2.179.0",
+                      "metadata": [
+                        "*",
+                        {
+                          "attachToRole": [
+                            "*"
+                          ]
+                        },
+                        {
+                          "attachToRole": [
+                            "*"
+                          ]
+                        },
+                        {
+                          "addStatements": [
+                            {}
+                          ]
+                        },
+                        {
+                          "addStatements": [
+                            {}
+                          ]
+                        },
+                        {
+                          "addStatements": [
+                            {}
+                          ]
+                        }
+                      ]
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.173.2"
+                  "version": "2.179.0",
+                  "metadata": [
+                    {
+                      "assumedBy": {
+                        "principalAccount": "*",
+                        "assumeRoleAction": "*"
+                      },
+                      "inlinePolicies": "*"
+                    },
+                    {
+                      "addToPrincipalPolicy": [
+                        {}
+                      ]
+                    },
+                    {
+                      "attachInlinePolicy": [
+                        "*"
+                      ]
+                    },
+                    {
+                      "attachInlinePolicy": [
+                        "*"
+                      ]
+                    },
+                    {
+                      "addToPrincipalPolicy": [
+                        {}
+                      ]
+                    },
+                    {
+                      "addToPrincipalPolicy": [
+                        {}
+                      ]
+                    }
+                  ]
                 }
               },
               "LambdaFunction": {
@@ -575,7 +675,7 @@
                         "path": "lamken-genai-index/genai-index/LambdaFunction/Code/Stage",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.AssetStaging",
-                          "version": "2.173.2"
+                          "version": "2.179.0"
                         }
                       },
                       "AssetBucket": {
@@ -583,13 +683,14 @@
                         "path": "lamken-genai-index/genai-index/LambdaFunction/Code/AssetBucket",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                          "version": "2.173.2"
+                          "version": "2.179.0",
+                          "metadata": []
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                      "version": "2.173.2"
+                      "version": "2.179.0"
                     }
                   },
                   "Resource": {
@@ -630,13 +731,37 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                      "version": "2.173.2"
+                      "version": "2.179.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.Function",
-                  "version": "2.173.2"
+                  "version": "2.179.0",
+                  "metadata": [
+                    {
+                      "role": "*",
+                      "tracing": "Active",
+                      "code": "*",
+                      "runtime": "*",
+                      "handler": "*"
+                    },
+                    {
+                      "addEnvironment": [
+                        "*",
+                        "*",
+                        {
+                          "removeInEdge": true
+                        }
+                      ]
+                    },
+                    {
+                      "addEnvironment": [
+                        "*",
+                        "*"
+                      ]
+                    }
+                  ]
                 }
               },
               "kendra-index-role-genai-index": {
@@ -648,7 +773,10 @@
                     "path": "lamken-genai-index/genai-index/kendra-index-role-genai-index/Importkendra-index-role-genai-index",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.173.2"
+                      "version": "2.179.0",
+                      "metadata": [
+                        "*"
+                      ]
                     }
                   },
                   "Resource": {
@@ -766,13 +894,23 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.173.2"
+                      "version": "2.179.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.173.2"
+                  "version": "2.179.0",
+                  "metadata": [
+                    {
+                      "assumedBy": {
+                        "principalAccount": "*",
+                        "assumeRoleAction": "*"
+                      },
+                      "description": "*",
+                      "inlinePolicies": "*"
+                    }
+                  ]
                 }
               },
               "kendra-index-genai-index": {
@@ -793,7 +931,7 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_kendra.CfnIndex",
-                  "version": "2.173.2"
+                  "version": "2.179.0"
                 }
               },
               "data-source-role-genai-index0": {
@@ -805,7 +943,10 @@
                     "path": "lamken-genai-index/genai-index/data-source-role-genai-index0/Importdata-source-role-genai-index0",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.173.2"
+                      "version": "2.179.0",
+                      "metadata": [
+                        "*"
+                      ]
                     }
                   },
                   "Resource": {
@@ -885,13 +1026,23 @@
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.173.2"
+                      "version": "2.179.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.173.2"
+                  "version": "2.179.0",
+                  "metadata": [
+                    {
+                      "assumedBy": {
+                        "principalAccount": "*",
+                        "assumeRoleAction": "*"
+                      },
+                      "description": "*",
+                      "inlinePolicies": "*"
+                    }
+                  ]
                 }
               },
               "data-source-genai-index0": {
@@ -942,13 +1093,13 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_kendra.CfnDataSource",
-                  "version": "2.173.2"
+                  "version": "2.179.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-solutions-constructs/aws-lambda-kendra.LambdaToKendra",
-              "version": "2.76.0"
+              "version": "2.79.1"
             }
           },
           "Integ": {
@@ -976,7 +1127,7 @@
                         "path": "lamken-genai-index/Integ/DefaultTest/DeployAssert/BootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnParameter",
-                          "version": "2.173.2"
+                          "version": "2.179.0"
                         }
                       },
                       "CheckBootstrapVersion": {
@@ -984,25 +1135,25 @@
                         "path": "lamken-genai-index/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion",
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.CfnRule",
-                          "version": "2.173.2"
+                          "version": "2.179.0"
                         }
                       }
                     },
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Stack",
-                      "version": "2.173.2"
+                      "version": "2.179.0"
                     }
                   }
                 },
                 "constructInfo": {
                   "fqn": "@aws-cdk/integ-tests-alpha.IntegTestCase",
-                  "version": "2.173.2-alpha.0"
+                  "version": "2.179.0-alpha.0"
                 }
               }
             },
             "constructInfo": {
               "fqn": "@aws-cdk/integ-tests-alpha.IntegTest",
-              "version": "2.173.2-alpha.0"
+              "version": "2.179.0-alpha.0"
             }
           },
           "BootstrapVersion": {
@@ -1010,7 +1161,7 @@
             "path": "lamken-genai-index/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.173.2"
+              "version": "2.179.0"
             }
           },
           "CheckBootstrapVersion": {
@@ -1018,13 +1169,13 @@
             "path": "lamken-genai-index/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.173.2"
+              "version": "2.179.0"
             }
           }
         },
         "constructInfo": {
           "fqn": "aws-cdk-lib.Stack",
-          "version": "2.173.2"
+          "version": "2.179.0"
         }
       },
       "Tree": {
@@ -1038,7 +1189,7 @@
     },
     "constructInfo": {
       "fqn": "aws-cdk-lib.App",
-      "version": "2.173.2"
+      "version": "2.179.0"
     }
   }
 }

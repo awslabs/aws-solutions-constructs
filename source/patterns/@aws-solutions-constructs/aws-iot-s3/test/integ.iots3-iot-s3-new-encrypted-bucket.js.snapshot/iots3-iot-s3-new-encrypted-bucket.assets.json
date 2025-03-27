@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "39.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "source": {
@@ -14,7 +14,7 @@
         }
       }
     },
-    "27dd5b6db29b7370650616c45500275edf9fa4aa326adc3648791c4bb0590f5a": {
+    "a694b84553b582eb4c65683443d9a109e765d7e3440197fd4f69eba6e8a33c98": {
       "source": {
         "path": "iots3-iot-s3-new-encrypted-bucket.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "27dd5b6db29b7370650616c45500275edf9fa4aa326adc3648791c4bb0590f5a.json",
+          "objectKey": "a694b84553b582eb4c65683443d9a109e765d7e3440197fd4f69eba6e8a33c98.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

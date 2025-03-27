@@ -16,7 +16,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as api from 'aws-cdk-lib/aws-apigateway';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as defaults from '../index';
-import { Template } from 'aws-cdk-lib/assertions';
+import { Match, Template } from 'aws-cdk-lib/assertions';
 
 function deployRegionalApiGateway(stack: Stack) {
   const lambdaFunctionProps: lambda.FunctionProps = {
@@ -27,11 +27,11 @@ function deployRegionalApiGateway(stack: Stack) {
 
   const fn = defaults.deployLambdaFunction(stack, lambdaFunctionProps);
 
-  return defaults.RegionalLambdaRestApi(stack, fn);
+  return defaults.RegionalLambdaRestApi(stack, fn, undefined);
 }
 
-function setupRestApi(stack: Stack, apiProps?: any): void {
-  const globalRestApiResponse = defaults.GlobalRestApi(stack, apiProps);
+function setupRestApi(stack: Stack, apiProps?: any, createUsagePlan: boolean = true): void {
+  const globalRestApiResponse = defaults.GlobalRestApi(stack, apiProps, undefined, createUsagePlan);
   // Setup the API Gateway resource
   const apiGatewayResource = globalRestApiResponse.api.root.addResource('api-gateway-resource');
   // Setup the API Gateway Integration
@@ -115,6 +115,7 @@ test('Test override for RegionalApiGateway', () => {
       Name: "LambdaRestApi"
     }
   });
+  template.hasResource("AWS::ApiGateway::UsagePlan", {});
 });
 
 test('Test override for GlobalApiGateway', () => {
@@ -145,6 +146,7 @@ test('Test override for GlobalApiGateway', () => {
       Name: "HelloWorld"
     }
   });
+  template.hasResource("AWS::ApiGateway::UsagePlan", {});
 });
 
 test('Test ApiGateway::Account resource for RegionalApiGateway', () => {
@@ -205,6 +207,20 @@ test('Test default RestApi deployment w/ ApiGatewayProps', () => {
   });
 });
 
+test('Test suppress UsagePlan', () => {
+  const stack = new Stack();
+  setupRestApi(stack, {
+    restApiName: "customRestApi"
+  },
+    false);
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::ApiGateway::RestApi', {
+    Name: "customRestApi"
+  });
+  template.resourceCountIs("AWS::ApiGateway::UsagePlan", 0);
+});
+
 test('Test default RestApi deployment w/ cloudWatchRole set to false', () => {
   const stack = new Stack();
   setupRestApi(stack, {
@@ -213,6 +229,7 @@ test('Test default RestApi deployment w/ cloudWatchRole set to false', () => {
 
   const template = Template.fromStack(stack);
   template.resourceCountIs("AWS::ApiGateway::Account", 0);
+  template.hasResource("AWS::ApiGateway::UsagePlan", {});
 });
 
 test('Test default RestApi deployment for Cloudwatch loggroup', () => {
@@ -368,6 +385,33 @@ test('Test for RegionalRestApiGateway', () => {
   });
 });
 
+test('Test supporess usage plan in RegionalRestApiGateway', () => {
+  const stack = new Stack();
+
+  const regionalRestApiResponse = defaults.RegionalRestApi(stack, {
+    restApiName: "HelloWorld-RegionalApi"
+  }, undefined, false);
+  // Setup the API Gateway role
+  const apiGatewayRole = new iam.Role(stack, 'api-gateway-role', {
+    assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com')
+  });
+
+  // Setup the API Gateway resource
+  const apiGatewayResource = regionalRestApiResponse.api.root.addResource('hello');
+
+  defaults.addProxyMethodToApiResource(
+    {
+      service: 'iotdata',
+      path: 'hello',
+      apiGatewayRole,
+      apiMethod: 'POST',
+      apiResource: apiGatewayResource,
+      requestTemplate: "$input.json('$')"
+    });
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::ApiGateway::UsagePlan", 0);
+});
 // -----------------------------------------------------------------------
 // Tests for exception while overriding restApiProps using endPointTypes
 // -----------------------------------------------------------------------
@@ -824,4 +868,54 @@ test('Specifying application/json content-type in additionalRequestTemplates pro
   };
 
   expect(app).toThrowError('Request Template for the application/json content-type must be specified in the requestTemplate property and not in the additionalRequestTemplates property');
+});
+
+test('Test CheckApiProps', () => {
+  const apiWithKeyProps: api.LambdaRestApiProps = {
+    handler: {} as lambda.Function,
+    defaultMethodOptions: {
+      apiKeyRequired: true
+    }
+
+  };
+
+  const apiWithNoKeyProps: api.LambdaRestApiProps = {
+    handler: {} as lambda.Function,
+  };
+
+  const noErrApp = () => {
+    defaults.CheckApiProps({
+      apiGatewayProps: apiWithNoKeyProps,
+      createUsagePlan: false
+    });
+  };
+  expect(noErrApp).not.toThrowError();
+
+  const app = () => {
+    defaults.CheckApiProps({
+      apiGatewayProps: apiWithKeyProps,
+      createUsagePlan: false
+    });
+  };
+  expect(app).toThrowError('Error - if API key is required, then the Usage plan must be created\n');
+});
+
+test('Correctly generate a SpecRestApi', () => {
+  const stack = new Stack();
+
+  const myApiDefinition = api.ApiDefinition.fromAsset('./test/openapi/apiDefinition.json');
+
+  defaults.CreateSpecRestApi(stack, {
+    apiDefinition: myApiDefinition
+  });
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::ApiGateway::RestApi", 1);
+  template.resourceCountIs("AWS::ApiGateway::Deployment", 1);
+  template.resourceCountIs("AWS::ApiGateway::Stage", 1);
+  template.resourceCountIs("AWS::ApiGateway::UsagePlan", 1);
+  template.hasResourceProperties("AWS::ApiGateway::RestApi", {
+    BodyS3Location: {
+      Bucket: Match.anyValue()
+    }
+  });
 });
