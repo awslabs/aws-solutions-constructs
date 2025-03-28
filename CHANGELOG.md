@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.81.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.80.0...v2.81.0) (2025-03-28)
+
+Build on CDK 2.186.0
+
+* **aws-openapigateway-lambda:** fix template substitution ([#1284](https://github.com/awslabs/aws-solutions-constructs/issues/1284)) ([ea6da7a](https://github.com/awslabs/aws-solutions-constructs/commit/ea6da7acc596e6d7999948b4878517c94e6ba561))
+
 ## [2.80.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.79.1...v2.80.0) (2025-03-27)
 
 Build on CDK v2.179.0
