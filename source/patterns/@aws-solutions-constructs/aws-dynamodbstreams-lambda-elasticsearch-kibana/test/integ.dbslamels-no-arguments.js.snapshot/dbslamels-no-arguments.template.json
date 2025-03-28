@@ -68,11 +68,7 @@
     "PolicyDocument": {
      "Statement": [
       {
-       "Action": [
-        "dynamodb:ListStreams",
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
+       "Action": "dynamodb:ListStreams",
        "Effect": "Allow",
        "Resource": "*"
       },
@@ -113,16 +109,6 @@
       "Ref": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleEC11512B"
      }
     ]
-   },
-   "Metadata": {
-    "cfn_nag": {
-     "rules_to_suppress": [
-      {
-       "id": "W12",
-       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
-      }
-     ]
-    }
    }
   },
   "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionB70B7296": {
@@ -132,7 +118,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "92927de5fcc3aea277bddecb845bee318fb502f7375daedbdafb72c0400bc197.zip"
+     "S3Key": "a74ebe51b3b0a5d5ce9dba94e06a0334a9996a636fa2de01e119363adc36f9a6.zip"
     },
     "Environment": {
      "Variables": {
@@ -178,6 +164,30 @@
       }
      ]
     }
+   }
+  },
+  "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctioninlinePolicyAddedToExecutionRole05D4F2798": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctioninlinePolicyAddedToExecutionRole05D4F2798",
+    "Roles": [
+     {
+      "Ref": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleEC11512B"
+     }
+    ]
    }
   },
   "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionDynamoDBEventSourcedbslamelsnoargumentstestddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableE5DA3737A0F8E1D7": {

@@ -63,40 +63,6 @@
     }
    }
   },
-  "disconnectServiceRoleDefaultPolicyD85178B8": {
-   "Type": "AWS::IAM::Policy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "PolicyName": "disconnectServiceRoleDefaultPolicyD85178B8",
-    "Roles": [
-     {
-      "Ref": "disconnectServiceRole0B1E33D9"
-     }
-    ]
-   },
-   "Metadata": {
-    "cfn_nag": {
-     "rules_to_suppress": [
-      {
-       "id": "W12",
-       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
-      }
-     ]
-    }
-   }
-  },
   "disconnect829B70D0": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -124,7 +90,6 @@
     }
    },
    "DependsOn": [
-    "disconnectServiceRoleDefaultPolicyD85178B8",
     "disconnectServiceRole0B1E33D9"
    ],
    "Metadata": {
@@ -144,6 +109,30 @@
       }
      ]
     }
+   }
+  },
+  "disconnectinlinePolicyAddedToExecutionRole0CDB203CB": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "disconnectinlinePolicyAddedToExecutionRole0CDB203CB",
+    "Roles": [
+     {
+      "Ref": "disconnectServiceRole0B1E33D9"
+     }
+    ]
    }
   },
   "ApiGatewayV2WebSocketToSqsqueuedlq875602DF": {

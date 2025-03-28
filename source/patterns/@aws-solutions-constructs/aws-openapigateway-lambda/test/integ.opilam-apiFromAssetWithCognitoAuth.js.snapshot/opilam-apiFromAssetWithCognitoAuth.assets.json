@@ -1,5 +1,5 @@
 {
-  "version": "39.0.0",
+  "version": "40.0.0",
   "files": {
     "8c48f41891550d16b8b5de60b76d4f7a2b045576775bc16e9b461062c830b50d": {
       "source": {
@@ -79,7 +79,7 @@
         }
       }
     },
-    "cd188d2f7538d176b6e214bd2ebc3b74cc44952bde34af2f480e975678200b92": {
+    "b17fdfa387e3cb9b17a0f5f8c89e6ac3127f5b78cdf54e19b97340e297257cac": {
       "source": {
         "path": "opilam-apiFromAssetWithCognitoAuth.template.json",
         "packaging": "file"
@@ -87,7 +87,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "cd188d2f7538d176b6e214bd2ebc3b74cc44952bde34af2f480e975678200b92.json",
+          "objectKey": "b17fdfa387e3cb9b17a0f5f8c89e6ac3127f5b78cdf54e19b97340e297257cac.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

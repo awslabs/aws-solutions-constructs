@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "40.0.0",
   "files": {
     "42887c62b1163d790cdb42902037c9f639feb35681616a16826e400c8d1a4435": {
       "source": {
@@ -14,7 +14,7 @@
         }
       }
     },
-    "efdc187a0096e6e50e49878559facdc09b3f0b64912200e2455c0584d10fb8a1": {
+    "bfd5c0772919e97d599693a9dc90f27cdb7e14be378a2241b819c8c637115975": {
       "source": {
         "path": "lamsqs-deployFunction.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "efdc187a0096e6e50e49878559facdc09b3f0b64912200e2455c0584d10fb8a1.json",
+          "objectKey": "bfd5c0772919e97d599693a9dc90f27cdb7e14be378a2241b819c8c637115975.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

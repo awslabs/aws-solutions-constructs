@@ -1,5 +1,5 @@
 {
-  "version": "39.0.0",
+  "version": "40.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "source": {
@@ -27,7 +27,7 @@
         }
       }
     },
-    "812ab5b317ee29c25b5a237289eff8f0ac7d7d7c526124d1067b5e58bf94ef2b": {
+    "fcf1c32daccfa375215757d1812721a8c92698ee7b9cda6ae367773d5521f414": {
       "source": {
         "path": "lamels-disabledZoneAwareness.template.json",
         "packaging": "file"
@@ -35,7 +35,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "812ab5b317ee29c25b5a237289eff8f0ac7d7d7c526124d1067b5e58bf94ef2b.json",
+          "objectKey": "fcf1c32daccfa375215757d1812721a8c92698ee7b9cda6ae367773d5521f414.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

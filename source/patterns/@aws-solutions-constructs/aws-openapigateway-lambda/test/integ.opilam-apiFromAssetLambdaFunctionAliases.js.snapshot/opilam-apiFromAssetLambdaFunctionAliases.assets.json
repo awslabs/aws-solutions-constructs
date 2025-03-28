@@ -1,5 +1,5 @@
 {
-  "version": "39.0.0",
+  "version": "40.0.0",
   "files": {
     "c2b362b5f0d6d8f56ac2c011288aebd095499d839b130a932427f74232de2a32": {
       "source": {
@@ -79,7 +79,7 @@
         }
       }
     },
-    "bdd517def05a173c3a17582a74c26b1a380f308da27171ae59a97c8b8538a89e": {
+    "a02be628fd2eb061b65653e58a7dbc42ecd3fb3e2e7d1e2c82d393beaaa067f8": {
       "source": {
         "path": "opilam-apiFromAssetLambdaFunctionAliases.template.json",
         "packaging": "file"
@@ -87,7 +87,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "bdd517def05a173c3a17582a74c26b1a380f308da27171ae59a97c8b8538a89e.json",
+          "objectKey": "a02be628fd2eb061b65653e58a7dbc42ecd3fb3e2e7d1e2c82d393beaaa067f8.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

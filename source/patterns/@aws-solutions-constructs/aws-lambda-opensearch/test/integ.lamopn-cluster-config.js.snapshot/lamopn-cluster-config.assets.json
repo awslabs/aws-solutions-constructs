@@ -1,5 +1,5 @@
 {
-  "version": "39.0.0",
+  "version": "40.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "source": {
@@ -27,7 +27,7 @@
         }
       }
     },
-    "5149bb01573098ba36f6ba18562d862057b9730240b0514fbee42507d87e3080": {
+    "7f0c0eb4acf5063cf4cd02b79b6f4fecc76ac4e93023da423e11c252347da6fc": {
       "source": {
         "path": "lamopn-cluster-config.template.json",
         "packaging": "file"
@@ -35,7 +35,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "5149bb01573098ba36f6ba18562d862057b9730240b0514fbee42507d87e3080.json",
+          "objectKey": "7f0c0eb4acf5063cf4cd02b79b6f4fecc76ac4e93023da423e11c252347da6fc.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

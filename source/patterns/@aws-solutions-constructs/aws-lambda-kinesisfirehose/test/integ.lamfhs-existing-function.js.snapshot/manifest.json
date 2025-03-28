@@ -1,5 +1,5 @@
 {
-  "version": "40.0.0",
+  "version": "42.0.0",
   "artifacts": {
     "lamfhsexistingfunctionIntegDefaultTestDeployAssertF673254D.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/da30e006d97c98bad4899c751ea01e892925053e20d23f00fbb22fc0cc4af209.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9aad65e696f967ab71ac6d851d4ab306c5aecc896ee1c304bb35bbc7397bbe19.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -370,14 +370,6 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
               "attachInlinePolicy": [
                 "*"
               ]
@@ -404,25 +396,17 @@
             "data": "existingfunctionServiceRole90E818C0"
           }
         ],
-        "/lamfhs-existing-function/existing-function/ServiceRole/DefaultPolicy": [
+        "/lamfhs-existing-function/existing-function/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingfunctionC3A89A38"
+          }
+        ],
+        "/lamfhs-existing-function/existing-function/inlinePolicyAddedToExecutionRole-0": [
           {
             "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
             "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "statements": "*"
             }
           },
           {
@@ -432,18 +416,28 @@
                 {}
               ]
             }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
           }
         ],
-        "/lamfhs-existing-function/existing-function/ServiceRole/DefaultPolicy/Resource": [
+        "/lamfhs-existing-function/existing-function/inlinePolicyAddedToExecutionRole-0/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "existingfunctionServiceRoleDefaultPolicyFAFC8F2C"
-          }
-        ],
-        "/lamfhs-existing-function/existing-function/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "existingfunctionC3A89A38"
+            "data": "existingfunctioninlinePolicyAddedToExecutionRole0618E5FEB"
           }
         ],
         "/lamfhs-existing-function/BootstrapVersion": [
@@ -457,6 +451,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "existingfunctionServiceRoleDefaultPolicyFAFC8F2C": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingfunctionServiceRoleDefaultPolicyFAFC8F2C",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamfhs-existing-function"
@@ -467,5 +470,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1006.0"
 }
