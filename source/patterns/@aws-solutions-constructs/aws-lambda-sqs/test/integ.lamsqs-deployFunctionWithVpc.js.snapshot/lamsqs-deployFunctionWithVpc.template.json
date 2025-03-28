@@ -74,9 +74,7 @@
         "ec2:CreateNetworkInterface",
         "ec2:DeleteNetworkInterface",
         "ec2:DescribeNetworkInterfaces",
-        "ec2:UnassignPrivateIpAddresses",
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
+        "ec2:UnassignPrivateIpAddresses"
        ],
        "Effect": "Allow",
        "Resource": "*"
@@ -217,6 +215,34 @@
      ]
     }
    }
+  },
+  "testlambdasqsLambdaFunctioninlinePolicyAddedToExecutionRole0ADACB8F6": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testlambdasqsLambdaFunctioninlinePolicyAddedToExecutionRole0ADACB8F6",
+    "Roles": [
+     {
+      "Ref": "testlambdasqsLambdaFunctionServiceRoleC0430CA8"
+     }
+    ]
+   },
+   "DependsOn": [
+    "VpcisolatedSubnet1RouteTableAssociationD259E31A",
+    "VpcisolatedSubnet2RouteTableAssociation25A4716F"
+   ]
   },
   "testlambdasqsqueuedlq0AFE8CA9": {
    "Type": "AWS::SQS::Queue",

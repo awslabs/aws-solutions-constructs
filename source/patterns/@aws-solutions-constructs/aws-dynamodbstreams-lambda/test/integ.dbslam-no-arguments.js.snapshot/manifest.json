@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "42.0.0",
   "artifacts": {
     "dbslamnoargumentsIntegDefaultTestDeployAssertD933A600.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9a8f2b35a04a8935d0d4c9899fa5fa6b58b806ec2552b1dca251895592b9b09f.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/bd324afaebc85247db98d3bd5e680b794067459843c2a498fddd158afd3dec00.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,10 +82,162 @@
         "dbslam-no-arguments.assets"
       ],
       "metadata": {
+        "/dbslam-no-arguments/test-dynamodbstreams-lambda/LambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/dbslam-no-arguments/test-dynamodbstreams-lambda/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/dbslam-no-arguments/test-dynamodbstreams-lambda/LambdaFunctionServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testdynamodbstreamslambdaLambdaFunctionServiceRole17CB5CA1"
+          }
+        ],
+        "/dbslam-no-arguments/test-dynamodbstreams-lambda/LambdaFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/dbslam-no-arguments/test-dynamodbstreams-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
@@ -94,10 +246,96 @@
             "data": "testdynamodbstreamslambdaLambdaFunctionServiceRoleDefaultPolicyC83E18AD"
           }
         ],
+        "/dbslam-no-arguments/test-dynamodbstreams-lambda/LambdaFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
+          }
+        ],
         "/dbslam-no-arguments/test-dynamodbstreams-lambda/LambdaFunction/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testdynamodbstreamslambdaLambdaFunctionE18EC5EF"
+          }
+        ],
+        "/dbslam-no-arguments/test-dynamodbstreams-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/dbslam-no-arguments/test-dynamodbstreams-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdynamodbstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole02B3D756F"
+          }
+        ],
+        "/dbslam-no-arguments/test-dynamodbstreams-lambda/LambdaFunction/DynamoDBEventSource:dbslamnoargumentstestdynamodbstreamslambdaDynamoTable052A3271": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "target": "*",
+              "eventSourceArn": "*",
+              "metricsConfig": "*",
+              "supportS3OnFailureDestination": true,
+              "batchSize": "*",
+              "bisectBatchOnError": true,
+              "startingPosition": "TRIM_HORIZON",
+              "reportBatchItemFailures": "*",
+              "maxBatchingWindow": "*",
+              "maxRecordAge": "*",
+              "retryAttempts": "*",
+              "parallelizationFactor": "*",
+              "onFailure": "*",
+              "tumblingWindow": "*",
+              "enabled": "*",
+              "filters": "*",
+              "filterEncryption": "*"
+            }
           }
         ],
         "/dbslam-no-arguments/test-dynamodbstreams-lambda/LambdaFunction/DynamoDBEventSource:dbslamnoargumentstestdynamodbstreamslambdaDynamoTable052A3271/Resource": [
@@ -106,16 +344,55 @@
             "data": "testdynamodbstreamslambdaLambdaFunctionDynamoDBEventSourcedbslamnoargumentstestdynamodbstreamslambdaDynamoTable052A32715F190F5F"
           }
         ],
+        "/dbslam-no-arguments/test-dynamodbstreams-lambda/DynamoTable": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "billingMode": "PAY_PER_REQUEST",
+              "encryption": "AWS_MANAGED",
+              "pointInTimeRecovery": true,
+              "partitionKey": {
+                "name": "*",
+                "type": "S"
+              },
+              "stream": "NEW_AND_OLD_IMAGES"
+            }
+          }
+        ],
         "/dbslam-no-arguments/test-dynamodbstreams-lambda/DynamoTable/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testdynamodbstreamslambdaDynamoTable64210BF7"
           }
         ],
+        "/dbslam-no-arguments/test-dynamodbstreams-lambda/DynamoTable/ScalingRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/dbslam-no-arguments/test-dynamodbstreams-lambda/SqsDlqQueue": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "KMS_MANAGED"
+            }
+          }
+        ],
         "/dbslam-no-arguments/test-dynamodbstreams-lambda/SqsDlqQueue/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testdynamodbstreamslambdaSqsDlqQueue183241DF"
+          }
+        ],
+        "/dbslam-no-arguments/test-dynamodbstreams-lambda/SqsDlqQueue/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "queues": [
+                "*"
+              ]
+            }
           }
         ],
         "/dbslam-no-arguments/test-dynamodbstreams-lambda/SqsDlqQueue/Policy/Resource": [
@@ -145,5 +422,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1006.0"
 }

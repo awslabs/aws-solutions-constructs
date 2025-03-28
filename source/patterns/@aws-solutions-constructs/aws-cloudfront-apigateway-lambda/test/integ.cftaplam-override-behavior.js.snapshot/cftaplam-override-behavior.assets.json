@@ -1,5 +1,5 @@
 {
-  "version": "39.0.0",
+  "version": "40.0.0",
   "files": {
     "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f": {
       "source": {
@@ -27,7 +27,7 @@
         }
       }
     },
-    "7ba4ead4a813aec7f115ea462c78a63199726657619e290c645c42a26e4ead25": {
+    "8bb8062d1158e548d5038f9c21c0c869d2f537f51945be1e927061bd581f23bc": {
       "source": {
         "path": "cftaplam-override-behavior.template.json",
         "packaging": "file"
@@ -35,7 +35,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "7ba4ead4a813aec7f115ea462c78a63199726657619e290c645c42a26e4ead25.json",
+          "objectKey": "8bb8062d1158e548d5038f9c21c0c869d2f537f51945be1e927061bd581f23bc.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

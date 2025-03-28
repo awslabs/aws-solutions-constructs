@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "42.0.0",
   "artifacts": {
     "evtstpeventbridgestepfunctionswithlambdaIntegDefaultTestDeployAssert852E184F.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b31e5684dfa3757f24ef3e78f4222225ab91bb7f842848dab35aeb759c8f34f5.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/693d54ae3b4095b5744d912a999894b400348d7de939ffc3b5f8ed04c2ef98fd.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,16 +82,68 @@
         "evtstp-eventbridge-stepfunctions-with-lambda.assets"
       ],
       "metadata": {
+        "/evtstp-eventbridge-stepfunctions-with-lambda/LambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-with-lambda/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/evtstp-eventbridge-stepfunctions-with-lambda/LambdaFunctionServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "LambdaFunctionServiceRole0C4CDE0B"
           }
         ],
-        "/evtstp-eventbridge-stepfunctions-with-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+        "/evtstp-eventbridge-stepfunctions-with-lambda/LambdaFunction": [
           {
-            "type": "aws:cdk:logicalId",
-            "data": "LambdaFunctionServiceRoleDefaultPolicy126C8897"
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "runtime": "*",
+              "code": "*",
+              "handler": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
           }
         ],
         "/evtstp-eventbridge-stepfunctions-with-lambda/LambdaFunction/Resource": [
@@ -100,16 +152,180 @@
             "data": "LambdaFunctionBF21E41F"
           }
         ],
+        "/evtstp-eventbridge-stepfunctions-with-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-with-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctioninlinePolicyAddedToExecutionRole007875684"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/StateMachineLogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "retention": 9999,
+              "removalPolicy": "destroy",
+              "logGroupName": "*"
+            }
+          }
+        ],
         "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/StateMachineLogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testeventbridgestepfunctionsandlambdaconstructStateMachineLogGroup7C2D036A"
           }
         ],
+        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/StateMachine": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logs": {
+                "destination": "*",
+                "level": "ERROR"
+              },
+              "definitionBody": "*",
+              "timeout": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToRolePolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToRolePolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/StateMachine/Role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/StateMachine/Role/ImportRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/StateMachine/Role/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testeventbridgestepfunctionsandlambdaconstructStateMachineRoleD7589F39"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/StateMachine/Role/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/StateMachine/Role/DefaultPolicy/Resource": [
@@ -124,22 +340,18 @@
             "data": "testeventbridgestepfunctionsandlambdaconstructStateMachineACD2232F"
           }
         ],
-        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/EventsRuleRole/Resource": [
+        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/ExecutionFailedAlarm": [
           {
-            "type": "aws:cdk:logicalId",
-            "data": "testeventbridgestepfunctionsandlambdaconstructEventsRuleRole932919A5"
-          }
-        ],
-        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/EventsRuleRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testeventbridgestepfunctionsandlambdaconstructEventsRuleRoleDefaultPolicyADADC1CD"
-          }
-        ],
-        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/EventsRule/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testeventbridgestepfunctionsandlambdaconstructEventsRule524F602A"
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
           }
         ],
         "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/ExecutionFailedAlarm/Resource": [
@@ -148,16 +360,159 @@
             "data": "testeventbridgestepfunctionsandlambdaconstructExecutionFailedAlarm61E476BC"
           }
         ],
+        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/ExecutionThrottledAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/ExecutionThrottledAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testeventbridgestepfunctionsandlambdaconstructExecutionThrottledAlarm70141701"
           }
         ],
+        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/ExecutionAbortedAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/ExecutionAbortedAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testeventbridgestepfunctionsandlambdaconstructExecutionAbortedAlarm8E79E87E"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/EventsRuleRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/EventsRuleRole/ImportEventsRuleRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/EventsRuleRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsandlambdaconstructEventsRuleRole932919A5"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/EventsRuleRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/EventsRuleRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsandlambdaconstructEventsRuleRoleDefaultPolicyADADC1CD"
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/EventsRule": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "targets": "*",
+              "eventBus": "*",
+              "schedule": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEventPattern": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addTarget": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/evtstp-eventbridge-stepfunctions-with-lambda/test-eventbridge-stepfunctions-and-lambda-construct/EventsRule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgestepfunctionsandlambdaconstructEventsRule524F602A"
           }
         ],
         "/evtstp-eventbridge-stepfunctions-with-lambda/BootstrapVersion": [
@@ -171,6 +526,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "LambdaFunctionServiceRoleDefaultPolicy126C8897": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "evtstp-eventbridge-stepfunctions-with-lambda"
@@ -181,5 +545,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1006.0"
 }

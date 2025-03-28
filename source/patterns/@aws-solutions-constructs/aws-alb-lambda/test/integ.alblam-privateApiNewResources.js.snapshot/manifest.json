@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "42.0.0",
   "artifacts": {
     "alblamprivateApiNewResourcesIntegDefaultTestDeployAssertB0CCE59F.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/e04f290fd581e12d040cf7adfd3b00326336b8892d7749a619d0292f55984f82.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/04d3c24432975f79f424fab3b932530b6c614bfcc8fefabaa4e950fb4c383a5e.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,10 +82,45 @@
         "alblam-privateApiNewResources.assets"
       ],
       "metadata": {
+        "/alblam-privateApiNewResources/test-one/test-one-alb": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          }
+        ],
         "/alblam-privateApiNewResources/test-one/test-one-alb/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testonetestonealb4F263E42"
+          }
+        ],
+        "/alblam-privateApiNewResources/test-one/test-one-alb/SecurityGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "vpc": "*",
+              "description": "*",
+              "allowAllOutbound": false
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addIngressRule": [
+                {
+                  "canInlineRule": true,
+                  "connections": "*",
+                  "uniqueId": "*"
+                },
+                {},
+                "*",
+                false
+              ]
+            }
           }
         ],
         "/alblam-privateApiNewResources/test-one/test-one-alb/SecurityGroup/Resource": [
@@ -94,10 +129,31 @@
             "data": "testonetestonealbSecurityGroup4DED9E2A"
           }
         ],
+        "/alblam-privateApiNewResources/test-one/test-one": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "autoDeleteObjects": true
+            }
+          }
+        ],
         "/alblam-privateApiNewResources/test-one/test-one/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testoneE6ACFBB6"
+          }
+        ],
+        "/alblam-privateApiNewResources/test-one/test-one/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
           }
         ],
         "/alblam-privateApiNewResources/test-one/test-one/Policy/Resource": [
@@ -106,10 +162,82 @@
             "data": "testonePolicyE30853FE"
           }
         ],
+        "/alblam-privateApiNewResources/test-one/test-one/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/alblam-privateApiNewResources/test-one/test-one/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testoneAutoDeleteObjectsCustomResourceEDE3D2FC"
+          }
+        ],
+        "/alblam-privateApiNewResources/test-one/LambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/alblam-privateApiNewResources/test-one/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/alblam-privateApiNewResources/test-one/LambdaFunctionServiceRole/Resource": [
@@ -118,10 +246,49 @@
             "data": "testoneLambdaFunctionServiceRoleE92573D3"
           }
         ],
+        "/alblam-privateApiNewResources/test-one/LambdaFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
         "/alblam-privateApiNewResources/test-one/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testoneLambdaFunctionServiceRoleDefaultPolicy6025A173"
+          }
+        ],
+        "/alblam-privateApiNewResources/test-one/ReplaceDefaultSecurityGroup-security-group": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "vpc": "*",
+              "allowAllOutbound": true
+            }
           }
         ],
         "/alblam-privateApiNewResources/test-one/ReplaceDefaultSecurityGroup-security-group/Resource": [
@@ -130,16 +297,92 @@
             "data": "testoneReplaceDefaultSecurityGroupsecuritygroupE46270FE"
           }
         ],
+        "/alblam-privateApiNewResources/test-one/LambdaFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "code": "*",
+              "runtime": "*",
+              "handler": "*",
+              "securityGroups": [
+                "*"
+              ],
+              "vpc": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
+          }
+        ],
         "/alblam-privateApiNewResources/test-one/LambdaFunction/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testoneLambdaFunctionCC9B03E1"
           }
         ],
+        "/alblam-privateApiNewResources/test-one/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/alblam-privateApiNewResources/test-one/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testoneLambdaFunctioninlinePolicyAddedToExecutionRole028251896"
+          }
+        ],
         "/alblam-privateApiNewResources/test-one/LambdaFunction/Invoke2UTWxhlfyqbT5FTn--5jvgbLgj+FfJwzswGk55DU1H--Y=": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testoneLambdaFunctionInvoke2UTWxhlfyqbT5FTn5jvgbLgjFfJwzswGk55DU1HY508A8518"
+          }
+        ],
+        "/alblam-privateApiNewResources/test-one/test-one-listener": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
           }
         ],
         "/alblam-privateApiNewResources/test-one/test-one-listener/Resource": [
@@ -154,10 +397,51 @@
             "data": "testonetg2tg6459EC7C"
           }
         ],
+        "/alblam-privateApiNewResources/Vpc": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "natGateways": "*",
+              "subnetConfiguration": [
+                {
+                  "cidrMask": "*",
+                  "name": "*",
+                  "subnetType": "Isolated"
+                }
+              ],
+              "enableDnsHostnames": true,
+              "enableDnsSupport": true
+            }
+          }
+        ],
         "/alblam-privateApiNewResources/Vpc/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "Vpc8378EB38"
+          }
+        ],
+        "/alblam-privateApiNewResources/Vpc/isolatedSubnet1": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": false,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": false,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
           }
         ],
         "/alblam-privateApiNewResources/Vpc/isolatedSubnet1/Subnet": [
@@ -178,6 +462,30 @@
             "data": "VpcisolatedSubnet1RouteTableAssociationD259E31A"
           }
         ],
+        "/alblam-privateApiNewResources/Vpc/isolatedSubnet2": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": false,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": false,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          }
+        ],
         "/alblam-privateApiNewResources/Vpc/isolatedSubnet2/Subnet": [
           {
             "type": "aws:cdk:logicalId",
@@ -196,10 +504,74 @@
             "data": "VpcisolatedSubnet2RouteTableAssociation25A4716F"
           }
         ],
+        "/alblam-privateApiNewResources/Vpc/RestrictDefaultSecurityGroupCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/alblam-privateApiNewResources/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
+          }
+        ],
+        "/alblam-privateApiNewResources/Vpc/FlowLog": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resourceType": "*"
+            }
+          }
+        ],
+        "/alblam-privateApiNewResources/Vpc/FlowLog/IAMRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "roleName": "*",
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/alblam-privateApiNewResources/Vpc/FlowLog/IAMRole/ImportIAMRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/alblam-privateApiNewResources/Vpc/FlowLog/IAMRole/Resource": [
@@ -208,10 +580,54 @@
             "data": "VpcFlowLogIAMRole6A475D41"
           }
         ],
+        "/alblam-privateApiNewResources/Vpc/FlowLog/IAMRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
         "/alblam-privateApiNewResources/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
+          }
+        ],
+        "/alblam-privateApiNewResources/Vpc/FlowLog/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/alblam-privateApiNewResources/Vpc/FlowLog/LogGroup/Resource": [
@@ -226,6 +642,12 @@
             "data": "VpcFlowLog8FF33A73"
           }
         ],
+        "/alblam-privateApiNewResources/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
         "/alblam-privateApiNewResources/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
           {
             "type": "aws:cdk:logicalId",
@@ -236,6 +658,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+          }
+        ],
+        "/alblam-privateApiNewResources/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
           }
         ],
         "/alblam-privateApiNewResources/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
@@ -271,5 +699,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1006.0"
 }

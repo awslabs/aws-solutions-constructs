@@ -1,5 +1,5 @@
 {
-  "version": "39.0.0",
+  "version": "40.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "source": {
@@ -27,7 +27,7 @@
         }
       }
     },
-    "803d661fe9f331e1f7757959697763c44dfbff4d333612de81287506cd8f4823": {
+    "e435246d26f1f690a28a98682f4eb2218e9e5cf285fb1ab36e400b5d70f28dbe": {
       "source": {
         "path": "iotlamddb-with-vpc.template.json",
         "packaging": "file"
@@ -35,7 +35,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "803d661fe9f331e1f7757959697763c44dfbff4d333612de81287506cd8f4823.json",
+          "objectKey": "e435246d26f1f690a28a98682f4eb2218e9e5cf285fb1ab36e400b5d70f28dbe.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

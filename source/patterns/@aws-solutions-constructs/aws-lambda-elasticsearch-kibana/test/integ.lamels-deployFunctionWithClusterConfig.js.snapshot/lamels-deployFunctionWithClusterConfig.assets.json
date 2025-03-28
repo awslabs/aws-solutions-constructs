@@ -1,5 +1,5 @@
 {
-  "version": "39.0.0",
+  "version": "40.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "source": {
@@ -27,7 +27,7 @@
         }
       }
     },
-    "9d380c345d439a779a61f8c62d8cd0a29b7fe85663ea779a312bf78caf55cca8": {
+    "03d60f8573552280b32339fee1f1b18e4e7d625d088be30d0542d54663fa75ae": {
       "source": {
         "path": "lamels-deployFunctionWithClusterConfig.template.json",
         "packaging": "file"
@@ -35,7 +35,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "9d380c345d439a779a61f8c62d8cd0a29b7fe85663ea779a312bf78caf55cca8.json",
+          "objectKey": "03d60f8573552280b32339fee1f1b18e4e7d625d088be30d0542d54663fa75ae.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

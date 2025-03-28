@@ -789,9 +789,7 @@
         "ec2:CreateNetworkInterface",
         "ec2:DeleteNetworkInterface",
         "ec2:DescribeNetworkInterfaces",
-        "ec2:UnassignPrivateIpAddresses",
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
+        "ec2:UnassignPrivateIpAddresses"
        ],
        "Effect": "Allow",
        "Resource": "*"
@@ -930,6 +928,36 @@
      ]
     }
    }
+  },
+  "testlambdasecretsmanagerstackLambdaFunctioninlinePolicyAddedToExecutionRole0EBC40474": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testlambdasecretsmanagerstackLambdaFunctioninlinePolicyAddedToExecutionRole0EBC40474",
+    "Roles": [
+     {
+      "Ref": "testlambdasecretsmanagerstackLambdaFunctionServiceRole4FE7A9C6"
+     }
+    ]
+   },
+   "DependsOn": [
+    "VpcPrivateSubnet1DefaultRouteBE02A9ED",
+    "VpcPrivateSubnet1RouteTableAssociation70C59FA6",
+    "VpcPrivateSubnet2DefaultRoute060D2087",
+    "VpcPrivateSubnet2RouteTableAssociationA89CAD56"
+   ]
   },
   "testlambdasecretsmanagerstacksecretC2FCB96E": {
    "Type": "AWS::SecretsManager::Secret",

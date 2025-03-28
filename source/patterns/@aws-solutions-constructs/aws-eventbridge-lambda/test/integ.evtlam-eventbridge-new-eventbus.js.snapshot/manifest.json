@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "42.0.0",
   "artifacts": {
     "evtlameventbridgeneweventbusIntegDefaultTestDeployAssert45FE6822.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/28814b1e80d35461272ea5a7cc47158959c3fc73a5ae7ed3a2b1ed49bf7d84e1.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/27d76740c058fa3d684bc5524c55ad4338b8e7cf9f3744d96450316d4d153705.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,16 +82,68 @@
         "evtlam-eventbridge-new-eventbus.assets"
       ],
       "metadata": {
+        "/evtlam-eventbridge-new-eventbus/test-eventbridge-lambda/LambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/evtlam-eventbridge-new-eventbus/test-eventbridge-lambda/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/evtlam-eventbridge-new-eventbus/test-eventbridge-lambda/LambdaFunctionServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testeventbridgelambdaLambdaFunctionServiceRole6D02CEEE"
           }
         ],
-        "/evtlam-eventbridge-new-eventbus/test-eventbridge-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+        "/evtlam-eventbridge-new-eventbus/test-eventbridge-lambda/LambdaFunction": [
           {
-            "type": "aws:cdk:logicalId",
-            "data": "testeventbridgelambdaLambdaFunctionServiceRoleDefaultPolicyB0C15F1B"
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
           }
         ],
         "/evtlam-eventbridge-new-eventbus/test-eventbridge-lambda/LambdaFunction/Resource": [
@@ -100,16 +152,90 @@
             "data": "testeventbridgelambdaLambdaFunction475423FD"
           }
         ],
+        "/evtlam-eventbridge-new-eventbus/test-eventbridge-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/evtlam-eventbridge-new-eventbus/test-eventbridge-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgelambdaLambdaFunctioninlinePolicyAddedToExecutionRole032228887"
+          }
+        ],
         "/evtlam-eventbridge-new-eventbus/test-eventbridge-lambda/LambdaFunction/AwsEventsLambdaInvokePermission-1": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testeventbridgelambdaLambdaFunctionAwsEventsLambdaInvokePermission1C8A95062"
           }
         ],
+        "/evtlam-eventbridge-new-eventbus/test-eventbridge-lambda/test-new-lambda": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {}
+          }
+        ],
         "/evtlam-eventbridge-new-eventbus/test-eventbridge-lambda/test-new-lambda/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testeventbridgelambdatestnewlambdaA726ECBB"
+          }
+        ],
+        "/evtlam-eventbridge-new-eventbus/test-eventbridge-lambda/EventsRule": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "targets": "*",
+              "eventBus": "*",
+              "eventPattern": {
+                "source": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEventPattern": [
+                {
+                  "source": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addTarget": [
+                {}
+              ]
+            }
           }
         ],
         "/evtlam-eventbridge-new-eventbus/test-eventbridge-lambda/EventsRule/Resource": [
@@ -129,6 +255,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testeventbridgelambdaLambdaFunctionServiceRoleDefaultPolicyB0C15F1B": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgelambdaLambdaFunctionServiceRoleDefaultPolicyB0C15F1B",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "evtlam-eventbridge-new-eventbus"
@@ -139,5 +274,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1006.0"
 }

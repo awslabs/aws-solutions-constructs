@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "42.0.0",
   "artifacts": {
     "cogapilamnoargumentsIntegDefaultTestDeployAssert6872A16C.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/bcb835ba0bd79a7a01aa5309a4582acc4ab4b534b3c2a247664412d426280957.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/04b5221f8c7f21dec443043d7d2491fe5240bd4ced44c1d862c4bfa13fcbed25.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,16 +82,68 @@
         "cogapilam-no-arguments.assets"
       ],
       "metadata": {
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunctionServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcognitoapigatewaylambdaLambdaFunctionServiceRole943D8510"
           }
         ],
-        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunction": [
           {
-            "type": "aws:cdk:logicalId",
-            "data": "testcognitoapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyED0AF2CF"
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
           }
         ],
         "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunction/Resource": [
@@ -100,10 +152,103 @@
             "data": "testcognitoapigatewaylambdaLambdaFunction0C8EAC23"
           }
         ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaFunctioninlinePolicyAddedToExecutionRole07151CEBD"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/ApiAccessLogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "retention": 9999
+            }
+          }
+        ],
         "/cogapilam-no-arguments/test-cognito-apigateway-lambda/ApiAccessLogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcognitoapigatewaylambdaApiAccessLogGroup9D0D0917"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "defaultIntegration": "*",
+              "endpointConfiguration": {
+                "types": [
+                  "EDGE"
+                ]
+              },
+              "cloudWatchRole": false,
+              "deployOptions": {
+                "accessLogDestination": "*",
+                "accessLogFormat": "*",
+                "loggingLevel": "INFO",
+                "dataTraceEnabled": false,
+                "tracingEnabled": true
+              },
+              "defaultMethodOptions": {
+                "authorizationType": "*"
+              },
+              "handler": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "endpointConfiguration": {
+                "types": [
+                  "EDGE"
+                ]
+              },
+              "cloudWatchRole": false,
+              "deployOptions": {
+                "accessLogDestination": "*",
+                "accessLogFormat": "*",
+                "loggingLevel": "INFO",
+                "dataTraceEnabled": false,
+                "tracingEnabled": true
+              },
+              "defaultMethodOptions": {
+                "authorizationType": "*"
+              },
+              "handler": "*"
+            }
           }
         ],
         "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Resource": [
@@ -112,10 +257,57 @@
             "data": "testcognitoapigatewaylambdaLambdaRestApi2E272431"
           }
         ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Deployment": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "description": "*",
+              "api": "*",
+              "retainDeployments": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          }
+        ],
         "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcognitoapigatewaylambdaLambdaRestApiDeployment96AFD8CA5d8e3257747e529ac6f9e48e8d20548e"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/DeploymentStage.prod": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "deployment": "*",
+              "accessLogDestination": "*",
+              "accessLogFormat": "*",
+              "loggingLevel": "INFO",
+              "dataTraceEnabled": false,
+              "tracingEnabled": true
+            }
           }
         ],
         "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/DeploymentStage.prod/Resource": [
@@ -130,10 +322,51 @@
             "data": "testcognitoapigatewaylambdaLambdaRestApiEndpointBF0175D7"
           }
         ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Default": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Default/{proxy+}": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*",
+              "defaultIntegration": "*",
+              "defaultMethodOptions": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethod": [
+                "*"
+              ]
+            }
+          }
+        ],
         "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Default/{proxy+}/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcognitoapigatewaylambdaLambdaRestApiproxy23E1DA20"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Default/{proxy+}/ANY": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": "*"
+            }
           }
         ],
         "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Default/{proxy+}/ANY/ApiPermission.cogapilamnoargumentstestcognitoapigatewaylambdaLambdaRestApi67DF35F8.ANY..{proxy+}": [
@@ -154,6 +387,17 @@
             "data": "testcognitoapigatewaylambdaLambdaRestApiproxyANY18BA6246"
           }
         ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Default/ANY": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": "*"
+            }
+          }
+        ],
         "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/Default/ANY/ApiPermission.cogapilamnoargumentstestcognitoapigatewaylambdaLambdaRestApi67DF35F8.ANY..": [
           {
             "type": "aws:cdk:logicalId",
@@ -172,10 +416,40 @@
             "data": "testcognitoapigatewaylambdaLambdaRestApiANY1BCFE40A"
           }
         ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/UsagePlan": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "apiStages": [
+                {
+                  "api": "*"
+                }
+              ]
+            }
+          }
+        ],
         "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApi/UsagePlan/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcognitoapigatewaylambdaLambdaRestApiUsagePlan75371896"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApiCloudWatchRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaRestApiCloudWatchRole/Resource": [
@@ -190,10 +464,26 @@
             "data": "testcognitoapigatewaylambdaLambdaRestApiAccountD303BB82"
           }
         ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/CognitoUserPool": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "removalPolicy": "destroy"
+            }
+          }
+        ],
         "/cogapilam-no-arguments/test-cognito-apigateway-lambda/CognitoUserPool/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testcognitoapigatewaylambdaCognitoUserPoolD5E74489"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/CognitoUserPoolClient": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "userPool": "*"
+            }
           }
         ],
         "/cogapilam-no-arguments/test-cognito-apigateway-lambda/CognitoUserPoolClient/Resource": [
@@ -219,6 +509,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testcognitoapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyED0AF2CF": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyED0AF2CF",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "cogapilam-no-arguments"
@@ -229,5 +528,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1006.0"
 }

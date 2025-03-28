@@ -1,5 +1,5 @@
 {
-  "version": "39.0.0",
+  "version": "40.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "source": {
@@ -27,7 +27,7 @@
         }
       }
     },
-    "0985ecef685d2c850c9398c44908c95de9cb020ee0ad4b89414c2f5ba9d06f24": {
+    "8de1196f7662fb2f9f3decfa7a17f933f29aa904d475b61524df728b44c4046f": {
       "source": {
         "path": "lamevt-deployFunctionWithNewEventBus.template.json",
         "packaging": "file"
@@ -35,7 +35,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "0985ecef685d2c850c9398c44908c95de9cb020ee0ad4b89414c2f5ba9d06f24.json",
+          "objectKey": "8de1196f7662fb2f9f3decfa7a17f933f29aa904d475b61524df728b44c4046f.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
