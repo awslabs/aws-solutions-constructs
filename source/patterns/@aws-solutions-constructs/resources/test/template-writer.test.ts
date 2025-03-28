@@ -16,6 +16,7 @@ import { Template } from 'aws-cdk-lib/assertions';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
 import * as path from 'path';
 import { TemplateValue, createTemplateWriterCustomResource } from '../lib/template-writer';
+import { replaceTarget } from '../lib/template-writer-custom-resource';
 
 test('TemplateWriter sets properties correctly', () => {
   const stack = new Stack();
@@ -79,4 +80,45 @@ test('TemplateWriter accepts custom lambda function timeout and memory size', ()
     Timeout: 420,
     MemorySize: 4096
   });
+});
+
+test('ReplaceTarget replaces exact target correctly', () => {
+  const templateWithReplaceableString = `firstline: value,
+  secondline: replaceThis,
+  thirdLine: final`;
+  const templateValue = {
+    id: "replaceThis",
+    value: "functionName",
+  };
+
+  const firstResult = replaceTarget(templateWithReplaceableString, templateValue);
+  expect(firstResult).toEqual(`firstline: value,
+  secondline: functionName,
+  thirdLine: final`);
+});
+
+test('ReplaceTarget ignores trialing substrings', () => {
+  const templateWithSubString = `firstline: value,
+  secondline: replaceThisName,
+  thirdLine: final`;
+  const templateValue = {
+    id: "replaceThis",
+    value: "functionName",
+  };
+
+  const firstResult = replaceTarget(templateWithSubString, templateValue);
+  expect(firstResult).toEqual(templateWithSubString);
+});
+
+test('ReplaceTarget ignores preceeding substrings', () => {
+  const templateWithSubString = `firstline: value,
+  secondline: NamereplaceThis,
+  thirdLine: final`;
+  const templateValue = {
+    id: "replaceThis",
+    value: "functionName",
+  };
+
+  const firstResult = replaceTarget(templateWithSubString, templateValue);
+  expect(firstResult).toEqual(templateWithSubString);
 });
