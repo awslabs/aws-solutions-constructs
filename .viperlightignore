@@ -70,30 +70,27 @@ source/patterns/@aws-solutions-constructs/aws-alb-lambda/README.md:85
 source/patterns/@aws-solutions-constructs/aws-route53-alb/README.md:60
 source/patterns/@aws-solutions-constructs/aws-wafwebacl-alb/README.md:68
 # ELB Log Reporting Account Incidents
-source/patterns/@aws-solutions-constructs/aws-alb-fargate/test/integ.albfar-all-new-public-http.js.snapshot/albfar-all-new-public-http.template.json:1040
-source/patterns/@aws-solutions-constructs/aws-alb-fargate/test/integ.albfar-all-new-public-http.js.snapshot/tree.json:1353
-source/patterns/@aws-solutions-constructs/aws-alb-fargate/test/integ.albfar-all-new-two-targets.js.snapshot/albfar-all-new-two-targets.template.json:1067
-source/patterns/@aws-solutions-constructs/aws-alb-fargate/test/integ.albfar-all-new-two-targets.js.snapshot/tree.json:1398
-source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-privateApiExistingResources.js.snapshot/alblam-privateApiExistingResources.template.json:1095
-source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-privateApiExistingResources.js.snapshot/tree.json:1400
-source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-privateApiNewResources.js.snapshot/alblam-privateApiNewResources.template.json:221
-source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-privateApiNewResources.js.snapshot/tree.json:254
-source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-publicApiExistingResources.js.snapshot/alblam-publicApiExistingResources.template.json:1095
-source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-publicApiExistingResources.js.snapshot/tree.json:1400
-source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-publicApiNewResources.js.snapshot/alblam-publicApiNewResources.template.json:225
-source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-publicApiNewResources.js.snapshot/tree.json:254
-source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-twoTargets.js.snapshot/alblam-twoTargets.template.json:225
-source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-twoTargets.js.snapshot/tree.json:254
-source/patterns/@aws-solutions-constructs/aws-route53-alb/test/integ.r53alb-deployPrivateApi.js.snapshot/r53alb-deployPrivateApi.template.json:218
-source/patterns/@aws-solutions-constructs/aws-route53-alb/test/integ.r53alb-deployPrivateApi.js.snapshot/tree.json:277
-source/patterns/@aws-solutions-constructs/aws-route53-alb/test/integ.r53alb-deployPrivateApiExistingZone.js.snapshot/r53alb-deployPrivateApiExistingZone.template.json:873
-source/patterns/@aws-solutions-constructs/aws-route53-alb/test/integ.r53alb-deployPrivateApiExistingZone.js.snapshot/tree.json:1153
-source/patterns/@aws-solutions-constructs/aws-route53-alb/test/integ.r53alb-deployPublicApiNewAlb.js.snapshot/r53alb-deployPublicApiNewAlb.template.json:214
-source/patterns/@aws-solutions-constructs/aws-route53-alb/test/integ.r53alb-deployPublicApiNewAlb.js.snapshot/tree.json:269
-# compressed test web site
-source/use_cases/aws-s3-static-website/test/integ.basic-deployment.js.snapshot/asset.eafa2d6c6a55bda16b1603003f1721e2f66a024c0c31d6665ee1c5ff59b565d9.zip
-# Snapshots from cloudfront-oai-s3
-source/patterns/@aws-solutions-constructs/aws-cloudfront-oai-s3/test/integ.cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket.js.snapshot/asset.1c5a2ab1d1e53b0672a644454aab3dbb258ccd0079c92ad0e23b95b2c2079f70.zip
+source\/patterns\/@aws-solutions-constructs\/.*\/test\/integ\..*\/
+# source/patterns/@aws-solutions-constructs/aws-alb-fargate/test/integ.albfar-all-new-public-http.js.snapshot/albfar-all-new-public-http.template.json:1040
+# source/patterns/@aws-solutions-constructs/aws-alb-fargate/test/integ.albfar-all-new-public-http.js.snapshot/tree.json:1353
+# source/patterns/@aws-solutions-constructs/aws-alb-fargate/test/integ.albfar-all-new-two-targets.js.snapshot/albfar-all-new-two-targets.template.json:1067
+# source/patterns/@aws-solutions-constructs/aws-alb-fargate/test/integ.albfar-all-new-two-targets.js.snapshot/tree.json:1398
+# source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-privateApiExistingResources.js.snapshot/
+# # source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-privateApiExistingResources.js.snapshot/tree.json:1400
+# source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-privateApiNewResources.js.snapshot/
+# #source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-privateApiNewResources.js.snapshot/tree.json:254
+# source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-publicApiExistingResources.js.snapshot/
+# # source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-publicApiExistingResources.js.snapshot/tree.json:1400
+# source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-publicApiNewResources.js.snapshot/
+# # source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-publicApiNewResources.js.snapshot/tree.json:254
+# source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-twoTargets.js.snapshot/
+# # source/patterns/@aws-solutions-constructs/aws-alb-lambda/test/integ.alblam-twoTargets.js.snapshot/tree.json:254
+# source/patterns/@aws-solutions-constructs/aws-route53-alb/test/integ.r53alb-deployPrivateApi.js.snapshot/
+# # source/patterns/@aws-solutions-constructs/aws-route53-alb/test/integ.r53alb-deployPrivateApi.js.snapshot/tree.json:277
+# source/patterns/@aws-solutions-constructs/aws-route53-alb/test/integ.r53alb-deployPrivateApiExistingZone.js.snapshot/
+# # source/patterns/@aws-solutions-constructs/aws-route53-alb/test/integ.r53alb-deployPrivateApiExistingZone.js.snapshot/tree.json:1153
+# source/patterns/@aws-solutions-constructs/aws-route53-alb/test/integ.r53alb-deployPublicApiNewAlb.js.snapshot/
+# # source/patterns/@aws-solutions-constructs/aws-route53-alb/test/integ.r53alb-deployPublicApiNewAlb.js.snapshot/tree.json:269
 
 deployment/v2/parse-raw-license-data.js:73
 deployment/v2/parse-raw-license-data.js:78

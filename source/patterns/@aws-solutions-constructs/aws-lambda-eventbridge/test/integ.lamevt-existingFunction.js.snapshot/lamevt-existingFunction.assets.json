@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "40.0.0",
   "files": {
     "b5faf4ff1ebde477120133d1e645d20d7c3d4952b76c3b586100069b94b2f146": {
       "source": {
@@ -14,7 +14,7 @@
         }
       }
     },
-    "5bb994b7e018c4134b6adc5cbe06b9ca8a5217f73a4d02756f54fdeffe3ce7e8": {
+    "0801f5c38a9e15b4036e18c1b9cab87a0089e035a53989d60cf85d190a855b8c": {
       "source": {
         "path": "lamevt-existingFunction.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "5bb994b7e018c4134b6adc5cbe06b9ca8a5217f73a4d02756f54fdeffe3ce7e8.json",
+          "objectKey": "0801f5c38a9e15b4036e18c1b9cab87a0089e035a53989d60cf85d190a855b8c.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

@@ -383,9 +383,7 @@
         "ec2:CreateNetworkInterface",
         "ec2:DeleteNetworkInterface",
         "ec2:DescribeNetworkInterfaces",
-        "ec2:UnassignPrivateIpAddresses",
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
+        "ec2:UnassignPrivateIpAddresses"
        ],
        "Effect": "Allow",
        "Resource": "*"
@@ -448,7 +446,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
      },
-     "S3Key": "7caf594b8ad91abecca72f7f10a23a5cf446d05dc00d6194619935e7e3fd5a79.zip"
+     "S3Key": "44065ab998484f0809423b22009edee6d159633b21d16657230931448f4bec08.zip"
     },
     "Environment": {
      "Variables": {
@@ -511,6 +509,36 @@
      ]
     }
    }
+  },
+  "testoneLambdaFunctioninlinePolicyAddedToExecutionRole028251896": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testoneLambdaFunctioninlinePolicyAddedToExecutionRole028251896",
+    "Roles": [
+     {
+      "Ref": "testoneLambdaFunctionServiceRoleE92573D3"
+     }
+    ]
+   },
+   "DependsOn": [
+    "VpcPrivateSubnet1DefaultRouteBE02A9ED",
+    "VpcPrivateSubnet1RouteTableAssociation70C59FA6",
+    "VpcPrivateSubnet2DefaultRoute060D2087",
+    "VpcPrivateSubnet2RouteTableAssociationA89CAD56"
+   ]
   },
   "testoneLambdaFunctionInvoke2UTWxhlfyqbT5FTn5jvgbLgjFfJwzswGk55DU1HY508A8518": {
    "Type": "AWS::Lambda::Permission",
@@ -1232,7 +1260,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
      },
-     "S3Key": "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a.zip"
+     "S3Key": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip"
     },
     "Timeout": 900,
     "MemorySize": 128,
@@ -1417,9 +1445,7 @@
         "ec2:CreateNetworkInterface",
         "ec2:DeleteNetworkInterface",
         "ec2:DescribeNetworkInterfaces",
-        "ec2:UnassignPrivateIpAddresses",
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
+        "ec2:UnassignPrivateIpAddresses"
        ],
        "Effect": "Allow",
        "Resource": "*"
@@ -1482,7 +1508,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
      },
-     "S3Key": "7caf594b8ad91abecca72f7f10a23a5cf446d05dc00d6194619935e7e3fd5a79.zip"
+     "S3Key": "44065ab998484f0809423b22009edee6d159633b21d16657230931448f4bec08.zip"
     },
     "Environment": {
      "Variables": {
@@ -1545,6 +1571,36 @@
      ]
     }
    }
+  },
+  "testtwoLambdaFunctioninlinePolicyAddedToExecutionRole00A7D0170": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testtwoLambdaFunctioninlinePolicyAddedToExecutionRole00A7D0170",
+    "Roles": [
+     {
+      "Ref": "testtwoLambdaFunctionServiceRoleD100E5F8"
+     }
+    ]
+   },
+   "DependsOn": [
+    "VpcPrivateSubnet1DefaultRouteBE02A9ED",
+    "VpcPrivateSubnet1RouteTableAssociation70C59FA6",
+    "VpcPrivateSubnet2DefaultRoute060D2087",
+    "VpcPrivateSubnet2RouteTableAssociationA89CAD56"
+   ]
   },
   "testtwoLambdaFunctionInvoke2UTWxhlfyqbT5FTn5jvgbLgjFfJwzswGk55DU1HY068D8D47": {
    "Type": "AWS::Lambda::Permission",

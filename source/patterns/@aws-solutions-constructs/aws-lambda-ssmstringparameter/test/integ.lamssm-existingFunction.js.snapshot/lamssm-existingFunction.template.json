@@ -70,14 +70,6 @@
      "Statement": [
       {
        "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      },
-      {
-       "Action": [
         "ssm:DescribeParameters",
         "ssm:GetParameter",
         "ssm:GetParameterHistory",
@@ -117,16 +109,6 @@
       "Ref": "LambdaFunctionServiceRole0C4CDE0B"
      }
     ]
-   },
-   "Metadata": {
-    "cfn_nag": {
-     "rules_to_suppress": [
-      {
-       "id": "W12",
-       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
-      }
-     ]
-    }
    }
   },
   "LambdaFunctionBF21E41F": {
@@ -136,7 +118,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "0c3255e93ffe7a906c7422e9f0e9cc4c7fd86ee996ee3bb302e2f134b38463c8.zip"
+     "S3Key": "a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c.zip"
     },
     "Environment": {
      "Variables": {
@@ -179,6 +161,30 @@
       }
      ]
     }
+   }
+  },
+  "LambdaFunctioninlinePolicyAddedToExecutionRole007875684": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LambdaFunctioninlinePolicyAddedToExecutionRole007875684",
+    "Roles": [
+     {
+      "Ref": "LambdaFunctionServiceRole0C4CDE0B"
+     }
+    ]
    }
   },
   "testlambdassmstringparameterstringParameter680CABAC": {

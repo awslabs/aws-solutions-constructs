@@ -684,55 +684,6 @@
     }
    }
   },
-  "testconstructLambdaFunctionServiceRoleDefaultPolicyBBF7DEC4": {
-   "Type": "AWS::IAM::Policy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      },
-      {
-       "Action": [
-        "firehose:DeleteDeliveryStream",
-        "firehose:PutRecord",
-        "firehose:PutRecordBatch",
-        "firehose:UpdateDestination"
-       ],
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "destinationfirehoseKinesisFirehoseE8EB5D91",
-         "Arn"
-        ]
-       }
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "PolicyName": "testconstructLambdaFunctionServiceRoleDefaultPolicyBBF7DEC4",
-    "Roles": [
-     {
-      "Ref": "testconstructLambdaFunctionServiceRole435FDF6F"
-     }
-    ]
-   },
-   "Metadata": {
-    "cfn_nag": {
-     "rules_to_suppress": [
-      {
-       "id": "W12",
-       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
-      }
-     ]
-    }
-   }
-  },
   "testconstructLambdaFunction88EA73D4": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -761,7 +712,6 @@
     }
    },
    "DependsOn": [
-    "testconstructLambdaFunctionServiceRoleDefaultPolicyBBF7DEC4",
     "testconstructLambdaFunctionServiceRole435FDF6F"
    ],
    "Metadata": {
@@ -781,6 +731,61 @@
       }
      ]
     }
+   }
+  },
+  "testconstructLambdaFunctioninlinePolicyAddedToExecutionRole0C88F4B36": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testconstructLambdaFunctioninlinePolicyAddedToExecutionRole0C88F4B36",
+    "Roles": [
+     {
+      "Ref": "testconstructLambdaFunctionServiceRole435FDF6F"
+     }
+    ]
+   }
+  },
+  "testconstructLambdaFunctioninlinePolicyAddedToExecutionRole14D1F9932": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "firehose:DeleteDeliveryStream",
+        "firehose:PutRecord",
+        "firehose:PutRecordBatch",
+        "firehose:UpdateDestination"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "destinationfirehoseKinesisFirehoseE8EB5D91",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testconstructLambdaFunctioninlinePolicyAddedToExecutionRole14D1F9932",
+    "Roles": [
+     {
+      "Ref": "testconstructLambdaFunctionServiceRole435FDF6F"
+     }
+    ]
    }
   }
  },

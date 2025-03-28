@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "40.0.0",
   "files": {
     "0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f": {
       "source": {
@@ -14,7 +14,7 @@
         }
       }
     },
-    "7156ed967121cd8f1073849f8dea758ac870ff2ec57ca5ed86ebc30c3bc03209": {
+    "a0daf42aca301ec0c3183de23ae9ec1d2e85ae5c3458322b2ae3d1b8d0d571a4": {
       "source": {
         "path": "sqslam-deployFunction.template.json",
         "packaging": "file"
@@ -22,7 +22,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "7156ed967121cd8f1073849f8dea758ac870ff2ec57ca5ed86ebc30c3bc03209.json",
+          "objectKey": "a0daf42aca301ec0c3183de23ae9ec1d2e85ae5c3458322b2ae3d1b8d0d571a4.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

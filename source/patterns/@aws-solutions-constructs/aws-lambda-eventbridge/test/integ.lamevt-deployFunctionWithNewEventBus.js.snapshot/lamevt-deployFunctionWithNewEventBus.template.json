@@ -74,9 +74,7 @@
         "ec2:CreateNetworkInterface",
         "ec2:DeleteNetworkInterface",
         "ec2:DescribeNetworkInterfaces",
-        "ec2:UnassignPrivateIpAddresses",
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
+        "ec2:UnassignPrivateIpAddresses"
        ],
        "Effect": "Allow",
        "Resource": "*"
@@ -213,6 +211,34 @@
      ]
     }
    }
+  },
+  "testlambdaeventbridgeLambdaFunctioninlinePolicyAddedToExecutionRole0885DF4B9": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testlambdaeventbridgeLambdaFunctioninlinePolicyAddedToExecutionRole0885DF4B9",
+    "Roles": [
+     {
+      "Ref": "testlambdaeventbridgeLambdaFunctionServiceRole0FD85077"
+     }
+    ]
+   },
+   "DependsOn": [
+    "VpcisolatedSubnet1RouteTableAssociationD259E31A",
+    "VpcisolatedSubnet2RouteTableAssociation25A4716F"
+   ]
   },
   "testlambdaeventbridgeCustomEventBus5F110E81": {
    "Type": "AWS::Events::EventBus",

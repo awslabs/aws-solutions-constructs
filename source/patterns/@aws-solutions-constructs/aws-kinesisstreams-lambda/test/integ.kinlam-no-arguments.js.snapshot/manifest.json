@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "42.0.0",
   "artifacts": {
     "kinlamnoargumentsIntegDefaultTestDeployAssertE5672C42.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f8c3c3bcf7ad57cc6172f277555ac422a975fecb3af598e67515f25b2a98cb54.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/75d54d1092862c3f3a3d49f381f746e31ba668f1702b3f06f8897ef19a887aa4.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,10 +82,92 @@
         "kinlam-no-arguments.assets"
       ],
       "metadata": {
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/KinesisStream": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "MANAGED"
+            }
+          }
+        ],
         "/kinlam-no-arguments/test-kinesisstreams-lambda/KinesisStream/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testkinesisstreamslambdaKinesisStream374D6D56"
+          }
+        ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunctionServiceRole/Resource": [
@@ -94,10 +176,80 @@
             "data": "testkinesisstreamslambdaLambdaFunctionServiceRoleAD98836E"
           }
         ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
         "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testkinesisstreamslambdaLambdaFunctionServiceRoleDefaultPolicy4929C676"
+          }
+        ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "runtime": "*",
+              "handler": "*",
+              "code": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
           }
         ],
         "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunction/Resource": [
@@ -106,10 +258,81 @@
             "data": "testkinesisstreamslambdaLambdaFunctionB9A91CA7"
           }
         ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole0111F49A4"
+          }
+        ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunction/KinesisEventSource:kinlamnoargumentstestkinesisstreamslambdaKinesisStreamB15C5952": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "target": "*",
+              "eventSourceArn": "*",
+              "startingPositionTimestamp": "*",
+              "metricsConfig": "*",
+              "supportS3OnFailureDestination": true,
+              "batchSize": "*",
+              "bisectBatchOnError": true,
+              "startingPosition": "TRIM_HORIZON",
+              "reportBatchItemFailures": "*",
+              "maxBatchingWindow": "*",
+              "maxRecordAge": "*",
+              "retryAttempts": "*",
+              "parallelizationFactor": "*",
+              "onFailure": "*",
+              "tumblingWindow": "*",
+              "enabled": "*",
+              "filters": "*",
+              "filterEncryption": "*"
+            }
+          }
+        ],
         "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunction/KinesisEventSource:kinlamnoargumentstestkinesisstreamslambdaKinesisStreamB15C5952/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testkinesisstreamslambdaLambdaFunctionKinesisEventSourcekinlamnoargumentstestkinesisstreamslambdaKinesisStreamB15C5952638E81E3"
+          }
+        ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/SqsDlqQueue": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "KMS_MANAGED"
+            }
           }
         ],
         "/kinlam-no-arguments/test-kinesisstreams-lambda/SqsDlqQueue/Resource": [
@@ -118,16 +341,54 @@
             "data": "testkinesisstreamslambdaSqsDlqQueue5971C9BA"
           }
         ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/SqsDlqQueue/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "queues": [
+                "*"
+              ]
+            }
+          }
+        ],
         "/kinlam-no-arguments/test-kinesisstreams-lambda/SqsDlqQueue/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testkinesisstreamslambdaSqsDlqQueuePolicy670A2EC7"
           }
         ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/KinesisStreamGetRecordsIteratorAgeAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/kinlam-no-arguments/test-kinesisstreams-lambda/KinesisStreamGetRecordsIteratorAgeAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testkinesisstreamslambdaKinesisStreamGetRecordsIteratorAgeAlarmFB74C363"
+          }
+        ],
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/KinesisStreamReadProvisionedThroughputExceededAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
           }
         ],
         "/kinlam-no-arguments/test-kinesisstreams-lambda/KinesisStreamReadProvisionedThroughputExceededAlarm/Resource": [
@@ -157,5 +418,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1006.0"
 }
