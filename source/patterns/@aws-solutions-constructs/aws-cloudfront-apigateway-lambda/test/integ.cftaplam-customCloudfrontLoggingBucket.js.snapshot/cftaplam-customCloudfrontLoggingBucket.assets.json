@@ -1,5 +1,5 @@
 {
-  "version": "39.0.0",
+  "version": "40.0.0",
   "files": {
     "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f": {
       "source": {
@@ -27,7 +27,7 @@
         }
       }
     },
-    "65a57df9513697c55c3fe661e072b6dafe4b1a97fa0cbd155957cfdd4d7e1747": {
+    "56bdebd3e070c54939fb4c16468230e6790b049d28417121881c06296453a3d7": {
       "source": {
         "path": "cftaplam-customCloudfrontLoggingBucket.template.json",
         "packaging": "file"
@@ -35,7 +35,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "65a57df9513697c55c3fe661e072b6dafe4b1a97fa0cbd155957cfdd4d7e1747.json",
+          "objectKey": "56bdebd3e070c54939fb4c16468230e6790b049d28417121881c06296453a3d7.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

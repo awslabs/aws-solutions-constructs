@@ -1,5 +1,5 @@
 {
-  "version": "40.0.0",
+  "version": "42.0.0",
   "artifacts": {
     "lamsqslamdeployProducerFunctionWithVpcIntegDefaultTestDeployAssert1C26B326.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5e3f155dab6aecebed322596286d138bfcb868ec1d6f00b9855a08d5b502062f.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ff877e1178613fddabade4be2b40c27f70edc509509b936ba74856f046c5035e.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -128,8 +128,16 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "addToPrincipalPolicy": [
-                {}
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
               ]
             }
           },
@@ -172,14 +180,6 @@
             "data": {
               "attachToRole": [
                 "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
               ]
             }
           },
@@ -262,6 +262,44 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdasqslambdatosqsLambdaFunction0973C5A7"
+          }
+        ],
+        "/lamsqslam-deployProducerFunctionWithVpc/test-lambda-sqs/lambda-to-sqs/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamsqslam-deployProducerFunctionWithVpc/test-lambda-sqs/lambda-to-sqs/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqslambdatosqsLambdaFunctioninlinePolicyAddedToExecutionRole009C52B5C"
           }
         ],
         "/lamsqslam-deployProducerFunctionWithVpc/test-lambda-sqs/lambda-to-sqs/queue-dlq": [
@@ -655,14 +693,6 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
               "attachInlinePolicy": [
                 "*"
               ]
@@ -681,6 +711,22 @@
             "data": {
               "addToPrincipalPolicy": [
                 {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
               ]
             }
           }
@@ -715,14 +761,6 @@
             "data": {
               "attachToRole": [
                 "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
               ]
             }
           },
@@ -769,6 +807,44 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdasqssqstolambdaLambdaFunctionDE6481E6"
+          }
+        ],
+        "/lamsqslam-deployProducerFunctionWithVpc/test-lambda-sqs/sqs-to-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamsqslam-deployProducerFunctionWithVpc/test-lambda-sqs/sqs-to-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasqssqstolambdaLambdaFunctioninlinePolicyAddedToExecutionRole0C94161AF"
           }
         ],
         "/lamsqslam-deployProducerFunctionWithVpc/test-lambda-sqs/sqs-to-lambda/LambdaFunction/SqsEventSource:lamsqslamdeployProducerFunctionWithVpctestlambdasqslambdatosqsqueueD62DE11E": [
@@ -839,5 +915,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1006.0"
 }

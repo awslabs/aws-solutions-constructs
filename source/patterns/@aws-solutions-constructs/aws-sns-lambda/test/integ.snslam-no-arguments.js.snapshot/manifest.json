@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "42.0.0",
   "artifacts": {
     "snslamnoargumentsIntegDefaultTestDeployAssertB9F7D66E.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/68100891cafa3dea0112af0a2e2702e3119f70ce4828a3a496dff75daccdf793.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d1492876ede387ab647beac77de9db9f2592919ff974aa9a90a0cac894187ebd.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,16 +82,68 @@
         "snslam-no-arguments.assets"
       ],
       "metadata": {
+        "/snslam-no-arguments/test-sns-lambda/LambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/snslam-no-arguments/test-sns-lambda/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/snslam-no-arguments/test-sns-lambda/LambdaFunctionServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testsnslambdaLambdaFunctionServiceRole23794781"
           }
         ],
-        "/snslam-no-arguments/test-sns-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+        "/snslam-no-arguments/test-sns-lambda/LambdaFunction": [
           {
-            "type": "aws:cdk:logicalId",
-            "data": "testsnslambdaLambdaFunctionServiceRoleDefaultPolicy3E6745ED"
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "runtime": "*",
+              "handler": "*",
+              "code": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
           }
         ],
         "/snslam-no-arguments/test-sns-lambda/LambdaFunction/Resource": [
@@ -100,10 +152,62 @@
             "data": "testsnslambdaLambdaFunctionEE9A249B"
           }
         ],
+        "/snslam-no-arguments/test-sns-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/snslam-no-arguments/test-sns-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnslambdaLambdaFunctioninlinePolicyAddedToExecutionRole015A6D296"
+          }
+        ],
         "/snslam-no-arguments/test-sns-lambda/LambdaFunction/AllowInvoke:snslamnoargumentstestsnslambdaSnsTopicC2A35224": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testsnslambdaLambdaFunctionAllowInvokesnslamnoargumentstestsnslambdaSnsTopicC2A3522489F066D4"
+          }
+        ],
+        "/snslam-no-arguments/test-sns-lambda/LambdaFunction/SnsTopic": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "topic": "*",
+              "endpoint": "*",
+              "protocol": "lambda",
+              "filterPolicy": "*",
+              "filterPolicyWithMessageBody": "*",
+              "region": "*",
+              "deadLetterQueue": "*"
+            }
           }
         ],
         "/snslam-no-arguments/test-sns-lambda/LambdaFunction/SnsTopic/Resource": [
@@ -112,10 +216,28 @@
             "data": "testsnslambdaLambdaFunctionSnsTopic9C14F333"
           }
         ],
+        "/snslam-no-arguments/test-sns-lambda/SnsTopic": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "masterKey": "*"
+            }
+          }
+        ],
         "/snslam-no-arguments/test-sns-lambda/SnsTopic/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testsnslambdaSnsTopic52CA159E"
+          }
+        ],
+        "/snslam-no-arguments/test-sns-lambda/SnsTopic/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "topics": [
+                "*"
+              ]
+            }
           }
         ],
         "/snslam-no-arguments/test-sns-lambda/SnsTopic/Policy/Resource": [
@@ -135,6 +257,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testsnslambdaLambdaFunctionServiceRoleDefaultPolicy3E6745ED": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsnslambdaLambdaFunctionServiceRoleDefaultPolicy3E6745ED",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "snslam-no-arguments"
@@ -145,5 +276,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1006.0"
 }

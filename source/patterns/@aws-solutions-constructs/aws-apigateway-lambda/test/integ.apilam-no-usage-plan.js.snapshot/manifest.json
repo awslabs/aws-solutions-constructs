@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d7a812c73fac26597e55611517dbb9588a71baffe20f246ee4b5eebd55ff2ec7.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3a6415e3df08844304f115c22dc5326fffdb2e72d603a024e1f5c0730c13d837.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -91,14 +91,6 @@
                 "assumeRoleAction": "*"
               },
               "inlinePolicies": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
             }
           },
           {
@@ -130,42 +122,6 @@
             "data": "testapigatewaylambdaLambdaFunctionServiceRole5CD2E9F7"
           }
         ],
-        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaFunctionServiceRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyA5D0BE32"
-          }
-        ],
         "/apilam-no-usage-plan/test-apigateway-lambda/LambdaFunction": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -194,6 +150,44 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaylambdaLambdaFunction18FF222F"
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaFunctioninlinePolicyAddedToExecutionRole00FEF72FF"
           }
         ],
         "/apilam-no-usage-plan/test-apigateway-lambda/ApiAccessLogGroup": [
@@ -462,6 +456,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyA5D0BE32": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyA5D0BE32",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

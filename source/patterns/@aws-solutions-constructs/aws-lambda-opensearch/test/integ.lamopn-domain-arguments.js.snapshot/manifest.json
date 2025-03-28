@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "42.0.0",
   "artifacts": {
     "lamopndomainargumentsIntegDefaultTestDeployAssert47534E1E.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d5cfcd5fe575cc8333bb12183544fc315802c562da1bf82709aeb33f703f5a8c.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a87706d30d8a239a6aab9d52e1f8cf7976ba00efce486d17465c1402b6c2bdbc.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,16 +82,77 @@
         "lamopn-domain-arguments.assets"
       ],
       "metadata": {
+        "/lamopn-domain-arguments/test-lambda-opensearch/LambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamopn-domain-arguments/test-lambda-opensearch/LambdaFunctionServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaopensearchLambdaFunctionServiceRole4722AB8A"
           }
         ],
-        "/lamopn-domain-arguments/test-lambda-opensearch/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+        "/lamopn-domain-arguments/test-lambda-opensearch/LambdaFunction": [
           {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchLambdaFunctionServiceRoleDefaultPolicy78C56359"
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*"
+              ]
+            }
           }
         ],
         "/lamopn-domain-arguments/test-lambda-opensearch/LambdaFunction/Resource": [
@@ -100,10 +161,62 @@
             "data": "testlambdaopensearchLambdaFunction93FD38F7"
           }
         ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchLambdaFunctioninlinePolicyAddedToExecutionRole09B870594"
+          }
+        ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/CognitoUserPool": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamopn-domain-arguments/test-lambda-opensearch/CognitoUserPool/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaopensearchCognitoUserPoolA09096F9"
+          }
+        ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/CognitoUserPoolClient": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "userPool": "*"
+            }
           }
         ],
         "/lamopn-domain-arguments/test-lambda-opensearch/CognitoUserPoolClient/Resource": [
@@ -124,6 +237,24 @@
             "data": "testlambdaopensearchUserPoolDomain98864920"
           }
         ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/CognitoAuthorizedRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/CognitoAuthorizedRole/ImportCognitoAuthorizedRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamopn-domain-arguments/test-lambda-opensearch/CognitoAuthorizedRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -136,10 +267,75 @@
             "data": "testlambdaopensearchIdentityPoolRoleMappingD8C765B1"
           }
         ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/CognitoDashboardConfigureRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/CognitoDashboardConfigureRole/ImportCognitoDashboardConfigureRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamopn-domain-arguments/test-lambda-opensearch/CognitoDashboardConfigureRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaopensearchCognitoDashboardConfigureRole1F2B7B7A"
+          }
+        ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/CognitoDashboardConfigureRolePolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
           }
         ],
         "/lamopn-domain-arguments/test-lambda-opensearch/CognitoDashboardConfigureRolePolicy/Resource": [
@@ -154,10 +350,38 @@
             "data": "testlambdaopensearchOpenSearchDomainF9CCC3D3"
           }
         ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/StatusRedAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/lamopn-domain-arguments/test-lambda-opensearch/StatusRedAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaopensearchStatusRedAlarm1627144D"
+          }
+        ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/StatusYellowAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
           }
         ],
         "/lamopn-domain-arguments/test-lambda-opensearch/StatusYellowAlarm/Resource": [
@@ -166,10 +390,38 @@
             "data": "testlambdaopensearchStatusYellowAlarm57139CF0"
           }
         ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/FreeStorageSpaceTooLowAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/lamopn-domain-arguments/test-lambda-opensearch/FreeStorageSpaceTooLowAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaopensearchFreeStorageSpaceTooLowAlarm6A5E1E96"
+          }
+        ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/IndexWritesBlockedTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
           }
         ],
         "/lamopn-domain-arguments/test-lambda-opensearch/IndexWritesBlockedTooHighAlarm/Resource": [
@@ -178,10 +430,38 @@
             "data": "testlambdaopensearchIndexWritesBlockedTooHighAlarmD2E041A3"
           }
         ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/AutomatedSnapshotFailureTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/lamopn-domain-arguments/test-lambda-opensearch/AutomatedSnapshotFailureTooHighAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaopensearchAutomatedSnapshotFailureTooHighAlarm9A4D0B1F"
+          }
+        ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/CPUUtilizationTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
           }
         ],
         "/lamopn-domain-arguments/test-lambda-opensearch/CPUUtilizationTooHighAlarm/Resource": [
@@ -190,16 +470,58 @@
             "data": "testlambdaopensearchCPUUtilizationTooHighAlarmC4850758"
           }
         ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/JVMMemoryPressureTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/lamopn-domain-arguments/test-lambda-opensearch/JVMMemoryPressureTooHighAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaopensearchJVMMemoryPressureTooHighAlarmEFB09A7C"
           }
         ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/MasterCPUUtilizationTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/lamopn-domain-arguments/test-lambda-opensearch/MasterCPUUtilizationTooHighAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaopensearchMasterCPUUtilizationTooHighAlarm124D5748"
+          }
+        ],
+        "/lamopn-domain-arguments/test-lambda-opensearch/MasterJVMMemoryPressureTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
           }
         ],
         "/lamopn-domain-arguments/test-lambda-opensearch/MasterJVMMemoryPressureTooHighAlarm/Resource": [
@@ -219,6 +541,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testlambdaopensearchLambdaFunctionServiceRoleDefaultPolicy78C56359": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchLambdaFunctionServiceRoleDefaultPolicy78C56359",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamopn-domain-arguments"
@@ -229,5 +560,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1006.0"
 }

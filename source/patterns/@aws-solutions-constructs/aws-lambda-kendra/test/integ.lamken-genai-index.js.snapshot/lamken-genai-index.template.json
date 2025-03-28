@@ -458,58 +458,6 @@
     }
    }
   },
-  "genaiindexLambdaFunctionServiceRoleDefaultPolicy18386D50": {
-   "Type": "AWS::IAM::Policy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      },
-      {
-       "Action": [
-        "kendra:BatchGet*",
-        "kendra:Describe*",
-        "kendra:Get*",
-        "kendra:List*",
-        "kendra:Query",
-        "kendra:Retrieve",
-        "kendra:SubmitFeedback"
-       ],
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "genaiindexkendraindexgenaiindex5FFB72B4",
-         "Arn"
-        ]
-       }
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "PolicyName": "genaiindexLambdaFunctionServiceRoleDefaultPolicy18386D50",
-    "Roles": [
-     {
-      "Ref": "genaiindexLambdaFunctionServiceRoleE929EAD8"
-     }
-    ]
-   },
-   "Metadata": {
-    "cfn_nag": {
-     "rules_to_suppress": [
-      {
-       "id": "W12",
-       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
-      }
-     ]
-    }
-   }
-  },
   "genaiindexLambdaFunctionD79F5018": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -543,7 +491,6 @@
     }
    },
    "DependsOn": [
-    "genaiindexLambdaFunctionServiceRoleDefaultPolicy18386D50",
     "genaiindexLambdaFunctionServiceRoleE929EAD8"
    ],
    "Metadata": {
@@ -563,6 +510,89 @@
       }
      ]
     }
+   }
+  },
+  "genaiindexLambdaFunctioninlinePolicyAddedToExecutionRole02296A6AC": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "genaiindexLambdaFunctioninlinePolicyAddedToExecutionRole02296A6AC",
+    "Roles": [
+     {
+      "Ref": "genaiindexLambdaFunctionServiceRoleE929EAD8"
+     }
+    ]
+   }
+  },
+  "genaiindexLambdaFunctioninlinePolicyAddedToExecutionRole1B78E0048": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "kendra:BatchGet*",
+        "kendra:Describe*",
+        "kendra:Get*",
+        "kendra:List*",
+        "kendra:Query",
+        "kendra:Retrieve"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "genaiindexkendraindexgenaiindex5FFB72B4",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "genaiindexLambdaFunctioninlinePolicyAddedToExecutionRole1B78E0048",
+    "Roles": [
+     {
+      "Ref": "genaiindexLambdaFunctionServiceRoleE929EAD8"
+     }
+    ]
+   }
+  },
+  "genaiindexLambdaFunctioninlinePolicyAddedToExecutionRole2D07C016D": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "kendra:SubmitFeedback",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "genaiindexkendraindexgenaiindex5FFB72B4",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "genaiindexLambdaFunctioninlinePolicyAddedToExecutionRole2D07C016D",
+    "Roles": [
+     {
+      "Ref": "genaiindexLambdaFunctionServiceRoleE929EAD8"
+     }
+    ]
    }
   },
   "genaiindexkendraindexrolegenaiindex2848B249": {

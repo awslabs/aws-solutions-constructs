@@ -1,5 +1,5 @@
 {
-  "version": "39.0.0",
+  "version": "40.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "source": {
@@ -27,7 +27,7 @@
         }
       }
     },
-    "2220c8733c46dc1d4f92c08caa484787a76e26ce8642c75c304e9e27ad68f22b": {
+    "1cb5dbfb5c3a84e5b340c0108b26d8222af723b5e3744c06ce693a4e21811647": {
       "source": {
         "path": "lamkin-existingVpc.template.json",
         "packaging": "file"
@@ -35,7 +35,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "2220c8733c46dc1d4f92c08caa484787a76e26ce8642c75c304e9e27ad68f22b.json",
+          "objectKey": "1cb5dbfb5c3a84e5b340c0108b26d8222af723b5e3744c06ce693a4e21811647.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "42.0.0",
   "artifacts": {
     "lamelsdomainargumentsIntegDefaultTestDeployAssert01468AA9.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/2447b5c8a50b0257abc8e2fb4d4998f448406c7fb8858f6510f2772c92c9e61b.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6c0a7a1dc017b1b6f4592e06626737cf8884360662b551b2c1a6ab027db810e9.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,16 +82,77 @@
         "lamels-domain-arguments.assets"
       ],
       "metadata": {
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunctionServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleA59E9EBF"
           }
         ],
-        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunction": [
           {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleDefaultPolicy438CAC76"
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*"
+              ]
+            }
           }
         ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunction/Resource": [
@@ -100,10 +161,62 @@
             "data": "testlambdaelasticsearchkibana2LambdaFunctionE665DF63"
           }
         ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2LambdaFunctioninlinePolicyAddedToExecutionRole0DD92EB84"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoUserPool": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoUserPool/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoUserPoolClient": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "userPool": "*"
+            }
           }
         ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoUserPoolClient/Resource": [
@@ -124,6 +237,24 @@
             "data": "testlambdaelasticsearchkibana2UserPoolDomainF6BF7A6F"
           }
         ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoAuthorizedRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoAuthorizedRole/ImportCognitoAuthorizedRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoAuthorizedRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -136,10 +267,75 @@
             "data": "testlambdaelasticsearchkibana2IdentityPoolRoleMapping5CE56BBF"
           }
         ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoKibanaConfigureRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoKibanaConfigureRole/ImportCognitoKibanaConfigureRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoKibanaConfigureRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana2CognitoKibanaConfigureRoleC9C9E921"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoKibanaConfigureRolePolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
           }
         ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoKibanaConfigureRolePolicy/Resource": [
@@ -154,10 +350,38 @@
             "data": "testlambdaelasticsearchkibana2ElasticsearchDomainE2BD1E73"
           }
         ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/StatusRedAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/StatusRedAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana2StatusRedAlarm508A4D17"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/StatusYellowAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
           }
         ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/StatusYellowAlarm/Resource": [
@@ -166,10 +390,38 @@
             "data": "testlambdaelasticsearchkibana2StatusYellowAlarmEF13F129"
           }
         ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/FreeStorageSpaceTooLowAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/FreeStorageSpaceTooLowAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana2FreeStorageSpaceTooLowAlarm1ED7AA90"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/IndexWritesBlockedTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
           }
         ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/IndexWritesBlockedTooHighAlarm/Resource": [
@@ -178,10 +430,38 @@
             "data": "testlambdaelasticsearchkibana2IndexWritesBlockedTooHighAlarmCE02A217"
           }
         ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/AutomatedSnapshotFailureTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/AutomatedSnapshotFailureTooHighAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana2AutomatedSnapshotFailureTooHighAlarm75E8F988"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CPUUtilizationTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
           }
         ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CPUUtilizationTooHighAlarm/Resource": [
@@ -190,16 +470,58 @@
             "data": "testlambdaelasticsearchkibana2CPUUtilizationTooHighAlarm7E4A7ADE"
           }
         ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/JVMMemoryPressureTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/JVMMemoryPressureTooHighAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana2JVMMemoryPressureTooHighAlarm7CB5E1C7"
           }
         ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/MasterCPUUtilizationTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/MasterCPUUtilizationTooHighAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana2MasterCPUUtilizationTooHighAlarmE22B714C"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/MasterJVMMemoryPressureTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
           }
         ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/MasterJVMMemoryPressureTooHighAlarm/Resource": [
@@ -219,6 +541,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleDefaultPolicy438CAC76": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleDefaultPolicy438CAC76",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamels-domain-arguments"
@@ -229,5 +560,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1006.0"
 }

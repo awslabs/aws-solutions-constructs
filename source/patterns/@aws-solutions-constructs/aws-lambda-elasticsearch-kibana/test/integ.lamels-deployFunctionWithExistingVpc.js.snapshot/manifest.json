@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "42.0.0",
   "artifacts": {
     "lamelsdeployFunctionWithExistingVpcIntegDefaultTestDeployAssertB067F5A6.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/f634bf3ab60c1978a1ce9d208368c829fd2575665d9ee451689bc4403a25a862.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/33f6c7864440a66c5b03d1e35ddcd072121e24fe689055c05bcb17950431db3f.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,10 +82,56 @@
         "lamels-deployFunctionWithExistingVpc.assets"
       ],
       "metadata": {
+        "/lamels-deployFunctionWithExistingVpc/Vpc": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "enableDnsHostnames": true,
+              "enableDnsSupport": true,
+              "ipAddresses": "*"
+            }
+          }
+        ],
         "/lamels-deployFunctionWithExistingVpc/Vpc/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "Vpc8378EB38"
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/Vpc/PublicSubnet1": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": true,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": true,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {}
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addNatGateway": [
+                "*"
+              ]
+            }
           }
         ],
         "/lamels-deployFunctionWithExistingVpc/Vpc/PublicSubnet1/Subnet": [
@@ -124,6 +170,42 @@
             "data": "VpcPublicSubnet1NATGateway4D7517AA"
           }
         ],
+        "/lamels-deployFunctionWithExistingVpc/Vpc/PublicSubnet2": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": true,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": true,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {}
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addNatGateway": [
+                "*"
+              ]
+            }
+          }
+        ],
         "/lamels-deployFunctionWithExistingVpc/Vpc/PublicSubnet2/Subnet": [
           {
             "type": "aws:cdk:logicalId",
@@ -160,6 +242,34 @@
             "data": "VpcPublicSubnet2NATGateway9182C01D"
           }
         ],
+        "/lamels-deployFunctionWithExistingVpc/Vpc/PrivateSubnet1": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": false,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": false,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {}
+          }
+        ],
         "/lamels-deployFunctionWithExistingVpc/Vpc/PrivateSubnet1/Subnet": [
           {
             "type": "aws:cdk:logicalId",
@@ -182,6 +292,34 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "VpcPrivateSubnet1DefaultRouteBE02A9ED"
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/Vpc/PrivateSubnet2": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": false,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "availabilityZone": "*",
+              "vpcId": "*",
+              "cidrBlock": "*",
+              "mapPublicIpOnLaunch": false,
+              "ipv6CidrBlock": "*",
+              "assignIpv6AddressOnCreation": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {}
           }
         ],
         "/lamels-deployFunctionWithExistingVpc/Vpc/PrivateSubnet2/Subnet": [
@@ -220,10 +358,74 @@
             "data": "VpcVPCGWBF912B6E"
           }
         ],
+        "/lamels-deployFunctionWithExistingVpc/Vpc/RestrictDefaultSecurityGroupCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamels-deployFunctionWithExistingVpc/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/Vpc/FlowLog": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resourceType": "*"
+            }
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/Vpc/FlowLog/IAMRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "roleName": "*",
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/Vpc/FlowLog/IAMRole/ImportIAMRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/lamels-deployFunctionWithExistingVpc/Vpc/FlowLog/IAMRole/Resource": [
@@ -232,10 +434,54 @@
             "data": "VpcFlowLogIAMRole6A475D41"
           }
         ],
+        "/lamels-deployFunctionWithExistingVpc/Vpc/FlowLog/IAMRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
         "/lamels-deployFunctionWithExistingVpc/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/Vpc/FlowLog/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/lamels-deployFunctionWithExistingVpc/Vpc/FlowLog/LogGroup/Resource": [
@@ -250,6 +496,12 @@
             "data": "VpcFlowLog8FF33A73"
           }
         ],
+        "/lamels-deployFunctionWithExistingVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
         "/lamels-deployFunctionWithExistingVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
           {
             "type": "aws:cdk:logicalId",
@@ -262,10 +514,106 @@
             "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
           }
         ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/LambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/LambdaFunctionServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana4LambdaFunctionServiceRoleA52BB7F9"
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/LambdaFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
@@ -274,10 +622,56 @@
             "data": "testlambdaelasticsearchkibana4LambdaFunctionServiceRoleDefaultPolicyA5AD88E5"
           }
         ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/ReplaceDefaultSecurityGroup-security-group": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "vpc": "*",
+              "allowAllOutbound": true
+            }
+          }
+        ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/ReplaceDefaultSecurityGroup-security-group/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana4ReplaceDefaultSecurityGroupsecuritygroupA79E2B92"
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/LambdaFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "code": "*",
+              "runtime": "*",
+              "handler": "*",
+              "securityGroups": [
+                "*"
+              ],
+              "vpc": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*"
+              ]
+            }
           }
         ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/LambdaFunction/Resource": [
@@ -286,10 +680,62 @@
             "data": "testlambdaelasticsearchkibana4LambdaFunction2C5856DF"
           }
         ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana4LambdaFunctioninlinePolicyAddedToExecutionRole0CFA48A09"
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/CognitoUserPool": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/CognitoUserPool/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana4CognitoUserPool37A5CDE1"
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/CognitoUserPoolClient": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "userPool": "*"
+            }
           }
         ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/CognitoUserPoolClient/Resource": [
@@ -310,6 +756,24 @@
             "data": "testlambdaelasticsearchkibana4UserPoolDomain4CAAF2F6"
           }
         ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/CognitoAuthorizedRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/CognitoAuthorizedRole/ImportCognitoAuthorizedRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/CognitoAuthorizedRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -322,10 +786,75 @@
             "data": "testlambdaelasticsearchkibana4IdentityPoolRoleMapping9378D177"
           }
         ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/CognitoKibanaConfigureRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/CognitoKibanaConfigureRole/ImportCognitoKibanaConfigureRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/CognitoKibanaConfigureRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana4CognitoKibanaConfigureRole6A058B80"
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/CognitoKibanaConfigureRolePolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
           }
         ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/CognitoKibanaConfigureRolePolicy/Resource": [
@@ -340,10 +869,38 @@
             "data": "testlambdaelasticsearchkibana4ElasticsearchDomainC32C1BE6"
           }
         ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/StatusRedAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/StatusRedAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana4StatusRedAlarm56DEE5C7"
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/StatusYellowAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
           }
         ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/StatusYellowAlarm/Resource": [
@@ -352,10 +909,38 @@
             "data": "testlambdaelasticsearchkibana4StatusYellowAlarm810B4F9E"
           }
         ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/FreeStorageSpaceTooLowAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/FreeStorageSpaceTooLowAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana4FreeStorageSpaceTooLowAlarmF3FB31EA"
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/IndexWritesBlockedTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
           }
         ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/IndexWritesBlockedTooHighAlarm/Resource": [
@@ -364,10 +949,38 @@
             "data": "testlambdaelasticsearchkibana4IndexWritesBlockedTooHighAlarmF2968C92"
           }
         ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/AutomatedSnapshotFailureTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/AutomatedSnapshotFailureTooHighAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana4AutomatedSnapshotFailureTooHighAlarm53EB1ABB"
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/CPUUtilizationTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
           }
         ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/CPUUtilizationTooHighAlarm/Resource": [
@@ -376,16 +989,58 @@
             "data": "testlambdaelasticsearchkibana4CPUUtilizationTooHighAlarm29B67D10"
           }
         ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/JVMMemoryPressureTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/JVMMemoryPressureTooHighAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana4JVMMemoryPressureTooHighAlarm9DDED711"
           }
         ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/MasterCPUUtilizationTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/MasterCPUUtilizationTooHighAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana4MasterCPUUtilizationTooHighAlarmE66867F2"
+          }
+        ],
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/MasterJVMMemoryPressureTooHighAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
           }
         ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/MasterJVMMemoryPressureTooHighAlarm/Resource": [
@@ -415,5 +1070,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1006.0"
 }

@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "42.0.0",
   "artifacts": {
     "wssqsexistingwebsocketIntegDefaultTestDeployAssertE80DFB19.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/00c3c95b44e13c1525db5666ce4323a30c2c5e57760f2cbed93a539c8613d8f8.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4a39e277f5ba7c3cf30364f078ee45f33561837eb77b4638bd14101eb035bdd.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,16 +82,68 @@
         "wssqs-existing-web-socket.assets"
       ],
       "metadata": {
+        "/wssqs-existing-web-socket/connectServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/wssqs-existing-web-socket/connectServiceRole/ImportconnectServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/wssqs-existing-web-socket/connectServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "connectServiceRoleD6E70EFD"
           }
         ],
-        "/wssqs-existing-web-socket/connectServiceRole/DefaultPolicy/Resource": [
+        "/wssqs-existing-web-socket/connect": [
           {
-            "type": "aws:cdk:logicalId",
-            "data": "connectServiceRoleDefaultPolicyCE4B3DE0"
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
           }
         ],
         "/wssqs-existing-web-socket/connect/Resource": [
@@ -100,16 +152,106 @@
             "data": "connectEB2081F1"
           }
         ],
+        "/wssqs-existing-web-socket/connect/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/wssqs-existing-web-socket/connect/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "connectinlinePolicyAddedToExecutionRole0FA4FAF92"
+          }
+        ],
+        "/wssqs-existing-web-socket/disconnectServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/wssqs-existing-web-socket/disconnectServiceRole/ImportdisconnectServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/wssqs-existing-web-socket/disconnectServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "disconnectServiceRole0B1E33D9"
           }
         ],
-        "/wssqs-existing-web-socket/disconnectServiceRole/DefaultPolicy/Resource": [
+        "/wssqs-existing-web-socket/disconnect": [
           {
-            "type": "aws:cdk:logicalId",
-            "data": "disconnectServiceRoleDefaultPolicyD85178B8"
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "role": "*",
+              "tracing": "Active",
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*",
+                {
+                  "removeInEdge": true
+                }
+              ]
+            }
           }
         ],
         "/wssqs-existing-web-socket/disconnect/Resource": [
@@ -118,16 +260,80 @@
             "data": "disconnect829B70D0"
           }
         ],
+        "/wssqs-existing-web-socket/disconnect/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/wssqs-existing-web-socket/disconnect/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "disconnectinlinePolicyAddedToExecutionRole0CDB203CB"
+          }
+        ],
+        "/wssqs-existing-web-socket/TestWebSocket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": "*"
+          }
+        ],
         "/wssqs-existing-web-socket/TestWebSocket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "TestWebSocketF281E1FE"
           }
         ],
+        "/wssqs-existing-web-socket/TestWebSocket/$connect-Route": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/wssqs-existing-web-socket/TestWebSocket/$connect-Route/ConnectIntegration-Permission": [
           {
             "type": "aws:cdk:logicalId",
             "data": "TestWebSocketconnectRouteConnectIntegrationPermissionB20E5F78"
+          }
+        ],
+        "/wssqs-existing-web-socket/TestWebSocket/$connect-Route/ConnectIntegration": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/wssqs-existing-web-socket/TestWebSocket/$connect-Route/ConnectIntegration/Resource": [
@@ -142,10 +348,22 @@
             "data": "TestWebSocketconnectRoute202CFA90"
           }
         ],
+        "/wssqs-existing-web-socket/TestWebSocket/$disconnect-Route": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/wssqs-existing-web-socket/TestWebSocket/$disconnect-Route/DisconnectIntegration-Permission": [
           {
             "type": "aws:cdk:logicalId",
             "data": "TestWebSocketdisconnectRouteDisconnectIntegrationPermissionE56CE9E3"
+          }
+        ],
+        "/wssqs-existing-web-socket/TestWebSocket/$disconnect-Route/DisconnectIntegration": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/wssqs-existing-web-socket/TestWebSocket/$disconnect-Route/DisconnectIntegration/Resource": [
@@ -160,10 +378,31 @@
             "data": "TestWebSocketdisconnectRouteF87564DB"
           }
         ],
+        "/wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/queue-dlq": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "KMS_MANAGED",
+              "fifo": true,
+              "deduplicationScope": "messageGroup",
+              "fifoThroughputLimit": "perMessageGroupId"
+            }
+          }
+        ],
         "/wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsqueuedlq875602DF"
+          }
+        ],
+        "/wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/queue-dlq/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "queues": [
+                "*"
+              ]
+            }
           }
         ],
         "/wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/queue-dlq/Policy/Resource": [
@@ -172,10 +411,39 @@
             "data": "ApiGatewayV2WebSocketToSqsqueuedlqPolicy9E75C5D9"
           }
         ],
+        "/wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/queue": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "KMS_MANAGED",
+              "fifo": true,
+              "deduplicationScope": "messageGroup",
+              "fifoThroughputLimit": "perMessageGroupId",
+              "redriveAllowPolicy": {
+                "redrivePermission": "denyAll"
+              },
+              "visibilityTimeout": "*",
+              "deadLetterQueue": {
+                "maxReceiveCount": "*",
+                "queue": "*"
+              }
+            }
+          }
+        ],
         "/wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/queue/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsqueue6D26A944"
+          }
+        ],
+        "/wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/queue/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "queues": [
+                "*"
+              ]
+            }
           }
         ],
         "/wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/queue/Policy/Resource": [
@@ -184,10 +452,97 @@
             "data": "ApiGatewayV2WebSocketToSqsqueuePolicyEFABA1AE"
           }
         ],
+        "/wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsLambdaRestApiCloudWatchRole42C4E931"
+          }
+        ],
+        "/wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/LambdaRestApiCloudWatchRole/DefaultPolicy/Resource": [
@@ -196,10 +551,24 @@
             "data": "ApiGatewayV2WebSocketToSqsLambdaRestApiCloudWatchRoleDefaultPolicy6D004FA5"
           }
         ],
+        "/wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/Stage": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/Stage/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ApiGatewayV2WebSocketToSqsStage5C419F9E"
+          }
+        ],
+        "/wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "retention": 9999
+            }
           }
         ],
         "/wssqs-existing-web-socket/ApiGatewayV2WebSocketToSqs/LogGroup/Resource": [
@@ -219,6 +588,24 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "connectServiceRoleDefaultPolicyCE4B3DE0": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "connectServiceRoleDefaultPolicyCE4B3DE0",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "disconnectServiceRoleDefaultPolicyD85178B8": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "disconnectServiceRoleDefaultPolicyD85178B8",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "wssqs-existing-web-socket"
@@ -229,5 +616,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1006.0"
 }
