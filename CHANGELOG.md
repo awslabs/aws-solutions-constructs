@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.82.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.81.0...v2.82.0) (2025-04-03)
+
+Built on CDK 2.187.0
+
+This release can be used with CDK 2.187.0, so allows clients to address this [CVE](https://github.com/advisories/GHSA-qq4x-c6h6-rfxh).
+
 ## [2.81.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.80.0...v2.81.0) (2025-03-28)
 
 Build on CDK 2.186.0
