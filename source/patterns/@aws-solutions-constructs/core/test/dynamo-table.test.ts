@@ -21,7 +21,12 @@ import { getPartitionKeyNameFromTable } from '../lib/dynamodb-table-helper';
 test('test TableProps change billing mode', () => {
   const stack = new Stack();
 
-  const defaultProps: dynamodb.TableProps = defaults.defaultTableProps;
+  const defaultProps: dynamodb.TableProps = defaults.GetDefaultTableProps({
+    partitionKey: {
+      name: 'donotuse',
+      type: dynamodb.AttributeType.BINARY
+    },
+  });
 
   const inProps: dynamodb.TableProps = {
     billingMode: dynamodb.BillingMode.PROVISIONED,
@@ -63,7 +68,12 @@ test('test TableProps change billing mode', () => {
 test('test TableProps override add sort key', () => {
   const stack = new Stack();
 
-  const defaultProps: dynamodb.TableProps = defaults.defaultTableProps;
+  const defaultProps: dynamodb.TableProps = defaults.GetDefaultTableProps({
+    partitionKey: {
+      name: 'donotuse',
+      type: dynamodb.AttributeType.BINARY
+    },
+  });
 
   const inProps: dynamodb.TableProps = {
     partitionKey: {
@@ -111,7 +121,12 @@ test('test TableProps override add sort key', () => {
 test('test TableWithStreamProps override stream view type', () => {
   const stack = new Stack();
 
-  const defaultProps: dynamodb.TableProps = defaults.defaultTableWithStreamProps;
+  const defaultProps: dynamodb.TableProps = defaults.GetDefaultTableWithStreamProps({
+    partitionKey: {
+      name: 'donotuse',
+      type: dynamodb.AttributeType.BINARY
+    },
+  });
 
   const inProps: dynamodb.TableProps = {
     partitionKey: {
@@ -400,7 +415,12 @@ test('test getPartitionKeyNameFromTable()', () => {
 
   const stack = new Stack();
 
-  const defaultProps: dynamodb.TableProps = defaults.defaultTableProps;
+  const defaultProps: dynamodb.TableProps = defaults.GetDefaultTableProps({
+    partitionKey: {
+      name: 'donotuse',
+      type: dynamodb.AttributeType.BINARY
+    },
+  });
 
   const inProps: dynamodb.TableProps = {
     partitionKey: {
@@ -421,6 +441,54 @@ test('test getPartitionKeyNameFromTable()', () => {
   expect(testKeyName).toEqual(partitionKeyName);
 });
 
+test('Test that PointInTimeRecovery is not set when PointInTimeRecoverySpecification is provided', () => {
+  const defaultProps: dynamodb.TableProps = defaults.GetDefaultTableProps({
+    partitionKey: {
+      name: 'donotuse',
+      type: dynamodb.AttributeType.BINARY
+    },
+    pointInTimeRecoverySpecification: {
+      pointInTimeRecoveryEnabled: true
+    }
+  });
+
+  expect(defaultProps.pointInTimeRecovery).toBeUndefined();
+
+  // Let's confirm the alternative  as well
+  const moreDefaultProps: dynamodb.TableProps = defaults.GetDefaultTableProps({
+    partitionKey: {
+      name: 'donotuse',
+      type: dynamodb.AttributeType.BINARY
+    }
+  });
+
+  expect(moreDefaultProps.pointInTimeRecovery).toEqual(true);
+});
+
+test('Test that PointInTimeRecovery is not set when PointInTimeRecoverySpecification is provided for table with stream', () => {
+  const defaultProps: dynamodb.TableProps = defaults.GetDefaultTableWithStreamProps({
+    partitionKey: {
+      name: 'donotuse',
+      type: dynamodb.AttributeType.BINARY
+    },
+    pointInTimeRecoverySpecification: {
+      pointInTimeRecoveryEnabled: true
+    }
+  });
+
+  expect(defaultProps.pointInTimeRecovery).toBeUndefined();
+
+  // Let's confirm the alternative  as well
+  const moreDefaultProps: dynamodb.TableProps = defaults.GetDefaultTableWithStreamProps({
+    partitionKey: {
+      name: 'donotuse',
+      type: dynamodb.AttributeType.BINARY
+    }
+  });
+
+  expect(moreDefaultProps.pointInTimeRecovery).toEqual(true);
+});
+
 // ---------------------------
 // Prop Tests
 // ---------------------------
@@ -428,8 +496,18 @@ test('Test fail DynamoDB table check', () => {
   const stack = new Stack();
 
   const props: defaults.DynamoDBProps = {
-    existingTableObj: new dynamodb.Table(stack, 'placeholder', defaults.defaultTableProps),
-    dynamoTableProps: defaults.defaultTableProps,
+    existingTableObj: new dynamodb.Table(stack, 'placeholder', defaults.GetDefaultTableProps({
+      partitionKey: {
+        name: 'donotuse',
+        type: dynamodb.AttributeType.BINARY
+      },
+    })),
+    dynamoTableProps: defaults.GetDefaultTableProps({
+      partitionKey: {
+        name: 'donotuse',
+        type: dynamodb.AttributeType.BINARY
+      },
+    }),
   };
 
   const app = () => {
@@ -444,8 +522,18 @@ test('Test fail DynamoDB table check (for interface AND obj)', () => {
   const stack = new Stack();
 
   const props: defaults.DynamoDBProps = {
-    existingTableInterface: new dynamodb.Table(stack, 'placeholder', defaults.defaultTableProps),
-    existingTableObj: new dynamodb.Table(stack, 'placeholderobj', defaults.defaultTableProps),
+    existingTableInterface: new dynamodb.Table(stack, 'placeholder', defaults.GetDefaultTableProps({
+      partitionKey: {
+        name: 'donotuse',
+        type: dynamodb.AttributeType.BINARY
+      },
+    })),
+    existingTableObj: new dynamodb.Table(stack, 'placeholderobj', defaults.GetDefaultTableProps({
+      partitionKey: {
+        name: 'donotuse',
+        type: dynamodb.AttributeType.BINARY
+      },
+    })),
   };
 
   const app = () => {

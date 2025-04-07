@@ -18,25 +18,28 @@
 
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 
-const defaultTableProps: dynamodb.TableProps = {
-  billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-  encryption: dynamodb.TableEncryption.AWS_MANAGED,
-  pointInTimeRecovery: true,
-  partitionKey: {
-    name: 'id',
-    type: dynamodb.AttributeType.STRING
-  }
-};
+export function GetDefaultTableProps(clientTableProps?: dynamodb.TableProps) {
+  return {
+    billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+    encryption: dynamodb.TableEncryption.AWS_MANAGED,
+    pointInTimeRecovery: clientTableProps?.pointInTimeRecoverySpecification ? undefined : true,
+    partitionKey: {
+      name: 'id',
+      type: dynamodb.AttributeType.STRING
+    }
+  };
+}
 
-const defaultTableWithStreamProps: dynamodb.TableProps = {
-  billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-  encryption: dynamodb.TableEncryption.AWS_MANAGED,
-  pointInTimeRecovery: true,
-  partitionKey: {
-    name: 'id',
-    type: dynamodb.AttributeType.STRING
-  },
-  stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES
-};
+export function GetDefaultTableWithStreamProps(clientTableProps?: dynamodb.TableProps) {
+  return {
+    billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+    encryption: dynamodb.TableEncryption.AWS_MANAGED,
+    pointInTimeRecovery: clientTableProps?.pointInTimeRecoverySpecification ? undefined : true,
+    partitionKey: {
+      name: 'id',
+      type: dynamodb.AttributeType.STRING
+    },
+    stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES
+  };
+}
 
-export { defaultTableProps, defaultTableWithStreamProps };
