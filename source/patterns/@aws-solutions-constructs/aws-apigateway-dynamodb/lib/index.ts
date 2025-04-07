@@ -307,7 +307,9 @@ export class ApiGatewayToDynamoDB extends Construct {
     }
 
     // Set the default props for DynamoDB table
-    const dynamoTableProps: dynamodb.TableProps = defaults.consolidateProps(defaults.defaultTableProps, props.dynamoTableProps);
+    const dynamoTableProps: dynamodb.TableProps = defaults.consolidateProps(
+      defaults.GetDefaultTableProps(props.dynamoTableProps),
+      props.dynamoTableProps);
     let partitionKeyName = dynamoTableProps.partitionKey.name;
 
     if (props.existingTableObj) {
