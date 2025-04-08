@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.83.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.82.0...v2.83.0) (2025-04-08)
+
+Built on CDK 2.187.0
+
+* **aws-lambda-dynamodb:** apply condition on pointIntimerecoveryspecification ([#1284](https://github.com/awslabs/aws-solutions-constructs/issues/1301)) ([03b5124](https://github.com/awslabs/aws-solutions-constructs/commit/03b5124c84b48ea26cc63746c2e8f2acceb95ea5))
+
 ## [2.82.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.81.0...v2.82.0) (2025-04-03)
 
 Built on CDK 2.187.0
