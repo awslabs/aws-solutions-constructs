@@ -77,3 +77,4 @@ export * from './lib/websocket-api-defaults';
 export * from './lib/websocket-api-helper';
 export * from './lib/pipes-defaults';
 export * from './lib/pipes-helper';
+export * from './lib/bedrock-inference-helper';

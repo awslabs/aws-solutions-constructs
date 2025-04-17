@@ -168,6 +168,13 @@ export function generatePhysicalKendraIndexName(
   return generatePhysicalName(prefix, parts, 1000);
 }
 
+export function generatePhysicalInferenceProfileName(
+  prefix: string,
+  parts: string[]
+): string {
+  return generatePhysicalName(prefix, parts, 64);
+}
+
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  *

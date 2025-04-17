@@ -81,6 +81,8 @@ export enum ServiceEndpointTypes {
   EVENTS = "CLOUDWATCH_EVENTS",
   KINESIS_FIREHOSE = "KINESIS_FIREHOSE",
   KINESIS_STREAMS = "KINESIS_STREAMS",
+  BEDROCK = "BEDROCK",
+  BEDROCK_RUNTIME = "BEDROCK_RUNTIME",
   KENDRA = "KENDRA"
 }
 
@@ -166,6 +168,16 @@ const endpointSettings: EndpointDefinition[] = [
     endpointName: ServiceEndpointTypes.KENDRA,
     endpointType: EndpointTypes.INTERFACE,
     endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.KENDRA
+  },
+  {
+    endpointName: ServiceEndpointTypes.BEDROCK,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.BEDROCK
+  },
+  {
+    endpointName: ServiceEndpointTypes.BEDROCK_RUNTIME,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.BEDROCK_RUNTIME
   }
 ];
 
