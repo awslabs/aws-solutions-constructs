@@ -64,9 +64,11 @@ export interface LambdaToBedrockinferenceprofileProps {
   readonly bedrockModelId: string;
   /**
    * Properties to override constructs props values for the Inference Profile.
-   * The construct will populate modelSource and inverenceProfileName - so don't
-   * override those unless you have an very good reason.  This is where you set tags
-   * required for tracking inference calls.
+   * The construct will populate inverenceProfileName - so don't override it
+   * unless you have an very good reason.  The construct base IAM policies around
+   * the modelSource that it creates, so trying to send a modelSource in ths
+   * parameter will cause an error. This is where you set tags required for
+   * tracking inference calls.
    */
   readonly inferenceProfileProps?: bedrock.CfnApplicationInferenceProfileProps;
   /**
@@ -144,7 +146,7 @@ export class LambdaToBedrockinferenceprofile extends Construct {
     this.inferenceProfile = buildInferenceResponse.inferenceProfile;
 
     const regionMapping = createAreaRegionMapping(this, id, props.bedrockModelId);
-    const regionTag = cdk.Fn.select(0, cdk.Fn.split('-', cdk.Aws.REGION));
+    const regionPrefix = cdk.Fn.select(0, cdk.Fn.split('-', cdk.Aws.REGION));
 
     this.lambdaFunction.addToRolePolicy(new iam.PolicyStatement({
       actions: ['bedrock:Invoke*'],
@@ -153,11 +155,10 @@ export class LambdaToBedrockinferenceprofile extends Construct {
       ]
     }));
 
-    const crossRegion = defaults.CheckBooleanWithDefault(props.deployCrossRegionProfile, true);
     this.lambdaFunction.addToRolePolicy(new iam.PolicyStatement({
       actions: ['bedrock:Invoke*'],
-      resources: crossRegion ?
-        cdk.Fn.split(",", cdk.Fn.findInMap(regionMapping.mappingName, regionTag, 'regionalModels')) :
+      resources: defaults.IsCrossRegionProfile(props.deployCrossRegionProfile) ?
+        cdk.Fn.split(",", cdk.Fn.findInMap(regionMapping.mappingName, regionPrefix, 'regionalModels')) :
         [ `arn:${cdk.Aws.PARTITION}:bedrock:${cdk.Aws.REGION}::foundation-model/${props.bedrockModelId}` ]
     }));
 

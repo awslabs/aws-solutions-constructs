@@ -31,12 +31,11 @@ export interface BuildInferenceProfileReponse {
 
 export function buildInferenceProfile(scope: Construct, id: string, props: BuildInferenceProfileProps): BuildInferenceProfileReponse {
   const areaMap = createAreaPrefixMapping(scope, id);
-  const crossRegion = defaults.CheckBooleanWithDefault(props.deployCrossRegionProfile, true);
 
-  const regionTag = cdk.Fn.select(0, cdk.Fn.split('-', cdk.Aws.REGION));
-
+  const regionPrefix = cdk.Fn.select(0, cdk.Fn.split('-', cdk.Aws.REGION));
+  const crossRegion = IsCrossRegionProfile(props.deployCrossRegionProfile);
   const inferenceSourceArn = crossRegion ?
-    `arn:${cdk.Aws.PARTITION}:bedrock:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:inference-profile/${areaMap.mapping.findInMap(regionTag, "prefix")}.${props.bedrockModelId}` :
+    `arn:${cdk.Aws.PARTITION}:bedrock:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:inference-profile/${areaMap.mapping.findInMap(regionPrefix, "prefix")}.${props.bedrockModelId}` :
     `arn:${cdk.Aws.PARTITION}:bedrock:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:foundation-model/${props.bedrockModelId}`;
 
   const constructInferenceProps: bedrock.CfnApplicationInferenceProfileProps = {
@@ -114,6 +113,10 @@ export function createAreaRegionMapping(scope: Construct, id: string, model: str
     mapping: newMapping,
     mappingName
   };
+}
+
+export function IsCrossRegionProfile(deployCrossRegionProfile?: boolean) {
+  return defaults.CheckBooleanWithDefault(deployCrossRegionProfile, true);
 }
 
 export interface BedrockInferenceProps {

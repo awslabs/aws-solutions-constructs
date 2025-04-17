@@ -231,7 +231,8 @@ test('Test deployment with VPC', () => {
     deployVpc: true
   };
 
-  new LambdaToBedrockinferenceprofile(stack, 'test-lambda-inferenceprops', props);
+  const newConstruct = new LambdaToBedrockinferenceprofile(stack, 'test-lambda-inferenceprops', props);
+  expect(newConstruct.vpc).toBeDefined();
   const template = Template.fromStack(stack);
 
   template.resourceCountIs("AWS::EC2::VPC", 1);

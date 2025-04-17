@@ -12,7 +12,7 @@
  */
 
 import * as cdk from 'aws-cdk-lib';
-import { createAreaPrefixMapping, createAreaRegionMapping, buildInferenceProfile, CheckBedrockInferenceProps } from '../lib/bedrock-inference-helper';
+import { createAreaPrefixMapping, createAreaRegionMapping, buildInferenceProfile, CheckBedrockInferenceProps, IsCrossRegionProfile } from '../lib/bedrock-inference-helper';
 // import { Construct } from 'constructs';
 import { Template } from 'aws-cdk-lib/assertions';
 
@@ -222,4 +222,15 @@ test('Create cross region Inference Profile by default', () => {
   });
 });
 
+test('Test IsCrossRegionProfile', () => {
+  let crossRegion;
 
+  crossRegion =IsCrossRegionProfile(true);
+  expect(crossRegion).toEqual(true);
+
+  crossRegion =IsCrossRegionProfile(false);
+  expect(crossRegion).toEqual(false);
+
+  crossRegion =IsCrossRegionProfile();
+  expect(crossRegion).toEqual(true);
+});
