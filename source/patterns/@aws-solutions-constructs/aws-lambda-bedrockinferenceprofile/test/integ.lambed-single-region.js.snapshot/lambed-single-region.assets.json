@@ -1,0 +1,34 @@
+{
+  "version": "41.0.0",
+  "files": {
+    "0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f": {
+      "displayName": "test-lambda-inferenceprops/LambdaFunction/Code",
+      "source": {
+        "path": "asset.0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f.zip",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    },
+    "70173c074415be65df00341d3f84b73cefdeebab6858b6a5ebf90d7f19a170dd": {
+      "displayName": "lambed-single-region Template",
+      "source": {
+        "path": "lambed-single-region.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "70173c074415be65df00341d3f84b73cefdeebab6858b6a5ebf90d7f19a170dd.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
