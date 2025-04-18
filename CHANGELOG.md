@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.84.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.83.0...v2.84.0) (2025-04-18)
+
+
+### Features
+
+* **aws-lambda-bedrockinferenceprofile:** new construct ([#1305](https://github.com/awslabs/aws-solutions-constructs/issues/1305)) ([46fd40c](https://github.com/awslabs/aws-solutions-constructs/commit/46fd40c09fad30da32e8a90f596d619130d7d649))
+
 ## [2.83.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.82.0...v2.83.0) (2025-04-08)
 
 Built on CDK 2.187.0
