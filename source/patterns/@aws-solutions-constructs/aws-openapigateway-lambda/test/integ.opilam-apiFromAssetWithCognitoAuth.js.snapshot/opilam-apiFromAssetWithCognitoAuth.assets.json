@@ -1,7 +1,8 @@
 {
-  "version": "40.0.0",
+  "version": "41.0.0",
   "files": {
     "8c48f41891550d16b8b5de60b76d4f7a2b045576775bc16e9b461062c830b50d": {
+      "displayName": "ApiDefinitionAsset",
       "source": {
         "path": "asset.8c48f41891550d16b8b5de60b76d4f7a2b045576775bc16e9b461062c830b50d.yaml",
         "packaging": "file"
@@ -15,6 +16,7 @@
       }
     },
     "0ac0535f48d1ada09cde7f11fc72195d9d32da75a2719aeb20c4e5c45b28e62e": {
+      "displayName": "OpenApiGatewayToLambda/MessagesHandlerApiFunction0/Code",
       "source": {
         "path": "asset.0ac0535f48d1ada09cde7f11fc72195d9d32da75a2719aeb20c4e5c45b28e62e",
         "packaging": "zip"
@@ -28,6 +30,7 @@
       }
     },
     "654d49d4ea47a6be417d57b94dc0310933d0e971a3e48a3080c3e48487af3e50": {
+      "displayName": "OpenApiGatewayToLambda/PhotosHandlerApiFunction1/Code",
       "source": {
         "path": "asset.654d49d4ea47a6be417d57b94dc0310933d0e971a3e48a3080c3e48487af3e50",
         "packaging": "zip"
@@ -41,6 +44,7 @@
       }
     },
     "7dbcd6245c5c6f70da313d31e9bd533af2214c565d855fb2f669666e927c125e": {
+      "displayName": "OpenApiGatewayToLambda/ApiOutputAsset",
       "source": {
         "path": "asset.7dbcd6245c5c6f70da313d31e9bd533af2214c565d855fb2f669666e927c125e",
         "packaging": "file"
@@ -54,6 +58,7 @@
       }
     },
     "b670072ae403f5d0f7c4ac0413a63bb9f093a32fd1620d0908d53ce809c7575d": {
+      "displayName": "OpenApiGatewayToLambda/LambdaFunction/Code",
       "source": {
         "path": "asset.b670072ae403f5d0f7c4ac0413a63bb9f093a32fd1620d0908d53ce809c7575d",
         "packaging": "zip"
@@ -67,6 +72,7 @@
       }
     },
     "bdc104ed9cab1b5b6421713c8155f0b753380595356f710400609664d3635eca": {
+      "displayName": "OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/Code",
       "source": {
         "path": "asset.bdc104ed9cab1b5b6421713c8155f0b753380595356f710400609664d3635eca",
         "packaging": "zip"
@@ -79,7 +85,8 @@
         }
       }
     },
-    "27e62ea9059df19105b6db403639ae9d960b9aa58d4c8bc2236dde59996c8240": {
+    "88028e31cf4dbe6e0192a1a84f16525896a8993afb12876906992c69cf898f8b": {
+      "displayName": "opilam-apiFromAssetWithCognitoAuth Template",
       "source": {
         "path": "opilam-apiFromAssetWithCognitoAuth.template.json",
         "packaging": "file"
@@ -87,7 +94,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "27e62ea9059df19105b6db403639ae9d960b9aa58d4c8bc2236dde59996c8240.json",
+          "objectKey": "88028e31cf4dbe6e0192a1a84f16525896a8993afb12876906992c69cf898f8b.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

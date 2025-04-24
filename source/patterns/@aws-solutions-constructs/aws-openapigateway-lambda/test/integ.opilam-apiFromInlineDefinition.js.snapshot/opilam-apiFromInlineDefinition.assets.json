@@ -1,7 +1,8 @@
 {
-  "version": "40.0.0",
+  "version": "41.0.0",
   "files": {
     "0ac0535f48d1ada09cde7f11fc72195d9d32da75a2719aeb20c4e5c45b28e62e": {
+      "displayName": "OpenApiGatewayToLambda/MessagesHandlerApiFunction0/Code",
       "source": {
         "path": "asset.0ac0535f48d1ada09cde7f11fc72195d9d32da75a2719aeb20c4e5c45b28e62e",
         "packaging": "zip"
@@ -15,6 +16,7 @@
       }
     },
     "654d49d4ea47a6be417d57b94dc0310933d0e971a3e48a3080c3e48487af3e50": {
+      "displayName": "OpenApiGatewayToLambda/PhotosHandlerApiFunction1/Code",
       "source": {
         "path": "asset.654d49d4ea47a6be417d57b94dc0310933d0e971a3e48a3080c3e48487af3e50",
         "packaging": "zip"
@@ -27,7 +29,8 @@
         }
       }
     },
-    "4477e55e0fe9726dceb52c88903d6ce990707236851b6954931d5a6aea29026b": {
+    "373bfce2ca27d2971d7c02177eae5d6b953c2eacf4498979e1483d2a580babb9": {
+      "displayName": "opilam-apiFromInlineDefinition Template",
       "source": {
         "path": "opilam-apiFromInlineDefinition.template.json",
         "packaging": "file"
@@ -35,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "4477e55e0fe9726dceb52c88903d6ce990707236851b6954931d5a6aea29026b.json",
+          "objectKey": "373bfce2ca27d2971d7c02177eae5d6b953c2eacf4498979e1483d2a580babb9.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

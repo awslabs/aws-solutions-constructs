@@ -145,7 +145,7 @@ export class OpenApiGatewayToLambda extends Construct {
 
       targetInterface.addPermission(`${id}PermitAPIGInvocation`, {
         principal: new iam.ServicePrincipal('apigateway.amazonaws.com'),
-        sourceArn: this.apiGateway.arnForExecuteApi('*')
+        sourceArn: `arn:${cdk.Aws.PARTITION}:execute-api:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:${this.apiGateway.restApiId}/*/*`
       });
     });
   }

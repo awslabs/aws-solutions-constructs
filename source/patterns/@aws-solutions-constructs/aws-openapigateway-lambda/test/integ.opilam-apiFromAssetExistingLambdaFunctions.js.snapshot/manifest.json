@@ -1,5 +1,5 @@
 {
-  "version": "42.0.0",
+  "version": "43.0.0",
   "artifacts": {
     "opilamapiFromAssetExistingLambdaFunctionsIntegDefaultTestDeployAssertF0801F72.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/61cde875fd073f8a58977eb24c0bb2af45d24c8733fc17876f4115770b83c151.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/670576c310e4d68ee6d95c83683fedaaa1fb68d4035991d62d37b4df034987f1.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -193,7 +193,10 @@
         "/opilam-apiFromAssetExistingLambdaFunctions/LambdaFunction/OpenApiGatewayToLambdaPermitAPIGInvocation": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "LambdaFunctionOpenApiGatewayToLambdaPermitAPIGInvocation9D043C93"
+            "data": "LambdaFunctionOpenApiGatewayToLambdaPermitAPIGInvocation9D043C93",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_REPLACE"
+            ]
           }
         ],
         "/opilam-apiFromAssetExistingLambdaFunctions/PhotosExistingLambdaTestFromAssetServiceRole": [
@@ -308,7 +311,10 @@
         "/opilam-apiFromAssetExistingLambdaFunctions/PhotosExistingLambdaTestFromAsset/OpenApiGatewayToLambdaPermitAPIGInvocation": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "PhotosExistingLambdaTestFromAssetOpenApiGatewayToLambdaPermitAPIGInvocationF5E0ECB8"
+            "data": "PhotosExistingLambdaTestFromAssetOpenApiGatewayToLambdaPermitAPIGInvocationF5E0ECB8",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_REPLACE"
+            ]
           }
         ],
         "/opilam-apiFromAssetExistingLambdaFunctions/OpenApiGatewayToLambda/LambdaFunctionServiceRole": [
@@ -852,33 +858,6 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
-        ],
-        "LambdaFunctionServiceRoleDefaultPolicy126C8897": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "PhotosExistingLambdaTestFromAssetServiceRoleDefaultPolicy429BC741": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "PhotosExistingLambdaTestFromAssetServiceRoleDefaultPolicy429BC741",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "OpenApiGatewayToLambdaLambdaFunctionServiceRoleDefaultPolicy90DFA0A8": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaLambdaFunctionServiceRoleDefaultPolicy90DFA0A8",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
         ]
       },
       "displayName": "opilam-apiFromAssetExistingLambdaFunctions"
@@ -890,5 +869,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1006.0"
+  "minimumCliVersion": "3.0.0"
 }
