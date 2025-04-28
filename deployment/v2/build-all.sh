@@ -18,7 +18,7 @@ export NODE_OPTIONS="--max-old-space-size=4096 ${NODE_OPTIONS:-}"
 echo "============================================================================================="
 echo "building..."
 # time lerna run $bail --stream $runtarget || fail
-npx nx run-many -t blt --parallel=6 --output-style=static
+npx nx run-many -t blt --parallel=12 --output-style=static
 
 echo "============================================================================================="
 echo "running cfn-guard..."
@@ -30,7 +30,7 @@ echo "refresh license files"
 
 echo "============================================================================================="
 # time lerna run --bail --stream jsii-pacmak || fail
-npx nx run-many -t jsii-pacmak --parallel=6 --output-style=static
+npx nx run-many -t jsii-pacmak --parallel=12 --output-style=static
 
 echo "============================================================================================="
 echo "reverting back versions and updates to package.json for CDK v2..."
