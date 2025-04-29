@@ -120,7 +120,7 @@ npm link
 cd $source_dir
 echo "============================================================================================="
 echo "building..."
-time lerna run $bail --stream $runtarget || fail
+npx nx run-many -t $runtarget --parallel=12 --output-style=static
 
 for construct in $constructs; do
 
