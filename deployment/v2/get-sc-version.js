@@ -10,7 +10,7 @@
  *    node -p require('./get-sc-version')
  * 
  */
-const versionFile = 'source/lerna.json';
+const versionFile = 'source/release-info.json';
 if (!versionFile) {
   throw new Error(`unable to determine version filename from .versionrc.json at the root of the repo`);
 }

@@ -11,7 +11,7 @@ scRepoVersion=$(node -p "require('./get-sc-version')")
 
 cd $source_dir/
 
-# Align versions in ALL package.json with the one in lerna.json
+# Align versions in ALL package.json with the one in release-info.json
 files=$(find . -name package.json |\
     grep -v node_modules)
 

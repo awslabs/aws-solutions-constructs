@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "targetDefaults": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "jsii": {
+      "dependsOn": [
+        "^jsii"
+      ]
+    },
+    "build+lint+test": {
+      "dependsOn": [
+        "^build+lint+test"
+      ]
+    },
+    "blt": {
+      "dependsOn": [
+        "^blt"
+      ]
+    },
+    "jsii-pacmak": {
+      "dependsOn": [
+        "^jsii-pacmak"
+      ]
+    }
+  }
+}

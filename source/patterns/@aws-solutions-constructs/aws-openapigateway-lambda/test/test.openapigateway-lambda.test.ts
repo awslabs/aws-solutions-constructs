@@ -794,3 +794,61 @@ test('Deploys API based on Alias correctly', () => {
     Principal: "apigateway.amazonaws.com",
   }, 0);
 });
+
+test('confirm execute-api arn is generated correctly', () => {
+  const stack = new Stack();
+
+  const apiDefinitionAsset = new Asset(stack, 'OpenApiAsset', {
+    path: path.join(__dirname, 'openapi/apiDefinition.yaml')
+  });
+
+  new OpenApiGatewayToLambda(stack, 'test-apigateway-lambda', {
+    apiDefinitionAsset,
+    apiIntegrations: [
+      {
+        id: 'MessagesHandler',
+        lambdaFunctionProps: {
+          runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+          handler: 'index.handler',
+          code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+        }
+      }
+    ]
+  });
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties("AWS::Lambda::Permission", {
+    Action: "lambda:InvokeFunction",
+    Principal: "apigateway.amazonaws.com",
+    FunctionName: {
+      "Fn::GetAtt": [
+        Match.stringLikeRegexp("testapigatewaylambdaMessagesHandlerApiFunction*"),
+        "Arn"
+      ]
+    },
+    SourceArn: {
+      "Fn::Join": [
+        "",
+        [
+          "arn:",
+          {
+            "Ref": "AWS::Partition"
+          },
+          ":execute-api:",
+          {
+            "Ref": "AWS::Region"
+          },
+          ":",
+          {
+            "Ref": "AWS::AccountId"
+          },
+          ":",
+          {
+            "Ref": Match.stringLikeRegexp("testapigatewaylambdaSpecRestApi*")
+          },
+          "/*/*"
+        ]
+      ]
+    }
+  });
+});

@@ -38,6 +38,6 @@ git fetch origin "refs/tags/*:refs/tags/*"
 repoVersion=$(node -p "require('${deployment_dir}/get-sc-version')")
 echo "repoVersion=${repoVersion}"
 
-git add source/lerna.json
+git add source/release-info.json
 git add CHANGELOG.md
 git commit -m "chore(release): ${repoVersion}"

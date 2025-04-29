@@ -48,12 +48,45 @@ new LambdaToBedrockInferenceProfile(this, 'LambdaToBedrockPattern', {
 
 Python
 ``` python
-# TBD
+from constructs import Construct
+from aws_cdk import (
+    aws_lambda as _lambda,
+    Stack
+)
+
+from aws_solutions_constructs import (
+    aws_lambda_bedrockinferenceprofile as lambda_bedrock
+)
+
+lambda_bedrock.LambdaToBedrockinferenceprofile(
+    self, 'bedrock-construct',
+    bedrock_model_id="amazon.nova-lite-v1:0",
+    lambda_function_props=_lambda.FunctionProps(
+        runtime=_lambda.Runtime.NODEJS_20_X,
+        code=_lambda.Code.from_asset('lambda'),
+        handler='index.handler',
+    )
+)
 ```
 
 Java
 ``` java
-// TBD
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.lambdabedrockinferenceprofile.*;
+
+  new LambdaToBedrockinferenceprofile(this, "ApiGatewayToLambdaPattern", new LambdaToBedrockinferenceprofileProps.Builder()
+          .lambdaFunctionProps(new FunctionProps.Builder()
+                  .runtime(Runtime.NODEJS_20_X)
+                  .code(Code.fromAsset("lambda"))
+                  .handler("index.handler")
+                  .build())
+          .bedrockModelId("amazon.nova-lite-v1:0")
+          .build());
 ```
 
 ## Pattern Construct Props
