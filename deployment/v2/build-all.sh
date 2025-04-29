@@ -17,7 +17,6 @@ export NODE_OPTIONS="--max-old-space-size=4096 ${NODE_OPTIONS:-}"
 
 echo "============================================================================================="
 echo "building..."
-# time lerna run $bail --stream $runtarget || fail
 npx nx run-many -t blt --parallel=12 --output-style=static
 
 echo "============================================================================================="
@@ -29,7 +28,6 @@ echo "refresh license files"
 /bin/bash $deployment_dir/generate-license-file.sh
 
 echo "============================================================================================="
-# time lerna run --bail --stream jsii-pacmak || fail
 npx nx run-many -t jsii-pacmak --parallel=12 --output-style=static
 
 echo "============================================================================================="
