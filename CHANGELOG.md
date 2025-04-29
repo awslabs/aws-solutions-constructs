@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.85.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.84.0...v2.85.0) (2025-04-29)
 
+Built on CDK 2.192.0
+
+### Bug Fixes
+
+* **aws-openapigateway-lambda:** generate execute-api arn ([#1312](https://github.com/awslabs/aws-solutions-constructs/issues/1312))
+
 ## [2.84.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.83.0...v2.84.0) (2025-04-18)
 
 Built on CDK 2.190.0
