@@ -1,7 +1,8 @@
 {
-  "version": "40.0.0",
+  "version": "41.0.0",
   "files": {
     "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f": {
+      "displayName": "cftaplam-customCloudfrontLoggingBucket-authorizerAuthFunction/Code",
       "source": {
         "path": "asset.3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f",
         "packaging": "zip"
@@ -15,6 +16,7 @@
       }
     },
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "cftaplam-customCloudfrontLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
       "source": {
         "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
         "packaging": "zip"
@@ -27,7 +29,8 @@
         }
       }
     },
-    "56bdebd3e070c54939fb4c16468230e6790b049d28417121881c06296453a3d7": {
+    "366956161cdb72a880caa7339455b66496e6a8677a9af2cd96f529b53c9cacfc": {
+      "displayName": "cftaplam-customCloudfrontLoggingBucket Template",
       "source": {
         "path": "cftaplam-customCloudfrontLoggingBucket.template.json",
         "packaging": "file"
@@ -35,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "56bdebd3e070c54939fb4c16468230e6790b049d28417121881c06296453a3d7.json",
+          "objectKey": "366956161cdb72a880caa7339455b66496e6a8677a9af2cd96f529b53c9cacfc.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

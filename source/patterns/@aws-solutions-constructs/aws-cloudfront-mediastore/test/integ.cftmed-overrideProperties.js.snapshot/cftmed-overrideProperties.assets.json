@@ -1,7 +1,8 @@
 {
-  "version": "39.0.0",
+  "version": "41.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "cftmed-overrideProperties/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
       "source": {
         "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
         "packaging": "zip"
@@ -14,7 +15,8 @@
         }
       }
     },
-    "659f0533212b20dc3094aa392590ede201503860deaa61acbfbd71e18ea19c6f": {
+    "770520617b189d2d24145225b4a101f0ffae532e63dc12ffe38f59d53188eee9": {
+      "displayName": "cftmed-overrideProperties Template",
       "source": {
         "path": "cftmed-overrideProperties.template.json",
         "packaging": "file"
@@ -22,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "659f0533212b20dc3094aa392590ede201503860deaa61acbfbd71e18ea19c6f.json",
+          "objectKey": "770520617b189d2d24145225b4a101f0ffae532e63dc12ffe38f59d53188eee9.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

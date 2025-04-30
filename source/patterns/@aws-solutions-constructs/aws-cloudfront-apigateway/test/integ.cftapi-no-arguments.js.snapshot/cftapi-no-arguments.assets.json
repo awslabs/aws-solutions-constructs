@@ -1,7 +1,8 @@
 {
-  "version": "39.0.0",
+  "version": "41.0.0",
   "files": {
     "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f": {
+      "displayName": "cftapi-no-arguments-apiFunction/Code",
       "source": {
         "path": "asset.3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f",
         "packaging": "zip"
@@ -15,6 +16,7 @@
       }
     },
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "cftapi-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
       "source": {
         "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
         "packaging": "zip"
@@ -27,7 +29,8 @@
         }
       }
     },
-    "424c875589a8ef13798a7d7919edcf0973ccf74f7560e5d0ffa06fa8ed48407c": {
+    "820b2678073c633cf29cd17c0198ea98fedcfe02ba62f2875f12555ab7a6dd02": {
+      "displayName": "cftapi-no-arguments Template",
       "source": {
         "path": "cftapi-no-arguments.template.json",
         "packaging": "file"
@@ -35,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "424c875589a8ef13798a7d7919edcf0973ccf74f7560e5d0ffa06fa8ed48407c.json",
+          "objectKey": "820b2678073c633cf29cd17c0198ea98fedcfe02ba62f2875f12555ab7a6dd02.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

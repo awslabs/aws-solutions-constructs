@@ -1,5 +1,5 @@
 {
-  "version": "39.0.0",
+  "version": "41.0.0",
   "testCases": {
     "farkin-existingFargateService/Integ/DefaultTest": {
       "stacks": [
@@ -8,5 +8,6 @@
       "assertionStack": "farkin-existingFargateService/Integ/DefaultTest/DeployAssert",
       "assertionStackName": "farkinexistingFargateServiceIntegDefaultTestDeployAssertF1F4EC2C"
     }
-  }
+  },
+  "minimumCliVersion": "2.1005.0"
 }
