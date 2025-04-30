@@ -1,5 +1,5 @@
 {
-  "version": "40.0.0",
+  "version": "41.0.0",
   "testCases": {
     "cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/Integ/DefaultTest": {
       "stacks": [
@@ -8,5 +8,6 @@
       "assertionStack": "cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/Integ/DefaultTest/DeployAssert",
       "assertionStackName": "cfts3bucketencryptedwithcmkprovidedasexistingbucketIntegDefaultTestDeployAssertF6031114"
     }
-  }
+  },
+  "minimumCliVersion": "2.1005.0"
 }

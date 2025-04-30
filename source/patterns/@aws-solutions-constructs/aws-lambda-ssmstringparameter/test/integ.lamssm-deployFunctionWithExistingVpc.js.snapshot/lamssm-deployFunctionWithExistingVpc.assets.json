@@ -1,7 +1,8 @@
 {
-  "version": "40.0.0",
+  "version": "41.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
+      "displayName": "lamssm-deployFunctionWithExistingVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
       "source": {
         "path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
         "packaging": "zip"
@@ -15,6 +16,7 @@
       }
     },
     "a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c": {
+      "displayName": "test-lambda-ssmstringparameter/LambdaFunction/Code",
       "source": {
         "path": "asset.a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c",
         "packaging": "zip"
@@ -27,7 +29,8 @@
         }
       }
     },
-    "5f74e29eca704b7b169329ce2e8aa5f15e1a1313e330a77982782d3f612218aa": {
+    "f72087915f105d8b98cdb9c146a0710abcf3da138c07302a5243d11feed06caa": {
+      "displayName": "lamssm-deployFunctionWithExistingVpc Template",
       "source": {
         "path": "lamssm-deployFunctionWithExistingVpc.template.json",
         "packaging": "file"
@@ -35,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "5f74e29eca704b7b169329ce2e8aa5f15e1a1313e330a77982782d3f612218aa.json",
+          "objectKey": "f72087915f105d8b98cdb9c146a0710abcf3da138c07302a5243d11feed06caa.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

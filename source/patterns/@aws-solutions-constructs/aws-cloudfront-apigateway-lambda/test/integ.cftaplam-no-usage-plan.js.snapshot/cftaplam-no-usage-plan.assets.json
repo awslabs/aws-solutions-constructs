@@ -1,7 +1,8 @@
 {
-  "version": "40.0.0",
+  "version": "41.0.0",
   "files": {
     "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f": {
+      "displayName": "cftaplam-no-usage-plan-authorizerAuthFunction/Code",
       "source": {
         "path": "asset.3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f",
         "packaging": "zip"
@@ -15,6 +16,7 @@
       }
     },
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "cftaplam-no-usage-plan/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
       "source": {
         "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
         "packaging": "zip"
@@ -27,7 +29,8 @@
         }
       }
     },
-    "7df9e12538d0b0731b350b862b5b0f431802deac8db86e07c2abaf7034bb666b": {
+    "c0ad8a779014cc2347f3973e60050d484b448ed45ff132f95e0f805837a1a3ae": {
+      "displayName": "cftaplam-no-usage-plan Template",
       "source": {
         "path": "cftaplam-no-usage-plan.template.json",
         "packaging": "file"
@@ -35,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "7df9e12538d0b0731b350b862b5b0f431802deac8db86e07c2abaf7034bb666b.json",
+          "objectKey": "c0ad8a779014cc2347f3973e60050d484b448ed45ff132f95e0f805837a1a3ae.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

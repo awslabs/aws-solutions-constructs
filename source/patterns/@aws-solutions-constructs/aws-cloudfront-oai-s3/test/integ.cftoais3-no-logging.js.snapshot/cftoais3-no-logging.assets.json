@@ -1,7 +1,8 @@
 {
-  "version": "39.0.0",
+  "version": "41.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "cftoais3-no-logging/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
       "source": {
         "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
         "packaging": "zip"
@@ -14,7 +15,8 @@
         }
       }
     },
-    "d5899bc9d5205607ed629e95130a93c5e002a6617be52f76dad224d7061e48c1": {
+    "97488d5c58dcb9e8e75f23d1a2053ea7fa7df88cdb0f34bf89948d342cca8315": {
+      "displayName": "cftoais3-no-logging Template",
       "source": {
         "path": "cftoais3-no-logging.template.json",
         "packaging": "file"
@@ -22,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "d5899bc9d5205607ed629e95130a93c5e002a6617be52f76dad224d7061e48c1.json",
+          "objectKey": "97488d5c58dcb9e8e75f23d1a2053ea7fa7df88cdb0f34bf89948d342cca8315.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
