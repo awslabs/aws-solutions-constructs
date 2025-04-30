@@ -1,7 +1,8 @@
 {
-  "version": "40.0.0",
+  "version": "41.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
+      "displayName": "lamevt-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
       "source": {
         "path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
         "packaging": "zip"
@@ -15,6 +16,7 @@
       }
     },
     "b5faf4ff1ebde477120133d1e645d20d7c3d4952b76c3b586100069b94b2f146": {
+      "displayName": "test-lambda-eventbridge/LambdaFunction/Code",
       "source": {
         "path": "asset.b5faf4ff1ebde477120133d1e645d20d7c3d4952b76c3b586100069b94b2f146",
         "packaging": "zip"
@@ -27,7 +29,8 @@
         }
       }
     },
-    "eaae2154b80b34c661fdf9272220295097fcc3537e243c0f437cd5adc02ec683": {
+    "7960ffca33c1256b2d1737fdc9bde7015211e71d71528e0a4fa8d173f85fc063": {
+      "displayName": "lamevt-deployFunctionWithVpc Template",
       "source": {
         "path": "lamevt-deployFunctionWithVpc.template.json",
         "packaging": "file"
@@ -35,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "eaae2154b80b34c661fdf9272220295097fcc3537e243c0f437cd5adc02ec683.json",
+          "objectKey": "7960ffca33c1256b2d1737fdc9bde7015211e71d71528e0a4fa8d173f85fc063.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

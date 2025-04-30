@@ -1,7 +1,8 @@
 {
-  "version": "39.0.0",
+  "version": "41.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
       "source": {
         "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
         "packaging": "zip"
@@ -14,7 +15,8 @@
         }
       }
     },
-    "8981fc8dc36cf5ee318e5a7785f4485015a4625e519a3fc48a393846172d39ea": {
+    "e97cb4f08bec1a7d54de64c027c6a2b1d705e4848de4805533dd4fae72854f0f": {
+      "displayName": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket Template",
       "source": {
         "path": "cfts3-bucket-encrypted-with-managed-key-provided-as-existingbucket.template.json",
         "packaging": "file"
@@ -22,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "8981fc8dc36cf5ee318e5a7785f4485015a4625e519a3fc48a393846172d39ea.json",
+          "objectKey": "e97cb4f08bec1a7d54de64c027c6a2b1d705e4848de4805533dd4fae72854f0f.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

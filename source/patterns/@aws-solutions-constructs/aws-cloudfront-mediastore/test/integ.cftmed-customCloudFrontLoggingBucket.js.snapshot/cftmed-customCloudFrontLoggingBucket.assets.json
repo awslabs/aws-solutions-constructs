@@ -1,7 +1,8 @@
 {
-  "version": "39.0.0",
+  "version": "41.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "cftmed-customCloudFrontLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
       "source": {
         "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
         "packaging": "zip"
@@ -14,7 +15,8 @@
         }
       }
     },
-    "b04735235710d11801fe98eeef76272488611f5bddd1419b064a1321c1564a5f": {
+    "a2135ad4fa595d5c0f64091e6f9b4a0b739b2fe875fee5e6e71f27cbf73cf7cc": {
+      "displayName": "cftmed-customCloudFrontLoggingBucket Template",
       "source": {
         "path": "cftmed-customCloudFrontLoggingBucket.template.json",
         "packaging": "file"
@@ -22,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "b04735235710d11801fe98eeef76272488611f5bddd1419b064a1321c1564a5f.json",
+          "objectKey": "a2135ad4fa595d5c0f64091e6f9b4a0b739b2fe875fee5e6e71f27cbf73cf7cc.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

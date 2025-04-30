@@ -1,7 +1,8 @@
 {
-  "version": "40.0.0",
+  "version": "41.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
+      "displayName": "iotlamddb-with-vpc/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
       "source": {
         "path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
         "packaging": "zip"
@@ -15,6 +16,7 @@
       }
     },
     "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f": {
+      "displayName": "test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/Code",
       "source": {
         "path": "asset.3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f",
         "packaging": "zip"
@@ -27,7 +29,8 @@
         }
       }
     },
-    "e435246d26f1f690a28a98682f4eb2218e9e5cf285fb1ab36e400b5d70f28dbe": {
+    "a322dc145c4a4509eb7efcab1233c4638e712f982e95e32bbd4e2c5d7b2adf55": {
+      "displayName": "iotlamddb-with-vpc Template",
       "source": {
         "path": "iotlamddb-with-vpc.template.json",
         "packaging": "file"
@@ -35,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "e435246d26f1f690a28a98682f4eb2218e9e5cf285fb1ab36e400b5d70f28dbe.json",
+          "objectKey": "a322dc145c4a4509eb7efcab1233c4638e712f982e95e32bbd4e2c5d7b2adf55.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

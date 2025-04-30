@@ -1,5 +1,5 @@
 {
-  "version": "40.0.0",
+  "version": "41.0.0",
   "testCases": {
     "dbslamels-deploy-with-vpc/Integ/DefaultTest": {
       "stacks": [
@@ -8,5 +8,6 @@
       "assertionStack": "dbslamels-deploy-with-vpc/Integ/DefaultTest/DeployAssert",
       "assertionStackName": "dbslamelsdeploywithvpcIntegDefaultTestDeployAssert06163818"
     }
-  }
+  },
+  "minimumCliVersion": "2.1005.0"
 }

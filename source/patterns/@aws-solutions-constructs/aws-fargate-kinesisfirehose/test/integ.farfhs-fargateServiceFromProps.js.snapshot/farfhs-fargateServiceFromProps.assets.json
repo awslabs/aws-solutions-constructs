@@ -1,7 +1,8 @@
 {
-  "version": "39.0.0",
+  "version": "41.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "farfhs-fargateServiceFromProps/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
       "source": {
         "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
         "packaging": "zip"
@@ -15,6 +16,7 @@
       }
     },
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
+      "displayName": "farfhs-fargateServiceFromProps/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
       "source": {
         "path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
         "packaging": "zip"
@@ -27,7 +29,8 @@
         }
       }
     },
-    "58809189201ce9bbe59b955fbb570a430a6425e57bb7baef4e47dd0e9004b6af": {
+    "79af2533c8118589a4aa8c70689497bd93031e5c8b1127348f54f06a094e84ed": {
+      "displayName": "farfhs-fargateServiceFromProps Template",
       "source": {
         "path": "farfhs-fargateServiceFromProps.template.json",
         "packaging": "file"
@@ -35,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "58809189201ce9bbe59b955fbb570a430a6425e57bb7baef4e47dd0e9004b6af.json",
+          "objectKey": "79af2533c8118589a4aa8c70689497bd93031e5c8b1127348f54f06a094e84ed.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
