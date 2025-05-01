@@ -87,7 +87,11 @@ export class CloudFrontToMediaStore extends Construct {
    */
   constructor(scope: Construct, id: string, props: CloudFrontToMediaStoreProps) {
     super(scope, id);
-
+    defaults.printWarning("******************");
+    defaults.printWarning("AWS Elemental MediaStore will be discontinued on November 13, 2025");
+    defaults.printWarning("Support for this construct will be removed for all subsequent releases.");
+    defaults.printWarning("https://aws.amazon.com/blogs/media/support-for-aws-elemental-mediastore-ending-soon/");
+    defaults.printWarning("******************");
     // All our tests are based upon this behavior being on, so we're setting
     // context here rather than assuming the client will set it
     this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
