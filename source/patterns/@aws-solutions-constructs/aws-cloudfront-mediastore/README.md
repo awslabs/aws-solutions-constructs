@@ -20,6 +20,8 @@
 |![Java Logo](https://docs.aws.amazon.com/cdk/api/latest/img/java32.png) Java|`software.amazon.awsconstructs.services.cloudfrontmediastore`|
 
 ## Overview
+IMPORTANT NOTICE - AWS Elemental MediaStore will be discontinued on November 13, 2025. All subsequent releases of AWS Solutions Constructs will NOT include this construct.
+
 This AWS Solutions Construct implements an Amazon CloudFront distribution to an AWS Elemental MediaStore container.
 
 Here is a minimal deployable pattern definition:
