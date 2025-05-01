@@ -2,7 +2,9 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [2.85.2](https://github.com/awslabs/aws-solutions-constructs/compare/v2.85.1...v2.85.2) (2025-05-01)
+## [2.85.2](https://github.com/awslabs/aws-solutions-constructs/compare/v2.85.1...v2.85.2) (2025-05-01)
+
+Just added warnings to aws-cloudfront-mediastore and testing pipeline
 
 ## [2.85.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.85.0...v2.85.1) (2025-04-30)
 
