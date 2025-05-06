@@ -17,29 +17,35 @@
  */
 
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
+import { overrideProps } from './utils';
 
 export function GetDefaultTableProps(clientTableProps?: dynamodb.TableProps) {
-  return {
+  return AddAppropriatePointInTimeRecovery(clientTableProps,{
     billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
     encryption: dynamodb.TableEncryption.AWS_MANAGED,
-    pointInTimeRecovery: clientTableProps?.pointInTimeRecoverySpecification ? undefined : true,
     partitionKey: {
       name: 'id',
       type: dynamodb.AttributeType.STRING
     }
-  };
+  });
 }
 
 export function GetDefaultTableWithStreamProps(clientTableProps?: dynamodb.TableProps) {
-  return {
+  return AddAppropriatePointInTimeRecovery(clientTableProps, {
     billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
     encryption: dynamodb.TableEncryption.AWS_MANAGED,
-    pointInTimeRecovery: clientTableProps?.pointInTimeRecoverySpecification ? undefined : true,
     partitionKey: {
       name: 'id',
       type: dynamodb.AttributeType.STRING
     },
     stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES
-  };
+  });
 }
 
+function AddAppropriatePointInTimeRecovery(clientTableProps: dynamodb.TableProps | undefined, defaultProps: dynamodb.TableProps) {
+  if (clientTableProps?.pointInTimeRecovery !== undefined) {
+    return clientTableProps;
+  } else {
+    return overrideProps(defaultProps, { pointInTimeRecoverySpecification: { pointInTimeRecoveryEnabled: true }});
+  }
+}

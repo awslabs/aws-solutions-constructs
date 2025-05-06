@@ -126,6 +126,8 @@ export interface DynamoDBProps {
   readonly dynamoTableProps?: dynamodb.TableProps,
   readonly existingTableObj?: dynamodb.Table,
   readonly existingTableInterface?: dynamodb.ITable,
+  readonly pointInTimeRecoverySpecification?: dynamodb.PointInTimeRecoverySpecification,
+  readonly pointInTimeRecovery?: boolean
 }
 
 export function CheckDynamoDBProps(propsObject: DynamoDBProps | any) {
@@ -144,6 +146,11 @@ export function CheckDynamoDBProps(propsObject: DynamoDBProps | any) {
 
   if (propsObject.existingTableObj && propsObject.existingTableInterface) {
     errorMessages += 'Error - Either provide existingTableInterface or existingTableObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.pointInTimeRecovery && propsObject.pointInTimeRecoverySpecification) {
+    errorMessages += 'Error - Either provide pointInTimeRecovery or pointInTimeRecoverySpecification, but not both.\n';
     errorFound = true;
   }
 

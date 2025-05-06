@@ -441,18 +441,21 @@ test('test getPartitionKeyNameFromTable()', () => {
   expect(testKeyName).toEqual(partitionKeyName);
 });
 
+// TODO: We should never set pointInTimeRecovery in defaults, only default to the new
+// TODO: If the old is provided, don't set the new as a default
+// TODO: If the new is provided, we can still set the default - the new will override. so
+// we don't need a "if  pointInTimeRecoverySpecification" check here - just look for old stuff.
+
 test('Test that PointInTimeRecovery is not set when PointInTimeRecoverySpecification is provided', () => {
   const defaultProps: dynamodb.TableProps = defaults.GetDefaultTableProps({
     partitionKey: {
       name: 'donotuse',
       type: dynamodb.AttributeType.BINARY
     },
-    pointInTimeRecoverySpecification: {
-      pointInTimeRecoveryEnabled: true
-    }
+    pointInTimeRecovery: true
   });
 
-  expect(defaultProps.pointInTimeRecovery).toBeUndefined();
+  expect(defaultProps.pointInTimeRecoverySpecification).toBeUndefined();
 
   // Let's confirm the alternative  as well
   const moreDefaultProps: dynamodb.TableProps = defaults.GetDefaultTableProps({
@@ -462,7 +465,7 @@ test('Test that PointInTimeRecovery is not set when PointInTimeRecoverySpecifica
     }
   });
 
-  expect(moreDefaultProps.pointInTimeRecovery).toEqual(true);
+  expect(moreDefaultProps.pointInTimeRecoverySpecification).toBeDefined();
 });
 
 test('Test that PointInTimeRecovery is not set when PointInTimeRecoverySpecification is provided for table with stream', () => {
@@ -471,12 +474,10 @@ test('Test that PointInTimeRecovery is not set when PointInTimeRecoverySpecifica
       name: 'donotuse',
       type: dynamodb.AttributeType.BINARY
     },
-    pointInTimeRecoverySpecification: {
-      pointInTimeRecoveryEnabled: true
-    }
+    pointInTimeRecovery: true
   });
 
-  expect(defaultProps.pointInTimeRecovery).toBeUndefined();
+  expect(defaultProps.pointInTimeRecoverySpecification).toBeUndefined();
 
   // Let's confirm the alternative  as well
   const moreDefaultProps: dynamodb.TableProps = defaults.GetDefaultTableWithStreamProps({
@@ -486,7 +487,7 @@ test('Test that PointInTimeRecovery is not set when PointInTimeRecoverySpecifica
     }
   });
 
-  expect(moreDefaultProps.pointInTimeRecovery).toEqual(true);
+  expect(moreDefaultProps.pointInTimeRecoverySpecification).toBeDefined();
 });
 
 // ---------------------------
@@ -542,4 +543,215 @@ test('Test fail DynamoDB table check (for interface AND obj)', () => {
 
   // Assertion
   expect(app).toThrowError('Error - Either provide existingTableInterface or existingTableObj, but not both.\n');
+});
+
+test('Test fail DynamoDB pointInTimeRecoverySpecification and pointInTimeRecovery both specified', () => {
+  const props: defaults.DynamoDBProps = {
+    pointInTimeRecovery: true,
+    pointInTimeRecoverySpecification: {
+      pointInTimeRecoveryEnabled: true
+    }
+  };
+
+  const app = () => {
+    defaults.CheckDynamoDBProps(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - Either provide pointInTimeRecovery or pointInTimeRecoverySpecification, but not both.\n');
+});
+
+
+// ---------------------------
+// New Tests
+// ---------------------------
+test('test pointInTimeRecoverySpecification default is set correctly', () => {
+  const stack = new Stack();
+
+  const dynamoTableProps: dynamodb.TableProps = {
+    partitionKey: {
+      name: 'table_id',
+      type: dynamodb.AttributeType.STRING
+    },
+  };
+
+  defaults.buildDynamoDBTable(stack, {
+    dynamoTableProps
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
+    PointInTimeRecoverySpecification: {
+      PointInTimeRecoveryEnabled: true
+    }
+  });
+});
+
+
+test('test that a provided pointInTimeRecoverySpecification value is used', () => {
+  const stack = new Stack();
+
+  const dynamoTableProps: dynamodb.TableProps = {
+    partitionKey: {
+      name: 'table_id',
+      type: dynamodb.AttributeType.STRING
+    },
+    pointInTimeRecoverySpecification: {
+      pointInTimeRecoveryEnabled: false
+    }
+  };
+
+  defaults.buildDynamoDBTable(stack, {
+    dynamoTableProps
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
+    PointInTimeRecoverySpecification: {
+      PointInTimeRecoveryEnabled: false
+    }
+  });
+});
+
+test('test that if client provides pointInTimeRecovery it is used', () => {
+  const stack = new Stack();
+
+  const dynamoTableProps: dynamodb.TableProps = {
+    partitionKey: {
+      name: 'table_id',
+      type: dynamodb.AttributeType.STRING
+    },
+    pointInTimeRecovery: true
+  };
+
+  defaults.buildDynamoDBTable(stack, {
+    dynamoTableProps
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
+    // pointInTimeRecovery has no CFN equivalent, CDK converts it to PointInTimeRecoverySpecification
+    PointInTimeRecoverySpecification: {
+      PointInTimeRecoveryEnabled: true
+    }
+  });
+});
+
+test('test that if client provides pointInTimeRecovery: false will turn off feature', () => {
+  const stack = new Stack();
+
+  const dynamoTableProps: dynamodb.TableProps = {
+    partitionKey: {
+      name: 'table_id',
+      type: dynamodb.AttributeType.STRING
+    },
+    pointInTimeRecovery: false
+  };
+
+  defaults.buildDynamoDBTable(stack, {
+    dynamoTableProps
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
+    // pointInTimeRecovery has no CFN equivalent, CDK converts it to PointInTimeRecoverySpecification
+    PointInTimeRecoverySpecification: {
+      PointInTimeRecoveryEnabled: false
+    }
+  });
+});
+
+test('test pointInTimeRecoverySpecification default is set correctly', () => {
+  const stack = new Stack();
+
+  const dynamoTableProps: dynamodb.TableProps = {
+    partitionKey: {
+      name: 'table_id',
+      type: dynamodb.AttributeType.STRING
+    },
+  };
+
+  defaults.buildDynamoDBTableWithStream(stack, {
+    dynamoTableProps
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
+    PointInTimeRecoverySpecification: {
+      PointInTimeRecoveryEnabled: true
+    }
+  });
+});
+
+test('test that a provided pointInTimeRecoverySpecification value is used', () => {
+  const stack = new Stack();
+
+  const dynamoTableProps: dynamodb.TableProps = {
+    partitionKey: {
+      name: 'table_id',
+      type: dynamodb.AttributeType.STRING
+    },
+    pointInTimeRecoverySpecification: {
+      pointInTimeRecoveryEnabled: false
+    }
+  };
+
+  defaults.buildDynamoDBTableWithStream(stack, {
+    dynamoTableProps
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
+    PointInTimeRecoverySpecification: {
+      PointInTimeRecoveryEnabled: false
+    }
+  });
+});
+
+test('test that if client provides pointInTimeRecovery it is used', () => {
+  const stack = new Stack();
+
+  const dynamoTableProps: dynamodb.TableProps = {
+    partitionKey: {
+      name: 'table_id',
+      type: dynamodb.AttributeType.STRING
+    },
+    pointInTimeRecovery: true
+  };
+
+  defaults.buildDynamoDBTableWithStream(stack, {
+    dynamoTableProps
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
+    // pointInTimeRecovery has no CFN equivalent, CDK converts it to PointInTimeRecoverySpecification
+    PointInTimeRecoverySpecification: {
+      PointInTimeRecoveryEnabled: true
+    }
+  });
+});
+
+test('test that if client provides pointInTimeRecovery: false will turn off feature', () => {
+  const stack = new Stack();
+
+  const dynamoTableProps: dynamodb.TableProps = {
+    partitionKey: {
+      name: 'table_id',
+      type: dynamodb.AttributeType.STRING
+    },
+    pointInTimeRecovery: false
+  };
+
+  defaults.buildDynamoDBTableWithStream(stack, {
+    dynamoTableProps
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::DynamoDB::Table', {
+    // pointInTimeRecovery has no CFN equivalent, CDK converts it to PointInTimeRecoverySpecification
+    PointInTimeRecoverySpecification: {
+      PointInTimeRecoveryEnabled: false
+    }
+  });
 });
