@@ -43,7 +43,7 @@ const lambdaProps: lambda.FunctionProps = {
 new LambdaToOpenSearch(this, 'sample', {
   lambdaFunctionProps: lambdaProps,
   openSearchDomainName: 'testdomain',
-  // TODO: Ensure the Cognito domain name is globally unique
+  // NOTE: Ensure the Cognito domain name is globally unique
   cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID
 });
 ```
@@ -67,7 +67,7 @@ lambda_props = _lambda.FunctionProps(
 LambdaToOpenSearch(self, 'sample',
                             lambda_function_props=lambda_props,
                             open_search_domain_name='testdomain',
-                            # TODO: Ensure the Cognito domain name is globally unique
+                            # NOTE: Ensure the Cognito domain name is globally unique
                             cognito_domain_name='globallyuniquedomain' + Aws.ACCOUNT_ID
                             )
 ```
@@ -91,7 +91,7 @@ new LambdaToOpenSearch(this, "sample",
                         .handler("index.handler")
                         .build())
                 .openSearchDomainName("testdomain")
-                // TODO: Ensure the Cognito domain name is globally unique
+                // NOTE: Ensure the Cognito domain name is globally unique
                 .cognitoDomainName("globallyuniquedomain" + Aws.ACCOUNT_ID)
                 .build());
 ```

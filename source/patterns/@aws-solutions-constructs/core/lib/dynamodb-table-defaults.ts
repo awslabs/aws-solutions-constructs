@@ -43,6 +43,11 @@ export function GetDefaultTableWithStreamProps(clientTableProps?: dynamodb.Table
 }
 
 function AddAppropriatePointInTimeRecovery(clientTableProps: dynamodb.TableProps | undefined, defaultProps: dynamodb.TableProps) {
+  // We should never set pointInTimeRecovery as it is deprecated. But if a client has set it, the value passed by the client
+  // should be used. If the client ahs sent a pointInTimeRecovery, we should not set a pointInTimeRecoverySpecification because
+  // the two values will at best be redundant, and at worst conflict.
+
+  // Under the covers, CDK will convert pointInTimeRecovery to PointInTimeRecoverySpecification in the actual template
   if (clientTableProps?.pointInTimeRecovery !== undefined) {
     return clientTableProps;
   } else {

@@ -37,7 +37,7 @@ const constructProps: FargateToOpenSearchProps = {
   publicApi: true,
   ecrRepositoryArn: "arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo",
   openSearchDomainName: 'testdomain',
-  // TODO: Ensure the Cognito domain name is globally unique
+  // NOTE: Ensure the Cognito domain name is globally unique
   cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID
 };
 
@@ -56,7 +56,7 @@ FargateToOpenSearch(self, 'test_construct',
             public_api=True,
             ecr_repository_arn="arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo",
             open_search_domain_name='testdomain',
-            # TODO: Ensure the Cognito domain name is globally unique
+            # NOTE: Ensure the Cognito domain name is globally unique
             cognito_domain_name='globallyuniquedomain' + Aws.ACCOUNT_ID)
 ```
 
@@ -72,7 +72,7 @@ new FargateToOpenSearch(this, "test_construct", new FargateToOpenSearchProps.Bui
         .publicApi(true)
         .ecrRepositoryArn("arn:aws:ecr:us-east-1:123456789012:repository/your-ecr-repo"
         .openSearchDomainName("testdomain")
-        // TODO: Ensure the Cognito domain name is globally unique
+        // NOTE: Ensure the Cognito domain name is globally unique
         .cognitoDomainName("globallyuniquedomain" + Aws.ACCOUNT_ID)
         .build());
 ```

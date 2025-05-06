@@ -441,11 +441,6 @@ test('test getPartitionKeyNameFromTable()', () => {
   expect(testKeyName).toEqual(partitionKeyName);
 });
 
-// TODO: We should never set pointInTimeRecovery in defaults, only default to the new
-// TODO: If the old is provided, don't set the new as a default
-// TODO: If the new is provided, we can still set the default - the new will override. so
-// we don't need a "if  pointInTimeRecoverySpecification" check here - just look for old stuff.
-
 test('Test that PointInTimeRecovery is not set when PointInTimeRecoverySpecification is provided', () => {
   const defaultProps: dynamodb.TableProps = defaults.GetDefaultTableProps({
     partitionKey: {
