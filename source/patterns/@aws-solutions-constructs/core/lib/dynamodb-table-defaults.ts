@@ -17,29 +17,40 @@
  */
 
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
+import { overrideProps } from './utils';
 
 export function GetDefaultTableProps(clientTableProps?: dynamodb.TableProps) {
-  return {
+  return AddAppropriatePointInTimeRecovery(clientTableProps,{
     billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
     encryption: dynamodb.TableEncryption.AWS_MANAGED,
-    pointInTimeRecovery: clientTableProps?.pointInTimeRecoverySpecification ? undefined : true,
     partitionKey: {
       name: 'id',
       type: dynamodb.AttributeType.STRING
     }
-  };
+  });
 }
 
 export function GetDefaultTableWithStreamProps(clientTableProps?: dynamodb.TableProps) {
-  return {
+  return AddAppropriatePointInTimeRecovery(clientTableProps, {
     billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
     encryption: dynamodb.TableEncryption.AWS_MANAGED,
-    pointInTimeRecovery: clientTableProps?.pointInTimeRecoverySpecification ? undefined : true,
     partitionKey: {
       name: 'id',
       type: dynamodb.AttributeType.STRING
     },
     stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES
-  };
+  });
 }
 
+function AddAppropriatePointInTimeRecovery(clientTableProps: dynamodb.TableProps | undefined, defaultProps: dynamodb.TableProps) {
+  // We should never set pointInTimeRecovery as it is deprecated. But if a client has set it, the value passed by the client
+  // should be used. If the client ahs sent a pointInTimeRecovery, we should not set a pointInTimeRecoverySpecification because
+  // the two values will at best be redundant, and at worst conflict.
+
+  // Under the covers, CDK will convert pointInTimeRecovery to PointInTimeRecoverySpecification in the actual template
+  if (clientTableProps?.pointInTimeRecovery !== undefined) {
+    return clientTableProps;
+  } else {
+    return overrideProps(defaultProps, { pointInTimeRecoverySpecification: { pointInTimeRecoveryEnabled: true }});
+  }
+}

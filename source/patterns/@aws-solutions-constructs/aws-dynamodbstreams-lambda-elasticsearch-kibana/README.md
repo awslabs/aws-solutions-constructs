@@ -48,7 +48,7 @@ const constructProps: DynamoDBStreamsToLambdaToElasticSearchAndKibanaProps = {
     handler: 'index.handler'
   },
   domainName: 'test-domain',
-  // TODO: Ensure the Cognito domain name is globally unique
+  // NOTE: Ensure the Cognito domain name is globally unique
   cognitoDomainName: 'globallyuniquedomain' + Aws.ACCOUNT_ID
 };
 
@@ -73,7 +73,7 @@ DynamoDBStreamsToLambdaToElasticSearchAndKibana(
         handler='index.handler'
     ),
     domain_name='test-domain',
-    # TODO: Ensure the Cognito domain name is globally unique
+    # NOTE: Ensure the Cognito domain name is globally unique
     cognito_domain_name='globallyuniquedomain' + Aws.ACCOUNT_ID)
 ```
 
