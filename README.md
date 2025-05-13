@@ -19,7 +19,7 @@ AWS Solutions Constructs and the AWS CDK are independent teams and have differen
 The AWS Solutions Constructs library is organized into several modules. They are named like this:
 
 * __aws-xxx__: well architected pattern package for the indicated services. This package will contain constructs that contain multiple AWS CDK service modules to configure the given pattern.
-* __xxx__: packages that don't start "aws-" are core modules that are used to configure best practice defaults for services used within the pattern library. They are not intended to be accessed directly.
+* __xxx__: packages that don't start "aws-" are core modules that are used to configure best practice defaults for services used within the pattern library. They are internal, and not intended to be accessed directly.
 
 ## Module Contents
 
