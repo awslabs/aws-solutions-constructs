@@ -10,6 +10,8 @@ The AWS Solutions Constructs library is an open-source extension of the AWS Clou
 
 The patterns defined in AWS Solutions Constructs are high level, multi-service abstractions of AWS CDK constructs that have default configurations based on well-architected best practices. The library is organized into logical modules using object-oriented techniques to create each architectural pattern model.
 
+More docs
+
 ## CDK Versions
 
 AWS Solutions Constructs and the AWS CDK are independent teams and have different release schedules. Each release of AWS Solutions Constructs is built against a specific version of the AWS CDK. The CHANGELOG.md file lists the CDK version associated with each AWS Solutions Constructs release. For instance, AWS Solutions Constructs v2.39.0 was built against AWS CDK v2.76.0. This means that to use AWS Solutions Constructs v2.39.0, your application must include AWS CDK v2.76.0 *or later*. You can continue to use the latest AWS CDK versions and upgrade the your AWS Solutions Constructs version when new releases become available.
