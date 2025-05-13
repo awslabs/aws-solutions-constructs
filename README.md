@@ -36,8 +36,6 @@ The pattern's documentation page also lists the available methods to call and th
 
 This library includes a collection of functional use case implementations to demonstrate the usage of AWS Solutions Constructs architectural patterns. These can be used in the same way as architectural patterns, and can be conceptualized as an additional "higher-level" abstraction of those patterns. The following use cases are provided as functional examples:
 
-* __aws-custom-glue-etl__ - implements an example using the Kinesis Data Streams Glue Job construct. The application architecture uses a custom ETL job defined in AWS Glue that takes in data from Amazon Kinesis Data Streams to process and store it in the target datastore as defined by the ETL script (for this example an S3 bucket location).
-  * Use case pattern: https://github.com/awslabs/aws-solutions-constructs/tree/main/source/use_cases/aws-custom-glue-etl
 * __aws-s3-static-website__ - implements an Amazon CloudFront distribution, Amazon S3 bucket and AWS Lambda-based custom resource to copy the static website content for the Wild Rydes demo website (part of the aws-serverless-web-app implementation).
   * Use case pattern: https://github.com/awslabs/aws-solutions-constructs/tree/main/source/use_cases/aws-s3-static-website
 * __aws-restaurant-management-demo__ - implements a complex, multi-stack architecture that models a restaurant management system. This use case will provision a stack for service/wait staff to open/close orders, a stack for kitchen staff to view/complete orders, and a stack for managers to perform various business functions. It will also provision a stack
