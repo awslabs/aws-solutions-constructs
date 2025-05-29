@@ -34,8 +34,10 @@ to an Amazon S3 bucket.
 
 Here is a minimal deployable pattern definition :
 
+====
+[role="tablist"]
 Typescript
-
++
 [source,typescript]
 ----
 import { Construct } from 'constructs';
@@ -53,7 +55,7 @@ new LambdaToS3(this, 'LambdaToS3Pattern', {
 ----
 
 Python
-
++
 [source,python]
 ----
 from aws_solutions_constructs.aws_lambda_s3 import LambdaToS3
@@ -73,7 +75,7 @@ LambdaToS3(self, 'LambdaToS3Pattern',
 ----
 
 Java
-
++
 [source,java]
 ----
 import software.constructs.Construct;
@@ -92,7 +94,7 @@ new LambdaToS3(this, "LambdaToS3Pattern", new LambdaToS3Props.Builder()
                 .build())
         .build());
 ----
-
+====
 === Pattern Construct Props
 
 [width="100%",cols="<30%,<35%,35%",options="header",]
