@@ -36,6 +36,23 @@ Here is a minimal deployable pattern definition :
 
 ====
 [role="tablist"]
+Fargate - Linux::
++
+[source,bash,subs="verbatim,attributes"]
+----
+eksctl create cluster --name my-cluster --region region-code --fargate
+----
+
+Managed nodes - Linux::
++
+[source,bash,subs="verbatim,attributes"]
+----
+eksctl create cluster --name my-cluster --region region-code
+----
+====
+
+====
+[role="tablist"]
 Typescript
 +
 [source,typescript]
