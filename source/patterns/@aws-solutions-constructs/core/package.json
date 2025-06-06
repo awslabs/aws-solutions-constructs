@@ -22,6 +22,7 @@
     "test": "jest --coverage",
     "clean": "tsc -b --clean",
     "watch": "tsc -b -w",
+    "asciidoc": "asciidoctor --failure-level WARNING -o /dev/null README.adoc",
     "integ": "integ-runner --update-on-failed",
     "integ-assert": "integ-runner",
     "jsii": "jsii",

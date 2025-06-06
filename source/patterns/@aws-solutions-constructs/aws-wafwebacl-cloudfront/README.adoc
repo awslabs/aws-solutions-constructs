@@ -1,0 +1,180 @@
+//!!NODE_ROOT <section>
+//== aws-wafwebacl-cloudfront module
+
+[.topic]
+= aws-wafwebacl-cloudfront
+:info_doctype: section
+:info_title: aws-wafwebacl-cloudfront
+
+.Stability: Experimental
+image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
+
+____
+All classes are under active development and subject to non-backward
+compatible changes or removal in any future version. These are not
+subject to the https://semver.org/[Semantic Versioning] model. This
+means that while you may use them, you may need to update your source
+code when upgrading to a newer version of this package.
+____
+
+[width="100%",cols="<50%,<50%",options="header",]
+|===
+|*Reference Documentation*:
+|https://docs.aws.amazon.com/solutions/latest/constructs/
+|===
+
+[width="100%",cols="<46%,54%",options="header",]
+|===
+|*Language* |*Package*
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+Logo] Python
+|`aws++_++solutions++_++constructs.aws++_++wafwebacl++_++cloudfront`
+
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+Logo] Typescript |`@aws-solutions-constructs/aws-wafwebacl-cloudfront`
+
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+Logo] Java |`software.amazon.awsconstructs.services.wafwebaclcloudfront`
+|===
+
+== Overview
+
+This AWS Solutions Construct implements an AWS WAF web ACL connected to
+Amazon CloudFront.
+
+Here is a minimal deployable pattern definition:
+
+====
+[role="tablist"]
+Typescript::
++
+[source,typescript]
+----
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { CloudFrontToS3 } from '@aws-solutions-constructs/aws-cloudfront-s3';
+import { WafwebaclToCloudFront } from "@aws-solutions-constructs/aws-wafwebacl-cloudfront";
+
+const cloudfrontToS3 = new CloudFrontToS3(this, 'test-cloudfront-s3', {});
+
+// This construct can only be attached to a configured CloudFront.
+new WafwebaclToCloudFront(this, 'test-wafwebacl-cloudfront', {
+    existingCloudFrontWebDistribution: cloudfrontToS3.cloudFrontWebDistribution
+});
+----
+
+Python::
++
+[source,python]
+----
+from aws_solutions_constructs.aws_cloudfront_s3 import CloudFrontToS3
+from aws_solutions_constructs.aws_wafwebacl_cloudfront import WafwebaclToCloudFront
+from aws_cdk import Stack
+from constructs import Construct
+
+cloudfront_to_s3 = CloudFrontToS3(self, 'test_cloudfront_s3')
+
+# This construct can only be attached to a configured CloudFront.
+WafwebaclToCloudFront(self, 'test_wafwebacl_cloudfront',
+                      existing_cloud_front_web_distribution=cloudfront_to_s3.cloud_front_web_distribution
+                      )
+----
+
+Java::
++
+[source,java]
+----
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awsconstructs.services.cloudfronts3.*;
+import software.amazon.awsconstructs.services.wafwebaclcloudfront.*;
+
+final CloudFrontToS3 cloudfrontToS3 = new CloudFrontToS3(this, "test-cloudfront-s3",
+        new CloudFrontToS3Props.Builder()
+                .build());
+
+// This construct can only be attached to a configured CloudFront.
+new WafwebaclToCloudFront(this, "test-wafwebacl-cloudfront", new WafwebaclToCloudFrontProps.Builder()
+        .existingCloudFrontWebDistribution(cloudfrontToS3.getCloudFrontWebDistribution())
+        .build());
+----
+====
+
+== Pattern Construct Props
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|existingCloudFrontWebDistribution
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudfront.Distribution.html[`cloudfront.Distribution`]
+|The existing CloudFront instance that will be protected with the WAF
+web ACL. _Note that a WAF web ACL can only be added to a configured
+CloudFront, so this construct only accepts an existing Distribution and
+does not accept cloudfrontProps._
+
+|existingWebaclObj?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_wafv2.CfnWebACL.html[`waf.CfnWebACL`]
+|Existing instance of a WAF web ACL, an error will occur if this and
+props is set.
+
+|webaclProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_wafv2.CfnWebACLProps.html[`waf.CfnWebACLProps`]
+|Optional user-provided props to override the default props for the AWS
+WAF web ACL. To use a different collection of managed rule sets, specify
+a new rules property. Use our
+link:../core/lib/waf-defaults.ts[`wrapManagedRuleSet(managedGroupName: string, vendorName: string, priority: number)`]
+function from core to create an array entry from each desired managed
+rule set.
+|===
+
+== Pattern Properties
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|webacl
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_wafv2.CfnWebACL.html[`waf.CfnWebACL`]
+|Returns an instance of the waf.CfnWebACL created by the construct.
+
+|cloudFrontWebDistribution
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudfront.Distribution.html[`cloudfront.Distribution`]
+|Returns an instance of cloudfront.Distribution created by the
+construct.
+|===
+
+== Default settings
+
+Out of the box implementation of the Construct without any override will
+set the following defaults:
+
+==== AWS WAF
+
+* Deploy a WAF web ACL with 7
+https://docs.aws.amazon.com/waf/latest/developerguide/aws-managed-rule-groups-list.html[AWS
+managed rule groups].
+** AWSManagedRulesBotControlRuleSet
+** AWSManagedRulesKnownBadInputsRuleSet
+** AWSManagedRulesCommonRuleSet
+** AWSManagedRulesAnonymousIpList
+** AWSManagedRulesAmazonIpReputationList
+** AWSManagedRulesAdminProtectionRuleSet
+** AWSManagedRulesSQLiRuleSet
++
+_Note that the default rules can be replaced by specifying the rules
+property of CfnWebACLProps_
+* Send metrics to Amazon CloudWatch
+
+==== Amazon CloudFront
+
+* User provided CloudFront object is used as-is
+
+== Architecture
+
+.Architecture Diagram
+image::architecture.png[Architecture Diagram]
+
+'''''
+
+© Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.

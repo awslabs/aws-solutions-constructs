@@ -1,0 +1,187 @@
+//!!NODE_ROOT <section>
+//== aws-wafwebacl-appsync module
+
+[.topic]
+= aws-wafwebacl-appsync
+:info_doctype: section
+:info_title: aws-wafwebacl-appsync
+
+.Stability: Experimental
+image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
+
+____
+All classes are under active development and subject to non-backward
+compatible changes or removal in any future version. These are not
+subject to the https://semver.org/[Semantic Versioning] model. This
+means that while you may use them, you may need to update your source
+code when upgrading to a newer version of this package.
+____
+
+'''''
+
+[width="100%",cols="<23%,<77%",options="header",]
+|===
+|*Reference Documentation*:
+|https://docs.aws.amazon.com/solutions/latest/constructs/
+|===
+
+[width="100%",cols="<63%,37%",options="header",]
+|===
+|*Language* |*Package*
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+Logo] Python
+|`aws++_++solutions++_++constructs.aws++_++wafwebacl++_++appsync`
+
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+Logo] Typescript |`@aws-solutions-constructs/aws-wafwebacl-appsync`
+
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+Logo] Java |`software.amazon.awsconstructs.services.wafwebaclappsync`
+|===
+
+== Overview
+
+This AWS Solutions Construct implements an AWS WAF web ACL connected to
+an AWS AppSync API.
+
+Here is a minimal deployable pattern definition:
+
+====
+[role="tablist"]
+Typescript::
++
+[source,typescript]
+----
+import { Construct } from "constructs";
+import { Stack, StackProps } from "aws-cdk-lib";
+import {
+  WafwebaclToAppsyncProps,
+  WafwebaclToAppsync,
+} from "@aws-solutions-constructs/aws-wafwebacl-appsync";
+
+// Use an existing AppSync GraphQL API
+const existingGraphQLApi = previouslyCreatedApi;
+
+// This construct can only be attached to a configured AWS AppSync API.
+new WafwebaclToAppsync(this, "test-wafwebacl-appsync", {
+  existingAppsyncApi: existingGraphQLApi,
+});
+----
+
+Python::
++
+[source,python]
+----
+from aws_solutions_constructs.aws_wafwebacl_appsync import WafwebaclToAppsyncProps, WafwebaclToAppsync
+from aws_cdk import (
+    aws_route53 as route53,
+    Stack
+)
+from constructs import Construct
+
+# Use an existing AppSync API
+existingGraphQLApi = previouslyCreatedApi
+
+
+# This construct can only be attached to a configured AWS AppSync API.
+WafwebaclToAppsync(self, 'test_wafwebacl_appsync',
+                existing_appsync_api=existingGraphQLApi
+                )
+----
+
+Java::
++
+[source,java]
+----
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awsconstructs.services.wafwebaclappsync.*;
+
+// Use an existing AppSync API
+final existingGraphQLApi = previouslyCreatedApi
+
+
+// This construct can only be attached to a configured AWS AppSync API.
+new WafwebaclToAppsync(this, "test-wafwebacl-appsync", new WafwebaclToAppsyncProps.Builder()
+        .existingAppsyncApi(existingGraphQLApi)
+        .build());
+----
+====
+
+== Pattern Construct Props
+
+[width="100%",cols="<5%,<22%,73%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|existingAppsyncApi
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_appsync.CfnGraphQLApi.html[`appsync.CfnGraphQLApi`]
+|The existing Appsync CfnGraphQLApi object that will be protected with
+the WAF web ACL. _Note that a WAF web ACL can only be added to a
+configured AppSync API, so this construct only accepts an existing
+CfnGraphQLApi and does not accept CfnGraphQLApiProps._
+
+|existingWebaclObj?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_waf.CfnWebACL.html[`waf.CfnWebACL`]
+|Existing instance of a WAF web ACL, an error will occur if this and
+props is set.
+
+|webaclProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_waf.CfnWebACLProps.html[`waf.CfnWebACLProps`]
+|Optional user-provided props to override the default props for the AWS
+WAF web ACL. To use a different collection of managed rule sets, specify
+a new rules property. Use our
+link:../core/lib/waf-defaults.ts[`wrapManagedRuleSet(managedGroupName: string, vendorName: string, priority: number)`]
+function from core to create an array entry from each desired managed
+rule set.
+|===
+
+== Pattern Properties
+
+[width="100%",cols="<7%,<59%,34%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|webacl
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_waf.CfnWebACL.html[`waf.CfnWebACL`]
+|Returns an instance of the waf.CfnWebACL created by the construct.
+
+|appsyncApi
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_appsync.CfnGraphQLApi.html[`appsync.CfnGraphQLApi`]
+|Returns an instance of the CfnGraphQLApi used by the pattern.
+|===
+
+== Default settings
+
+Out of the box implementation of the Construct without any override will
+set the following defaults:
+
+==== AWS WAF
+
+* Deploy a WAF web ACL with 7
+https://docs.aws.amazon.com/waf/latest/developerguide/aws-managed-rule-groups-list.html[AWS
+managed rule groups].
+** AWSManagedRulesBotControlRuleSet
+** AWSManagedRulesKnownBadInputsRuleSet
+** AWSManagedRulesCommonRuleSet
+** AWSManagedRulesAnonymousIpList
+** AWSManagedRulesAmazonIpReputationList
+** AWSManagedRulesAdminProtectionRuleSet
+** AWSManagedRulesSQLiRuleSet
++
+_Note that the default rules can be replaced by specifying the rules
+property of CfnWebACLProps_
+* Send metrics to Amazon CloudWatch
+
+==== AppSync API
+
+* User provided AppSync graphql API object is used as-is
+
+== Architecture
+
+.Architecture Diagram
+image::architecture.png[Architecture Diagram]
+
+'''''
+
+© Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
