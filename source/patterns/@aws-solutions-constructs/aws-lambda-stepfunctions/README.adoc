@@ -21,7 +21,7 @@ Stable]
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
 Logo] Python
-|`aws++_++solutions++_++constructs.aws++_++lambda++_++stepfunctions`
+|`aws_solutions_constructs.aws_lambda_stepfunctions`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-lambda-stepfunctions`
@@ -147,7 +147,7 @@ CloudWatchLogs LogGroup.
 
 |stateMachineEnvironmentVariableName? |`string` |Optional Name for the
 Lambda function environment variable set to the ARN of the state
-machine. Default: STATE++_++MACHINE++_++ARN
+machine. Default: STATE_MACHINE_ARN
 
 |existingVpc?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html[`ec2.IVpc`]
@@ -213,8 +213,8 @@ set the following defaults:
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
 * Enable X-Ray Tracing
 * Set Environment Variables
-** (default) STATE++_++MACHINE++_++ARN
-** AWS++_++NODEJS++_++CONNECTION++_++REUSE++_++ENABLED (for Node 10.x
+** (default) STATE_MACHINE_ARN
+** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
 and higher functions)
 
 ==== AWS Step Functions
@@ -224,8 +224,8 @@ and higher functions)
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

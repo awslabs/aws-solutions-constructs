@@ -6,7 +6,7 @@
 :info_doctype: section
 :info_title: aws-s3-sns
 
-.Stability: Experimental
+
 image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
 
 ____
@@ -27,7 +27,7 @@ ____
 |===
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
-Logo] Python |`aws++_++solutions++_++constructs.aws++_++s3++_++sns`
+Logo] Python |`aws_solutions_constructs.aws_s3_sns`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-s3-sns`
@@ -100,7 +100,7 @@ Bucket.
 |s3EventTypes?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.EventType.html[`s3.EventType++[]++`]
 |The S3 event types that will trigger the notification. Defaults to
-s3.EventType.OBJECT++_++CREATED.
+s3.EventType.OBJECT_CREATED.
 
 |s3EventFilters?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.NotificationKeyFilter.html[`s3.NotificationKeyFilter++[]++`]
@@ -204,8 +204,8 @@ KMS Key
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

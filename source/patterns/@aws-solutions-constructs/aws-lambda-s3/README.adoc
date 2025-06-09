@@ -20,7 +20,7 @@ Stable]
 |===
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
-Logo] Python |`aws++_++solutions++_++constructs.aws++_++lambda++_++s3`
+Logo] Python |`aws_solutions_constructs.aws_lambda_s3`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-lambda-s3`
@@ -152,7 +152,7 @@ minimal, most private VPC to run the pattern:
 
 |bucketEnvironmentVariableName? |`string` |Optional Name for the Lambda
 function environment variable set to the name of the bucket. Default:
-S3++_++BUCKET++_++NAME
+S3_BUCKET_NAME
 
 |loggingBucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
@@ -204,8 +204,8 @@ set the following defaults:
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
 * Enable X-Ray Tracing
 * Set Environment Variables
-** (default) S3++_++BUCKET++_++NAME
-** AWS++_++NODEJS++_++CONNECTION++_++REUSE++_++ENABLED (for Node 10.x
+** (default) S3_BUCKET_NAME
+** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
 and higher functions)
 
 ==== Amazon S3 Bucket
@@ -221,8 +221,8 @@ storage after 90 days
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

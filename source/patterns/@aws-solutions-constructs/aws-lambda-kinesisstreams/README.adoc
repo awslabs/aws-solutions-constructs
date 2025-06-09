@@ -6,7 +6,7 @@
 :info_doctype: section
 :info_title: aws-lambda-kinesisstreams
 
-.Stability: Experimental
+
 image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
 
 [width="100%",cols="<50%,<50%",options="header",]
@@ -20,7 +20,7 @@ image::https://img.shields.io/badge/stability-Experimental-important.svg?style=f
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
 Logo] Python
-|`aws++_++solutions++_++constructs.aws++_++lambda++_++kinesis++_++stream`
+|`aws_solutions_constructs.aws_lambda_kinesis_stream`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-lambda-kinesisstreams`
@@ -154,7 +154,7 @@ minimal, most private VPC to run the pattern:
 
 |streamEnvironmentVariableName? |`string` |Optional Name to override the
 Lambda Function default environment variable name that holds the Kinesis
-Data Stream name value. Default: KINESIS++_++DATASTREAM++_++NAME
+Data Stream name value. Default: KINESIS_DATASTREAM_NAME
 |===
 
 == Pattern Properties
@@ -192,7 +192,7 @@ will set the following defaults:
 * Minimally-permissive IAM role for the Lambda Function to put records
 on the Kinesis Data Stream
 * Enable X-Ray Tracing
-* Sets an Environment Variable named KINESIS++_++DATASTREAM++_++NAME
+* Sets an Environment Variable named KINESIS_DATASTREAM_NAME
 that holds the Kinesis Data Stream Name, which is a required property
 Kinesis Data Streams SDK when making calls to it
 
@@ -204,8 +204,8 @@ Managed CMK
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

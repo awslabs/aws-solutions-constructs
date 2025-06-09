@@ -6,7 +6,7 @@
 :info_doctype: section
 :info_title: aws-fargate-kinesisstreams
 
-.Stability: Experimental
+
 image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
 
 [width="100%",cols="<50%,<50%",options="header",]
@@ -20,7 +20,7 @@ image::https://img.shields.io/badge/stability-Experimental-important.svg?style=f
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
 Logo] Python
-|`aws++_++solutions++_++constructs.aws++_++fargate++_++kinesisstreams`
+|`aws_solutions_constructs.aws_fargate_kinesisstreams`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-fargate-kinesisstreams`
@@ -175,7 +175,7 @@ CloudWatch Alarms for the Kinesis Stream (defaults to true).
 
 |streamEnvironmentVariableName? |`string` |Optional Name to override the
 Fargate Service default environment variable name that holds the Kinesis
-Data Stream name value. Default: KINESIS++_++DATASTREAM++_++NAME
+Data Stream name value. Default: KINESIS_DATASTREAM_NAME
 |===
 
 == Pattern Properties
@@ -216,7 +216,7 @@ will set the following defaults:
 * An AWS Fargate Service running in the isolated subnets of a new VPC
 * Minimally-permissive IAM role for the Fargate Service to put records
 on the Kinesis Data Stream
-* Sets an Environment Variable named KINESIS++_++DATASTREAM++_++NAME
+* Sets an Environment Variable named KINESIS_DATASTREAM_NAME
 that holds the Kinesis Data Stream Name, which is a required property of
 the Kinesis Data Streams SDK when making calls to it
 
@@ -230,8 +230,8 @@ Fargate Service and the Kinesis Data Stream
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

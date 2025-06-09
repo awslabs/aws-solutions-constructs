@@ -6,7 +6,7 @@
 :info_doctype: section
 :info_title: aws-apigateway-iot
 
-.Stability: Experimental
+
 image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
 
 ____
@@ -28,7 +28,7 @@ ____
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
 Logo] Python
-|`aws++_++solutions++_++constructs.aws++_++apigateway++_++iot`
+|`aws_solutions_constructs.aws_apigateway_iot`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-apigateway-iot`
@@ -207,8 +207,8 @@ comprising a `state` node and associated `desired` and `reported` nodes.
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

@@ -21,7 +21,7 @@ Stable]
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
 Logo] Python
-|`aws++_++solutions++_++constructs.aws++_++eventbridge++_++sqs`
+|`aws_solutions_constructs.aws_eventbridge_sqs`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-eventbridge-sqs`
@@ -230,7 +230,7 @@ for the KMS encryption key used to encrypt the SQS queue with.
 |Returns an instance of events.Rule created by the construct
 
 |eventRuleDlq?
-|`sqs.Queue`++]++(https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws++_++sqs.Queue.html)
+|`sqs.Queue`++]++(https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.Queue.html)
 |If the client sets deployEventRuleDlq to '`true`', then this value will
 contain the DLQ set up for the rule.
 
@@ -271,8 +271,8 @@ managed KMS Key.
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

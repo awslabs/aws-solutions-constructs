@@ -6,7 +6,7 @@
 :info_doctype: section
 :info_title: aws-iot-lambda-dynamodb
 
-.Stability: Experimental
+
 image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
 
 ____
@@ -28,7 +28,7 @@ ____
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
 Logo] Python
-|`aws++_++solutions++_++constructs.aws++_++iot++_++lambda++_++dynamodb`
+|`aws_solutions_constructs.aws_iot_lambda_dynamodb`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-iot-lambda-dynamodb`
@@ -171,7 +171,7 @@ Lambda function. One of the following may be specified: `All`, `Read`,
 
 |tableEnvironmentVariableName? |`string` |Optional Name for the Lambda
 function environment variable set to the name of the DynamoDB table.
-Default: DDB++_++TABLE++_++NAME
+Default: DDB_TABLE_NAME
 
 |existingVpc?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html[`ec2.IVpc`]
@@ -236,7 +236,7 @@ set the following defaults:
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
 * Enable X-Ray Tracing
 * Set Environment Variables
-** AWS++_++NODEJS++_++CONNECTION++_++REUSE++_++ENABLED (for Node 10.x
+** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
 and higher functions)
 
 ==== Amazon DynamoDB Table
@@ -250,8 +250,8 @@ Key
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

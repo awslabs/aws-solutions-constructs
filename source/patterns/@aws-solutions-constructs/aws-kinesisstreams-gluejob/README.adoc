@@ -6,7 +6,7 @@
 :info_doctype: section
 :info_title: aws-kinesisstreams-gluejob
 
-.Stability: Experimental
+
 image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
 
 ____
@@ -30,7 +30,7 @@ ____
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
 Logo] Python
-|`aws++_++solutions++_++constructs.aws++_++kinesis++_++streams++_++gluejob`
+|`aws_solutions_constructs.aws_kinesis_streams_gluejob`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-kinesisstreams-gluejob`
@@ -282,12 +282,12 @@ falling behind (to avoid risk of data loss due to record expiration)
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 == Reference Implementation
 
 A sample use case which uses this pattern is available under
-https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-custom-glue-etl[`use++_++cases/aws-custom-glue-etl`].
+https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-custom-glue-etl[`use_cases/aws-custom-glue-etl`].
 
 © Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.

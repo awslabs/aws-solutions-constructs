@@ -6,7 +6,7 @@
 :info_doctype: section
 :info_title: aws-fargate-opensearch
 
-.Stability: Experimental
+
 image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
 
 ____
@@ -28,7 +28,7 @@ ____
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
 Logo] Python
-|`aws++_++solutions++_++constructs.aws++_++fargate++_++opensearch`
+|`aws_solutions_constructs.aws_fargate_opensearch`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-fargate-opensearch`
@@ -184,7 +184,7 @@ CloudWatch alarms.
 
 |domainEndpointEnvironmentVariableName? |`string` |Optional name for the
 OpenSearch Service domain endpoint environment variable set for the
-Lambda function. Default is `DOMAIN++_++ENDPOINT`.
+Lambda function. Default is `DOMAIN_ENDPOINT`.
 |===
 
 == Pattern Properties
@@ -269,8 +269,8 @@ managed KMS Key
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

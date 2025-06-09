@@ -6,7 +6,7 @@
 :info_doctype: section
 :info_title: aws-fargate-secretsmanager
 
-.Stability: Experimental
+
 image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
 
 ____
@@ -28,7 +28,7 @@ ____
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
 Logo] Python
-|`aws++_++solutions++_++constructs.aws++_++fargate++_++secretsmanager`
+|`aws_solutions_constructs.aws_fargate_secretsmanager`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-fargate-secretsmanager`
@@ -175,7 +175,7 @@ the Fargate service (Read-Only by default)
 
 |secretEnvironmentVariableName? |`string` |Optional Name for the
 container environment variable set to the ARN of the secret. Default:
-SECRET++_++ARN
+SECRET_ARN
 |===
 
 == Pattern Properties
@@ -233,8 +233,8 @@ by default runs in Isolated or Private subnets)
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

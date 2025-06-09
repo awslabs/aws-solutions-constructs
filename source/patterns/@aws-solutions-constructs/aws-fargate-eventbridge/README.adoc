@@ -6,7 +6,7 @@
 :info_doctype: section
 :info_title: aws-fargate-eventbridge
 
-.Stability: Experimental
+
 image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
 
 ____
@@ -28,7 +28,7 @@ ____
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
 Logo] Python
-|`aws++_++solutions++_++constructs.aws++_++fargate++_++eventbridge`
+|`aws_solutions_constructs.aws_fargate_eventbridge`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-fargate-eventbridge`
@@ -174,7 +174,7 @@ results an error.
 
 |eventBusEnvironmentVariableName? |`string` |Optional Name for the
 container environment variable set to the DynamoDB table name. Default:
-EVENTBUS++_++NAME
+EVENTBUS_NAME
 |===
 
 == Pattern Properties
@@ -216,7 +216,7 @@ set the following defaults:
 subnets if available and finally public subnets
 * Adds environment variables to the container with the Name of the event
 bus
-** Default: EVENTBUS++_++NAME
+** Default: EVENTBUS_NAME
 * Add permissions to the container IAM role allowing it to put events in
 the EventBridge event bus
 
@@ -232,8 +232,8 @@ default runs in Isolated or Private subnets)
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

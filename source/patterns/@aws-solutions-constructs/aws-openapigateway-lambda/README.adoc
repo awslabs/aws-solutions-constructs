@@ -6,7 +6,7 @@
 :info_doctype: section
 :info_title: aws-openapigateway-lambda
 
-.Stability: Experimental
+
 image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
 
 [width="100%",cols="<50%,<50%",options="header",]
@@ -20,7 +20,7 @@ image::https://img.shields.io/badge/stability-Experimental-important.svg?style=f
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
 Logo] Python
-|`aws++_++solutions++_++constructs.aws++_++openapigateway++_++lambda`
+|`aws_solutions_constructs.aws_openapigateway_lambda`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-openapigateway-lambda`
@@ -41,7 +41,7 @@ Here is a minimal deployable pattern definition.
 *NOTE* The referenced `openapi/apiDefinition.yaml` openapi definition
 file and `messages-lambda` lambda package directory for the three code
 samples below can both be found under this constructs `test` folder
-(`++<++repository++_++root++>++/source/patterns/@aws-solutions-constructs/aws-openapigateway-lambda/test`)
+(`++<++repository_root++>++/source/patterns/@aws-solutions-constructs/aws-openapigateway-lambda/test`)
 
 ====
 [role="tablist"]
@@ -163,7 +163,7 @@ When specifying this property, `apiDefinitionBucket` must also be
 specified.
 
 |apiDefinitionAsset?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html[`aws++_++s3++_++assets.Asset`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3_assets.Asset.html[`aws_s3_assets.Asset`]
 |Local file asset of the OpenAPI spec file.
 
 |apiDefinitionJson? |any |OpenAPI specification represented in a JSON
@@ -330,13 +330,13 @@ set the following defaults:
 * Enable reusing connections with Keep-Alive for NodeJs Lambda functions
 * Enable X-Ray Tracing
 * Set Environment Variables
-** AWS++_++NODEJS++_++CONNECTION++_++REUSE++_++ENABLED (for Node 10.x
+** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
 and higher functions)
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

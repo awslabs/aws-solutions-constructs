@@ -20,7 +20,7 @@ Stable]
 |===
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
-Logo] Python |`aws++_++solutions++_++constructs.aws++_++lambda++_++sns`
+Logo] Python |`aws_solutions_constructs.aws_lambda_sns`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-lambda-sns`
@@ -149,11 +149,11 @@ minimal, most private VPC to run the pattern:
 
 |topicArnEnvironmentVariableName? |`string` |Optional Name for the
 Lambda function environment variable set to the arn of the topic.
-Default: SNS++_++TOPIC++_++ARN
+Default: SNS_TOPIC_ARN
 
 |topicNameEnvironmentVariableName? |`string` |Optional Name for the
 Lambda function environment variable set to the name of the topic.
-Default: SNS++_++TOPIC++_++NAME
+Default: SNS_TOPIC_NAME
 
 |enableEncryptionWithCustomerManagedKey? |`boolean` |If no key is
 provided, this flag determines whether the SNS Topic is encrypted with a
@@ -203,9 +203,9 @@ access the Firehose Delivery Stream
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
 * Enable X-Ray Tracing
 * Set Environment Variables
-** (default) SNS++_++TOPIC++_++NAME
-** (default) SNS++_++TOPIC++_++ARN
-** AWS++_++NODEJS++_++CONNECTION++_++REUSE++_++ENABLED (for Node 10.x
+** (default) SNS_TOPIC_NAME
+** (default) SNS_TOPIC_ARN
+** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
 and higher functions)
 
 ==== Amazon SNS Topic
@@ -216,8 +216,8 @@ and higher functions)
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

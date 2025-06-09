@@ -6,7 +6,7 @@
 :info_doctype: section
 :info_title: aws-lambda-elasticachememcached
 
-.Stability: Experimental
+
 image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
 
 [width="100%",cols="<50%,<50%",options="header",]
@@ -20,7 +20,7 @@ image::https://img.shields.io/badge/stability-Experimental-important.svg?style=f
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
 Logo] Python
-|`aws++_++solutions++_++constructs.aws++_++lambda++_++elasticachememcached`
+|`aws_solutions_constructs.aws_lambda_elasticachememcached`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript
@@ -134,7 +134,7 @@ values for those properties supplied here will be overridden.
 
 |cacheEndpointEnvironmentVariableName? |string |Optional Name for the
 Lambda function environment variable set to the cache endpoint. Default:
-CACHE++_++ENDPOINT
+CACHE_ENDPOINT
 
 |cacheProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_elasticache.CfnCacheClusterProps.html[`cache.CfnCacheClusterProps`]
@@ -180,8 +180,8 @@ set the following defaults:
 * Enable X-Ray Tracing
 * Attached to self referencing security group to grant access to cache
 * Set Environment Variables
-** (default) CACHE++_++ENDPOINT
-** AWS++_++NODEJS++_++CONNECTION++_++REUSE++_++ENABLED (for Node 10.x
+** (default) CACHE_ENDPOINT
+** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
 and higher functions)
 
 ==== Amazon Elasticache Memcached Cluster
@@ -192,8 +192,8 @@ and higher functions)
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

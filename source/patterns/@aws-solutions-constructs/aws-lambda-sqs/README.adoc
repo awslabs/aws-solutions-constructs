@@ -20,7 +20,7 @@ Stable]
 |===
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
-Logo] Python |`aws++_++solutions++_++constructs.aws++_++lambda++_++sqs`
+Logo] Python |`aws_solutions_constructs.aws_lambda_sqs`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-lambda-sqs`
@@ -167,7 +167,7 @@ minimal, most private VPC to run the pattern:
 
 |queueEnvironmentVariableName? |`string` |Optional Name for the Lambda
 function environment variable set to the URL of the queue. Default:
-SQS++_++QUEUE++_++URL
+SQS_QUEUE_URL
 
 |enableEncryptionWithCustomerManagedKey? |`boolean` |If no key is
 provided, this flag determines whether the queue is encrypted with a new
@@ -223,8 +223,8 @@ set the following defaults:
 enabled using the `enableQueuePurge` property).
 * Enable X-Ray Tracing
 * Set Environment Variables
-** SQS++_++QUEUE++_++URL
-** AWS++_++NODEJS++_++CONNECTION++_++REUSE++_++ENABLED (for Node 10.x
+** SQS_QUEUE_URL
+** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
 and higher functions)
 
 ==== Amazon SQS Queue
@@ -236,8 +236,8 @@ KMS Key.
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

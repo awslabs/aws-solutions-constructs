@@ -20,6 +20,7 @@ export NODE_OPTIONS="--max-old-space-size=4096 ${NODE_OPTIONS:-}"
 npm install -g @aws-cdk/integ-runner@2.186.2
 npm install -g aws-cdk
 npm install -g npm-license-crawler
+npm install -g asciidoctor
 
 # Install cfn-guard and rules
 export RULE_BUCKET=solutions-build-assets

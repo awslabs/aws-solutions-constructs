@@ -6,7 +6,7 @@
 :info_doctype: section
 :info_title: aws-fargate-s3
 
-.Stability: Experimental
+
 image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
 
 ____
@@ -27,7 +27,7 @@ ____
 |===
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
-Logo] Python |`aws++_++solutions++_++constructs.aws++_++fargate++_++s3`
+Logo] Python |`aws_solutions_constructs.aws_fargate_s3`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-fargate-s3`
@@ -186,11 +186,11 @@ specified: `Delete`, `Read`, and `Write`. Default is ++[++"`Read`",
 
 |bucketArnEnvironmentVariableName? |string |Optional Name for the
 container environment variable set to the bucket ARN. Default:
-S3++_++BUCKET++_++ARN
+S3_BUCKET_ARN
 
 |bucketEnvironmentVariableName? |string |Optional Optional Name for the
 container environment variable set to the bucket name. Default:
-S3++_++BUCKET++_++NAME
+S3_BUCKET_NAME
 |===
 
 == Pattern Properties
@@ -253,8 +253,8 @@ runs in Isolated or Private subnets)
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

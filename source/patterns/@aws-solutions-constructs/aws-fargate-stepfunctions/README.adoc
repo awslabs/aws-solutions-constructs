@@ -6,7 +6,7 @@
 :info_doctype: section
 :info_title: aws-fargate-stepfunctions
 
-.Stability: Experimental
+
 image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
 
 ____
@@ -28,7 +28,7 @@ ____
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
 Logo] Python
-|`aws++_++solutions++_++constructs.aws++_++fargate++_++stepfunctions`
+|`aws_solutions_constructs.aws_fargate_stepfunctions`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-fargate-stepfunctions`
@@ -191,7 +191,7 @@ CloudWatchLogs LogGroup.
 
 |stateMachineEnvironmentVariableName? |`string` |Optional Name for the
 container environment variable set to the ARN of the state machine.
-Default: STATE++_++MACHINE++_++ARN
+Default: STATE_MACHINE_ARN
 |===
 
 == Pattern Properties
@@ -242,7 +242,7 @@ set the following defaults:
 subnets if available and finally public subnets
 * Adds an environment variable to the container containing the ARN of
 the state machine
-** Default name is `STATE++_++MACHINE++_++ARN`
+** Default name is `STATE_MACHINE_ARN`
 * Add permissions to the container IAM role allowing it to start the
 execution of a state machine
 
@@ -257,8 +257,8 @@ by default runs in Isolated or Private subnets)
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

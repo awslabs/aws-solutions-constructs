@@ -6,7 +6,7 @@
 :info_doctype: section
 :info_title: aws-dynamodbstreams-lambda-elasticsearch-kibana
 
-.Stability: Experimental
+
 image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
 
 ____
@@ -28,7 +28,7 @@ ____
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
 Logo] Python
-|`aws++_++solutions++_++constructs.aws++_++dynamodbstreams++_++elasticsearch++_++kibana`
+|`aws_solutions_constructs.aws_dynamodbstreams_elasticsearch_kibana`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript
@@ -285,7 +285,7 @@ Key
 set defaults for Maximum Record Age (24 hours) & Maximum Retry Attempts
 (500) and deploy SQS dead-letter queue as destination on failure
 * Set Environment Variables
-** AWS++_++NODEJS++_++CONNECTION++_++REUSE++_++ENABLED (for Node 10.x
+** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
 and higher functions)
 
 ==== Amazon Cognito
@@ -304,8 +304,8 @@ managed KMS Key
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

@@ -6,7 +6,7 @@
 :info_doctype: section
 :info_title: aws-constructs-factories
 
-.Stability: Experimental
+
 image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
 
 ____
@@ -28,7 +28,7 @@ ____
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
 Logo] Python
-|`aws++_++solutions++_++constructs.aws++_++constructs++_++factories`
+|`aws_solutions_constructs.aws_constructs_factories`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-constructs-factories`
@@ -171,13 +171,13 @@ days
 ** Bucket policy requiring SecureTransport
 ** Bucket policy granting PutObject privileges to the S3 logging
 service, from the content bucket in the content bucket account.
-** cfn++_++nag suppression of access logging finding (not logging access
+** cfn_nag suppression of access logging finding (not logging access
 to the access log bucket)
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 == Step Functions State Machines
 
@@ -245,7 +245,7 @@ required and must include a definitionBody or definition (definition is
 deprecated)
 
 |logGroup?
-|++[]++`logs.LogGroup`++]++(https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws++_++logs.LogGroup.html)
+|++[]++`logs.LogGroup`++]++(https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroup.html)
 |An existing LogGroup to which the new state machine will write log
 entries. Default: none, the construct will create a new log group.
 
@@ -270,7 +270,7 @@ factories you can ignore it
 |
 
 |logGroup
-|++[]++`logs.LogGroupProps`++]++(https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws++_++logs.LogGroupProps.html)
+|++[]++`logs.LogGroupProps`++]++(https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)
 |
 
 |cloudwatchAlarms?
@@ -298,8 +298,8 @@ name collisions.
 
 == Architecture
 
-.Architecture Diagram
-image::sf-architecture.png[Architecture Diagram]
+
+image::sf-architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 == SQS Queues
 
@@ -409,8 +409,8 @@ can override)
 
 == Architecture
 
-.Architecture Diagram
-image::sqs-architecture.png[Architecture Diagram]
+
+image::sqs-architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 

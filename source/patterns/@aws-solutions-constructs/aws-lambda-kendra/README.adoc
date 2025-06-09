@@ -8,7 +8,7 @@
 
 '''''
 
-.Stability: Experimental
+
 image::https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
 
 ____
@@ -32,7 +32,7 @@ ____
 |*Language* |*Package*
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
 Logo] Python
-|`aws++_++solutions++_++constructs.aws++_++lambda++_++kendra`
+|`aws_solutions_constructs.aws_lambda_kendra`
 
 |image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-lambda-kendra`
@@ -213,13 +213,13 @@ will set the following defaults:
 * Enable reusing connections with Keep-Alive for Node.js Lambda function
 * Enable X-Ray Tracing
 * Set Environment Variables
-** (default) KENDRA++_++INDEX++_++ID
-** AWS++_++NODEJS++_++CONNECTION++_++REUSE++_++ENABLED
+** (default) KENDRA_INDEX_ID
+** AWS_NODEJS_CONNECTION_REUSE_ENABLED
 
 ==== Amazon Kendra Index
 
 * Creates Amazon Kendra endpoint in VPC if appropriate
-* Defaults to DEVELOPER++_++EDITION
+* Defaults to DEVELOPER_EDITION
 
 *Amazon Kendra DataSources*
 
@@ -231,8 +231,8 @@ https://docs.aws.amazon.com/kendra/latest/dg/iam-roles.html
 
 == Architecture
 
-.Architecture Diagram
-image::architecture.png[Architecture Diagram]
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
 
 '''''
 
