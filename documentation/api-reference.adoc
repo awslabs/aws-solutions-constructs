@@ -1,0 +1,297 @@
+//!!NODE_ROOT <chapter>
+[.topic]
+[[api-reference,api-reference.title]]
+= API Reference
+:doctype: book
+:sectnums:
+:toc: left
+:icons: font
+:experimental:
+:idprefix:
+:idseparator: -
+:sourcedir: .
+:info_doctype: chapter
+:info_title: API Reference
+:info_titleabbrev: API Reference
+:info_abstract: AWS Solutions Constructs (Constructs) is an open-source extension of the AWS Cloud Development Kit (AWS CDK) that provides \
+        multi-service, well-architected patterns for quickly defining solutions in code to create \
+        predictable and repeatable infrastructure.
+
+[abstract]
+--
+AWS Solutions Constructs (Constructs) is an open-source extension of the AWS Cloud Development Kit (AWS CDK) that provides multi-service, well-architected patterns for quickly defining solutions in code to create predictable and repeatable infrastructure. 
+--
+
+AWS V7 Solutions Constructs (Constructs) is an open-source extension of the AWS Cloud Development Kit (AWS CDK) that provides multi-service, well-architected patterns for quickly defining solutions in code to create predictable and repeatable infrastructure. Constructs's goal is to accelerates the experience for developers to build solutions of any size using pattern-based definitions for their architecture.  
+
+The patterns defined in Constructs are high level, multi-service abstractions of AWS CDK constructs that have default configurations based on well-architected best practices. The library is organized into logical modules using object-oriented techniques to create each architectural pattern model. 
+
+The CDK is available in the following languages: 
+
+
+
+* JavaScript, TypeScript (Node.js ≥ 10.3.0) 
+* Python (Python ≥ 3.6) 
+* Java (Java ≥ 1.8)
+
+
+[[modules,modules.title]]
+== Modules
+
+AWS Solutions Constructs is organized into several modules. They are named like this:  
+
+
+
+* **aws-xxx**: Well-architected pattern package for the indicated services. This package will contain constructs that contain multiple AWS CDK service modules to configure the given pattern. 
+* **xxx**: Packages that don't start "**aws-**" are Constructs core modules that are used to configure best practice defaults for services used within the pattern library. 
+
+
+[[module-contents,module-contents.title]]
+== Module Contents
+
+Modules contain the following types:  
+
+
+
+* *Patterns* - All higher-level, multi-services constructs in this library. 
+* *Other Types* - All non-construct classes, interfaces, structs and enums that exist to support the patterns. 
+
+Patterns take a set of (input) properties in their constructor; the set of properties (and which ones are required) can be seen on a pattern's documentation page.  
+
+The pattern's documentation page also lists the available methods to call and the properties which can be used to retrieve information about the pattern after it has been instantiated. 
+
+include::aws-alb-fargate.adoc[leveloffset=+1]
+
+
+include::aws-alb-lambda.adoc[leveloffset=+1]
+
+
+include::aws-apigateway-dynamodb.adoc[leveloffset=+1]
+
+
+include::aws-apigateway-iot.adoc[leveloffset=+1]
+
+
+include::aws-apigateway-kinesisstreams.adoc[leveloffset=+1]
+
+
+include::aws-apigateway-lambda.adoc[leveloffset=+1]
+
+
+include::aws-apigateway-sagemakerendpoint.adoc[leveloffset=+1]
+
+
+include::aws-apigateway-sqs.adoc[leveloffset=+1]
+
+
+include::aws-apigatewayv2websocket-sqs.adoc[leveloffset=+1]
+
+
+include::aws-cloudfront-apigateway-lambda.adoc[leveloffset=+1]
+
+
+include::aws-cloudfront-apigateway.adoc[leveloffset=+1]
+
+
+include::aws-cloudfront-mediastore.adoc[leveloffset=+1]
+
+
+include::aws-cloudfront-oai-s3.adoc[leveloffset=+1]
+
+
+include::aws-cloudfront-s3.adoc[leveloffset=+1]
+
+
+include::aws-cognito-apigateway-lambda.adoc[leveloffset=+1]
+
+
+include::aws-constructs-factories.adoc[leveloffset=+1]
+
+
+include::aws-dynamodbstreams-lambda-elasticsearch-kibana.adoc[leveloffset=+1]
+
+
+include::aws-dynamodbstreams-lambda.adoc[leveloffset=+1]
+
+
+include::aws-dynamodbstreams-pipes-stepfunctions.adoc[leveloffset=+1]
+
+
+include::aws-eventbridge-kinesisfirehose-s3.adoc[leveloffset=+1]
+
+
+include::aws-eventbridge-kinesisstreams.adoc[leveloffset=+1]
+
+
+include::aws-eventbridge-lambda.adoc[leveloffset=+1]
+
+
+include::aws-eventbridge-sns.adoc[leveloffset=+1]
+
+
+include::aws-eventbridge-sqs.adoc[leveloffset=+1]
+
+
+include::aws-eventbridge-stepfunctions.adoc[leveloffset=+1]
+
+
+include::aws-fargate-dynamodb.adoc[leveloffset=+1]
+
+
+include::aws-fargate-eventbridge.adoc[leveloffset=+1]
+
+
+include::aws-fargate-kinesisfirehose.adoc[leveloffset=+1]
+
+
+include::aws-fargate-kinesisstreams.adoc[leveloffset=+1]
+
+
+include::aws-fargate-opensearch.adoc[leveloffset=+1]
+
+
+include::aws-fargate-s3.adoc[leveloffset=+1]
+
+
+include::aws-fargate-secretsmanager.adoc[leveloffset=+1]
+
+
+include::aws-fargate-sns.adoc[leveloffset=+1]
+
+
+include::aws-fargate-sqs.adoc[leveloffset=+1]
+
+
+include::aws-fargate-ssmstringparameter.adoc[leveloffset=+1]
+
+
+include::aws-fargate-stepfunctions.adoc[leveloffset=+1]
+
+
+include::aws-iot-kinesisfirehose-s3.adoc[leveloffset=+1]
+
+
+include::aws-iot-kinesisstreams.adoc[leveloffset=+1]
+
+
+include::aws-iot-lambda-dynamodb.adoc[leveloffset=+1]
+
+
+include::aws-iot-lambda.adoc[leveloffset=+1]
+
+
+include::aws-iot-s3.adoc[leveloffset=+1]
+
+
+include::aws-iot-sqs.adoc[leveloffset=+1]
+
+
+include::aws-kinesisfirehose-s3.adoc[leveloffset=+1]
+
+
+include::aws-kinesisstreams-gluejob.adoc[leveloffset=+1]
+
+
+include::aws-kinesisstreams-kinesisfirehose-s3.adoc[leveloffset=+1]
+
+
+include::aws-kinesisstreams-lambda.adoc[leveloffset=+1]
+
+
+include::aws-lambda-bedrockinferenceprofile.adoc[leveloffset=+1]
+
+
+include::aws-lambda-dynamodb.adoc[leveloffset=+1]
+
+
+include::aws-lambda-elasticachememcached.adoc[leveloffset=+1]
+
+
+include::aws-lambda-elasticsearch-kibana.adoc[leveloffset=+1]
+
+
+include::aws-lambda-eventbridge.adoc[leveloffset=+1]
+
+
+include::aws-lambda-kendra.adoc[leveloffset=+1]
+
+
+include::aws-lambda-kinesisfirehose.adoc[leveloffset=+1]
+
+
+include::aws-lambda-kinesisstreams.adoc[leveloffset=+1]
+
+
+include::aws-lambda-opensearch.adoc[leveloffset=+1]
+
+
+include::aws-lambda-s3.adoc[leveloffset=+1]
+
+
+include::aws-lambda-sagemakerendpoint.adoc[leveloffset=+1]
+
+
+include::aws-lambda-secretsmanager.adoc[leveloffset=+1]
+
+
+include::aws-lambda-sns.adoc[leveloffset=+1]
+
+
+include::aws-lambda-sqs-lambda.adoc[leveloffset=+1]
+
+
+include::aws-lambda-sqs.adoc[leveloffset=+1]
+
+
+include::aws-lambda-ssmstringparameter.adoc[leveloffset=+1]
+
+
+include::aws-lambda-stepfunctions.adoc[leveloffset=+1]
+
+
+include::aws-openapigateway-lambda.adoc[leveloffset=+1]
+
+
+include::aws-route53-alb.adoc[leveloffset=+1]
+
+
+include::aws-route53-apigateway.adoc[leveloffset=+1]
+
+
+include::aws-s3-lambda.adoc[leveloffset=+1]
+
+
+include::aws-s3-sns.adoc[leveloffset=+1]
+
+
+include::aws-s3-sqs.adoc[leveloffset=+1]
+
+
+include::aws-s3-stepfunctions.adoc[leveloffset=+1]
+
+
+include::aws-sns-lambda.adoc[leveloffset=+1]
+
+
+include::aws-sns-sqs.adoc[leveloffset=+1]
+
+
+include::aws-sqs-lambda.adoc[leveloffset=+1]
+
+
+include::aws-sqs-pipes-stepfunctions.adoc[leveloffset=+1]
+
+
+include::aws-wafwebacl-alb.adoc[leveloffset=+1]
+
+
+include::aws-wafwebacl-apigateway.adoc[leveloffset=+1]
+
+
+include::aws-wafwebacl-appsync.adoc[leveloffset=+1]
+
+
+include::aws-wafwebacl-cloudfront.adoc[leveloffset=+1]
+
+
+

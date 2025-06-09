@@ -1,0 +1,182 @@
+//!!NODE_ROOT <section>
+//== aws-kinesisfirehose-s3 module
+
+[.topic]
+= aws-kinesisfirehose-s3
+:info_doctype: section
+:info_title: aws-kinesisfirehose-s3
+
+
+image::https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-the-badge[Stability:Stable]
+
+[width="100%",cols="<50%,<50%",options="header",]
+|===
+|*Reference Documentation*:
+|https://docs.aws.amazon.com/solutions/latest/constructs/
+|===
+
+[width="100%",cols="<46%,54%",options="header",]
+|===
+|*Language* |*Package*
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+Logo] Python
+|`aws_solutions_constructs.aws_kinesis_firehose_s3`
+
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+Logo] Typescript |`@aws-solutions-constructs/aws-kinesisfirehose-s3`
+
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+Logo] Java |`software.amazon.awsconstructs.services.kinesisfirehoses3`
+|===
+
+== Overview
+
+This AWS Solutions Construct implements an Amazon Kinesis Data Firehose
+delivery stream connected to an Amazon S3 bucket.
+
+Here is a minimal deployable pattern definition:
+
+====
+[role="tablist"]
+Typescript::
++
+[source,typescript]
+----
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfirehose-s3';
+
+new KinesisFirehoseToS3(this, 'test-firehose-s3', {});
+----
+
+Python::
++
+[source,python]
+----
+from aws_solutions_constructs.aws_kinesis_firehose_s3 import KinesisFirehoseToS3
+from aws_cdk import Stack
+from constructs import Construct
+
+KinesisFirehoseToS3(self, 'test_firehose_s3')
+----
+
+Java::
++
+[source,java]
+----
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awsconstructs.services.kinesisfirehoses3.*;
+
+new KinesisFirehoseToS3(this, "test_firehose_s3", new KinesisFirehoseToS3Props.Builder()
+        .build());
+----
+====
+
+== Pattern Construct Props
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|bucketProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
+|Optional user provided props to override the default props for the S3
+Bucket.
+
+|existingBucketObj?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
+|Optional existing instance of S3 Bucket. If this is provided, then also
+providing bucketProps is an error.
+
+|existingLoggingBucketObj?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
+|Optional existing instance of logging S3 Bucket for the S3 Bucket
+created by the pattern.
+
+|kinesisFirehoseProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kinesisfirehose.CfnDeliveryStreamProps.html[`kinesisfirehose.CfnDeliveryStreamProps`]{vbar}`any`
+|Optional user provided props to override the default props for Kinesis
+Firehose Delivery Stream.
+
+|logGroupProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html[`logs.LogGroupProps`]
+|Optional user provided props to override the default props for for the
+CloudWatchLogs LogGroup.
+
+|loggingBucketProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
+|Optional user provided props to override the default props for the S3
+Logging Bucket.
+
+|logS3AccessLogs? |boolean |Whether to turn on Access Logging for the S3
+bucket. Creates an S3 bucket with associated storage costs for the logs.
+Enabling Access Logging is a best practice. default - true
+|===
+
+== Pattern Properties
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|kinesisFirehose
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kinesisfirehose.CfnDeliveryStream.html[`kinesisfirehose.CfnDeliveryStream`]
+|Returns an instance of kinesisfirehose.CfnDeliveryStream created by the
+construct
+
+|kinesisFirehoseLogGroup
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroup.html[`logs.LogGroup`]
+|Returns an instance of the logs.LogGroup created by the construct for
+Kinesis Data Firehose delivery stream
+
+|kinesisFirehoseRole
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html[`iam.Role`]
+|Returns an instance of the iam.Role created by the construct for
+Kinesis Data Firehose delivery stream
+
+|s3Bucket?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html[`s3.Bucket`]
+|Returns an instance of s3.Bucket created by the construct
+
+|s3LoggingBucket?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html[`s3.Bucket`]
+|Returns an instance of s3.Bucket created by the construct as the
+logging bucket for the primary bucket
+
+|s3BucketInterface
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
+|Returns an instance of s3.IBucket created by the construct
+|===
+
+== Default settings
+
+Out of the box implementation of the Construct without any override will
+set the following defaults:
+
+==== Amazon Kinesis Firehose
+
+* Enable CloudWatch logging for Kinesis Firehose
+* Configure least privilege access IAM role for Amazon Kinesis Firehose
+
+==== Amazon S3 Bucket
+
+* Configure Access logging for S3 Bucket
+* Enable server-side encryption for S3 Bucket using AWS managed KMS Key
+* Enforce encryption of data in transit
+* Turn on the versioning for S3 Bucket
+* Don’t allow public access for S3 Bucket
+* Retain the S3 Bucket when deleting the CloudFormation stack
+* Applies Lifecycle rule to move noncurrent object versions to Glacier
+storage after 90 days
+
+== Architecture
+
+
+image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
+
+// github block
+
+'''''
+
+© Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
