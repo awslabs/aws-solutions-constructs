@@ -43,7 +43,7 @@ AWS Solutions Constructs is organized into several modules. They are named like 
 
 
 * **aws-xxx**: Well-architected pattern package for the indicated services. This package will contain constructs that contain multiple AWS CDK service modules to configure the given pattern. 
-* **xxx**: Packages that don't start "**aws-**" are Constructs core modules that are used to configure best practice defaults for services used within the pattern library. 
+* **xxx**: Packages that don't start "**aws-**" are Constructs core modules that are used to configure best practice defaults for services used within the pattern library. Any function in these modules is internal and not intended to be called by clients directly - changes in implementation may result in the breaking changes to the interfaces on these functions. Some of this functionality has been exposed for safe client use in the aws-constructs-factories.
 
 
 [[module-contents,module-contents.title]]
