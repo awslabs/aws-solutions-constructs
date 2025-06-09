@@ -6,8 +6,8 @@
 :info_doctype: section
 :info_title: aws-lambda-dynamodb
 
-.Stability: Stable
-image::https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-the-badge[Stability:
+
+image::https://img.shields.io/badge/cfn--resources-Stable-success.svg?style=for-the-badge[Stability:
 Stable]
 
 [width="100%",cols="<50%,<50%",options="header",]
@@ -126,11 +126,11 @@ Table
 |Existing instance of DynamoDB table object, providing both this and
 `dynamoTableProps` will cause an error.
 
-|tablePermissions? |`string` |Optional table permissions to grant to the
+StablePermissions? |`string` |Optional table permissions to grant to the
 Lambda function. One of the following may be specified: `All`, `Read`,
 `ReadWrite`, `Write`.
 
-|tableEnvironmentVariableName? |`string` |Optional Name for the Lambda
+StableEnvironmentVariableName? |`string` |Optional Name for the Lambda
 function environment variable set to the name of the DynamoDB table.
 Default: DDB_TABLE_NAME
 
@@ -206,6 +206,8 @@ Key
 
 
 image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
+
+\\ github block
 
 '''''
 

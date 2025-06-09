@@ -160,7 +160,7 @@ function.
 |Optional user provided props to override the default props for DynamoDB
 Table
 
-|tablePermissions? |`string` |Optional table permissions to grant to the
+StablePermissions? |`string` |Optional table permissions to grant to the
 Lambda function. One of the following may be specified: `All`, `Read`,
 `ReadWrite`, `Write`.
 
@@ -169,7 +169,7 @@ Lambda function. One of the following may be specified: `All`, `Read`,
 |Existing instance of DynamoDB table object, providing both this and
 `dynamoTableProps` will cause an error.
 
-|tableEnvironmentVariableName? |`string` |Optional Name for the Lambda
+StableEnvironmentVariableName? |`string` |Optional Name for the Lambda
 function environment variable set to the name of the DynamoDB table.
 Default: DDB_TABLE_NAME
 
@@ -252,6 +252,8 @@ Key
 
 
 image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
+
+\\ github block
 
 '''''
 

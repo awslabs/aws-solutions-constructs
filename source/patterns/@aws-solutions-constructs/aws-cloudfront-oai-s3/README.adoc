@@ -6,8 +6,8 @@
 :info_doctype: section
 :info_title: aws-cloudfront-oai-s3
 
-.Stability: Stable
-image::https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-the-badge[Stability:
+
+image::https://img.shields.io/badge/cfn--resources-Stable-success.svg?style=for-the-badge[Stability:
 Stable]
 
 [width="100%",cols="<50%,<50%",options="header",]
@@ -194,7 +194,7 @@ bucket is passed in via
 |originaAccessIdentity?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudfront.OriginAccessIdentity.html[`cloudfront.OriginAccessIdentity`]
 |The Origina Access Identity created to connect the CloudFront
-distribution to the S3 bucket (only suitable for use in regions without
+distribution to the S3 bucket (only suStable for use in regions without
 OAC, such as China)
 |===
 
@@ -226,6 +226,8 @@ storage after 90 days
 
 
 image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
+
+\\ github block
 
 '''''
 
