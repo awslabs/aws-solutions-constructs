@@ -110,20 +110,20 @@ property is required if the `allowCreateOperation` property is set to
 true.
 
 |additionalCreateRequestTemplates?
-|`++{++ ++[++contentType: string++]++: string; }` |Optional Create
+|`{ [contentType: string]: string;  }` |Optional Create
 Request Templates for content-types other than `application/json`. Use
 the `createRequestTemplate` property to set the request template for the
 `application/json` content-type. This property can only be specified if
 the `allowCreateOperation` property is set to true.
 
 |createIntegrationResponses?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses++[]++`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses[]`]
 |Optional, custom API Gateway Integration Response for the create
 method. This property can only be specified if the
 `allowCreateOperation` property is set to true.
 
 |createMethodResponses?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses++[]++`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
 |Optional, custom API Gateway Method Responses for the create action.
 default: ++[{++ statusCode: "`200`", responseParameters: ++{++
 "`method.response.header.Content-Type`": true }},++{++ statusCode:
@@ -137,17 +137,17 @@ for GET HTTP operations on the queue (i.e. sqs:ReceiveMessage).
 read method for the default `application/json` content-type.
 
 |additionalReadRequestTemplates?
-|`++{++ ++[++contentType: string++]++: string; }` |Optional Read Request
+|`{ [contentType: string]: string;  }` |Optional Read Request
 Templates for content-types other than `application/json`. Use the
 `readRequestTemplate` property to set the request template for the
 `application/json` content-type.
 
 |readIntegrationResponses?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses++[]++`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses[]`]
 |Optional, custom API Gateway Integration Response for the read method.
 
 |readMethodResponses?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses++[]++`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
 |Optional, custom API Gateway Method Responses for the read action.
 default: ++[{++ statusCode: "`200`", responseParameters: ++{++
 "`method.response.header.Content-Type`": true }},++{++ statusCode:
@@ -163,20 +163,20 @@ property can only be specified if the `allowDeleteOperation` property is
 set to true.
 
 |additionalDeleteRequestTemplates?
-|`++{++ ++[++contentType: string++]++: string; }` |Optional Delete
+|`{ [contentType: string]: string;  }` |Optional Delete
 request templates for content-types other than `application/json`. Use
 the `deleteRequestTemplate` property to set the request template for the
 `application/json` content-type. This property can only be specified if
 the `allowDeleteOperation` property is set to true.
 
 |deleteIntegrationResponses?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses++[]++`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses[]`]
 |Optional, custom API Gateway Integration Response for the delete
 method. This property can only be specified if the
 `allowDeleteOperation` property is set to true.
 
 |deleteMethodResponses?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses++[]++`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
 |Optional, custom API Gateway Method Responses for the delete action.
 default: ++[{++ statusCode: "`200`", responseParameters: ++{++
 "`method.response.header.Content-Type`": true }},++{++ statusCode:

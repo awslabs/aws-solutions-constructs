@@ -96,7 +96,7 @@ apiGatewayProps.defaultMethodOptions.apiKeyRequired is true. @default -
 true (to match legacy behavior)
 
 |additionalPutRecordRequestTemplates?
-|`++{++ ++[++contentType: string++]++: string; }` |Optional PutRecord
+|`{ [contentType: string]: string;  }` |Optional PutRecord
 Request Templates for content-types other than `application/json`. Use
 the `putRecordRequestTemplate` property to set the request template for
 the `application/json` content-type.
@@ -107,12 +107,12 @@ the `application/json` content-type.
 default one will be created.
 
 |putRecordIntegrationResponses?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses++[]++`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses[]`]
 |Optional, custom API Gateway Integration Response for the PutRecord
 action.
 
 |putRecordMethodResponses?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses++[]++`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
 |Optional, custom API Gateway Method Responses for the putRecord action.
 default: ++[{++ statusCode: "`200`", responseParameters: ++{++
 "`method.response.header.Content-Type`": true }},++{++ statusCode:
@@ -123,7 +123,7 @@ default: ++[{++ statusCode: "`200`", responseParameters: ++{++
 the PutRecords action. If not provided, a default one will be used.
 
 |additionalPutRecordsRequestTemplates?
-|`++{++ ++[++contentType: string++]++: string; }` |Optional PutRecords
+|`{ [contentType: string]: string;  }` |Optional PutRecords
 Request Templates for content-types other than `application/json`. Use
 the `putRecordsRequestTemplate` property to set the request template for
 the `application/json` content-type.
@@ -134,12 +134,12 @@ the `application/json` content-type.
 default one will be created.
 
 |putRecordsIntegrationResponses?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses++[]++`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses[]`]
 |Optional, custom API Gateway Integration Response for the PutRecords
 action.
 
 |putRecordsMethodResponses?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses++[]++`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
 |Optional, custom API Gateway Method Responses for the putRecords
 action. default: ++[{++ statusCode: "`200`", responseParameters: ++{++
 "`method.response.header.Content-Type`": true }},++{++ statusCode:

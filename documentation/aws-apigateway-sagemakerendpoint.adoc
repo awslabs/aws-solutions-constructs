@@ -175,7 +175,7 @@ requests for the default `application/json` content-type received on the
 REST API to POST requests expected by the SageMaker endpoint.
 
 |additionalRequestTemplates
-|`++{++ ++[++contentType: string++]++: string; }` |Optional Request
+|`{ [contentType: string]: string;  }` |Optional Request
 Templates for content-types other than `application/json`. Use the
 `requestMappingTemplate` property to set the request template for the
 `application/json` content-type.

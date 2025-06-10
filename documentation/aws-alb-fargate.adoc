@@ -160,7 +160,7 @@ use the VPC in existingVpc or the VPC created by the construct.
 
 |existingLoadBalancerObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationLoadBalancer.html[elasticloadbalancingv2.ApplicationLoadBalancer]
-|++[++existing Application Load Balancer to incorporate into the
+|existing Application Load Balancer to incorporate into the
 construct architecture. Providing both this and loadBalancerProps is an
 error. The VPC containing this loadBalancer must match the VPC provided
 in existingVpc.
@@ -307,21 +307,6 @@ Balancer
 *** Service will run in isolated subnets if available, then private
 subnets if available and finally public subnets
 
-|===
-
-[width="100%",cols="<46%,54%",options="header",]
-|===
-|*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
-Logo] Python |`aws_solutions_constructs.aws_alb_fargate`
-
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
-Logo] Typescript |`@aws-solutions-constructs/aws-alb-fargate`
-
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
-Logo] Java |`software.amazon.awsconstructs.services.albfargate`
-|===
-
 == Architecture
 
 image::images/aws-alb-fargate.png["Application Load Balancer directing traffic to AWS Fargate and Amazon S3 services.",scaledwidth=100%]
@@ -336,21 +321,6 @@ image::images/aws-alb-fargate.png["Application Load Balancer directing traffic t
 // |
 // |https://github.com/awslabs/aws-solutions-constructs/tree/master/source/patterns/%40aws-solutions-constructs/aws-apigateway-iot[@aws-solutions-constructs/aws-apigateway-iot]
 // |===
-
-|===
-
-[width="100%",cols="<46%,54%",options="header",]
-|===
-|*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
-Logo] Python |`aws_solutions_constructs.aws_alb_fargate`
-
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
-Logo] Typescript |`@aws-solutions-constructs/aws-alb-fargate`
-
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
-Logo] Java |`software.amazon.awsconstructs.services.albfargate`
-|===
 
 [[github,topic.title]]
 == GitHub

@@ -160,7 +160,7 @@ use the VPC in existingVpc or the VPC created by the construct.
 
 |existingLoadBalancerObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationLoadBalancer.html[elasticloadbalancingv2.ApplicationLoadBalancer]
-|++[++existing Application Load Balancer to incorporate into the
+|existing Application Load Balancer to incorporate into the
 construct architecture. Providing both this and loadBalancerProps is an
 error. The VPC containing this loadBalancer must match the VPC provided
 in existingVpc.
