@@ -41,7 +41,7 @@ Here is a minimal deployable pattern definition.
 *NOTE* The referenced `openapi/apiDefinition.yaml` openapi definition
 file and `messages-lambda` lambda package directory for the three code
 samples below can both be found under this constructs `test` folder
-(`++<++repository_root++>++/source/patterns/@aws-solutions-constructs/aws-openapigateway-lambda/test`)
+(`<repository_root>/source/patterns/@aws-solutions-constructs/aws-openapigateway-lambda/test`)
 
 ====
 [role="tablist"]
@@ -173,7 +173,7 @@ growing too big, but there are some use cases that require an embedded
 spec. Unless your use case explicitly requires an embedded spec you
 should pass your spec as an S3 asset.
 
-|apiIntegrations |`ApiIntegration++[]++` |One or more key-value pairs
+|apiIntegrations |`ApiIntegration[]` |One or more key-value pairs
 that contain an id for the api integration and either an existing lambda
 function or an instance of the LambdaProps. Please see the
 `Overview of how the OpenAPI file transformation works` section below
@@ -190,7 +190,7 @@ CloudWatchLogs LogGroup.
 [width="100%",cols="<30%,<35%,35%",options="header",]
 |===
 |*Name* |*Type* |*Description*
-|apiLambdaFunctions |`ApiLambdaFunction++[]++` |Returns an array of
+|apiLambdaFunctions |`ApiLambdaFunction[]` |Returns an array of
 ApiLambdaFunction objects, where each has an `id` of the
 `apiIntegration` and the corresponding `lambda.Function` that it maps
 to.
@@ -304,7 +304,7 @@ paths:
 When the construct is created or updated, it will overwrite the
 `MessagesHandler` string with the fully resolved lambda proxy uri of the
 `MessagesHandlerLambdaFunction`, e.g.,
-`arn:$++{++Aws.PARTITION}:apigateway:$++{++Aws.REGION}:lambda:path/2015-03-31/functions/$++{++messagesLambda.functionArn}/invocations`,
+`arn:${Aws.PARTITION}:apigateway:${Aws.REGION}:lambda:path/2015-03-31/functions/${messagesLambda.functionArn}/invocations`,
 and similarly for the `PhotosHandler` string and
 `PhotosHandlerLambdaFunction`, resulting in a valid OpenAPI spec file
 that is then passed to the `SpecRestApi` construct.

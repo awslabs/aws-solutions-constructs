@@ -125,10 +125,10 @@ method. This property can only be specified if the
 |createMethodResponses?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
 |Optional, custom API Gateway Method Responses for the create action.
-default: ++[{++ statusCode: "`200`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true }},++{++ statusCode:
-"`500`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true } } ++]++
+default: [{ statusCode: "`200`", responseParameters: {
+"`method.response.header.Content-Type`": true }},{ statusCode:
+"`500`", responseParameters: {
+"`method.response.header.Content-Type`": true } } ]
 
 |allowReadOperation? |`boolean` |Whether to deploy an API Gateway Method
 for GET HTTP operations on the queue (i.e. sqs:ReceiveMessage).
@@ -149,10 +149,10 @@ Templates for content-types other than `application/json`. Use the
 |readMethodResponses?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
 |Optional, custom API Gateway Method Responses for the read action.
-default: ++[{++ statusCode: "`200`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true }},++{++ statusCode:
-"`500`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true } } ++]++
+default: [{ statusCode: "`200`", responseParameters: {
+"`method.response.header.Content-Type`": true }},{ statusCode:
+"`500`", responseParameters: {
+"`method.response.header.Content-Type`": true } } ]
 
 |allowDeleteOperation? |`boolean` |Whether to deploy an API Gateway
 Method for HTTP DELETE operations on the queue (i.e. sqs:DeleteMessage).
@@ -178,10 +178,10 @@ method. This property can only be specified if the
 |deleteMethodResponses?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
 |Optional, custom API Gateway Method Responses for the delete action.
-default: ++[{++ statusCode: "`200`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true }},++{++ statusCode:
-"`500`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true } } ++]++
+default: [{ statusCode: "`200`", responseParameters: {
+"`method.response.header.Content-Type`": true }},{ statusCode:
+"`500`", responseParameters: {
+"`method.response.header.Content-Type`": true } } ]
 
 |logGroupProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html[`logs.LogGroupProps`]
@@ -203,15 +203,15 @@ encryptionKeyProps.
 |Optional user provided properties to override the default properties
 for the KMS encryption key used to encrypt the SQS queue with.
 
-|messageSchema? |++{++ ++[++contentType: string++]++:
+|messageSchema? |{ [contentType: string]:
 https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.JsonSchema.html[api.JsonSchema];
 } |Optional schema to define format of incoming message in API request
-body. Example: ++{++ "`application/json`": ++{++ schema:
+body. Example: { "`application/json`": { schema:
 api.JsonSchemaVersion.DRAFT4, title: '`pollResponse`', type:
-api.JsonSchemaType.OBJECT, required: ++[++'`firstProperty`',
-'`antotherProperty`'++]++, additionalProperties: false, properties:
-++{++ firstProperty: ++{++ type: api.JsonSchemaType.STRING },
-antotherProperty: ++{++ type: api.JsonSchemaType.STRING } } } Only
+api.JsonSchemaType.OBJECT, required: ['`firstProperty`',
+'`antotherProperty`'], additionalProperties: false, properties:
+{ firstProperty: { type: api.JsonSchemaType.STRING },
+antotherProperty: { type: api.JsonSchemaType.STRING } } } Only
 relevant for create operation, if allowCreateOperation is not true, then
 supplying this is an error. Sending this value causes this construct to
 turn on validation for the request body. @default - None
@@ -257,10 +257,10 @@ Gateway access logging to CloudWatch.
 |*Method* |*Request Path* |*Request Body* |*Queue Action* |*Description*
 |GET |`/` | |`sqs::ReceiveMessage` |Retrieves a message from the queue.
 
-|POST |`/` |`++{++ "data": "Hello World!" }` |`sqs::SendMessage`
+|POST |`/` |`{ "data": "Hello World!" }` |`sqs::SendMessage`
 |Delivers a message to the queue.
 
-|DELETE |`/message?receiptHandle=++[++value++]++` |
+|DELETE |`/message?receiptHandle=[value]` |
 |`sqs::DeleteMessage` |Deletes a specified message from the queue
 |===
 
@@ -269,13 +269,13 @@ Gateway access logging to CloudWatch.
 This construct allows you to implement four DynamoDB API operations,
 CREATE/READ/DELETE (corresponding the HTTP POST/GET/DELETE requests
 respectively). They are completely independent and each follows the same
-pattern: ++*++ Setting `allowCreateOperation` to true will implement the
+pattern: * Setting `allowCreateOperation` to true will implement the
 `application/json` content-type with default request and response
-templates ++*++ The request template for `application/json` requests can
-be customized using the `createRequestTemplate` prop value ++*++
+templates * The request template for `application/json` requests can
+be customized using the `createRequestTemplate` prop value *
 _Additional_ request templates can be specified using the
 `additionalCreateRequestTemplates` prop value. Note - these DO NOT
-replace the `application/json` content-type ++*++ Customized integration
+replace the `application/json` content-type * Customized integration
 responses can be specified for any content type in the
 `createIntegrationResponses` prop value.
 

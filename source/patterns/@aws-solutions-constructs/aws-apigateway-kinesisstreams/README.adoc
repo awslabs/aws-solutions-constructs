@@ -114,10 +114,10 @@ action.
 |putRecordMethodResponses?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
 |Optional, custom API Gateway Method Responses for the putRecord action.
-default: ++[{++ statusCode: "`200`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true }},++{++ statusCode:
-"`500`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true } } ++]++
+default: [{ statusCode: "`200`", responseParameters: {
+"`method.response.header.Content-Type`": true }},{ statusCode:
+"`500`", responseParameters: {
+"`method.response.header.Content-Type`": true } } ]
 
 |putRecordsRequestTemplate? |`string` |API Gateway request template for
 the PutRecords action. If not provided, a default one will be used.
@@ -141,10 +141,10 @@ action.
 |putRecordsMethodResponses?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
 |Optional, custom API Gateway Method Responses for the putRecords
-action. default: ++[{++ statusCode: "`200`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true }},++{++ statusCode:
-"`500`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true } } ++]++
+action. default: [{ statusCode: "`200`", responseParameters: {
+"`method.response.header.Content-Type`": true }},{ statusCode:
+"`500`", responseParameters: {
+"`method.response.header.Content-Type`": true } } ]
 
 |existingStreamObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kinesis.Stream.html[`kinesis.Stream`]
@@ -196,7 +196,7 @@ Gateway access logging to CloudWatch.
 pattern.
 
 |cloudwatchAlarms?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Alarm.html[`cloudwatch.Alarm++[]++`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Alarm.html[`cloudwatch.Alarm[]`]
 |Returns an array of recommended CloudWatch Alarms created by the
 construct for Kinesis Data stream
 |===
@@ -208,11 +208,11 @@ construct for Kinesis Data stream
 |*Method* |*Request Path* |*Request Body* |*Stream Action*
 |*Description*
 |POST |`/record`
-|`++{++ "data": "Hello World!", "partitionKey": "pk001" }`
+|`{ "data": "Hello World!", "partitionKey": "pk001" }`
 |`kinesis:PutRecord` |Writes a single data record into the stream.
 
 |POST |`/records`
-|`++{++ "records": ++[{++ "data": "abc", "partitionKey": "pk001" }, ++{++ "data": "xyz", "partitionKey": "pk001" }++]++ }`
+|`{ "records": [{ "data": "abc", "partitionKey": "pk001" }, { "data": "xyz", "partitionKey": "pk001" }] }`
 |`kinesis:PutRecords` |Writes multiple data records into the stream in a
 single call.
 |===

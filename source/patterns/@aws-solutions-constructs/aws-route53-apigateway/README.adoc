@@ -171,7 +171,7 @@ This construct can create Private Hosted Zones. If you want a Private
 Hosted Zone, then you can either provide an existing Private Hosted Zone
 or a privateHostedZoneProps value with at least the Domain Name defined.
 If you are using privateHostedZoneProps, an existing wildcard
-certificate (++*++.example.com) must be issued from a previous domain to
+certificate (*.example.com) must be issued from a previous domain to
 be used in the newly created Private Hosted Zone. New certificate
 creation and validation do not take place in this construct. A private
 Rest API already exists in a VPC, so that VPC must be provided in the

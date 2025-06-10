@@ -117,16 +117,16 @@ Kendra index. Providing both these and existingKendraIndexObj is an
 error.
 
 |kendraDataSourcesProps
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnDataSource.html[`CfnDataSourceProps++[]++`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnDataSource.html[`CfnDataSourceProps[]`]
 |A list of data sources that will provide data to the Kendra index. _At
 least 1 must be specified_. We will do majority of processing for some
 data sources (S3 crawler initially), but for others the props must be
 complete (e.g. proper roleArn, etc.)
 
-|indexPermissions? |`string++[]++` |Optional - index permissions to
+|indexPermissions? |`string[]` |Optional - index permissions to
 grant to the Lambda function. One or more of the following may be
 specified: `Read`, `SubmitFeedback` and `Write`. Default is
-`++[++"Read", "SubmitFeedback"++]++`. Read is all the operations IAM
+`["Read", "SubmitFeedback"]`. Read is all the operations IAM
 defines as Read and List. SubmitFeedback is only the SubmitFeedback
 action. Write is all the operations IAM defines as Write and Tag. This
 functionality may be overridden by providing a specific role arn in
@@ -178,7 +178,7 @@ specified. Defaults to `false`.
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnIndex.html[`kendra.cfnIndex`]
 |Returns an instance of `kendra.cfnIndex` managed by the construct
 
-|kendraDataSources |DataSourceProperties++[]++ (this interface is
+|kendraDataSources |DataSourceProperties[] (this interface is
 defined by Solutions Constructs and described below) |A list of data
 sources created for this construct/index, each in an object that
 includes the role for that data source.
@@ -194,9 +194,9 @@ be a VPC created by the pattern or the VPC supplied to the pattern
 constructor.
 |===
 
-interface DataSourceProperties ++{++ role?:
+interface DataSourceProperties { role?:
 https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html[`iam.Role`],
-source: ++|++
+source: |
 https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnDataSource.html[`CfnDataSource`]
 } ## Lambda Function
 

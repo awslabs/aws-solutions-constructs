@@ -145,7 +145,7 @@ Lambda function.
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.LambdaRestApiProps.html[`api.LambdaRestApiProps`]
 |User provided props to override the default props for the API Gateway.
 As of release 2.48.0, clients must include this property with
-`defaultMethodOptions: ++{++ authorizationType: string }` specified. See
+`defaultMethodOptions: { authorizationType: string }` specified. See
 Issue1043 in the github repo
 https://github.com/awslabs/aws-solutions-constructs/issues/1043
 

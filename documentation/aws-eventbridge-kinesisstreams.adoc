@@ -118,7 +118,7 @@ both this and `eventBusProps` results an error.
 |eventBusProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.EventBusProps.html[`events.EventBusProps`]
 |Optional user-provided properties to override the default properties
-when creating a custom EventBus. Setting this value to `++{++}` will
+when creating a custom EventBus. Setting this value to `{}` will
 create a custom EventBus using all default properties. If neither this
 nor `existingEventBusInterface` is provided the construct will use the
 `default` EventBus. Providing both this and `existingEventBusInterface`
@@ -165,8 +165,8 @@ CloudWatch alarms.
 rule.
 
 |cloudwatchAlarms?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Alarm.html[`cloudwatch.Alarm++[]++`]
-|Returns an instance of the cloudwatch.Alarm++[]++ created by the
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Alarm.html[`cloudwatch.Alarm[]`]
+|Returns an instance of the cloudwatch.Alarm[] created by the
 construct.
 |===
 

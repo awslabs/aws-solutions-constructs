@@ -119,7 +119,7 @@ header while accessing RestApi. Default value set to `false`
 |apiGatewayExecutionRole?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html[`iam.Role`]
 |IAM Role used by the API Gateway to access AWS IoT. If not specified, a
-default role is created with wildcard (’++*++’) access to all topics and
+default role is created with wildcard (’*’) access to all topics and
 things.
 
 |apiGatewayProps?
@@ -188,17 +188,17 @@ the API Gateway after deploying the Construct.
 [width="100%",cols="18%,24%,20%,19%,19%",options="header",]
 |===
 |Method |Resource |Query parameter(s) |Return code(s) |Description
-|*POST* |`/message/++<++topics++>++` |*qos* |`200/403/500` |By calling
+|*POST* |`/message/<topics>` |*qos* |`200/403/500` |By calling
 this endpoint, you need to pass the topics on which you would like to
 publish (e.g `/message/device/foo`).
 
-|*POST* |`/shadow/++<++thingName++>++` |*None* |`200/403/500` |This
+|*POST* |`/shadow/<thingName>` |*None* |`200/403/500` |This
 route allows to update the shadow document of a thing, given its
 `thingName` using Unnamed (classic) shadow type. The body shall comply
 with the standard shadow structure comprising a `state` node and
 associated `desired` and `reported` nodes.
 
-|*POST* |`/shadow/++<++thingName++>++/++<++shadowName++>++` |*None*
+|*POST* |`/shadow/<thingName>/<shadowName>` |*None*
 |`200/403/500` |This route allows to update the named shadow document of
 a thing, given its `thingName` and the `shadowName` using the Named
 shadow type. The body shall comply with the standard shadow structure

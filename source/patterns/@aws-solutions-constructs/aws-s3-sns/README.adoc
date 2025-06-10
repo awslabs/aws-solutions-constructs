@@ -98,12 +98,12 @@ providing bucketProps is an error.
 Bucket.
 
 |s3EventTypes?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.EventType.html[`s3.EventType++[]++`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.EventType.html[`s3.EventType[]`]
 |The S3 event types that will trigger the notification. Defaults to
 s3.EventType.OBJECT_CREATED.
 
 |s3EventFilters?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.NotificationKeyFilter.html[`s3.NotificationKeyFilter++[]++`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.NotificationKeyFilter.html[`s3.NotificationKeyFilter[]`]
 |S3 object key filter rules to determine which objects trigger this
 event. If not specified no filter rules will be applied.
 

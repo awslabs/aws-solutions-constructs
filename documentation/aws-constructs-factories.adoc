@@ -245,7 +245,7 @@ required and must include a definitionBody or definition (definition is
 deprecated)
 
 |logGroup?
-|++[]++`logs.LogGroup`++]++(https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroup.html)
+|[]`logs.LogGroup`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroup.html)
 |An existing LogGroup to which the new state machine will write log
 entries. Default: none, the construct will create a new log group.
 
@@ -270,11 +270,11 @@ factories you can ignore it
 |
 
 |logGroup
-|++[]++`logs.LogGroupProps`++]++(https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)
+|[]`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)
 |
 
 |cloudwatchAlarms?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Alarm.html[`cloudwatch.Alarm++[]++`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Alarm.html[`cloudwatch.Alarm[]`]
 |The alarms created by the factory (ExecutionFailed, ExecutionThrottled,
 ExecutionAborted)
 |===

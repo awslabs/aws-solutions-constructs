@@ -136,10 +136,10 @@ method. This property can only be specified if the
 |createMethodResponses?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
 |Optional, custom API Gateway Method Responses for the create action.
-default: ++[{++ statusCode: "`200`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true }},++{++ statusCode:
-"`500`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true } } ++]++
+default: [{ statusCode: "`200`", responseParameters: {
+"`method.response.header.Content-Type`": true }},{ statusCode:
+"`500`", responseParameters: {
+"`method.response.header.Content-Type`": true } } ]
 
 |allowReadOperation? |`boolean` |Whether to deploy an API Gateway Method
 for GET HTTP operations on DynamoDB table (i.e. dynamodb:Query).
@@ -165,10 +165,10 @@ for PUT HTTP operations on DynamoDB table (i.e. dynamodb:UpdateItem).
 |readMethodResponses?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
 |Optional, custom API Gateway Method Responses for the read action.
-default: ++[{++ statusCode: "`200`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true }},++{++ statusCode:
-"`500`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true } } ++]++
+default: [{ statusCode: "`200`", responseParameters: {
+"`method.response.header.Content-Type`": true }},{ statusCode:
+"`500`", responseParameters: {
+"`method.response.header.Content-Type`": true } } ]
 
 |updateRequestTemplate? |`string` |API Gateway Request Template for the
 update method. This property is required if the `allowUpdateOperation`
@@ -190,10 +190,10 @@ method. This property can only be specified if the
 |updateMethodResponses?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
 |Optional, custom API Gateway Method Responses for the update action.
-default: ++[{++ statusCode: "`200`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true }},++{++ statusCode:
-"`500`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true } } ++]++
+default: [{ statusCode: "`200`", responseParameters: {
+"`method.response.header.Content-Type`": true }},{ statusCode:
+"`500`", responseParameters: {
+"`method.response.header.Content-Type`": true } } ]
 
 |allowDeleteOperation? |`boolean` |Whether to deploy API Gateway Method
 for DELETE HTTP operations on DynamoDB table (i.e. dynamodb:DeleteItem).
@@ -217,10 +217,10 @@ method. This property can only be specified if the
 |deleteMethodResponses?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
 |Optional, custom API Gateway Method Responses for the delete action.
-default: ++[{++ statusCode: "`200`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true }},++{++ statusCode:
-"`500`", responseParameters: ++{++
-"`method.response.header.Content-Type`": true } } ++]++
+default: [{ statusCode: "`200`", responseParameters: {
+"`method.response.header.Content-Type`": true }},{ statusCode:
+"`500`", responseParameters: {
+"`method.response.header.Content-Type`": true } } ]
 
 |logGroupProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html[`logs.LogGroupProps`]
@@ -262,13 +262,13 @@ Gateway access logging to CloudWatch.
 This construct allows you to implement four DynamoDB API operations,
 CREATE/READ/UPDATE/DELETE (corresponding the HTTP POST/GET/PUT/DELETE
 requests respectively). They are completely independent and each follows
-the same pattern: ++*++ Setting `allowCreateOperation` to true will
+the same pattern: * Setting `allowCreateOperation` to true will
 implement the `application/json` content-type with default request and
-response templates ++*++ The request template for `application/json`
+response templates * The request template for `application/json`
 requests can be customized using the `createRequestTemplate` prop value
-++*++ _Additional_ request templates can be specified using the
+* _Additional_ request templates can be specified using the
 `additionalCreateRequestTemplates` prop value. Note - these DO NOT
-replace the `application/json` content-type ++*++ Customized integration
+replace the `application/json` content-type * Customized integration
 responses can be specified for any content type in the
 `createIntegrationResponses` prop value.
 

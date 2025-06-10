@@ -141,7 +141,7 @@ Logging Bucket.
 |User provided CfnTopicRuleProps to override the defaults.
 
 |s3Key |`string` |User provided s3Key to override the default
-(`$++{++topic()}/$++{++timestamp()}`) object key. Used to store messages
+(`${topic()}/${timestamp()}`) object key. Used to store messages
 matched by the IoT Rule.
 
 |logS3AccessLogs? |`boolean` |Whether to turn on Access Logging for the
