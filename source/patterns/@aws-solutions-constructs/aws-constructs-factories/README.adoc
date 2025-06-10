@@ -177,9 +177,7 @@ to the access log bucket)
 == Architecture
 
 
-image::architecture.png["Diagram showing the S3 bucket and Access Log bucket created by the factory.",scaledwidth=100%]
-
-\\ github block
+image::aws-constructs-factories.png["Diagram showing the S3 bucket and Access Log bucket created by the factory.",scaledwidth=100%]
 
 == Step Functions State Machines
 
@@ -303,8 +301,6 @@ name collisions.
 
 image::sf-architecture.png["Diagram showing the State Machine, CloudWatch Logs and Alarms, and IAM Role launched by the factory.",scaledwidth=100%]
 
-\\ github block
-
 == SQS Queues
 
 Create SQS queues complete with DLQs and KMS CMKs with one function
@@ -416,7 +412,7 @@ can override)
 
 image::sqs-architecture.png["Diagram showing the KMS keys, SQS Queue and Dead Letter Queue launched by the factory.",scaledwidth=100%]
 
-\\ github block
+// github block
 
 '''''
 
