@@ -130,7 +130,7 @@ Kinesis stream.
 |Existing instance of AWS Glue Table. If this is set, tableProps and
 fieldSchema are ignored.
 
-|tableProps?
+StableProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_glue.TableProps.html[`CfnTableProps`]
 |User provided AWS Glue Table props to override default props used to
 create a Glue Table.
@@ -213,7 +213,7 @@ Glue Job.
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_glue.CfnDatabase.html[`CfnDatabase`]
 |Returns an instance of AWS Glue Database created by the construct.
 
-|table
+Stable
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_glue.CfnTable.html[`CfnTable`]
 |Returns an instance of the AWS Glue Table created by the construct
 
@@ -283,7 +283,7 @@ falling behind (to avoid risk of data loss due to record expiration)
 == Architecture
 
 
-image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
+image::aws-kinesisstreams-gluejob.png["Diagram showing the Kinesis data stream, Glue job, S3 bucket, storage destinations and IAM role created by the construct",scaledwidth=100%]
 
 // github block
 
