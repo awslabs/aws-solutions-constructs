@@ -177,7 +177,7 @@ to the access log bucket)
 == Architecture
 
 
-image::architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
+image::architecture.png["Diagram showing the S3 bucket and Access Log bucket created by the factory.",scaledwidth=100%]
 
 \\ github block
 
@@ -301,7 +301,7 @@ name collisions.
 == Architecture
 
 
-image::sf-architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
+image::sf-architecture.png["Diagram showing the State Machine, CloudWatch Logs and Alarms, and IAM Role launched by the factory.",scaledwidth=100%]
 
 \\ github block
 
@@ -414,7 +414,7 @@ can override)
 == Architecture
 
 
-image::sqs-architecture.png["AWS architecture diagram showing aaa interactions.",scaledwidth=100%]
+image::sqs-architecture.png["Diagram showing the KMS keys, SQS Queue and Dead Letter Queue launched by the factory.",scaledwidth=100%]
 
 \\ github block
 
