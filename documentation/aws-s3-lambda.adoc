@@ -165,7 +165,7 @@ logging bucket for the primary bucket.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== Amazon S3 Bucket
+=== Amazon S3 Bucket
 
 * Configure Access logging for S3 Bucket
 * Enable server-side encryption for S3 Bucket using AWS managed KMS Key
@@ -176,7 +176,7 @@ set the following defaults:
 * Applies Lifecycle rule to move noncurrent object versions to Glacier
 storage after 90 days
 
-==== AWS Lambda Function
+=== AWS Lambda Function
 
 * Configure limited privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function

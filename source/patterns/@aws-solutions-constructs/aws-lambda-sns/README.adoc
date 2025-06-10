@@ -195,7 +195,7 @@ constructor.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== AWS Lambda Function
+=== AWS Lambda Function
 
 * Configure limited privilege access IAM role for Lambda function to
 access the Firehose Delivery Stream
@@ -207,7 +207,7 @@ access the Firehose Delivery Stream
 ** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
 and higher functions)
 
-==== Amazon SNS Topic
+=== Amazon SNS Topic
 
 * Configure least privilege access permissions for SNS Topic
 * Enable server-side encryption forSNS Topic using AWS managed KMS Key

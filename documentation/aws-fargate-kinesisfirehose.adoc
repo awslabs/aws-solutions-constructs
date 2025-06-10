@@ -216,7 +216,7 @@ property.
 Out of the box implementation of the Construct without any overrides
 will set the following defaults:
 
-==== AWS Fargate Service
+=== AWS Fargate Service
 
 * An AWS Fargate Service running in the isolated subnets of a new VPC
 * Minimally-permissive IAM role for the Fargate Service to put records
@@ -226,7 +226,7 @@ FIREHOSE_DELIVERYSTREAM_NAME that holds the Firehose Delivery
 Stream Name, which is a required property of the Kinesis Firehose SDK
 when making calls to it
 
-==== Amazon Firehose Delivery Stream
+=== Amazon Firehose Delivery Stream
 
 * This construct must be provided a configured Firehose Data Stream
 construct, it does not change this Stream.

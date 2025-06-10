@@ -205,7 +205,7 @@ cloudtrailBucket - cloudtrailLoggingBucket
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== Amazon S3 Bucket
+=== Amazon S3 Bucket
 
 * Enable EventBridge to send events from the S3 Bucket
 * Configure Access logging for S3 Bucket
@@ -217,16 +217,16 @@ set the following defaults:
 * Applies Lifecycle Rule to move noncurrent object versions to Glacier
 storage after 90 days
 
-==== AWS S3 Event Notification
+=== AWS S3 Event Notification
 
 * Enable S3 to send events to EventBridge when an object is created.
 
-==== Amazon CloudWatch Events Rule
+=== Amazon CloudWatch Events Rule
 
 * Grant least privilege permissions to CloudWatch Events to trigger the
 Lambda Function
 
-==== AWS Step Functions
+=== AWS Step Functions
 
 * Enable CloudWatch logging for API Gateway
 * Deploy best practices CloudWatch Alarms for the Step Functions

@@ -195,13 +195,13 @@ CloudFront Logging Bucket.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== Amazon CloudFront
+=== Amazon CloudFront
 
 * Configure Access logging for CloudFront Distribution
 * Enable automatic injection of best practice HTTP security headers in
 all responses from CloudFront Distribution
 
-==== Amazon API Gateway
+=== Amazon API Gateway
 
 * User provided API Gateway object is used as-is
 * Enable X-Ray Tracing

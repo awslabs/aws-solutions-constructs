@@ -190,7 +190,7 @@ constructor.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== AWS Lambda Function
+=== AWS Lambda Function
 
 * Configure limited privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
@@ -199,7 +199,7 @@ set the following defaults:
 ** (default) FIREHOSE_DELIVERYSTREAM_NAME
 ** AWS_NODEJS_CONNECTION_REUSE_ENABLED
 
-==== Amazon Kinesis Firehose Delivery Stream
+=== Amazon Kinesis Firehose Delivery Stream
 
 * This construct must be provided a configured Stream construct, it does
 not change this Stream.

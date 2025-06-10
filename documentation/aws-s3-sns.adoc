@@ -182,7 +182,7 @@ logging bucket for the primary bucket.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== Amazon S3 Bucket
+=== Amazon S3 Bucket
 
 * Configure Access logging for the S3 Bucket
 * Enable server-side encryption for S3 Bucket using an AWS managed KMS
@@ -194,7 +194,7 @@ Key
 * Applies Lifecycle rule to move noncurrent object versions to Glacier
 storage after 90 days
 
-==== Amazon SNS Topic
+=== Amazon SNS Topic
 
 * Configure least privilege SNS Topic access policy to allow the S3
 Bucket to publish messages to it

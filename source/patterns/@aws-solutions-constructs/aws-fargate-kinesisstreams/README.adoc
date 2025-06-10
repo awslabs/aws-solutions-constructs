@@ -211,7 +211,7 @@ Stream.
 Out of the box implementation of the Construct without any overrides
 will set the following defaults:
 
-==== AWS Fargate Service
+=== AWS Fargate Service
 
 * An AWS Fargate Service running in the isolated subnets of a new VPC
 * Minimally-permissive IAM role for the Fargate Service to put records
@@ -220,7 +220,7 @@ on the Kinesis Data Stream
 that holds the Kinesis Data Stream Name, which is a required property of
 the Kinesis Data Streams SDK when making calls to it
 
-==== Amazon Kinesis Stream
+=== Amazon Kinesis Stream
 
 * Enable server-side encryption for the Kinesis Data Stream using an AWS
 Managed CMK

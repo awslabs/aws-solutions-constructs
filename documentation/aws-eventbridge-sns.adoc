@@ -205,12 +205,12 @@ for the KMS encryption key used to encrypt the SNS Topic with.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== Amazon EventBridge Rule
+=== Amazon EventBridge Rule
 
 * Grant least privilege permissions to EventBridge Rule to publish to
 the SNS Topic.
 
-==== Amazon SNS Topic
+=== Amazon SNS Topic
 
 * Configure least privilege access permissions for SNS Topic.
 * Enable server-side encryption forSNS Topic using Customer managed KMS

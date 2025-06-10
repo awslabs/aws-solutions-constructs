@@ -232,7 +232,7 @@ https://github.com/awslabs/aws-solutions-constructs/blob/master/source/patterns/
 Out of the box implementation of the Construct without any overrides
 will set the following defaults:
 
-==== AWS Lambda Function
+=== AWS Lambda Function
 
 * Configure limited privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for Node.js Lambda function
@@ -241,12 +241,12 @@ will set the following defaults:
 ** (default) DOMAIN_ENDPOINT
 ** AWS_NODEJS_CONNECTION_REUSE_ENABLED
 
-==== Amazon Cognito
+=== Amazon Cognito
 
 * Set password policy for User Pools
 * Enforce the advanced security mode for User Pools
 
-==== Amazon OpenSearch Service
+=== Amazon OpenSearch Service
 
 * Deploy best practices CloudWatch Alarms for the OpenSearch Service
 domain

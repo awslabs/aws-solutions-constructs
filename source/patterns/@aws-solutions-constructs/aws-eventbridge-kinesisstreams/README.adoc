@@ -175,12 +175,12 @@ construct.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== Amazon EventBridge Rule
+=== Amazon EventBridge Rule
 
 * Configure least privilege access IAM role for EventBridge Rule to
 publish to the Kinesis Data Stream.
 
-==== Amazon Kinesis Stream
+=== Amazon Kinesis Stream
 
 * Enable server-side encryption for Kinesis Data Stream using AWS
 Managed KMS Key.

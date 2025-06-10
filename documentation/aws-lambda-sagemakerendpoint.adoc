@@ -241,7 +241,7 @@ pattern, if `deployVpc?` is `true`, or `existingVpc?` is provided.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== AWS Lambda Function
+=== AWS Lambda Function
 
 * Configure limited privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
@@ -254,7 +254,7 @@ SageMaker endpoint is deployed
 ** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
 and higher functions).
 
-==== Amazon SageMaker Endpoint
+=== Amazon SageMaker Endpoint
 
 * Configure limited privilege to create SageMaker resources
 * Deploy SageMaker model, endpointConfig, and endpoint

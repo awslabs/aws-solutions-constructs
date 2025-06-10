@@ -215,13 +215,13 @@ Gateway access logging to CloudWatch.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== Amazon CloudFront
+=== Amazon CloudFront
 
 * Configure Access logging for CloudFront Distribution
 * Enable automatic injection of best practice HTTP security headers in
 all responses from CloudFront Distribution
 
-==== Amazon API Gateway
+=== Amazon API Gateway
 
 * Deploy a regional API endpoint
 * Enable CloudWatch logging for API Gateway
@@ -229,7 +229,7 @@ all responses from CloudFront Distribution
 * Set the default authorizationType for all API methods to NONE
 * Enable X-Ray Tracing
 
-==== AWS Lambda Function
+=== AWS Lambda Function
 
 * Configure limited privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function

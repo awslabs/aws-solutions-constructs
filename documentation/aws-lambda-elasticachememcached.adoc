@@ -173,7 +173,7 @@ created by the pattern or the VPC supplied to the pattern constructor.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== AWS Lambda Function
+=== AWS Lambda Function
 
 * Configure limited privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
@@ -184,7 +184,7 @@ set the following defaults:
 ** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
 and higher functions)
 
-==== Amazon Elasticache Memcached Cluster
+=== Amazon Elasticache Memcached Cluster
 
 * Creates multi node, cross-az cluster by default
 ** 2 cache nodes, type: cache.t3.medium

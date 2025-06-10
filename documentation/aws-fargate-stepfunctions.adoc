@@ -233,7 +233,7 @@ for StateMachine.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== AWS Fargate Service
+=== AWS Fargate Service
 
 * Sets up an AWS Fargate service
 ** Uses the existing service if provided
@@ -246,7 +246,7 @@ the state machine
 * Add permissions to the container IAM role allowing it to start the
 execution of a state machine
 
-==== AWS Step Functions
+=== AWS Step Functions
 
 * Sets up an AWS Step Functions state machine
 ** Uses an existing state machine if one is provided, otherwise creates

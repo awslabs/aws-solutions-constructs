@@ -217,12 +217,12 @@ construct or providedb by the client)
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== Amazon Route53
+=== Amazon Route53
 
 * Adds an ALIAS record to the new or provided Hosted Zone that routes to
 the construct’s ALB
 
-==== Application Load Balancer
+=== Application Load Balancer
 
 * Creates an Application Load Balancer with no Listener or target. The
 construct can incorporate an existing, fully configured ALB if provided.

@@ -197,7 +197,7 @@ constructor.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== AWS Lambda Function
+=== AWS Lambda Function
 
 * Configure limited privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
@@ -207,7 +207,7 @@ set the following defaults:
 ** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
 and higher functions)
 
-==== Amazon S3 Bucket
+=== Amazon S3 Bucket
 
 * Configure Access logging for S3 Bucket
 * Enable server-side encryption for S3 Bucket using AWS managed KMS Key

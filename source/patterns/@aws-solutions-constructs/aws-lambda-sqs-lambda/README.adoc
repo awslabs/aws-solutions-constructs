@@ -243,7 +243,7 @@ constructor.
 Out-of-the-box implementation of this Construct (without any overridden
 properties) will adhere to the following defaults:
 
-==== AWS Lambda Functions
+=== AWS Lambda Functions
 
 * Configure limited privilege access IAM role for Lambda functions.
 * Enable reusing connections with Keep-Alive for NodeJs Lambda
@@ -253,7 +253,7 @@ functions.
 ** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
 and higher functions)
 
-==== Amazon SQS Queue
+=== Amazon SQS Queue
 
 * Deploy a dead letter queue for the primary queue.
 * Enable server-side encryption for the primary queue using an AWS

@@ -223,7 +223,7 @@ constructor.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== AWS Lambda Function
+=== AWS Lambda Function
 
 * Configure limited privilege access IAM role for Lambda function,
 granting Invoke privileges for:
@@ -237,7 +237,7 @@ model in the current region.
 ** (default) BEDROCK_PROFILE
 ** (default) BEDROCK_MODEL
 
-==== Amazon Bedrock Inference Profile
+=== Amazon Bedrock Inference Profile
 
 * Cross-region inference profile for provided model by default
 * Geographic area prefix in arn defaults to value appropriate for

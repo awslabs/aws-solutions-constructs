@@ -193,16 +193,16 @@ pattern.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== Amazon IoT Rule
+=== Amazon IoT Rule
 
 * Configure an IoT Rule to send messages to the SQS Queue
 
-==== Amazon IAM Role
+=== Amazon IAM Role
 
 * Configure least privilege access IAM role for Amazon IoT to be able to
 publish messages to the SQS Queue
 
-==== Amazon SQS Queue
+=== Amazon SQS Queue
 
 * Deploy a dead-letter queue for the source queue.
 * Enable server-side encryption for the source queue using a

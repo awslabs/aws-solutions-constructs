@@ -173,7 +173,7 @@ the pattern.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== AWS WAF
+=== AWS WAF
 
 * Deploy a WAF web ACL with 7
 https://docs.aws.amazon.com/waf/latest/developerguide/aws-managed-rule-groups-list.html[AWS
@@ -190,7 +190,7 @@ _Note that the default rules can be replaced by specifying the rules
 property of CfnWebACLProps_
 * Send metrics to Amazon CloudWatch
 
-==== Application Load Balancer
+=== Application Load Balancer
 
 * User provided Application Load Balancer object is used as-is
 

@@ -187,7 +187,7 @@ constructor.
 Out of the box implementation of the Construct without any overrides
 will set the following defaults:
 
-==== AWS Lambda Function
+=== AWS Lambda Function
 
 * Minimally-permissive IAM role for the Lambda Function to put records
 on the Kinesis Data Stream
@@ -196,7 +196,7 @@ on the Kinesis Data Stream
 that holds the Kinesis Data Stream Name, which is a required property
 Kinesis Data Streams SDK when making calls to it
 
-==== Amazon Kinesis Stream
+=== Amazon Kinesis Stream
 
 * Enable server-side encryption for the Kinesis Data Stream using AWS
 Managed CMK

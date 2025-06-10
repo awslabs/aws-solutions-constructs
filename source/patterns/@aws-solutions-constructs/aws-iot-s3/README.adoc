@@ -187,16 +187,16 @@ allows IoT to publish messages to the S3 bucket.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== Amazon IoT Rule
+=== Amazon IoT Rule
 
 * Configure an IoT Rule to send messages to the S3 Bucket
 
-==== Amazon IAM Role
+=== Amazon IAM Role
 
 * Configure least privilege access IAM role for Amazon IoT to be able to
 publish messages to the S3 Bucket
 
-==== Amazon S3 Bucket
+=== Amazon S3 Bucket
 
 * Configure Access logging for S3 Bucket
 * Enable server-side encryption for S3 Bucket using AWS managed KMS Key

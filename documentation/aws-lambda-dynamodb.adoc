@@ -182,7 +182,7 @@ constructor.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== AWS Lambda Function
+=== AWS Lambda Function
 
 * Configure limited privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
@@ -192,7 +192,7 @@ set the following defaults:
 ** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
 and higher functions)
 
-==== Amazon DynamoDB Table
+=== Amazon DynamoDB Table
 
 * Set the billing mode for DynamoDB Table to On-Demand (Pay per request)
 * Enable server-side encryption for DynamoDB Table using AWS managed KMS

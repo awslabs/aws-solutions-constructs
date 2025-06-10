@@ -245,7 +245,7 @@ one is deployed.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== AWS Fargate Service
+=== AWS Fargate Service
 
 * Sets up an AWS Fargate service
 ** Uses the existing service if provided
@@ -257,7 +257,7 @@ queue
 ** Add permissions to the container IAM role allowing it to publish to
 the SQS queue
 
-==== Amazon SQS Queue
+=== Amazon SQS Queue
 
 * Sets up an Amazon SQS queue
 ** Uses an existing queue if one is provided, otherwise creates a new

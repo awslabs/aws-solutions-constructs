@@ -192,7 +192,7 @@ constructor.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== AWS Lambda Function
+=== AWS Lambda Function
 
 * Configure limited privilege access IAM role for Lambda function
 * Enable reusing connections with Keep-Alive for NodeJs Lambda function
@@ -205,7 +205,7 @@ property].
 ** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
 and higher functions)
 
-==== Amazon SecretsManager Secret
+=== Amazon SecretsManager Secret
 
 * Enable read-only access for the associated AWS Lambda Function
 * Creates a new Secret
