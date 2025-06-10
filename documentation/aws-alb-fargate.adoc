@@ -292,13 +292,13 @@ property.
 Out of the box implementation of the Construct without any override will
 set the following defaults:
 
-==== Application Load Balancer
+=== Application Load Balancer
 
 * Creates or configures an Application Load Balancer with:
 ** Required listeners
 ** New target group with routing rules if appropriate
 
-==== AWS Fargate Service
+=== AWS Fargate Service
 
 * Sets up an AWS Fargate service as a target of the Application Load
 Balancer
@@ -314,7 +314,7 @@ image::images/aws-alb-fargate.png["Application Load Balancer directing traffic t
 
 == Github
 
-image::images/GitHub-Mark-32px.png[The github logo.,scaledwidth=100%]
+image::images/GitHub-Mark-32px.png["The github logo.",scaledwidth=100%]
 
 '''''
 
