@@ -148,17 +148,17 @@ arn:aws:ecr:_region_:_account number_:repository/_Repository Name_
 repository. Defaults to '`Latest`'
 
 |containerDefinitionProps?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs.ContainerDefinitionProps.html[`ecs.ContainerDefinitionProps \{vbar} any`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs.ContainerDefinitionProps.html[`ecs.ContainerDefinitionProps {vbar} any`]
 |Optional props to define the container created for the Fargate Service
 (defaults found in fargate-defaults.ts)
 
 |fargateTaskDefinitionProps?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs.FargateTaskDefinitionProps.html[`ecs.FargateTaskDefinitionProps \{vbar} any`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs.FargateTaskDefinitionProps.html[`ecs.FargateTaskDefinitionProps {vbar} any`]
 |Optional props to define the Fargate Task Definition for this construct
 (defaults found in fargate-defaults.ts)
 
 |fargateServiceProps?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs.FargateServiceProps.html[`ecs.FargateServiceProps \{vbar} any`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ecs.FargateServiceProps.html[`ecs.FargateServiceProps {vbar} any`]
 |Optional values to override default Fargate Task definition properties
 (fargate-defaults.ts). The construct will default to launching the
 service is the most isolated subnets available (precedence: Isolated,
