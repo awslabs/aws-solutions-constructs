@@ -193,7 +193,7 @@ bucket is passed in via
 |originaAccessIdentity?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudfront.OriginAccessIdentity.html[`cloudfront.OriginAccessIdentity`]
 |The Origina Access Identity created to connect the CloudFront
-distribution to the S3 bucket (only suitable for use in regions without
+distribution to the S3 bucket (only suStable for use in regions without
 OAC, such as China)
 |===
 
@@ -224,10 +224,27 @@ storage after 90 days
 == Architecture
 
 
-image::aws-cloudfront-oai-s3.png["Diagram showing data flow between AWS services including CLoudFront, S3, and an Origin Access Identity",scaledwidth=100%]
+image::imagesws-cloudfront-oai-s3.png["Diagram showing data flow between AWS services including CLoudFront, S3, and an Origin Access Identity",scaledwidth=100%]
 
-// github block
+[[github,topic.title]]
+== GitHub
+
+[cols=1,1, options=header]
+|===
+| 
+To view the code for this pattern, create/view issues and pull requests, and more:
+
+
+
+|
+
+
+
+image::images/GitHub-Mark-32px.png[The github logo.,scaledwidth=100%]
+
+|https://github.com/awslabs/aws-solutions-constructs/tree/master/source/patterns/%40aws-solutions-constructs/aws-aws-cloudfront-oai-s3[-solutions-constructsaws-cloudfront-oai-s3]
+|===
 
 '''''
 
-© Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+

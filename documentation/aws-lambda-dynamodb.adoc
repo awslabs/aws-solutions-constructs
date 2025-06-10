@@ -125,11 +125,11 @@ Table
 |Existing instance of DynamoDB table object, providing both this and
 `dynamoTableProps` will cause an error.
 
-|tablePermissions? |`string` |Optional table permissions to grant to the
+StablePermissions? |`string` |Optional table permissions to grant to the
 Lambda function. One of the following may be specified: `All`, `Read`,
 `ReadWrite`, `Write`.
 
-|tableEnvironmentVariableName? |`string` |Optional Name for the Lambda
+StableEnvironmentVariableName? |`string` |Optional Name for the Lambda
 function environment variable set to the name of the DynamoDB table.
 Default: DDB_TABLE_NAME
 
@@ -204,10 +204,27 @@ Key
 == Architecture
 
 
-image::aws-lambda-dynamodb.png["Diagram showing the Lambda function, CloudWatch log group, DynamoDB table and IAM role created by the construct",scaledwidth=100%]
+image::imagesws-lambda-dynamodb.png["Diagram showing the Lambda function, CloudWatch log group, DynamoDB table and IAM role created by the construct",scaledwidth=100%]
 
-// github block
+[[github,topic.title]]
+== GitHub
+
+[cols=1,1, options=header]
+|===
+| 
+To view the code for this pattern, create/view issues and pull requests, and more:
+
+
+
+|
+
+
+
+image::images/GitHub-Mark-32px.png[The github logo.,scaledwidth=100%]
+
+|https://github.com/awslabs/aws-solutions-constructs/tree/master/source/patterns/%40aws-solutions-constructs/aws-aws-lambda-dynamodb[-solutions-constructsaws-lambda-dynamodb]
+|===
 
 '''''
 
-© Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+

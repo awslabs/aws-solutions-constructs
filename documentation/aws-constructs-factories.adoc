@@ -177,7 +177,7 @@ to the access log bucket)
 == Architecture
 
 
-image::aws-constructs-factories.png["Diagram showing the S3 bucket and Access Log bucket created by the factory.",scaledwidth=100%]
+image::imagesws-constructs-factories.png["Diagram showing the S3 bucket and Access Log bucket created by the factory.",scaledwidth=100%]
 
 == Step Functions State Machines
 
@@ -412,8 +412,25 @@ can override)
 
 image::sqs-architecture.png["Diagram showing the KMS keys, SQS Queue and Dead Letter Queue launched by the factory.",scaledwidth=100%]
 
-// github block
+[[github,topic.title]]
+== GitHub
+
+[cols=1,1, options=header]
+|===
+| 
+To view the code for this pattern, create/view issues and pull requests, and more:
+
+
+
+|
+
+
+
+image::images/GitHub-Mark-32px.png[The github logo.,scaledwidth=100%]
+
+|https://github.com/awslabs/aws-solutions-constructs/tree/master/source/patterns/%40aws-solutions-constructs/aws-aws-constructs-factories[-solutions-constructsaws-constructs-factories]
+|===
 
 '''''
 
-© Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
