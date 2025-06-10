@@ -128,13 +128,13 @@ the `createRequestTemplate` property to set the request template for the
 the `allowCreateOperation` property is set to true.
 
 |createIntegrationResponses?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses[]`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses[\]`]
 |Optional, custom API Gateway Integration Response for the create
 method. This property can only be specified if the
 `allowCreateOperation` property is set to true.
 
 |createMethodResponses?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[\]`]
 |Optional, custom API Gateway Method Responses for the create action.
 default: [{ statusCode: "`200`", responseParameters: {
 "`method.response.header.Content-Type`": true }},{ statusCode:
@@ -156,14 +156,14 @@ Templates for content-types other than `application/json`. Use the
 `application/json` content-type.
 
 |readIntegrationResponses?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses[]`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses[\]`]
 |Optional, custom API Gateway Integration Response for the read method.
 
 |allowUpdateOperation? |`boolean` |Whether to deploy API Gateway Method
 for PUT HTTP operations on DynamoDB table (i.e. dynamodb:UpdateItem).
 
 |readMethodResponses?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[\]`]
 |Optional, custom API Gateway Method Responses for the read action.
 default: [{ statusCode: "`200`", responseParameters: {
 "`method.response.header.Content-Type`": true }},{ statusCode:
@@ -182,13 +182,13 @@ the `updateRequestTemplate` property to set the request template for the
 the `allowUpdateOperation` property is set to true.
 
 |updateIntegrationResponses?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses[]`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses[\]`]
 |Optional, custom API Gateway Integration Response for the update
 method. This property can only be specified if the
 `allowUpdateOperation` property is set to true.
 
 |updateMethodResponses?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[\]`]
 |Optional, custom API Gateway Method Responses for the update action.
 default: [{ statusCode: "`200`", responseParameters: {
 "`method.response.header.Content-Type`": true }},{ statusCode:
@@ -215,7 +215,7 @@ method. This property can only be specified if the
 `allowDeleteOperation` property is set to true.
 
 |deleteMethodResponses?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[]`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[\]`]
 |Optional, custom API Gateway Method Responses for the delete action.
 default: [{ statusCode: "`200`", responseParameters: {
 "`method.response.header.Content-Type`": true }},{ statusCode:

@@ -122,7 +122,7 @@ Kinesis stream.
 `glueJobProps` will cause an error.
 
 |fieldSchema?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_glue.CfnTable.ColumnProperty.html[`CfnTable.ColumnProperty[]`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_glue.CfnTable.ColumnProperty.html[`CfnTable.ColumnProperty[\]`]
 |User provided schema structure to create an AWS Glue Table.
 
 |existingTable?
@@ -223,7 +223,7 @@ Stable
 the AWS Glue Job.
 
 |cloudwatchAlarms?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Alarm.html[`cloudwatch.Alarm[]`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Alarm.html[`cloudwatch.Alarm[\]`]
 |Returns an array of recommended CloudWatch Alarms created by the
 construct for Kinesis Data stream.
 |===

@@ -117,7 +117,7 @@ Kendra index. Providing both these and existingKendraIndexObj is an
 error.
 
 |kendraDataSourcesProps
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnDataSource.html[`CfnDataSourceProps[]`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kendra.CfnDataSource.html[`CfnDataSourceProps[\]`]
 |A list of data sources that will provide data to the Kendra index. _At
 least 1 must be specified_. We will do majority of processing for some
 data sources (S3 crawler initially), but for others the props must be
