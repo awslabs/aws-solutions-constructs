@@ -43,5 +43,5 @@ find source/patterns -name "README.adoc" -type f | while read file; do
 
     perl -i -pe "s/^image::aws-/image::images\/aws-/g" "documentation/${parent_dir}.adoc"
 
-    perl -i -pe "s/^\/\/ github block/Go to the https:\/\/github.com\/awslabs\/aws-solutions-constructs\/tree\/main\/source\/patterns\/%40aws-solutions-constructs\/${parent_dir}\[Github repo\] for this pattern to view the code, read\/create issues and pull requests and more./" "documentation/${parent_dir}.adoc"
+    perl -i -pe "s/^\/\/ github block/== Github\n\nGo to the https:\/\/github.com\/awslabs\/aws-solutions-constructs\/tree\/main\/source\/patterns\/%40aws-solutions-constructs\/${parent_dir}\[Github repo\] for this pattern to view the code, read\/create issues and pull requests and more./" "documentation/${parent_dir}.adoc"
 done
