@@ -39,7 +39,7 @@ find source/patterns -name "README.adoc" -type f | while read file; do
     cp "$file" "documentation/${parent_dir}.adoc"
     cp "${dir_name}/${parent_dir}.png" "documentation/images/"
 
-    # perl -i -0pe "s/© Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.\n/\n/g" "documentation/${parent_dir}.adoc"
+    perl -i -0pe "s/© Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.\n/\n/g" "documentation/${parent_dir}.adoc"
 
     perl -i -pe "s/^image::aws-/image::images\/aws-/g" "documentation/${parent_dir}.adoc"
 
