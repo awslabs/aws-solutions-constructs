@@ -33,7 +33,7 @@ Let's get started by writing the code for the Hit Counter AWS Lambda function. T
 * and return the response to end user. 
 
 
-===
+====
 [role="tablist"]
 Typescript::
 * Add a file called `lambda/hitcounter.js` with the following contents: 
@@ -142,10 +142,7 @@ exports.handler = async function(event) {
   return JSON.parse(resp.Payload);
 };
 ----
-===
-
-[[define-the-resources]]
-== Unknown Title!
+====
 
 [[install-the-new-dependency,install-the-new-dependency.title]]
 === Install the new dependency
@@ -154,7 +151,7 @@ As usual, we first need to install the dependency we need for our solution updat
 
 
 
-===
+====
 [role="tablist"]
 Typescript::
 +
@@ -195,7 +192,7 @@ Run the command:
 
 mvn install
 ----
-===
+====
 
 
 [[w6aab7c17b9b3,define-the-resources.title]]
@@ -207,6 +204,8 @@ First, we are going to import our new dependency and move the "Hello" function o
 
 
 
+====
+[role="tablist"]
 TypeScript::
 * Replace the code in `lib/hello-constructs-stack.ts` with the following: 
 +
@@ -348,7 +347,7 @@ public class HelloConstructsStack extends Stack {
     }
 }
 ----
-===
+====
 
 Next, we are going to add the  `aws-lambda-dynamodb` pattern to build out the hit counter service for our updated architecture. 
 
@@ -360,6 +359,8 @@ The next update below defines the properties for the  `aws-lambda-dynamodb` patt
 
 
 
+====
+[role="tablist"]
 TypeScript::
 * Edit the file `lib/hello-constructs-stack.ts` with the following: 
 +
@@ -571,12 +572,14 @@ public class HelloConstructsStack extends Stack {
     }
 }
 ----
-===
+====
 
 Next, we need to grant the Hit Counter function created from the  `aws-lambda-dynamodb` pattern added above permission to invoke our Hello function. 
 
 
 
+====
+[role="tablist"]
 TypeScript::
 * Edit the file `lib/hello-constructs-stack.ts` with the following: 
 +
@@ -798,12 +801,14 @@ public class HelloConstructsStack extends Stack {
     }
 }
 ----
-===
+====
 
 Finally, we need to update our original  `aws-apigateway-lambda` pattern to utilize our new Hit Counter function that was provisioned with the `aws-lambda-dynamodb` pattern above. 
 
 
 
+====
+[role="tablist"]
 TypeScript::
 * Edit the file `lib/hello-constructs-stack.ts` with the following: 
 +
@@ -1013,7 +1018,7 @@ public class HelloConstructsStack extends Stack {
     }
 }
 ----
-===
+====
 
 
 [[review-the-changes,review-the-changes.title]]
@@ -1023,7 +1028,7 @@ Let`'s build our project and review the changes to our resources that will happe
 
 
 
-===
+====
 [role="tablist"]
 Typescript::
 +
@@ -1052,7 +1057,7 @@ Java::
 mvn package
 cdk diff
 ----
-===
+====
 
 Our output should look like this:  
 
