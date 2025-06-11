@@ -7,7 +7,7 @@
 :info_title: aws-apigatewayv2websocket-sqs
 
 
-image::https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-the-badge[Stability:Stable]
+image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-the-badge[Stability:Stable]
 
 [width="100%",cols="<50%,<50%",options="header",]
 |===
@@ -169,7 +169,8 @@ with the following VTL mapping
 
 |defaultIamAuthorization? |`boolean` |Add IAM authorization to the connect$ path by default. Only set this to false if: 1) If plan to provide an authorizer with the `$connectroute`; or 2) The API should be open (no authorization) (AWS recommends against deploying unprotected APIs). If an authorizer is specified in connectRouteOptions, this parameter is ignored and no default IAM authorizer will be created.
 
-|customRouteName?|`string`|
+|customRouteName?|`string`
+| The name of the route that will be sent through WebSocketApiProps.routeSelectionExpression when invoking the WebSocket endpoint. At least one of createDefaultRoute or customRouteName must be provided. Default - None
 |===
 
 == Pattern Properties
