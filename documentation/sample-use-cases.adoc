@@ -19,19 +19,6 @@ This library includes a collection of functional use case implementations to dem
 
 This library includes a collection of functional use case implementations to demonstrate the usage of Constructs architectural patterns. These can be used in the same way as architectural patterns, and can be conceptualized as an additional "higher-level" abstraction of those patterns. The following use cases are provided as functional examples.  
 
-[[aws-custom-glue-etl,aws-custom-glue-etl.title]]
-== AWS Glue Custom ETL Job
-
-This use case implements an example using the Kinesis Data Streams Glue Job construct. The architecture uses a custom ETL job defined in AWS Glue that takes in data from Amazon Kinesis Data Streams to process and store it in the target datastore as defined by the ETL script (for this example, an S3 bucket location).
-
-.Source Code (aws-custom-glue-etl)
-[NOTE]
-====
-
-{https---github-com-awslabs-aws-solutions-constructs-tree-master-source-use-cases-aws-custom-glue-etl}[https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-custom-glue-etl]
-
-====
-
 [[aws-static-s3-website,aws-static-s3-website.title]]
 == AWS Static S3 Website
 

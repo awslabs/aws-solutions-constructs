@@ -41,7 +41,7 @@ Create a directory for your CDK app, and then create a AWS CDK app in that direc
 
 
 
-===
+====
 [role="tablist"]
 Typescript::
 +
@@ -53,7 +53,6 @@ cd hello-constructs
 cdk init --language typescript
 ----
 
-
 Python::
 +
 [source,python]
@@ -64,7 +63,6 @@ cd hello-constructs
 cdk init --language python
 ----
 
-
 Java::
 +
 [source,java]
@@ -74,7 +72,7 @@ mkdir hello-constructs
 cd hello-constructs
 cdk init --language java
 ----
-===
+====
 
 [TIP]
 ====
@@ -96,7 +94,7 @@ Install the projects base dependencies.
 
 
 
-===
+====
 [role="tablist"]
 Typescript::
 +
@@ -121,16 +119,16 @@ Java::
 +
 [source,java]
 ----
-===
 
 mvn install
 ----
+====
 
 Build and run the app and confirm that it creates an empty stack.  
 
 
 
-===
+====
 [role="tablist"]
 Typescript::
 +
@@ -155,17 +153,17 @@ Java::
 +
 [source,java]
 ----
-===
 
 mvn package
 cdk synth
 ----
+====
 
 You should see a stack like the following, where  `CDK-VERSION` is the version of the CDK. (Your output may differ slightly from what`'s shown here – the metadata and parameters are omitted from this listing.) 
 
 
 
-===
+====
 [role="tablist"]
 Typescript::
 +
@@ -197,7 +195,6 @@ Java::
 * 
 [source,python]
 ----
-===
 
 Resources:
   CDKMetadata:
@@ -205,7 +202,7 @@ Resources:
     Properties:
           Modules: aws-cdk=CDK-VERSION,@aws-cdk/core=VERSION_NUMBER,@aws-cdk/cx-api=VERSION_NUMBER,jsii-runtime=Java/VERSION_NUMBER
 ----
-
+====
 
 [[lambda-handler-code,lambda-handler-code.title]]
 == Lambda handler code
@@ -216,7 +213,9 @@ Create a directory [path]``lambda`` in the root of your project tree.
 
 
 
-TypeScript::
+====
+[role="tablist"]
+Typescript::
 * Add a file called [path]``lambda/hello.js`` with the following contents:  
 +
 [source,typescript]
@@ -258,7 +257,6 @@ Java::
 +
 [source,typescript]
 ----
-===
 
 exports.handler = async function(event) {
   console.log("request:", JSON.stringify(event, null, 2));
@@ -269,6 +267,7 @@ exports.handler = async function(event) {
   };
 };
 ----
+====
 
 This is a simple Lambda function which returns the text "Hello, Constructs! You`'ve hit [url path]". The function`'s output also includes the HTTP status code and HTTP headers. These are used by API Gateway to formulate the HTTP response to the user. It`'s in this function where you would insert logic for your application.
 
@@ -285,7 +284,7 @@ Install the AWS Solutions Constructs [path]``aws-apigateway-lambda`` module and 
 
 
 
-===
+====
 [role="tablist"]
 Typescript::
 +
@@ -306,8 +305,6 @@ pip install aws_solutions_constructs.aws_apigateway_lambda
 
 
 Java::
-+
----
 * Edit the [path]``pom.xml`` file with the following information:
 +
 NOTE: 2.5.0 was the latest version of AWS Solutions Constructs at this writing. To find the latest version of AWS Solutions Constructs (and any other dependencies), use the command `mvn versions:display-dependency-updates` and update the pom.xml file. 
@@ -315,7 +312,7 @@ NOTE: 2.5.0 was the latest version of AWS Solutions Constructs at this writing. 
 
 [source,xml]
 ----
-===
+
 
 <properties>
   <solutionconstructs.version>2.5.0</solutionconstructs.version>
@@ -336,7 +333,7 @@ Run the command:
 
 mvn install
 ----
-
+====
 
 [[add-an-aws-api-gatewayaws-lambda-pattern-to-your-stack,add-an-aws-api-gatewayaws-lambda-pattern-to-your-stack.title]]
 == Add an Amazon API Gateway/AWS Lambda pattern to your stack
@@ -345,6 +342,8 @@ Now, let`'s define the AWS Solutions Constructs pattern for implementing an Amaz
 
 
 
+====
+[role="tablist"]
 TypeScript::
 * Replace the code in [path]``lib/hello-constructs-stack.ts`` with the following:  
 +
@@ -463,7 +462,7 @@ public class HelloConstructsStack extends Stack {
     }
 }
 ----
-===
+====
 
 That`'s it. This is all you need to do in order to define an API Gateway which proxies all requests to an AWS Lambda function. Let's compare our new stack to the original one:  
 
