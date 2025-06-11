@@ -125,11 +125,11 @@ Table
 |Existing instance of DynamoDB table object, providing both this and
 `dynamoTableProps` will cause an error.
 
-StablePermissions? |`string` |Optional table permissions to grant to the
+|tablePermissions? |`string` |Optional table permissions to grant to the
 Lambda function. One of the following may be specified: `All`, `Read`,
 `ReadWrite`, `Write`.
 
-StableEnvironmentVariableName? |`string` |Optional Name for the Lambda
+|tableEnvironmentVariableName? |`string` |Optional Name for the Lambda
 function environment variable set to the name of the DynamoDB table.
 Default: DDB_TABLE_NAME
 

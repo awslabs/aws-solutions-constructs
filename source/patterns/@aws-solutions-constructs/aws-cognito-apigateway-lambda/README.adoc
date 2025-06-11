@@ -107,6 +107,7 @@ new CognitoToApiGatewayToLambda(this, "test-cognito-apigateway-lambda",
                         .build())
                 .build());
 ----
+====
 
 If you are defining resources and methods on your API (e.g. proxy =
 false), then you must call addAuthorizers() after the API is fully

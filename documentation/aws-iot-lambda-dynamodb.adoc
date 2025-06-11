@@ -160,7 +160,7 @@ function.
 |Optional user provided props to override the default props for DynamoDB
 Table
 
-StablePermissions? |`string` |Optional table permissions to grant to the
+|tablePermissions? |`string` |Optional table permissions to grant to the
 Lambda function. One of the following may be specified: `All`, `Read`,
 `ReadWrite`, `Write`.
 
