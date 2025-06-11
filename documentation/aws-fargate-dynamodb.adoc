@@ -169,15 +169,15 @@ Table.
 |Existing instance of DynamoDB table object or interface, providing both
 this and `dynamoTableProps` will cause an error.
 
-StablePermissions? |`string` |Optional table permissions to grant to the
+|tablePermissions? |`string` |Optional table permissions to grant to the
 Fargate service. One of the following may be specified: `All`, `Read`,
 `ReadWrite`, `Write`.
 
-StableArnEnvironmentVariableName? |`string` |Optional Name for the
+|tableArnEnvironmentVariableName? |`string` |Optional Name for the
 container environment variable set to the ARN for the DynamoDB table.
 Default: DYNAMODB_TABLE_ARN
 
-StableEnvironmentVariableName? |`string` |Optional Name for the
+|tableEnvironmentVariableName? |`string` |Optional Name for the
 container environment variable set to the DynamoDB table name. Default:
 DYNAMODB_TABLE_NAME
 |===

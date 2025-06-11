@@ -103,6 +103,7 @@ final ConstructsFactories factories = new ConstructsFactories(this, "MyFactories
 factories.s3BucketFactory("GoodBucket", 
   new S3BucketFactoryProps.Builder().build());
 ----
+====
 
 == S3BucketFactory Function Signature
 
@@ -225,6 +226,7 @@ Java::
 
 // Pending
 ----
+====
 
 == stateMachineFactory Function Signature
 
@@ -334,6 +336,7 @@ Java::
 ----
 Pendiong
 ----
+====
 
 == SqsQueueFactory Function Signature
 
