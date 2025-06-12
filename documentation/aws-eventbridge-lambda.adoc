@@ -1,0 +1,200 @@
+//!!NODE_ROOT <section>
+//== aws-eventbridge-lambda module
+
+[.topic]
+= aws-eventbridge-lambda
+:info_doctype: section
+:info_title: aws-eventbridge-lambda
+
+
+image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-the-badge[Stability:Stable]
+
+[width="100%",cols="<50%,<50%",options="header",]
+|===
+|*Reference Documentation*:
+|https://docs.aws.amazon.com/solutions/latest/constructs/
+|===
+
+[width="100%",cols="<46%,54%",options="header",]
+|===
+|*Language* |*Package*
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+Logo] Python
+|`aws_solutions_constructs.aws_eventbridge_lambda`
+
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+Logo] Typescript |`@aws-solutions-constructs/aws-eventbridge-lambda`
+
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+Logo] Java |`software.amazon.awsconstructs.services.eventbridgelambda`
+|===
+
+== Overview
+
+This AWS Solutions Construct implements an AWS EventBridge rule and an
+AWS Lambda function.
+
+Here is a minimal deployable pattern definition:
+
+====
+[role="tablist"]
+Typescript::
++
+[source,typescript]
+----
+import { Construct } from 'constructs';
+import { Stack, StackProps, Duration } from 'aws-cdk-lib';
+import { EventbridgeToLambdaProps, EventbridgeToLambda } from '@aws-solutions-constructs/aws-eventbridge-lambda';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as events from 'aws-cdk-lib/aws-events';
+
+const constructProps: EventbridgeToLambdaProps = {
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset(`lambda`),
+    runtime: lambda.Runtime.NODEJS_20_X,
+    handler: 'index.handler'
+  },
+  eventRuleProps: {
+    schedule: events.Schedule.rate(Duration.minutes(5))
+  }
+};
+
+new EventbridgeToLambda(this, 'test-eventbridge-lambda', constructProps);
+----
+
+Python::
++
+[source,python]
+----
+from aws_solutions_constructs.aws_eventbridge_lambda import EventbridgeToLambda, EventbridgeToLambdaProps
+from aws_cdk import (
+    aws_lambda as _lambda,
+    aws_events as events,
+    Duration,
+    Stack
+)
+from constructs import Construct
+
+EventbridgeToLambda(self, 'test-eventbridge-lambda',
+                    lambda_function_props=_lambda.FunctionProps(
+                        code=_lambda.Code.from_asset('lambda'),
+                        runtime=_lambda.Runtime.PYTHON_3_11,
+                        handler='index.handler'
+                    ),
+                    event_rule_props=events.RuleProps(
+                        schedule=events.Schedule.rate(
+                            Duration.minutes(5))
+                    ))
+----
+
+Java::
++
+[source,java]
+----
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.services.events.*;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.eventbridgelambda.*;
+
+new EventbridgeToLambda(this, "test-eventbridge-lambda",
+        new EventbridgeToLambdaProps.Builder()
+                .lambdaFunctionProps(new FunctionProps.Builder()
+                        .runtime(Runtime.NODEJS_20_X)
+                        .code(Code.fromAsset("lambda"))
+                        .handler("index.handler")
+                        .build())
+                .eventRuleProps(new RuleProps.Builder()
+                        .schedule(Schedule.rate(Duration.minutes(5)))
+                        .build())
+                .build());
+----
+====
+
+== Pattern Construct Props
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|existingLambdaObj?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html[`lambda.Function`]
+|Existing instance of Lambda Function object, providing both this and
+`lambdaFunctionProps` will cause an error.
+
+|lambdaFunctionProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html[`lambda.FunctionProps`]
+|User provided props to override the default props for the Lambda
+function.
+
+|existingEventBusInterface?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.IEventBus.html[`events.IEventBus`]
+|Optional user-provided custom EventBus for construct to use. Providing
+both this and `eventBusProps` results an error.
+
+|eventBusProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.EventBusProps.html[`events.EventBusProps`]
+|Optional user-provided properties to override the default properties
+when creating a custom EventBus. Setting this value to `{}` will
+create a custom EventBus using all default properties. If neither this
+nor `existingEventBusInterface` is provided the construct will use the
+`default` EventBus. Providing both this and `existingEventBusInterface`
+results an error.
+
+|eventRuleProps
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.RuleProps.html[`events.RuleProps`]
+|User provided eventRuleProps to override the defaults
+|===
+
+== Pattern Properties
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|eventBus?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.IEventBus.html[`events.IEventBus`]
+|Returns the instance of events.IEventBus used by the construct
+
+|eventsRule
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.Rule.html[`events.Rule`]
+|Returns an instance of events.Rule created by the construct
+
+|lambdaFunction
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html[`lambda.Function`]
+|Returns an instance of lambda.Function created by the construct
+|===
+
+== Default settings
+
+Out of the box implementation of the Construct without any override will
+set the following defaults:
+
+=== Amazon EventBridge Rule
+
+* Grant least privilege permissions to EventBridge rule to trigger the
+Lambda Function
+
+=== AWS Lambda Function
+
+* Configure limited privilege access IAM role for Lambda function
+* Enable reusing connections with Keep-Alive for NodeJs Lambda function
+* Enable X-Ray Tracing
+* Set Environment Variables
+* AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x and
+higher functions)
+
+== Architecture
+
+
+image::images/aws-eventbridge-lambda.png["Diagram showing the EventBridge rule, Lambda function, CloudWatch log group and IAM role created by the construct",scaledwidth=100%]
+
+== Github
+
+Go to the https://github.com/awslabs/aws-solutions-constructs/tree/main/source/patterns/%40aws-solutions-constructs/aws-eventbridge-lambda[Github repo] for this pattern to view the code, read/create issues and pull requests and more.
+
+'''''
+
+

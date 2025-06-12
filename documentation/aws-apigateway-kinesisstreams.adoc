@@ -1,0 +1,251 @@
+//!!NODE_ROOT <section>
+//== aws-apigateway-kinesisstreams module
+
+[.topic]
+= aws-apigateway-kinesisstreams
+:info_doctype: section
+:info_title: aws-apigateway-kinesisstreams
+
+
+image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-the-badge[Stability:Stable]
+
+[width="100%",cols="<50%,<50%",options="header",]
+|===
+|*Reference Documentation*:
+|https://docs.aws.amazon.com/solutions/latest/constructs/
+|===
+
+[width="100%",cols="<46%,54%",options="header",]
+|===
+|*Language* |*Package*
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+Logo] Python
+|`aws_solutions_constructs.aws_apigateway_kinesisstreams`
+
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+Logo] Typescript
+|`@aws-solutions-constructs/aws-apigateway-kinesisstreams`
+
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+Logo] Java
+|`software.amazon.awsconstructs.services.apigatewaykinesisstreams`
+|===
+
+== Overview
+
+This AWS Solutions Construct implements an Amazon API Gateway connected
+to an Amazon Kinesis Data Stream pattern.
+
+Here is a minimal deployable pattern definition:
+
+====
+[role="tablist"]
+Typescript::
++
+[source,typescript]
+----
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { ApiGatewayToKinesisStreams, ApiGatewayToKinesisStreamsProps } from '@aws-solutions-constructs/aws-apigateway-kinesisstreams';
+
+new ApiGatewayToKinesisStreams(this, 'test-apigw-kinesis', {});
+----
+
+Python::
++
+[source,python]
+----
+from aws_solutions_constructs.aws_apigateway_kinesisstreams import ApiGatewayToKinesisStreams
+from aws_cdk import Stack
+from constructs import Construct
+
+ApiGatewayToKinesisStreams(self, 'test-apigw-kinesis')
+----
+
+Java::
++
+[source,java]
+----
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awsconstructs.services.apigatewaykinesisstreams.*;
+
+new ApiGatewayToKinesisStreams(this, "test-apigw-kinesis", new ApiGatewayToKinesisStreamsProps.Builder()
+        .build());
+----
+====
+
+== Pattern Construct Props
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|apiGatewayProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.RestApiProps.html[`api.RestApiProps`]
+|Optional user-provided props to override the default props for the API
+Gateway.
+
+|putRecordRequestTemplate? |`string` |API Gateway request template for
+the PutRecord action. If not provided, a default one will be used.
+
+|createUsagePlan? |boolean |Whether to create a Usage Plan attached to
+the API. Must be true if
+apiGatewayProps.defaultMethodOptions.apiKeyRequired is true. @default -
+true (to match legacy behavior)
+
+|additionalPutRecordRequestTemplates?
+|`{ [contentType: string]: string;  }` |Optional PutRecord
+Request Templates for content-types other than `application/json`. Use
+the `putRecordRequestTemplate` property to set the request template for
+the `application/json` content-type.
+
+|putRecordRequestModel?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.ModelOptions.html[`api.ModelOptions`]
+|API Gateway request model for the PutRecord action. If not provided, a
+default one will be created.
+
+|putRecordIntegrationResponses?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses[\]`]
+|Optional, custom API Gateway Integration Response for the PutRecord
+action.
+
+|putRecordMethodResponses?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[\]`]
+|Optional, custom API Gateway Method Responses for the putRecord action.
+default: [{ statusCode: "`200`", responseParameters: {
+"`method.response.header.Content-Type`": true }},{ statusCode:
+"`500`", responseParameters: {
+"`method.response.header.Content-Type`": true } } ]
+
+|putRecordsRequestTemplate? |`string` |API Gateway request template for
+the PutRecords action. If not provided, a default one will be used.
+
+|additionalPutRecordsRequestTemplates?
+|`{ [contentType: string]: string;  }` |Optional PutRecords
+Request Templates for content-types other than `application/json`. Use
+the `putRecordsRequestTemplate` property to set the request template for
+the `application/json` content-type.
+
+|putRecordsRequestModel?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.ModelOptions.html[`api.ModelOptions`]
+|API Gateway request model for the PutRecords action. If not provided, a
+default one will be created.
+
+|putRecordsIntegrationResponses?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.IntegrationResponse.html[`api.IntegrationResponses[\]`]
+|Optional, custom API Gateway Integration Response for the PutRecords
+action.
+
+|putRecordsMethodResponses?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.MethodResponse.html[`api.MethodResponses[\]`]
+|Optional, custom API Gateway Method Responses for the putRecords
+action. default: [{ statusCode: "`200`", responseParameters: {
+"`method.response.header.Content-Type`": true }},{ statusCode:
+"`500`", responseParameters: {
+"`method.response.header.Content-Type`": true } } ]
+
+|existingStreamObj?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kinesis.Stream.html[`kinesis.Stream`]
+|Existing instance of Kinesis Stream, providing both this and
+`kinesisStreamProps` will cause an error.
+
+|kinesisStreamProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kinesis.StreamProps.html[`kinesis.StreamProps`]
+|Optional user-provided props to override the default props for the
+Kinesis stream.
+
+|logGroupProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html[`logs.LogGroupProps`]
+|User provided props to override the default props for for the
+CloudWatchLogs LogGroup.
+
+|createCloudWatchAlarms |`boolean` |Whether to create recommended
+CloudWatch alarms for Kinesis Data Stream. Default value is set to
+`true`
+|===
+
+== Pattern Properties
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|apiGateway
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.RestApi.html[`api.RestApi`]
+|Returns an instance of the API Gateway REST API created by the pattern.
+
+|apiGatewayRole
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html[`iam.Role`]
+|Returns an instance of the iam.Role created by the construct for API
+Gateway.
+
+|apiGatewayCloudWatchRole?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_iam.Role.html[`iam.Role`]
+|Returns an instance of the iam.Role created by the construct for API
+Gateway for CloudWatch access.
+
+|apiGatewayLogGroup
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroup.html[`logs.LogGroup`]
+|Returns an instance of the LogGroup created by the construct for API
+Gateway access logging to CloudWatch.
+
+|kinesisStream
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kinesis.Stream.html[`kinesis.Stream`]
+|Returns an instance of the Kinesis stream created or used by the
+pattern.
+
+|cloudwatchAlarms?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Alarm.html[`cloudwatch.Alarm[\]`]
+|Returns an array of recommended CloudWatch Alarms created by the
+construct for Kinesis Data stream
+|===
+
+== Sample API Usage
+
+[width="99%",cols="<20%,<20%,20%,20%,20%",options="header",]
+|===
+|*Method* |*Request Path* |*Request Body* |*Stream Action*
+|*Description*
+|POST |`/record`
+|`{ "data": "Hello World!", "partitionKey": "pk001" }`
+|`kinesis:PutRecord` |Writes a single data record into the stream.
+
+|POST |`/records`
+|`{ "records": [{ "data": "abc", "partitionKey": "pk001" }, { "data": "xyz", "partitionKey": "pk001" }] }`
+|`kinesis:PutRecords` |Writes multiple data records into the stream in a
+single call.
+|===
+
+== Default settings
+
+Out of the box implementation of the Construct without any override will
+set the following defaults:
+
+=== Amazon API Gateway
+
+* Deploy an edge-optimized API endpoint
+* Enable CloudWatch logging for API Gateway
+* Configure least privilege access IAM role for API Gateway
+* Set the default authorizationType for all API methods to IAM
+* Enable X-Ray Tracing
+* Validate request body before passing data to Kinesis
+
+=== Amazon Kinesis Data Stream
+
+* Configure least privilege access IAM role for Kinesis Stream
+* Enable server-side encryption for Kinesis Stream using AWS Managed KMS
+Key
+
+== Architecture
+
+
+image::images/aws-apigateway-kinesisstreams.png["Diagram showing data flow between cloud search, code analysis, and network components.",scaledwidth=100%]
+
+== Github
+
+Go to the https://github.com/awslabs/aws-solutions-constructs/tree/main/source/patterns/%40aws-solutions-constructs/aws-apigateway-kinesisstreams[Github repo] for this pattern to view the code, read/create issues and pull requests and more.
+
+'''''
+
+

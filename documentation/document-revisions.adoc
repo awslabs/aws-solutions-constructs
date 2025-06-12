@@ -1,0 +1,343 @@
+//!!NODE_ROOT <chapter>
+[.topic]
+[[document-revisions,document-revisions.title]]
+= Document Revisions
+:doctype: book
+:sectnums:
+:toc: left
+:icons: font
+:experimental:
+:idprefix:
+:idseparator: -
+:sourcedir: .
+:info_doctype: chapter
+:info_title: Document Revisions
+:info_titleabbrev: Document Revisions
+:info_abstract: Document revisions
+
+[abstract]
+--
+Document revisions
+--
+
+
+[.updates]
+== Unknown Title!
+
+[.update,date="2025-05-13"]
+=== Content updated
+
+Updated documents to reflect version 2.85.2. Added new page for `aws-lambda-bedrockinferenceprofile` and `aws-cloudfront-oai-s3`. (v2.85.2)  
+
+[.update,date="2024-12-26"]
+=== Content updated
+
+Updated documents to reflect version 2.76.0. Added new page for `aws-dynamodbstreams-pipes-stepfunctions` and `aws-sqs-pipes-stepfunctions`. (v2.76.0)  
+
+[.update,date="2024-09-15"]
+=== Content updated
+
+Updated documents to reflect version 2.69.0. Added new page for `aws-apigatewayv2websocket-sqs`. (v2.69.0)  
+
+[.update,date="2024-04-29"]
+=== Content updated
+
+Updated documents to reflect version 2.56.0. Added new page for `aws-constructs-factories`. (v2.56.0)  
+
+[.update,date="2024-02-05"]
+=== Content updated
+
+Updated documents to reflect version 2.51.0 (v2.51.0)  
+
+[.update,date="2023-10-11"]
+=== Content updated
+
+Updated documents to reflect version 2.44.0. Added new `aws-lambda-kendra` and `aws-openapigateway-lambda` constructs. (v2.44.0)  
+
+[.update,date="2023-02-27"]
+=== Content updated
+
+Updated documents to reflect version 2.32.0. (v2.32.0)  
+
+[.update,date="2023-01-03"]
+=== Content updated
+
+Updated documents to reflect version 2.30.0. Added new `aws-fargate-kinesisfirehose`, `aws-fargate-kinesisstreams`, `aws-lambda-kinesisfirehose`, and `aws-lambda-kinesisstreams` constructs. (v2.30.0)  
+
+[.update,date="2022-11-11"]
+=== Content updated
+
+Updated documents to reflect version 2.27.0. (v2.27.0)  
+
+[.update,date="2022-08-15"]
+=== Content updated
+
+Minor props updates for constructs using AWS CloudFront. (v2.14.0)  
+
+[.update,date="2022-07-19"]
+=== Content updated
+
+Updated properties for the  `aws-lambda-elasticsearch-kibana` construct. Minor typographical corrections. (v2.11.0) 
+
+[.update,date="2022-07-14"]
+=== Content updated
+
+Updated documents to reflect version 2.10.0. (v2.10.0)  
+
+[.update,date="2022-05-20"]
+=== Content updated
+
+Added minimal deployable code samples for TypeScript, Python, and Java for each Construct. Added  ``aws-fargate-dynamodb``, ``aws-fargate-secretsmanager``, ``aws-fargate-ssmstringparameter``, ``aws-fargate-stepfunctions``, and `aws-lambda-elasticachememcached` Constructs. (v1.156.0) 
+
+[.update,date="2022-05-12"]
+=== Content updated
+
+Updated walkthrough content to reflect development with AWS Solutions Constructs v2.
+
+[.update,date="2022-03-07"]
+=== Content updated
+
+Added  `aws-fargate-s3` and `aws-fargate-sqs` constructs.
+
+[.update,date="2022-02-01"]
+=== Content updated
+
+Added  `aws-fargate-sns` and `aws-route53-apigateway` constructs. Updated properties for `aws-alb-fargate` constructs.
+
+[.update,date="2022-01-14"]
+=== Content updated
+
+Added  `aws-alb-fargate` and `aws-iot-s3` constructs. Updated Node.js runtime specifications in minimal deployable code snippets for applicable patterns. Updated logging properties for constructs that deploy AWS Step Functions state machines. Other minor updates.
+
+[.update,date="2021-12-03"]
+=== Content updated
+
+Added  `logS3AccessLogs` and `loggingBucketProps` input properties, as well as an `S3BucketInterface` output property, to applicable patterns that deploy an Amazon S3 bucket. Other minor updates. (v2.0.0)
+
+[.update,date="2021-10-27"]
+=== Content updated
+
+Added new  ``aws-alb-lambda``, ``aws-route53-alb``, and `aws-wafwebacl-alb` constructs. Promoted additional constructs to stable from experimental. Other minor updates. (v1.126.0)
+
+[.update,date="2021-10-11"]
+=== Content updated
+
+Added new  `loggingBucketProps` property to the following patterns: ``aws-cloudfront-s3``, ``aws-lambda-s3``, ``aws-s3-lambda``, ``aws-s3-sqs``, ``aws-s3-step-function``, and ``aws-s3-stepfunctions``. (v1.125.0)
+
+[.update,date="2021-10-03"]
+=== Content updated
+
+Added new  `aws-wafwebacl-cloudfront` pattern. Updated properties for `aws-apigateway-kinesisstreams` pattern. (v1.124.0)
+
+[.update,date="2021-09-21"]
+=== Content updated
+
+Added new  `aws-iot-kinesisstreams` pattern. Other minor content updates. (v1.123.0)
+
+[.update,date="2021-09-20"]
+=== Content updated
+
+Added new  `aws-lambda-eventbridge` and `aws-wafwebacl-apigateway` pattern. Other minor content updates. (v1.122.0)
+
+[.update,date="2021-08-17"]
+=== Content updated
+
+Added new  `aws-iot-sqs` pattern. Other minor content updates. (v1.117.0)
+
+[.update,date="2021-08-17"]
+=== Content updated
+
+Multiple patterns deprecated and replaced with new patterns based on updated naming convention. Multiple patterns upgraded to Stable. Other minor updates for v1.116.0.
+
+[.update,date="2021-07-26"]
+=== Content updated
+
+Updated properties for the aws-cloudfront-s3 pattern.
+
+[.update,date="2021-07-23"]
+=== Content updated
+
+Updated properties for the aws-cloudfront-s3 pattern. Other minor content updates.
+
+[.update,date="2021-06-16"]
+=== Content updated
+
+Updated properties for select patterns and added new use case.
+
+[.update,date="2021-05-27"]
+=== Content updated
+
+Added aws-lambda-ssmstringparameter pattern. Other minor content updates.
+
+[.update,date="2021-05-12"]
+=== Content updated
+
+Added aws-lambda-secretsmanager pattern. Other minor content updates.
+
+[.update,date="2021-04-17"]
+=== Content updated
+
+Property updates to select *-lambda patterns. Other minor content updates.
+
+[.update,date="2021-03-30"]
+=== Content updated
+
+Fixed an issue in the Walkthrough for Python users and updated property examples for constructs containing Lambda functions.
+
+[.update,date="2021-03-08"]
+=== Content updated
+
+Minor fixes/updates to pattern props and default settings for select patterns.
+
+[.update,date="2021-03-04"]
+=== Content updated
+
+Minor fixes/updates to walkthrough content.
+
+[.update,date="2021-02-24"]
+=== Content updated
+
+Added  `aws-lambda-sagemakerendpoint` pattern and updated properties for select Kinesis Firehose patterns.
+
+[.update,date="2021-02-17"]
+=== Content updated
+
+Added  `aws-kinesisstreams-gluejob` pattern and updated walkthrough steps for Python users.
+
+[.update,date="2021-02-09"]
+=== Content updated
+
+Updated properties for  `aws-cloudfront-*` patterns.
+
+[.update,date="2021-02-05"]
+=== Content updated
+
+Added link to GitHub for each pattern.
+
+[.update,date="2021-02-01"]
+=== Content updated
+
+Updated properties for select patterns.
+
+[.update,date="2021-01-04"]
+=== Content updated
+
+Updated documentation of properties and default settings for select patterns.
+
+[.update,date="2020-12-20"]
+=== Content updated
+
+Added new patterns: aws-cloudfront-mediastore and aws-s3-sqs.
+
+[.update,date="2020-11-17"]
+=== Content updated
+
+Removed aws-lambda-sagemaker pattern.
+
+[.update,date="2020-10-27"]
+=== Content updated
+
+Added new patterns: aws-events-rule-kinesisstreams, aws-events-rule-kinesisfirehose-s3, and aws-lambda-sagemaker.
+
+[.update,date="2020-10-22"]
+=== Content updated
+
+Updated to reflect breaking change in aws-events-rule-sns and aws-events-rule-sqs patterns: class and interface names changed to pascal case.
+
+[.update,date="2020-10-20"]
+=== Content updated
+
+Added aws-apigateway-sagemakerendpoint and aws-kinesisstreams-kinesisfirehose-s3 patterns; other minor updates to existing content.
+
+[.update,date="2020-10-07"]
+=== Content updated
+
+Added aws-apigateway-iot pattern; other minor updates to existing content.
+
+[.update,date="2020-10-05"]
+=== Content updated
+
+Updated minimal deployable pattern code snippets and best practice defaults for all patterns.
+
+[.update,date="2020-09-14"]
+=== Content updated
+
+Updated properties for aws-kinesisstreams-lambda pattern to reflect breaking change.
+
+[.update,date="2020-09-10"]
+=== Content updated
+
+Minor fix to second part of walkthrough.
+
+[.update,date="2020-09-10"]
+=== Content updated
+
+Added aws-apigateway-kinesisstreams, aws-events-rule-sns, and aws-events-rule-sqs patterns.
+
+[.update,date="2020-09-02"]
+=== Content updated
+
+Added aws-sns-sqs pattern; updates to all SNS patterns; minor typographical corrections.
+
+[.update,date="2020-08-31"]
+=== Content updated
+
+Fixed module names for aws-sqs-lambda pattern.
+
+[.update,date="2020-08-31"]
+=== Content updated
+
+Fixed Python module name for aws-dynamodb-stream-lambda-elasticsearch-kibana pattern.
+
+[.update,date="2020-08-27"]
+=== Content updated
+
+Updated defaults for Lambda patterns; other minor updates.
+
+[.update,date="2020-08-10"]
+=== Content updated
+
+Updated public properties for S3 patterns; updated defaults for DynamoDB patterns.
+
+[.update,date="2020-08-04"]
+=== Content updated
+
+Updated multiple patterns to highlight default enforcement of encryption in transit.
+
+[.update,date="2020-07-27"]
+=== Content updated
+
+Added aws-lambda-sqs-lambda pattern; improved configuration instructions in Getting Started guide; updated all patterns to make additional resources available through public properties.
+
+[.update,date="2020-07-20"]
+=== Content updated
+
+Added aws-lambda-sqs pattern; other minor updates.
+
+[.update,date="2020-07-09"]
+=== Content updated
+
+Removed deployLambda and deployBucket properties from relevant patterns; other minor updates.
+
+[.update,date="2020-07-07"]
+=== Content updated
+
+Added aws-lambda-step-function pattern and corrected minor typographical errors.
+
+[.update,date="2020-06-25"]
+=== Content updated
+
+Added existingTableObj? property to select DynamoDB patterns.
+
+[.update,date="2020-06-23"]
+=== Content updated
+
+Several text corrections and fixes for broken links.
+
+[.update,date="2020-06-22"]
+=== Initial release
+
+AWS Solutions Constructs made publicly available.
+
+
+To be notified about updates to AWS Solutions Constructs, subscribe to the RSS feed.

@@ -1,0 +1,207 @@
+//!!NODE_ROOT <section>
+//== aws-sqs-lambda module
+
+[.topic]
+= aws-sqs-lambda
+:info_doctype: section
+:info_title: aws-sqs-lambda
+
+
+image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-the-badge[Stability:Stable]
+
+[width="100%",cols="<50%,<50%",options="header",]
+|===
+|*Reference Documentation*:
+|https://docs.aws.amazon.com/solutions/latest/constructs/
+|===
+
+[width="100%",cols="<46%,54%",options="header",]
+|===
+|*Language* |*Package*
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+Logo] Python |`aws_solutions_constructs.aws_sqs_lambda`
+
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+Logo] Typescript |`@aws-solutions-constructs/aws-sqs-lambda`
+
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+Logo] Java |`software.amazon.awsconstructs.services.sqslambda`
+|===
+
+== Overview
+
+This AWS Solutions Construct implements an Amazon SQS queue connected to
+an AWS Lambda function.
+
+Here is a minimal deployable pattern definition:
+
+====
+[role="tablist"]
+Typescript::
++
+[source,typescript]
+----
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { SqsToLambda, SqsToLambdaProps } from "@aws-solutions-constructs/aws-sqs-lambda";
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+
+new SqsToLambda(this, 'SqsToLambdaPattern', {
+  lambdaFunctionProps: {
+    runtime: lambda.Runtime.NODEJS_20_X,
+    handler: 'index.handler',
+    code: lambda.Code.fromAsset(`lambda`)
+  }
+});
+----
+
+Python::
++
+[source,python]
+----
+from aws_solutions_constructs.aws_sqs_lambda import SqsToLambda
+from aws_cdk import (
+    aws_lambda as _lambda,
+    Stack
+)
+from constructs import Construct
+
+
+SqsToLambda(self, 'SqsToLambdaPattern',
+            lambda_function_props=_lambda.FunctionProps(
+                code=_lambda.Code.from_asset('lambda'),
+                runtime=_lambda.Runtime.PYTHON_3_11,
+                handler='index.handler'
+            )
+            )
+----
+
+Java::
++
+[source,java]
+----
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.sqslambda.*;
+
+new SqsToLambda(this, "SnsToSqsPattern", new SqsToLambdaProps.Builder()
+        .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_20_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+        .build());
+----
+====
+
+== Pattern Construct Props
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|existingLambdaObj?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html[`lambda.Function`]
+|Existing instance of Lambda Function object, providing both this and
+lambdaFunctionProps will cause an error.
+
+|lambdaFunctionProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html[`lambda.FunctionProps`]
+|User provided props to override the default props for the Lambda
+function.
+
+|existingQueueObj?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.Queue.html[`sqs.Queue`]
+|An optional, existing SQS queue to be used instead of the default
+queue. Providing both this and `queueProps` will cause an error.
+
+|queueProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.QueueProps.html[`sqs.QueueProps`]
+|Optional user-provided props to override the default props for the SQS
+queue.
+
+|deadLetterQueueProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.QueueProps.html[`sqs.QueueProps`]
+|Optional user-provided props to override the default props for the dead
+letter SQS queue.
+
+|deployDeadLetterQueue? |`boolean` |Whether to create a secondary queue
+to be used as a dead letter queue. Defaults to true.
+
+|maxReceiveCount? |`number` |The number of times a message can be
+unsuccessfully dequeued before being moved to the dead letter queue.
+Defaults to 15.
+
+|sqsEventSourceProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda_event_sources.SqsEventSourceProps.html[`SqsEventSourceProps`]
+|Optional user provided properties for the queue event source.
+
+|enableEncryptionWithCustomerManagedKey? |`boolean` |If no key is
+provided, this flag determines whether the queue is encrypted with a new
+CMK or an AWS managed key. This flag is ignored if any of the following
+are defined: queueProps.encryptionMasterKey, encryptionKey or
+encryptionKeyProps.
+
+|encryptionKey?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.Key.html[`kms.Key`]
+|An optional, imported encryption key to encrypt the SQS Queue with.
+
+|encryptionKeyProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.Key.html#construct-props[`kms.KeyProps`]
+|Optional user provided properties to override the default properties
+for the KMS encryption key used to encrypt the SQS queue with.
+|===
+
+== Pattern Properties
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|lambdaFunction
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html[`lambda.Function`]
+|Returns an instance of the Lambda function created by the pattern.
+
+|sqsQueue
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.Queue.html[`sqs.Queue`]
+|Returns an instance of the SQS queue created by the pattern.
+
+|deadLetterQueue?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.Queue.html[`sqs.Queue`]
+|Returns an instance of the dead-letter SQS queue created by the
+pattern.
+|===
+
+== Default settings
+
+Out of the box implementation of the Construct without any override will
+set the following defaults:
+
+=== Amazon SQS Queue
+
+* Deploy SQS dead-letter queue for the source SQS Queue
+* Enable server-side encryption for source SQS Queue using AWS Managed
+KMS Key
+* Enforce encryption of data in transit
+
+=== AWS Lambda Function
+
+* Configure limited privilege access IAM role for Lambda function
+* Enable reusing connections with Keep-Alive for NodeJs Lambda function
+* Enable X-Ray Tracing
+* Set Environment Variables
+** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
+and higher functions)
+
+== Architecture
+
+
+image::aws-sqs-lambda.png["Diagram showing the SQS queue, Lambda Function, CloudWatch log group and IAM role created by the construct",scaledwidth=100%]
+
+// github block
+
+'''''
+
+© Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
