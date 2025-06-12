@@ -39,9 +39,12 @@ find source/patterns -name "README.adoc" -type f | while read file; do
     cp "$file" "documentation/${parent_dir}.adoc"
     cp "${dir_name}/${parent_dir}.png" "documentation/images/"
 
+    # remove the copyright notices, as the web site will add another
     perl -i -0pe "s/© Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.\n/\n/g" "documentation/${parent_dir}.adoc"
 
+    # get the Architecture diargram from the images sub-folder
     perl -i -pe "s/^image::aws-/image::images\/aws-/g" "documentation/${parent_dir}.adoc"
 
+    # Add the block pointing to the github repo
     perl -i -pe "s/^\/\/ github block/== Github\n\nGo to the https:\/\/github.com\/awslabs\/aws-solutions-constructs\/tree\/main\/source\/patterns\/%40aws-solutions-constructs\/${parent_dir}\[Github repo\] for this pattern to view the code, read\/create issues and pull requests and more./" "documentation/${parent_dir}.adoc"
 done
