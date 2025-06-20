@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.85.3](https://github.com/awslabs/aws-solutions-constructs/compare/v2.85.2...v2.85.3) (2025-06-20)
+
+
+### Features
+
+* **dynamodb:** remove use of deprecated pointInTimeRecovery prop ([#1328](https://github.com/awslabs/aws-solutions-constructs/issues/1328)) ([a2b599e](https://github.com/awslabs/aws-solutions-constructs/commit/a2b599e276172e9adf879c73722fe1fd49330247))
+
 ## [2.85.2](https://github.com/awslabs/aws-solutions-constructs/compare/v2.85.1...v2.85.2) (2025-05-01)
 
 Just added warnings to aws-cloudfront-mediastore and testing pipeline
