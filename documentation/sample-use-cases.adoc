@@ -1,0 +1,46 @@
+//!!NODE_ROOT <section>
+:https---github-com-awslabs-aws-solutions-constructs-tree-master-source-use-cases-aws-restaurant-management-demo: https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-restaurant-management-demo
+:https---github-com-awslabs-aws-solutions-constructs-tree-master-source-use-cases-aws-s3-static-website: https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-s3-static-website
+:https---github-com-awslabs-aws-solutions-constructs-tree-master-source-use-cases-aws-custom-glue-etl: https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-custom-glue-etl
+
+[.topic]
+[[sample-use-cases,sample-use-cases.title]]
+= Sample Use Cases
+:info_doctype: section
+:info_title: Sample Use Cases
+:info_titleabbrev: Sample Use Cases
+:info_abstract: This library includes a collection of functional use case implementations to demonstrate \
+        the usage of Constructs architectural patterns.
+
+[abstract]
+--
+This library includes a collection of functional use case implementations to demonstrate the usage of Constructs architectural patterns. 
+--
+
+This library includes a collection of functional use case implementations to demonstrate the usage of Constructs architectural patterns. These can be used in the same way as architectural patterns, and can be conceptualized as an additional "higher-level" abstraction of those patterns. The following use cases are provided as functional examples.  
+
+[[aws-static-s3-website,aws-static-s3-website.title]]
+== AWS Static S3 Website
+
+This use case pattern (``aws-s3-static-website``) implements an Amazon CloudFront distribution, Amazon S3 bucket, and AWS Lambda-based custom resource to copy the static website content for the Wild Rydes demo website (part of the `aws-serverless-web-app` implementation). 
+
+.Source Code (aws-s3-static-website)
+[NOTE]
+====
+
+{https---github-com-awslabs-aws-solutions-constructs-tree-master-source-use-cases-aws-s3-static-website}[https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-s3-static-website]
+
+====
+
+[[aws-restaurant-management-demo,aws-restaurant-management-demo.title]]
+== AWS Restaurant Management Demo
+
+This use case pattern (``aws-restaurant-management-demo``) implements a complex, multi-stack architecture that models a restaurant management system. This use case will provision a stack for service/wait staff to open/close orders, a stack for kitchen staff to view/complete orders, and a stack for managers to perform various business functions. It will also provision a stack containing a central DynamoDB table for managing orders, as well as a Lambda layer for sharing common database access patterns. 
+
+.Source Code (aws-restaurant-management-demo)
+[NOTE]
+====
+
+{https---github-com-awslabs-aws-solutions-constructs-tree-master-source-use-cases-aws-restaurant-management-demo}[https://github.com/awslabs/aws-solutions-constructs/tree/master/source/use_cases/aws-restaurant-management-demo]
+
+====

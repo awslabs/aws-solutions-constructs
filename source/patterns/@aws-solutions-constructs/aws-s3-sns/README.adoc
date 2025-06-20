@@ -1,0 +1,214 @@
+//!!NODE_ROOT <section>
+//== aws-s3-sns module
+
+[.topic]
+= aws-s3-sns
+:info_doctype: section
+:info_title: aws-s3-sns
+
+
+image:https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
+
+____
+All classes are under active development and subject to non-backward
+compatible changes or removal in any future version. These are not
+subject to the https://semver.org/[Semantic Versioning] model. This
+means that while you may use them, you may need to update your source
+code when upgrading to a newer version of this package.
+____
+
+[width="100%",cols="<50%,<50%",options="header",]
+|===
+|*Reference Documentation*:
+|https://docs.aws.amazon.com/solutions/latest/constructs/
+|===
+
+[width="100%",cols="<46%,54%",options="header",]
+|===
+|*Language* |*Package*
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+Logo] Python |`aws_solutions_constructs.aws_s3_sns`
+
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+Logo] Typescript |`@aws-solutions-constructs/aws-s3-sns`
+
+|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+Logo] Java |`software.amazon.awsconstructs.services.s3sns`
+|===
+
+== Overview
+
+This AWS Solutions Construct implements an Amazon S3 Bucket that is
+configured to send S3 event messages to an Amazon SNS topic.
+
+Here is a minimal deployable pattern definition:
+
+====
+[role="tablist"]
+Typescript::
++
+[source,typescript]
+----
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { S3ToSns } from "@aws-solutions-constructs/aws-s3-sns";
+
+new S3ToSns(this, 'S3ToSNSPattern', {});
+----
+
+Python::
++
+[source,python]
+----
+from aws_solutions_constructs.aws_s3_sns import S3ToSns
+from aws_cdk import Stack
+from constructs import Construct
+
+S3ToSns(self, 'S3ToSNSPattern')
+----
+
+Java::
++
+[source,java]
+----
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awsconstructs.services.s3sns.*;
+
+new S3ToSns(this, "S3ToSNSPattern", new S3ToSnsProps.Builder()
+        .build());
+----
+====
+
+== Pattern Construct Props
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|existingBucketObj?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html[`s3.Bucket`]
+|Existing instance of S3 Bucket object. If this is provided, then also
+providing bucketProps is an error.
+
+|bucketProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
+|Optional user provided props to override the default props for the S3
+Bucket.
+
+|s3EventTypes?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.EventType.html[`s3.EventType[\]`]
+|The S3 event types that will trigger the notification. Defaults to
+s3.EventType.OBJECT_CREATED.
+
+|s3EventFilters?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.NotificationKeyFilter.html[`s3.NotificationKeyFilter[\]`]
+|S3 object key filter rules to determine which objects trigger this
+event. If not specified no filter rules will be applied.
+
+|loggingBucketProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
+|Optional user provided props to override the default props for the S3
+Logging Bucket.
+
+|logS3AccessLogs? |`boolean` |Whether to turn on Access Logging for the
+S3 bucket. Creates an S3 bucket with associated storage costs for the
+logs. Enabling Access Logging is a best practice. default - true
+
+|existingTopicObj?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sns.Topic.html[`sns.Topic`]
+|An optional, existing SNS topic to be used instead of the default
+topic. Providing both this and `topicProps` will cause an error. If the
+SNS Topic is encrypted with a Customer-Managed KMS Key, the key must be
+specified in the `existingTopicEncryptionKey` property.
+
+|existingTopicEncryptionKey?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.Key.html[`kms.Key`]
+|If an existing topic is provided in the `existingTopicObj` property,
+and that topic is encrypted with a Customer-Managed KMS key, this
+property also needs to be set with same key.
+
+|topicProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sns.TopicProps.html[`sns.TopicProps`]
+|Optional user provided props to override the default props for the SNS
+topic.
+
+|enableEncryptionWithCustomerManagedKey? |`boolean` |If no key is
+provided, this flag determines whether the topic is encrypted with a new
+CMK or an AWS managed key. This flag is ignored if any of the following
+are defined: topicProps.encryptionMasterKey, encryptionKey or
+encryptionKeyProps.
+
+|encryptionKey?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.Key.html[`kms.Key`]
+|An optional, imported encryption key to encrypt the SNS Topic with.
+
+|encryptionKeyProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.Key.html#construct-props[`kms.KeyProps`]
+|Optional user provided properties to override the default properties
+for the KMS encryption key used to encrypt the SNS Topic with.
+|===
+
+== Pattern Properties
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|snsTopic
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sns.Topic.html[`sns.Topic`]
+|Returns an instance of the SNS Topic created by the pattern.
+
+|encryptionKey?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.Key.html[`kms.Key`]
+|Returns an instance of the kms.Key associated with the SNS Topic
+
+|s3Bucket?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html[`s3.Bucket`]
+|Returns an instance of the s3.Bucket created by the construct
+
+|s3LoggingBucket?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html[`s3.Bucket`]
+|Returns an instance of s3.Bucket created by the construct as the
+logging bucket for the primary bucket.
+
+|s3BucketInterface
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
+|Returns an instance of s3.IBucket created by the construct.
+|===
+
+== Default settings
+
+Out of the box implementation of the Construct without any override will
+set the following defaults:
+
+=== Amazon S3 Bucket
+
+* Configure Access logging for the S3 Bucket
+* Enable server-side encryption for S3 Bucket using an AWS managed KMS
+Key
+* Enforce encryption of data in transit
+* Turn on the versioning for the S3 Bucket
+* Don’t allow public access for the S3 Bucket
+* Retain the S3 Bucket when deleting the CloudFormation stack
+* Applies Lifecycle rule to move noncurrent object versions to Glacier
+storage after 90 days
+
+=== Amazon SNS Topic
+
+* Configure least privilege SNS Topic access policy to allow the S3
+Bucket to publish messages to it
+* Enable server-side encryption for the SNS Topic using an AWS managed
+KMS Key
+* Enforce encryption of data in transit
+
+== Architecture
+
+
+image::aws-s3-sns.png["Diagram showing the S3 bucket and SNS topic created by the construct",scaledwidth=100%]
+
+// github block
+
+'''''
+
+© Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
