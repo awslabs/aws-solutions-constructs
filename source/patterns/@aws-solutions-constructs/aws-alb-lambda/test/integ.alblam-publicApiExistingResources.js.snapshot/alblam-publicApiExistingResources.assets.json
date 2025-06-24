@@ -1,7 +1,8 @@
 {
-  "version": "40.0.0",
+  "version": "41.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
+      "displayName": "alblam-publicApiExistingResources/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
       "source": {
         "path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
         "packaging": "zip"
@@ -16,6 +17,7 @@
       }
     },
     "44065ab998484f0809423b22009edee6d159633b21d16657230931448f4bec08": {
+      "displayName": "LambdaFunction/Code",
       "source": {
         "path": "asset.44065ab998484f0809423b22009edee6d159633b21d16657230931448f4bec08",
         "packaging": "zip"
@@ -30,6 +32,7 @@
       }
     },
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "alblam-publicApiExistingResources/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
       "source": {
         "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
         "packaging": "zip"
@@ -43,7 +46,8 @@
         }
       }
     },
-    "249dfcc0c708325301a54217866881be2cf5b9e8d6cfefb7fff8622947a4bc05": {
+    "a4d48fab9fa3f8275feb50d36b3a70f963c53a50856dd5777dca085ccdf52680": {
+      "displayName": "alblam-publicApiExistingResources Template",
       "source": {
         "path": "alblam-publicApiExistingResources.template.json",
         "packaging": "file"
@@ -51,7 +55,7 @@
       "destinations": {
         "current_account-us-east-1": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "249dfcc0c708325301a54217866881be2cf5b9e8d6cfefb7fff8622947a4bc05.json",
+          "objectKey": "a4d48fab9fa3f8275feb50d36b3a70f963c53a50856dd5777dca085ccdf52680.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }

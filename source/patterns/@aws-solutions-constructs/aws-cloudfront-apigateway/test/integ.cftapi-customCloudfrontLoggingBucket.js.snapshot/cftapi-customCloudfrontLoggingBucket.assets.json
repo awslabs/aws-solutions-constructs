@@ -29,7 +29,7 @@
         }
       }
     },
-    "012e5d6fe7dcb7bf017406d324971cc295a1ace6759c5e52074a8e0b0be35b3a": {
+    "5dc01953063c6d7c9287c99b3590cce4e2b8c7f85001edd755d7a0e46a73af99": {
       "displayName": "cftapi-customCloudfrontLoggingBucket Template",
       "source": {
         "path": "cftapi-customCloudfrontLoggingBucket.template.json",
@@ -38,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "012e5d6fe7dcb7bf017406d324971cc295a1ace6759c5e52074a8e0b0be35b3a.json",
+          "objectKey": "5dc01953063c6d7c9287c99b3590cce4e2b8c7f85001edd755d7a0e46a73af99.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

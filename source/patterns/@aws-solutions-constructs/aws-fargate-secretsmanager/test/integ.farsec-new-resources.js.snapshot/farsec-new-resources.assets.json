@@ -1,7 +1,8 @@
 {
-  "version": "39.0.0",
+  "version": "41.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
+      "displayName": "farsec-new-resources/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
       "source": {
         "path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
         "packaging": "zip"
@@ -15,7 +16,8 @@
         }
       }
     },
-    "9d269837fa9095fe066bab492c5a9ca2537c656e3d54e410fc78a4a5cfbb0a0c": {
+    "80568be8dc3c81ce5f2d31f0512355c02ccf73426ca789312812e02d9e599228": {
+      "displayName": "farsec-new-resources Template",
       "source": {
         "path": "farsec-new-resources.template.json",
         "packaging": "file"
@@ -23,7 +25,7 @@
       "destinations": {
         "current_account-us-east-1": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "9d269837fa9095fe066bab492c5a9ca2537c656e3d54e410fc78a4a5cfbb0a0c.json",
+          "objectKey": "80568be8dc3c81ce5f2d31f0512355c02ccf73426ca789312812e02d9e599228.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }
