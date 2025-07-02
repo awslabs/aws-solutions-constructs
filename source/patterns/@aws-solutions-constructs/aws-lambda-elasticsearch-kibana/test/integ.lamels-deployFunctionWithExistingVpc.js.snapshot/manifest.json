@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamelsdeployFunctionWithExistingVpcIntegDefaultTestDeployAssertB067F5A6.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/b1233d612340e7a546c4e3d43eea9e47cbce6a3b6a4219f92e007d607718127c.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/581fac514737b63484aa3ef5fbd87b8b83b6107bff7ba8751a67399098d98c9e.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -560,16 +560,8 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           }
@@ -604,6 +596,14 @@
             "data": {
               "attachToRole": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
               ]
             }
           },
@@ -680,42 +680,18 @@
             "data": "testlambdaelasticsearchkibana4LambdaFunction2C5856DF"
           }
         ],
-        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaelasticsearchkibana4LambdaFunctioninlinePolicyAddedToExecutionRole0CFA48A09"
+            "data": "testlambdaelasticsearchkibana4LambdaFunctionLogGroup6244A257"
           }
         ],
         "/lamels-deployFunctionWithExistingVpc/test-lambda-elasticsearch-kibana4/CognitoUserPool": [
@@ -1060,6 +1036,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testlambdaelasticsearchkibana4LambdaFunctioninlinePolicyAddedToExecutionRole0CFA48A09": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana4LambdaFunctioninlinePolicyAddedToExecutionRole0CFA48A09",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamels-deployFunctionWithExistingVpc"
@@ -1071,5 +1056,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "kinlamexistingIntegDefaultTestDeployAssert64C292A9.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe0481d6fd666d1d83e996182fea020397cbaa46f7ce40701995b191bf502a13.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ee97c0d196005acccb823fbea8ecb9174ef2145bf18ae586d4afd8722d90908d.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,10 +82,114 @@
         "kinlam-existing.assets"
       ],
       "metadata": {
+        "/kinlam-existing/test-role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/kinlam-existing/test-role/Importtest-role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/kinlam-existing/test-role/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testroleB50A37BE"
+          }
+        ],
+        "/kinlam-existing/test-role/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/kinlam-existing/test-role/DefaultPolicy/Resource": [
@@ -94,10 +198,60 @@
             "data": "testroleDefaultPolicy884631E2"
           }
         ],
+        "/kinlam-existing/test-fn": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "runtime": "*",
+              "handler": "*",
+              "code": "*",
+              "role": "*"
+            }
+          }
+        ],
         "/kinlam-existing/test-fn/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testfn76BCC25C"
+          }
+        ],
+        "/kinlam-existing/test-fn/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroupName": "*"
+            }
+          }
+        ],
+        "/kinlam-existing/test-fn/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testfnLogGroup0BD091A2"
+          }
+        ],
+        "/kinlam-existing/test-fn/KinesisEventSource:kinlamexistingteststream6B91D225": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "target": "*",
+              "eventSourceArn": "*",
+              "startingPositionTimestamp": "*",
+              "metricsConfig": "*",
+              "supportS3OnFailureDestination": true,
+              "batchSize": "*",
+              "bisectBatchOnError": true,
+              "startingPosition": "LATEST",
+              "reportBatchItemFailures": "*",
+              "maxBatchingWindow": "*",
+              "maxRecordAge": "*",
+              "retryAttempts": "*",
+              "parallelizationFactor": "*",
+              "onFailure": "*",
+              "tumblingWindow": "*",
+              "enabled": "*",
+              "filters": "*",
+              "filterEncryption": "*"
+            }
           }
         ],
         "/kinlam-existing/test-fn/KinesisEventSource:kinlamexistingteststream6B91D225/Resource": [
@@ -106,10 +260,27 @@
             "data": "testfnKinesisEventSourcekinlamexistingteststream6B91D22533D472A8"
           }
         ],
+        "/kinlam-existing/test-stream": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "shardCount": "*",
+              "encryption": "MANAGED"
+            }
+          }
+        ],
         "/kinlam-existing/test-stream/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "teststream04374A09"
+          }
+        ],
+        "/kinlam-existing/test-ks-lambda/SqsDlqQueue": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "KMS_MANAGED"
+            }
           }
         ],
         "/kinlam-existing/test-ks-lambda/SqsDlqQueue/Resource": [
@@ -118,16 +289,54 @@
             "data": "testkslambdaSqsDlqQueueDE67EC6C"
           }
         ],
+        "/kinlam-existing/test-ks-lambda/SqsDlqQueue/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "queues": [
+                "*"
+              ]
+            }
+          }
+        ],
         "/kinlam-existing/test-ks-lambda/SqsDlqQueue/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testkslambdaSqsDlqQueuePolicy48897D8E"
           }
         ],
+        "/kinlam-existing/test-ks-lambda/KinesisStreamGetRecordsIteratorAgeAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
+          }
+        ],
         "/kinlam-existing/test-ks-lambda/KinesisStreamGetRecordsIteratorAgeAlarm/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testkslambdaKinesisStreamGetRecordsIteratorAgeAlarmD5DC1A73"
+          }
+        ],
+        "/kinlam-existing/test-ks-lambda/KinesisStreamReadProvisionedThroughputExceededAlarm": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "metric": {
+                "warnings": "*"
+              },
+              "threshold": "*",
+              "evaluationPeriods": "*",
+              "comparisonOperator": "*",
+              "alarmDescription": "*"
+            }
           }
         ],
         "/kinlam-existing/test-ks-lambda/KinesisStreamReadProvisionedThroughputExceededAlarm/Resource": [
@@ -157,5 +366,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1019.0"
 }

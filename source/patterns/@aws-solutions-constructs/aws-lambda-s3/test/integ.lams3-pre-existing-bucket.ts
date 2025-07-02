@@ -26,6 +26,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-lambda-s3';
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 const existingBucket = CreateScrapBucket(stack, "scrapBucket", { removalPolicy: RemovalPolicy.DESTROY });
 

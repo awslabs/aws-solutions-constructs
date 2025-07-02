@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamkenmultiplesourcesIntegDefaultTestDeployAssertDE50B828.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/88efd640eb254228f20532ca9ab75a47af234fbc45c3b95ccdc203b2b46566ee.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/bc18585263cb74c5d8f5b4836a57132fccab2b7e160aef35a7156439f4f8b17e.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -321,8 +321,8 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
@@ -345,24 +345,16 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           }
@@ -377,6 +369,58 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "multiplesourcesLambdaFunctionServiceRole66EC8973"
+          }
+        ],
+        "/lamken-multiple-sources/multiple-sources/LambdaFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/lamken-multiple-sources/multiple-sources/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "multiplesourcesLambdaFunctionServiceRoleDefaultPolicyF82ADA6A"
           }
         ],
         "/lamken-multiple-sources/multiple-sources/LambdaFunction": [
@@ -418,118 +462,18 @@
             "data": "multiplesourcesLambdaFunction9BDB2DBA"
           }
         ],
-        "/lamken-multiple-sources/multiple-sources/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamken-multiple-sources/multiple-sources/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamken-multiple-sources/multiple-sources/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamken-multiple-sources/multiple-sources/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "multiplesourcesLambdaFunctioninlinePolicyAddedToExecutionRole02D707C8B"
-          }
-        ],
-        "/lamken-multiple-sources/multiple-sources/LambdaFunction/inlinePolicyAddedToExecutionRole-1": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/lamken-multiple-sources/multiple-sources/LambdaFunction/inlinePolicyAddedToExecutionRole-1/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "multiplesourcesLambdaFunctioninlinePolicyAddedToExecutionRole1F955B6B2"
-          }
-        ],
-        "/lamken-multiple-sources/multiple-sources/LambdaFunction/inlinePolicyAddedToExecutionRole-2": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/lamken-multiple-sources/multiple-sources/LambdaFunction/inlinePolicyAddedToExecutionRole-2/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "multiplesourcesLambdaFunctioninlinePolicyAddedToExecutionRole23B3A0248"
+            "data": "multiplesourcesLambdaFunctionLogGroupE7294216"
           }
         ],
         "/lamken-multiple-sources/multiple-sources/kendra-index-role-multiple-sources": [
@@ -642,6 +586,33 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "multiplesourcesLambdaFunctioninlinePolicyAddedToExecutionRole02D707C8B": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "multiplesourcesLambdaFunctioninlinePolicyAddedToExecutionRole02D707C8B",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "multiplesourcesLambdaFunctioninlinePolicyAddedToExecutionRole1F955B6B2": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "multiplesourcesLambdaFunctioninlinePolicyAddedToExecutionRole1F955B6B2",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "multiplesourcesLambdaFunctioninlinePolicyAddedToExecutionRole23B3A0248": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "multiplesourcesLambdaFunctioninlinePolicyAddedToExecutionRole23B3A0248",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamken-multiple-sources"
@@ -653,5 +624,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

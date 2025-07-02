@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "displayName": "lamfhs-new-vpc/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
@@ -43,7 +43,7 @@
         }
       }
     },
-    "0db23bf688ebb44e8abf7d2ef48ceaee1cb0a5f669b31a0f2c927d995cb1a547": {
+    "72e22555c5629b0115b1f0e1dae706b9415c6574caf8a08afc2c1bc0fe154534": {
       "displayName": "lamfhs-new-vpc Template",
       "source": {
         "path": "lamfhs-new-vpc.template.json",
@@ -52,7 +52,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "0db23bf688ebb44e8abf7d2ef48ceaee1cb0a5f669b31a0f2c927d995cb1a547.json",
+          "objectKey": "72e22555c5629b0115b1f0e1dae706b9415c6574caf8a08afc2c1bc0fe154534.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

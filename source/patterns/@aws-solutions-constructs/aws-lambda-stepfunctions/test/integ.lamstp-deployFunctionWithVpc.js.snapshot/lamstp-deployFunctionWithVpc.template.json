@@ -69,6 +69,25 @@
     }
    }
   },
+  "lambdalamstptestLogGroup9E545BC0": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "lambdalamstptestA7F4D461"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
   "testlambdastepfunctionsStateMachineLogGroupD3F22A89": {
    "Type": "AWS::Logs::LogGroup",
    "Properties": {
@@ -381,7 +400,9 @@
         "ec2:CreateNetworkInterface",
         "ec2:DeleteNetworkInterface",
         "ec2:DescribeNetworkInterfaces",
-        "ec2:UnassignPrivateIpAddresses"
+        "ec2:UnassignPrivateIpAddresses",
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
        ],
        "Effect": "Allow",
        "Resource": "*"
@@ -528,33 +549,28 @@
     }
    }
   },
-  "testlambdastepfunctionsLambdaFunctioninlinePolicyAddedToExecutionRole05414E4FF": {
-   "Type": "AWS::IAM::Policy",
+  "testlambdastepfunctionsLambdaFunctionLogGroup6053F42B": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testlambdastepfunctionsLambdaFunctionFC1F0FAE"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testlambdastepfunctionsLambdaFunctioninlinePolicyAddedToExecutionRole05414E4FF",
-    "Roles": [
-     {
-      "Ref": "testlambdastepfunctionsLambdaFunctionServiceRoleA33E2E9C"
-     }
-    ]
+    "RetentionInDays": 731
    },
    "DependsOn": [
     "VpcisolatedSubnet1RouteTableAssociationD259E31A",
     "VpcisolatedSubnet2RouteTableAssociation25A4716F"
-   ]
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "Vpc8378EB38": {
    "Type": "AWS::EC2::VPC",

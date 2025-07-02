@@ -20,6 +20,7 @@ import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 // Setup
 const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename), {});
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 const lambdaProps: lambda.FunctionProps = {
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),

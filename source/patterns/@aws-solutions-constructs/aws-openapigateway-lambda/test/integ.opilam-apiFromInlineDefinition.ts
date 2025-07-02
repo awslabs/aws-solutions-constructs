@@ -22,6 +22,7 @@ import * as jsonApiDefinition from './openapi/apiDefinition.json';
 const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-openapigateway-lambda';
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 new OpenApiGatewayToLambda(stack, 'OpenApiGatewayToLambda', {
   apiDefinitionJson: jsonApiDefinition,

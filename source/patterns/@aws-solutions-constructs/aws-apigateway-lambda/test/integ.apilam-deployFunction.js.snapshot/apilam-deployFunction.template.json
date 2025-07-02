@@ -63,6 +63,40 @@
     }
    }
   },
+  "testapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyA5D0BE32": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyA5D0BE32",
+    "Roles": [
+     {
+      "Ref": "testapigatewaylambdaLambdaFunctionServiceRole5CD2E9F7"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
   "testapigatewaylambdaLambdaFunction18FF222F": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -90,6 +124,7 @@
     }
    },
    "DependsOn": [
+    "testapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyA5D0BE32",
     "testapigatewaylambdaLambdaFunctionServiceRole5CD2E9F7"
    ],
    "Metadata": {
@@ -111,29 +146,24 @@
     }
    }
   },
-  "testapigatewaylambdaLambdaFunctioninlinePolicyAddedToExecutionRole00FEF72FF": {
-   "Type": "AWS::IAM::Policy",
+  "testapigatewaylambdaLambdaFunctionLogGroup2F7E1A23": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testapigatewaylambdaLambdaFunction18FF222F"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testapigatewaylambdaLambdaFunctioninlinePolicyAddedToExecutionRole00FEF72FF",
-    "Roles": [
-     {
-      "Ref": "testapigatewaylambdaLambdaFunctionServiceRole5CD2E9F7"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testapigatewaylambdaApiAccessLogGroupEB3253A2": {
    "Type": "AWS::Logs::LogGroup",
@@ -179,6 +209,7 @@
     "testapigatewaylambdaLambdaRestApiANY1FACA749"
    ],
    "Metadata": {
+    "aws:cdk:do-not-refactor": true,
     "cfn_nag": {
      "rules_to_suppress": [
       {

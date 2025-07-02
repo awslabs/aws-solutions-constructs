@@ -1,5 +1,5 @@
 {
-  "version": "42.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "dbslamexistingtableIntegDefaultTestDeployAssert4B659DF4.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c0d278a74ce0caf5f30e112cab591bff6a7475f50cc1db026e79a82399b14d57.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/de283d052f427dc5b712206cd5155a80b95f10eeba5fa938183a18a966858115.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -123,22 +123,6 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
               "addToPrincipalPolicy": [
                 {}
               ]
@@ -157,6 +141,14 @@
             "data": {
               "attachInlinePolicy": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
@@ -265,6 +257,14 @@
                 {}
               ]
             }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/dbslam-existing-table/test-dynamodbstreams-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
@@ -303,42 +303,18 @@
             "data": "testdynamodbstreamslambdaLambdaFunctionE18EC5EF"
           }
         ],
-        "/dbslam-existing-table/test-dynamodbstreams-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/dbslam-existing-table/test-dynamodbstreams-lambda/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/dbslam-existing-table/test-dynamodbstreams-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/dbslam-existing-table/test-dynamodbstreams-lambda/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testdynamodbstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole02B3D756F"
+            "data": "testdynamodbstreamslambdaLambdaFunctionLogGroup69ECB2AE"
           }
         ],
         "/dbslam-existing-table/test-dynamodbstreams-lambda/LambdaFunction/DynamoDBEventSource:dbslamexistingtablemytable00A85A16": [
@@ -412,6 +388,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testdynamodbstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole02B3D756F": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testdynamodbstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole02B3D756F",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "dbslam-existing-table"
@@ -423,5 +408,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1006.0"
+  "minimumCliVersion": "2.1019.2"
 }

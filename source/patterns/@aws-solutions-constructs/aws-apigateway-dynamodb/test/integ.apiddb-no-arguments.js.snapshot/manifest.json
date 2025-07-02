@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "apiddbnoargumentsIntegDefaultTestDeployAssert79BAC49F.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f27a1d96234933d88e197ea7f325c4024e25db1157e307a14b2a51612dcd7041.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5f315615396d1f1c029fe64320b475ee5e88ebddccffaaf2fa6ade468e4935f4.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,10 +82,40 @@
         "apiddb-no-arguments.assets"
       ],
       "metadata": {
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/DynamoTable": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "billingMode": "PAY_PER_REQUEST",
+              "encryption": "AWS_MANAGED",
+              "partitionKey": {
+                "name": "*",
+                "type": "S"
+              },
+              "pointInTimeRecoverySpecification": {
+                "pointInTimeRecoveryEnabled": true
+              }
+            }
+          }
+        ],
         "/apiddb-no-arguments/test-api-gateway-dynamodb-default/DynamoTable/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaydynamodbdefaultDynamoTable0720D92C"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/DynamoTable/ScalingRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/ApiAccessLogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "retention": 9999
+            }
           }
         ],
         "/apiddb-no-arguments/test-api-gateway-dynamodb-default/ApiAccessLogGroup/Resource": [
@@ -94,16 +124,78 @@
             "data": "testapigatewaydynamodbdefaultApiAccessLogGroup0192183A"
           }
         ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "endpointConfiguration": {
+                "types": [
+                  "EDGE"
+                ]
+              },
+              "cloudWatchRole": false,
+              "deployOptions": {
+                "accessLogDestination": "*",
+                "accessLogFormat": "*",
+                "loggingLevel": "INFO",
+                "dataTraceEnabled": false,
+                "tracingEnabled": true
+              },
+              "defaultMethodOptions": {
+                "authorizationType": "*"
+              }
+            }
+          }
+        ],
         "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaydynamodbdefaultRestApi9102FDF9"
           }
         ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/Deployment": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "description": "*",
+              "api": "*",
+              "retainDeployments": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          }
+        ],
         "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaydynamodbdefaultRestApiDeploymentFAC726F3818e0ad130f9a49152a4afbd35ada7b6"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/DeploymentStage.prod": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "deployment": "*",
+              "accessLogDestination": "*",
+              "accessLogFormat": "*",
+              "loggingLevel": "INFO",
+              "dataTraceEnabled": false,
+              "tracingEnabled": true
+            }
           }
         ],
         "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/DeploymentStage.prod/Resource": [
@@ -118,10 +210,69 @@
             "data": "testapigatewaydynamodbdefaultRestApiEndpointD5AD8DB9"
           }
         ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/Default": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/Default/{id}": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*",
+              "pathPart": "*"
+            }
+          }
+        ],
         "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/Default/{id}/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaydynamodbdefaultRestApiidFD6A9E91"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/Default/{id}/GET": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": {
+                "methodResponses": [
+                  {
+                    "statusCode": "*",
+                    "responseParameters": "*"
+                  },
+                  {
+                    "statusCode": "*",
+                    "responseParameters": "*"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethodResponse": [
+                {
+                  "statusCode": "*",
+                  "responseParameters": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethodResponse": [
+                {
+                  "statusCode": "*",
+                  "responseParameters": "*"
+                }
+              ]
+            }
           }
         ],
         "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/Default/{id}/GET/Resource": [
@@ -130,10 +281,40 @@
             "data": "testapigatewaydynamodbdefaultRestApiidGET94B6F433"
           }
         ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/UsagePlan": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "apiStages": [
+                {
+                  "api": "*"
+                }
+              ]
+            }
+          }
+        ],
         "/apiddb-no-arguments/test-api-gateway-dynamodb-default/RestApi/UsagePlan/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaydynamodbdefaultRestApiUsagePlanA266BB3D"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/LambdaRestApiCloudWatchRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/apiddb-no-arguments/test-api-gateway-dynamodb-default/LambdaRestApiCloudWatchRole/Resource": [
@@ -148,10 +329,89 @@
             "data": "testapigatewaydynamodbdefaultLambdaRestApiAccountE6585EBB"
           }
         ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/api-gateway-role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/api-gateway-role/Importapi-gateway-role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/apiddb-no-arguments/test-api-gateway-dynamodb-default/api-gateway-role/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaydynamodbdefaultapigatewayrole0CDF008A"
+          }
+        ],
+        "/apiddb-no-arguments/test-api-gateway-dynamodb-default/api-gateway-role/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/apiddb-no-arguments/test-api-gateway-dynamodb-default/api-gateway-role/DefaultPolicy/Resource": [
@@ -181,5 +441,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1019.0"
 }

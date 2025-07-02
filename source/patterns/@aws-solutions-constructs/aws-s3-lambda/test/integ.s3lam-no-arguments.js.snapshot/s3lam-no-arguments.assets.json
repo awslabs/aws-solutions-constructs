@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c": {
       "displayName": "test-s3-lambda/LambdaFunction/Code",
@@ -29,7 +29,7 @@
         }
       }
     },
-    "97e6666d4928b6cce12cdfaf61495cf9a3ee72adafc5983bbe6eb92f56ad2c73": {
+    "883e46f5103293a909e607bbd8271f60f6c239044841f9bc00a5ddffcaffa742": {
       "displayName": "s3lam-no-arguments Template",
       "source": {
         "path": "s3lam-no-arguments.template.json",
@@ -38,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "97e6666d4928b6cce12cdfaf61495cf9a3ee72adafc5983bbe6eb92f56ad2c73.json",
+          "objectKey": "883e46f5103293a909e607bbd8271f60f6c239044841f9bc00a5ddffcaffa742.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

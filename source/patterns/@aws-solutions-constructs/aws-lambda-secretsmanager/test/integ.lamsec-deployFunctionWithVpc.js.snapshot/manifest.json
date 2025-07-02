@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamsecdeployFunctionWithVpcIntegDefaultTestDeployAssert66148FF5.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4a576d71013fa3e435a8cc2ba57b944e8821edaca5aecd1b232b75a39e066437.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3a51b8ecdfa04043427c81678fdaaa0ad22b01d45865d6d76339c72faacee15d.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -128,16 +128,8 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
@@ -180,6 +172,14 @@
             "data": {
               "attachToRole": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
               ]
             }
           },
@@ -264,42 +264,18 @@
             "data": "testlambdasecretsmanagerLambdaFunction130E7301"
           }
         ],
-        "/lamsec-deployFunctionWithVpc/test-lambda-secretsmanager/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamsec-deployFunctionWithVpc/test-lambda-secretsmanager/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamsec-deployFunctionWithVpc/test-lambda-secretsmanager/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamsec-deployFunctionWithVpc/test-lambda-secretsmanager/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasecretsmanagerLambdaFunctioninlinePolicyAddedToExecutionRole0A805C55F"
+            "data": "testlambdasecretsmanagerLambdaFunctionLogGroupFB9E5A3C"
           }
         ],
         "/lamsec-deployFunctionWithVpc/test-lambda-secretsmanager/secret": [
@@ -663,6 +639,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testlambdasecretsmanagerLambdaFunctioninlinePolicyAddedToExecutionRole0A805C55F": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasecretsmanagerLambdaFunctioninlinePolicyAddedToExecutionRole0A805C55F",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamsec-deployFunctionWithVpc"
@@ -674,5 +659,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

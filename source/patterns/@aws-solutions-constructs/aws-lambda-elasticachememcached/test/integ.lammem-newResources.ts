@@ -23,6 +23,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test with new resourcesfor aws-lambda-elasticachememcached';
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 // Definitions
 const props: LambdaToElasticachememcachedProps = {

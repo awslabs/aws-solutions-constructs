@@ -27,6 +27,7 @@ const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 // Create VPC
 const vpc = defaults.getTestVpc(stack);

@@ -364,7 +364,7 @@ export class HelloConstructsStack extends Stack {
     const api_lambda_props: ApiGatewayToLambdaProps = {
       lambdaFunctionProps: {
         code: lambda.Code.fromAsset('lambda'),
-        runtime: lambda.Runtime.NODEJS_20_X,
+        runtime: lambda.Runtime.NODEJS_22_X,
         handler: 'hello.handler'
       },
       apiGatewayProps: {
@@ -449,7 +449,7 @@ public class HelloConstructsStack extends Stack {
 
         new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern", new ApiGatewayToLambdaProps.Builder()
                 .lambdaFunctionProps(new FunctionProps.Builder()
-                        .runtime(Runtime.NODEJS_14_X) // execution environment
+                        .runtime(Runtime.NODEJS_22_X) // execution environment
                         .code(Code.fromAsset("lambda")) // code loaded from the "lambda" directory
                         .handler("hello.handler") // file is "hello", function is "handler"
                         .build())

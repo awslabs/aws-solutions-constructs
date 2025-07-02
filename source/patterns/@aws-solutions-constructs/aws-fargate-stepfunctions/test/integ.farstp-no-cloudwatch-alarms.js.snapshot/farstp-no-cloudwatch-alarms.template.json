@@ -1149,6 +1149,25 @@
     }
    }
   },
+  "lambdafarstptestLogGroupDDDC8A12": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "lambdafarstptest04DC4058"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
   "testconstructStateMachineLogGroup2EB4F48B": {
    "Type": "AWS::Logs::LogGroup",
    "Properties": {

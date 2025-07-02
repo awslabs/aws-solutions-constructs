@@ -1,5 +1,5 @@
 {
-  "version": "42.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamddbuseexistingfuncIntegDefaultTestDeployAssert48D284DD.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/534d74fb32bcb4ad6182b21fad4718422f839cb964c0ca21e3f1271a3bff52b6.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/434e0484734d9141dee3ba6af49b8208b3eaf97817dc1874637cbdd2b7ae0289.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -96,22 +96,6 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
               "addToPrincipalPolicy": [
                 {}
               ]
@@ -130,6 +114,14 @@
             "data": {
               "attachInlinePolicy": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           }
@@ -164,6 +156,14 @@
             "data": {
               "attachToRole": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
               ]
             }
           },
@@ -221,42 +221,18 @@
             "data": "LambdaFunctionBF21E41F"
           }
         ],
-        "/lamddb-use-existing-func/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamddb-use-existing-func/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamddb-use-existing-func/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamddb-use-existing-func/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "LambdaFunctioninlinePolicyAddedToExecutionRole007875684"
+            "data": "LambdaFunctionLogGroup286B0B9E"
           }
         ],
         "/lamddb-use-existing-func/test-lambda-dynamodb-stack/DynamoTable": [
@@ -265,10 +241,12 @@
             "data": {
               "billingMode": "PAY_PER_REQUEST",
               "encryption": "AWS_MANAGED",
-              "pointInTimeRecovery": true,
               "partitionKey": {
                 "name": "*",
                 "type": "S"
+              },
+              "pointInTimeRecoverySpecification": {
+                "pointInTimeRecoveryEnabled": true
               }
             }
           }
@@ -296,6 +274,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "LambdaFunctioninlinePolicyAddedToExecutionRole007875684": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctioninlinePolicyAddedToExecutionRole007875684",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamddb-use-existing-func"
@@ -307,5 +294,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1006.0"
+  "minimumCliVersion": "2.1019.2"
 }

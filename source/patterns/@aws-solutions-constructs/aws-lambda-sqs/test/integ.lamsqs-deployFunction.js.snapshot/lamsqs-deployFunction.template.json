@@ -70,6 +70,14 @@
      "Statement": [
       {
        "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
         "sqs:GetQueueAttributes",
         "sqs:GetQueueUrl",
         "sqs:SendMessage"
@@ -91,6 +99,16 @@
       "Ref": "testlambdasqsLambdaFunctionServiceRoleC0430CA8"
      }
     ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
    }
   },
   "testlambdasqsLambdaFunction28E890A1": {
@@ -145,29 +163,24 @@
     }
    }
   },
-  "testlambdasqsLambdaFunctioninlinePolicyAddedToExecutionRole0ADACB8F6": {
-   "Type": "AWS::IAM::Policy",
+  "testlambdasqsLambdaFunctionLogGroupEC4B303C": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testlambdasqsLambdaFunction28E890A1"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testlambdasqsLambdaFunctioninlinePolicyAddedToExecutionRole0ADACB8F6",
-    "Roles": [
-     {
-      "Ref": "testlambdasqsLambdaFunctionServiceRoleC0430CA8"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testlambdasqsqueuedlq0AFE8CA9": {
    "Type": "AWS::SQS::Queue",

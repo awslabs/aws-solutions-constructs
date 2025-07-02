@@ -68,6 +68,25 @@
     }
    }
   },
+  "badfunctionLogGroup2A04BE60": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "badfunction3559C0E9"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
   "lambdadbsstptestServiceRole4515C09E": {
    "Type": "AWS::IAM::Role",
    "Properties": {
@@ -135,6 +154,25 @@
      ]
     }
    }
+  },
+  "lambdadbsstptestLogGroup61B417AA": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "lambdadbsstptestE56C39A8"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testdbspipesstatesconstructDynamoTable5457FA02": {
    "Type": "AWS::DynamoDB::Table",

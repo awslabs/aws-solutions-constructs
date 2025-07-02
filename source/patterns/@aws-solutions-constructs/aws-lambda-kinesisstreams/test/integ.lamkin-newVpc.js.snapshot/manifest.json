@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamkinnewVpcIntegDefaultTestDeployAssert16AC3D59.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c7a5bb02790a29e029f81fed7ea1ec826c63d7d61f4538e67c883a301882744d.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3dac982dc8385548952e8a4e67114775afc77873495772d6f59e04a6fc98e1a9.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -128,16 +128,8 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
@@ -180,6 +172,14 @@
             "data": {
               "attachToRole": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
               ]
             }
           },
@@ -264,42 +264,18 @@
             "data": "testlambdakinesisstreamsLambdaFunction4348B6E4"
           }
         ],
-        "/lamkin-newVpc/test-lambda-kinesisstreams/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamkin-newVpc/test-lambda-kinesisstreams/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamkin-newVpc/test-lambda-kinesisstreams/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamkin-newVpc/test-lambda-kinesisstreams/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdakinesisstreamsLambdaFunctioninlinePolicyAddedToExecutionRole022FB8950"
+            "data": "testlambdakinesisstreamsLambdaFunctionLogGroup9EDBB3CA"
           }
         ],
         "/lamkin-newVpc/test-lambda-kinesisstreams/KinesisStream": [
@@ -703,6 +679,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testlambdakinesisstreamsLambdaFunctioninlinePolicyAddedToExecutionRole022FB8950": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdakinesisstreamsLambdaFunctioninlinePolicyAddedToExecutionRole022FB8950",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamkin-newVpc"
@@ -714,5 +699,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

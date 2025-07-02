@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "iotlamddb-with-vpc/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -29,7 +29,7 @@
         }
       }
     },
-    "5fb800e3ca480937539bc3b53a7cc3afceca37ce09537d6801ecca30f7276a6e": {
+    "0ced7d83e278f433e8f1b142f09729a5ef609a048ae00fea1ec2b680386dc4cd": {
       "displayName": "iotlamddb-with-vpc Template",
       "source": {
         "path": "iotlamddb-with-vpc.template.json",
@@ -38,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "5fb800e3ca480937539bc3b53a7cc3afceca37ce09537d6801ecca30f7276a6e.json",
+          "objectKey": "0ced7d83e278f433e8f1b142f09729a5ef609a048ae00fea1ec2b680386dc4cd.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

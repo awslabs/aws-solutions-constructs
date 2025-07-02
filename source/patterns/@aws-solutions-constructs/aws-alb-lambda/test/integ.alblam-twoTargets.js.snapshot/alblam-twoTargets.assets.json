@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "alblam-twoTargets/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -46,7 +46,7 @@
         }
       }
     },
-    "198c2458cfea676bcccc2c1a8098784a85235e0e35ecd2e894e3715468310849": {
+    "090cc18123656ab1a22a88de6cb71b9ac208c432256b80db379f96795c4941b7": {
       "displayName": "alblam-twoTargets Template",
       "source": {
         "path": "alblam-twoTargets.template.json",
@@ -55,7 +55,7 @@
       "destinations": {
         "current_account-us-east-1": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "198c2458cfea676bcccc2c1a8098784a85235e0e35ecd2e894e3715468310849.json",
+          "objectKey": "090cc18123656ab1a22a88de6cb71b9ac208c432256b80db379f96795c4941b7.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }

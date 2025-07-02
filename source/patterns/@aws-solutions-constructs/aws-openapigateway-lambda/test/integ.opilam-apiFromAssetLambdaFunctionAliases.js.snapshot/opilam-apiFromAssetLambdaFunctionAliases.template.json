@@ -63,6 +63,40 @@
     }
    }
   },
+  "LambdaFunctionServiceRoleDefaultPolicy126C8897": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
+    "Roles": [
+     {
+      "Ref": "LambdaFunctionServiceRole0C4CDE0B"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
   "LambdaFunctionBF21E41F": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -90,6 +124,7 @@
     }
    },
    "DependsOn": [
+    "LambdaFunctionServiceRoleDefaultPolicy126C8897",
     "LambdaFunctionServiceRole0C4CDE0B"
    ],
    "Metadata": {
@@ -111,29 +146,24 @@
     }
    }
   },
-  "LambdaFunctioninlinePolicyAddedToExecutionRole007875684": {
-   "Type": "AWS::IAM::Policy",
+  "LambdaFunctionLogGroup286B0B9E": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "LambdaFunctionBF21E41F"
+       }
+      ]
+     ]
     },
-    "PolicyName": "LambdaFunctioninlinePolicyAddedToExecutionRole007875684",
-    "Roles": [
-     {
-      "Ref": "LambdaFunctionServiceRole0C4CDE0B"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "LambdaFunctionCurrentVersion7D5C86E3e1fbde6f17ee9d8a6083dfbb39f7780b": {
    "Type": "AWS::Lambda::Version",
@@ -143,7 +173,18 @@
     }
    },
    "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:do-not-refactor": true
+   }
+  },
+  "ourloggroup6D01057B": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
   },
   "PhotosLambdaAliasTestFromAssetServiceRole57A6A5AD": {
    "Type": "AWS::IAM::Role",
@@ -207,6 +248,40 @@
     }
    }
   },
+  "PhotosLambdaAliasTestFromAssetServiceRoleDefaultPolicyB9987B9A": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "PhotosLambdaAliasTestFromAssetServiceRoleDefaultPolicyB9987B9A",
+    "Roles": [
+     {
+      "Ref": "PhotosLambdaAliasTestFromAssetServiceRole57A6A5AD"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
   "PhotosLambdaAliasTestFromAsset5EBB242B": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -223,6 +298,11 @@
     },
     "FunctionName": "PhotosLambdaAliasTestFromAsset",
     "Handler": "index.handler",
+    "LoggingConfig": {
+     "LogGroup": {
+      "Ref": "ourloggroup6D01057B"
+     }
+    },
     "Role": {
      "Fn::GetAtt": [
       "PhotosLambdaAliasTestFromAssetServiceRole57A6A5AD",
@@ -235,6 +315,7 @@
     }
    },
    "DependsOn": [
+    "PhotosLambdaAliasTestFromAssetServiceRoleDefaultPolicyB9987B9A",
     "PhotosLambdaAliasTestFromAssetServiceRole57A6A5AD"
    ],
    "Metadata": {
@@ -254,30 +335,6 @@
       }
      ]
     }
-   }
-  },
-  "PhotosLambdaAliasTestFromAssetinlinePolicyAddedToExecutionRole0CCFB3921": {
-   "Type": "AWS::IAM::Policy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "PolicyName": "PhotosLambdaAliasTestFromAssetinlinePolicyAddedToExecutionRole0CCFB3921",
-    "Roles": [
-     {
-      "Ref": "PhotosLambdaAliasTestFromAssetServiceRole57A6A5AD"
-     }
-    ]
    }
   },
   "PhotosLambdaAliasTestFromAssetOpenApiGatewayToLambdaPermitAPIGInvocationB7CC159F": {
@@ -428,6 +485,40 @@
     }
    }
   },
+  "OpenApiGatewayToLambdaLambdaFunctionServiceRoleDefaultPolicy90DFA0A8": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "OpenApiGatewayToLambdaLambdaFunctionServiceRoleDefaultPolicy90DFA0A8",
+    "Roles": [
+     {
+      "Ref": "OpenApiGatewayToLambdaLambdaFunctionServiceRoleACE09A85"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
   "OpenApiGatewayToLambdaLambdaFunctionC7227471": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -457,6 +548,7 @@
     }
    },
    "DependsOn": [
+    "OpenApiGatewayToLambdaLambdaFunctionServiceRoleDefaultPolicy90DFA0A8",
     "OpenApiGatewayToLambdaLambdaFunctionServiceRoleACE09A85"
    ],
    "Metadata": {
@@ -478,29 +570,24 @@
     }
    }
   },
-  "OpenApiGatewayToLambdaLambdaFunctioninlinePolicyAddedToExecutionRole02B56CE3C": {
-   "Type": "AWS::IAM::Policy",
+  "OpenApiGatewayToLambdaLambdaFunctionLogGroupFDDE1E2C": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "OpenApiGatewayToLambdaLambdaFunctionC7227471"
+       }
+      ]
+     ]
     },
-    "PolicyName": "OpenApiGatewayToLambdaLambdaFunctioninlinePolicyAddedToExecutionRole02B56CE3C",
-    "Roles": [
-     {
-      "Ref": "OpenApiGatewayToLambdaLambdaFunctionServiceRoleACE09A85"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "OpenApiGatewayToLambdaApiTemplateWriterPolicy5B3085E5": {
    "Type": "AWS::IAM::Policy",
@@ -619,6 +706,16 @@
          ]
         }
        ]
+      },
+      {
+       "Action": "lambda:GetFunction",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "OpenApiGatewayToLambdaLambdaFunctionC7227471",
+         "Arn"
+        ]
+       }
       }
      ],
      "Version": "2012-10-17"
@@ -692,31 +789,24 @@
     }
    }
   },
-  "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventinlinePolicyAddedToExecutionRole03000DF90": {
-   "Type": "AWS::IAM::Policy",
+  "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventLogGroupBE6349D9": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": "lambda:GetFunction",
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "OpenApiGatewayToLambdaLambdaFunctionC7227471",
-         "Arn"
-        ]
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventEF37D730"
        }
-      }
-     ],
-     "Version": "2012-10-17"
+      ]
+     ]
     },
-    "PolicyName": "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventinlinePolicyAddedToExecutionRole03000DF90",
-    "Roles": [
-     {
-      "Ref": "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventServiceRoleFEE201A1"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "OpenApiGatewayToLambdaApiTemplateWriterCustomResource957D1BA4": {
    "Type": "Custom::TemplateWriter",
@@ -841,6 +931,7 @@
     }
    },
    "Metadata": {
+    "aws:cdk:do-not-refactor": true,
     "cfn_nag": {
      "rules_to_suppress": [
       {

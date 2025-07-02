@@ -1,5 +1,5 @@
 {
-  "version": "42.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "sqslamdeployFifoQueueIntegDefaultTestDeployAssert77FD67F7.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e483dd752ec5563288937f40e9e669e17e63820d9fb43c3ed717487f67155e4c.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/78bca1a8a3fb95f3f34e6c61fe1e61e59621db7d4b9e43d7cc62c8b0fe491521.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -96,22 +96,6 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
               "addToPrincipalPolicy": [
                 {}
               ]
@@ -130,6 +114,14 @@
             "data": {
               "attachInlinePolicy": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           }
@@ -164,6 +156,14 @@
             "data": {
               "attachToRole": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
               ]
             }
           },
@@ -212,42 +212,18 @@
             "data": "testsqslambdafifoLambdaFunction0F3AE705"
           }
         ],
-        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testsqslambdafifoLambdaFunctioninlinePolicyAddedToExecutionRole0DAD3262B"
+            "data": "testsqslambdafifoLambdaFunctionLogGroupF2545C87"
           }
         ],
         "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/LambdaFunction/SqsEventSource:sqslamdeployFifoQueuetestsqslambdafifoqueue471FB916": [
@@ -352,6 +328,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testsqslambdafifoLambdaFunctioninlinePolicyAddedToExecutionRole0DAD3262B": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testsqslambdafifoLambdaFunctioninlinePolicyAddedToExecutionRole0DAD3262B",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "sqslam-deployFifoQueue"
@@ -363,5 +348,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1006.0"
+  "minimumCliVersion": "2.1019.2"
 }

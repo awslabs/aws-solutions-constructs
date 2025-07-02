@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "keypolicyupdaterIntegDefaultTestDeployAssert2855331B.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f9816fbcd68754140aa5075e3462c59c97e329dfb430c3d8247f7ac5d5fc9075.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/73474973e615eed10d13b589af8af3c91fd829460468365dd2a3246d31227123.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -168,6 +168,14 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
               "attachInlinePolicy": [
                 "*"
               ]
@@ -210,6 +218,42 @@
             "data": "LambdaFunctionServiceRole0C4CDE0B"
           }
         ],
+        "/key-policy-updater/LambdaFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/key-policy-updater/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctionServiceRoleDefaultPolicy126C8897"
+          }
+        ],
         "/key-policy-updater/LambdaFunction": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -243,42 +287,18 @@
             "data": "LambdaFunctionBF21E41F"
           }
         ],
-        "/key-policy-updater/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/key-policy-updater/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/key-policy-updater/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/key-policy-updater/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "LambdaFunctioninlinePolicyAddedToExecutionRole007875684"
+            "data": "LambdaFunctionLogGroup286B0B9E"
           }
         ],
         "/key-policy-updater/TestResourceCmkPolicy": [
@@ -389,16 +409,8 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           }
@@ -443,6 +455,14 @@
                 {}
               ]
             }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/key-policy-updater/KmsKeyPolicyUpdateProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource": [
@@ -457,42 +477,18 @@
             "data": "KmsKeyPolicyUpdateProviderframeworkonEventEC76BE2C"
           }
         ],
-        "/key-policy-updater/KmsKeyPolicyUpdateProvider/framework-onEvent/inlinePolicyAddedToExecutionRole-0": [
+        "/key-policy-updater/KmsKeyPolicyUpdateProvider/framework-onEvent/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/key-policy-updater/KmsKeyPolicyUpdateProvider/framework-onEvent/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/key-policy-updater/KmsKeyPolicyUpdateProvider/framework-onEvent/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "KmsKeyPolicyUpdateProviderframeworkonEventinlinePolicyAddedToExecutionRole0DC7D970F"
+            "data": "KmsKeyPolicyUpdateProviderframeworkonEventLogGroupB7617255"
           }
         ],
         "/key-policy-updater/LatestNodeRuntimeMap": [
@@ -524,6 +520,24 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "LambdaFunctioninlinePolicyAddedToExecutionRole007875684": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaFunctioninlinePolicyAddedToExecutionRole007875684",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "KmsKeyPolicyUpdateProviderframeworkonEventinlinePolicyAddedToExecutionRole0DC7D970F": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KmsKeyPolicyUpdateProviderframeworkonEventinlinePolicyAddedToExecutionRole0DC7D970F",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "key-policy-updater"
@@ -535,5 +549,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

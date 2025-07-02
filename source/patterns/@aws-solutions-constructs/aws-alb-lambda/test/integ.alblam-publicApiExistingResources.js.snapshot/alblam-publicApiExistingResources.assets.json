@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "alblam-publicApiExistingResources/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -46,7 +46,7 @@
         }
       }
     },
-    "a4d48fab9fa3f8275feb50d36b3a70f963c53a50856dd5777dca085ccdf52680": {
+    "a1e4b3b06be1a8c801b32c2e9a8a786a95b11f921f7988b02f1cb17383a5fb41": {
       "displayName": "alblam-publicApiExistingResources Template",
       "source": {
         "path": "alblam-publicApiExistingResources.template.json",
@@ -55,7 +55,7 @@
       "destinations": {
         "current_account-us-east-1": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "a4d48fab9fa3f8275feb50d36b3a70f963c53a50856dd5777dca085ccdf52680.json",
+          "objectKey": "a1e4b3b06be1a8c801b32c2e9a8a786a95b11f921f7988b02f1cb17383a5fb41.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }

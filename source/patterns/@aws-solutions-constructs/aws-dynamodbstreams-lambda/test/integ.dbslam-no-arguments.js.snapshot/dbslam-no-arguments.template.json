@@ -68,7 +68,11 @@
     "PolicyDocument": {
      "Statement": [
       {
-       "Action": "dynamodb:ListStreams",
+       "Action": [
+        "dynamodb:ListStreams",
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
        "Effect": "Allow",
        "Resource": "*"
       },
@@ -109,6 +113,16 @@
       "Ref": "testdynamodbstreamslambdaLambdaFunctionServiceRole17CB5CA1"
      }
     ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
    }
   },
   "testdynamodbstreamslambdaLambdaFunctionE18EC5EF": {
@@ -160,29 +174,24 @@
     }
    }
   },
-  "testdynamodbstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole02B3D756F": {
-   "Type": "AWS::IAM::Policy",
+  "testdynamodbstreamslambdaLambdaFunctionLogGroup69ECB2AE": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testdynamodbstreamslambdaLambdaFunctionE18EC5EF"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testdynamodbstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole02B3D756F",
-    "Roles": [
-     {
-      "Ref": "testdynamodbstreamslambdaLambdaFunctionServiceRole17CB5CA1"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testdynamodbstreamslambdaLambdaFunctionDynamoDBEventSourcedbslamnoargumentstestdynamodbstreamslambdaDynamoTable052A32715F190F5F": {
    "Type": "AWS::Lambda::EventSourceMapping",

@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamopnexistingvpcIntegDefaultTestDeployAssert4A7EE058.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/4b2909a1a87ad822cfaa7b171fc5fc3ebd789bc58fd71df8f0958388feadaad1.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/c3f386d2a79ca62e1267055b5d870e5fb2789293e47eefd4dc42970fb0afe5e2.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -560,16 +560,8 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           }
@@ -604,6 +596,14 @@
             "data": {
               "attachToRole": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
               ]
             }
           },
@@ -680,42 +680,18 @@
             "data": "testlambdaelasticsearchkibana4LambdaFunction2C5856DF"
           }
         ],
-        "/lamopn-existing-vpc/test-lambda-elasticsearch-kibana4/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamopn-existing-vpc/test-lambda-elasticsearch-kibana4/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamopn-existing-vpc/test-lambda-elasticsearch-kibana4/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamopn-existing-vpc/test-lambda-elasticsearch-kibana4/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaelasticsearchkibana4LambdaFunctioninlinePolicyAddedToExecutionRole0CFA48A09"
+            "data": "testlambdaelasticsearchkibana4LambdaFunctionLogGroup6244A257"
           }
         ],
         "/lamopn-existing-vpc/test-lambda-elasticsearch-kibana4/CognitoUserPool": [
@@ -1060,6 +1036,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testlambdaelasticsearchkibana4LambdaFunctioninlinePolicyAddedToExecutionRole0CFA48A09": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana4LambdaFunctioninlinePolicyAddedToExecutionRole0CFA48A09",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamopn-existing-vpc"
@@ -1071,5 +1056,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

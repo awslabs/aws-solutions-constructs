@@ -21,7 +21,7 @@ import * as cdk from 'aws-cdk-lib';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
 import * as ec2 from "aws-cdk-lib/aws-ec2";
-import { buildInferenceProfile , createAreaRegionMapping, CheckBedrockInferenceProps } from '@aws-solutions-constructs/core';
+import { buildInferenceProfile , createAreaRegionMapping,  CheckBedrockInferenceProps } from '@aws-solutions-constructs/core';
 
 /**
  * @summary The properties for the LambdaToSns class.

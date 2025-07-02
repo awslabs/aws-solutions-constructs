@@ -1,7 +1,8 @@
 {
-  "version": "40.0.0",
+  "version": "44.0.0",
   "files": {
     "e4dc8c22c79add1b62eb2b2d313770cba3dc11a6a8f8e386dd8723853be0265d": {
+      "displayName": "SampleAsset",
       "source": {
         "path": "asset.e4dc8c22c79add1b62eb2b2d313770cba3dc11a6a8f8e386dd8723853be0265d.tar.gz",
         "packaging": "file"
@@ -15,6 +16,7 @@
       }
     },
     "d894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15": {
+      "displayName": "test-lambda-sagemaker/LambdaFunction/Code",
       "source": {
         "path": "asset.d894a15aa0242919d44274cbb8ddd33f39cce242789e85e67e642da0a2926e15",
         "packaging": "zip"
@@ -27,7 +29,8 @@
         }
       }
     },
-    "3d5e36c90429973e0b64a5e76e48543d565670405a9582b6dae01a9129943f6b": {
+    "bd36fce1a112358d52702b1dfc87aec1c1035ff223702c5af90bf9b880a9d4ee": {
+      "displayName": "lamsag-deployFunction Template",
       "source": {
         "path": "lamsag-deployFunction.template.json",
         "packaging": "file"
@@ -35,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "3d5e36c90429973e0b64a5e76e48543d565670405a9582b6dae01a9129943f6b.json",
+          "objectKey": "bd36fce1a112358d52702b1dfc87aec1c1035ff223702c5af90bf9b880a9d4ee.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

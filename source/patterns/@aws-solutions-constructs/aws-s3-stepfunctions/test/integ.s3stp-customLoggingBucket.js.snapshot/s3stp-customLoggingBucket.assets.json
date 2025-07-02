@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "displayName": "s3stp-customLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
@@ -15,7 +15,7 @@
         }
       }
     },
-    "d729f6e77ecb64f00a627dfe320ac7080e6af7ee09c2b885e25b4fa4ab092d87": {
+    "15c563f9bd31e3dea18d5d5f50703bbfe93a4d0b9ce0a0849e942c8eef4c039a": {
       "displayName": "s3stp-customLoggingBucket Template",
       "source": {
         "path": "s3stp-customLoggingBucket.template.json",
@@ -24,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "d729f6e77ecb64f00a627dfe320ac7080e6af7ee09c2b885e25b4fa4ab092d87.json",
+          "objectKey": "15c563f9bd31e3dea18d5d5f50703bbfe93a4d0b9ce0a0849e942c8eef4c039a.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lambedsingleregionIntegDefaultTestDeployAssertBF812D85.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/70173c074415be65df00341d3f84b73cefdeebab6858b6a5ebf90d7f19a170dd.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/addfc35e74f0b334fb00aa55ecd1749abfd8c2e2f934169adde498adcc9ba854.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -96,8 +96,8 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
@@ -120,24 +120,16 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           }
@@ -152,6 +144,58 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdainferencepropsLambdaFunctionServiceRole102487FD"
+          }
+        ],
+        "/lambed-single-region/test-lambda-inferenceprops/LambdaFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/lambed-single-region/test-lambda-inferenceprops/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdainferencepropsLambdaFunctionServiceRoleDefaultPolicyB1E40609"
           }
         ],
         "/lambed-single-region/test-lambda-inferenceprops/LambdaFunction": [
@@ -203,118 +247,18 @@
             "data": "testlambdainferencepropsLambdaFunction2FD85C24"
           }
         ],
-        "/lambed-single-region/test-lambda-inferenceprops/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lambed-single-region/test-lambda-inferenceprops/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lambed-single-region/test-lambda-inferenceprops/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lambed-single-region/test-lambda-inferenceprops/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdainferencepropsLambdaFunctioninlinePolicyAddedToExecutionRole09A675D51"
-          }
-        ],
-        "/lambed-single-region/test-lambda-inferenceprops/LambdaFunction/inlinePolicyAddedToExecutionRole-1": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/lambed-single-region/test-lambda-inferenceprops/LambdaFunction/inlinePolicyAddedToExecutionRole-1/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdainferencepropsLambdaFunctioninlinePolicyAddedToExecutionRole1121B30C3"
-          }
-        ],
-        "/lambed-single-region/test-lambda-inferenceprops/LambdaFunction/inlinePolicyAddedToExecutionRole-2": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/lambed-single-region/test-lambda-inferenceprops/LambdaFunction/inlinePolicyAddedToExecutionRole-2/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdainferencepropsLambdaFunctioninlinePolicyAddedToExecutionRole2DBB277C5"
+            "data": "testlambdainferencepropsLambdaFunctionLogGroup041701BC"
           }
         ],
         "/lambed-single-region/test-lambda-inferenceprops/test-lambda-inferenceprops-area-prefix-mapping": [
@@ -365,5 +309,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

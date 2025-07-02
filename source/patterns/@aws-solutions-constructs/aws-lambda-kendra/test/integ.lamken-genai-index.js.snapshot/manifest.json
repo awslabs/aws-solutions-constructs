@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamkengenaiindexIntegDefaultTestDeployAssert33BD740C.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/41cee5e7733174f213ffe4bb82c50c395dee4ce689203f3a601732437a21927c.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8434213250a18324c0eb71ec3fc2dd7dbd06df89bb088a810a2d5f7a7681c868.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -209,8 +209,8 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
@@ -233,24 +233,16 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           }
@@ -265,6 +257,58 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "genaiindexLambdaFunctionServiceRoleE929EAD8"
+          }
+        ],
+        "/lamken-genai-index/genai-index/LambdaFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/lamken-genai-index/genai-index/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "genaiindexLambdaFunctionServiceRoleDefaultPolicy18386D50"
           }
         ],
         "/lamken-genai-index/genai-index/LambdaFunction": [
@@ -306,118 +350,18 @@
             "data": "genaiindexLambdaFunctionD79F5018"
           }
         ],
-        "/lamken-genai-index/genai-index/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamken-genai-index/genai-index/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamken-genai-index/genai-index/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamken-genai-index/genai-index/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "genaiindexLambdaFunctioninlinePolicyAddedToExecutionRole02296A6AC"
-          }
-        ],
-        "/lamken-genai-index/genai-index/LambdaFunction/inlinePolicyAddedToExecutionRole-1": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/lamken-genai-index/genai-index/LambdaFunction/inlinePolicyAddedToExecutionRole-1/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "genaiindexLambdaFunctioninlinePolicyAddedToExecutionRole1B78E0048"
-          }
-        ],
-        "/lamken-genai-index/genai-index/LambdaFunction/inlinePolicyAddedToExecutionRole-2": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/lamken-genai-index/genai-index/LambdaFunction/inlinePolicyAddedToExecutionRole-2/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "genaiindexLambdaFunctioninlinePolicyAddedToExecutionRole2D07C016D"
+            "data": "genaiindexLambdaFunctionLogGroup74D2BC4C"
           }
         ],
         "/lamken-genai-index/genai-index/kendra-index-role-genai-index": [
@@ -493,6 +437,33 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "genaiindexLambdaFunctioninlinePolicyAddedToExecutionRole02296A6AC": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "genaiindexLambdaFunctioninlinePolicyAddedToExecutionRole02296A6AC",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "genaiindexLambdaFunctioninlinePolicyAddedToExecutionRole1B78E0048": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "genaiindexLambdaFunctioninlinePolicyAddedToExecutionRole1B78E0048",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "genaiindexLambdaFunctioninlinePolicyAddedToExecutionRole2D07C016D": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "genaiindexLambdaFunctioninlinePolicyAddedToExecutionRole2D07C016D",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamken-genai-index"
@@ -504,5 +475,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

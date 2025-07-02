@@ -1,5 +1,5 @@
 {
-  "version": "38.0.1",
+  "version": "44.0.0",
   "artifacts": {
     "dbspstpexistingstatemachineIntegDefaultTestDeployAssert3C3118B7.assets": {
       "type": "cdk:asset-manifest",
@@ -16,7 +16,6 @@
         "templateFile": "dbspstpexistingstatemachineIntegDefaultTestDeployAssert3C3118B7.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
-        "notificationArns": [],
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
         "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/21fbb51d7b23f6a6c262b46a9caee79d744a3ac019fd45422d988b96d44b2a22.json",
@@ -65,10 +64,9 @@
         "templateFile": "dbspstp-existing-state-machine.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
-        "notificationArns": [],
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c4c50147e5bb7bc2be0d81507bdbe1b827dd1c8e3eac870ee7d59c4eaf4c2b32.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d2793f282c03a740dcd18972c0f9d277064702d4958d29300a369ff4d0ac49fd.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -84,6 +82,38 @@
         "dbspstp-existing-state-machine.assets"
       ],
       "metadata": {
+        "/dbspstp-existing-state-machine/lambdadbsstp-test-state-machine": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          }
+        ],
+        "/dbspstp-existing-state-machine/lambdadbsstp-test-state-machine/ServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "managedPolicies": [
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          }
+        ],
+        "/dbspstp-existing-state-machine/lambdadbsstp-test-state-machine/ServiceRole/ImportServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/dbspstp-existing-state-machine/lambdadbsstp-test-state-machine/ServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -96,10 +126,111 @@
             "data": "lambdadbsstpteststatemachine3BB0B3E0"
           }
         ],
+        "/dbspstp-existing-state-machine/lambdadbsstp-test-state-machine/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroupName": "*"
+            }
+          }
+        ],
+        "/dbspstp-existing-state-machine/lambdadbsstp-test-state-machine/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdadbsstpteststatemachineLogGroup8DCF919C"
+          }
+        ],
+        "/dbspstp-existing-state-machine/dbsstp-test-state-machine": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "definitionBody": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToRolePolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/dbspstp-existing-state-machine/dbsstp-test-state-machine/Role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/dbspstp-existing-state-machine/dbsstp-test-state-machine/Role/ImportRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/dbspstp-existing-state-machine/dbsstp-test-state-machine/Role/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "dbsstpteststatemachineRole41CB13EC"
+          }
+        ],
+        "/dbspstp-existing-state-machine/dbsstp-test-state-machine/Role/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/dbspstp-existing-state-machine/dbsstp-test-state-machine/Role/DefaultPolicy/Resource": [
@@ -114,10 +245,41 @@
             "data": "dbsstpteststatemachine94317E1F"
           }
         ],
+        "/dbspstp-existing-state-machine/test-dbs-pipes-states-construct/DynamoTable": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "billingMode": "PAY_PER_REQUEST",
+              "encryption": "AWS_MANAGED",
+              "partitionKey": {
+                "name": "*",
+                "type": "S"
+              },
+              "stream": "NEW_AND_OLD_IMAGES",
+              "pointInTimeRecoverySpecification": {
+                "pointInTimeRecoveryEnabled": true
+              }
+            }
+          }
+        ],
         "/dbspstp-existing-state-machine/test-dbs-pipes-states-construct/DynamoTable/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testdbspipesstatesconstructDynamoTable5457FA02"
+          }
+        ],
+        "/dbspstp-existing-state-machine/test-dbs-pipes-states-construct/DynamoTable/ScalingRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/dbspstp-existing-state-machine/test-dbs-pipes-states-construct/dlq": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "KMS_MANAGED"
+            }
           }
         ],
         "/dbspstp-existing-state-machine/test-dbs-pipes-states-construct/dlq/Resource": [
@@ -126,16 +288,53 @@
             "data": "testdbspipesstatesconstructdlqF765E6A0"
           }
         ],
+        "/dbspstp-existing-state-machine/test-dbs-pipes-states-construct/dlq/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "queues": [
+                "*"
+              ]
+            }
+          }
+        ],
         "/dbspstp-existing-state-machine/test-dbs-pipes-states-construct/dlq/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testdbspipesstatesconstructdlqPolicyB08573AE"
           }
         ],
+        "/dbspstp-existing-state-machine/test-dbs-pipes-states-construct/PipeRole--test-dbs-pipes-states-construct": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/dbspstp-existing-state-machine/test-dbs-pipes-states-construct/PipeRole--test-dbs-pipes-states-construct/ImportPipeRole--test-dbs-pipes-states-construct": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/dbspstp-existing-state-machine/test-dbs-pipes-states-construct/PipeRole--test-dbs-pipes-states-construct/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testdbspipesstatesconstructPipeRoletestdbspipesstatesconstruct4E57732C"
+          }
+        ],
+        "/dbspstp-existing-state-machine/test-dbs-pipes-states-construct/LogGroup-test-dbs-pipes-states-construct": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "retention": 9999,
+              "logGroupName": "*"
+            }
           }
         ],
         "/dbspstp-existing-state-machine/test-dbs-pipes-states-construct/LogGroup-test-dbs-pipes-states-construct/Resource": [
@@ -171,5 +370,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1019.2"
 }

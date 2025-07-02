@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f": {
       "displayName": "cftaplam-no-arguments-authorizerAuthFunction/Code",
@@ -29,7 +29,7 @@
         }
       }
     },
-    "2c3f30b1d99a8df91db48e8e94c63b691d07848010eaa53b1ed582c3cdd2a922": {
+    "2ffaeca8a252934f2d9de0b0c085f89f7d80adc9566ec7272aeab058b2bdb077": {
       "displayName": "cftaplam-no-arguments Template",
       "source": {
         "path": "cftaplam-no-arguments.template.json",
@@ -38,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "2c3f30b1d99a8df91db48e8e94c63b691d07848010eaa53b1ed582c3cdd2a922.json",
+          "objectKey": "2ffaeca8a252934f2d9de0b0c085f89f7d80adc9566ec7272aeab058b2bdb077.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

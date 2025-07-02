@@ -11,17 +11,19 @@
  *  and limitations under the License.
  */
 
-import { App, Stack } from "aws-cdk-lib";
+import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { OpenApiGatewayToLambda } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Asset } from "aws-cdk-lib/aws-s3-assets";
 import * as path from 'path';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
+import * as logs from 'aws-cdk-lib/aws-logs';
 
 const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-openapigateway-lambda';
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 const apiDefinitionAsset = new Asset(stack, 'ApiDefinitionAsset', {
   path: path.join(__dirname, 'openapi/apiDefinition.yaml')
@@ -35,12 +37,19 @@ const messagesLambda = defaults.buildLambdaFunction(stack, {
   }
 });
 
+// We need a different log group, because using the function name
+// causes CDK to create a log group with the same name (that is not destroyed)
+// so there's a collision with the default log group
+const replacementLogGroup = new logs.LogGroup(stack, 'our-log-group', {
+  removalPolicy: RemovalPolicy.DESTROY
+});
 const photosLambda = defaults.buildLambdaFunction(stack, {
   lambdaFunctionProps: {
     functionName: 'PhotosExistingLambdaTestFromAsset',
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),
+    logGroup: replacementLogGroup
   }
 });
 

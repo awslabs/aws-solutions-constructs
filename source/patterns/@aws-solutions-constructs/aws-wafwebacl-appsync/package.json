@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-wafwebacl-appsync",
-  "version": "0.0.0",
+  "version": "2.85.6",
   "description": "CDK constructs for defining an AWS web WAF connected to an AWS AppSync API.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -55,13 +55,13 @@
     }
   },
   "dependencies": {
-    "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-solutions-constructs/core": "2.85.6",
     "constructs": "^10.0.0"
   },
   "devDependencies": {
-    "@aws-cdk/integ-tests-alpha": "0.0.0-alpha.0",
+    "@aws-cdk/integ-tests-alpha": "2.202.0-alpha.0",
     "@types/node": "^10.3.0",
-    "aws-cdk-lib": "0.0.0",
+    "aws-cdk-lib": "2.202.0",
     "constructs": "^10.0.0"
   },
   "jest": {
@@ -79,8 +79,8 @@
     ]
   },
   "peerDependencies": {
-    "@aws-solutions-constructs/core": "0.0.0",
-    "aws-cdk-lib": "^0.0.0",
+    "@aws-solutions-constructs/core": "2.85.6",
+    "aws-cdk-lib": "^2.202.0",
     "constructs": "^10.0.0"
   },
   "keywords": [

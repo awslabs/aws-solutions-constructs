@@ -68,6 +68,25 @@
     }
    }
   },
+  "lambdadbsstptestLogGroup61B417AA": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "lambdadbsstptestE56C39A8"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
   "testsqspipesstatesconstructDynamoTable17AE0B12": {
    "Type": "AWS::DynamoDB::Table",
    "Properties": {

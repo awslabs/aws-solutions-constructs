@@ -1,7 +1,8 @@
 {
-  "version": "40.0.0",
+  "version": "44.0.0",
   "files": {
     "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f": {
+      "displayName": "test-iot-lambda-integration/LambdaFunction/Code",
       "source": {
         "path": "asset.3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f",
         "packaging": "zip"
@@ -14,7 +15,8 @@
         }
       }
     },
-    "f2aefc220f5fa6638f80e958c7a942487db3e323b7948289c85311c801c82bd0": {
+    "88a7e47248aa75a78130a68ec357bd886bbae63fb5a729280dba133c209694d0": {
+      "displayName": "iotlam-iot-lambda-new-func Template",
       "source": {
         "path": "iotlam-iot-lambda-new-func.template.json",
         "packaging": "file"
@@ -22,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "f2aefc220f5fa6638f80e958c7a942487db3e323b7948289c85311c801c82bd0.json",
+          "objectKey": "88a7e47248aa75a78130a68ec357bd886bbae63fb5a729280dba133c209694d0.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

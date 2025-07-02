@@ -528,7 +528,7 @@ test('Test no logging', () => {
   CheckPipeRole(template, prerequisiteId);
 
   // One log group for the state machine, none for the pipe
-  template.resourceCountIs('AWS::Logs::LogGroup', 1);
+  template.resourceCountIs("AWS::Logs::LogGroup", 1);
 });
 
 test('Override a subset of SQS source paramters', () => {

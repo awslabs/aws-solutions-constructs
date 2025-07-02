@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamsecdeployFunctionWithExistingVpcIntegDefaultTestDeployAssert647243A7.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1a2c48ecbe70454e603d5d040cd7c644cdb458922c9e75b43007beddbc442730.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b9fc4c59dbb94e373a9c784576df3567604ba9161b098fbfd49e29765adcdc94.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -587,16 +587,8 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
@@ -639,6 +631,14 @@
             "data": {
               "attachToRole": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
               ]
             }
           },
@@ -723,42 +723,18 @@
             "data": "testlambdasecretsmanagerstackLambdaFunction2DDE520A"
           }
         ],
-        "/lamsec-deployFunctionWithExistingVpc/test-lambda-secretsmanager-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamsec-deployFunctionWithExistingVpc/test-lambda-secretsmanager-stack/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamsec-deployFunctionWithExistingVpc/test-lambda-secretsmanager-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamsec-deployFunctionWithExistingVpc/test-lambda-secretsmanager-stack/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasecretsmanagerstackLambdaFunctioninlinePolicyAddedToExecutionRole0EBC40474"
+            "data": "testlambdasecretsmanagerstackLambdaFunctionLogGroupE802AE9B"
           }
         ],
         "/lamsec-deployFunctionWithExistingVpc/test-lambda-secretsmanager-stack/secret": [
@@ -831,6 +807,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testlambdasecretsmanagerstackLambdaFunctioninlinePolicyAddedToExecutionRole0EBC40474": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasecretsmanagerstackLambdaFunctioninlinePolicyAddedToExecutionRole0EBC40474",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamsec-deployFunctionWithExistingVpc"
@@ -842,5 +827,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

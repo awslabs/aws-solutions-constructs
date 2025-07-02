@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lambednoargumentsIntegDefaultTestDeployAssertF60E7E69.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f4113aaf947712f1446294101278684d9eaea5a9324306263ef1d6d51e352883.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3dc8d6b4ccc14bdc28633ee081d7271a09d57ebce9acf4e679e652bf985d0571.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -241,6 +241,20 @@
             "data": "testlambdainferencepropsLambdaFunctioninlinePolicyAddedToExecutionRole09A675D51"
           }
         ],
+        "/lambed-no-arguments/test-lambda-inferenceprops/LambdaFunction/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroupName": "*"
+            }
+          }
+        ],
+        "/lambed-no-arguments/test-lambda-inferenceprops/LambdaFunction/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdainferencepropsLambdaFunctionLogGroup041701BC"
+          }
+        ],
         "/lambed-no-arguments/test-lambda-inferenceprops/LambdaFunction/inlinePolicyAddedToExecutionRole-1": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -361,5 +375,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

@@ -68,7 +68,11 @@
     "PolicyDocument": {
      "Statement": [
       {
-       "Action": "dynamodb:ListStreams",
+       "Action": [
+        "dynamodb:ListStreams",
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
        "Effect": "Allow",
        "Resource": "*"
       },
@@ -109,6 +113,16 @@
       "Ref": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleEC11512B"
      }
     ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
    }
   },
   "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionB70B7296": {
@@ -166,29 +180,24 @@
     }
    }
   },
-  "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctioninlinePolicyAddedToExecutionRole05D4F2798": {
-   "Type": "AWS::IAM::Policy",
+  "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionLogGroup0F566756": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionB70B7296"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctioninlinePolicyAddedToExecutionRole05D4F2798",
-    "Roles": [
-     {
-      "Ref": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleEC11512B"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionDynamoDBEventSourcedbslamelsnoargumentstestddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableE5DA3737A0F8E1D7": {
    "Type": "AWS::Lambda::EventSourceMapping",

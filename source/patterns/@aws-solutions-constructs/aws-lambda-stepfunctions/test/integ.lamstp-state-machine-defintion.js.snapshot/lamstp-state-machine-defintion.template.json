@@ -62,6 +62,40 @@
     }
    }
   },
+  "firstfunctionServiceRoleDefaultPolicy05FFD222": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "firstfunctionServiceRoleDefaultPolicy05FFD222",
+    "Roles": [
+     {
+      "Ref": "firstfunctionServiceRole0FF7D94B"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
   "firstfunction297AC5AB": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -86,6 +120,7 @@
     }
    },
    "DependsOn": [
+    "firstfunctionServiceRoleDefaultPolicy05FFD222",
     "firstfunctionServiceRole0FF7D94B"
    ],
    "Metadata": {
@@ -107,29 +142,24 @@
     }
    }
   },
-  "firstfunctioninlinePolicyAddedToExecutionRole0E3CD5BD8": {
-   "Type": "AWS::IAM::Policy",
+  "firstfunctionLogGroupDA7905EE": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "firstfunction297AC5AB"
+       }
+      ]
+     ]
     },
-    "PolicyName": "firstfunctioninlinePolicyAddedToExecutionRole0E3CD5BD8",
-    "Roles": [
-     {
-      "Ref": "firstfunctionServiceRole0FF7D94B"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "secondfunctionServiceRole5264DF4C": {
    "Type": "AWS::IAM::Role",
@@ -193,6 +223,40 @@
     }
    }
   },
+  "secondfunctionServiceRoleDefaultPolicy02F27461": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "secondfunctionServiceRoleDefaultPolicy02F27461",
+    "Roles": [
+     {
+      "Ref": "secondfunctionServiceRole5264DF4C"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
   "secondfunctionB2F1D4DD": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -217,6 +281,7 @@
     }
    },
    "DependsOn": [
+    "secondfunctionServiceRoleDefaultPolicy02F27461",
     "secondfunctionServiceRole5264DF4C"
    ],
    "Metadata": {
@@ -238,29 +303,24 @@
     }
    }
   },
-  "secondfunctioninlinePolicyAddedToExecutionRole0F6A2FD44": {
-   "Type": "AWS::IAM::Policy",
+  "secondfunctionLogGroupE92A3CB8": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "secondfunctionB2F1D4DD"
+       }
+      ]
+     ]
     },
-    "PolicyName": "secondfunctioninlinePolicyAddedToExecutionRole0F6A2FD44",
-    "Roles": [
-     {
-      "Ref": "secondfunctionServiceRole5264DF4C"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testlambdastepfunctionsconstructStateMachineLogGroup1FD4C0D4": {
    "Type": "AWS::Logs::LogGroup",
@@ -600,6 +660,14 @@
     "PolicyDocument": {
      "Statement": [
       {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
        "Action": "states:StartExecution",
        "Effect": "Allow",
        "Resource": {
@@ -615,6 +683,16 @@
       "Ref": "testlambdastepfunctionsconstructLambdaFunctionServiceRole2D3C3FD0"
      }
     ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
    }
   },
   "testlambdastepfunctionsconstructLambdaFunction561377BC": {
@@ -669,29 +747,24 @@
     }
    }
   },
-  "testlambdastepfunctionsconstructLambdaFunctioninlinePolicyAddedToExecutionRole0CAF71EB9": {
-   "Type": "AWS::IAM::Policy",
+  "testlambdastepfunctionsconstructLambdaFunctionLogGroup72D237BC": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testlambdastepfunctionsconstructLambdaFunction561377BC"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testlambdastepfunctionsconstructLambdaFunctioninlinePolicyAddedToExecutionRole0CAF71EB9",
-    "Roles": [
-     {
-      "Ref": "testlambdastepfunctionsconstructLambdaFunctionServiceRole2D3C3FD0"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   }
  },
  "Parameters": {

@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "lamopn-disabled-zone-awareness/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -29,7 +29,7 @@
         }
       }
     },
-    "584145e51536cb5db042e6628fa90f9eea268ab97b647ccc5381ba4394247b91": {
+    "3b47086673ce7cc9f450b6497729ec131bf63b73aa83de4c7d98eb4e036a3bd1": {
       "displayName": "lamopn-disabled-zone-awareness Template",
       "source": {
         "path": "lamopn-disabled-zone-awareness.template.json",
@@ -38,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "584145e51536cb5db042e6628fa90f9eea268ab97b647ccc5381ba4394247b91.json",
+          "objectKey": "3b47086673ce7cc9f450b6497729ec131bf63b73aa83de4c7d98eb4e036a3bd1.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

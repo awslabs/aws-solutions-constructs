@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lammemexistingResourcesIntegDefaultTestDeployAssertD269DF67.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/2c6168b630b0b363a13d2718da1b07900b8b94d4d6ce5e93c93053b82c109bf1.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5bc62f6d9aec453bba0c82850eb1c65a37a213ae997779c6df767b412b2e0bbf.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -426,6 +426,20 @@
             "data": "testfunction5B23D3B0"
           }
         ],
+        "/lammem-existingResources/test-function/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroupName": "*"
+            }
+          }
+        ],
+        "/lammem-existingResources/test-function/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testfunctionLogGroupE1FCF8FE"
+          }
+        ],
         "/lammem-existingResources/ec-subnetgroup-test-cache": [
           {
             "type": "aws:cdk:logicalId",
@@ -496,5 +510,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.0"
 }

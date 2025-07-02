@@ -120,6 +120,25 @@
     }
    }
   },
+  "cftaplamoverridebehaviorauthorizerAuthFunctionLogGroup24030B5E": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "cftaplamoverridebehaviorauthorizerAuthFunction9DD827D6"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
   "cftaplamoverridebehaviorauthorizerAuthFunctioncftaplamoverridebehaviorcftaplamoverridebehaviorauthorizer3042C32CPermissions33B8870B": {
    "Type": "AWS::Lambda::Permission",
    "Properties": {
@@ -283,6 +302,40 @@
     }
    }
   },
+  "cfapilambdaoverrideLambdaFunctionServiceRoleDefaultPolicy1A3D9202": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "cfapilambdaoverrideLambdaFunctionServiceRoleDefaultPolicy1A3D9202",
+    "Roles": [
+     {
+      "Ref": "cfapilambdaoverrideLambdaFunctionServiceRole4B1A4043"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
   "cfapilambdaoverrideLambdaFunction74CE466F": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -310,6 +363,7 @@
     }
    },
    "DependsOn": [
+    "cfapilambdaoverrideLambdaFunctionServiceRoleDefaultPolicy1A3D9202",
     "cfapilambdaoverrideLambdaFunctionServiceRole4B1A4043"
    ],
    "Metadata": {
@@ -331,29 +385,24 @@
     }
    }
   },
-  "cfapilambdaoverrideLambdaFunctioninlinePolicyAddedToExecutionRole0248615B6": {
-   "Type": "AWS::IAM::Policy",
+  "cfapilambdaoverrideLambdaFunctionLogGroup4E9044D0": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "cfapilambdaoverrideLambdaFunction74CE466F"
+       }
+      ]
+     ]
     },
-    "PolicyName": "cfapilambdaoverrideLambdaFunctioninlinePolicyAddedToExecutionRole0248615B6",
-    "Roles": [
-     {
-      "Ref": "cfapilambdaoverrideLambdaFunctionServiceRole4B1A4043"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "cfapilambdaoverrideApiAccessLogGroup2665068D": {
    "Type": "AWS::Logs::LogGroup",
@@ -401,6 +450,7 @@
     "cftaplamoverridebehaviorauthorizer74D77225"
    ],
    "Metadata": {
+    "aws:cdk:do-not-refactor": true,
     "cfn_nag": {
      "rules_to_suppress": [
       {

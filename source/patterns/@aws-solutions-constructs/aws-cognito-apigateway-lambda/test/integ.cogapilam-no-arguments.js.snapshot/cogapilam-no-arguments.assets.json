@@ -1,7 +1,8 @@
 {
-  "version": "40.0.0",
+  "version": "44.0.0",
   "files": {
     "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f": {
+      "displayName": "test-cognito-apigateway-lambda/LambdaFunction/Code",
       "source": {
         "path": "asset.3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f",
         "packaging": "zip"
@@ -14,7 +15,8 @@
         }
       }
     },
-    "04b5221f8c7f21dec443043d7d2491fe5240bd4ced44c1d862c4bfa13fcbed25": {
+    "7276108be1525981fdcf3cb4b4e6318f6c20b2b2660a6b7549193ab97da26e6b": {
+      "displayName": "cogapilam-no-arguments Template",
       "source": {
         "path": "cogapilam-no-arguments.template.json",
         "packaging": "file"
@@ -22,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "04b5221f8c7f21dec443043d7d2491fe5240bd4ced44c1d862c4bfa13fcbed25.json",
+          "objectKey": "7276108be1525981fdcf3cb4b4e6318f6c20b2b2660a6b7549193ab97da26e6b.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

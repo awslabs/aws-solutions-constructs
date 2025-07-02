@@ -74,7 +74,9 @@
         "ec2:CreateNetworkInterface",
         "ec2:DeleteNetworkInterface",
         "ec2:DescribeNetworkInterfaces",
-        "ec2:UnassignPrivateIpAddresses"
+        "ec2:UnassignPrivateIpAddresses",
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
        ],
        "Effect": "Allow",
        "Resource": "*"
@@ -234,33 +236,28 @@
     }
    }
   },
-  "testlambdassmstringparameterLambdaFunctioninlinePolicyAddedToExecutionRole0FC2BAAAC": {
-   "Type": "AWS::IAM::Policy",
+  "testlambdassmstringparameterLambdaFunctionLogGroup833BF4B4": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testlambdassmstringparameterLambdaFunctionD0F9E80D"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testlambdassmstringparameterLambdaFunctioninlinePolicyAddedToExecutionRole0FC2BAAAC",
-    "Roles": [
-     {
-      "Ref": "testlambdassmstringparameterLambdaFunctionServiceRole0E6B5916"
-     }
-    ]
+    "RetentionInDays": 731
    },
    "DependsOn": [
     "VpcisolatedSubnet1RouteTableAssociationD259E31A",
     "VpcisolatedSubnet2RouteTableAssociation25A4716F"
-   ]
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testlambdassmstringparameterstringParameter680CABAC": {
    "Type": "AWS::SSM::Parameter",

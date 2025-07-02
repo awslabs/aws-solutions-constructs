@@ -1,5 +1,5 @@
 {
-  "version": "42.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "kinlamnoargumentsIntegDefaultTestDeployAssertE5672C42.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/75d54d1092862c3f3a3d49f381f746e31ba668f1702b3f06f8897ef19a887aa4.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9e5e6e07c12e02b07d3d8a319531eb6c01761df58dd21de1687cbdf15f02f493.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -110,22 +110,6 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
               "addToPrincipalPolicy": [
                 {}
               ]
@@ -144,6 +128,14 @@
             "data": {
               "attachInlinePolicy": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
@@ -220,6 +212,14 @@
                 {}
               ]
             }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
@@ -258,42 +258,18 @@
             "data": "testkinesisstreamslambdaLambdaFunctionB9A91CA7"
           }
         ],
-        "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testkinesisstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole0111F49A4"
+            "data": "testkinesisstreamslambdaLambdaFunctionLogGroup3C7888F6"
           }
         ],
         "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunction/KinesisEventSource:kinlamnoargumentstestkinesisstreamslambdaKinesisStreamB15C5952": [
@@ -408,6 +384,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testkinesisstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole0111F49A4": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testkinesisstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole0111F49A4",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "kinlam-no-arguments"
@@ -419,5 +404,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1006.0"
+  "minimumCliVersion": "2.1019.2"
 }

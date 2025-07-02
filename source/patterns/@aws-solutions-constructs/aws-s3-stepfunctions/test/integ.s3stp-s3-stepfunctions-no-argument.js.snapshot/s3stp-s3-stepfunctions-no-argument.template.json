@@ -68,6 +68,25 @@
     }
    }
   },
+  "lambdas3stptestLogGroupC7B8F609": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "lambdas3stptest9FBDC6CE"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
   "tests3stepfunctionsconstructS3LoggingBucket706AEC25": {
    "Type": "AWS::S3::Bucket",
    "Properties": {

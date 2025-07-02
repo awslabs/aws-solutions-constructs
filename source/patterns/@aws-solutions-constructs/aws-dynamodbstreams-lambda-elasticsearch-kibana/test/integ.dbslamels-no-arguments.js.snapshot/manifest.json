@@ -1,5 +1,5 @@
 {
-  "version": "42.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "dbslamelsnoargumentsIntegDefaultTestDeployAssert903053D4.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ea7578f163d84d6eb6356963dc7f3f6b69ac76f4c7082a73d7d29725c1c400c9.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/7898c55cdda105510dd4a36faf07f0287c38a56b4a6c03fd83e4727f9ea0452a.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -96,22 +96,6 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
               "addToPrincipalPolicy": [
                 {}
               ]
@@ -130,6 +114,14 @@
             "data": {
               "attachInlinePolicy": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
@@ -238,6 +230,14 @@
                 {}
               ]
             }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
@@ -285,42 +285,18 @@
             "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionB70B7296"
           }
         ],
-        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctioninlinePolicyAddedToExecutionRole05D4F2798"
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionLogGroup0F566756"
           }
         ],
         "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/DynamoDBEventSource:dbslamelsnoargumentstestddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableE5DA3737": [
@@ -690,12 +666,14 @@
             "data": {
               "billingMode": "PAY_PER_REQUEST",
               "encryption": "AWS_MANAGED",
-              "pointInTimeRecovery": true,
               "partitionKey": {
                 "name": "*",
                 "type": "S"
               },
-              "stream": "NEW_AND_OLD_IMAGES"
+              "stream": "NEW_AND_OLD_IMAGES",
+              "pointInTimeRecoverySpecification": {
+                "pointInTimeRecoveryEnabled": true
+              }
             }
           }
         ],
@@ -752,6 +730,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctioninlinePolicyAddedToExecutionRole05D4F2798": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctioninlinePolicyAddedToExecutionRole05D4F2798",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "dbslamels-no-arguments"
@@ -763,5 +750,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1006.0"
+  "minimumCliVersion": "2.1019.2"
 }

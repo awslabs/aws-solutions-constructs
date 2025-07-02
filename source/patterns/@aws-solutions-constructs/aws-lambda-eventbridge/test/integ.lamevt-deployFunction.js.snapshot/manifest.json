@@ -1,5 +1,5 @@
 {
-  "version": "42.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamevtdeployFunctionIntegDefaultTestDeployAssertEE6CC055.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/00578fe9ab5664c129f8d0655f8b302afda1767fd9c7376e9e519865f43a6008.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/82a186162868590838bcac0d17535374f3e4fa179c0059d2325fa5ff952a8829.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,7 +82,7 @@
         "lamevt-deployFunction.assets"
       ],
       "metadata": {
-        "/lamevt-deployFunction/test-lambda-eventbridge/LambdaFunctionServiceRole": [
+        "/lamevt-deployFunction/testServiceRole": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -91,22 +91,6 @@
                 "assumeRoleAction": "*"
               },
               "inlinePolicies": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
             }
           },
           {
@@ -134,19 +118,19 @@
             }
           }
         ],
-        "/lamevt-deployFunction/test-lambda-eventbridge/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+        "/lamevt-deployFunction/testServiceRole/ImporttestServiceRole": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": "*"
           }
         ],
-        "/lamevt-deployFunction/test-lambda-eventbridge/LambdaFunctionServiceRole/Resource": [
+        "/lamevt-deployFunction/testServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaeventbridgeLambdaFunctionServiceRole0FD85077"
+            "data": "testServiceRoleF364A929"
           }
         ],
-        "/lamevt-deployFunction/test-lambda-eventbridge/LambdaFunctionServiceRole/DefaultPolicy": [
+        "/lamevt-deployFunction/testServiceRole/DefaultPolicy": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": "*"
@@ -176,13 +160,13 @@
             }
           }
         ],
-        "/lamevt-deployFunction/test-lambda-eventbridge/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+        "/lamevt-deployFunction/testServiceRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaeventbridgeLambdaFunctionServiceRoleDefaultPolicy0F454786"
+            "data": "testServiceRoleDefaultPolicyC80E2C16"
           }
         ],
-        "/lamevt-deployFunction/test-lambda-eventbridge/LambdaFunction": [
+        "/lamevt-deployFunction/test": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -204,65 +188,26 @@
                 }
               ]
             }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addEnvironment": [
-                "*",
-                "*"
-              ]
-            }
           }
         ],
-        "/lamevt-deployFunction/test-lambda-eventbridge/LambdaFunction/Resource": [
+        "/lamevt-deployFunction/test/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaeventbridgeLambdaFunction361ABB82"
+            "data": "testAF53AC38"
           }
         ],
-        "/lamevt-deployFunction/test-lambda-eventbridge/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamevt-deployFunction/test/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamevt-deployFunction/test-lambda-eventbridge/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamevt-deployFunction/test/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaeventbridgeLambdaFunctioninlinePolicyAddedToExecutionRole0885DF4B9"
-          }
-        ],
-        "/lamevt-deployFunction/test-lambda-eventbridge/default-event-bus": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
+            "data": "testLogGroup8FA2542F"
           }
         ],
         "/lamevt-deployFunction/BootstrapVersion": [
@@ -276,6 +221,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testinlinePolicyAddedToExecutionRole04E49125E": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testinlinePolicyAddedToExecutionRole04E49125E",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamevt-deployFunction"
@@ -287,5 +241,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1006.0"
+  "minimumCliVersion": "2.1019.2"
 }

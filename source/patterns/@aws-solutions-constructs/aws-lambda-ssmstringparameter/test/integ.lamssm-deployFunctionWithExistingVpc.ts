@@ -23,6 +23,7 @@ import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = "Integration Test for test-lambda-ssmstringparameter";
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 // Create VPC
 const vpc = defaults.buildVpc(stack, {

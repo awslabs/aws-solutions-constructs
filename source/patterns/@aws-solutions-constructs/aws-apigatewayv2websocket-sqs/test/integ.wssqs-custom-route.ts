@@ -23,6 +23,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-apigateway-sqs';
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 const mockDisconnectLambda = defaults.deployLambdaFunction(stack, {
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),

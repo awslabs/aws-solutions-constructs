@@ -24,6 +24,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 const destination = GetTestFirehoseDestination(stack, 'destination-firehose');
 

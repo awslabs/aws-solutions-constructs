@@ -23,6 +23,7 @@ const app = new App();
 
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 new LambdaToS3(stack, 'test-lambda-s3', {
   lambdaFunctionProps: {

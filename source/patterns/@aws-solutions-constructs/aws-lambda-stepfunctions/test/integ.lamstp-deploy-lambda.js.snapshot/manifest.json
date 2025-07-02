@@ -1,5 +1,5 @@
 {
-  "version": "42.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamstpdeploylambdaIntegDefaultTestDeployAssert115BE00D.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8d7da9c39ae5a53709e77a4daf36fa625cfca6c293e2e0a4db63a891cbff1eed.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a42eb501bf874869efe35e28442f571f3a13173d0dbbdb3658ba966a25b6f9cf.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -96,6 +96,14 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
               "attachInlinePolicy": [
                 "*"
               ]
@@ -120,6 +128,42 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "taskFunctionServiceRole31E35058"
+          }
+        ],
+        "/lamstp-deploy-lambda/taskFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/lamstp-deploy-lambda/taskFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "taskFunctionServiceRoleDefaultPolicyDD9784DE"
           }
         ],
         "/lamstp-deploy-lambda/taskFunction": [
@@ -162,42 +206,18 @@
             "data": "taskFunctionBFDAC5DE"
           }
         ],
-        "/lamstp-deploy-lambda/taskFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamstp-deploy-lambda/taskFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamstp-deploy-lambda/taskFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamstp-deploy-lambda/taskFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "taskFunctioninlinePolicyAddedToExecutionRole0CE3738A0"
+            "data": "taskFunctionLogGroupE9734B59"
           }
         ],
         "/lamstp-deploy-lambda/test-lambda-stepfunctions-construct/StateMachineLogGroup": [
@@ -423,22 +443,6 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
               "addToPrincipalPolicy": [
                 {}
               ]
@@ -457,6 +461,14 @@
             "data": {
               "attachInlinePolicy": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           }
@@ -491,6 +503,14 @@
             "data": {
               "attachToRole": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
               ]
             }
           },
@@ -548,42 +568,18 @@
             "data": "testlambdastepfunctionsconstructLambdaFunction561377BC"
           }
         ],
-        "/lamstp-deploy-lambda/test-lambda-stepfunctions-construct/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamstp-deploy-lambda/test-lambda-stepfunctions-construct/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamstp-deploy-lambda/test-lambda-stepfunctions-construct/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamstp-deploy-lambda/test-lambda-stepfunctions-construct/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdastepfunctionsconstructLambdaFunctioninlinePolicyAddedToExecutionRole0CAF71EB9"
+            "data": "testlambdastepfunctionsconstructLambdaFunctionLogGroup72D237BC"
           }
         ],
         "/lamstp-deploy-lambda/BootstrapVersion": [
@@ -598,10 +594,19 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "taskFunctionServiceRoleDefaultPolicyDD9784DE": [
+        "taskFunctioninlinePolicyAddedToExecutionRole0CE3738A0": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "taskFunctionServiceRoleDefaultPolicyDD9784DE",
+            "data": "taskFunctioninlinePolicyAddedToExecutionRole0CE3738A0",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testlambdastepfunctionsconstructLambdaFunctioninlinePolicyAddedToExecutionRole0CAF71EB9": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsconstructLambdaFunctioninlinePolicyAddedToExecutionRole0CAF71EB9",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
@@ -617,5 +622,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1006.0"
+  "minimumCliVersion": "2.1019.2"
 }

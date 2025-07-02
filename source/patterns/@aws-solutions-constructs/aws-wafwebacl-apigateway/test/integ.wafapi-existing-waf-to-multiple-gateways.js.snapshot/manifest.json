@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "wafapiexistingwaftomultiplegatewaysIntegDefaultTestDeployAssert419156F9.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3f84e40d9d399301af25da032883981e0799b236578b402199f331b54f5ca5dd.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1932b9ea3dcf50903329d46fa85c46172e75f6df50aba98a1afd412b81de4235.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,6 +82,38 @@
         "wafapi-existing-waf-to-multiple-gateways.assets"
       ],
       "metadata": {
+        "/wafapi-existing-waf-to-multiple-gateways/testOneFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneFunction/ServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "managedPolicies": [
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneFunction/ServiceRole/ImportServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/wafapi-existing-waf-to-multiple-gateways/testOneFunction/ServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -92,6 +124,52 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testOneFunction5860F00A"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneFunction/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroupName": "*"
+            }
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneFunction/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneFunctionLogGroup2A7F1CCC"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOne-authorizerAuthFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOne-authorizerAuthFunction/ServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "managedPolicies": [
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOne-authorizerAuthFunction/ServiceRole/ImportServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/wafapi-existing-waf-to-multiple-gateways/testOne-authorizerAuthFunction/ServiceRole/Resource": [
@@ -106,10 +184,30 @@
             "data": "testOneauthorizerAuthFunctionB12D8D93"
           }
         ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOne-authorizerAuthFunction/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroupName": "*"
+            }
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOne-authorizerAuthFunction/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testOneauthorizerAuthFunctionLogGroupCB9327AE"
+          }
+        ],
         "/wafapi-existing-waf-to-multiple-gateways/testOne-authorizerAuthFunction/wafapiexistingwaftomultiplegatewaystestOneauthorizer7F4D0710:Permissions": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testOneauthorizerAuthFunctionwafapiexistingwaftomultiplegatewaystestOneauthorizer7F4D0710Permissions21D6CD33"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOne-authorizer": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/wafapi-existing-waf-to-multiple-gateways/testOne-authorizer/Resource": [
@@ -118,16 +216,97 @@
             "data": "testOneauthorizerA10D8AB0"
           }
         ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "defaultIntegration": "*",
+              "handler": "*",
+              "defaultMethodOptions": {
+                "authorizationType": "*",
+                "authorizer": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "handler": "*",
+              "defaultMethodOptions": {
+                "authorizationType": "*",
+                "authorizer": "*"
+              }
+            }
+          }
+        ],
         "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testOneApi71064556"
           }
         ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Deployment": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "description": "*",
+              "api": "*",
+              "retainDeployments": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          }
+        ],
         "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testOneApiDeploymentEF63BD8609fc6a0f86e232515b5cb988fd677939"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi/DeploymentStage.prod": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "deployment": "*"
+            }
           }
         ],
         "/wafapi-existing-waf-to-multiple-gateways/testOneApi/DeploymentStage.prod/Resource": [
@@ -142,10 +321,51 @@
             "data": "testOneApiEndpoint1C7554D8"
           }
         ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Default": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Default/{proxy+}": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*",
+              "defaultIntegration": "*",
+              "defaultMethodOptions": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethod": [
+                "*"
+              ]
+            }
+          }
+        ],
         "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Default/{proxy+}/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testOneApiproxyC9BD4274"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Default/{proxy+}/ANY": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": "*"
+            }
           }
         ],
         "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Default/{proxy+}/ANY/ApiPermission.wafapiexistingwaftomultiplegatewaystestOneApiB9044B59.ANY..{proxy+}": [
@@ -166,6 +386,17 @@
             "data": "testOneApiproxyANY7F46A6A5"
           }
         ],
+        "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Default/ANY": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": "*"
+            }
+          }
+        ],
         "/wafapi-existing-waf-to-multiple-gateways/testOneApi/Default/ANY/ApiPermission.wafapiexistingwaftomultiplegatewaystestOneApiB9044B59.ANY..": [
           {
             "type": "aws:cdk:logicalId",
@@ -184,6 +415,38 @@
             "data": "testOneApiANY899DD2DA"
           }
         ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoFunction/ServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "managedPolicies": [
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoFunction/ServiceRole/ImportServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/wafapi-existing-waf-to-multiple-gateways/testTwoFunction/ServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -194,6 +457,52 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testTwoFunctionE0EEB0EF"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoFunction/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroupName": "*"
+            }
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoFunction/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoFunctionLogGroup6CFEFC7B"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwo-authorizerAuthFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwo-authorizerAuthFunction/ServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "managedPolicies": [
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwo-authorizerAuthFunction/ServiceRole/ImportServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/wafapi-existing-waf-to-multiple-gateways/testTwo-authorizerAuthFunction/ServiceRole/Resource": [
@@ -208,10 +517,30 @@
             "data": "testTwoauthorizerAuthFunction1DBBD707"
           }
         ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwo-authorizerAuthFunction/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroupName": "*"
+            }
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwo-authorizerAuthFunction/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testTwoauthorizerAuthFunctionLogGroupE566B5BE"
+          }
+        ],
         "/wafapi-existing-waf-to-multiple-gateways/testTwo-authorizerAuthFunction/wafapiexistingwaftomultiplegatewaystestTwoauthorizer9B2C525E:Permissions": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testTwoauthorizerAuthFunctionwafapiexistingwaftomultiplegatewaystestTwoauthorizer9B2C525EPermissions44287234"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwo-authorizer": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/wafapi-existing-waf-to-multiple-gateways/testTwo-authorizer/Resource": [
@@ -220,16 +549,97 @@
             "data": "testTwoauthorizer627F159B"
           }
         ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "defaultIntegration": "*",
+              "handler": "*",
+              "defaultMethodOptions": {
+                "authorizationType": "*",
+                "authorizer": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "handler": "*",
+              "defaultMethodOptions": {
+                "authorizationType": "*",
+                "authorizer": "*"
+              }
+            }
+          }
+        ],
         "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testTwoApi17A08EF5"
           }
         ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Deployment": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "description": "*",
+              "api": "*",
+              "retainDeployments": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          }
+        ],
         "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testTwoApiDeployment4EDBF4DF16b5f55503554b1a9ae378c4dff33c43"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/DeploymentStage.prod": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "deployment": "*"
+            }
           }
         ],
         "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/DeploymentStage.prod/Resource": [
@@ -244,10 +654,51 @@
             "data": "testTwoApiEndpointFE406EE7"
           }
         ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Default": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Default/{proxy+}": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*",
+              "defaultIntegration": "*",
+              "defaultMethodOptions": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethod": [
+                "*"
+              ]
+            }
+          }
+        ],
         "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Default/{proxy+}/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testTwoApiproxy2575DCE3"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Default/{proxy+}/ANY": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": "*"
+            }
           }
         ],
         "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Default/{proxy+}/ANY/ApiPermission.wafapiexistingwaftomultiplegatewaystestTwoApi3F5A8986.ANY..{proxy+}": [
@@ -266,6 +717,17 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testTwoApiproxyANY63FFF74A"
+          }
+        ],
+        "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Default/ANY": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": "*"
+            }
           }
         ],
         "/wafapi-existing-waf-to-multiple-gateways/testTwoApi/Default/ANY/ApiPermission.wafapiexistingwaftomultiplegatewaystestTwoApi3F5A8986.ANY..": [
@@ -325,5 +787,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1019.0"
 }

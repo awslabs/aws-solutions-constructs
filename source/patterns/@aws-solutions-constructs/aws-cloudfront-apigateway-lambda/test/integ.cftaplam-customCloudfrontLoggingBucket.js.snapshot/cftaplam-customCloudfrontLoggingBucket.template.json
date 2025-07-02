@@ -72,6 +72,25 @@
     }
    }
   },
+  "cftaplamcustomCloudfrontLoggingBucketauthorizerAuthFunctionLogGroup609CEE85": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "cftaplamcustomCloudfrontLoggingBucketauthorizerAuthFunction86ECA8C3"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
   "cftaplamcustomCloudfrontLoggingBucketauthorizerAuthFunctioncftaplamcustomCloudfrontLoggingBucketcftaplamcustomCloudfrontLoggingBucketauthorizer02C97B0FPermissionsBF8A1A3B": {
    "Type": "AWS::Lambda::Permission",
    "Properties": {
@@ -235,6 +254,40 @@
     }
    }
   },
+  "cfapigwlambdaLambdaFunctionServiceRoleDefaultPolicy388158BB": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "cfapigwlambdaLambdaFunctionServiceRoleDefaultPolicy388158BB",
+    "Roles": [
+     {
+      "Ref": "cfapigwlambdaLambdaFunctionServiceRole9B40D826"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
   "cfapigwlambdaLambdaFunction10C09D31": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -262,6 +315,7 @@
     }
    },
    "DependsOn": [
+    "cfapigwlambdaLambdaFunctionServiceRoleDefaultPolicy388158BB",
     "cfapigwlambdaLambdaFunctionServiceRole9B40D826"
    ],
    "Metadata": {
@@ -283,29 +337,24 @@
     }
    }
   },
-  "cfapigwlambdaLambdaFunctioninlinePolicyAddedToExecutionRole00FBB4ADD": {
-   "Type": "AWS::IAM::Policy",
+  "cfapigwlambdaLambdaFunctionLogGroup71D647A9": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "cfapigwlambdaLambdaFunction10C09D31"
+       }
+      ]
+     ]
     },
-    "PolicyName": "cfapigwlambdaLambdaFunctioninlinePolicyAddedToExecutionRole00FBB4ADD",
-    "Roles": [
-     {
-      "Ref": "cfapigwlambdaLambdaFunctionServiceRole9B40D826"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "cfapigwlambdaApiAccessLogGroup16C73450": {
    "Type": "AWS::Logs::LogGroup",
@@ -352,6 +401,7 @@
     "cftaplamcustomCloudfrontLoggingBucketauthorizer4D180075"
    ],
    "Metadata": {
+    "aws:cdk:do-not-refactor": true,
     "cfn_nag": {
      "rules_to_suppress": [
       {

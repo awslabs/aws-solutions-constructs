@@ -849,6 +849,40 @@
     }
    }
   },
+  "testcloudfronts3cmkencryptionkeyLambdaFunctionServiceRoleDefaultPolicyE566BC43": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testcloudfronts3cmkencryptionkeyLambdaFunctionServiceRoleDefaultPolicyE566BC43",
+    "Roles": [
+     {
+      "Ref": "testcloudfronts3cmkencryptionkeyLambdaFunctionServiceRole85783D1D"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
   "testcloudfronts3cmkencryptionkeyLambdaFunction4DCD662E": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -877,6 +911,7 @@
     }
    },
    "DependsOn": [
+    "testcloudfronts3cmkencryptionkeyLambdaFunctionServiceRoleDefaultPolicyE566BC43",
     "testcloudfronts3cmkencryptionkeyLambdaFunctionServiceRole85783D1D"
    ],
    "Metadata": {
@@ -898,29 +933,24 @@
     }
    }
   },
-  "testcloudfronts3cmkencryptionkeyLambdaFunctioninlinePolicyAddedToExecutionRole030BCEDF3": {
-   "Type": "AWS::IAM::Policy",
+  "testcloudfronts3cmkencryptionkeyLambdaFunctionLogGroup062E3ACC": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testcloudfronts3cmkencryptionkeyLambdaFunction4DCD662E"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testcloudfronts3cmkencryptionkeyLambdaFunctioninlinePolicyAddedToExecutionRole030BCEDF3",
-    "Roles": [
-     {
-      "Ref": "testcloudfronts3cmkencryptionkeyLambdaFunctionServiceRole85783D1D"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testcloudfronts3cmkencryptionkeytestcloudfronts3cmkencryptionkeyResourceCmkPolicyBD4BA975": {
    "Type": "AWS::IAM::Policy",
@@ -1013,6 +1043,16 @@
          ]
         }
        ]
+      },
+      {
+       "Action": "lambda:GetFunction",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "testcloudfronts3cmkencryptionkeyLambdaFunction4DCD662E",
+         "Arn"
+        ]
+       }
       }
      ],
      "Version": "2012-10-17"
@@ -1086,31 +1126,24 @@
     }
    }
   },
-  "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventinlinePolicyAddedToExecutionRole0055AB010": {
-   "Type": "AWS::IAM::Policy",
+  "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventLogGroupC7C64D89": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": "lambda:GetFunction",
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "testcloudfronts3cmkencryptionkeyLambdaFunction4DCD662E",
-         "Arn"
-        ]
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEvent8BCBFC59"
        }
-      }
-     ],
-     "Version": "2012-10-17"
+      ]
+     ]
     },
-    "PolicyName": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventinlinePolicyAddedToExecutionRole0055AB010",
-    "Roles": [
-     {
-      "Ref": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventServiceRole3D4040AD"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdaterFAFEBF0F": {
    "Type": "Custom::KmsKeyPolicyUpdater",

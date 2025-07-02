@@ -11,24 +11,13 @@
  *  and limitations under the License.
  */
 
-const aws = require('aws-sdk');
-const eventbridge = new aws.EventBridge();
-exports.handler = () => {
-  const params = {
-    Entries: [{
-      EventBusName: process.env.EVENTBUS_NAME,
-      Source: 'solutionsconstructs',
-      DetailType: 'test',
-      Detail: JSON.stringify({
-        Hello: 'World'
-      })
-    }]
-  };
-  eventbridge.putEvents(params, function (err, data) {
-    if (err) {
-      throw Error('An error while putting the event.');
-    } else {
-      console.log('Event was successfully sent.');
-    }
-  });
+console.log('Loading function');
+
+exports.handler = async (event, context) => {
+    console.log('Received event:', JSON.stringify(event, null, 2));
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'text/plain' },
+      body: `Hello from Project Vesper! You've hit ${event.path}\n`
+    };
 };

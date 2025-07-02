@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "apiddbadditionalrequesttemplatescustomresourcenameIntegDefaultTestDeployAssertABD5B2B6.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/15ee1a8a6181d47e6b6f594fe1256ebd3d4893e442bbc08a182344ac4ebfdc9c.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/24a20c79c1315d73f394cb7bf0454fbbd73584480ee73a1aef71d5b3c35c1ac2.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,10 +82,42 @@
         "apiddb-additional-request-templates-custom-resource-name.assets"
       ],
       "metadata": {
+        "/apiddb-additional-request-templates-custom-resource-name/existing-table": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "partitionKey": {
+                "name": "*",
+                "type": "S"
+              },
+              "sortKey": {
+                "name": "*",
+                "type": "S"
+              },
+              "pointInTimeRecovery": true,
+              "encryption": "AWS_MANAGED",
+              "billingMode": "PAY_PER_REQUEST"
+            }
+          }
+        ],
         "/apiddb-additional-request-templates-custom-resource-name/existing-table/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "existingtableE51CCC93"
+          }
+        ],
+        "/apiddb-additional-request-templates-custom-resource-name/existing-table/ScalingRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/ApiAccessLogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "retention": 9999
+            }
           }
         ],
         "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/ApiAccessLogGroup/Resource": [
@@ -94,16 +126,78 @@
             "data": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameApiAccessLogGroup89C7FD92"
           }
         ],
+        "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/RestApi": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "endpointConfiguration": {
+                "types": [
+                  "EDGE"
+                ]
+              },
+              "cloudWatchRole": false,
+              "deployOptions": {
+                "accessLogDestination": "*",
+                "accessLogFormat": "*",
+                "loggingLevel": "INFO",
+                "dataTraceEnabled": false,
+                "tracingEnabled": true
+              },
+              "defaultMethodOptions": {
+                "authorizationType": "*"
+              }
+            }
+          }
+        ],
         "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/RestApi/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiC4813ABE"
           }
         ],
+        "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/RestApi/Deployment": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "description": "*",
+              "api": "*",
+              "retainDeployments": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          }
+        ],
         "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/RestApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiDeployment7F5497B67361a1e02c5799cae81447bf3ad5ef46"
+          }
+        ],
+        "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/RestApi/DeploymentStage.prod": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "deployment": "*",
+              "accessLogDestination": "*",
+              "accessLogFormat": "*",
+              "loggingLevel": "INFO",
+              "dataTraceEnabled": false,
+              "tracingEnabled": true
+            }
           }
         ],
         "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/RestApi/DeploymentStage.prod/Resource": [
@@ -118,10 +212,69 @@
             "data": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiEndpoint4892309E"
           }
         ],
+        "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/RestApi/Default": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/RestApi/Default/{id}": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*",
+              "pathPart": "*"
+            }
+          }
+        ],
         "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/RestApi/Default/{id}/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiid4EBF99AB"
+          }
+        ],
+        "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/RestApi/Default/{id}/GET": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": {
+                "methodResponses": [
+                  {
+                    "statusCode": "*",
+                    "responseParameters": "*"
+                  },
+                  {
+                    "statusCode": "*",
+                    "responseParameters": "*"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethodResponse": [
+                {
+                  "statusCode": "*",
+                  "responseParameters": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethodResponse": [
+                {
+                  "statusCode": "*",
+                  "responseParameters": "*"
+                }
+              ]
+            }
           }
         ],
         "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/RestApi/Default/{id}/GET/Resource": [
@@ -130,10 +283,40 @@
             "data": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiidGETB657BB05"
           }
         ],
+        "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/RestApi/UsagePlan": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "apiStages": [
+                {
+                  "api": "*"
+                }
+              ]
+            }
+          }
+        ],
         "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/RestApi/UsagePlan/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameRestApiUsagePlan4D14DF10"
+          }
+        ],
+        "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/LambdaRestApiCloudWatchRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/LambdaRestApiCloudWatchRole/Resource": [
@@ -148,10 +331,89 @@
             "data": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameLambdaRestApiAccountFA4A4D09"
           }
         ],
+        "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/api-gateway-role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/api-gateway-role/Importapi-gateway-role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/api-gateway-role/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaydynamodbadditionalrequesttemplatescustomresourcenameapigatewayrole3D282506"
+          }
+        ],
+        "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/api-gateway-role/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/apiddb-additional-request-templates-custom-resource-name/test-api-gateway-dynamodb-additional-request-templates-custom-resource-name/api-gateway-role/DefaultPolicy/Resource": [
@@ -181,5 +443,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1019.0"
 }

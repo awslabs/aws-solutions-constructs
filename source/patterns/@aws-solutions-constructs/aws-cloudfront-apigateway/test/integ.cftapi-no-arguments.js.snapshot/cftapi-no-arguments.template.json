@@ -72,6 +72,25 @@
     }
    }
   },
+  "cftapinoargumentsapiFunctionLogGroup913F9183": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "cftapinoargumentsapiFunctionFF0A9430"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
   "cftapinoargumentsapiauthorizerAuthFunctionServiceRole33BC576C": {
    "Type": "AWS::IAM::Role",
    "Properties": {
@@ -142,6 +161,25 @@
      ]
     }
    }
+  },
+  "cftapinoargumentsapiauthorizerAuthFunctionLogGroupFB95E364": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "cftapinoargumentsapiauthorizerAuthFunction5A0061F7"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "cftapinoargumentsapiauthorizerAuthFunctioncftapinoargumentscftapinoargumentsapiauthorizerCA624E68Permissions3907BB66": {
    "Type": "AWS::Lambda::Permission",
@@ -265,6 +303,7 @@
     "cftapinoargumentsapiApiANY1E5CEE5C"
    ],
    "Metadata": {
+    "aws:cdk:do-not-refactor": true,
     "cfn_nag": {
      "rules_to_suppress": [
       {

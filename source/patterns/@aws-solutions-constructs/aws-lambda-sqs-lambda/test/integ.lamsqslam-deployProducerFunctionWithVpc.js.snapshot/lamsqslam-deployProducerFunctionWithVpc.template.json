@@ -74,7 +74,9 @@
         "ec2:CreateNetworkInterface",
         "ec2:DeleteNetworkInterface",
         "ec2:DescribeNetworkInterfaces",
-        "ec2:UnassignPrivateIpAddresses"
+        "ec2:UnassignPrivateIpAddresses",
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
        ],
        "Effect": "Allow",
        "Resource": "*"
@@ -216,33 +218,28 @@
     }
    }
   },
-  "testlambdasqslambdatosqsLambdaFunctioninlinePolicyAddedToExecutionRole009C52B5C": {
-   "Type": "AWS::IAM::Policy",
+  "testlambdasqslambdatosqsLambdaFunctionLogGroup8FA3507A": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testlambdasqslambdatosqsLambdaFunction0973C5A7"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testlambdasqslambdatosqsLambdaFunctioninlinePolicyAddedToExecutionRole009C52B5C",
-    "Roles": [
-     {
-      "Ref": "testlambdasqslambdatosqsLambdaFunctionServiceRole9A15D8F5"
-     }
-    ]
+    "RetentionInDays": 731
    },
    "DependsOn": [
     "testlambdasqsVpcisolatedSubnet1RouteTableAssociation270A37E8",
     "testlambdasqsVpcisolatedSubnet2RouteTableAssociation723A8A06"
-   ]
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testlambdasqslambdatosqsqueuedlqC154C220": {
    "Type": "AWS::SQS::Queue",
@@ -846,6 +843,14 @@
      "Statement": [
       {
        "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
         "sqs:ChangeMessageVisibility",
         "sqs:DeleteMessage",
         "sqs:GetQueueAttributes",
@@ -869,6 +874,16 @@
       "Ref": "testlambdasqssqstolambdaLambdaFunctionServiceRoleB914400A"
      }
     ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
    }
   },
   "testlambdasqssqstolambdaLambdaFunctionDE6481E6": {
@@ -920,29 +935,24 @@
     }
    }
   },
-  "testlambdasqssqstolambdaLambdaFunctioninlinePolicyAddedToExecutionRole0C94161AF": {
-   "Type": "AWS::IAM::Policy",
+  "testlambdasqssqstolambdaLambdaFunctionLogGroup777FC099": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testlambdasqssqstolambdaLambdaFunctionDE6481E6"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testlambdasqssqstolambdaLambdaFunctioninlinePolicyAddedToExecutionRole0C94161AF",
-    "Roles": [
-     {
-      "Ref": "testlambdasqssqstolambdaLambdaFunctionServiceRoleB914400A"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testlambdasqssqstolambdaLambdaFunctionSqsEventSourcelamsqslamdeployProducerFunctionWithVpctestlambdasqslambdatosqsqueueD62DE11EB9A24E09": {
    "Type": "AWS::Lambda::EventSourceMapping",

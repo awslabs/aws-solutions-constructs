@@ -23,6 +23,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 // Setup the app and stack
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 const taskFunction = deployLambdaFunction(stack, {
   runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,

@@ -73,7 +73,9 @@
         "ec2:CreateNetworkInterface",
         "ec2:DeleteNetworkInterface",
         "ec2:DescribeNetworkInterfaces",
-        "ec2:UnassignPrivateIpAddresses"
+        "ec2:UnassignPrivateIpAddresses",
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
        ],
        "Effect": "Allow",
        "Resource": "*"
@@ -211,32 +213,27 @@
     }
    }
   },
-  "testlambdakinesisstreamsLambdaFunctioninlinePolicyAddedToExecutionRole022FB8950": {
-   "Type": "AWS::IAM::Policy",
+  "testlambdakinesisstreamsLambdaFunctionLogGroup9EDBB3CA": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testlambdakinesisstreamsLambdaFunction4348B6E4"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testlambdakinesisstreamsLambdaFunctioninlinePolicyAddedToExecutionRole022FB8950",
-    "Roles": [
-     {
-      "Ref": "testlambdakinesisstreamsLambdaFunctionServiceRole95206CF3"
-     }
-    ]
+    "RetentionInDays": 731
    },
    "DependsOn": [
     "VpcisolatedSubnet1RouteTableAssociationD259E31A"
-   ]
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testlambdakinesisstreamsKinesisStream11A82116": {
    "Type": "AWS::Kinesis::Stream",

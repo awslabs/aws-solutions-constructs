@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c": {
       "displayName": "test-lambda-dynamodb-stack/LambdaFunction/Code",
@@ -15,7 +15,7 @@
         }
       }
     },
-    "cdf64f9fe16dedc5e85b9ae6760d3a90e114c7b81efcfde82a7fdba7a6322281": {
+    "6650709e230460e12a50f4da356bf2abc256de78edc1ae32c75eeb8805549f4e": {
       "displayName": "lamddb-point-in-time-recovery Template",
       "source": {
         "path": "lamddb-point-in-time-recovery.template.json",
@@ -24,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "cdf64f9fe16dedc5e85b9ae6760d3a90e114c7b81efcfde82a7fdba7a6322281.json",
+          "objectKey": "6650709e230460e12a50f4da356bf2abc256de78edc1ae32c75eeb8805549f4e.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

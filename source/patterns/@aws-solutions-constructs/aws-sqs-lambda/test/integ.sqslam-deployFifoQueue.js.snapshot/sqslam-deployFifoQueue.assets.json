@@ -1,7 +1,8 @@
 {
-  "version": "40.0.0",
+  "version": "44.0.0",
   "files": {
     "0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f": {
+      "displayName": "test-sqs-lambda-fifo/LambdaFunction/Code",
       "source": {
         "path": "asset.0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f",
         "packaging": "zip"
@@ -14,7 +15,8 @@
         }
       }
     },
-    "e483dd752ec5563288937f40e9e669e17e63820d9fb43c3ed717487f67155e4c": {
+    "78bca1a8a3fb95f3f34e6c61fe1e61e59621db7d4b9e43d7cc62c8b0fe491521": {
+      "displayName": "sqslam-deployFifoQueue Template",
       "source": {
         "path": "sqslam-deployFifoQueue.template.json",
         "packaging": "file"
@@ -22,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "e483dd752ec5563288937f40e9e669e17e63820d9fb43c3ed717487f67155e4c.json",
+          "objectKey": "78bca1a8a3fb95f3f34e6c61fe1e61e59621db7d4b9e43d7cc62c8b0fe491521.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

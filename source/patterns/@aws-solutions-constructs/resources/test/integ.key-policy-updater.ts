@@ -24,6 +24,7 @@ import { addCfnSuppressRules } from "../../core/lib/utils";
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for Key Policy Updater Resource';
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 const key = new kms.Key(stack, 'test key', {
   removalPolicy: RemovalPolicy.DESTROY,

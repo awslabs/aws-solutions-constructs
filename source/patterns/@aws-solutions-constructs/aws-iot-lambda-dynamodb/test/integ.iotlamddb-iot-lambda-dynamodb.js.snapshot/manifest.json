@@ -1,5 +1,5 @@
 {
-  "version": "42.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "iotlamddbiotlambdadynamodbIntegDefaultTestDeployAssert78E90BBB.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/71ff56d2c9f287593abd4417b725bc92e673b2d61dd4044ca9df0447da1fda49.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/bbbfce27270362b25d1f82d1a0ba4ce45f686c7b83e0ab32317e8bcaef7df2a7.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -96,22 +96,6 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
               "addToPrincipalPolicy": [
                 {}
               ]
@@ -130,6 +114,14 @@
             "data": {
               "attachInlinePolicy": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           }
@@ -164,6 +156,14 @@
             "data": {
               "attachToRole": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
               ]
             }
           },
@@ -221,42 +221,18 @@
             "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunction5165A7EE"
           }
         ],
-        "/iotlamddb-iot-lambda-dynamodb/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/iotlamddb-iot-lambda-dynamodb/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/iotlamddb-iot-lambda-dynamodb/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/iotlamddb-iot-lambda-dynamodb/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctioninlinePolicyAddedToExecutionRole0B0FADEBF"
+            "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionLogGroupFE5991F1"
           }
         ],
         "/iotlamddb-iot-lambda-dynamodb/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/AwsIotLambdaInvokePermission-1": [
@@ -271,10 +247,12 @@
             "data": {
               "billingMode": "PAY_PER_REQUEST",
               "encryption": "AWS_MANAGED",
-              "pointInTimeRecovery": true,
               "partitionKey": {
                 "name": "*",
                 "type": "S"
+              },
+              "pointInTimeRecoverySpecification": {
+                "pointInTimeRecoveryEnabled": true
               }
             }
           }
@@ -308,6 +286,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctioninlinePolicyAddedToExecutionRole0B0FADEBF": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctioninlinePolicyAddedToExecutionRole0B0FADEBF",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "iotlamddb-iot-lambda-dynamodb"
@@ -319,5 +306,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1006.0"
+  "minimumCliVersion": "2.1019.2"
 }

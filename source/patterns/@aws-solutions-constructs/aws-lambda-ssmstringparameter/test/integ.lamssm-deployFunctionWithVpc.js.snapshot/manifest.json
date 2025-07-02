@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamssmdeployFunctionWithVpcIntegDefaultTestDeployAssertF3551348.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f62fac5a9f39d0faf0e35af9465d65013233d9c62189c95fdfb6903f5c794987.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/559f47b82a5dddd06c938a4a98b4c2a13dd7b4999807d210bda1b16b97eefc5e.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -128,16 +128,8 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
@@ -180,6 +172,14 @@
             "data": {
               "attachToRole": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
               ]
             }
           },
@@ -264,42 +264,18 @@
             "data": "testlambdassmstringparameterLambdaFunctionD0F9E80D"
           }
         ],
-        "/lamssm-deployFunctionWithVpc/test-lambda-ssmstringparameter/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamssm-deployFunctionWithVpc/test-lambda-ssmstringparameter/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamssm-deployFunctionWithVpc/test-lambda-ssmstringparameter/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamssm-deployFunctionWithVpc/test-lambda-ssmstringparameter/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdassmstringparameterLambdaFunctioninlinePolicyAddedToExecutionRole0FC2BAAAC"
+            "data": "testlambdassmstringparameterLambdaFunctionLogGroup833BF4B4"
           }
         ],
         "/lamssm-deployFunctionWithVpc/test-lambda-ssmstringparameter/stringParameter": [
@@ -663,6 +639,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testlambdassmstringparameterLambdaFunctioninlinePolicyAddedToExecutionRole0FC2BAAAC": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdassmstringparameterLambdaFunctioninlinePolicyAddedToExecutionRole0FC2BAAAC",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamssm-deployFunctionWithVpc"
@@ -674,5 +659,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

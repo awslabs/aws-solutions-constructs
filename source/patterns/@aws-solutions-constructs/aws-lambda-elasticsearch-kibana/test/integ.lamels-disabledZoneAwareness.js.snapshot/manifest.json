@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamelsdisabledZoneAwarenessIntegDefaultTestDeployAssert961A0C2F.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/028982092550fb8d98df9c92810691b5657df8fa4647ba6b5e6bf55c0f7bf1ac.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6646cbb1911919fecb26b8284286f2ebaef673521f321efc1cab54a8ae032ce0.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -128,16 +128,8 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           }
@@ -172,6 +164,14 @@
             "data": {
               "attachToRole": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
               ]
             }
           },
@@ -248,42 +248,18 @@
             "data": "testlambdaelasticsearchkibanaLambdaFunction601D26D3"
           }
         ],
-        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaelasticsearchkibanaLambdaFunctioninlinePolicyAddedToExecutionRole043DCBC33"
+            "data": "testlambdaelasticsearchkibanaLambdaFunctionLogGroup0DA4FF09"
           }
         ],
         "/lamels-disabledZoneAwareness/test-lambda-elasticsearch-kibana/CognitoUserPool": [
@@ -856,6 +832,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testlambdaelasticsearchkibanaLambdaFunctioninlinePolicyAddedToExecutionRole043DCBC33": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibanaLambdaFunctioninlinePolicyAddedToExecutionRole043DCBC33",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamels-disabledZoneAwareness"
@@ -867,5 +852,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

@@ -786,6 +786,58 @@
     }
    }
   },
+  "multiplesourcesLambdaFunctionServiceRoleDefaultPolicyF82ADA6A": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kendra:BatchGet*",
+        "kendra:Describe*",
+        "kendra:Get*",
+        "kendra:List*",
+        "kendra:Query",
+        "kendra:Retrieve",
+        "kendra:SubmitFeedback"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "multiplesourceskendraindexmultiplesourcesD8FB1621",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "multiplesourcesLambdaFunctionServiceRoleDefaultPolicyF82ADA6A",
+    "Roles": [
+     {
+      "Ref": "multiplesourcesLambdaFunctionServiceRole66EC8973"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
   "multiplesourcesLambdaFunction9BDB2DBA": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -819,6 +871,7 @@
     }
    },
    "DependsOn": [
+    "multiplesourcesLambdaFunctionServiceRoleDefaultPolicyF82ADA6A",
     "multiplesourcesLambdaFunctionServiceRole66EC8973"
    ],
    "Metadata": {
@@ -840,88 +893,24 @@
     }
    }
   },
-  "multiplesourcesLambdaFunctioninlinePolicyAddedToExecutionRole02D707C8B": {
-   "Type": "AWS::IAM::Policy",
+  "multiplesourcesLambdaFunctionLogGroupE7294216": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "PolicyName": "multiplesourcesLambdaFunctioninlinePolicyAddedToExecutionRole02D707C8B",
-    "Roles": [
-     {
-      "Ref": "multiplesourcesLambdaFunctionServiceRole66EC8973"
-     }
-    ]
-   }
-  },
-  "multiplesourcesLambdaFunctioninlinePolicyAddedToExecutionRole1F955B6B2": {
-   "Type": "AWS::IAM::Policy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "kendra:BatchGet*",
-        "kendra:Describe*",
-        "kendra:Get*",
-        "kendra:List*",
-        "kendra:Query",
-        "kendra:Retrieve"
-       ],
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "multiplesourceskendraindexmultiplesourcesD8FB1621",
-         "Arn"
-        ]
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "multiplesourcesLambdaFunction9BDB2DBA"
        }
-      }
-     ],
-     "Version": "2012-10-17"
+      ]
+     ]
     },
-    "PolicyName": "multiplesourcesLambdaFunctioninlinePolicyAddedToExecutionRole1F955B6B2",
-    "Roles": [
-     {
-      "Ref": "multiplesourcesLambdaFunctionServiceRole66EC8973"
-     }
-    ]
-   }
-  },
-  "multiplesourcesLambdaFunctioninlinePolicyAddedToExecutionRole23B3A0248": {
-   "Type": "AWS::IAM::Policy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": "kendra:SubmitFeedback",
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "multiplesourceskendraindexmultiplesourcesD8FB1621",
-         "Arn"
-        ]
-       }
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "PolicyName": "multiplesourcesLambdaFunctioninlinePolicyAddedToExecutionRole23B3A0248",
-    "Roles": [
-     {
-      "Ref": "multiplesourcesLambdaFunctionServiceRole66EC8973"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "multiplesourceskendraindexrolemultiplesourcesAB2C8779": {
    "Type": "AWS::IAM::Role",

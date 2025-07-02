@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "lamels-deployToFiveZones/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -29,7 +29,7 @@
         }
       }
     },
-    "d3e24090cabe0eca7b4e581727fc44fffc50891a7c10bd4a0f21f19af2cf7de6": {
+    "69d060809fc7d0e266083e94b4725d31f247de0b2f02e6e1c60218ce884818be": {
       "displayName": "lamels-deployToFiveZones Template",
       "source": {
         "path": "lamels-deployToFiveZones.template.json",
@@ -38,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "d3e24090cabe0eca7b4e581727fc44fffc50891a7c10bd4a0f21f19af2cf7de6.json",
+          "objectKey": "69d060809fc7d0e266083e94b4725d31f247de0b2f02e6e1c60218ce884818be.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "apisqsadditionalrequesttemplatesIntegDefaultTestDeployAssertDA16E210.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/efbb644dd3af8d0c105898013266207d77cb3c2aa7d5d0ef57d322c42d0713cc.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a3f3ab55ca8dbe91d41aedb178407e7536c206ed67a7b002d4308ba54ce55a46.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,10 +82,29 @@
         "apisqs-additional-request-templates.assets"
       ],
       "metadata": {
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/queue-dlq": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "KMS_MANAGED",
+              "fifo": "*"
+            }
+          }
+        ],
         "/apisqs-additional-request-templates/test-api-gateway-sqs-default/queue-dlq/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaysqsdefaultqueuedlqF08203A7"
+          }
+        ],
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/queue-dlq/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "queues": [
+                "*"
+              ]
+            }
           }
         ],
         "/apisqs-additional-request-templates/test-api-gateway-sqs-default/queue-dlq/Policy/Resource": [
@@ -94,10 +113,32 @@
             "data": "testapigatewaysqsdefaultqueuedlqPolicy3E4AECEE"
           }
         ],
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/queue": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "KMS_MANAGED",
+              "deadLetterQueue": {
+                "maxReceiveCount": "*",
+                "queue": "*"
+              }
+            }
+          }
+        ],
         "/apisqs-additional-request-templates/test-api-gateway-sqs-default/queue/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaysqsdefaultqueueCAC098BE"
+          }
+        ],
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/queue/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "queues": [
+                "*"
+              ]
+            }
           }
         ],
         "/apisqs-additional-request-templates/test-api-gateway-sqs-default/queue/Policy/Resource": [
@@ -106,10 +147,41 @@
             "data": "testapigatewaysqsdefaultqueuePolicy529DEC31"
           }
         ],
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/ApiAccessLogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "retention": 9999
+            }
+          }
+        ],
         "/apisqs-additional-request-templates/test-api-gateway-sqs-default/ApiAccessLogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaysqsdefaultApiAccessLogGroup16132600"
+          }
+        ],
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/RestApi": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "endpointConfiguration": {
+                "types": [
+                  "EDGE"
+                ]
+              },
+              "cloudWatchRole": false,
+              "deployOptions": {
+                "accessLogDestination": "*",
+                "accessLogFormat": "*",
+                "loggingLevel": "INFO",
+                "dataTraceEnabled": false,
+                "tracingEnabled": true
+              },
+              "defaultMethodOptions": {
+                "authorizationType": "*"
+              }
+            }
           }
         ],
         "/apisqs-additional-request-templates/test-api-gateway-sqs-default/RestApi/Resource": [
@@ -118,10 +190,49 @@
             "data": "testapigatewaysqsdefaultRestApi554243C3"
           }
         ],
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/RestApi/Deployment": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "description": "*",
+              "api": "*",
+              "retainDeployments": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          }
+        ],
         "/apisqs-additional-request-templates/test-api-gateway-sqs-default/RestApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaysqsdefaultRestApiDeploymentFB9688F5ba8a42d07caa9db068377b2cabf4da74"
+          }
+        ],
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/RestApi/DeploymentStage.prod": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "deployment": "*",
+              "accessLogDestination": "*",
+              "accessLogFormat": "*",
+              "loggingLevel": "INFO",
+              "dataTraceEnabled": false,
+              "tracingEnabled": true
+            }
           }
         ],
         "/apisqs-additional-request-templates/test-api-gateway-sqs-default/RestApi/DeploymentStage.prod/Resource": [
@@ -136,10 +247,104 @@
             "data": "testapigatewaysqsdefaultRestApiEndpointE6DCCE4E"
           }
         ],
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/RestApi/Default": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/RestApi/Default/POST": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": {
+                "methodResponses": [
+                  {
+                    "statusCode": "*",
+                    "responseParameters": "*"
+                  },
+                  {
+                    "statusCode": "*",
+                    "responseParameters": "*"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethodResponse": [
+                {
+                  "statusCode": "*",
+                  "responseParameters": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethodResponse": [
+                {
+                  "statusCode": "*",
+                  "responseParameters": "*"
+                }
+              ]
+            }
+          }
+        ],
         "/apisqs-additional-request-templates/test-api-gateway-sqs-default/RestApi/Default/POST/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaysqsdefaultRestApiPOSTD8ACD1CB"
+          }
+        ],
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/RestApi/Default/GET": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": {
+                "methodResponses": [
+                  {
+                    "statusCode": "*",
+                    "responseParameters": "*"
+                  },
+                  {
+                    "statusCode": "*",
+                    "responseParameters": "*"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethodResponse": [
+                {
+                  "statusCode": "*",
+                  "responseParameters": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethodResponse": [
+                {
+                  "statusCode": "*",
+                  "responseParameters": "*"
+                }
+              ]
+            }
           }
         ],
         "/apisqs-additional-request-templates/test-api-gateway-sqs-default/RestApi/Default/GET/Resource": [
@@ -148,10 +353,40 @@
             "data": "testapigatewaysqsdefaultRestApiGET733E6394"
           }
         ],
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/RestApi/UsagePlan": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "apiStages": [
+                {
+                  "api": "*"
+                }
+              ]
+            }
+          }
+        ],
         "/apisqs-additional-request-templates/test-api-gateway-sqs-default/RestApi/UsagePlan/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaysqsdefaultRestApiUsagePlan3475CA67"
+          }
+        ],
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/LambdaRestApiCloudWatchRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/apisqs-additional-request-templates/test-api-gateway-sqs-default/LambdaRestApiCloudWatchRole/Resource": [
@@ -166,10 +401,113 @@
             "data": "testapigatewaysqsdefaultLambdaRestApiAccountF7D19F4F"
           }
         ],
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/api-gateway-role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/api-gateway-role/Importapi-gateway-role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/apisqs-additional-request-templates/test-api-gateway-sqs-default/api-gateway-role/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaysqsdefaultapigatewayrole080B85EC"
+          }
+        ],
+        "/apisqs-additional-request-templates/test-api-gateway-sqs-default/api-gateway-role/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/apisqs-additional-request-templates/test-api-gateway-sqs-default/api-gateway-role/DefaultPolicy/Resource": [
@@ -199,5 +537,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1019.0"
 }

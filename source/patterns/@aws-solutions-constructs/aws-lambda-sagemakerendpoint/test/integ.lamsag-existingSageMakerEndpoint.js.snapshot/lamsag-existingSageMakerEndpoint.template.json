@@ -482,6 +482,47 @@
     }
    }
   },
+  "testlambdasagemakerLambdaFunctionServiceRoleDefaultPolicy208C2512": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": "sagemaker:InvokeEndpoint",
+       "Effect": "Allow",
+       "Resource": {
+        "Ref": "SagemakerEndpoint"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testlambdasagemakerLambdaFunctionServiceRoleDefaultPolicy208C2512",
+    "Roles": [
+     {
+      "Ref": "testlambdasagemakerLambdaFunctionServiceRole4BA038CB"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
   "testlambdasagemakerLambdaFunction661E043F": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -516,6 +557,7 @@
     }
    },
    "DependsOn": [
+    "testlambdasagemakerLambdaFunctionServiceRoleDefaultPolicy208C2512",
     "testlambdasagemakerLambdaFunctionServiceRole4BA038CB"
    ],
    "Metadata": {
@@ -537,52 +579,24 @@
     }
    }
   },
-  "testlambdasagemakerLambdaFunctioninlinePolicyAddedToExecutionRole0DB7F0BCA": {
-   "Type": "AWS::IAM::Policy",
+  "testlambdasagemakerLambdaFunctionLogGroup59BC2A33": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "PolicyName": "testlambdasagemakerLambdaFunctioninlinePolicyAddedToExecutionRole0DB7F0BCA",
-    "Roles": [
-     {
-      "Ref": "testlambdasagemakerLambdaFunctionServiceRole4BA038CB"
-     }
-    ]
-   }
-  },
-  "testlambdasagemakerLambdaFunctioninlinePolicyAddedToExecutionRole1048EC459": {
-   "Type": "AWS::IAM::Policy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": "sagemaker:InvokeEndpoint",
-       "Effect": "Allow",
-       "Resource": {
-        "Ref": "SagemakerEndpoint"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testlambdasagemakerLambdaFunction661E043F"
        }
-      }
-     ],
-     "Version": "2012-10-17"
+      ]
+     ]
     },
-    "PolicyName": "testlambdasagemakerLambdaFunctioninlinePolicyAddedToExecutionRole1048EC459",
-    "Roles": [
-     {
-      "Ref": "testlambdasagemakerLambdaFunctionServiceRole4BA038CB"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   }
  },
  "Parameters": {

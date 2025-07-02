@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "cftapinoargumentsIntegDefaultTestDeployAssert86305603.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0a64f7e47c523dab0ae54799e9a545dd77805a314de2da11e3c7bc9e62be2a6d.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/db99d1c6d3ea5da0e423aa499caf11dbb498a6dab7257d0589a1c7e35ce73a61.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -126,6 +126,20 @@
             "data": "cftapinoargumentsapiFunctionFF0A9430"
           }
         ],
+        "/cftapi-no-arguments/cftapi-no-arguments-apiFunction/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroupName": "*"
+            }
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-apiFunction/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiFunctionLogGroup913F9183"
+          }
+        ],
         "/cftapi-no-arguments/cftapi-no-arguments-api-authorizerAuthFunction": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -168,6 +182,20 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "cftapinoargumentsapiauthorizerAuthFunction5A0061F7"
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-api-authorizerAuthFunction/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroupName": "*"
+            }
+          }
+        ],
+        "/cftapi-no-arguments/cftapi-no-arguments-api-authorizerAuthFunction/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cftapinoargumentsapiauthorizerAuthFunctionLogGroupFB95E364"
           }
         ],
         "/cftapi-no-arguments/cftapi-no-arguments-api-authorizerAuthFunction/cftapinoargumentscftapinoargumentsapiauthorizerCA624E68:Permissions": [
@@ -552,5 +580,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.0"
 }

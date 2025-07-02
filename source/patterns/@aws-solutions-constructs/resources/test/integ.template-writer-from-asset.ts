@@ -21,6 +21,7 @@ import { TemplateValue, createTemplateWriterCustomResource } from "../lib/templa
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for Template Writer Resource';
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 const templateAsset = new Asset(stack, 'TemplateAsset', {
   path: path.join(__dirname, 'template/sample-template')

@@ -68,6 +68,25 @@
     }
    }
   },
+  "lambdaevtstptestLogGroup3B07FBB6": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "lambdaevtstptest4DAE33D9"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
   "testeventbridgestepfunctionsconstructStateMachineLogGroup3098B32C": {
    "Type": "AWS::Logs::LogGroup",
    "Properties": {
@@ -244,67 +263,6 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
-  "testeventbridgestepfunctionsconstructEventsRuleRole18E9101A": {
-   "Type": "AWS::IAM::Role",
-   "Properties": {
-    "AssumeRolePolicyDocument": {
-     "Statement": [
-      {
-       "Action": "sts:AssumeRole",
-       "Effect": "Allow",
-       "Principal": {
-        "Service": "events.amazonaws.com"
-       }
-      }
-     ],
-     "Version": "2012-10-17"
-    }
-   }
-  },
-  "testeventbridgestepfunctionsconstructEventsRuleRoleDefaultPolicyC40CE54A": {
-   "Type": "AWS::IAM::Policy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": "states:StartExecution",
-       "Effect": "Allow",
-       "Resource": {
-        "Ref": "testeventbridgestepfunctionsconstructStateMachine08688697"
-       }
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "PolicyName": "testeventbridgestepfunctionsconstructEventsRuleRoleDefaultPolicyC40CE54A",
-    "Roles": [
-     {
-      "Ref": "testeventbridgestepfunctionsconstructEventsRuleRole18E9101A"
-     }
-    ]
-   }
-  },
-  "testeventbridgestepfunctionsconstructEventsRuleECA8B70F": {
-   "Type": "AWS::Events::Rule",
-   "Properties": {
-    "ScheduleExpression": "rate(5 minutes)",
-    "State": "ENABLED",
-    "Targets": [
-     {
-      "Arn": {
-       "Ref": "testeventbridgestepfunctionsconstructStateMachine08688697"
-      },
-      "Id": "Target0",
-      "RoleArn": {
-       "Fn::GetAtt": [
-        "testeventbridgestepfunctionsconstructEventsRuleRole18E9101A",
-        "Arn"
-       ]
-      }
-     }
-    ]
-   }
-  },
   "testeventbridgestepfunctionsconstructExecutionFailedAlarm57DF694C": {
    "Type": "AWS::CloudWatch::Alarm",
    "Properties": {
@@ -366,6 +324,67 @@
     "Period": 300,
     "Statistic": "Maximum",
     "Threshold": 1
+   }
+  },
+  "testeventbridgestepfunctionsconstructEventsRuleRole18E9101A": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "events.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "testeventbridgestepfunctionsconstructEventsRuleRoleDefaultPolicyC40CE54A": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "states:StartExecution",
+       "Effect": "Allow",
+       "Resource": {
+        "Ref": "testeventbridgestepfunctionsconstructStateMachine08688697"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testeventbridgestepfunctionsconstructEventsRuleRoleDefaultPolicyC40CE54A",
+    "Roles": [
+     {
+      "Ref": "testeventbridgestepfunctionsconstructEventsRuleRole18E9101A"
+     }
+    ]
+   }
+  },
+  "testeventbridgestepfunctionsconstructEventsRuleECA8B70F": {
+   "Type": "AWS::Events::Rule",
+   "Properties": {
+    "ScheduleExpression": "rate(5 minutes)",
+    "State": "ENABLED",
+    "Targets": [
+     {
+      "Arn": {
+       "Ref": "testeventbridgestepfunctionsconstructStateMachine08688697"
+      },
+      "Id": "Target0",
+      "RoleArn": {
+       "Fn::GetAtt": [
+        "testeventbridgestepfunctionsconstructEventsRuleRole18E9101A",
+        "Arn"
+       ]
+      }
+     }
+    ]
    }
   }
  },

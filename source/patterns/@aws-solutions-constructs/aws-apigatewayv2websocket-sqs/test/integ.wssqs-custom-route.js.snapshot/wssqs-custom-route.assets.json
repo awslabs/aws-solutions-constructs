@@ -1,7 +1,8 @@
 {
-  "version": "40.0.0",
+  "version": "44.0.0",
   "files": {
     "9da0e8bdfa0712cb47fc2d6c6bad128e2edc58ffe5a8af5a322914f5c63609d1": {
+      "displayName": "disconnect/Code",
       "source": {
         "path": "asset.9da0e8bdfa0712cb47fc2d6c6bad128e2edc58ffe5a8af5a322914f5c63609d1",
         "packaging": "zip"
@@ -14,7 +15,8 @@
         }
       }
     },
-    "af2103ec4027cd06c3b70785ef96baa82e16535604586878d03345f64a0a5ace": {
+    "8e96c30785016ef310ebc832bf0201c80663c6f991d1382a9864f7fe2582dd8c": {
+      "displayName": "wssqs-custom-route Template",
       "source": {
         "path": "wssqs-custom-route.template.json",
         "packaging": "file"
@@ -22,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "af2103ec4027cd06c3b70785ef96baa82e16535604586878d03345f64a0a5ace.json",
+          "objectKey": "8e96c30785016ef310ebc832bf0201c80663c6f991d1382a9864f7fe2582dd8c.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

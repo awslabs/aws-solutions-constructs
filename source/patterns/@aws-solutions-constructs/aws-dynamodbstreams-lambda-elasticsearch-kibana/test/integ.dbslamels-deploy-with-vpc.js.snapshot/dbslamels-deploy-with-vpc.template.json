@@ -74,7 +74,9 @@
         "ec2:CreateNetworkInterface",
         "ec2:DeleteNetworkInterface",
         "ec2:DescribeNetworkInterfaces",
-        "ec2:UnassignPrivateIpAddresses"
+        "ec2:UnassignPrivateIpAddresses",
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
        ],
        "Effect": "Allow",
        "Resource": "*"
@@ -233,33 +235,28 @@
     }
    }
   },
-  "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctioninlinePolicyAddedToExecutionRole05D4F2798": {
-   "Type": "AWS::IAM::Policy",
+  "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionLogGroup0F566756": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionB70B7296"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctioninlinePolicyAddedToExecutionRole05D4F2798",
-    "Roles": [
-     {
-      "Ref": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleEC11512B"
-     }
-    ]
+    "RetentionInDays": 731
    },
    "DependsOn": [
     "testddbstreamslambdaeskVpcisolatedSubnet1RouteTableAssociation2E533936",
     "testddbstreamslambdaeskVpcisolatedSubnet2RouteTableAssociation77A663A5"
-   ]
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionDynamoDBEventSourcedbslamelsdeploywithvpctestddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTable3450D24364E2F0CA": {
    "Type": "AWS::Lambda::EventSourceMapping",

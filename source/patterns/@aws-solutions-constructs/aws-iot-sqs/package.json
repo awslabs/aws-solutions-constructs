@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-iot-sqs",
-  "version": "0.0.0",
+  "version": "2.85.6",
   "description": "CDK Constructs for AWS IoT to AWS SQS integration",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -55,14 +55,14 @@
     }
   },
   "dependencies": {
-    "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-solutions-constructs/core": "2.85.6",
     "constructs": "^10.0.0"
   },
   "devDependencies": {
-    "@aws-cdk/integ-tests-alpha": "0.0.0-alpha.0",
+    "@aws-cdk/integ-tests-alpha": "2.202.0-alpha.0",
     "@types/node": "^10.3.0",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "0.0.0"
+    "aws-cdk-lib": "2.202.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -79,8 +79,8 @@
     ]
   },
   "peerDependencies": {
-    "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-solutions-constructs/core": "2.85.6",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "^0.0.0"
+    "aws-cdk-lib": "^2.202.0"
   }
 }

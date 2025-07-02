@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "s3stppreexistingbucketIntegDefaultTestDeployAssert71C6CEBC.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/80f3df7b5eb351d3ef9e760df39e2ee2de5c0335bcd063ac1823fb19cca4299d.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/623b2de84bed5bc9e981731ae53aaeb48f7e09fbf2bebd16e89b9b9ad1002bbc.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -343,6 +343,20 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "lambdas3stptest9FBDC6CE"
+          }
+        ],
+        "/s3stp-pre-existing-bucket/lambdas3stp-test/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroupName": "*"
+            }
+          }
+        ],
+        "/s3stp-pre-existing-bucket/lambdas3stp-test/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdas3stptestLogGroupC7B8F609"
           }
         ],
         "/s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/StateMachineLogGroup": [
@@ -699,5 +713,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.0"
 }

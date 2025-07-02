@@ -63,6 +63,40 @@
     }
    }
   },
+  "testsnslambdaLambdaFunctionServiceRoleDefaultPolicy3E6745ED": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testsnslambdaLambdaFunctionServiceRoleDefaultPolicy3E6745ED",
+    "Roles": [
+     {
+      "Ref": "testsnslambdaLambdaFunctionServiceRole23794781"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
   "testsnslambdaLambdaFunctionEE9A249B": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -90,6 +124,7 @@
     }
    },
    "DependsOn": [
+    "testsnslambdaLambdaFunctionServiceRoleDefaultPolicy3E6745ED",
     "testsnslambdaLambdaFunctionServiceRole23794781"
    ],
    "Metadata": {
@@ -111,29 +146,24 @@
     }
    }
   },
-  "testsnslambdaLambdaFunctioninlinePolicyAddedToExecutionRole015A6D296": {
-   "Type": "AWS::IAM::Policy",
+  "testsnslambdaLambdaFunctionLogGroupF44BBEC4": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testsnslambdaLambdaFunctionEE9A249B"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testsnslambdaLambdaFunctioninlinePolicyAddedToExecutionRole015A6D296",
-    "Roles": [
-     {
-      "Ref": "testsnslambdaLambdaFunctionServiceRole23794781"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testsnslambdaLambdaFunctionAllowInvokesnslamnoargumentstestsnslambdaSnsTopicC2A3522489F066D4": {
    "Type": "AWS::Lambda::Permission",

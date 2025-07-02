@@ -1,5 +1,5 @@
 {
-  "version": "42.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamelsdomainargumentsIntegDefaultTestDeployAssert01468AA9.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6c0a7a1dc017b1b6f4592e06626737cf8884360662b551b2c1a6ab027db810e9.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8648b1798216f45acc0a6ae8dbedd5e372537e1f2d4d6cada3c98ed93b808848.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -96,6 +96,14 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
               "attachInlinePolicy": [
                 "*"
               ]
@@ -120,6 +128,42 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleA59E9EBF"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleDefaultPolicy438CAC76"
           }
         ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunction": [
@@ -161,42 +205,18 @@
             "data": "testlambdaelasticsearchkibana2LambdaFunctionE665DF63"
           }
         ],
-        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaelasticsearchkibana2LambdaFunctioninlinePolicyAddedToExecutionRole0DD92EB84"
+            "data": "testlambdaelasticsearchkibana2LambdaFunctionLogGroup34DB1C8A"
           }
         ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoUserPool": [
@@ -542,10 +562,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleDefaultPolicy438CAC76": [
+        "testlambdaelasticsearchkibana2LambdaFunctioninlinePolicyAddedToExecutionRole0DD92EB84": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleDefaultPolicy438CAC76",
+            "data": "testlambdaelasticsearchkibana2LambdaFunctioninlinePolicyAddedToExecutionRole0DD92EB84",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
@@ -561,5 +581,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1006.0"
+  "minimumCliVersion": "2.1019.2"
 }

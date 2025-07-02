@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f": {
       "displayName": "test-lambda-inferenceprops/LambdaFunction/Code",
@@ -15,7 +15,7 @@
         }
       }
     },
-    "f4113aaf947712f1446294101278684d9eaea5a9324306263ef1d6d51e352883": {
+    "3dc8d6b4ccc14bdc28633ee081d7271a09d57ebce9acf4e679e652bf985d0571": {
       "displayName": "lambed-no-arguments Template",
       "source": {
         "path": "lambed-no-arguments.template.json",
@@ -24,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "f4113aaf947712f1446294101278684d9eaea5a9324306263ef1d6d51e352883.json",
+          "objectKey": "3dc8d6b4ccc14bdc28633ee081d7271a09d57ebce9acf4e679e652bf985d0571.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

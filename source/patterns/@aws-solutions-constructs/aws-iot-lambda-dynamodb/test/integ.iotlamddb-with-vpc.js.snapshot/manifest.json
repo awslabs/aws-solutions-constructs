@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "iotlamddbwithvpcIntegDefaultTestDeployAssertBBC79152.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5fb800e3ca480937539bc3b53a7cc3afceca37ce09537d6801ecca30f7276a6e.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0ced7d83e278f433e8f1b142f09729a5ef609a048ae00fea1ec2b680386dc4cd.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -128,16 +128,8 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
@@ -180,6 +172,14 @@
             "data": {
               "attachToRole": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
               ]
             }
           },
@@ -264,42 +264,18 @@
             "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunction5165A7EE"
           }
         ],
-        "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctioninlinePolicyAddedToExecutionRole0B0FADEBF"
+            "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionLogGroupFE5991F1"
           }
         ],
         "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/AwsIotLambdaInvokePermission-1": [
@@ -639,6 +615,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctioninlinePolicyAddedToExecutionRole0B0FADEBF": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctioninlinePolicyAddedToExecutionRole0B0FADEBF",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "iotlamddb-with-vpc"
@@ -650,5 +635,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

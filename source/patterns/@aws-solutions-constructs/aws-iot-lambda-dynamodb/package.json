@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-iot-lambda-dynamodb",
-  "version": "0.0.0",
+  "version": "2.85.6",
   "description": "CDK Constructs for AWS IoT to AWS Lambda to AWS DyanmoDB integration.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -55,16 +55,16 @@
     }
   },
   "dependencies": {
-    "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-iot-lambda": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-dynamodb": "0.0.0",
+    "@aws-solutions-constructs/core": "2.85.6",
+    "@aws-solutions-constructs/aws-iot-lambda": "2.85.6",
+    "@aws-solutions-constructs/aws-lambda-dynamodb": "2.85.6",
     "constructs": "^10.0.0"
   },
   "devDependencies": {
-    "@aws-cdk/integ-tests-alpha": "0.0.0-alpha.0",
+    "@aws-cdk/integ-tests-alpha": "2.202.0-alpha.0",
     "@types/node": "^10.3.0",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "0.0.0"
+    "aws-cdk-lib": "2.202.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -81,11 +81,11 @@
     ]
   },
   "peerDependencies": {
-    "@aws-solutions-constructs/core": "0.0.0",
-    "@aws-solutions-constructs/aws-iot-lambda": "0.0.0",
-    "@aws-solutions-constructs/aws-lambda-dynamodb": "0.0.0",
+    "@aws-solutions-constructs/core": "2.85.6",
+    "@aws-solutions-constructs/aws-iot-lambda": "2.85.6",
+    "@aws-solutions-constructs/aws-lambda-dynamodb": "2.85.6",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "^0.0.0"
+    "aws-cdk-lib": "^2.202.0"
   },
   "keywords": [
     "aws",

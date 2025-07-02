@@ -653,6 +653,37 @@
     ]
    }
   },
+  "existingfunctionServiceRoleDefaultPolicyFAFC8F2C": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "firehose:DeleteDeliveryStream",
+        "firehose:PutRecord",
+        "firehose:PutRecordBatch",
+        "firehose:UpdateDestination"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "destinationfirehoseKinesisFirehoseE8EB5D91",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "existingfunctionServiceRoleDefaultPolicyFAFC8F2C",
+    "Roles": [
+     {
+      "Ref": "existingfunctionServiceRole90E818C0"
+     }
+    ]
+   }
+  },
   "existingfunctionC3A89A38": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -677,6 +708,7 @@
     "Runtime": "nodejs20.x"
    },
    "DependsOn": [
+    "existingfunctionServiceRoleDefaultPolicyFAFC8F2C",
     "existingfunctionServiceRole90E818C0"
    ],
    "Metadata": {
@@ -698,36 +730,24 @@
     }
    }
   },
-  "existingfunctioninlinePolicyAddedToExecutionRole0618E5FEB": {
-   "Type": "AWS::IAM::Policy",
+  "existingfunctionLogGroupF513E2E0": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "firehose:DeleteDeliveryStream",
-        "firehose:PutRecord",
-        "firehose:PutRecordBatch",
-        "firehose:UpdateDestination"
-       ],
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "destinationfirehoseKinesisFirehoseE8EB5D91",
-         "Arn"
-        ]
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "existingfunctionC3A89A38"
        }
-      }
-     ],
-     "Version": "2012-10-17"
+      ]
+     ]
     },
-    "PolicyName": "existingfunctioninlinePolicyAddedToExecutionRole0618E5FEB",
-    "Roles": [
-     {
-      "Ref": "existingfunctionServiceRole90E818C0"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   }
  },
  "Mappings": {

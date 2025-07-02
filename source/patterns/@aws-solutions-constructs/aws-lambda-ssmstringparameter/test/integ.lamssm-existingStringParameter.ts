@@ -23,6 +23,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 stack.templateOptions.description = 'Integration Test for aws-lambda-ssmstringparameter';
 const existingStringParam = new StringParameter(stack, 'myNewStringParameter', {stringValue: "test-string-value" });
 

@@ -23,6 +23,7 @@ const app = new App();
 
 // Change the billing mode to PROVISIONED
 const stack = new Stack(app, generateIntegStackName(__filename));
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 const construct: LambdaToDynamoDB = new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', {
   lambdaFunctionProps: {

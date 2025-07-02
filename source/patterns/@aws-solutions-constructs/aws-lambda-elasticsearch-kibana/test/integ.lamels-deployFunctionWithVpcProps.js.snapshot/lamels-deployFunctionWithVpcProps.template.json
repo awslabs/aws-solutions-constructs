@@ -73,7 +73,9 @@
         "ec2:CreateNetworkInterface",
         "ec2:DeleteNetworkInterface",
         "ec2:DescribeNetworkInterfaces",
-        "ec2:UnassignPrivateIpAddresses"
+        "ec2:UnassignPrivateIpAddresses",
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
        ],
        "Effect": "Allow",
        "Resource": "*"
@@ -204,33 +206,28 @@
     }
    }
   },
-  "testlambdaelasticsearchkibana3LambdaFunctioninlinePolicyAddedToExecutionRole0B7497C66": {
-   "Type": "AWS::IAM::Policy",
+  "testlambdaelasticsearchkibana3LambdaFunctionLogGroup08C0A4EC": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testlambdaelasticsearchkibana3LambdaFunctionE377CF86"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testlambdaelasticsearchkibana3LambdaFunctioninlinePolicyAddedToExecutionRole0B7497C66",
-    "Roles": [
-     {
-      "Ref": "testlambdaelasticsearchkibana3LambdaFunctionServiceRoleA3C1E07E"
-     }
-    ]
+    "RetentionInDays": 731
    },
    "DependsOn": [
     "VpcisolatedSubnet1RouteTableAssociationD259E31A",
     "VpcisolatedSubnet2RouteTableAssociation25A4716F"
-   ]
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testlambdaelasticsearchkibana3CognitoUserPoolEF0D5793": {
    "Type": "AWS::Cognito::UserPool",

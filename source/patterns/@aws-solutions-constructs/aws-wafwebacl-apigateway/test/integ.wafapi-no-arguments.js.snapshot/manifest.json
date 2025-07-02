@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "wafapinoargumentsIntegDefaultTestDeployAssertB0CD172A.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/99bfbbcd252271f1265c514b9fd7b4c7152f6d71f0f35c500f18b8287d3c3afd.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f199268a5b813dbd65b82829d821d1040b59e5517d08da7a794c6d21ef31cf58.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,6 +82,38 @@
         "wafapi-no-arguments.assets"
       ],
       "metadata": {
+        "/wafapi-no-arguments/testFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          }
+        ],
+        "/wafapi-no-arguments/testFunction/ServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "managedPolicies": [
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          }
+        ],
+        "/wafapi-no-arguments/testFunction/ServiceRole/ImportServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/wafapi-no-arguments/testFunction/ServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -92,6 +124,52 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testFunction483F4CBE"
+          }
+        ],
+        "/wafapi-no-arguments/testFunction/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroupName": "*"
+            }
+          }
+        ],
+        "/wafapi-no-arguments/testFunction/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testFunctionLogGroup5361733A"
+          }
+        ],
+        "/wafapi-no-arguments/test-authorizerAuthFunction": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "code": "*",
+              "runtime": "*",
+              "handler": "*"
+            }
+          }
+        ],
+        "/wafapi-no-arguments/test-authorizerAuthFunction/ServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "managedPolicies": [
+                {
+                  "managedPolicyArn": "*"
+                }
+              ]
+            }
+          }
+        ],
+        "/wafapi-no-arguments/test-authorizerAuthFunction/ServiceRole/ImportServiceRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/wafapi-no-arguments/test-authorizerAuthFunction/ServiceRole/Resource": [
@@ -106,10 +184,30 @@
             "data": "testauthorizerAuthFunctionCE2F3743"
           }
         ],
+        "/wafapi-no-arguments/test-authorizerAuthFunction/LogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "logGroupName": "*"
+            }
+          }
+        ],
+        "/wafapi-no-arguments/test-authorizerAuthFunction/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testauthorizerAuthFunctionLogGroup3C72FCFF"
+          }
+        ],
         "/wafapi-no-arguments/test-authorizerAuthFunction/wafapinoargumentstestauthorizerB886165D:Permissions": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testauthorizerAuthFunctionwafapinoargumentstestauthorizerB886165DPermissions0BD74048"
+          }
+        ],
+        "/wafapi-no-arguments/test-authorizer": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/wafapi-no-arguments/test-authorizer/Resource": [
@@ -118,16 +216,97 @@
             "data": "testauthorizer92817493"
           }
         ],
+        "/wafapi-no-arguments/testApi": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "defaultIntegration": "*",
+              "handler": "*",
+              "defaultMethodOptions": {
+                "authorizationType": "*",
+                "authorizer": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "handler": "*",
+              "defaultMethodOptions": {
+                "authorizationType": "*",
+                "authorizer": "*"
+              }
+            }
+          }
+        ],
         "/wafapi-no-arguments/testApi/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testApiD6ECAB50"
           }
         ],
+        "/wafapi-no-arguments/testApi/Deployment": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "description": "*",
+              "api": "*",
+              "retainDeployments": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          }
+        ],
         "/wafapi-no-arguments/testApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testApiDeployment3727A0B945269ece8c1cb1d7d33b0e2942ca4768"
+          }
+        ],
+        "/wafapi-no-arguments/testApi/DeploymentStage.prod": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "deployment": "*"
+            }
           }
         ],
         "/wafapi-no-arguments/testApi/DeploymentStage.prod/Resource": [
@@ -142,10 +321,51 @@
             "data": "testApiEndpointC9D07ADA"
           }
         ],
+        "/wafapi-no-arguments/testApi/Default": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/wafapi-no-arguments/testApi/Default/{proxy+}": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*",
+              "defaultIntegration": "*",
+              "defaultMethodOptions": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethod": [
+                "*"
+              ]
+            }
+          }
+        ],
         "/wafapi-no-arguments/testApi/Default/{proxy+}/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testApiproxyA0E5503A"
+          }
+        ],
+        "/wafapi-no-arguments/testApi/Default/{proxy+}/ANY": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": "*"
+            }
           }
         ],
         "/wafapi-no-arguments/testApi/Default/{proxy+}/ANY/ApiPermission.wafapinoargumentstestApi4B407520.ANY..{proxy+}": [
@@ -164,6 +384,17 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testApiproxyANYC53F2608"
+          }
+        ],
+        "/wafapi-no-arguments/testApi/Default/ANY": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": "*"
+            }
           }
         ],
         "/wafapi-no-arguments/testApi/Default/ANY/ApiPermission.wafapinoargumentstestApi4B407520.ANY..": [
@@ -217,5 +448,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1019.0"
 }

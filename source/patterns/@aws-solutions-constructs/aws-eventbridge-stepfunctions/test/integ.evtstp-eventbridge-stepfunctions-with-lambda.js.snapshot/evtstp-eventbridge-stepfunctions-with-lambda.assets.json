@@ -1,7 +1,8 @@
 {
-  "version": "40.0.0",
+  "version": "44.0.0",
   "files": {
     "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f": {
+      "displayName": "LambdaFunction/Code",
       "source": {
         "path": "asset.3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f",
         "packaging": "zip"
@@ -14,7 +15,8 @@
         }
       }
     },
-    "693d54ae3b4095b5744d912a999894b400348d7de939ffc3b5f8ed04c2ef98fd": {
+    "673c19074fb0d478587985acb1188cd8311081efd3602b3f159ac7ed853133fc": {
+      "displayName": "evtstp-eventbridge-stepfunctions-with-lambda Template",
       "source": {
         "path": "evtstp-eventbridge-stepfunctions-with-lambda.template.json",
         "packaging": "file"
@@ -22,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "693d54ae3b4095b5744d912a999894b400348d7de939ffc3b5f8ed04c2ef98fd.json",
+          "objectKey": "673c19074fb0d478587985acb1188cd8311081efd3602b3f159ac7ed853133fc.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

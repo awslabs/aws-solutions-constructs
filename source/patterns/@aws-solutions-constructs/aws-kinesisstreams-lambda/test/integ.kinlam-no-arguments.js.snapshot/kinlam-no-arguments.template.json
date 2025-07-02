@@ -83,6 +83,14 @@
      "Statement": [
       {
        "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
         "kinesis:DescribeStream",
         "kinesis:DescribeStreamConsumer",
         "kinesis:DescribeStreamSummary",
@@ -123,6 +131,16 @@
       "Ref": "testkinesisstreamslambdaLambdaFunctionServiceRoleAD98836E"
      }
     ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
    }
   },
   "testkinesisstreamslambdaLambdaFunctionB9A91CA7": {
@@ -174,29 +192,24 @@
     }
    }
   },
-  "testkinesisstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole0111F49A4": {
-   "Type": "AWS::IAM::Policy",
+  "testkinesisstreamslambdaLambdaFunctionLogGroup3C7888F6": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testkinesisstreamslambdaLambdaFunctionB9A91CA7"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testkinesisstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole0111F49A4",
-    "Roles": [
-     {
-      "Ref": "testkinesisstreamslambdaLambdaFunctionServiceRoleAD98836E"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testkinesisstreamslambdaLambdaFunctionKinesisEventSourcekinlamnoargumentstestkinesisstreamslambdaKinesisStreamB15C5952638E81E3": {
    "Type": "AWS::Lambda::EventSourceMapping",

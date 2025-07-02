@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamkenwithvpcIntegDefaultTestDeployAssert3CDC35C6.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a41cf034057c4b39ed2eb1b7c843f9099016b417f797dd5a1e86a11055d4e781.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/26e3ec7956410cbb6ce194d9a43ddbf952008e247fe499ad2774e47a3ccac78e.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -241,48 +241,24 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           }
@@ -317,6 +293,30 @@
             "data": {
               "attachToRole": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
               ]
             }
           },
@@ -393,118 +393,18 @@
             "data": "minimalargumentsLambdaFunctionC19CFAAC"
           }
         ],
-        "/lamken-with-vpc/minimal-arguments/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamken-with-vpc/minimal-arguments/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamken-with-vpc/minimal-arguments/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamken-with-vpc/minimal-arguments/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole0F2C1CE4B"
-          }
-        ],
-        "/lamken-with-vpc/minimal-arguments/LambdaFunction/inlinePolicyAddedToExecutionRole-1": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/lamken-with-vpc/minimal-arguments/LambdaFunction/inlinePolicyAddedToExecutionRole-1/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole13B87ED37"
-          }
-        ],
-        "/lamken-with-vpc/minimal-arguments/LambdaFunction/inlinePolicyAddedToExecutionRole-2": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/lamken-with-vpc/minimal-arguments/LambdaFunction/inlinePolicyAddedToExecutionRole-2/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole2FA23AF8F"
+            "data": "minimalargumentsLambdaFunctionLogGroupA6B7ABA8"
           }
         ],
         "/lamken-with-vpc/minimal-arguments/kendra-index-role-minimal-arguments": [
@@ -910,6 +810,33 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole0F2C1CE4B": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole0F2C1CE4B",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole13B87ED37": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole13B87ED37",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole2FA23AF8F": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole2FA23AF8F",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamken-with-vpc"
@@ -921,5 +848,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

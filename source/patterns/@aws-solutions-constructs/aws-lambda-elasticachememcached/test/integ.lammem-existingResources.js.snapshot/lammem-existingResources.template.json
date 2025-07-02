@@ -553,6 +553,29 @@
     }
    }
   },
+  "testfunctionLogGroupE1FCF8FE": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testfunction5B23D3B0"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "DependsOn": [
+    "VpcisolatedSubnet1RouteTableAssociationD259E31A",
+    "VpcisolatedSubnet2RouteTableAssociation25A4716F"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
   "ecsubnetgrouptestcache": {
    "Type": "AWS::ElastiCache::SubnetGroup",
    "Properties": {

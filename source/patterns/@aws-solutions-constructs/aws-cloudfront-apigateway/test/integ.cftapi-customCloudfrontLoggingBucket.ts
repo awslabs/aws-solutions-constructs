@@ -22,6 +22,7 @@ import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-apigateway custom Cloudfront Logging Bucket';
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 const testApi = defaults.CreateTestApi(stack, `${generateIntegStackName(__filename)}-api`);
 

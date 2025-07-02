@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "lamsec-deployFunctionWithExistingVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -29,7 +29,7 @@
         }
       }
     },
-    "1a2c48ecbe70454e603d5d040cd7c644cdb458922c9e75b43007beddbc442730": {
+    "b9fc4c59dbb94e373a9c784576df3567604ba9161b098fbfd49e29765adcdc94": {
       "displayName": "lamsec-deployFunctionWithExistingVpc Template",
       "source": {
         "path": "lamsec-deployFunctionWithExistingVpc.template.json",
@@ -38,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "1a2c48ecbe70454e603d5d040cd7c644cdb458922c9e75b43007beddbc442730.json",
+          "objectKey": "b9fc4c59dbb94e373a9c784576df3567604ba9161b098fbfd49e29765adcdc94.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

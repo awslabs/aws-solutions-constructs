@@ -24,6 +24,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-apigateway-lambda custom Cloudfront Logging Bucket';
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 new CloudFrontToApiGatewayToLambda(stack, 'cf-apigw-lambda', {
   apiGatewayProps: {

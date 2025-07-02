@@ -24,6 +24,7 @@ import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.templateOptions.description = 'Integration Test for aws-lambda-sagemakerendpoint';
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 // deploy lambda function
 const fn = defaults.deployLambdaFunction(stack, {

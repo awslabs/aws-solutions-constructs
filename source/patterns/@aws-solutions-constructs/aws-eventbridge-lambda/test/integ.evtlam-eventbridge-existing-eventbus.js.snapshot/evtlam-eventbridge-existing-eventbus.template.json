@@ -68,6 +68,40 @@
     }
    }
   },
+  "testeventbridgelambdaLambdaFunctionServiceRoleDefaultPolicyB0C15F1B": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testeventbridgelambdaLambdaFunctionServiceRoleDefaultPolicyB0C15F1B",
+    "Roles": [
+     {
+      "Ref": "testeventbridgelambdaLambdaFunctionServiceRole6D02CEEE"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
   "testeventbridgelambdaLambdaFunction475423FD": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -95,6 +129,7 @@
     }
    },
    "DependsOn": [
+    "testeventbridgelambdaLambdaFunctionServiceRoleDefaultPolicyB0C15F1B",
     "testeventbridgelambdaLambdaFunctionServiceRole6D02CEEE"
    ],
    "Metadata": {
@@ -116,29 +151,24 @@
     }
    }
   },
-  "testeventbridgelambdaLambdaFunctioninlinePolicyAddedToExecutionRole032228887": {
-   "Type": "AWS::IAM::Policy",
+  "testeventbridgelambdaLambdaFunctionLogGroupFA236203": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testeventbridgelambdaLambdaFunction475423FD"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testeventbridgelambdaLambdaFunctioninlinePolicyAddedToExecutionRole032228887",
-    "Roles": [
-     {
-      "Ref": "testeventbridgelambdaLambdaFunctionServiceRole6D02CEEE"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testeventbridgelambdaLambdaFunctionAwsEventsLambdaInvokePermission1C8A95062": {
    "Type": "AWS::Lambda::Permission",

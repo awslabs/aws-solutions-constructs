@@ -149,6 +149,25 @@
     }
    }
   },
+  "testfnLogGroup0BD091A2": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testfn76BCC25C"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
   "testfnKinesisEventSourcekinlamexistingteststream6B91D22533D472A8": {
    "Type": "AWS::Lambda::EventSourceMapping",
    "Properties": {

@@ -1,5 +1,5 @@
 {
-  "version": "42.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "wssqsdefaultrouteIntegDefaultTestDeployAssert04324B3F.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/94d504acffe91228a1332e087ad851a557648ed3bcd8d9235dfac19d129aef1b.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9ca055328332a48ad34530a4f229ee249117eaa0391806de7f07a62e60a5412c.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -96,6 +96,14 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
               "attachInlinePolicy": [
                 "*"
               ]
@@ -120,6 +128,42 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "disconnectServiceRole0B1E33D9"
+          }
+        ],
+        "/wssqs-default-route/disconnectServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/wssqs-default-route/disconnectServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "disconnectServiceRoleDefaultPolicyD85178B8"
           }
         ],
         "/wssqs-default-route/disconnect": [
@@ -152,42 +196,18 @@
             "data": "disconnect829B70D0"
           }
         ],
-        "/wssqs-default-route/disconnect/inlinePolicyAddedToExecutionRole-0": [
+        "/wssqs-default-route/disconnect/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/wssqs-default-route/disconnect/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/wssqs-default-route/disconnect/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "disconnectinlinePolicyAddedToExecutionRole0CDB203CB"
+            "data": "disconnectLogGroupE8B9E3E4"
           }
         ],
         "/wssqs-default-route/ApiGatewayV2WebSocketToSqs/queue-dlq": [
@@ -503,10 +523,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "disconnectServiceRoleDefaultPolicyD85178B8": [
+        "disconnectinlinePolicyAddedToExecutionRole0CDB203CB": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "disconnectServiceRoleDefaultPolicyD85178B8",
+            "data": "disconnectinlinePolicyAddedToExecutionRole0CDB203CB",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
@@ -522,5 +542,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1006.0"
+  "minimumCliVersion": "2.1019.2"
 }

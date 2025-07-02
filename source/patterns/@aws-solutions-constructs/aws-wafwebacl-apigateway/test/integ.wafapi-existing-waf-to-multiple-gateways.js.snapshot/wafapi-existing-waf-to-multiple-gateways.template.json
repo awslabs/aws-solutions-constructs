@@ -38,7 +38,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c.zip"
+     "S3Key": "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f.zip"
     },
     "Handler": ".handler",
     "Role": {
@@ -70,6 +70,25 @@
      ]
     }
    }
+  },
+  "testOneFunctionLogGroup2A7F1CCC": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testOneFunction5860F00A"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testOneauthorizerAuthFunctionServiceRoleE1B4208E": {
    "Type": "AWS::IAM::Role",
@@ -109,7 +128,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c.zip"
+     "S3Key": "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f.zip"
     },
     "Handler": ".handler",
     "Role": {
@@ -141,6 +160,25 @@
      ]
     }
    }
+  },
+  "testOneauthorizerAuthFunctionLogGroupCB9327AE": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testOneauthorizerAuthFunctionB12D8D93"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testOneauthorizerAuthFunctionwafapiexistingwaftomultiplegatewaystestOneauthorizer7F4D0710Permissions21D6CD33": {
    "Type": "AWS::Lambda::Permission",
@@ -264,6 +302,7 @@
     "testOneApiANY899DD2DA"
    ],
    "Metadata": {
+    "aws:cdk:do-not-refactor": true,
     "cfn_nag": {
      "rules_to_suppress": [
       {
@@ -618,7 +657,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c.zip"
+     "S3Key": "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f.zip"
     },
     "Handler": ".handler",
     "Role": {
@@ -650,6 +689,25 @@
      ]
     }
    }
+  },
+  "testTwoFunctionLogGroup6CFEFC7B": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testTwoFunctionE0EEB0EF"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testTwoauthorizerAuthFunctionServiceRole4C3292A3": {
    "Type": "AWS::IAM::Role",
@@ -689,7 +747,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c.zip"
+     "S3Key": "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f.zip"
     },
     "Handler": ".handler",
     "Role": {
@@ -721,6 +779,25 @@
      ]
     }
    }
+  },
+  "testTwoauthorizerAuthFunctionLogGroupE566B5BE": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testTwoauthorizerAuthFunction1DBBD707"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testTwoauthorizerAuthFunctionwafapiexistingwaftomultiplegatewaystestTwoauthorizer9B2C525EPermissions44287234": {
    "Type": "AWS::Lambda::Permission",
@@ -844,6 +921,7 @@
     "testTwoApiANY91121C6F"
    ],
    "Metadata": {
+    "aws:cdk:do-not-refactor": true,
     "cfn_nag": {
      "rules_to_suppress": [
       {

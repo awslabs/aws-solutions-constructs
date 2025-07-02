@@ -22,6 +22,7 @@ import * as defaults from "@aws-solutions-constructs/core";
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 const encryptionKey = new kms.Key(stack, 'test-key', {
   enableKeyRotation: true

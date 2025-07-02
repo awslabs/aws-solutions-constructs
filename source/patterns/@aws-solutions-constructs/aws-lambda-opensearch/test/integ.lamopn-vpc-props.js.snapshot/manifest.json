@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamopnvpcpropsIntegDefaultTestDeployAssertC7FD49B0.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/173c3e6d4047d803cc315eae5fab1c950d89b385d198f985e5a135169e7df129.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/a0bf44dd4257c930f7680e1b8f3156159780512c164f35e52e9aa5dc6d4555ae.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -128,16 +128,8 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           }
@@ -172,6 +164,14 @@
             "data": {
               "attachToRole": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
               ]
             }
           },
@@ -248,42 +248,18 @@
             "data": "testlambdaopensearchLambdaFunction93FD38F7"
           }
         ],
-        "/lamopn-vpc-props/test-lambda-opensearch/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamopn-vpc-props/test-lambda-opensearch/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamopn-vpc-props/test-lambda-opensearch/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamopn-vpc-props/test-lambda-opensearch/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchLambdaFunctioninlinePolicyAddedToExecutionRole09B870594"
+            "data": "testlambdaopensearchLambdaFunctionLogGroup84458EB6"
           }
         ],
         "/lamopn-vpc-props/test-lambda-opensearch/CognitoUserPool": [
@@ -892,6 +868,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testlambdaopensearchLambdaFunctioninlinePolicyAddedToExecutionRole09B870594": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaopensearchLambdaFunctioninlinePolicyAddedToExecutionRole09B870594",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamopn-vpc-props"
@@ -903,5 +888,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

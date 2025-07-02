@@ -1,5 +1,5 @@
 {
-  "version": "42.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamddbsetbillingmodeIntegDefaultTestDeployAssertDAE32272.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4523ea9c5043eeeece834e81a14df946c778c1885217c9c133588f0706b592cd.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/107d1f09bce9948c6f10e95bd78150af51f2a4fcd35841a4b8b5ab0dd1e7ce01.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -96,22 +96,6 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
               "addToPrincipalPolicy": [
                 {}
               ]
@@ -130,6 +114,14 @@
             "data": {
               "attachInlinePolicy": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           }
@@ -164,6 +156,14 @@
             "data": {
               "attachToRole": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
               ]
             }
           },
@@ -221,42 +221,18 @@
             "data": "testlambdadynamodbstackLambdaFunction5DDB3E8D"
           }
         ],
-        "/lamddb-set-billing-mode/test-lambda-dynamodb-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamddb-set-billing-mode/test-lambda-dynamodb-stack/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamddb-set-billing-mode/test-lambda-dynamodb-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamddb-set-billing-mode/test-lambda-dynamodb-stack/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdadynamodbstackLambdaFunctioninlinePolicyAddedToExecutionRole019E2DE85"
+            "data": "testlambdadynamodbstackLambdaFunctionLogGroup2A9E6090"
           }
         ],
         "/lamddb-set-billing-mode/test-lambda-dynamodb-stack/DynamoTable": [
@@ -265,10 +241,12 @@
             "data": {
               "billingMode": "PROVISIONED",
               "encryption": "AWS_MANAGED",
-              "pointInTimeRecovery": true,
               "partitionKey": {
                 "name": "*",
                 "type": "S"
+              },
+              "pointInTimeRecoverySpecification": {
+                "pointInTimeRecoveryEnabled": true
               },
               "readCapacity": "*",
               "writeCapacity": "*"
@@ -298,6 +276,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testlambdadynamodbstackLambdaFunctioninlinePolicyAddedToExecutionRole019E2DE85": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdadynamodbstackLambdaFunctioninlinePolicyAddedToExecutionRole019E2DE85",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamddb-set-billing-mode"
@@ -309,5 +296,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1006.0"
+  "minimumCliVersion": "2.1019.2"
 }

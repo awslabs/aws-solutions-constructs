@@ -143,6 +143,25 @@
     ]
    }
   },
+  "testlambdainferencepropsLambdaFunctionLogGroup041701BC": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testlambdainferencepropsLambdaFunction2FD85C24"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
   "testlambdainferencepropsLambdaFunctioninlinePolicyAddedToExecutionRole1121B30C3": {
    "Type": "AWS::IAM::Policy",
    "Properties": {

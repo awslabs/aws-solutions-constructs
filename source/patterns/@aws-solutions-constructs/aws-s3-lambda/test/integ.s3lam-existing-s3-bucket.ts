@@ -28,6 +28,7 @@ const app = new App({
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 const myBucket = CreateScrapBucket(stack, "scrapBucket");
 

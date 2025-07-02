@@ -458,6 +458,58 @@
     }
    }
   },
+  "minimalargumentsLambdaFunctionServiceRoleDefaultPolicy59EC60ED": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kendra:BatchGet*",
+        "kendra:Describe*",
+        "kendra:Get*",
+        "kendra:List*",
+        "kendra:Query",
+        "kendra:Retrieve",
+        "kendra:SubmitFeedback"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "minimalargumentskendraindexminimalarguments5CBDD236",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "minimalargumentsLambdaFunctionServiceRoleDefaultPolicy59EC60ED",
+    "Roles": [
+     {
+      "Ref": "minimalargumentsLambdaFunctionServiceRole73B77FF7"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
   "minimalargumentsLambdaFunctionC19CFAAC": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -491,6 +543,7 @@
     }
    },
    "DependsOn": [
+    "minimalargumentsLambdaFunctionServiceRoleDefaultPolicy59EC60ED",
     "minimalargumentsLambdaFunctionServiceRole73B77FF7"
    ],
    "Metadata": {
@@ -512,88 +565,24 @@
     }
    }
   },
-  "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole0F2C1CE4B": {
-   "Type": "AWS::IAM::Policy",
+  "minimalargumentsLambdaFunctionLogGroupA6B7ABA8": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "PolicyName": "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole0F2C1CE4B",
-    "Roles": [
-     {
-      "Ref": "minimalargumentsLambdaFunctionServiceRole73B77FF7"
-     }
-    ]
-   }
-  },
-  "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole13B87ED37": {
-   "Type": "AWS::IAM::Policy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "kendra:BatchGet*",
-        "kendra:Describe*",
-        "kendra:Get*",
-        "kendra:List*",
-        "kendra:Query",
-        "kendra:Retrieve"
-       ],
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "minimalargumentskendraindexminimalarguments5CBDD236",
-         "Arn"
-        ]
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "minimalargumentsLambdaFunctionC19CFAAC"
        }
-      }
-     ],
-     "Version": "2012-10-17"
+      ]
+     ]
     },
-    "PolicyName": "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole13B87ED37",
-    "Roles": [
-     {
-      "Ref": "minimalargumentsLambdaFunctionServiceRole73B77FF7"
-     }
-    ]
-   }
-  },
-  "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole2FA23AF8F": {
-   "Type": "AWS::IAM::Policy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": "kendra:SubmitFeedback",
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "minimalargumentskendraindexminimalarguments5CBDD236",
-         "Arn"
-        ]
-       }
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "PolicyName": "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole2FA23AF8F",
-    "Roles": [
-     {
-      "Ref": "minimalargumentsLambdaFunctionServiceRole73B77FF7"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "minimalargumentskendraindexroleminimalargumentsB1DBDF7D": {
    "Type": "AWS::IAM::Role",

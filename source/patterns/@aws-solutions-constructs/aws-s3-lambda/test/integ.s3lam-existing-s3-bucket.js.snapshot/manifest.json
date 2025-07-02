@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "s3lamexistings3bucketIntegDefaultTestDeployAssert7738D7BA.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f160d67fe001d32dc798f98dd5fc5d041c84489b776ebaa8c26bc89353c192de.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/afd4e4921a41452038fdf41b53c59fe21812802ddb94a4b88a081154ca336940.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -221,6 +221,14 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
               "attachInlinePolicy": [
                 "*"
               ]
@@ -245,6 +253,42 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "tests3lambdaLambdaFunctionServiceRoleA74F4427"
+          }
+        ],
+        "/s3lam-existing-s3-bucket/test-s3-lambda/LambdaFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/s3lam-existing-s3-bucket/test-s3-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3lambdaLambdaFunctionServiceRoleDefaultPolicyA7E71BD5"
           }
         ],
         "/s3lam-existing-s3-bucket/test-s3-lambda/LambdaFunction": [
@@ -277,42 +321,18 @@
             "data": "tests3lambdaLambdaFunctionB56B7023"
           }
         ],
-        "/s3lam-existing-s3-bucket/test-s3-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/s3lam-existing-s3-bucket/test-s3-lambda/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/s3lam-existing-s3-bucket/test-s3-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/s3lam-existing-s3-bucket/test-s3-lambda/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "tests3lambdaLambdaFunctioninlinePolicyAddedToExecutionRole0D4909C11"
+            "data": "tests3lambdaLambdaFunctionLogGroupD1439DF8"
           }
         ],
         "/s3lam-existing-s3-bucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role": [
@@ -425,6 +445,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "tests3lambdaLambdaFunctioninlinePolicyAddedToExecutionRole0D4909C11": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3lambdaLambdaFunctioninlinePolicyAddedToExecutionRole0D4909C11",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "s3lam-existing-s3-bucket"
@@ -436,5 +465,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

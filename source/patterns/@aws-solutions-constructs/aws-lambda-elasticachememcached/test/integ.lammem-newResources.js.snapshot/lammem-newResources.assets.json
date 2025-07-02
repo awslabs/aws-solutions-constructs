@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "lammem-newResources/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -29,7 +29,7 @@
         }
       }
     },
-    "67e10e8ab11228750b1cf64adbfd0e5c50ef6a489bea469f6a7eada15ac1451a": {
+    "4561638d9bbb76aabb9bfbb53cada0a8eb533ef2e8f3d72948e179826f76bc53": {
       "displayName": "lammem-newResources Template",
       "source": {
         "path": "lammem-newResources.template.json",
@@ -38,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "67e10e8ab11228750b1cf64adbfd0e5c50ef6a489bea469f6a7eada15ac1451a.json",
+          "objectKey": "4561638d9bbb76aabb9bfbb53cada0a8eb533ef2e8f3d72948e179826f76bc53.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

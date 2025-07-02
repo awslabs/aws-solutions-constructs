@@ -73,7 +73,9 @@
         "ec2:CreateNetworkInterface",
         "ec2:DeleteNetworkInterface",
         "ec2:DescribeNetworkInterfaces",
-        "ec2:UnassignPrivateIpAddresses"
+        "ec2:UnassignPrivateIpAddresses",
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
        ],
        "Effect": "Allow",
        "Resource": "*"
@@ -229,33 +231,28 @@
     }
    }
   },
-  "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctioninlinePolicyAddedToExecutionRole0B0FADEBF": {
-   "Type": "AWS::IAM::Policy",
+  "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionLogGroupFE5991F1": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunction5165A7EE"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctioninlinePolicyAddedToExecutionRole0B0FADEBF",
-    "Roles": [
-     {
-      "Ref": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionServiceRole31915E05"
-     }
-    ]
+    "RetentionInDays": 731
    },
    "DependsOn": [
     "testiotlambdadynamodbstackVpcisolatedSubnet1RouteTableAssociationFAA18521",
     "testiotlambdadynamodbstackVpcisolatedSubnet2RouteTableAssociation80ECEB84"
-   ]
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionAwsIotLambdaInvokePermission13FCFED39": {
    "Type": "AWS::Lambda::Permission",

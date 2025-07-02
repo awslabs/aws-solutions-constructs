@@ -72,6 +72,25 @@
     }
    }
   },
+  "cftapicustomCloudfrontLoggingBucketapiFunctionLogGroupF77B94D5": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "cftapicustomCloudfrontLoggingBucketapiFunctionA537178D"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
   "cftapicustomCloudfrontLoggingBucketapiauthorizerAuthFunctionServiceRole13E010C8": {
    "Type": "AWS::IAM::Role",
    "Properties": {
@@ -142,6 +161,25 @@
      ]
     }
    }
+  },
+  "cftapicustomCloudfrontLoggingBucketapiauthorizerAuthFunctionLogGroupEB5CBB40": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "cftapicustomCloudfrontLoggingBucketapiauthorizerAuthFunction38CBEC38"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "cftapicustomCloudfrontLoggingBucketapiauthorizerAuthFunctioncftapicustomCloudfrontLoggingBucketcftapicustomCloudfrontLoggingBucketapiauthorizerFD948D42Permissions5BB59610": {
    "Type": "AWS::Lambda::Permission",
@@ -265,6 +303,7 @@
     "cftapicustomCloudfrontLoggingBucketapiApiANYCCBB70F0"
    ],
    "Metadata": {
+    "aws:cdk:do-not-refactor": true,
     "cfn_nag": {
      "rules_to_suppress": [
       {

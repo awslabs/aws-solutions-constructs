@@ -1,5 +1,5 @@
 {
-  "version": "42.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamsagexistingSageMakerEndpointIntegDefaultTestDeployAssert09FA4E20.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/055a1ebfdb16cbc3455587cf55485209ce4f8672cf0fa31a65bb80fa89db3437.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f14b51573423d720363cdf6be56d17a13d14648d50f9d378ce57a1bb79d67f30.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -393,8 +393,8 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
@@ -417,8 +417,8 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           }
@@ -433,6 +433,50 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdasagemakerLambdaFunctionServiceRole4BA038CB"
+          }
+        ],
+        "/lamsag-existingSageMakerEndpoint/test-lambda-sagemaker/LambdaFunctionServiceRole/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/lamsag-existingSageMakerEndpoint/test-lambda-sagemaker/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasagemakerLambdaFunctionServiceRoleDefaultPolicy208C2512"
           }
         ],
         "/lamsag-existingSageMakerEndpoint/test-lambda-sagemaker/LambdaFunction": [
@@ -464,80 +508,18 @@
             "data": "testlambdasagemakerLambdaFunction661E043F"
           }
         ],
-        "/lamsag-existingSageMakerEndpoint/test-lambda-sagemaker/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamsag-existingSageMakerEndpoint/test-lambda-sagemaker/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamsag-existingSageMakerEndpoint/test-lambda-sagemaker/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamsag-existingSageMakerEndpoint/test-lambda-sagemaker/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasagemakerLambdaFunctioninlinePolicyAddedToExecutionRole0DB7F0BCA"
-          }
-        ],
-        "/lamsag-existingSageMakerEndpoint/test-lambda-sagemaker/LambdaFunction/inlinePolicyAddedToExecutionRole-1": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/lamsag-existingSageMakerEndpoint/test-lambda-sagemaker/LambdaFunction/inlinePolicyAddedToExecutionRole-1/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdasagemakerLambdaFunctioninlinePolicyAddedToExecutionRole1048EC459"
+            "data": "testlambdasagemakerLambdaFunctionLogGroup59BC2A33"
           }
         ],
         "/lamsag-existingSageMakerEndpoint/BootstrapVersion": [
@@ -552,10 +534,19 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdasagemakerLambdaFunctionServiceRoleDefaultPolicy208C2512": [
+        "testlambdasagemakerLambdaFunctioninlinePolicyAddedToExecutionRole0DB7F0BCA": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasagemakerLambdaFunctionServiceRoleDefaultPolicy208C2512",
+            "data": "testlambdasagemakerLambdaFunctioninlinePolicyAddedToExecutionRole0DB7F0BCA",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testlambdasagemakerLambdaFunctioninlinePolicyAddedToExecutionRole1048EC459": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdasagemakerLambdaFunctioninlinePolicyAddedToExecutionRole1048EC459",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
@@ -571,5 +562,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1006.0"
+  "minimumCliVersion": "2.1019.2"
 }

@@ -63,6 +63,40 @@
     }
    }
   },
+  "connectServiceRoleDefaultPolicyCE4B3DE0": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "connectServiceRoleDefaultPolicyCE4B3DE0",
+    "Roles": [
+     {
+      "Ref": "connectServiceRoleD6E70EFD"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
   "connectEB2081F1": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -90,6 +124,7 @@
     }
    },
    "DependsOn": [
+    "connectServiceRoleDefaultPolicyCE4B3DE0",
     "connectServiceRoleD6E70EFD"
    ],
    "Metadata": {
@@ -111,29 +146,24 @@
     }
    }
   },
-  "connectinlinePolicyAddedToExecutionRole0FA4FAF92": {
-   "Type": "AWS::IAM::Policy",
+  "connectLogGroupB0A4FE72": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "connectEB2081F1"
+       }
+      ]
+     ]
     },
-    "PolicyName": "connectinlinePolicyAddedToExecutionRole0FA4FAF92",
-    "Roles": [
-     {
-      "Ref": "connectServiceRoleD6E70EFD"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "disconnectServiceRole0B1E33D9": {
    "Type": "AWS::IAM::Role",
@@ -197,6 +227,40 @@
     }
    }
   },
+  "disconnectServiceRoleDefaultPolicyD85178B8": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "disconnectServiceRoleDefaultPolicyD85178B8",
+    "Roles": [
+     {
+      "Ref": "disconnectServiceRole0B1E33D9"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
   "disconnect829B70D0": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -224,6 +288,7 @@
     }
    },
    "DependsOn": [
+    "disconnectServiceRoleDefaultPolicyD85178B8",
     "disconnectServiceRole0B1E33D9"
    ],
    "Metadata": {
@@ -245,29 +310,24 @@
     }
    }
   },
-  "disconnectinlinePolicyAddedToExecutionRole0CDB203CB": {
-   "Type": "AWS::IAM::Policy",
+  "disconnectLogGroupE8B9E3E4": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "disconnect829B70D0"
+       }
+      ]
+     ]
     },
-    "PolicyName": "disconnectinlinePolicyAddedToExecutionRole0CDB203CB",
-    "Roles": [
-     {
-      "Ref": "disconnectServiceRole0B1E33D9"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "ApiGatewayV2WebSocketToSqsqueuedlq875602DF": {
    "Type": "AWS::SQS::Queue",

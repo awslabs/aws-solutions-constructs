@@ -21,6 +21,18 @@ import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
+SetConsistentFeatureFlags(stack);
+SetConsistentFeatureFlags(stack);
+SetConsistentFeatureFlags(stack);
+SetConsistentFeatureFlags(stack);
+SetConsistentFeatureFlags(stack);
+SetConsistentFeatureFlags(stack);
+SetConsistentFeatureFlags(stack);
+SetConsistentFeatureFlags(stack);
+SetConsistentFeatureFlags(stack);
+SetConsistentFeatureFlags(stack);
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-apigateway-dynamodb';
 
 const partitionKeyName = 'PK';

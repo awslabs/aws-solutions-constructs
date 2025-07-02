@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "dbslamelsdeploywithvpcIntegDefaultTestDeployAssert06163818.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/86dd02c5ad3bf37f59b72779e67d57b647c09ab67120dae86ee5f4fbc4157ad5.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a6a8e21239a4a7e3e611b5048649333c7f4fd6ead761ad755beeb022f346f717.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -128,16 +128,8 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
@@ -262,6 +254,14 @@
                 {}
               ]
             }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
           }
         ],
         "/dbslamels-deploy-with-vpc/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
@@ -328,42 +328,18 @@
             "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionB70B7296"
           }
         ],
-        "/dbslamels-deploy-with-vpc/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/dbslamels-deploy-with-vpc/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/dbslamels-deploy-with-vpc/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/dbslamels-deploy-with-vpc/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctioninlinePolicyAddedToExecutionRole05D4F2798"
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionLogGroup0F566756"
           }
         ],
         "/dbslamels-deploy-with-vpc/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/DynamoDBEventSource:dbslamelsdeploywithvpctestddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTable3450D243": [
@@ -1066,6 +1042,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctioninlinePolicyAddedToExecutionRole05D4F2798": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctioninlinePolicyAddedToExecutionRole05D4F2798",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "dbslamels-deploy-with-vpc"
@@ -1077,5 +1062,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

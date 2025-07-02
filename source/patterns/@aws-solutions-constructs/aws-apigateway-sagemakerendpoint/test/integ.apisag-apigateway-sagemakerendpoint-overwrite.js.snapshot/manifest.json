@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "apisagapigatewaysagemakerendpointoverwriteIntegDefaultTestDeployAssert75D4108E.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5ca94ddc5ede55315f8c051ef4804df391fb7a31ef4daed4d53b2b71861207a5.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d8f689b5e2ad9fd6adf81394cba92231e7e607162a0b1b48ebc0233ec5d14561.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -82,10 +82,37 @@
         "apisag-apigateway-sagemakerendpoint-overwrite.assets"
       ],
       "metadata": {
+        "/apisag-apigateway-sagemakerendpoint-overwrite/api-gateway-role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "description": "*",
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/apisag-apigateway-sagemakerendpoint-overwrite/api-gateway-role/Importapi-gateway-role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
         "/apisag-apigateway-sagemakerendpoint-overwrite/api-gateway-role/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "apigatewayroleE6D48DBD"
+          }
+        ],
+        "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/ApiAccessLogGroup": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "retention": 9999
+            }
           }
         ],
         "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/ApiAccessLogGroup/Resource": [
@@ -94,16 +121,106 @@
             "data": "testapigatewaysagemakerendpointoverwriteApiAccessLogGroupC0933D4E"
           }
         ],
+        "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/RestApi": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "endpointConfiguration": {
+                "types": [
+                  "EDGE"
+                ]
+              },
+              "cloudWatchRole": false,
+              "deployOptions": {
+                "accessLogDestination": "*",
+                "accessLogFormat": "*",
+                "loggingLevel": "INFO",
+                "dataTraceEnabled": false,
+                "tracingEnabled": true
+              },
+              "defaultMethodOptions": {
+                "authorizationType": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addRequestValidator": [
+                "*",
+                {
+                  "requestValidatorName": "*",
+                  "validateRequestParameters": true
+                }
+              ]
+            }
+          }
+        ],
         "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/RestApi/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaysagemakerendpointoverwriteRestApi0EE22754"
           }
         ],
+        "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/RestApi/Deployment": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "description": "*",
+              "api": "*",
+              "retainDeployments": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToLogicalId": [
+                {}
+              ]
+            }
+          }
+        ],
         "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/RestApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaysagemakerendpointoverwriteRestApiDeployment3B3B03364a19f99c87430d39385b3313a65df211"
+          }
+        ],
+        "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/RestApi/DeploymentStage.prod": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "deployment": "*",
+              "accessLogDestination": "*",
+              "accessLogFormat": "*",
+              "loggingLevel": "INFO",
+              "dataTraceEnabled": false,
+              "tracingEnabled": true
+            }
           }
         ],
         "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/RestApi/DeploymentStage.prod/Resource": [
@@ -118,10 +235,34 @@
             "data": "testapigatewaysagemakerendpointoverwriteRestApiEndpointE0CCBC1C"
           }
         ],
+        "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/RestApi/Default": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/RestApi/Default/predicted-ratings": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*",
+              "pathPart": "*"
+            }
+          }
+        ],
         "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/RestApi/Default/predicted-ratings/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaysagemakerendpointoverwriteRestApipredictedratings1C8B9193"
+          }
+        ],
+        "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/RestApi/Default/predicted-ratings/{user_id}": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "parent": "*",
+              "pathPart": "*"
+            }
           }
         ],
         "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/RestApi/Default/predicted-ratings/{user_id}/Resource": [
@@ -130,10 +271,76 @@
             "data": "testapigatewaysagemakerendpointoverwriteRestApipredictedratingsuseridB999A556"
           }
         ],
+        "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/RestApi/Default/predicted-ratings/{user_id}/GET": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "resource": "*",
+              "httpMethod": "*",
+              "integration": "*",
+              "options": {
+                "methodResponses": [
+                  {
+                    "statusCode": "*"
+                  },
+                  {
+                    "statusCode": "*"
+                  },
+                  {
+                    "statusCode": "*"
+                  }
+                ],
+                "requestValidator": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethodResponse": [
+                {
+                  "statusCode": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethodResponse": [
+                {
+                  "statusCode": "*"
+                }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addMethodResponse": [
+                {
+                  "statusCode": "*"
+                }
+              ]
+            }
+          }
+        ],
         "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/RestApi/Default/predicted-ratings/{user_id}/GET/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaysagemakerendpointoverwriteRestApipredictedratingsuseridGET06B35696"
+          }
+        ],
+        "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/RestApi/UsagePlan": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "apiStages": [
+                {
+                  "api": "*"
+                }
+              ]
+            }
           }
         ],
         "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/RestApi/UsagePlan/Resource": [
@@ -142,10 +349,38 @@
             "data": "testapigatewaysagemakerendpointoverwriteRestApiUsagePlan64BD97E7"
           }
         ],
+        "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/RestApi/request-validator": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "requestValidatorName": "*",
+              "validateRequestParameters": true,
+              "restApi": "*"
+            }
+          }
+        ],
         "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/RestApi/request-validator/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaysagemakerendpointoverwriteRestApirequestvalidatorFA90CC69"
+          }
+        ],
+        "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/LambdaRestApiCloudWatchRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              },
+              "inlinePolicies": "*"
+            }
+          }
+        ],
+        "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
           }
         ],
         "/apisag-apigateway-sagemakerendpoint-overwrite/test-apigateway-sagemakerendpoint-overwrite/LambdaRestApiCloudWatchRole/Resource": [
@@ -181,5 +416,6 @@
         "file": "tree.json"
       }
     }
-  }
+  },
+  "minimumCliVersion": "2.1019.0"
 }

@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "lamddbdeployFunctionWithExistingVpcIntegDefaultTestDeployAssertEE08E38E.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fbe5b65c29c6fee913f7e2206d0b8c629511f0f23157e10b90638d2a466f2d84.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3de043fdaef8929dc782b2aa6b95aab1f7c8e04148c12d10f28f5b79bf1aa897.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -582,16 +582,8 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
+              "addToPrincipalPolicy": [
+                {}
               ]
             }
           },
@@ -634,6 +626,14 @@
             "data": {
               "attachToRole": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
               ]
             }
           },
@@ -718,42 +718,18 @@
             "data": "testlambdadynamodbstackLambdaFunction5DDB3E8D"
           }
         ],
-        "/lamddb-deployFunctionWithExistingVpc/test-lambda-dynamodb-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamddb-deployFunctionWithExistingVpc/test-lambda-dynamodb-stack/LambdaFunction/LogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "logGroupName": "*"
             }
           }
         ],
-        "/lamddb-deployFunctionWithExistingVpc/test-lambda-dynamodb-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamddb-deployFunctionWithExistingVpc/test-lambda-dynamodb-stack/LambdaFunction/LogGroup/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdadynamodbstackLambdaFunctioninlinePolicyAddedToExecutionRole019E2DE85"
+            "data": "testlambdadynamodbstackLambdaFunctionLogGroup2A9E6090"
           }
         ],
         "/lamddb-deployFunctionWithExistingVpc/test-lambda-dynamodb-stack/DynamoTable": [
@@ -795,6 +771,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testlambdadynamodbstackLambdaFunctioninlinePolicyAddedToExecutionRole019E2DE85": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdadynamodbstackLambdaFunctioninlinePolicyAddedToExecutionRole019E2DE85",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lamddb-deployFunctionWithExistingVpc"
@@ -806,5 +791,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

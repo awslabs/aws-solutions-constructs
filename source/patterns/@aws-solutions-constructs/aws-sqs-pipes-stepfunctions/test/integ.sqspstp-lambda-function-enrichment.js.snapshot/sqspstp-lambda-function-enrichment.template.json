@@ -38,7 +38,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "33adcab38bd8c4e154734b436a40ee81920a89cd6c787ce62302c33df5e1dfcb.zip"
+     "S3Key": "947efcc93dea6b762c3fca8bf09476c9d8fd2490afbd3e08e668328245340cb8.zip"
     },
     "Handler": "index.handler",
     "Role": {
@@ -70,6 +70,25 @@
      ]
     }
    }
+  },
+  "enrichmentfunctionLogGroupA81E9838": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "enrichmentfunction84C1BE72"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "lambdas3stptestServiceRoleF17BB6C7": {
    "Type": "AWS::IAM::Role",
@@ -138,6 +157,25 @@
      ]
     }
    }
+  },
+  "lambdas3stptestLogGroupC7B8F609": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "lambdas3stptest9FBDC6CE"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testsqspipesstatesconstructqueuedlq420A82FD": {
    "Type": "AWS::SQS::Queue",

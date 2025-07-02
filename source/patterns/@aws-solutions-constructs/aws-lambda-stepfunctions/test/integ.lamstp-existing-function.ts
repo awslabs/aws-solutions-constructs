@@ -21,6 +21,7 @@ import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 // Setup the app and stack
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 // Setup the "existing" Lambda function props
 const lambdaFunctionProps = {

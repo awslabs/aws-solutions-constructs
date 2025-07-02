@@ -62,6 +62,40 @@
     }
    }
   },
+  "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleDefaultPolicy438CAC76": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleDefaultPolicy438CAC76",
+    "Roles": [
+     {
+      "Ref": "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleA59E9EBF"
+     }
+    ]
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W12",
+       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
+      }
+     ]
+    }
+   }
+  },
   "testlambdaelasticsearchkibana2LambdaFunctionE665DF63": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -95,6 +129,7 @@
     }
    },
    "DependsOn": [
+    "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleDefaultPolicy438CAC76",
     "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleA59E9EBF"
    ],
    "Metadata": {
@@ -116,29 +151,24 @@
     }
    }
   },
-  "testlambdaelasticsearchkibana2LambdaFunctioninlinePolicyAddedToExecutionRole0DD92EB84": {
-   "Type": "AWS::IAM::Policy",
+  "testlambdaelasticsearchkibana2LambdaFunctionLogGroup34DB1C8A": {
+   "Type": "AWS::Logs::LogGroup",
    "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "testlambdaelasticsearchkibana2LambdaFunctionE665DF63"
+       }
+      ]
+     ]
     },
-    "PolicyName": "testlambdaelasticsearchkibana2LambdaFunctioninlinePolicyAddedToExecutionRole0DD92EB84",
-    "Roles": [
-     {
-      "Ref": "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleA59E9EBF"
-     }
-    ]
-   }
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
   },
   "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA": {
    "Type": "AWS::Cognito::UserPool",
