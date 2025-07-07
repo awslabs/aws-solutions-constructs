@@ -1,6 +1,6 @@
 # AWS Solutions Constructs
 
-Triggering a build
+Triggering another build
 
 | **Browse Library**:| <span style="font-weight: normal">https://aws.amazon.com/solutions/constructs/patterns/</span>|
 |:-------------|:-------------|
