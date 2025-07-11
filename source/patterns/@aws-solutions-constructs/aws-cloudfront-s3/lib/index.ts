@@ -206,6 +206,20 @@ export class CloudFrontToS3 extends Construct {
       })
     );
 
+    originBucket.addToResourcePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ['s3:ListBucket'],
+        principals: [new iam.ServicePrincipal('cloudfront.amazonaws.com')],
+        resources: [originBucket.bucketArn],
+        conditions: {
+          StringEquals: {
+            'AWS:SourceArn': `arn:${Aws.PARTITION}:cloudfront::${Aws.ACCOUNT_ID}:distribution/${this.cloudFrontWebDistribution.distributionId}`
+          }
+        }
+      })
+    );
+
     // We need to create a custom resource to introduce the indirection necessary to avoid
     // a circular dependency when granting the CloudFront distribution access to use the
     // KMS key to decrypt objects. Without this indirection, it is not possible to reference

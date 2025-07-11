@@ -416,6 +416,42 @@
        }
       },
       {
+       "Action": "s3:ListBucket",
+       "Condition": {
+        "StringEquals": {
+         "AWS:SourceArn": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":cloudfront::",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":distribution/",
+            {
+             "Ref": "testcloudfronts3CloudFrontDistribution0565DEE8"
+            }
+           ]
+          ]
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "cloudfront.amazonaws.com"
+       },
+       "Resource": {
+        "Fn::GetAtt": [
+         "scrapBucketB11863B7",
+         "Arn"
+        ]
+       }
+      },
+      {
        "Action": "s3:GetObject",
        "Effect": "Allow",
        "Principal": {

@@ -353,6 +353,42 @@
          ]
         ]
        }
+      },
+      {
+       "Action": "s3:ListBucket",
+       "Condition": {
+        "StringEquals": {
+         "AWS:SourceArn": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":cloudfront::",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":distribution/",
+            {
+             "Ref": "testcloudfronts3cmkencryptionkeyCloudFrontDistribution57C8A907"
+            }
+           ]
+          ]
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "cloudfront.amazonaws.com"
+       },
+       "Resource": {
+        "Fn::GetAtt": [
+         "testcloudfronts3cmkencryptionkeyS3Bucket0E74E5D2",
+         "Arn"
+        ]
+       }
       }
      ],
      "Version": "2012-10-17"
