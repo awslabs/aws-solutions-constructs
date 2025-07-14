@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.86.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.85.6...v2.86.0) (2025-07-14)
+
+Built on CDK 2.193.0
+
+### Bug Fixes
+
+* include ListBucket in S3 policy for CF ([6e706e5](https://github.com/awslabs/aws-solutions-constructs/commit/6e706e5cc80a99ab4377479e927a00811851f045))
+
 ## [2.85.6](https://github.com/awslabs/aws-solutions-constructs/compare/v2.85.5...v2.85.6) (2025-06-23)
 
 Built on CDK 2.193.0
