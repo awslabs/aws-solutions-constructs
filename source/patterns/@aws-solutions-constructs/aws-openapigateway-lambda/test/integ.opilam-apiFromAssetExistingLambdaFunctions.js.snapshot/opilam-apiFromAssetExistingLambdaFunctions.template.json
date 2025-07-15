@@ -189,7 +189,17 @@
     "RetentionInDays": 731
    },
    "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete"
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W84",
+       "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
+      }
+     ]
+    }
+   }
   },
   "PhotosExistingLambdaTestFromAssetServiceRoleA2E1C415": {
    "Type": "AWS::IAM::Role",

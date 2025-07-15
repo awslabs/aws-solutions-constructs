@@ -47,6 +47,12 @@ const messagesLambda = defaults.buildLambdaFunction(stack, {
 const replacementLogGroup = new logs.LogGroup(stack, 'our-log-group', {
   removalPolicy: RemovalPolicy.DESTROY
 });
+defaults.addCfnSuppressRules( replacementLogGroup, [
+  {
+    id: 'W84',
+    reason: 'By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)'
+  }
+]);
 const photosLambda = defaults.buildLambdaFunction(stack, {
   lambdaFunctionProps: {
     functionName: 'PhotosLambdaAliasTestFromAsset',
