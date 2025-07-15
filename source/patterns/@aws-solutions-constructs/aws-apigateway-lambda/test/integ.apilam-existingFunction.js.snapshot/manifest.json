@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d88d7eaa5575e375383596679060fbf694ccb6adec447316f2f987b1128a3f10.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/7f67bf95bcd068b2042590faf8765c495724904189c81ace8c9dd525252678ca.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -194,20 +194,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "LambdaFunctionBF21E41F"
-          }
-        ],
-        "/apilam-existingFunction/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/apilam-existingFunction/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LambdaFunctionLogGroup286B0B9E"
           }
         ],
         "/apilam-existingFunction/test-apigateway-lambda/ApiAccessLogGroup": [
@@ -496,10 +482,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "LambdaFunctioninlinePolicyAddedToExecutionRole007875684": [
+        "LambdaFunctionLogGroup286B0B9E": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "LambdaFunctioninlinePolicyAddedToExecutionRole007875684",
+            "data": "LambdaFunctionLogGroup286B0B9E",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

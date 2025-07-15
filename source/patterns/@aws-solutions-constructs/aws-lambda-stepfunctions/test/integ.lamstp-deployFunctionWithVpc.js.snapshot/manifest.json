@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ca6da353bdceb0e0d4ce2d0a7ad3a797d1d115cac72284d51f697c04632cbd1e.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/395a2e11e6ee40977d91f4f83e563d5782c88e1d68d84fc056be9e5c372e415e.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -124,20 +124,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "lambdalamstptestA7F4D461"
-          }
-        ],
-        "/lamstp-deployFunctionWithVpc/lambdalamstp-test/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamstp-deployFunctionWithVpc/lambdalamstp-test/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lambdalamstptestLogGroup9E545BC0"
           }
         ],
         "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/StateMachineLogGroup": [
@@ -531,20 +517,6 @@
             "data": "testlambdastepfunctionsLambdaFunctionFC1F0FAE"
           }
         ],
-        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamstp-deployFunctionWithVpc/test-lambda-stepfunctions/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdastepfunctionsLambdaFunctionLogGroup6053F42B"
-          }
-        ],
         "/lamstp-deployFunctionWithVpc/Vpc": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -812,12 +784,6 @@
             "data": "VpcSTEPFUNCTIONS550F8CB6"
           }
         ],
-        "/lamstp-deployFunctionWithVpc/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/lamstp-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -893,10 +859,19 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdastepfunctionsLambdaFunctioninlinePolicyAddedToExecutionRole05414E4FF": [
+        "lambdalamstptestLogGroup9E545BC0": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdastepfunctionsLambdaFunctioninlinePolicyAddedToExecutionRole05414E4FF",
+            "data": "lambdalamstptestLogGroup9E545BC0",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testlambdastepfunctionsLambdaFunctionLogGroup6053F42B": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdastepfunctionsLambdaFunctionLogGroup6053F42B",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

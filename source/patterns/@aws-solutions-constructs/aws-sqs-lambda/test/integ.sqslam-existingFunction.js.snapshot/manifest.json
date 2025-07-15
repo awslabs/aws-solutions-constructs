@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/28f0c93e873a3f5abeb63705c4e6c00c51dcfb9d169c519e2bdbd2855cd0813a.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d208299cec0900be7765342ab389dc13d5f1f38270787c8a6a31785933742736.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -212,20 +212,6 @@
             "data": "LambdaFunctionBF21E41F"
           }
         ],
-        "/sqslam-existingFunction/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/sqslam-existingFunction/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LambdaFunctionLogGroup286B0B9E"
-          }
-        ],
         "/sqslam-existingFunction/LambdaFunction/SqsEventSource:sqslamexistingFunctiontestsqslambdaqueue16552447": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -327,10 +313,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "LambdaFunctioninlinePolicyAddedToExecutionRole007875684": [
+        "LambdaFunctionLogGroup286B0B9E": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "LambdaFunctioninlinePolicyAddedToExecutionRole007875684",
+            "data": "LambdaFunctionLogGroup286B0B9E",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

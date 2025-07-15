@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/bdd2a827c2b1558c28942b8b158dc411e3bcc34d4fc68941caca9e91e7c46b0f.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6b9a66113dbafdb461707354f81b51a7278ebb2e24e0117384d5691f9046f139.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -210,20 +210,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "LambdaFunctionBF21E41F"
-          }
-        ],
-        "/lamsqslam-existingConsumerFunction/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamsqslam-existingConsumerFunction/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LambdaFunctionLogGroup286B0B9E"
           }
         ],
         "/lamsqslam-existingConsumerFunction/LambdaFunction/SqsEventSource:lamsqslamexistingConsumerFunctiontestlambdasqslambdalambdatosqsqueueADB261AF": [
@@ -388,20 +374,6 @@
             "data": "testlambdasqslambdalambdatosqsLambdaFunction8CCC2F0B"
           }
         ],
-        "/lamsqslam-existingConsumerFunction/test-lambda-sqs-lambda/lambda-to-sqs/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamsqslam-existingConsumerFunction/test-lambda-sqs-lambda/lambda-to-sqs/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdasqslambdalambdatosqsLambdaFunctionLogGroup5181F103"
-          }
-        ],
         "/lamsqslam-existingConsumerFunction/test-lambda-sqs-lambda/lambda-to-sqs/queue-dlq": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -479,19 +451,19 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "LambdaFunctioninlinePolicyAddedToExecutionRole007875684": [
+        "LambdaFunctionLogGroup286B0B9E": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "LambdaFunctioninlinePolicyAddedToExecutionRole007875684",
+            "data": "LambdaFunctionLogGroup286B0B9E",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
           }
         ],
-        "testlambdasqslambdalambdatosqsLambdaFunctioninlinePolicyAddedToExecutionRole0CFE94A99": [
+        "testlambdasqslambdalambdatosqsLambdaFunctionLogGroup5181F103": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasqslambdalambdatosqsLambdaFunctioninlinePolicyAddedToExecutionRole0CFE94A99",
+            "data": "testlambdasqslambdalambdatosqsLambdaFunctionLogGroup5181F103",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

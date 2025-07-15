@@ -163,25 +163,6 @@
     }
    }
   },
-  "LambdaFunctionLogGroup286B0B9E": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "LambdaFunctionBF21E41F"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testlambdasqslambdalambdatosqsqueuedlq4B0084E6": {
    "Type": "AWS::SQS::Queue",
    "Properties": {
@@ -509,25 +490,6 @@
      ]
     }
    }
-  },
-  "testlambdasqslambdasqstolambdaLambdaFunctionLogGroup34E5BE82": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testlambdasqslambdasqstolambdaLambdaFunction81308327"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
   },
   "testlambdasqslambdasqstolambdaLambdaFunctionSqsEventSourcelamsqslamexistingProducerFunctiontestlambdasqslambdalambdatosqsqueue8D69F5FDF7993E28": {
    "Type": "AWS::Lambda::EventSourceMapping",

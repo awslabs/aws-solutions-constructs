@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/88a7e47248aa75a78130a68ec357bd886bbae63fb5a729280dba133c209694d0.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/66c7c692ccce1fc158da592b51a80b1991ff29f4a47f53c6c98ac6d76cd8cc1c.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -196,20 +196,6 @@
             "data": "testiotlambdaintegrationLambdaFunctionC5329DBA"
           }
         ],
-        "/iotlam-iot-lambda-new-func/test-iot-lambda-integration/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/iotlam-iot-lambda-new-func/test-iot-lambda-integration/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testiotlambdaintegrationLambdaFunctionLogGroup9069712B"
-          }
-        ],
         "/iotlam-iot-lambda-new-func/test-iot-lambda-integration/LambdaFunction/AwsIotLambdaInvokePermission-1": [
           {
             "type": "aws:cdk:logicalId",
@@ -234,10 +220,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testiotlambdaintegrationLambdaFunctioninlinePolicyAddedToExecutionRole078F7FCF5": [
+        "testiotlambdaintegrationLambdaFunctionLogGroup9069712B": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testiotlambdaintegrationLambdaFunctioninlinePolicyAddedToExecutionRole078F7FCF5",
+            "data": "testiotlambdaintegrationLambdaFunctionLogGroup9069712B",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

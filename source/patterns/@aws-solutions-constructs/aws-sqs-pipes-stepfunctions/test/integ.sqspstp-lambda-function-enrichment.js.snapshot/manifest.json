@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b0fb7cd01bbd4aa932872624d2fb3551832712ef710a9942aba77494236c860a.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/863390ecb3e70c8ef451d24c3ef3d84cd1fd4fbd93fde8b3604a228693c53211.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -126,20 +126,6 @@
             "data": "enrichmentfunction84C1BE72"
           }
         ],
-        "/sqspstp-lambda-function-enrichment/enrichment-function/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/enrichment-function/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "enrichmentfunctionLogGroupA81E9838"
-          }
-        ],
         "/sqspstp-lambda-function-enrichment/lambdas3stp-test": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -182,20 +168,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "lambdas3stptest9FBDC6CE"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/lambdas3stp-test/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/lambdas3stp-test/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lambdas3stptestLogGroupC7B8F609"
           }
         ],
         "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/queue-dlq": [
@@ -580,6 +552,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "enrichmentfunctionLogGroupA81E9838": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "enrichmentfunctionLogGroupA81E9838",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "lambdas3stptestLogGroupC7B8F609": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdas3stptestLogGroupC7B8F609",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

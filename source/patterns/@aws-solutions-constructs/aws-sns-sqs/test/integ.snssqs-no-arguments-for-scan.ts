@@ -17,12 +17,13 @@
 import { App, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { SnsToSqs, SnsToSqsProps } from "../lib";
 import * as iam from 'aws-cdk-lib/aws-iam';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-sns-sqs';
 stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", true);
 

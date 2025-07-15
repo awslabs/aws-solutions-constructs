@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "farfhs-existingVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -29,7 +29,7 @@
         }
       }
     },
-    "51679a112fa9e57fb1537ce65221774725291842ad76e285fa58fa370fd00ecc": {
+    "28ef4142c48fe6b0489b967f9eb6216f881ae225b6ad115e13c33c3c0a687bab": {
       "displayName": "farfhs-existingVpc Template",
       "source": {
         "path": "farfhs-existingVpc.template.json",
@@ -38,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "51679a112fa9e57fb1537ce65221774725291842ad76e285fa58fa370fd00ecc.json",
+          "objectKey": "28ef4142c48fe6b0489b967f9eb6216f881ae225b6ad115e13c33c3c0a687bab.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

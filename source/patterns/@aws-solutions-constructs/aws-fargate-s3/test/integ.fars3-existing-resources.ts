@@ -14,7 +14,7 @@
 // Imports
 import { Aws, App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { FargateToS3, FargateToS3Props } from "../lib";
-import { generateIntegStackName, getTestVpc, CreateFargateService } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, getTestVpc, CreateFargateService, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as defaults from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
@@ -24,6 +24,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test with existing VPC, Service and Bucket';
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 

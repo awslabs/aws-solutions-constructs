@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/a0bf44dd4257c930f7680e1b8f3156159780512c164f35e52e9aa5dc6d4555ae.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/8010ba6c3098e2aa7efa07f53430796c57f5f09b6b7a17abf700fdaf6ab3a569.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -246,20 +246,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaopensearchLambdaFunction93FD38F7"
-          }
-        ],
-        "/lamopn-vpc-props/test-lambda-opensearch/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamopn-vpc-props/test-lambda-opensearch/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchLambdaFunctionLogGroup84458EB6"
           }
         ],
         "/lamopn-vpc-props/test-lambda-opensearch/CognitoUserPool": [
@@ -869,10 +855,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdaopensearchLambdaFunctioninlinePolicyAddedToExecutionRole09B870594": [
+        "testlambdaopensearchLambdaFunctionLogGroup84458EB6": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchLambdaFunctioninlinePolicyAddedToExecutionRole09B870594",
+            "data": "testlambdaopensearchLambdaFunctionLogGroup84458EB6",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

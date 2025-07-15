@@ -13,12 +13,13 @@
 
 import { App, Stack } from "aws-cdk-lib";
 import { WafwebaclToCloudFront } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import { CreateTestDistro } from './test-helper';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 
 const newDistroOne = CreateTestDistro(stack, "distroOne");
 const newDistroTwo = CreateTestDistro(stack, "distroTwo");

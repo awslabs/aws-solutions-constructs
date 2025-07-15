@@ -16,6 +16,7 @@ import { Aws, App, Stack } from "aws-cdk-lib";
 import { AlbToFargate, AlbToFargateProps } from "../lib";
 import * as elb from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as defaults from '@aws-solutions-constructs/core';
+import { SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import { CfnSecurityGroup } from "aws-cdk-lib/aws-ec2";
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
@@ -25,6 +26,7 @@ const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for private HTTPS API with existing VPC, LoadBalancer and Service';
 
 // This is a minimal web server in our account that passes health checks

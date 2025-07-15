@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0ced7d83e278f433e8f1b142f09729a5ef609a048ae00fea1ec2b680386dc4cd.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f7272a3115d000ef2d2748de9f4fe164796c006f2820c18f9441bab57b1795e5.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -262,20 +262,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunction5165A7EE"
-          }
-        ],
-        "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionLogGroupFE5991F1"
           }
         ],
         "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/AwsIotLambdaInvokePermission-1": [
@@ -580,12 +566,6 @@
             "data": "testiotlambdadynamodbstackIotToLambdaIotTopic74F5E3BB"
           }
         ],
-        "/iotlamddb-with-vpc/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/iotlamddb-with-vpc/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -616,10 +596,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctioninlinePolicyAddedToExecutionRole0B0FADEBF": [
+        "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionLogGroupFE5991F1": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctioninlinePolicyAddedToExecutionRole0B0FADEBF",
+            "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionLogGroupFE5991F1",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

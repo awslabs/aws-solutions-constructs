@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3b47086673ce7cc9f450b6497729ec131bf63b73aa83de4c7d98eb4e036a3bd1.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4dc362d2bc2c1b20007fb0bf74bc61a558ac35a6ba3d8227eb41c57337baf105.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -246,20 +246,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaopensearchLambdaFunction93FD38F7"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchLambdaFunctionLogGroup84458EB6"
           }
         ],
         "/lamopn-disabled-zone-awareness/test-lambda-opensearch/CognitoUserPool": [
@@ -797,12 +783,6 @@
             "data": "VpcFlowLog8FF33A73"
           }
         ],
-        "/lamopn-disabled-zone-awareness/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/lamopn-disabled-zone-awareness/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -833,10 +813,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdaopensearchLambdaFunctioninlinePolicyAddedToExecutionRole09B870594": [
+        "testlambdaopensearchLambdaFunctionLogGroup84458EB6": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchLambdaFunctioninlinePolicyAddedToExecutionRole09B870594",
+            "data": "testlambdaopensearchLambdaFunctionLogGroup84458EB6",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

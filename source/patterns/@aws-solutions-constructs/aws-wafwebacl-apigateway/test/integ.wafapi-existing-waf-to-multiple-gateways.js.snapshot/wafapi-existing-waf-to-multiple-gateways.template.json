@@ -71,25 +71,6 @@
     }
    }
   },
-  "testOneFunctionLogGroup2A7F1CCC": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testOneFunction5860F00A"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testOneauthorizerAuthFunctionServiceRoleE1B4208E": {
    "Type": "AWS::IAM::Role",
    "Properties": {
@@ -160,25 +141,6 @@
      ]
     }
    }
-  },
-  "testOneauthorizerAuthFunctionLogGroupCB9327AE": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testOneauthorizerAuthFunctionB12D8D93"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
   },
   "testOneauthorizerAuthFunctionwafapiexistingwaftomultiplegatewaystestOneauthorizer7F4D0710Permissions21D6CD33": {
    "Type": "AWS::Lambda::Permission",
@@ -690,25 +652,6 @@
     }
    }
   },
-  "testTwoFunctionLogGroup6CFEFC7B": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testTwoFunctionE0EEB0EF"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testTwoauthorizerAuthFunctionServiceRole4C3292A3": {
    "Type": "AWS::IAM::Role",
    "Properties": {
@@ -779,25 +722,6 @@
      ]
     }
    }
-  },
-  "testTwoauthorizerAuthFunctionLogGroupE566B5BE": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testTwoauthorizerAuthFunction1DBBD707"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
   },
   "testTwoauthorizerAuthFunctionwafapiexistingwaftomultiplegatewaystestTwoauthorizer9B2C525EPermissions44287234": {
    "Type": "AWS::Lambda::Permission",

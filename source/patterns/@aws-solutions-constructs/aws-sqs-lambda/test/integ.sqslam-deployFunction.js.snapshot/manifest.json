@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/70860c9c3d42a0aca038ff4859b69d7e65e305ace62f94694c8afb71c18eb5d2.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/7156ed967121cd8f1073849f8dea758ac870ff2ec57ca5ed86ebc30c3bc03209.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -212,20 +212,6 @@
             "data": "testsqslambdaLambdaFunction58720146"
           }
         ],
-        "/sqslam-deployFunction/test-sqs-lambda/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/sqslam-deployFunction/test-sqs-lambda/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqslambdaLambdaFunctionLogGroup310A8C6F"
-          }
-        ],
         "/sqslam-deployFunction/test-sqs-lambda/LambdaFunction/SqsEventSource:sqslamdeployFunctiontestsqslambdaqueueAA417393": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -327,10 +313,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testsqslambdaLambdaFunctioninlinePolicyAddedToExecutionRole0CEC1E15F": [
+        "testsqslambdaLambdaFunctionLogGroup310A8C6F": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testsqslambdaLambdaFunctioninlinePolicyAddedToExecutionRole0CEC1E15F",
+            "data": "testsqslambdaLambdaFunctionLogGroup310A8C6F",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

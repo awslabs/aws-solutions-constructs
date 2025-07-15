@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9e5e6e07c12e02b07d3d8a319531eb6c01761df58dd21de1687cbdf15f02f493.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f8c3c3bcf7ad57cc6172f277555ac422a975fecb3af598e67515f25b2a98cb54.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -258,20 +258,6 @@
             "data": "testkinesisstreamslambdaLambdaFunctionB9A91CA7"
           }
         ],
-        "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testkinesisstreamslambdaLambdaFunctionLogGroup3C7888F6"
-          }
-        ],
         "/kinlam-no-arguments/test-kinesisstreams-lambda/LambdaFunction/KinesisEventSource:kinlamnoargumentstestkinesisstreamslambdaKinesisStreamB15C5952": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -385,10 +371,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testkinesisstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole0111F49A4": [
+        "testkinesisstreamslambdaLambdaFunctionLogGroup3C7888F6": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testkinesisstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole0111F49A4",
+            "data": "testkinesisstreamslambdaLambdaFunctionLogGroup3C7888F6",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

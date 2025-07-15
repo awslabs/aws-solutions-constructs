@@ -192,25 +192,6 @@
     }
    }
   },
-  "testkinesislambdaLambdaFunctionLogGroup3007751B": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testkinesislambdaLambdaFunction7F18F840"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testkinesislambdaLambdaFunctionKinesisEventSourcekinfhss3existingStreamObjtestkinesislambdaKinesisStream06A6475B85130EBE": {
    "Type": "AWS::Lambda::EventSourceMapping",
    "Properties": {

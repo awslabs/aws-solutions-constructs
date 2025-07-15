@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/2e948cfbc7b72bfa20870ff8e2d113de5d3b00bce33bae09774b308e04e03fa9.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/813dad11a5f060776e18395e2cbd8d3d9815783709a0a53c3e94ab99f3811869.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -276,20 +276,6 @@
             "data": "testdynamodbstreamslambdaLambdaFunctionE18EC5EF"
           }
         ],
-        "/dbslam-no-arguments/test-dynamodbstreams-lambda/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/dbslam-no-arguments/test-dynamodbstreams-lambda/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testdynamodbstreamslambdaLambdaFunctionLogGroup69ECB2AE"
-          }
-        ],
         "/dbslam-no-arguments/test-dynamodbstreams-lambda/LambdaFunction/DynamoDBEventSource:dbslamnoargumentstestdynamodbstreamslambdaDynamoTable052A3271": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -391,10 +377,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testdynamodbstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole02B3D756F": [
+        "testdynamodbstreamslambdaLambdaFunctionLogGroup69ECB2AE": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testdynamodbstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole02B3D756F",
+            "data": "testdynamodbstreamslambdaLambdaFunctionLogGroup69ECB2AE",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

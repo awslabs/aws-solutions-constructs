@@ -177,25 +177,6 @@
     }
    }
   },
-  "testlambdakinesisstreamsLambdaFunctionLogGroup9EDBB3CA": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testlambdakinesisstreamsLambdaFunction4348B6E4"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testlambdakinesisstreamsKinesisStreamGetRecordsIteratorAgeAlarmC4A0FF00": {
    "Type": "AWS::CloudWatch::Alarm",
    "Properties": {

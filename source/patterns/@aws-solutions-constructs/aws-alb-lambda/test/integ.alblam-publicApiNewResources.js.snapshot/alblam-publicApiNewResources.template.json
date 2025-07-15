@@ -512,31 +512,6 @@
     }
    }
   },
-  "testoneLambdaFunctionLogGroupAAEC0377": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testoneLambdaFunctionCC9B03E1"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "DependsOn": [
-    "VpcPrivateSubnet1DefaultRouteBE02A9ED",
-    "VpcPrivateSubnet1RouteTableAssociation70C59FA6",
-    "VpcPrivateSubnet2DefaultRoute060D2087",
-    "VpcPrivateSubnet2RouteTableAssociationA89CAD56"
-   ],
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testoneLambdaFunctionInvoke2UTWxhlfyqbT5FTn5jvgbLgjFfJwzswGk55DU1HY508A8518": {
    "Type": "AWS::Lambda::Permission",
    "Properties": {

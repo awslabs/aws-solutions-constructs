@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/eb3d673b3c8cb42ee85bb5ee2da5cc2527d270d4d60b90bce122ee78d44b42bd.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e08b3d3b83e0a1ee4dfd63c3dd630e7a64ac8f702b4be37e66a42a260cfb58fe.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -124,20 +124,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "lambdadbsstptestE56C39A8"
-          }
-        ],
-        "/dbspstp-custom-log-level/lambdadbsstp-test/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/dbspstp-custom-log-level/lambdadbsstp-test/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lambdadbsstptestLogGroup61B417AA"
           }
         ],
         "/dbspstp-custom-log-level/test-dbs-pipes-states-construct/DynamoTable": [
@@ -462,6 +448,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "lambdadbsstptestLogGroup61B417AA": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdadbsstptestLogGroup61B417AA",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

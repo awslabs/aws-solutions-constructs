@@ -68,25 +68,6 @@
     }
    }
   },
-  "lambdadbsstpteststatemachineLogGroup8DCF919C": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "lambdadbsstpteststatemachine3BB0B3E0"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "dbsstpteststatemachineRole41CB13EC": {
    "Type": "AWS::IAM::Role",
    "Properties": {

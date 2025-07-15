@@ -1,7 +1,7 @@
 {
   "version": "44.0.0",
   "files": {
-    "015859d21319ad5b7b0f533235cee6dac11e1f19ad071d8fbafa88da592e3b34": {
+    "999c1d09e8422479a8bfc5e3959a462993a6ac0e0a1c76a7c54d28735f9b564b": {
       "displayName": "sqspstp-existing-queue Template",
       "source": {
         "path": "sqspstp-existing-queue.template.json",
@@ -10,7 +10,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "015859d21319ad5b7b0f533235cee6dac11e1f19ad071d8fbafa88da592e3b34.json",
+          "objectKey": "999c1d09e8422479a8bfc5e3959a462993a6ac0e0a1c76a7c54d28735f9b564b.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

@@ -159,25 +159,6 @@
     }
    }
   },
-  "testlambdasecretsmanagerLambdaFunctionLogGroupFB9E5A3C": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testlambdasecretsmanagerLambdaFunction130E7301"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testlambdasecretsmanagersecret4C99E6BF": {
    "Type": "AWS::SecretsManager::Secret",
    "Properties": {

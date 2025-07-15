@@ -68,25 +68,6 @@
     }
    }
   },
-  "lambdaevtstptestLogGroup3B07FBB6": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "lambdaevtstptest4DAE33D9"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testeventbridgestepfunctionsconstructStateMachineLogGroup3098B32C": {
    "Type": "AWS::Logs::LogGroup",
    "Properties": {

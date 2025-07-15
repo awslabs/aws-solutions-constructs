@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e613f9deb1a189c8fac33ce1392083393564177ad867f0194e5d39eceb67515d.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/55cdcca69857a45d55aef8235c8528516d682b176aa6121abcce2cf30bf32a98.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -196,20 +196,6 @@
             "data": "firstfunction297AC5AB"
           }
         ],
-        "/lamstp-state-machine-defintion/first-function/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamstp-state-machine-defintion/first-function/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "firstfunctionLogGroupDA7905EE"
-          }
-        ],
         "/lamstp-state-machine-defintion/second-functionServiceRole": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -322,20 +308,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "secondfunctionB2F1D4DD"
-          }
-        ],
-        "/lamstp-state-machine-defintion/second-function/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamstp-state-machine-defintion/second-function/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "secondfunctionLogGroupE92A3CB8"
           }
         ],
         "/lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/StateMachineLogGroup": [
@@ -710,20 +682,6 @@
             "data": "testlambdastepfunctionsconstructLambdaFunction561377BC"
           }
         ],
-        "/lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamstp-state-machine-defintion/test-lambda-stepfunctions-construct/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdastepfunctionsconstructLambdaFunctionLogGroup72D237BC"
-          }
-        ],
         "/lamstp-state-machine-defintion/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
@@ -736,28 +694,28 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "firstfunctioninlinePolicyAddedToExecutionRole0E3CD5BD8": [
+        "firstfunctionLogGroupDA7905EE": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "firstfunctioninlinePolicyAddedToExecutionRole0E3CD5BD8",
+            "data": "firstfunctionLogGroupDA7905EE",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
           }
         ],
-        "secondfunctioninlinePolicyAddedToExecutionRole0F6A2FD44": [
+        "secondfunctionLogGroupE92A3CB8": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "secondfunctioninlinePolicyAddedToExecutionRole0F6A2FD44",
+            "data": "secondfunctionLogGroupE92A3CB8",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
           }
         ],
-        "testlambdastepfunctionsconstructLambdaFunctioninlinePolicyAddedToExecutionRole0CAF71EB9": [
+        "testlambdastepfunctionsconstructLambdaFunctionLogGroup72D237BC": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdastepfunctionsconstructLambdaFunctioninlinePolicyAddedToExecutionRole0CAF71EB9",
+            "data": "testlambdastepfunctionsconstructLambdaFunctionLogGroup72D237BC",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

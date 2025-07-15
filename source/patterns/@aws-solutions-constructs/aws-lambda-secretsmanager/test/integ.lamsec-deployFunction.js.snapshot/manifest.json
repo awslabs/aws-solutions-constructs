@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/09ba97f0859bf96505877607ad9955eee8067bec1199c6a1eef96bda95435ac9.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/068d6dbd89a2da12907fd7ef9312b54a51ff5c9128b0962fc0b1d98f35c14706.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -221,20 +221,6 @@
             "data": "testlambdasecretsmanagerLambdaFunction130E7301"
           }
         ],
-        "/lamsec-deployFunction/test-lambda-secretsmanager/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamsec-deployFunction/test-lambda-secretsmanager/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdasecretsmanagerLambdaFunctionLogGroupFB9E5A3C"
-          }
-        ],
         "/lamsec-deployFunction/test-lambda-secretsmanager/secret": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -261,10 +247,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdasecretsmanagerLambdaFunctioninlinePolicyAddedToExecutionRole0A805C55F": [
+        "testlambdasecretsmanagerLambdaFunctionLogGroupFB9E5A3C": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasecretsmanagerLambdaFunctioninlinePolicyAddedToExecutionRole0A805C55F",
+            "data": "testlambdasecretsmanagerLambdaFunctionLogGroupFB9E5A3C",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

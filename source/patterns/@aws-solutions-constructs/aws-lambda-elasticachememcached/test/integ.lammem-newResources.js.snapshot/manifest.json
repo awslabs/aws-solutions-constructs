@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4561638d9bbb76aabb9bfbb53cada0a8eb533ef2e8f3d72948e179826f76bc53.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b7f07efbf592995075e59e41be41beceeeb4981aba19e7aaca0ee3aa9ea4eceb.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -280,20 +280,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "lammemnewResourcesLambdaFunction960422D5"
-          }
-        ],
-        "/lammem-newResources/lammem-newResources/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lammem-newResources/lammem-newResources/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lammemnewResourcesLambdaFunctionLogGroup3547C41F"
           }
         ],
         "/lammem-newResources/Vpc": [
@@ -539,12 +525,6 @@
             "data": "VpcFlowLog8FF33A73"
           }
         ],
-        "/lammem-newResources/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/lammem-newResources/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -575,10 +555,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "lammemnewResourcesLambdaFunctioninlinePolicyAddedToExecutionRole03F480433": [
+        "lammemnewResourcesLambdaFunctionLogGroup3547C41F": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "lammemnewResourcesLambdaFunctioninlinePolicyAddedToExecutionRole03F480433",
+            "data": "lammemnewResourcesLambdaFunctionLogGroup3547C41F",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

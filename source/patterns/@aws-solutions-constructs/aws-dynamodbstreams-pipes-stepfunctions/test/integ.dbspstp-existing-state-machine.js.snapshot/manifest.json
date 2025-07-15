@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d2793f282c03a740dcd18972c0f9d277064702d4958d29300a369ff4d0ac49fd.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c4c50147e5bb7bc2be0d81507bdbe1b827dd1c8e3eac870ee7d59c4eaf4c2b32.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -124,20 +124,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "lambdadbsstpteststatemachine3BB0B3E0"
-          }
-        ],
-        "/dbspstp-existing-state-machine/lambdadbsstp-test-state-machine/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/dbspstp-existing-state-machine/lambdadbsstp-test-state-machine/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lambdadbsstpteststatemachineLogGroup8DCF919C"
           }
         ],
         "/dbspstp-existing-state-machine/dbsstp-test-state-machine": [
@@ -359,6 +345,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "lambdadbsstpteststatemachineLogGroup8DCF919C": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdadbsstpteststatemachineLogGroup8DCF919C",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

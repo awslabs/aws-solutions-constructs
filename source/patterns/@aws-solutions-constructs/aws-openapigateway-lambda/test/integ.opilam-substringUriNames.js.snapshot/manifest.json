@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ca90cc0e5041c1871ba6bae46e6051b8caf15a0138b5e459423a746aa2c883ca.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/81d6b223cf2f4298fa778098c53faab7aebb63d29ee093501f3605aa69ec47b7.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -196,20 +196,6 @@
             "data": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0E78C5307"
           }
         ],
-        "/opilam-substringUriNames/OpenApiGatewayToLambda/MessagesHandlerApiFunction0/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/opilam-substringUriNames/OpenApiGatewayToLambda/MessagesHandlerApiFunction0/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0LogGroup7B339536"
-          }
-        ],
         "/opilam-substringUriNames/OpenApiGatewayToLambda/MessagesHandlerApiFunction0/OpenApiGatewayToLambdaPermitAPIGInvocation": [
           {
             "type": "aws:cdk:logicalId",
@@ -330,20 +316,6 @@
             "data": "OpenApiGatewayToLambdaMessagesHandlerPostApiFunction1076A18D3"
           }
         ],
-        "/opilam-substringUriNames/OpenApiGatewayToLambda/MessagesHandlerPostApiFunction1/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/opilam-substringUriNames/OpenApiGatewayToLambda/MessagesHandlerPostApiFunction1/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaMessagesHandlerPostApiFunction1LogGroupACF32734"
-          }
-        ],
         "/opilam-substringUriNames/OpenApiGatewayToLambda/MessagesHandlerPostApiFunction1/OpenApiGatewayToLambdaPermitAPIGInvocation": [
           {
             "type": "aws:cdk:logicalId",
@@ -462,20 +434,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "OpenApiGatewayToLambdaDeleteMessagesHandlerApiFunction2BADD028F"
-          }
-        ],
-        "/opilam-substringUriNames/OpenApiGatewayToLambda/DeleteMessagesHandlerApiFunction2/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/opilam-substringUriNames/OpenApiGatewayToLambda/DeleteMessagesHandlerApiFunction2/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaDeleteMessagesHandlerApiFunction2LogGroup8F44653C"
           }
         ],
         "/opilam-substringUriNames/OpenApiGatewayToLambda/DeleteMessagesHandlerApiFunction2/OpenApiGatewayToLambdaPermitAPIGInvocation": [
@@ -614,20 +572,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "OpenApiGatewayToLambdaLambdaFunctionC7227471"
-          }
-        ],
-        "/opilam-substringUriNames/OpenApiGatewayToLambda/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/opilam-substringUriNames/OpenApiGatewayToLambda/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaLambdaFunctionLogGroupFDDE1E2C"
           }
         ],
         "/opilam-substringUriNames/OpenApiGatewayToLambda/ApiTemplateWriterPolicy": [
@@ -814,20 +758,6 @@
             "data": "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventEF37D730"
           }
         ],
-        "/opilam-substringUriNames/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/opilam-substringUriNames/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventLogGroupBE6349D9"
-          }
-        ],
         "/opilam-substringUriNames/OpenApiGatewayToLambda/ApiTemplateWriterCustomResource": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -1012,12 +942,6 @@
             "data": "OpenApiGatewayToLambdaLambdaRestApiAccount71EC7DA6"
           }
         ],
-        "/opilam-substringUriNames/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/opilam-substringUriNames/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
@@ -1030,46 +954,46 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "OpenApiGatewayToLambdaMessagesHandlerApiFunction0inlinePolicyAddedToExecutionRole035380347": [
+        "OpenApiGatewayToLambdaMessagesHandlerApiFunction0LogGroup7B339536": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0inlinePolicyAddedToExecutionRole035380347",
+            "data": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0LogGroup7B339536",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
           }
         ],
-        "OpenApiGatewayToLambdaMessagesHandlerPostApiFunction1inlinePolicyAddedToExecutionRole0555ACC7F": [
+        "OpenApiGatewayToLambdaMessagesHandlerPostApiFunction1LogGroupACF32734": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaMessagesHandlerPostApiFunction1inlinePolicyAddedToExecutionRole0555ACC7F",
+            "data": "OpenApiGatewayToLambdaMessagesHandlerPostApiFunction1LogGroupACF32734",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
           }
         ],
-        "OpenApiGatewayToLambdaDeleteMessagesHandlerApiFunction2inlinePolicyAddedToExecutionRole09E29D903": [
+        "OpenApiGatewayToLambdaDeleteMessagesHandlerApiFunction2LogGroup8F44653C": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaDeleteMessagesHandlerApiFunction2inlinePolicyAddedToExecutionRole09E29D903",
+            "data": "OpenApiGatewayToLambdaDeleteMessagesHandlerApiFunction2LogGroup8F44653C",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
           }
         ],
-        "OpenApiGatewayToLambdaLambdaFunctioninlinePolicyAddedToExecutionRole02B56CE3C": [
+        "OpenApiGatewayToLambdaLambdaFunctionLogGroupFDDE1E2C": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaLambdaFunctioninlinePolicyAddedToExecutionRole02B56CE3C",
+            "data": "OpenApiGatewayToLambdaLambdaFunctionLogGroupFDDE1E2C",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
           }
         ],
-        "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventinlinePolicyAddedToExecutionRole03000DF90": [
+        "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventLogGroupBE6349D9": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventinlinePolicyAddedToExecutionRole03000DF90",
+            "data": "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventLogGroupBE6349D9",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

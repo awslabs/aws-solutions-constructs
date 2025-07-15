@@ -13,7 +13,7 @@
 
 // Imports
 import { App, Stack, RemovalPolicy } from 'aws-cdk-lib';
-import { CreateScrapBucket, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { CreateScrapBucket, suppressCustomHandlerCfnNagWarnings, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { KinesisFirehoseToS3 } from '../lib';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
@@ -21,6 +21,7 @@ import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-kinesisfirehose-s3';
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 

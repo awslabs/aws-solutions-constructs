@@ -146,25 +146,6 @@
     }
    }
   },
-  "connectLogGroupB0A4FE72": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "connectEB2081F1"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "disconnectServiceRole0B1E33D9": {
    "Type": "AWS::IAM::Role",
    "Properties": {
@@ -309,25 +290,6 @@
      ]
     }
    }
-  },
-  "disconnectLogGroupE8B9E3E4": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "disconnect829B70D0"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
   },
   "TestWebSocketF281E1FE": {
    "Type": "AWS::ApiGatewayV2::Api",

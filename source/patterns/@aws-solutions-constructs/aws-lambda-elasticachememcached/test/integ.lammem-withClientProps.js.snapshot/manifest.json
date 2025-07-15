@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8114db2a6a969756c6520228d6eec59ff6052e0c7cd34eaf74e558d44493c54b.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e41d8633b4b195c4e4d872404acd8a849b22b9d4953fe5a0d71e48f79a5034c8.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -280,20 +280,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "lammemwithClientPropsLambdaFunction28E6BF2F"
-          }
-        ],
-        "/lammem-withClientProps/lammem-withClientProps/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lammem-withClientProps/lammem-withClientProps/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lammemwithClientPropsLambdaFunctionLogGroup0B82BDE6"
           }
         ],
         "/lammem-withClientProps/Vpc": [
@@ -540,12 +526,6 @@
             "data": "VpcFlowLog8FF33A73"
           }
         ],
-        "/lammem-withClientProps/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/lammem-withClientProps/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -576,10 +556,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "lammemwithClientPropsLambdaFunctioninlinePolicyAddedToExecutionRole0EA653AE3": [
+        "lammemwithClientPropsLambdaFunctionLogGroup0B82BDE6": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "lammemwithClientPropsLambdaFunctioninlinePolicyAddedToExecutionRole0EA653AE3",
+            "data": "lammemwithClientPropsLambdaFunctionLogGroup0B82BDE6",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b310859233b2a04fb19797a7de3690cf51e0b62b75073e911125866095aaa5ae.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d57a0ad1c2d0aea64ea0671a1cfb7521774384ccca223b4166c451d376cb28a0.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -237,20 +237,6 @@
             "data": "testlambdasqsLambdaFunction28E890A1"
           }
         ],
-        "/lamsqs-useCmk/test-lambda-sqs/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamsqs-useCmk/test-lambda-sqs/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdasqsLambdaFunctionLogGroupEC4B303C"
-          }
-        ],
         "/lamsqs-useCmk/test-lambda-sqs/queue-dlq": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -348,10 +334,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdasqsLambdaFunctioninlinePolicyAddedToExecutionRole0ADACB8F6": [
+        "testlambdasqsLambdaFunctionLogGroupEC4B303C": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasqsLambdaFunctioninlinePolicyAddedToExecutionRole0ADACB8F6",
+            "data": "testlambdasqsLambdaFunctionLogGroupEC4B303C",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

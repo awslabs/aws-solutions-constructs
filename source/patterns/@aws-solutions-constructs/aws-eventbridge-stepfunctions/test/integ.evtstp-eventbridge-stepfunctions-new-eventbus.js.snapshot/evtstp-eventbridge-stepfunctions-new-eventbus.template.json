@@ -145,25 +145,6 @@
     }
    }
   },
-  "LambdaFunctionLogGroup286B0B9E": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "LambdaFunctionBF21E41F"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testeventbridgestepfunctionsneweventbusconstructStateMachineLogGroup6DC6AD59": {
    "Type": "AWS::Logs::LogGroup",
    "Properties": {

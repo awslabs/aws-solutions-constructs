@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/96504b377b616b9206d1a9118b7e659fd17863dd7e4b862976cd1f19b9922e8e.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/dbad4f18de8dd6e3bc871d3e293c91ef5a31a9b8dde8be452124981241a2ae18.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -194,20 +194,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testapigatewaylambdaLambdaFunction18FF222F"
-          }
-        ],
-        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/apilam-no-usage-plan/test-apigateway-lambda/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaylambdaLambdaFunctionLogGroup2F7E1A23"
           }
         ],
         "/apilam-no-usage-plan/test-apigateway-lambda/ApiAccessLogGroup": [
@@ -478,10 +464,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testapigatewaylambdaLambdaFunctioninlinePolicyAddedToExecutionRole00FEF72FF": [
+        "testapigatewaylambdaLambdaFunctionLogGroup2F7E1A23": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testapigatewaylambdaLambdaFunctioninlinePolicyAddedToExecutionRole00FEF72FF",
+            "data": "testapigatewaylambdaLambdaFunctionLogGroup2F7E1A23",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

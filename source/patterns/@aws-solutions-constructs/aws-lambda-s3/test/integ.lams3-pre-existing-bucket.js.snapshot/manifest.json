@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/406cd5a90eb1c921dc908890105aa7de757249b646e66968b0a7f89426accd3b.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5c3f83a4434ae6b4bd371035b2677358ed717d5ede40d85f0ca14ea543caa68e.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -124,12 +124,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "scrapBucketLogAutoDeleteObjectsCustomResource307F3D47"
-          }
-        ],
-        "/lams3-pre-existing-bucket/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/lams3-pre-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
@@ -334,20 +328,6 @@
             "data": "testlambdas3preexistingbucketLambdaFunctionA56FB2C7"
           }
         ],
-        "/lams3-pre-existing-bucket/test-lambda-s3-pre-existing-bucket/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lams3-pre-existing-bucket/test-lambda-s3-pre-existing-bucket/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdas3preexistingbucketLambdaFunctionLogGroupCB5DD488"
-          }
-        ],
         "/lams3-pre-existing-bucket/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
@@ -360,10 +340,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdas3preexistingbucketLambdaFunctioninlinePolicyAddedToExecutionRole0B9BFC008": [
+        "testlambdas3preexistingbucketLambdaFunctionLogGroupCB5DD488": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdas3preexistingbucketLambdaFunctioninlinePolicyAddedToExecutionRole0B9BFC008",
+            "data": "testlambdas3preexistingbucketLambdaFunctionLogGroupCB5DD488",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

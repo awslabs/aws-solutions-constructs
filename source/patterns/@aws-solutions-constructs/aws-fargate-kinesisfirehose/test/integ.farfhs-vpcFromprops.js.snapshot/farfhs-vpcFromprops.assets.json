@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "displayName": "farfhs-vpcFromprops/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
@@ -29,7 +29,7 @@
         }
       }
     },
-    "28fda22e4e3f65beeb7c8172ab82833e5f20f3a7fff03e8f9cef580b4373c8d0": {
+    "9d09e0c9b0f7f08ba4812a0fac7d2d23281d82cf27b34bf10dd107f368dd0466": {
       "displayName": "farfhs-vpcFromprops Template",
       "source": {
         "path": "farfhs-vpcFromprops.template.json",
@@ -38,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "28fda22e4e3f65beeb7c8172ab82833e5f20f3a7fff03e8f9cef580b4373c8d0.json",
+          "objectKey": "9d09e0c9b0f7f08ba4812a0fac7d2d23281d82cf27b34bf10dd107f368dd0466.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

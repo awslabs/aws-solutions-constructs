@@ -13,7 +13,7 @@
 
 import { App, Stack } from "aws-cdk-lib";
 import { FargateToKinesisFirehose } from "../lib";
-import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import * as ecs from "aws-cdk-lib/aws-ecs";
 import { GetTestFirehoseDestination } from './test-helper';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
@@ -21,6 +21,7 @@ import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 
 const destination = GetTestFirehoseDestination(stack, 'destination-firehose');
 

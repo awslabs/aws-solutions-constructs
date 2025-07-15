@@ -146,25 +146,6 @@
     }
    }
   },
-  "taskFunctionLogGroupE9734B59": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "taskFunctionBFDAC5DE"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testlambdastepfunctionsconstructStateMachineLogGroup1FD4C0D4": {
    "Type": "AWS::Logs::LogGroup",
    "Properties": {
@@ -558,25 +539,6 @@
      ]
     }
    }
-  },
-  "testlambdastepfunctionsconstructLambdaFunctionLogGroup72D237BC": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testlambdastepfunctionsconstructLambdaFunction561377BC"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
   }
  },
  "Parameters": {

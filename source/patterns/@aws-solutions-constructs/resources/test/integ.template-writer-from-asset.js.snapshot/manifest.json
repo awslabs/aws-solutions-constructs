@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/25cb7d289706d7b36543c8207ff1e2e5fb7fa7c9504e890cf77b68445ad8479c.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/525b9b479dbb4a967a6a7fad8922545605d7d8dbe86faed0c9463b972c3040a6.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -212,20 +212,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "LambdaFunctionBF21E41F"
-          }
-        ],
-        "/template-writer-from-asset/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/template-writer-from-asset/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LambdaFunctionLogGroup286B0B9E"
           }
         ],
         "/template-writer-from-asset/TestTemplateWriterPolicy": [
@@ -412,26 +398,6 @@
             "data": "TestTemplateWriterProviderframeworkonEvent7FDD3553"
           }
         ],
-        "/template-writer-from-asset/TestTemplateWriterProvider/framework-onEvent/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/template-writer-from-asset/TestTemplateWriterProvider/framework-onEvent/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "TestTemplateWriterProviderframeworkonEventLogGroupE8A8DBA9"
-          }
-        ],
-        "/template-writer-from-asset/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/template-writer-from-asset/TestTemplateWriterCustomResource": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -464,19 +430,19 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "LambdaFunctioninlinePolicyAddedToExecutionRole007875684": [
+        "LambdaFunctionLogGroup286B0B9E": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "LambdaFunctioninlinePolicyAddedToExecutionRole007875684",
+            "data": "LambdaFunctionLogGroup286B0B9E",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
           }
         ],
-        "TestTemplateWriterProviderframeworkonEventinlinePolicyAddedToExecutionRole08CC44E87": [
+        "TestTemplateWriterProviderframeworkonEventLogGroupE8A8DBA9": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "TestTemplateWriterProviderframeworkonEventinlinePolicyAddedToExecutionRole08CC44E87",
+            "data": "TestTemplateWriterProviderframeworkonEventLogGroupE8A8DBA9",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

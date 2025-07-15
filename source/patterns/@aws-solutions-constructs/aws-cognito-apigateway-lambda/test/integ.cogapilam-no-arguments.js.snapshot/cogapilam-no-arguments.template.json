@@ -145,25 +145,6 @@
     }
    }
   },
-  "testcognitoapigatewaylambdaLambdaFunctionLogGroup922CD487": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testcognitoapigatewaylambdaLambdaFunction0C8EAC23"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testcognitoapigatewaylambdaApiAccessLogGroup9D0D0917": {
    "Type": "AWS::Logs::LogGroup",
    "UpdateReplacePolicy": "Retain",

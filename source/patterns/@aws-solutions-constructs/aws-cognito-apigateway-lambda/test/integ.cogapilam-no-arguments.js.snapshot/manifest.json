@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/7276108be1525981fdcf3cb4b4e6318f6c20b2b2660a6b7549193ab97da26e6b.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9e907130ca786afa800390c6a723e3d2d84118d4b71eb9f97a478b339f21a71a.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -194,20 +194,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testcognitoapigatewaylambdaLambdaFunction0C8EAC23"
-          }
-        ],
-        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcognitoapigatewaylambdaLambdaFunctionLogGroup922CD487"
           }
         ],
         "/cogapilam-no-arguments/test-cognito-apigateway-lambda/ApiAccessLogGroup": [
@@ -530,10 +516,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testcognitoapigatewaylambdaLambdaFunctioninlinePolicyAddedToExecutionRole07151CEBD": [
+        "testcognitoapigatewaylambdaLambdaFunctionLogGroup922CD487": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testcognitoapigatewaylambdaLambdaFunctioninlinePolicyAddedToExecutionRole07151CEBD",
+            "data": "testcognitoapigatewaylambdaLambdaFunctionLogGroup922CD487",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

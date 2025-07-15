@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/dc6a0794c0184ed424b20f7370197b2a5c93487f6cca312f8c27746082e2f27d.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c385e93ba4079d66a55c8b0c3e604c5bd1e207a0bd65ce6ac0eef7c51de36d0d.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -196,20 +196,6 @@
             "data": "testsnslambdaLambdaFunctionEE9A249B"
           }
         ],
-        "/snslam-no-arguments/test-sns-lambda/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/snslam-no-arguments/test-sns-lambda/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsnslambdaLambdaFunctionLogGroupF44BBEC4"
-          }
-        ],
         "/snslam-no-arguments/test-sns-lambda/LambdaFunction/AllowInvoke:snslamnoargumentstestsnslambdaSnsTopicC2A35224": [
           {
             "type": "aws:cdk:logicalId",
@@ -278,10 +264,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testsnslambdaLambdaFunctioninlinePolicyAddedToExecutionRole015A6D296": [
+        "testsnslambdaLambdaFunctionLogGroupF44BBEC4": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testsnslambdaLambdaFunctioninlinePolicyAddedToExecutionRole015A6D296",
+            "data": "testsnslambdaLambdaFunctionLogGroupF44BBEC4",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

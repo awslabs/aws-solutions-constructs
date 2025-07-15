@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/bbbfce27270362b25d1f82d1a0ba4ce45f686c7b83e0ab32317e8bcaef7df2a7.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a0050caa773bb79ae30790b1e1f54cc5a7d2065f9b742864a45a2430d2c858fe.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -221,20 +221,6 @@
             "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunction5165A7EE"
           }
         ],
-        "/iotlamddb-iot-lambda-dynamodb/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/iotlamddb-iot-lambda-dynamodb/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionLogGroupFE5991F1"
-          }
-        ],
         "/iotlamddb-iot-lambda-dynamodb/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/AwsIotLambdaInvokePermission-1": [
           {
             "type": "aws:cdk:logicalId",
@@ -287,10 +273,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctioninlinePolicyAddedToExecutionRole0B0FADEBF": [
+        "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionLogGroupFE5991F1": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctioninlinePolicyAddedToExecutionRole0B0FADEBF",
+            "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionLogGroupFE5991F1",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

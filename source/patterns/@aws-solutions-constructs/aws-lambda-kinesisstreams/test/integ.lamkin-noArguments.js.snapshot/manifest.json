@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3fa5fd55d7aa95821968ffa717f4e36fca37d0c20c5483cfa152dd4db26a7868.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a2bed0470494165c41ac6cb1aa7b4c793d777b6279c5dffa881404de8f90a65b.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -221,20 +221,6 @@
             "data": "testlambdakinesisstreamsLambdaFunction4348B6E4"
           }
         ],
-        "/lamkin-noArguments/test-lambda-kinesisstreams/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamkin-noArguments/test-lambda-kinesisstreams/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdakinesisstreamsLambdaFunctionLogGroup9EDBB3CA"
-          }
-        ],
         "/lamkin-noArguments/test-lambda-kinesisstreams/KinesisStream": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -301,10 +287,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdakinesisstreamsLambdaFunctioninlinePolicyAddedToExecutionRole022FB8950": [
+        "testlambdakinesisstreamsLambdaFunctionLogGroup9EDBB3CA": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdakinesisstreamsLambdaFunctioninlinePolicyAddedToExecutionRole022FB8950",
+            "data": "testlambdakinesisstreamsLambdaFunctionLogGroup9EDBB3CA",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

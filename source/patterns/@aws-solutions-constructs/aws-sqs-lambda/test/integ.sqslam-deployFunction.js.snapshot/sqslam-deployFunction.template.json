@@ -162,25 +162,6 @@
     }
    }
   },
-  "testsqslambdaLambdaFunctionLogGroup310A8C6F": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testsqslambdaLambdaFunction58720146"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testsqslambdaLambdaFunctionSqsEventSourcesqslamdeployFunctiontestsqslambdaqueueAA417393CB51C9D9": {
    "Type": "AWS::Lambda::EventSourceMapping",
    "Properties": {

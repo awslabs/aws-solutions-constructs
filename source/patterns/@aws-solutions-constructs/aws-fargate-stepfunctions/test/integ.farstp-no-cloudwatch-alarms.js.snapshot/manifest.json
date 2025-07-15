@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/4ba5e7bc12e6235a7f773ec3a7f99c9d8c4be1a3a7b75322ca42a2b16aeed76d.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/95f716e1e3c4000b86f37f770379bb73d41a64813a53f8cccaeccd1854bab89b.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -877,20 +877,6 @@
             "data": "lambdafarstptest04DC4058"
           }
         ],
-        "/farstp-no-cloudwatch-alarms/lambdafarstp-test/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/farstp-no-cloudwatch-alarms/lambdafarstp-test/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lambdafarstptestLogGroupDDDC8A12"
-          }
-        ],
         "/farstp-no-cloudwatch-alarms/test-construct/StateMachineLogGroup": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -1096,6 +1082,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "lambdafarstptestLogGroupDDDC8A12": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdafarstptestLogGroupDDDC8A12",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "farstp-no-cloudwatch-alarms"
@@ -1107,5 +1102,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1019.0"
+  "minimumCliVersion": "2.1019.2"
 }

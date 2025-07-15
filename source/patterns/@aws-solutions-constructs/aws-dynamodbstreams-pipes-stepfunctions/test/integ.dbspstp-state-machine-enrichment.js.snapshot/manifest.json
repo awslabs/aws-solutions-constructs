@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/01eb1caf7d81b51642cad86421c8690d61bf84c3cd33427f2ec39b52c2369032.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/690c3afba41fd84c15e79f468c082d1d3426baaf659324dd8fadeafcf984b890.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -124,20 +124,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "lambdatemp1CD2462E"
-          }
-        ],
-        "/dbspstp-state-machine-enrichment/lambdatemp/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/dbspstp-state-machine-enrichment/lambdatemp/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lambdatempLogGroupDB321A55"
           }
         ],
         "/dbspstp-state-machine-enrichment/temp": [
@@ -288,20 +274,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "lambdas3stptest9FBDC6CE"
-          }
-        ],
-        "/dbspstp-state-machine-enrichment/lambdas3stp-test/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/dbspstp-state-machine-enrichment/lambdas3stp-test/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lambdas3stptestLogGroupC7B8F609"
           }
         ],
         "/dbspstp-state-machine-enrichment/test-sqs-pipes-states-construct/DynamoTable": [
@@ -680,6 +652,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "lambdatempLogGroupDB321A55": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdatempLogGroupDB321A55",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "lambdas3stptestLogGroupC7B8F609": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdas3stptestLogGroupC7B8F609",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

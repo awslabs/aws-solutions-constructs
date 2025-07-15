@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f14b51573423d720363cdf6be56d17a13d14648d50f9d378ce57a1bb79d67f30.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3a01497c0d0032dd1ee2379759e1f4233bfbd47dea1824e3c67f81a25408617f.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -508,20 +508,6 @@
             "data": "testlambdasagemakerLambdaFunction661E043F"
           }
         ],
-        "/lamsag-existingSageMakerEndpoint/test-lambda-sagemaker/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamsag-existingSageMakerEndpoint/test-lambda-sagemaker/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdasagemakerLambdaFunctionLogGroup59BC2A33"
-          }
-        ],
         "/lamsag-existingSageMakerEndpoint/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
@@ -534,19 +520,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdasagemakerLambdaFunctioninlinePolicyAddedToExecutionRole0DB7F0BCA": [
+        "testlambdasagemakerLambdaFunctionLogGroup59BC2A33": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasagemakerLambdaFunctioninlinePolicyAddedToExecutionRole0DB7F0BCA",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "testlambdasagemakerLambdaFunctioninlinePolicyAddedToExecutionRole1048EC459": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdasagemakerLambdaFunctioninlinePolicyAddedToExecutionRole1048EC459",
+            "data": "testlambdasagemakerLambdaFunctionLogGroup59BC2A33",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

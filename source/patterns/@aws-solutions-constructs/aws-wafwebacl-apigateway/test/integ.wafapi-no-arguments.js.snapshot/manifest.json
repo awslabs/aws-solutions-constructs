@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f199268a5b813dbd65b82829d821d1040b59e5517d08da7a794c6d21ef31cf58.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c0a97cd66325587b81dcaeaa196b8005ca3f5dd16b2cb9590c38a54c2c9e7f78.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -126,20 +126,6 @@
             "data": "testFunction483F4CBE"
           }
         ],
-        "/wafapi-no-arguments/testFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/wafapi-no-arguments/testFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testFunctionLogGroup5361733A"
-          }
-        ],
         "/wafapi-no-arguments/test-authorizerAuthFunction": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -182,20 +168,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testauthorizerAuthFunctionCE2F3743"
-          }
-        ],
-        "/wafapi-no-arguments/test-authorizerAuthFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/wafapi-no-arguments/test-authorizerAuthFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testauthorizerAuthFunctionLogGroup3C72FCFF"
           }
         ],
         "/wafapi-no-arguments/test-authorizerAuthFunction/wafapinoargumentstestauthorizerB886165D:Permissions": [
@@ -438,6 +410,24 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testFunctionLogGroup5361733A": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testFunctionLogGroup5361733A",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testauthorizerAuthFunctionLogGroup3C72FCFF": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testauthorizerAuthFunctionLogGroup3C72FCFF",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "wafapi-no-arguments"
@@ -449,5 +439,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1019.0"
+  "minimumCliVersion": "2.1019.2"
 }

@@ -146,25 +146,6 @@
     }
    }
   },
-  "OpenApiGatewayToLambdaMessagesHandlerApiFunction0LogGroup7B339536": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0E78C5307"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "OpenApiGatewayToLambdaMessagesHandlerApiFunction0OpenApiGatewayToLambdaPermitAPIGInvocationC5ACBCDF": {
    "Type": "AWS::Lambda::Permission",
    "Properties": {
@@ -346,25 +327,6 @@
      ]
     }
    }
-  },
-  "OpenApiGatewayToLambdaPhotosHandlerApiFunction1LogGroup22B45CFE": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "OpenApiGatewayToLambdaPhotosHandlerApiFunction1C42C52E8"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
   },
   "OpenApiGatewayToLambdaPhotosHandlerApiFunction1OpenApiGatewayToLambdaPermitAPIGInvocation5B0B1DC7": {
    "Type": "AWS::Lambda::Permission",

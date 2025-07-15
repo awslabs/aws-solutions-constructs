@@ -15,7 +15,7 @@
         }
       }
     },
-    "6650709e230460e12a50f4da356bf2abc256de78edc1ae32c75eeb8805549f4e": {
+    "f723a1eac6fe506464e093fd32319fd43e691c3357b45291862dee5841c9d345": {
       "displayName": "lamddb-point-in-time-recovery Template",
       "source": {
         "path": "lamddb-point-in-time-recovery.template.json",
@@ -24,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "6650709e230460e12a50f4da356bf2abc256de78edc1ae32c75eeb8805549f4e.json",
+          "objectKey": "f723a1eac6fe506464e093fd32319fd43e691c3357b45291862dee5841c9d345.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

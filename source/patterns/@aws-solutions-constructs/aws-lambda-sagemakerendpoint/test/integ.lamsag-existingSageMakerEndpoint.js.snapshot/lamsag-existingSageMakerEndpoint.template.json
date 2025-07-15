@@ -578,25 +578,6 @@
      ]
     }
    }
-  },
-  "testlambdasagemakerLambdaFunctionLogGroup59BC2A33": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testlambdasagemakerLambdaFunction661E043F"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
   }
  },
  "Parameters": {

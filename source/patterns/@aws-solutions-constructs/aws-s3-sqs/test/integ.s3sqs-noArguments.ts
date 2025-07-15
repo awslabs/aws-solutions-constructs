@@ -13,7 +13,7 @@
 
 import {App, Stack, RemovalPolicy} from "aws-cdk-lib";
 import {S3ToSqs} from "../lib";
-import { SuppressCfnNagLambdaWarnings, generateIntegStackName } from '@aws-solutions-constructs/core';
+import { SuppressCfnNagLambdaWarnings, generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App({
@@ -24,6 +24,7 @@ const app = new App({
 
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 
 new S3ToSqs(stack, 'test-s3-sqs', {
   bucketProps: {

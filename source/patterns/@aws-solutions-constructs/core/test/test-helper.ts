@@ -384,5 +384,5 @@ export function SetConsistentFeatureFlags(stack: Stack) {
   stack.node.setContext("@aws-cdk/s3-notifications:addS3TrustKeyPolicyForSnsSubscriptions", true);
   stack.node.setContext("@aws-cdk/aws-ec2:requirePrivateSubnetsForEgressOnlyInternetGateway", true);
   stack.node.setContext("@aws-cdk/aws-s3:publicAccessBlockedByDefault", true);
-  stack.node.setContext("@aws-cdk/aws-lambda:useCdkManagedLogGroup", true);
+  stack.node.setContext("@aws-cdk/aws-lambda:useCdkManagedLogGroup", false);
 }

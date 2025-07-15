@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/addfc35e74f0b334fb00aa55ecd1749abfd8c2e2f934169adde498adcc9ba854.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9456c76719b961c12774a19c4b3c99199dcd713af9cb4ee0ec467c4693261f1f.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -247,20 +247,6 @@
             "data": "testlambdainferencepropsLambdaFunction2FD85C24"
           }
         ],
-        "/lambed-single-region/test-lambda-inferenceprops/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lambed-single-region/test-lambda-inferenceprops/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdainferencepropsLambdaFunctionLogGroup041701BC"
-          }
-        ],
         "/lambed-single-region/test-lambda-inferenceprops/test-lambda-inferenceprops-area-prefix-mapping": [
           {
             "type": "aws:cdk:logicalId",
@@ -297,6 +283,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testlambdainferencepropsLambdaFunctionLogGroup041701BC": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdainferencepropsLambdaFunctionLogGroup041701BC",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

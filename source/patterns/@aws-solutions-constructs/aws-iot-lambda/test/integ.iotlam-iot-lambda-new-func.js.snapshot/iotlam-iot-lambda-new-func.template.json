@@ -145,25 +145,6 @@
     }
    }
   },
-  "testiotlambdaintegrationLambdaFunctionLogGroup9069712B": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testiotlambdaintegrationLambdaFunctionC5329DBA"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testiotlambdaintegrationLambdaFunctionAwsIotLambdaInvokePermission184E45B6F": {
    "Type": "AWS::Lambda::Permission",
    "Properties": {

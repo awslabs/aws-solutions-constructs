@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/940eeaac0b49a35284ba88d5c706ba4946d9c7c0b2acced410613ade50d81e38.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/03ac9899a8f208f86814caa04786dd4aed6d67feb9e5d94121024fcb0742494a.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -196,20 +196,6 @@
             "data": "testeventbridgelambdaLambdaFunction475423FD"
           }
         ],
-        "/evtlam-eventbridge-no-argument/test-eventbridge-lambda/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/evtlam-eventbridge-no-argument/test-eventbridge-lambda/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testeventbridgelambdaLambdaFunctionLogGroupFA236203"
-          }
-        ],
         "/evtlam-eventbridge-no-argument/test-eventbridge-lambda/LambdaFunction/AwsEventsLambdaInvokePermission-1": [
           {
             "type": "aws:cdk:logicalId",
@@ -260,10 +246,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testeventbridgelambdaLambdaFunctioninlinePolicyAddedToExecutionRole032228887": [
+        "testeventbridgelambdaLambdaFunctionLogGroupFA236203": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testeventbridgelambdaLambdaFunctioninlinePolicyAddedToExecutionRole032228887",
+            "data": "testeventbridgelambdaLambdaFunctionLogGroupFA236203",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

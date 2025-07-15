@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/82a186162868590838bcac0d17535374f3e4fa179c0059d2325fa5ff952a8829.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/09fb184ae24daa2fe51792689a51b8f810168bdd7b53cc0ab53974146393debb.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -196,20 +196,6 @@
             "data": "testAF53AC38"
           }
         ],
-        "/lamevt-deployFunction/test/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamevt-deployFunction/test/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testLogGroup8FA2542F"
-          }
-        ],
         "/lamevt-deployFunction/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
@@ -222,10 +208,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testinlinePolicyAddedToExecutionRole04E49125E": [
+        "testLogGroup8FA2542F": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testinlinePolicyAddedToExecutionRole04E49125E",
+            "data": "testLogGroup8FA2542F",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

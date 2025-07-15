@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "displayName": "evtfhss3-existing-eventbus/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
@@ -15,7 +15,7 @@
         }
       }
     },
-    "3fbc002108fe6469735eabf938eda0f6eac95449f2a4b192b19153897929bfa9": {
+    "8b2bfa8128e130f143b954ffc1d85febad5116b30db99a523702e007f8b58181": {
       "displayName": "evtfhss3-existing-eventbus Template",
       "source": {
         "path": "evtfhss3-existing-eventbus.template.json",
@@ -24,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "3fbc002108fe6469735eabf938eda0f6eac95449f2a4b192b19153897929bfa9.json",
+          "objectKey": "8b2bfa8128e130f143b954ffc1d85febad5116b30db99a523702e007f8b58181.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

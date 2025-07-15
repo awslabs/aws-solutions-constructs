@@ -1,5 +1,5 @@
 {
-  "version": "43.0.0",
+  "version": "44.0.0",
   "artifacts": {
     "s3snssnsTopicWithAwsManagedKeyIntegDefaultTestDeployAssertBD7193C2.assets": {
       "type": "cdk:asset-manifest",
@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/23a718c2fdc7412f68eff4b4594e66732837c0d829de446e959d5d297d4cdbb7.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/7ddcf9d13fb4aec90d65eacf5bf75dba71ae36922762cec48070fba445eb3ebc.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -204,6 +204,12 @@
             "data": "tests3snsS3BucketNotificationsFCF8E340"
           }
         ],
+        "/s3sns-snsTopicWithAwsManagedKey/test-s3-sns/aws-managed-key": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "Can not change key policy of imported kms key. Ensure that your key policy contains the following permissions: \n{\n  \"Action\": [\n    \"kms:GenerateDataKey\",\n    \"kms:Decrypt\"\n  ],\n  \"Effect\": \"Allow\",\n  \"Principal\": {\n    \"Service\": \"${Token[s3.amazonaws.com.1233]}\"\n  },\n  \"Resource\": \"*\"\n} [ack: @aws-cdk/aws-s3-notifications:snsKMSPermissionsNotAdded]"
+          }
+        ],
         "/s3sns-snsTopicWithAwsManagedKey/test-s3-sns/SnsTopic": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -232,12 +238,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "tests3snsSnsTopicPolicyBB44DF16"
-          }
-        ],
-        "/s3sns-snsTopicWithAwsManagedKey/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/s3sns-snsTopicWithAwsManagedKey/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
@@ -379,5 +379,5 @@
       }
     }
   },
-  "minimumCliVersion": "3.0.0"
+  "minimumCliVersion": "2.1019.2"
 }

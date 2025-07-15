@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/74b42b923575cf435252ab0d5a8fbc69ff53e40824d773ca3564635128df6dd3.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/ba60b60a7d79fba4b292c43fa38199928b4de80e09326ee019588c0579bb88d5.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -329,20 +329,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testoneLambdaFunctionCC9B03E1"
-          }
-        ],
-        "/alblam-privateApiNewResources/test-one/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/alblam-privateApiNewResources/test-one/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testoneLambdaFunctionLogGroupAAEC0377"
           }
         ],
         "/alblam-privateApiNewResources/test-one/LambdaFunction/Invoke2UTWxhlfyqbT5FTn--5jvgbLgj+FfJwzswGk55DU1H--Y=": [
@@ -666,10 +652,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testoneLambdaFunctioninlinePolicyAddedToExecutionRole028251896": [
+        "testoneLambdaFunctionLogGroupAAEC0377": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testoneLambdaFunctioninlinePolicyAddedToExecutionRole028251896",
+            "data": "testoneLambdaFunctionLogGroupAAEC0377",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

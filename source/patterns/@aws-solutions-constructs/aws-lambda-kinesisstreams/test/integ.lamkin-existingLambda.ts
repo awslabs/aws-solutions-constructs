@@ -13,14 +13,14 @@
 
 import { App, Stack } from "aws-cdk-lib";
 import { LambdaToKinesisStreams } from "../lib";
-import { deployLambdaFunction, generateIntegStackName } from '@aws-solutions-constructs/core';
+import { deployLambdaFunction, generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from "@aws-solutions-constructs/core";
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
-stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
+SetConsistentFeatureFlags(stack);
 
 const existingLambdaObj = deployLambdaFunction(stack, {
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),

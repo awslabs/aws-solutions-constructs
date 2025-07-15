@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "wafalb-no-arguments/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -15,7 +15,7 @@
         }
       }
     },
-    "1565aaa63e107c2f550651d2bfb432e10bb8f594b46ebbed15203088a47a9570": {
+    "ae8d8b1d2738424919ed6583cf68d641f2c1e9df96fb9bc24cbc7704ba6f5ea0": {
       "displayName": "wafalb-no-arguments Template",
       "source": {
         "path": "wafalb-no-arguments.template.json",
@@ -24,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "1565aaa63e107c2f550651d2bfb432e10bb8f594b46ebbed15203088a47a9570.json",
+          "objectKey": "ae8d8b1d2738424919ed6583cf68d641f2c1e9df96fb9bc24cbc7704ba6f5ea0.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

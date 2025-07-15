@@ -146,25 +146,6 @@
     }
    }
   },
-  "LambdaFunctionLogGroup286B0B9E": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "LambdaFunctionBF21E41F"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testapigatewaylambdaApiAccessLogGroupEB3253A2": {
    "Type": "AWS::Logs::LogGroup",
    "UpdateReplacePolicy": "Retain",

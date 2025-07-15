@@ -15,12 +15,13 @@
 import { App, Stack, Aws } from 'aws-cdk-lib';
 import { ApiGatewayToSageMakerEndpoint, ApiGatewayToSageMakerEndpointProps } from '../lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import { addCfnGuardSuppressRules, generateIntegStackName } from '@aws-solutions-constructs/core';
+import { addCfnGuardSuppressRules, generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-apigateway-sagemakerendpoint';
 
 const existingRole = new iam.Role(stack, 'api-gateway-role', {

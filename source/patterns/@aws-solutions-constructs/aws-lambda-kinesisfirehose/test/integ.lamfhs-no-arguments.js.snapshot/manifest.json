@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0a4fe9eb747d7adb28243c147131fc5e0c1b4e65764eac415ee55e5a2b43412e.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/2dfc54bc6081cd15260a4d010b8dad4510286cf6a14c1143c7960cee0d8b5649.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -309,12 +309,6 @@
             "data": "destinationfirehoseKinesisFirehoseE8EB5D91"
           }
         ],
-        "/lamfhs-no-arguments/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/lamfhs-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -472,20 +466,6 @@
             "data": "testconstructLambdaFunction88EA73D4"
           }
         ],
-        "/lamfhs-no-arguments/test-construct/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamfhs-no-arguments/test-construct/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructLambdaFunctionLogGroup5C253B21"
-          }
-        ],
         "/lamfhs-no-arguments/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
@@ -498,19 +478,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testconstructLambdaFunctioninlinePolicyAddedToExecutionRole0C88F4B36": [
+        "testconstructLambdaFunctionLogGroup5C253B21": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testconstructLambdaFunctioninlinePolicyAddedToExecutionRole0C88F4B36",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "testconstructLambdaFunctioninlinePolicyAddedToExecutionRole14D1F9932": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructLambdaFunctioninlinePolicyAddedToExecutionRole14D1F9932",
+            "data": "testconstructLambdaFunctionLogGroup5C253B21",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

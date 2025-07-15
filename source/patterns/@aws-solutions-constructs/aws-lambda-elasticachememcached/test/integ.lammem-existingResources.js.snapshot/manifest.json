@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5bc62f6d9aec453bba0c82850eb1c65a37a213ae997779c6df767b412b2e0bbf.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ba5fa7caf186c00976eb60fdf0c3fb50f7bfc7d6d7607e4e70eeb1f773e28499.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -328,12 +328,6 @@
             "data": "VpcFlowLog8FF33A73"
           }
         ],
-        "/lammem-existingResources/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/lammem-existingResources/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -426,20 +420,6 @@
             "data": "testfunction5B23D3B0"
           }
         ],
-        "/lammem-existingResources/test-function/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lammem-existingResources/test-function/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testfunctionLogGroupE1FCF8FE"
-          }
-        ],
         "/lammem-existingResources/ec-subnetgroup-test-cache": [
           {
             "type": "aws:cdk:logicalId",
@@ -499,6 +479,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "testfunctionLogGroupE1FCF8FE": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testfunctionLogGroupE1FCF8FE",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "lammem-existingResources"
@@ -510,5 +499,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1019.0"
+  "minimumCliVersion": "2.1019.2"
 }

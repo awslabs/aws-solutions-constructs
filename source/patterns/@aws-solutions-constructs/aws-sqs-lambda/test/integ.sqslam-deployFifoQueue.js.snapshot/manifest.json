@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/78bca1a8a3fb95f3f34e6c61fe1e61e59621db7d4b9e43d7cc62c8b0fe491521.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/46329b94e86fdfebb358cf7c00f4289ec8fe22b67218e1ac0847f316f8539938.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -212,20 +212,6 @@
             "data": "testsqslambdafifoLambdaFunction0F3AE705"
           }
         ],
-        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqslambdafifoLambdaFunctionLogGroupF2545C87"
-          }
-        ],
         "/sqslam-deployFifoQueue/test-sqs-lambda-fifo/LambdaFunction/SqsEventSource:sqslamdeployFifoQueuetestsqslambdafifoqueue471FB916": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -329,10 +315,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testsqslambdafifoLambdaFunctioninlinePolicyAddedToExecutionRole0DAD3262B": [
+        "testsqslambdafifoLambdaFunctionLogGroupF2545C87": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testsqslambdafifoLambdaFunctioninlinePolicyAddedToExecutionRole0DAD3262B",
+            "data": "testsqslambdafifoLambdaFunctionLogGroupF2545C87",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

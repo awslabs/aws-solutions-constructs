@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d7f5f607bf5a2a0eb32acf0239a0a374381c0144e2d2096f9a2b8ec9a72f4839.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1d6ddd4a0c899ff760d32502aaf3205c6f95e127371bd2d97fe146b673e8f303.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -196,20 +196,6 @@
             "data": "connectEB2081F1"
           }
         ],
-        "/wssqs-custom-connect-route/connect/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/wssqs-custom-connect-route/connect/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "connectLogGroupB0A4FE72"
-          }
-        ],
         "/wssqs-custom-connect-route/disconnectServiceRole": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -322,20 +308,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "disconnect829B70D0"
-          }
-        ],
-        "/wssqs-custom-connect-route/disconnect/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/wssqs-custom-connect-route/disconnect/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "disconnectLogGroupE8B9E3E4"
           }
         ],
         "/wssqs-custom-connect-route/ApiGatewayV2WebSocketToSqs/queue-dlq": [
@@ -657,19 +629,19 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "connectinlinePolicyAddedToExecutionRole0FA4FAF92": [
+        "connectLogGroupB0A4FE72": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "connectinlinePolicyAddedToExecutionRole0FA4FAF92",
+            "data": "connectLogGroupB0A4FE72",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
           }
         ],
-        "disconnectinlinePolicyAddedToExecutionRole0CDB203CB": [
+        "disconnectLogGroupE8B9E3E4": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "disconnectinlinePolicyAddedToExecutionRole0CDB203CB",
+            "data": "disconnectLogGroupE8B9E3E4",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

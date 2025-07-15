@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "displayName": "cftmed-default/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
@@ -15,7 +15,7 @@
         }
       }
     },
-    "3bd855435cd8d1260c1003bb6a910f67c53c32614d86e8389662ee73c6c213c3": {
+    "721c36ee1d698e8e0b69de0b673e431df126499326e1551ecb891578aad05a7f": {
       "displayName": "cftmed-default Template",
       "source": {
         "path": "cftmed-default.template.json",
@@ -24,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "3bd855435cd8d1260c1003bb6a910f67c53c32614d86e8389662ee73c6c213c3.json",
+          "objectKey": "721c36ee1d698e8e0b69de0b673e431df126499326e1551ecb891578aad05a7f.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

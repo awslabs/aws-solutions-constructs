@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/24efa5e4c67b73add4c751abf2b3a69c2c7d3a87fcc9df8ce660623541dcb57c.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/7a8beb6ae84b114119bf4a223e434c4f9eb041e4cdc32bee3ea347c4e3de40da.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -208,20 +208,6 @@
             "data": "testeventbridgelambdaLambdaFunction475423FD"
           }
         ],
-        "/evtlam-eventbridge-existing-eventbus/test-eventbridge-lambda/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/evtlam-eventbridge-existing-eventbus/test-eventbridge-lambda/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testeventbridgelambdaLambdaFunctionLogGroupFA236203"
-          }
-        ],
         "/evtlam-eventbridge-existing-eventbus/test-eventbridge-lambda/LambdaFunction/AwsEventsLambdaInvokePermission-1": [
           {
             "type": "aws:cdk:logicalId",
@@ -276,10 +262,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testeventbridgelambdaLambdaFunctioninlinePolicyAddedToExecutionRole032228887": [
+        "testeventbridgelambdaLambdaFunctionLogGroupFA236203": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testeventbridgelambdaLambdaFunctioninlinePolicyAddedToExecutionRole032228887",
+            "data": "testeventbridgelambdaLambdaFunctionLogGroupFA236203",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

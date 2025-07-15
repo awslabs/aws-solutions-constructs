@@ -13,7 +13,7 @@
 
 import { App, Stack } from "aws-cdk-lib";
 import { WafwebaclToAlb } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import { CfnSecurityGroup } from "aws-cdk-lib/aws-ec2";
 import * as defaults from '@aws-solutions-constructs/core';
@@ -23,6 +23,7 @@ const app = new App();
 
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 
 const myVpc = defaults.getTestVpc(stack);
 

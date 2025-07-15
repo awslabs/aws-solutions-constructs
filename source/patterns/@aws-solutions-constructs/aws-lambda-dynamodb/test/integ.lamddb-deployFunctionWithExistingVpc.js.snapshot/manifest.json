@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3de043fdaef8929dc782b2aa6b95aab1f7c8e04148c12d10f28f5b79bf1aa897.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fea9ad94a11642c67823d8a7aa903b4b6f0296b2ef7490fa340e162341a36ed2.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -512,12 +512,6 @@
             "data": "VpcDDB49FBEC5F"
           }
         ],
-        "/lamddb-deployFunctionWithExistingVpc/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/lamddb-deployFunctionWithExistingVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -718,20 +712,6 @@
             "data": "testlambdadynamodbstackLambdaFunction5DDB3E8D"
           }
         ],
-        "/lamddb-deployFunctionWithExistingVpc/test-lambda-dynamodb-stack/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamddb-deployFunctionWithExistingVpc/test-lambda-dynamodb-stack/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdadynamodbstackLambdaFunctionLogGroup2A9E6090"
-          }
-        ],
         "/lamddb-deployFunctionWithExistingVpc/test-lambda-dynamodb-stack/DynamoTable": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -772,10 +752,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdadynamodbstackLambdaFunctioninlinePolicyAddedToExecutionRole019E2DE85": [
+        "testlambdadynamodbstackLambdaFunctionLogGroup2A9E6090": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdadynamodbstackLambdaFunctioninlinePolicyAddedToExecutionRole019E2DE85",
+            "data": "testlambdadynamodbstackLambdaFunctionLogGroup2A9E6090",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

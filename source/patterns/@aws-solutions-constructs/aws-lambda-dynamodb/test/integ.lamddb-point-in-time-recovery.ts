@@ -15,7 +15,7 @@ import { App, Stack } from "aws-cdk-lib";
 import { LambdaToDynamoDB, LambdaToDynamoDBProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -23,7 +23,7 @@ const app = new App();
 
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
-stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
+SetConsistentFeatureFlags(stack);
 
 const props: LambdaToDynamoDBProps = {
   lambdaFunctionProps: {

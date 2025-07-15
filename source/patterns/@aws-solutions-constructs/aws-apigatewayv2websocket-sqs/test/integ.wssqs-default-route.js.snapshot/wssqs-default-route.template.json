@@ -146,25 +146,6 @@
     }
    }
   },
-  "disconnectLogGroupE8B9E3E4": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "disconnect829B70D0"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "ApiGatewayV2WebSocketToSqsqueuedlq875602DF": {
    "Type": "AWS::SQS::Queue",
    "Properties": {

@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "farkin-streamFromProps/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -15,7 +15,7 @@
         }
       }
     },
-    "8749ce9fe3d27a4cc36eb360772bdbc3e3f64d98b1e3aed90c77547b2d603190": {
+    "63421b3006b068c301900dc1445aa90c9cf23714b2f00e26be4ad9a09d9b94e1": {
       "displayName": "farkin-streamFromProps Template",
       "source": {
         "path": "farkin-streamFromProps.template.json",
@@ -24,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "8749ce9fe3d27a4cc36eb360772bdbc3e3f64d98b1e3aed90c77547b2d603190.json",
+          "objectKey": "63421b3006b068c301900dc1445aa90c9cf23714b2f00e26be4ad9a09d9b94e1.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

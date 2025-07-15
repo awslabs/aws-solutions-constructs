@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6f09036f591a6726ce23591c5b49b75996f813a5ceafda315573708e2dfe332d.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5aa5f628b42919e4f3bb68a44b5aa5c80a7f9662823237bbe80135d4cbc7f63c.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -262,20 +262,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdadynamodbstackLambdaFunction5DDB3E8D"
-          }
-        ],
-        "/lamddb-deployFunctionWithVpc/test-lambda-dynamodb-stack/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamddb-deployFunctionWithVpc/test-lambda-dynamodb-stack/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdadynamodbstackLambdaFunctionLogGroup2A9E6090"
           }
         ],
         "/lamddb-deployFunctionWithVpc/test-lambda-dynamodb-stack/DynamoTable": [
@@ -568,12 +554,6 @@
             "data": "VpcDDB49FBEC5F"
           }
         ],
-        "/lamddb-deployFunctionWithVpc/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/lamddb-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -604,10 +584,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdadynamodbstackLambdaFunctioninlinePolicyAddedToExecutionRole019E2DE85": [
+        "testlambdadynamodbstackLambdaFunctionLogGroup2A9E6090": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdadynamodbstackLambdaFunctioninlinePolicyAddedToExecutionRole019E2DE85",
+            "data": "testlambdadynamodbstackLambdaFunctionLogGroup2A9E6090",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

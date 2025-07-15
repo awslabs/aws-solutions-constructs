@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/25111f7f16f9b5e42e3599f67bcec3f9c84ddaaa6323727980b346429eea010b.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8d36b618bb488c218c80dd1f82c42c36573bacfb2980bceccfe5880df6c26dbd.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -452,20 +452,6 @@
             "data": "testcloudfronts3cmkencryptionkeyLambdaFunction4DCD662E"
           }
         ],
-        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyLambdaFunctionLogGroup062E3ACC"
-          }
-        ],
         "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/test-cloudfront-s3-cmk-encryption-keyResourceCmkPolicy": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -642,20 +628,6 @@
             "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEvent8BCBFC59"
           }
         ],
-        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateProvider/framework-onEvent/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateProvider/framework-onEvent/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventLogGroupC7C64D89"
-          }
-        ],
         "/cfts3-cmk-provided-as-bucket-prop/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdater": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -666,12 +638,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdaterFAFEBF0F"
-          }
-        ],
-        "/cfts3-cmk-provided-as-bucket-prop/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/cfts3-cmk-provided-as-bucket-prop/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
@@ -704,19 +670,19 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testcloudfronts3cmkencryptionkeyLambdaFunctioninlinePolicyAddedToExecutionRole030BCEDF3": [
+        "testcloudfronts3cmkencryptionkeyLambdaFunctionLogGroup062E3ACC": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyLambdaFunctioninlinePolicyAddedToExecutionRole030BCEDF3",
+            "data": "testcloudfronts3cmkencryptionkeyLambdaFunctionLogGroup062E3ACC",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
           }
         ],
-        "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventinlinePolicyAddedToExecutionRole0055AB010": [
+        "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventLogGroupC7C64D89": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventinlinePolicyAddedToExecutionRole0055AB010",
+            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventLogGroupC7C64D89",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/7898c55cdda105510dd4a36faf07f0287c38a56b4a6c03fd83e4727f9ea0452a.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/df1920187608ef01cb74bff78e5c459f96aae97bd7ecb1eab957caddd87f9c17.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -283,20 +283,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionB70B7296"
-          }
-        ],
-        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionLogGroup0F566756"
           }
         ],
         "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/DynamoDBEventSource:dbslamelsnoargumentstestddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableE5DA3737": [
@@ -731,10 +717,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctioninlinePolicyAddedToExecutionRole05D4F2798": [
+        "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionLogGroup0F566756": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctioninlinePolicyAddedToExecutionRole05D4F2798",
+            "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionLogGroup0F566756",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/69d060809fc7d0e266083e94b4725d31f247de0b2f02e6e1c60218ce884818be.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8d9473cbf7e6e51c78a5c7119b4714dc1a2657368a06d07cc77b43a74c0e3506.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -246,20 +246,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibanaLambdaFunction601D26D3"
-          }
-        ],
-        "/lamels-deployToFiveZones/test-lambda-elasticsearch-kibana/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamels-deployToFiveZones/test-lambda-elasticsearch-kibana/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaelasticsearchkibanaLambdaFunctionLogGroup0DA4FF09"
           }
         ],
         "/lamels-deployToFiveZones/test-lambda-elasticsearch-kibana/CognitoUserPool": [
@@ -839,12 +825,6 @@
             "data": "VpcFlowLog8FF33A73"
           }
         ],
-        "/lamels-deployToFiveZones/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/lamels-deployToFiveZones/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -875,10 +855,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdaelasticsearchkibanaLambdaFunctioninlinePolicyAddedToExecutionRole043DCBC33": [
+        "testlambdaelasticsearchkibanaLambdaFunctionLogGroup0DA4FF09": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaelasticsearchkibanaLambdaFunctioninlinePolicyAddedToExecutionRole043DCBC33",
+            "data": "testlambdaelasticsearchkibanaLambdaFunctionLogGroup0DA4FF09",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

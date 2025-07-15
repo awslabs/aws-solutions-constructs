@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3f3ead023b119597d5ab743653b1c3784d78e92d416c61011d8c8a17578df8eb.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/aa1b7881bb7e44758ede576237899487c42c9f484a361a6f37374fd9ce5c6648.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -271,20 +271,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdasnsLambdaFunctionD8BC8ABA"
-          }
-        ],
-        "/lamsns-deployFunctionWithVpc/test-lambda-sns/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamsns-deployFunctionWithVpc/test-lambda-sns/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdasnsLambdaFunctionLogGroup2B4CC7D6"
           }
         ],
         "/lamsns-deployFunctionWithVpc/test-lambda-sns/SnsTopic": [
@@ -584,12 +570,6 @@
             "data": "VpcSNS5B664381"
           }
         ],
-        "/lamsns-deployFunctionWithVpc/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/lamsns-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -665,10 +645,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdasnsLambdaFunctioninlinePolicyAddedToExecutionRole05A095F20": [
+        "testlambdasnsLambdaFunctionLogGroup2B4CC7D6": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasnsLambdaFunctioninlinePolicyAddedToExecutionRole05A095F20",
+            "data": "testlambdasnsLambdaFunctionLogGroup2B4CC7D6",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

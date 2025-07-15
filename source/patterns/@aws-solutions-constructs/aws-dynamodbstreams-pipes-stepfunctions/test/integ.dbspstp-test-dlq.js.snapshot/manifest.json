@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/017df5382bd04059d0daa45cf56f41ee06a216ef549f2b97ddcd388b3ae17dcf.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/cbb67a75558e64c020ea7a5739b461757932164c84b09a36054ffe94f3ce2a4a.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -126,20 +126,6 @@
             "data": "badfunction3559C0E9"
           }
         ],
-        "/dbspstp-test-dlq/bad-function/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/dbspstp-test-dlq/bad-function/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "badfunctionLogGroup2A04BE60"
-          }
-        ],
         "/dbspstp-test-dlq/lambdadbsstp-test": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -182,20 +168,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "lambdadbsstptestE56C39A8"
-          }
-        ],
-        "/dbspstp-test-dlq/lambdadbsstp-test/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/dbspstp-test-dlq/lambdadbsstp-test/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lambdadbsstptestLogGroup61B417AA"
           }
         ],
         "/dbspstp-test-dlq/test-dbs-pipes-states-construct/DynamoTable": [
@@ -574,6 +546,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "badfunctionLogGroup2A04BE60": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "badfunctionLogGroup2A04BE60",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "lambdadbsstptestLogGroup61B417AA": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdadbsstptestLogGroup61B417AA",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/329ec8167c8fea087dee781c8b8d352884187eb276fdea97c02c4c86ef7566b2.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/faf8cfdd5bfdccf9789b841e5b39040c07a0a0e1b3acdb50dc7364123575c3c4.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -326,20 +326,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdainferencepropsLambdaFunctioninlinePolicyAddedToExecutionRole09A675D51"
-          }
-        ],
-        "/lambed-with-vpc/test-lambda-inferenceprops/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lambed-with-vpc/test-lambda-inferenceprops/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdainferencepropsLambdaFunctionLogGroup041701BC"
           }
         ],
         "/lambed-with-vpc/test-lambda-inferenceprops/LambdaFunction/inlinePolicyAddedToExecutionRole-1": [
@@ -847,6 +833,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "testlambdainferencepropsLambdaFunctionLogGroup041701BC": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdainferencepropsLambdaFunctionLogGroup041701BC",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

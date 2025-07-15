@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/7328b1fccdd1c6f1c0d98e7d494de1a3debd711c8cc2c96def70c049f11903a5.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/48cbead3fa77ff6e3536e2d124f5e394a86953c3c3607d1ce7036c809dade950.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -124,20 +124,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "lambdaevtstptest4DAE33D9"
-          }
-        ],
-        "/evtstp-eventbridge-stepfunctions-no-argument/lambdaevtstp-test/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/evtstp-eventbridge-stepfunctions-no-argument/lambdaevtstp-test/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lambdaevtstptestLogGroup3B07FBB6"
           }
         ],
         "/evtstp-eventbridge-stepfunctions-no-argument/test-eventbridge-stepfunctions-construct/StateMachineLogGroup": [
@@ -475,6 +461,15 @@
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
+        ],
+        "lambdaevtstptestLogGroup3B07FBB6": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdaevtstptestLogGroup3B07FBB6",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
         ]
       },
       "displayName": "evtstp-eventbridge-stepfunctions-no-argument"
@@ -486,5 +481,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1019.0"
+  "minimumCliVersion": "2.1019.2"
 }

@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5c0dab00db7f6b57026d24abb3c67b5d18077a634021302d63e73aa43a63ec62.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0ab460435f8fa6c65027dbea73268710eeb68e356d70bd85ef23269536617685.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -124,12 +124,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "contentBucketLogAutoDeleteObjectsCustomResource533B8207"
-          }
-        ],
-        "/lamken-minimal-arguments/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/lamken-minimal-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
@@ -350,20 +344,6 @@
             "data": "minimalargumentsLambdaFunctionC19CFAAC"
           }
         ],
-        "/lamken-minimal-arguments/minimal-arguments/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamken-minimal-arguments/minimal-arguments/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "minimalargumentsLambdaFunctionLogGroupA6B7ABA8"
-          }
-        ],
         "/lamken-minimal-arguments/minimal-arguments/kendra-index-role-minimal-arguments": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -438,28 +418,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole0F2C1CE4B": [
+        "minimalargumentsLambdaFunctionLogGroupA6B7ABA8": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole0F2C1CE4B",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole13B87ED37": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole13B87ED37",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole2FA23AF8F": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole2FA23AF8F",
+            "data": "minimalargumentsLambdaFunctionLogGroupA6B7ABA8",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

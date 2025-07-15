@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/090cc18123656ab1a22a88de6cb71b9ac208c432256b80db379f96795c4941b7.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/d8b04cf2d4eaddd5fde5ee9e381a16abd3da10091fee51855188c5bc00104b37.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -329,20 +329,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testoneLambdaFunctionCC9B03E1"
-          }
-        ],
-        "/alblam-twoTargets/test-one/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/alblam-twoTargets/test-one/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testoneLambdaFunctionLogGroupAAEC0377"
           }
         ],
         "/alblam-twoTargets/test-one/LambdaFunction/Invoke2UTWxhlfyqbT5FTn--5jvgbLgj+FfJwzswGk55DU1H--Y=": [
@@ -986,20 +972,6 @@
             "data": "testtwoLambdaFunction0418AA26"
           }
         ],
-        "/alblam-twoTargets/test-two/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/alblam-twoTargets/test-two/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testtwoLambdaFunctionLogGroup8B30621E"
-          }
-        ],
         "/alblam-twoTargets/test-two/LambdaFunction/Invoke2UTWxhlfyqbT5FTn--5jvgbLgj+FfJwzswGk55DU1H--Y=": [
           {
             "type": "aws:cdk:logicalId",
@@ -1024,19 +996,19 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testoneLambdaFunctioninlinePolicyAddedToExecutionRole028251896": [
+        "testoneLambdaFunctionLogGroupAAEC0377": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testoneLambdaFunctioninlinePolicyAddedToExecutionRole028251896",
+            "data": "testoneLambdaFunctionLogGroupAAEC0377",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
           }
         ],
-        "testtwoLambdaFunctioninlinePolicyAddedToExecutionRole00A7D0170": [
+        "testtwoLambdaFunctionLogGroup8B30621E": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testtwoLambdaFunctioninlinePolicyAddedToExecutionRole00A7D0170",
+            "data": "testtwoLambdaFunctionLogGroup8B30621E",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

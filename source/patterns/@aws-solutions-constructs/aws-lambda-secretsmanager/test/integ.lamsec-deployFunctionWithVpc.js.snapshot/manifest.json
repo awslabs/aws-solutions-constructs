@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3a51b8ecdfa04043427c81678fdaaa0ad22b01d45865d6d76339c72faacee15d.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ad39d5709e1990625e8347fd8e6d240440d043608151082e4c3b4134000ea80d.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -262,20 +262,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdasecretsmanagerLambdaFunction130E7301"
-          }
-        ],
-        "/lamsec-deployFunctionWithVpc/test-lambda-secretsmanager/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamsec-deployFunctionWithVpc/test-lambda-secretsmanager/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdasecretsmanagerLambdaFunctionLogGroupFB9E5A3C"
           }
         ],
         "/lamsec-deployFunctionWithVpc/test-lambda-secretsmanager/secret": [
@@ -559,12 +545,6 @@
             "data": "VpcSECRETSMANAGERF52907C2"
           }
         ],
-        "/lamsec-deployFunctionWithVpc/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/lamsec-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -640,10 +620,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdasecretsmanagerLambdaFunctioninlinePolicyAddedToExecutionRole0A805C55F": [
+        "testlambdasecretsmanagerLambdaFunctionLogGroupFB9E5A3C": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasecretsmanagerLambdaFunctioninlinePolicyAddedToExecutionRole0A805C55F",
+            "data": "testlambdasecretsmanagerLambdaFunctionLogGroupFB9E5A3C",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

@@ -71,25 +71,6 @@
     }
    }
   },
-  "testFunctionLogGroup5361733A": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testFunction483F4CBE"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testauthorizerAuthFunctionServiceRole6F05059E": {
    "Type": "AWS::IAM::Role",
    "Properties": {
@@ -160,25 +141,6 @@
      ]
     }
    }
-  },
-  "testauthorizerAuthFunctionLogGroup3C72FCFF": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testauthorizerAuthFunctionCE2F3743"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
   },
   "testauthorizerAuthFunctionwafapipartialargumentstestauthorizerDC0C2973PermissionsCD5A1000": {
    "Type": "AWS::Lambda::Permission",

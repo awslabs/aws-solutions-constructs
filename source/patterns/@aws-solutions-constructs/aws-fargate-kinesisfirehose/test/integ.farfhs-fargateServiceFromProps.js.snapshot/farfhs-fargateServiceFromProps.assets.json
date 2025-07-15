@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "displayName": "farfhs-fargateServiceFromProps/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
@@ -29,7 +29,7 @@
         }
       }
     },
-    "5fac2c9880d62bd4c10572281158250f4aafaba08bb5a00810998a01682dd588": {
+    "c0ac67f6f3c60b2353da5e1056511f135fb9a200eb3d694c6ee28ea4a3832733": {
       "displayName": "farfhs-fargateServiceFromProps Template",
       "source": {
         "path": "farfhs-fargateServiceFromProps.template.json",
@@ -38,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "5fac2c9880d62bd4c10572281158250f4aafaba08bb5a00810998a01682dd588.json",
+          "objectKey": "c0ac67f6f3c60b2353da5e1056511f135fb9a200eb3d694c6ee28ea4a3832733.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

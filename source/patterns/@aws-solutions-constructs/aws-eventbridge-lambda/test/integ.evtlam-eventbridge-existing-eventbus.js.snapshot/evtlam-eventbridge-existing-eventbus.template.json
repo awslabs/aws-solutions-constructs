@@ -151,25 +151,6 @@
     }
    }
   },
-  "testeventbridgelambdaLambdaFunctionLogGroupFA236203": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testeventbridgelambdaLambdaFunction475423FD"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testeventbridgelambdaLambdaFunctionAwsEventsLambdaInvokePermission1C8A95062": {
    "Type": "AWS::Lambda::Permission",
    "Properties": {

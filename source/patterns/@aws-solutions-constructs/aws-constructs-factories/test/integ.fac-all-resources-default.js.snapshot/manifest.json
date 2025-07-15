@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d8e740fec1ed0406ff5f142985d1a86db9f97c8caf858b6d54ef711ea4e972bb.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9c4110231896c2cc0bd1349a7a992ddd8463d2ac9e5eb0eeb24ade3eb0fbf79b.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -458,12 +458,6 @@
             "data": "integtestExecutionAbortedAlarm5571D1F6"
           }
         ],
-        "/fac-all-resources-default/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/fac-all-resources-default/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -526,20 +520,6 @@
             "data": "lambdatest8B679D7F"
           }
         ],
-        "/fac-all-resources-default/lambdatest/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/fac-all-resources-default/lambdatest/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lambdatestLogGroupA97D94B2"
-          }
-        ],
         "/fac-all-resources-default/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
@@ -550,6 +530,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "lambdatestLogGroupA97D94B2": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "lambdatestLogGroupA97D94B2",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },
@@ -562,5 +551,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1019.0"
+  "minimumCliVersion": "2.1019.2"
 }

@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/2e3c7cf20dd3d4ffc8c47a47e61225c7342e340596f964c63d06b9a169073260.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3ebd79c89c20b1b6bedf2074938570e6ee56891c6e7b149e472aa8b84108ff81.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -235,20 +235,6 @@
             "data": "testlambdassmstringparameterLambdaFunctionD0F9E80D"
           }
         ],
-        "/lamssm-existingStringParameter/test-lambda-ssmstringparameter/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamssm-existingStringParameter/test-lambda-ssmstringparameter/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdassmstringparameterLambdaFunctionLogGroup833BF4B4"
-          }
-        ],
         "/lamssm-existingStringParameter/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
@@ -261,10 +247,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdassmstringparameterLambdaFunctioninlinePolicyAddedToExecutionRole0FC2BAAAC": [
+        "testlambdassmstringparameterLambdaFunctionLogGroup833BF4B4": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdassmstringparameterLambdaFunctioninlinePolicyAddedToExecutionRole0FC2BAAAC",
+            "data": "testlambdassmstringparameterLambdaFunctionLogGroup833BF4B4",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

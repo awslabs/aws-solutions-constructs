@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d72f508bdf66de393a8ad72207d9f4c089ccf85d2fa49943eb23e9fa7a175135.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9c97b648c7431b2dc4c051eecac24d76d04fb6c7cb91d7f6269fab20acc8003c.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -124,20 +124,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "cftaplamnousageplanauthorizerAuthFunctionC756EB1A"
-          }
-        ],
-        "/cftaplam-no-usage-plan/cftaplam-no-usage-plan-authorizerAuthFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/cftaplam-no-usage-plan/cftaplam-no-usage-plan-authorizerAuthFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "cftaplamnousageplanauthorizerAuthFunctionLogGroupE5E79C21"
           }
         ],
         "/cftaplam-no-usage-plan/cftaplam-no-usage-plan-authorizerAuthFunction/cftaplamnousageplancftaplamnousageplanauthorizerB8C63521:Permissions": [
@@ -270,20 +256,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testcloudfrontapigatewaylambdaLambdaFunction17A55E65"
-          }
-        ],
-        "/cftaplam-no-usage-plan/test-cloudfront-apigateway-lambda/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/cftaplam-no-usage-plan/test-cloudfront-apigateway-lambda/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfrontapigatewaylambdaLambdaFunctionLogGroup8A8D4B2D"
           }
         ],
         "/cftaplam-no-usage-plan/test-cloudfront-apigateway-lambda/ApiAccessLogGroup": [
@@ -679,12 +651,6 @@
             "data": "testcloudfrontapigatewaylambdaCloudFrontToApiGatewayCloudFrontDistribution0AFC98FC"
           }
         ],
-        "/cftaplam-no-usage-plan/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/cftaplam-no-usage-plan/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -715,10 +681,19 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testcloudfrontapigatewaylambdaLambdaFunctioninlinePolicyAddedToExecutionRole010F5D55C": [
+        "cftaplamnousageplanauthorizerAuthFunctionLogGroupE5E79C21": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testcloudfrontapigatewaylambdaLambdaFunctioninlinePolicyAddedToExecutionRole010F5D55C",
+            "data": "cftaplamnousageplanauthorizerAuthFunctionLogGroupE5E79C21",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "testcloudfrontapigatewaylambdaLambdaFunctionLogGroup8A8D4B2D": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcloudfrontapigatewaylambdaLambdaFunctionLogGroup8A8D4B2D",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

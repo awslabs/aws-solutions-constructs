@@ -192,25 +192,6 @@
     }
    }
   },
-  "testkinesisstreamslambdaLambdaFunctionLogGroup3C7888F6": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testkinesisstreamslambdaLambdaFunctionB9A91CA7"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testkinesisstreamslambdaLambdaFunctionKinesisEventSourcekinlamnoargumentstestkinesisstreamslambdaKinesisStreamB15C5952638E81E3": {
    "Type": "AWS::Lambda::EventSourceMapping",
    "Properties": {

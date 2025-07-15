@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/81d45ed3db2f175fcc65350e0aa1882b1af2366281910fbc54feb4b7e61896ad.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/970a0b71712758ee4fe99b1e43f61f8ed1b6dc4275e609708cf7b97cc9ffb4e5.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -309,12 +309,6 @@
             "data": "destinationfirehoseKinesisFirehoseE8EB5D91"
           }
         ],
-        "/lamfhs-existing-function/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/lamfhs-existing-function/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -446,20 +440,6 @@
             "data": "existingfunctionC3A89A38"
           }
         ],
-        "/lamfhs-existing-function/existing-function/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamfhs-existing-function/existing-function/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "existingfunctionLogGroupF513E2E0"
-          }
-        ],
         "/lamfhs-existing-function/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
@@ -472,10 +452,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "existingfunctioninlinePolicyAddedToExecutionRole0618E5FEB": [
+        "existingfunctionLogGroupF513E2E0": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "existingfunctioninlinePolicyAddedToExecutionRole0618E5FEB",
+            "data": "existingfunctionLogGroupF513E2E0",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

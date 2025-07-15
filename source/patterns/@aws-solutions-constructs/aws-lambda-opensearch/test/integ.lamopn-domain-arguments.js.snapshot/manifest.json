@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/20e1cf9b7851ef9926b2cab161b2b130bfc6fa90f7790dfb239b256d88eb4990.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/c8dfdca0e1fdf7ae2fe3da700eeea6c673e0c3ca8a6bce0030dca5e6a56f11f3.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -203,20 +203,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaopensearchLambdaFunction93FD38F7"
-          }
-        ],
-        "/lamopn-domain-arguments/test-lambda-opensearch/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamopn-domain-arguments/test-lambda-opensearch/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchLambdaFunctionLogGroup84458EB6"
           }
         ],
         "/lamopn-domain-arguments/test-lambda-opensearch/CognitoUserPool": [
@@ -562,10 +548,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdaopensearchLambdaFunctioninlinePolicyAddedToExecutionRole09B870594": [
+        "testlambdaopensearchLambdaFunctionLogGroup84458EB6": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchLambdaFunctioninlinePolicyAddedToExecutionRole09B870594",
+            "data": "testlambdaopensearchLambdaFunctionLogGroup84458EB6",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

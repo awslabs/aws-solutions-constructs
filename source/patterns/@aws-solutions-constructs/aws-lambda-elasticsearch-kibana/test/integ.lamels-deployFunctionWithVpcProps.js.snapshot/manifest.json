@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/fc3f571a9af236c26fbcfde0d220178eac1e320e088ea44f1807011bbb62d8a0.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/7bf4723f6f1eca70f43afd2e658e263465e10804949b3085b0bab6171c93e5df.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -246,20 +246,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana3LambdaFunctionE377CF86"
-          }
-        ],
-        "/lamels-deployFunctionWithVpcProps/test-lambda-elasticsearch-kibana3/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamels-deployFunctionWithVpcProps/test-lambda-elasticsearch-kibana3/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaelasticsearchkibana3LambdaFunctionLogGroup08C0A4EC"
           }
         ],
         "/lamels-deployFunctionWithVpcProps/test-lambda-elasticsearch-kibana3/CognitoUserPool": [
@@ -869,10 +855,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdaelasticsearchkibana3LambdaFunctioninlinePolicyAddedToExecutionRole0B7497C66": [
+        "testlambdaelasticsearchkibana3LambdaFunctionLogGroup08C0A4EC": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaelasticsearchkibana3LambdaFunctioninlinePolicyAddedToExecutionRole0B7497C66",
+            "data": "testlambdaelasticsearchkibana3LambdaFunctionLogGroup08C0A4EC",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "44.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "displayName": "iots3-iot-s3-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
@@ -15,7 +15,7 @@
         }
       }
     },
-    "b956171bf46b537ea2307f95d4439e2037a1fbc7883c12d5e01ae796d520178e": {
+    "ec5b18d1fd71aa82ee4132b7038b101110501ca5f8a598415f01fde442e3cdb3": {
       "displayName": "iots3-iot-s3-existing-bucket Template",
       "source": {
         "path": "iots3-iot-s3-existing-bucket.template.json",
@@ -24,7 +24,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "b956171bf46b537ea2307f95d4439e2037a1fbc7883c12d5e01ae796d520178e.json",
+          "objectKey": "ec5b18d1fd71aa82ee4132b7038b101110501ca5f8a598415f01fde442e3cdb3.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

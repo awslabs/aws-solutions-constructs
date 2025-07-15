@@ -210,25 +210,6 @@
     }
    }
   },
-  "testdynamodbstreamslambdaLambdaFunctionLogGroup69ECB2AE": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testdynamodbstreamslambdaLambdaFunctionE18EC5EF"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testdynamodbstreamslambdaLambdaFunctionDynamoDBEventSourcedbslamexistingtablemytable00A85A16A55832C3": {
    "Type": "AWS::Lambda::EventSourceMapping",
    "Properties": {

@@ -1,7 +1,7 @@
 {
   "version": "44.0.0",
   "files": {
-    "38e69cd83cd14bf64588ee4c8b7ad56ccea7a08687aedb01811e4d46b4ea71d3": {
+    "b608de4251b772257f786d1776e1bb2dbb6566658681631d71e5741f2e95c986": {
       "displayName": "sqspstp-set-queue-batch-size Template",
       "source": {
         "path": "sqspstp-set-queue-batch-size.template.json",
@@ -10,7 +10,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "38e69cd83cd14bf64588ee4c8b7ad56ccea7a08687aedb01811e4d46b4ea71d3.json",
+          "objectKey": "b608de4251b772257f786d1776e1bb2dbb6566658681631d71e5741f2e95c986.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

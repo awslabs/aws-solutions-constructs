@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e652fd16801a4175b6f7a81d20849b01f66418d5f0c9446b55c484f711845651.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5b0b2037895e8422d5508765d2c1f7e3e005e0938cba5f2d7dbbc9845ec10443.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -246,20 +246,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaopensearchLambdaFunction93FD38F7"
-          }
-        ],
-        "/lamopn-cluster-config/test-lambda-opensearch/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamopn-cluster-config/test-lambda-opensearch/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchLambdaFunctionLogGroup84458EB6"
           }
         ],
         "/lamopn-cluster-config/test-lambda-opensearch/CognitoUserPool": [
@@ -839,12 +825,6 @@
             "data": "VpcFlowLog8FF33A73"
           }
         ],
-        "/lamopn-cluster-config/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/lamopn-cluster-config/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -875,10 +855,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdaopensearchLambdaFunctioninlinePolicyAddedToExecutionRole09B870594": [
+        "testlambdaopensearchLambdaFunctionLogGroup84458EB6": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchLambdaFunctioninlinePolicyAddedToExecutionRole09B870594",
+            "data": "testlambdaopensearchLambdaFunctionLogGroup84458EB6",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

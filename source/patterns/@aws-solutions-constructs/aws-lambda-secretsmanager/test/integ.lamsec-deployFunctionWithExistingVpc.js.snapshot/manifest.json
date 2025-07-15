@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b9fc4c59dbb94e373a9c784576df3567604ba9161b098fbfd49e29765adcdc94.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/77448ff22a9de249b2f894b9a187f008bcfea61ae770bd135241885bf05c6bbb.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -517,12 +517,6 @@
             "data": "VpcSECRETSMANAGERF52907C2"
           }
         ],
-        "/lamsec-deployFunctionWithExistingVpc/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/lamsec-deployFunctionWithExistingVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -723,20 +717,6 @@
             "data": "testlambdasecretsmanagerstackLambdaFunction2DDE520A"
           }
         ],
-        "/lamsec-deployFunctionWithExistingVpc/test-lambda-secretsmanager-stack/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamsec-deployFunctionWithExistingVpc/test-lambda-secretsmanager-stack/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdasecretsmanagerstackLambdaFunctionLogGroupE802AE9B"
-          }
-        ],
         "/lamsec-deployFunctionWithExistingVpc/test-lambda-secretsmanager-stack/secret": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -808,10 +788,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdasecretsmanagerstackLambdaFunctioninlinePolicyAddedToExecutionRole0EBC40474": [
+        "testlambdasecretsmanagerstackLambdaFunctionLogGroupE802AE9B": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdasecretsmanagerstackLambdaFunctioninlinePolicyAddedToExecutionRole0EBC40474",
+            "data": "testlambdasecretsmanagerstackLambdaFunctionLogGroupE802AE9B",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

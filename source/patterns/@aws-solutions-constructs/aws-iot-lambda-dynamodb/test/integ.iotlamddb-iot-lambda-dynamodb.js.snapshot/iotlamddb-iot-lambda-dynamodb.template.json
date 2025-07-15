@@ -176,25 +176,6 @@
     }
    }
   },
-  "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionLogGroupFE5991F1": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunction5165A7EE"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionAwsIotLambdaInvokePermission13FCFED39": {
    "Type": "AWS::Lambda::Permission",
    "Properties": {

@@ -151,25 +151,6 @@
     }
    }
   },
-  "testlambdaelasticsearchkibana2LambdaFunctionLogGroup34DB1C8A": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testlambdaelasticsearchkibana2LambdaFunctionE665DF63"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testlambdaelasticsearchkibana2CognitoUserPool9D73D9DA": {
    "Type": "AWS::Cognito::UserPool",
    "Properties": {

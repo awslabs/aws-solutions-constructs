@@ -176,25 +176,6 @@
     }
    }
   },
-  "testlambdadynamodbstackLambdaFunctionLogGroup2A9E6090": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testlambdadynamodbstackLambdaFunction5DDB3E8D"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testlambdadynamodbstackDynamoTable8138E93B": {
    "Type": "AWS::DynamoDB::Table",
    "Properties": {

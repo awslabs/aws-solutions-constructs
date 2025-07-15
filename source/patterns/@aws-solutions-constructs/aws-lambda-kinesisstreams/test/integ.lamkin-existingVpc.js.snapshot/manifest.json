@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9fa274ed81fbc61fddcda3a5fc1be8592debafd662ffdbb02f5a0d57afcb189a.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/68203d097828c77cfdd70ae3e1b9d08e460ca9d01636ff8c4cc7b532da38f5b8.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -514,12 +514,6 @@
             "data": "VpcKINESISSTREAMSC07D91B5"
           }
         ],
-        "/lamkin-existingVpc/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/lamkin-existingVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -720,20 +714,6 @@
             "data": "testlambdakinesisstreamsLambdaFunction4348B6E4"
           }
         ],
-        "/lamkin-existingVpc/test-lambda-kinesisstreams/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamkin-existingVpc/test-lambda-kinesisstreams/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdakinesisstreamsLambdaFunctionLogGroup9EDBB3CA"
-          }
-        ],
         "/lamkin-existingVpc/test-lambda-kinesisstreams/KinesisStream": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -845,10 +825,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdakinesisstreamsLambdaFunctioninlinePolicyAddedToExecutionRole022FB8950": [
+        "testlambdakinesisstreamsLambdaFunctionLogGroup9EDBB3CA": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdakinesisstreamsLambdaFunctioninlinePolicyAddedToExecutionRole022FB8950",
+            "data": "testlambdakinesisstreamsLambdaFunctionLogGroup9EDBB3CA",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

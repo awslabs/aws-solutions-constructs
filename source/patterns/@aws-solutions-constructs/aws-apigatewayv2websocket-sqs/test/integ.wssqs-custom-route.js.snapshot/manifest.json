@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8e96c30785016ef310ebc832bf0201c80663c6f991d1382a9864f7fe2582dd8c.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/bc1c5f936c9933fe397e564d115acb3b0fdc85adf9430214a8773f592b3189b6.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -194,20 +194,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "disconnect829B70D0"
-          }
-        ],
-        "/wssqs-custom-route/disconnect/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/wssqs-custom-route/disconnect/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "disconnectLogGroupE8B9E3E4"
           }
         ],
         "/wssqs-custom-route/ApiGatewayV2WebSocketToSqs/queue-dlq": [
@@ -523,10 +509,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "disconnectinlinePolicyAddedToExecutionRole0CDB203CB": [
+        "disconnectLogGroupE8B9E3E4": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "disconnectinlinePolicyAddedToExecutionRole0CDB203CB",
+            "data": "disconnectLogGroupE8B9E3E4",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

@@ -15,17 +15,17 @@
 import { App, Stack } from "aws-cdk-lib";
 // import { LambdaToEventbridge, LambdaToEventbridgeProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from "@aws-solutions-constructs/core";
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 // testStack.node.setContext("@aws-cdk/aws-lambda:useCdkManagedLogGroup", true);
 // testStack.node.setContext('@aws-cdk/aws-iam:minimizePolicies', true,);
 stack.templateOptions.description = 'Integration Test for aws-lambda-eventbridge';
-stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 // // Definitions
 // const props: LambdaToEventbridgeProps = {

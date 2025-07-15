@@ -15,14 +15,15 @@ import { App, Stack } from "aws-cdk-lib";
 import { OpenApiGatewayToLambda } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
+import { SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 import * as jsonApiDefinition from './openapi/apiDefinition.json';
 
 const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-openapigateway-lambda';
-stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
 
 new OpenApiGatewayToLambda(stack, 'OpenApiGatewayToLambda', {
   apiDefinitionJson: jsonApiDefinition,

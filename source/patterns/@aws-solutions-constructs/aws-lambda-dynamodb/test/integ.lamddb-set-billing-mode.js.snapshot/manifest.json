@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/107d1f09bce9948c6f10e95bd78150af51f2a4fcd35841a4b8b5ab0dd1e7ce01.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/20a09600b63d9b907d4ddbc4f1cd97d358223a292f5e495e4f6681ddf559f258.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -221,20 +221,6 @@
             "data": "testlambdadynamodbstackLambdaFunction5DDB3E8D"
           }
         ],
-        "/lamddb-set-billing-mode/test-lambda-dynamodb-stack/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamddb-set-billing-mode/test-lambda-dynamodb-stack/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdadynamodbstackLambdaFunctionLogGroup2A9E6090"
-          }
-        ],
         "/lamddb-set-billing-mode/test-lambda-dynamodb-stack/DynamoTable": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -277,10 +263,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdadynamodbstackLambdaFunctioninlinePolicyAddedToExecutionRole019E2DE85": [
+        "testlambdadynamodbstackLambdaFunctionLogGroup2A9E6090": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdadynamodbstackLambdaFunctioninlinePolicyAddedToExecutionRole019E2DE85",
+            "data": "testlambdadynamodbstackLambdaFunctionLogGroup2A9E6090",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

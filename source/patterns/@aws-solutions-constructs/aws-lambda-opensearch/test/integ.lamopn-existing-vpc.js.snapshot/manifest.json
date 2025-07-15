@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/c3f386d2a79ca62e1267055b5d870e5fb2789293e47eefd4dc42970fb0afe5e2.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/211c1a9790c646b65f638141344d0ce2aae22a2248a0636b185ff1abeb2cc567.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -680,20 +680,6 @@
             "data": "testlambdaelasticsearchkibana4LambdaFunction2C5856DF"
           }
         ],
-        "/lamopn-existing-vpc/test-lambda-elasticsearch-kibana4/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/lamopn-existing-vpc/test-lambda-elasticsearch-kibana4/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaelasticsearchkibana4LambdaFunctionLogGroup6244A257"
-          }
-        ],
         "/lamopn-existing-vpc/test-lambda-elasticsearch-kibana4/CognitoUserPool": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -1037,10 +1023,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdaelasticsearchkibana4LambdaFunctioninlinePolicyAddedToExecutionRole0CFA48A09": [
+        "testlambdaelasticsearchkibana4LambdaFunctionLogGroup6244A257": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaelasticsearchkibana4LambdaFunctioninlinePolicyAddedToExecutionRole0CFA48A09",
+            "data": "testlambdaelasticsearchkibana4LambdaFunctionLogGroup6244A257",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

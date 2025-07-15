@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/32fbd9e6d41cc722306b83cbc8606f02478359ef8554c38203578f380f618ff3.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/20e06cc64053dba9fc02f0d319e080445dc79d8312d8ea927a840d74a4709f1b.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -158,20 +158,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "cftaplamoverridebehaviorauthorizerAuthFunction9DD827D6"
-          }
-        ],
-        "/cftaplam-override-behavior/cftaplam-override-behavior-authorizerAuthFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/cftaplam-override-behavior/cftaplam-override-behavior-authorizerAuthFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "cftaplamoverridebehaviorauthorizerAuthFunctionLogGroup24030B5E"
           }
         ],
         "/cftaplam-override-behavior/cftaplam-override-behavior-authorizerAuthFunction/cftaplamoverridebehaviorcftaplamoverridebehaviorauthorizer3042C32C:Permissions": [
@@ -304,20 +290,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "cfapilambdaoverrideLambdaFunction74CE466F"
-          }
-        ],
-        "/cftaplam-override-behavior/cf-api-lambda-override/LambdaFunction/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/cftaplam-override-behavior/cf-api-lambda-override/LambdaFunction/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "cfapilambdaoverrideLambdaFunctionLogGroup4E9044D0"
           }
         ],
         "/cftaplam-override-behavior/cf-api-lambda-override/ApiAccessLogGroup": [
@@ -742,12 +714,6 @@
             "data": "cfapilambdaoverrideCloudFrontToApiGatewayCloudFrontDistribution94A35932"
           }
         ],
-        "/cftaplam-override-behavior/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/cftaplam-override-behavior/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -778,10 +744,19 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "cfapilambdaoverrideLambdaFunctioninlinePolicyAddedToExecutionRole0248615B6": [
+        "cftaplamoverridebehaviorauthorizerAuthFunctionLogGroup24030B5E": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "cfapilambdaoverrideLambdaFunctioninlinePolicyAddedToExecutionRole0248615B6",
+            "data": "cftaplamoverridebehaviorauthorizerAuthFunctionLogGroup24030B5E",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
+          }
+        ],
+        "cfapilambdaoverrideLambdaFunctionLogGroup4E9044D0": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapilambdaoverrideLambdaFunctionLogGroup4E9044D0",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

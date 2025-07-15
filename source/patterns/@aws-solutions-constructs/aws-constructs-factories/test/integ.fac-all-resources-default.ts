@@ -13,13 +13,14 @@
 
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { ConstructsFactories } from "../lib";
-import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings, CreateTestStateMachineDefinitionBody } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings, CreateTestStateMachineDefinitionBody, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 
 const factories = new ConstructsFactories(stack, 'integ-test');
 

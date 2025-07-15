@@ -151,25 +151,6 @@
     }
    }
   },
-  "testlambdaopensearchLambdaFunctionLogGroup84458EB6": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testlambdaopensearchLambdaFunction93FD38F7"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testlambdaopensearchCognitoUserPoolA09096F9": {
    "Type": "AWS::Cognito::UserPool",
    "Properties": {

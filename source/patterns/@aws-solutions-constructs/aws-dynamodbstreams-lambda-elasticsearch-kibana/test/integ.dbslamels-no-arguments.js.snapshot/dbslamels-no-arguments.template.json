@@ -180,25 +180,6 @@
     }
    }
   },
-  "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionLogGroup0F566756": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionB70B7296"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionDynamoDBEventSourcedbslamelsnoargumentstestddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableE5DA3737A0F8E1D7": {
    "Type": "AWS::Lambda::EventSourceMapping",
    "Properties": {

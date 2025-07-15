@@ -146,25 +146,6 @@
     }
    }
   },
-  "testsnslambdaLambdaFunctionLogGroupF44BBEC4": {
-   "Type": "AWS::Logs::LogGroup",
-   "Properties": {
-    "LogGroupName": {
-     "Fn::Join": [
-      "",
-      [
-       "/aws/lambda/",
-       {
-        "Ref": "testsnslambdaLambdaFunctionEE9A249B"
-       }
-      ]
-     ]
-    },
-    "RetentionInDays": 731
-   },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
-  },
   "testsnslambdaLambdaFunctionAllowInvokesnslamnoargumentstestsnslambdaSnsTopicC2A3522489F066D4": {
    "Type": "AWS::Lambda::Permission",
    "Properties": {
