@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/95a04568b1e980cfdccc476924d56aeae2125f85550e04149895635e6c8d7536.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3f524ab5fe47e4f421d014caa3ef8a0378d6bb8cc68c7b03347a20c7825431fd.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -91,14 +91,6 @@
                 "assumeRoleAction": "*"
               },
               "inlinePolicies": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
             }
           },
           {
@@ -130,42 +122,6 @@
             "data": "tests3lambdaLambdaFunctionServiceRoleA74F4427"
           }
         ],
-        "/s3lam-no-arguments/test-s3-lambda/LambdaFunctionServiceRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/s3lam-no-arguments/test-s3-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3lambdaLambdaFunctionServiceRoleDefaultPolicyA7E71BD5"
-          }
-        ],
         "/s3lam-no-arguments/test-s3-lambda/LambdaFunction": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -194,6 +150,44 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "tests3lambdaLambdaFunctionB56B7023"
+          }
+        ],
+        "/s3lam-no-arguments/test-s3-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/s3lam-no-arguments/test-s3-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tests3lambdaLambdaFunctioninlinePolicyAddedToExecutionRole0D4909C11"
           }
         ],
         "/s3lam-no-arguments/test-s3-lambda/S3LoggingBucket": [
@@ -440,10 +434,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "tests3lambdaLambdaFunctionLogGroupD1439DF8": [
+        "tests3lambdaLambdaFunctionServiceRoleDefaultPolicyA7E71BD5": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "tests3lambdaLambdaFunctionLogGroupD1439DF8",
+            "data": "tests3lambdaLambdaFunctionServiceRoleDefaultPolicyA7E71BD5",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

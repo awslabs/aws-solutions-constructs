@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/66c7c692ccce1fc158da592b51a80b1991ff29f4a47f53c6c98ac6d76cd8cc1c.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f2aefc220f5fa6638f80e958c7a942487db3e323b7948289c85311c801c82bd0.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -96,14 +96,6 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
               "attachInlinePolicy": [
                 "*"
               ]
@@ -128,42 +120,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testiotlambdaintegrationLambdaFunctionServiceRole27C3EE41"
-          }
-        ],
-        "/iotlam-iot-lambda-new-func/test-iot-lambda-integration/LambdaFunctionServiceRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/iotlam-iot-lambda-new-func/test-iot-lambda-integration/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testiotlambdaintegrationLambdaFunctionServiceRoleDefaultPolicy0FB2AE4D"
           }
         ],
         "/iotlam-iot-lambda-new-func/test-iot-lambda-integration/LambdaFunction": [
@@ -196,6 +152,44 @@
             "data": "testiotlambdaintegrationLambdaFunctionC5329DBA"
           }
         ],
+        "/iotlam-iot-lambda-new-func/test-iot-lambda-integration/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/iotlam-iot-lambda-new-func/test-iot-lambda-integration/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testiotlambdaintegrationLambdaFunctioninlinePolicyAddedToExecutionRole078F7FCF5"
+          }
+        ],
         "/iotlam-iot-lambda-new-func/test-iot-lambda-integration/LambdaFunction/AwsIotLambdaInvokePermission-1": [
           {
             "type": "aws:cdk:logicalId",
@@ -220,10 +214,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testiotlambdaintegrationLambdaFunctionLogGroup9069712B": [
+        "testiotlambdaintegrationLambdaFunctionServiceRoleDefaultPolicy0FB2AE4D": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testiotlambdaintegrationLambdaFunctionLogGroup9069712B",
+            "data": "testiotlambdaintegrationLambdaFunctionServiceRoleDefaultPolicy0FB2AE4D",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

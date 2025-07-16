@@ -77,14 +77,6 @@
      "Statement": [
       {
        "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      },
-      {
-       "Action": [
         "ssm:DescribeParameters",
         "ssm:GetParameter",
         "ssm:GetParameterHistory",
@@ -124,16 +116,6 @@
       "Ref": "testlambdassmstringparameterLambdaFunctionServiceRole0E6B5916"
      }
     ]
-   },
-   "Metadata": {
-    "cfn_nag": {
-     "rules_to_suppress": [
-      {
-       "id": "W12",
-       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
-      }
-     ]
-    }
    }
   },
   "testlambdassmstringparameterLambdaFunctionD0F9E80D": {
@@ -186,6 +168,30 @@
       }
      ]
     }
+   }
+  },
+  "testlambdassmstringparameterLambdaFunctioninlinePolicyAddedToExecutionRole0FC2BAAAC": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testlambdassmstringparameterLambdaFunctioninlinePolicyAddedToExecutionRole0FC2BAAAC",
+    "Roles": [
+     {
+      "Ref": "testlambdassmstringparameterLambdaFunctionServiceRole0E6B5916"
+     }
+    ]
    }
   }
  },

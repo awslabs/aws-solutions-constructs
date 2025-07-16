@@ -63,68 +63,6 @@
     }
    }
   },
-  "testlambdainferencepropsLambdaFunctionServiceRoleDefaultPolicyB1E40609": {
-   "Type": "AWS::IAM::Policy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      },
-      {
-       "Action": "bedrock:Invoke*",
-       "Effect": "Allow",
-       "Resource": [
-        {
-         "Fn::GetAtt": [
-          "testlambdainferencepropstestlambdainferencepropsinference01BBD7E6",
-          "InferenceProfileArn"
-         ]
-        },
-        {
-         "Fn::Join": [
-          "",
-          [
-           "arn:",
-           {
-            "Ref": "AWS::Partition"
-           },
-           ":bedrock:",
-           {
-            "Ref": "AWS::Region"
-           },
-           "::foundation-model/amazon.nova-lite-v1:0"
-          ]
-         ]
-        }
-       ]
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "PolicyName": "testlambdainferencepropsLambdaFunctionServiceRoleDefaultPolicyB1E40609",
-    "Roles": [
-     {
-      "Ref": "testlambdainferencepropsLambdaFunctionServiceRole102487FD"
-     }
-    ]
-   },
-   "Metadata": {
-    "cfn_nag": {
-     "rules_to_suppress": [
-      {
-       "id": "W12",
-       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
-      }
-     ]
-    }
-   }
-  },
   "testlambdainferencepropsLambdaFunction2FD85C24": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -160,7 +98,6 @@
     }
    },
    "DependsOn": [
-    "testlambdainferencepropsLambdaFunctionServiceRoleDefaultPolicyB1E40609",
     "testlambdainferencepropsLambdaFunctionServiceRole102487FD"
    ],
    "Metadata": {
@@ -180,6 +117,92 @@
       }
      ]
     }
+   }
+  },
+  "testlambdainferencepropsLambdaFunctioninlinePolicyAddedToExecutionRole09A675D51": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testlambdainferencepropsLambdaFunctioninlinePolicyAddedToExecutionRole09A675D51",
+    "Roles": [
+     {
+      "Ref": "testlambdainferencepropsLambdaFunctionServiceRole102487FD"
+     }
+    ]
+   }
+  },
+  "testlambdainferencepropsLambdaFunctioninlinePolicyAddedToExecutionRole1121B30C3": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "bedrock:Invoke*",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "testlambdainferencepropstestlambdainferencepropsinference01BBD7E6",
+         "InferenceProfileArn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testlambdainferencepropsLambdaFunctioninlinePolicyAddedToExecutionRole1121B30C3",
+    "Roles": [
+     {
+      "Ref": "testlambdainferencepropsLambdaFunctionServiceRole102487FD"
+     }
+    ]
+   }
+  },
+  "testlambdainferencepropsLambdaFunctioninlinePolicyAddedToExecutionRole2DBB277C5": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "bedrock:Invoke*",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":bedrock:",
+          {
+           "Ref": "AWS::Region"
+          },
+          "::foundation-model/amazon.nova-lite-v1:0"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testlambdainferencepropsLambdaFunctioninlinePolicyAddedToExecutionRole2DBB277C5",
+    "Roles": [
+     {
+      "Ref": "testlambdainferencepropsLambdaFunctionServiceRole102487FD"
+     }
+    ]
    }
   },
   "testlambdainferencepropstestlambdainferencepropsinference01BBD7E6": {

@@ -104,11 +104,7 @@
     "PolicyDocument": {
      "Statement": [
       {
-       "Action": [
-        "dynamodb:ListStreams",
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
+       "Action": "dynamodb:ListStreams",
        "Effect": "Allow",
        "Resource": "*"
       },
@@ -149,16 +145,6 @@
       "Ref": "testdynamodbstreamslambdaLambdaFunctionServiceRole17CB5CA1"
      }
     ]
-   },
-   "Metadata": {
-    "cfn_nag": {
-     "rules_to_suppress": [
-      {
-       "id": "W12",
-       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
-      }
-     ]
-    }
    }
   },
   "testdynamodbstreamslambdaLambdaFunctionE18EC5EF": {
@@ -208,6 +194,30 @@
       }
      ]
     }
+   }
+  },
+  "testdynamodbstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole02B3D756F": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testdynamodbstreamslambdaLambdaFunctioninlinePolicyAddedToExecutionRole02B3D756F",
+    "Roles": [
+     {
+      "Ref": "testdynamodbstreamslambdaLambdaFunctionServiceRole17CB5CA1"
+     }
+    ]
    }
   },
   "testdynamodbstreamslambdaLambdaFunctionDynamoDBEventSourcedbslamexistingtablemytable00A85A16A55832C3": {

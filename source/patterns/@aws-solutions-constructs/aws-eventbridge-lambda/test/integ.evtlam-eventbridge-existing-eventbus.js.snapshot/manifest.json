@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/7a8beb6ae84b114119bf4a223e434c4f9eb041e4cdc32bee3ea347c4e3de40da.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b12cda34ed3194b8872806fb2cc2d7744546f14d1271620a7560b30707e93b64.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -108,14 +108,6 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
               "attachInlinePolicy": [
                 "*"
               ]
@@ -140,42 +132,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testeventbridgelambdaLambdaFunctionServiceRole6D02CEEE"
-          }
-        ],
-        "/evtlam-eventbridge-existing-eventbus/test-eventbridge-lambda/LambdaFunctionServiceRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/evtlam-eventbridge-existing-eventbus/test-eventbridge-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testeventbridgelambdaLambdaFunctionServiceRoleDefaultPolicyB0C15F1B"
           }
         ],
         "/evtlam-eventbridge-existing-eventbus/test-eventbridge-lambda/LambdaFunction": [
@@ -206,6 +162,44 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testeventbridgelambdaLambdaFunction475423FD"
+          }
+        ],
+        "/evtlam-eventbridge-existing-eventbus/test-eventbridge-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/evtlam-eventbridge-existing-eventbus/test-eventbridge-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testeventbridgelambdaLambdaFunctioninlinePolicyAddedToExecutionRole032228887"
           }
         ],
         "/evtlam-eventbridge-existing-eventbus/test-eventbridge-lambda/LambdaFunction/AwsEventsLambdaInvokePermission-1": [
@@ -262,10 +256,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testeventbridgelambdaLambdaFunctionLogGroupFA236203": [
+        "testeventbridgelambdaLambdaFunctionServiceRoleDefaultPolicyB0C15F1B": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testeventbridgelambdaLambdaFunctionLogGroupFA236203",
+            "data": "testeventbridgelambdaLambdaFunctionServiceRoleDefaultPolicyB0C15F1B",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

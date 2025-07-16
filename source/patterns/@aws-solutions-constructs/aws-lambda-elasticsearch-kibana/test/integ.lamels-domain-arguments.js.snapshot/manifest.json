@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3d58c1bf36c5c3271238ea8ea8cfad9d04ab7d8535a4669ca8c36bbaae7fb833.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6c0a7a1dc017b1b6f4592e06626737cf8884360662b551b2c1a6ab027db810e9.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -96,14 +96,6 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
               "attachInlinePolicy": [
                 "*"
               ]
@@ -128,42 +120,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleA59E9EBF"
-          }
-        ],
-        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunctionServiceRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleDefaultPolicy438CAC76"
           }
         ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunction": [
@@ -203,6 +159,44 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdaelasticsearchkibana2LambdaFunctionE665DF63"
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdaelasticsearchkibana2LambdaFunctioninlinePolicyAddedToExecutionRole0DD92EB84"
           }
         ],
         "/lamels-domain-arguments/test-lambda-elasticsearch-kibana2/CognitoUserPool": [
@@ -548,10 +542,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testlambdaelasticsearchkibana2LambdaFunctionLogGroup34DB1C8A": [
+        "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleDefaultPolicy438CAC76": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testlambdaelasticsearchkibana2LambdaFunctionLogGroup34DB1C8A",
+            "data": "testlambdaelasticsearchkibana2LambdaFunctionServiceRoleDefaultPolicy438CAC76",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

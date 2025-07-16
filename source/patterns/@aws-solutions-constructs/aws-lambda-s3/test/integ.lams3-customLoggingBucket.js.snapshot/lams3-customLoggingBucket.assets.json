@@ -29,7 +29,7 @@
         }
       }
     },
-    "611566685fd67a4f705510699e6d82ba778d89aeecb5d1717014e03ee1693f84": {
+    "e6bdb3eb2e0271f872d58e85ea59d275e3a99a11fc4ce3d1d00165726093fbb1": {
       "displayName": "lams3-customLoggingBucket Template",
       "source": {
         "path": "lams3-customLoggingBucket.template.json",
@@ -38,7 +38,7 @@
       "destinations": {
         "current_account-current_region": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "611566685fd67a4f705510699e6d82ba778d89aeecb5d1717014e03ee1693f84.json",
+          "objectKey": "e6bdb3eb2e0271f872d58e85ea59d275e3a99a11fc4ce3d1d00165726093fbb1.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

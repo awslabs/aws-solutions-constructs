@@ -73,9 +73,7 @@
         "ec2:CreateNetworkInterface",
         "ec2:DeleteNetworkInterface",
         "ec2:DescribeNetworkInterfaces",
-        "ec2:UnassignPrivateIpAddresses",
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
+        "ec2:UnassignPrivateIpAddresses"
        ],
        "Effect": "Allow",
        "Resource": "*"
@@ -205,6 +203,34 @@
      ]
     }
    }
+  },
+  "testlambdaelasticsearchkibana3LambdaFunctioninlinePolicyAddedToExecutionRole0B7497C66": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testlambdaelasticsearchkibana3LambdaFunctioninlinePolicyAddedToExecutionRole0B7497C66",
+    "Roles": [
+     {
+      "Ref": "testlambdaelasticsearchkibana3LambdaFunctionServiceRoleA3C1E07E"
+     }
+    ]
+   },
+   "DependsOn": [
+    "VpcisolatedSubnet1RouteTableAssociationD259E31A",
+    "VpcisolatedSubnet2RouteTableAssociation25A4716F"
+   ]
   },
   "testlambdaelasticsearchkibana3CognitoUserPoolEF0D5793": {
    "Type": "AWS::Cognito::UserPool",

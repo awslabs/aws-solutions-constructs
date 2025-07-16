@@ -309,7 +309,7 @@ export function SuppressCfnNagLambdaWarnings(stack: Stack) {
  * @param stack - The stack for the integration test
  */
 export function SetConsistentFeatureFlags(stack: Stack) {
-  stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", false);
+  stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", true);
   stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
   stack.node.setContext("@aws-cdk/core:checkSecretUsage", true);

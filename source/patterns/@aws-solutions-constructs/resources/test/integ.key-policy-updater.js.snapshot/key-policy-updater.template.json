@@ -230,40 +230,6 @@
     }
    }
   },
-  "LambdaFunctionServiceRoleDefaultPolicy126C8897": {
-   "Type": "AWS::IAM::Policy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "PolicyName": "LambdaFunctionServiceRoleDefaultPolicy126C8897",
-    "Roles": [
-     {
-      "Ref": "LambdaFunctionServiceRole0C4CDE0B"
-     }
-    ]
-   },
-   "Metadata": {
-    "cfn_nag": {
-     "rules_to_suppress": [
-      {
-       "id": "W12",
-       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
-      }
-     ]
-    }
-   }
-  },
   "LambdaFunctionBF21E41F": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -292,7 +258,6 @@
     }
    },
    "DependsOn": [
-    "LambdaFunctionServiceRoleDefaultPolicy126C8897",
     "LambdaFunctionServiceRole0C4CDE0B"
    ],
    "Metadata": {
@@ -312,6 +277,30 @@
       }
      ]
     }
+   }
+  },
+  "LambdaFunctioninlinePolicyAddedToExecutionRole007875684": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LambdaFunctioninlinePolicyAddedToExecutionRole007875684",
+    "Roles": [
+     {
+      "Ref": "LambdaFunctionServiceRole0C4CDE0B"
+     }
+    ]
    }
   },
   "TestResourceCmkPolicy977FBAA4": {
@@ -405,16 +394,6 @@
          ]
         }
        ]
-      },
-      {
-       "Action": "lambda:GetFunction",
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "LambdaFunctionBF21E41F",
-         "Arn"
-        ]
-       }
       }
      ],
      "Version": "2012-10-17"
@@ -478,6 +457,32 @@
       }
      ]
     }
+   }
+  },
+  "KmsKeyPolicyUpdateProviderframeworkonEventinlinePolicyAddedToExecutionRole0DC7D970F": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "lambda:GetFunction",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "LambdaFunctionBF21E41F",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "KmsKeyPolicyUpdateProviderframeworkonEventinlinePolicyAddedToExecutionRole0DC7D970F",
+    "Roles": [
+     {
+      "Ref": "KmsKeyPolicyUpdateProviderframeworkonEventServiceRoleD0164B97"
+     }
+    ]
    }
   },
   "KmsKeyPolicyUpdater": {

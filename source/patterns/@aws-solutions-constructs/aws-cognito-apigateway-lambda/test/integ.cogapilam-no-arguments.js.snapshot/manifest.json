@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9e907130ca786afa800390c6a723e3d2d84118d4b71eb9f97a478b339f21a71a.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/92789d1b5403671c6736e406b38449a1d9a59a756f867fb369fcc7b67baa67e7.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -91,14 +91,6 @@
                 "assumeRoleAction": "*"
               },
               "inlinePolicies": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
             }
           },
           {
@@ -130,42 +122,6 @@
             "data": "testcognitoapigatewaylambdaLambdaFunctionServiceRole943D8510"
           }
         ],
-        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunctionServiceRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcognitoapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyED0AF2CF"
-          }
-        ],
         "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunction": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -194,6 +150,44 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testcognitoapigatewaylambdaLambdaFunction0C8EAC23"
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/cogapilam-no-arguments/test-cognito-apigateway-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testcognitoapigatewaylambdaLambdaFunctioninlinePolicyAddedToExecutionRole07151CEBD"
           }
         ],
         "/cogapilam-no-arguments/test-cognito-apigateway-lambda/ApiAccessLogGroup": [
@@ -516,10 +510,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "testcognitoapigatewaylambdaLambdaFunctionLogGroup922CD487": [
+        "testcognitoapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyED0AF2CF": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "testcognitoapigatewaylambdaLambdaFunctionLogGroup922CD487",
+            "data": "testcognitoapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyED0AF2CF",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

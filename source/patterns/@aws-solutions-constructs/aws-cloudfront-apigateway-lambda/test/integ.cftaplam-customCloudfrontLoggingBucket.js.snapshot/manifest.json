@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ee2c0449b6606bb992bc422259938198d536a6426094e9db9072e79046f53c4e.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/538cf76188992868036513a790fb4d2494c8d4aa9667db10ea43da6a11e92f9e.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -158,14 +158,6 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
               "attachInlinePolicy": [
                 "*"
               ]
@@ -190,42 +182,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "cfapigwlambdaLambdaFunctionServiceRole9B40D826"
-          }
-        ],
-        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaFunctionServiceRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "cfapigwlambdaLambdaFunctionServiceRoleDefaultPolicy388158BB"
           }
         ],
         "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaFunction": [
@@ -256,6 +212,44 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "cfapigwlambdaLambdaFunction10C09D31"
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapigwlambdaLambdaFunctioninlinePolicyAddedToExecutionRole00FBB4ADD"
           }
         ],
         "/cftaplam-customCloudfrontLoggingBucket/cf-apigw-lambda/ApiAccessLogGroup": [
@@ -699,19 +693,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "cftaplamcustomCloudfrontLoggingBucketauthorizerAuthFunctionLogGroup609CEE85": [
+        "cfapigwlambdaLambdaFunctionServiceRoleDefaultPolicy388158BB": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "cftaplamcustomCloudfrontLoggingBucketauthorizerAuthFunctionLogGroup609CEE85",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "cfapigwlambdaLambdaFunctionLogGroup71D647A9": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "cfapigwlambdaLambdaFunctionLogGroup71D647A9",
+            "data": "cfapigwlambdaLambdaFunctionServiceRoleDefaultPolicy388158BB",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

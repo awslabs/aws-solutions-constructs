@@ -1394,27 +1394,10 @@
         "ec2:CreateNetworkInterface",
         "ec2:DeleteNetworkInterface",
         "ec2:DescribeNetworkInterfaces",
-        "ec2:UnassignPrivateIpAddresses",
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
+        "ec2:UnassignPrivateIpAddresses"
        ],
        "Effect": "Allow",
        "Resource": "*"
-      },
-      {
-       "Action": [
-        "firehose:DeleteDeliveryStream",
-        "firehose:PutRecord",
-        "firehose:PutRecordBatch",
-        "firehose:UpdateDestination"
-       ],
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "destinationfirehoseKinesisFirehoseE8EB5D91",
-         "Arn"
-        ]
-       }
       }
      ],
      "Version": "2012-10-17"
@@ -1538,6 +1521,73 @@
      ]
     }
    }
+  },
+  "testconstructLambdaFunctioninlinePolicyAddedToExecutionRole0C88F4B36": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testconstructLambdaFunctioninlinePolicyAddedToExecutionRole0C88F4B36",
+    "Roles": [
+     {
+      "Ref": "testconstructLambdaFunctionServiceRole435FDF6F"
+     }
+    ]
+   },
+   "DependsOn": [
+    "VpcPrivateSubnet1DefaultRouteBE02A9ED",
+    "VpcPrivateSubnet1RouteTableAssociation70C59FA6",
+    "VpcPrivateSubnet2DefaultRoute060D2087",
+    "VpcPrivateSubnet2RouteTableAssociationA89CAD56"
+   ]
+  },
+  "testconstructLambdaFunctioninlinePolicyAddedToExecutionRole14D1F9932": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "firehose:DeleteDeliveryStream",
+        "firehose:PutRecord",
+        "firehose:PutRecordBatch",
+        "firehose:UpdateDestination"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "destinationfirehoseKinesisFirehoseE8EB5D91",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testconstructLambdaFunctioninlinePolicyAddedToExecutionRole14D1F9932",
+    "Roles": [
+     {
+      "Ref": "testconstructLambdaFunctionServiceRole435FDF6F"
+     }
+    ]
+   },
+   "DependsOn": [
+    "VpcPrivateSubnet1DefaultRouteBE02A9ED",
+    "VpcPrivateSubnet1RouteTableAssociation70C59FA6",
+    "VpcPrivateSubnet2DefaultRoute060D2087",
+    "VpcPrivateSubnet2RouteTableAssociationA89CAD56"
+   ]
   },
   "lamfhsexistingvpcKINESISFIREHOSEsecuritygroup18F0C673": {
    "Type": "AWS::EC2::SecurityGroup",

@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/970a0b71712758ee4fe99b1e43f61f8ed1b6dc4275e609708cf7b97cc9ffb4e5.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f2c07ef2967f42be96b728cfb419c7f4ff97ae27fd18fac5e0b8c286a4de0d2b.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -364,14 +364,6 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
               "attachInlinePolicy": [
                 "*"
               ]
@@ -398,25 +390,17 @@
             "data": "existingfunctionServiceRole90E818C0"
           }
         ],
-        "/lamfhs-existing-function/existing-function/ServiceRole/DefaultPolicy": [
+        "/lamfhs-existing-function/existing-function/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "existingfunctionC3A89A38"
+          }
+        ],
+        "/lamfhs-existing-function/existing-function/inlinePolicyAddedToExecutionRole-0": [
           {
             "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
             "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
+              "statements": "*"
             }
           },
           {
@@ -426,18 +410,28 @@
                 {}
               ]
             }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
           }
         ],
-        "/lamfhs-existing-function/existing-function/ServiceRole/DefaultPolicy/Resource": [
+        "/lamfhs-existing-function/existing-function/inlinePolicyAddedToExecutionRole-0/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "existingfunctionServiceRoleDefaultPolicyFAFC8F2C"
-          }
-        ],
-        "/lamfhs-existing-function/existing-function/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "existingfunctionC3A89A38"
+            "data": "existingfunctioninlinePolicyAddedToExecutionRole0618E5FEB"
           }
         ],
         "/lamfhs-existing-function/BootstrapVersion": [
@@ -452,10 +446,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "existingfunctionLogGroupF513E2E0": [
+        "existingfunctionServiceRoleDefaultPolicyFAFC8F2C": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "existingfunctionLogGroupF513E2E0",
+            "data": "existingfunctionServiceRoleDefaultPolicyFAFC8F2C",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

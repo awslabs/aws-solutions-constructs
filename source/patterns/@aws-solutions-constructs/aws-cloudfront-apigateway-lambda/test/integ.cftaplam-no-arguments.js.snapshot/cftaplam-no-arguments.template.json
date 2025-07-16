@@ -235,40 +235,6 @@
     }
    }
   },
-  "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyDB7FF8EB": {
-   "Type": "AWS::IAM::Policy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "xray:PutTelemetryRecords",
-        "xray:PutTraceSegments"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "PolicyName": "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyDB7FF8EB",
-    "Roles": [
-     {
-      "Ref": "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleCB74590F"
-     }
-    ]
-   },
-   "Metadata": {
-    "cfn_nag": {
-     "rules_to_suppress": [
-      {
-       "id": "W12",
-       "reason": "Lambda needs the following minimum required permissions to send trace data to X-Ray and access ENIs in a VPC."
-      }
-     ]
-    }
-   }
-  },
   "testcloudfrontapigatewaylambdaLambdaFunction17A55E65": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -296,7 +262,6 @@
     }
    },
    "DependsOn": [
-    "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleDefaultPolicyDB7FF8EB",
     "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleCB74590F"
    ],
    "Metadata": {
@@ -316,6 +281,30 @@
       }
      ]
     }
+   }
+  },
+  "testcloudfrontapigatewaylambdaLambdaFunctioninlinePolicyAddedToExecutionRole010F5D55C": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testcloudfrontapigatewaylambdaLambdaFunctioninlinePolicyAddedToExecutionRole010F5D55C",
+    "Roles": [
+     {
+      "Ref": "testcloudfrontapigatewaylambdaLambdaFunctionServiceRoleCB74590F"
+     }
+    ]
    }
   },
   "testcloudfrontapigatewaylambdaApiAccessLogGroup97EB2E40": {

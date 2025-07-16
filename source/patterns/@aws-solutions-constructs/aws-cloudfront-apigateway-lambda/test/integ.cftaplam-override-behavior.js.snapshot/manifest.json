@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/20e06cc64053dba9fc02f0d319e080445dc79d8312d8ea927a840d74a4709f1b.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/15f4d37c3b85a6278ba96597ab7e4bdda8be41dcc436bc71a700131f83a87fe8.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -192,14 +192,6 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
               "attachInlinePolicy": [
                 "*"
               ]
@@ -224,42 +216,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "cfapilambdaoverrideLambdaFunctionServiceRole4B1A4043"
-          }
-        ],
-        "/cftaplam-override-behavior/cf-api-lambda-override/LambdaFunctionServiceRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/cftaplam-override-behavior/cf-api-lambda-override/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "cfapilambdaoverrideLambdaFunctionServiceRoleDefaultPolicy1A3D9202"
           }
         ],
         "/cftaplam-override-behavior/cf-api-lambda-override/LambdaFunction": [
@@ -290,6 +246,44 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "cfapilambdaoverrideLambdaFunction74CE466F"
+          }
+        ],
+        "/cftaplam-override-behavior/cf-api-lambda-override/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/cftaplam-override-behavior/cf-api-lambda-override/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cfapilambdaoverrideLambdaFunctioninlinePolicyAddedToExecutionRole0248615B6"
           }
         ],
         "/cftaplam-override-behavior/cf-api-lambda-override/ApiAccessLogGroup": [
@@ -744,19 +738,10 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "cftaplamoverridebehaviorauthorizerAuthFunctionLogGroup24030B5E": [
+        "cfapilambdaoverrideLambdaFunctionServiceRoleDefaultPolicy1A3D9202": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "cftaplamoverridebehaviorauthorizerAuthFunctionLogGroup24030B5E",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "cfapilambdaoverrideLambdaFunctionLogGroup4E9044D0": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "cfapilambdaoverrideLambdaFunctionLogGroup4E9044D0",
+            "data": "cfapilambdaoverrideLambdaFunctionServiceRoleDefaultPolicy1A3D9202",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
