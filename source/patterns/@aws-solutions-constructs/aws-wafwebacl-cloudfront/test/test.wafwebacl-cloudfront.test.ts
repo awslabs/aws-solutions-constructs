@@ -19,7 +19,7 @@ import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as waf from "aws-cdk-lib/aws-wafv2";
 import * as defaults from '@aws-solutions-constructs/core';
-import { Template } from 'aws-cdk-lib/assertions';
+import { Match, Template } from 'aws-cdk-lib/assertions';
 
 function deployConstruct(stack: cdk.Stack, constructProps?: waf.CfnWebACLProps | any) {
   const myBucket = new s3.Bucket(stack, 'myBucket', {
@@ -324,4 +324,39 @@ test('Test existing web ACL', () => {
   });
 
   template.resourceCountIs("AWS::WAFv2::WebACL", 1);
+});
+
+test('Test defaultaction block', () => {
+  const stack = new cdk.Stack();
+  const webaclProps: waf.CfnWebACLProps =  {
+    defaultAction: {
+      block: {}
+    },
+    scope: 'CLOUDFRONT',
+    visibilityConfig: {
+      cloudWatchMetricsEnabled: false,
+      metricName: 'webACL',
+      sampledRequestsEnabled: true
+    },
+    rules: [
+      defaults.wrapManagedRuleSet("AWSManagedRulesCommonRuleSet", "AWS", 0),
+      defaults.wrapManagedRuleSet("AWSManagedRulesWordPressRuleSet", "AWS", 1),
+    ]
+  };
+
+  deployConstruct(stack, webaclProps);
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
+    DefaultAction: {
+      Block: {}
+    },
+  });
+
+  // The following will throw an assertion error
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
+    DefaultAction: Match.objectLike({
+      Allow: Match.absent()
+    }),
+  });
 });
