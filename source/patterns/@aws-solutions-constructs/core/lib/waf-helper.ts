@@ -43,7 +43,10 @@ export function buildWebacl(scope: Construct, webaclScope: string, props: BuildW
   } else { // Create a new WAF web ACL
     const finalWebaclProps: waf.CfnWebACLProps = consolidateProps(DefaultWafwebaclProps(webaclScope), props.webaclProps);
 
-    webAcl = new waf.CfnWebACL(scope, `${scope.node.id}-WebACL`, finalWebaclProps);
+    webAcl = new waf.CfnWebACL(scope, `${scope.node.id}-WebACL`, {
+      ...finalWebaclProps,
+      defaultAction: props.webaclProps?.defaultAction ?? finalWebaclProps.defaultAction
+    });
   }
 
   return webAcl;
