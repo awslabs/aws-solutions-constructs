@@ -14,7 +14,7 @@
 import { Stack } from 'aws-cdk-lib';
 import * as waf from "aws-cdk-lib/aws-wafv2";
 import * as defaults from '..';
-import {Match, Template} from 'aws-cdk-lib/assertions';
+import { Match, Template } from 'aws-cdk-lib/assertions';
 import { buildWebacl } from '..';
 
 test('Test construct with default props', () => {
