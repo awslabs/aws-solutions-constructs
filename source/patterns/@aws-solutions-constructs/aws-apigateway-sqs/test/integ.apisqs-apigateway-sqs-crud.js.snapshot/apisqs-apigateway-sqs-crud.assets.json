@@ -1,15 +1,16 @@
 {
-  "version": "36.0.0",
+  "version": "45.0.0",
   "files": {
-    "e59e956d09eb7e86d9a5d4139b87da14950710123d9eff7e53993eba4d8076c0": {
+    "d01f4adf8cb45c0fdbb131b8ffa9c2b8cbf3ea36ec1ae4356c87e80d16db80bf": {
+      "displayName": "apisqs-apigateway-sqs-crud Template",
       "source": {
         "path": "apisqs-apigateway-sqs-crud.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region": {
+        "current_account-current_region-437077ca": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "e59e956d09eb7e86d9a5d4139b87da14950710123d9eff7e53993eba4d8076c0.json",
+          "objectKey": "d01f4adf8cb45c0fdbb131b8ffa9c2b8cbf3ea36ec1ae4356c87e80d16db80bf.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

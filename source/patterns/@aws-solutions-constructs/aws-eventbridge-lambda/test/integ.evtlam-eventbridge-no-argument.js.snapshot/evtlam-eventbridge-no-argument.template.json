@@ -105,6 +105,10 @@
       {
        "id": "W92",
        "reason": "Impossible for us to define the correct concurrency for clients"
+      },
+      {
+       "id": "W84",
+       "reason": "By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)"
       }
      ]
     }

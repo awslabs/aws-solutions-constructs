@@ -21,12 +21,13 @@ import { LambdaToElasticSearchAndKibana } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
-import { suppressCustomHandlerCfnNagWarnings } from "@aws-solutions-constructs/core";
+import { suppressCustomHandlerCfnNagWarnings, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
+SetConsistentFeatureFlags(stack);
 
 // Create VPC
 const vpc = defaults.getTestVpc(stack);

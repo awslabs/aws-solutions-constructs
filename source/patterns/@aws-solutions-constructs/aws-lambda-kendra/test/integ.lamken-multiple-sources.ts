@@ -18,12 +18,13 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as kendra from 'aws-cdk-lib/aws-kendra';
 import * as defaults from '@aws-solutions-constructs/core';
-import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-lambda-kendra';
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 

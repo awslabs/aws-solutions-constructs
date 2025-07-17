@@ -13,12 +13,13 @@
 
 import { App, Stack } from "aws-cdk-lib";
 import { FargateToKinesisStreams } from "../lib";
-import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as ecs from "aws-cdk-lib/aws-ecs";
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 
 new FargateToKinesisStreams(stack, 'test-fargate-kinesisstreams', {
   publicApi: true,

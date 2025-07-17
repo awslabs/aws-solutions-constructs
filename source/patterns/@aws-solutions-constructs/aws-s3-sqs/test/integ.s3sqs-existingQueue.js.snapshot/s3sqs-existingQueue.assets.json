@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "45.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "displayName": "s3sqs-existingQueue/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
@@ -8,23 +8,23 @@
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-current_region": {
+        "current_account-current_region-e31788a2": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
           "objectKey": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
     },
-    "589b752927666266bda8ae92aaa478b999535d20ba72ebde010a0a6d050e0a99": {
+    "507a479b981de205f9386f78fb407d81b6ea1eaf8675400d8d7c14eb1c8e9045": {
       "displayName": "s3sqs-existingQueue Template",
       "source": {
         "path": "s3sqs-existingQueue.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region": {
+        "current_account-current_region-9c9d5dba": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "589b752927666266bda8ae92aaa478b999535d20ba72ebde010a0a6d050e0a99.json",
+          "objectKey": "507a479b981de205f9386f78fb407d81b6ea1eaf8675400d8d7c14eb1c8e9045.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

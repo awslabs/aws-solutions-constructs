@@ -22,13 +22,14 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
-import { suppressCustomHandlerCfnNagWarnings } from "@aws-solutions-constructs/core";
+import { suppressCustomHandlerCfnNagWarnings, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
+SetConsistentFeatureFlags(stack);
 
 const lambdaProps: lambda.FunctionProps = {
   code: lambda.Code.fromAsset(`${__dirname}/lambda`),

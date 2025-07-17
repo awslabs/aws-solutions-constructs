@@ -14,7 +14,7 @@
 import { App, RemovalPolicy, Stack, Duration } from "aws-cdk-lib";
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { S3ToSns } from "../lib";
-import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App({
@@ -23,6 +23,7 @@ const app = new App({
   },
 });
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 
 new S3ToSns(stack, 'test-s3-sns', {
   bucketProps: {

@@ -13,7 +13,7 @@
 
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { S3ToSns } from "../lib";
-import { SuppressCfnNagLambdaWarnings, addCfnSuppressRules, generateIntegStackName } from '@aws-solutions-constructs/core';
+import { SuppressCfnNagLambdaWarnings, addCfnSuppressRules, generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
@@ -23,6 +23,7 @@ const app = new App({
   },
 });
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 
 const existingTopicObj = new sns.Topic(stack, 'Topic');
 addCfnSuppressRules(existingTopicObj, [ { id: "W47", reason: "This test intentionally leaves the topic unencrypted" } ]);

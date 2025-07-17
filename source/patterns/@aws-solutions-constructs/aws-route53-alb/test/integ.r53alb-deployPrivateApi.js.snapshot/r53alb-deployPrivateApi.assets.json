@@ -1,27 +1,29 @@
 {
-  "version": "36.0.0",
+  "version": "45.0.0",
   "files": {
-    "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a": {
+    "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
+      "displayName": "r53alb-deployPrivateApi/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
       "source": {
-        "path": "asset.ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a",
+        "path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-us-east-1": {
+        "current_account-us-east-1-b3ca7882": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a.zip",
+          "objectKey": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }
       }
     },
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "r53alb-deployPrivateApi/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
       "source": {
         "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-us-east-1": {
+        "current_account-us-east-1-e650c2de": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
           "objectKey": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip",
           "region": "us-east-1",
@@ -29,15 +31,16 @@
         }
       }
     },
-    "9476e3505cd8a8aa1944e06c010ab6fcb1ddc41d0f764e12cbf9864ee2a71c15": {
+    "d77d8ae1c774ee7b8240d3e169a8d9ff142cf10be07835ca7aa21c54cd4b8994": {
+      "displayName": "r53alb-deployPrivateApi Template",
       "source": {
         "path": "r53alb-deployPrivateApi.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-us-east-1": {
+        "current_account-us-east-1-296b5363": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "9476e3505cd8a8aa1944e06c010ab6fcb1ddc41d0f764e12cbf9864ee2a71c15.json",
+          "objectKey": "d77d8ae1c774ee7b8240d3e169a8d9ff142cf10be07835ca7aa21c54cd4b8994.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }

@@ -1,29 +1,31 @@
 {
-  "version": "36.0.0",
+  "version": "45.0.0",
   "files": {
-    "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a": {
+    "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
+      "displayName": "r53alb-deployWithoutLogging/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
       "source": {
-        "path": "asset.ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a",
+        "path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-us-east-1": {
+        "current_account-us-east-1-b3ca7882": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a.zip",
+          "objectKey": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }
       }
     },
-    "3b9d1075a0f916c80f90fbe36ceedf2077b015d8526a5f9074b972bb062885ed": {
+    "e0ce6c1472071c20b45bb032cc98491ddd2a9a678350c1e0c592051c527986b7": {
+      "displayName": "r53alb-deployWithoutLogging Template",
       "source": {
         "path": "r53alb-deployWithoutLogging.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-us-east-1": {
+        "current_account-us-east-1-cfb097bb": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "3b9d1075a0f916c80f90fbe36ceedf2077b015d8526a5f9074b972bb062885ed.json",
+          "objectKey": "e0ce6c1472071c20b45bb032cc98491ddd2a9a678350c1e0c592051c527986b7.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }

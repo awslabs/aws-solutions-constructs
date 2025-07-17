@@ -15,13 +15,14 @@
 import {App, RemovalPolicy, Stack} from "aws-cdk-lib";
 import { LambdaToSecretsmanagerProps, LambdaToSecretsmanager } from '../lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
 
 // import * as defaults from '@aws-solutions-constructs/core';
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = "Integration Test for aws-lambda-secretsmanager";
 
 // Definitions

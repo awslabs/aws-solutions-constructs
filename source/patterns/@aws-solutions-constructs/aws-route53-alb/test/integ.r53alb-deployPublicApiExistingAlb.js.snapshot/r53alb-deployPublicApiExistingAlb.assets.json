@@ -1,29 +1,31 @@
 {
-  "version": "36.0.0",
+  "version": "45.0.0",
   "files": {
-    "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a": {
+    "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
+      "displayName": "r53alb-deployPublicApiExistingAlb/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
       "source": {
-        "path": "asset.ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a",
+        "path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-us-east-1": {
+        "current_account-us-east-1-b3ca7882": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a.zip",
+          "objectKey": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }
       }
     },
-    "231a05f7b521093a1f4ca3c2fc4479549f517f40eb7ceb0d1a8d2ed87e136f2e": {
+    "1ab6c5f507f9a3ac5bc9b80b10d6fdbecfee54bdb4561c5275f2ec21440bf68e": {
+      "displayName": "r53alb-deployPublicApiExistingAlb Template",
       "source": {
         "path": "r53alb-deployPublicApiExistingAlb.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-us-east-1": {
+        "current_account-us-east-1-533e046b": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "231a05f7b521093a1f4ca3c2fc4479549f517f40eb7ceb0d1a8d2ed87e136f2e.json",
+          "objectKey": "1ab6c5f507f9a3ac5bc9b80b10d6fdbecfee54bdb4561c5275f2ec21440bf68e.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }

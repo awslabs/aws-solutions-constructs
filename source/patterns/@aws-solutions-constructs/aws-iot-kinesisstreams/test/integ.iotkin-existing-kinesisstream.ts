@@ -15,13 +15,14 @@
 import { App, Stack, Duration } from "aws-cdk-lib";
 import * as kinesis from "aws-cdk-lib/aws-kinesis";
 import { IotToKinesisStreams, IotToKinesisStreamsProps } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import { StreamEncryption } from "aws-cdk-lib/aws-kinesis";
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-iot-kinesisstreams';
 
 // Definitions

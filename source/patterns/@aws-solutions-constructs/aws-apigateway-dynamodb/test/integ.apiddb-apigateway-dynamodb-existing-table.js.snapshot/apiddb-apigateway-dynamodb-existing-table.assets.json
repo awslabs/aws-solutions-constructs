@@ -1,15 +1,16 @@
 {
-  "version": "36.0.0",
+  "version": "45.0.0",
   "files": {
-    "f8d27da3d176206e9d3ac3998e892219176259a516f01fad9a8bb2b0d8db95bb": {
+    "c70d3d6ae92404a29a27d74361715c8c0dcffccd0cc669409f03ce54c78522ce": {
+      "displayName": "apiddb-apigateway-dynamodb-existing-table Template",
       "source": {
         "path": "apiddb-apigateway-dynamodb-existing-table.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region": {
+        "current_account-current_region-69e86624": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "f8d27da3d176206e9d3ac3998e892219176259a516f01fad9a8bb2b0d8db95bb.json",
+          "objectKey": "c70d3d6ae92404a29a27d74361715c8c0dcffccd0cc669409f03ce54c78522ce.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

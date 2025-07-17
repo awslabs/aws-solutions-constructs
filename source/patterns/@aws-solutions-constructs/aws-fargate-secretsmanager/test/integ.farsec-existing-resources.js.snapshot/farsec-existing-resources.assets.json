@@ -1,13 +1,14 @@
 {
-  "version": "39.0.0",
+  "version": "45.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
+      "displayName": "farsec-existing-resources/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
       "source": {
         "path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-us-east-1": {
+        "current_account-us-east-1-b3ca7882": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
           "objectKey": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip",
           "region": "us-east-1",
@@ -15,15 +16,16 @@
         }
       }
     },
-    "3521e1e155228b3149d1780235a5cc140218c213db6282a15f7e319a11e1d33d": {
+    "a076b9d59cf247e66a835e910176c7f8d2211bf9ea792f2b25575334db785bd3": {
+      "displayName": "farsec-existing-resources Template",
       "source": {
         "path": "farsec-existing-resources.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-us-east-1": {
+        "current_account-us-east-1-3a312ae1": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "3521e1e155228b3149d1780235a5cc140218c213db6282a15f7e319a11e1d33d.json",
+          "objectKey": "a076b9d59cf247e66a835e910176c7f8d2211bf9ea792f2b25575334db785bd3.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }

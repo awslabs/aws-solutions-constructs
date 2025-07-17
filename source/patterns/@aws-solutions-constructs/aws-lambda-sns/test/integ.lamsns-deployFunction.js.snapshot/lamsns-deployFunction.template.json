@@ -74,6 +74,38 @@
        "Resource": {
         "Ref": "testlambdasnsSnsTopic57DFED98"
        }
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey*"
+       ],
+       "Condition": {
+        "ForAnyValue:StringEquals": {
+         "kms:ResourceAliases": "alias/aws/sns"
+        }
+       },
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":kms:",
+          {
+           "Ref": "AWS::Region"
+          },
+          ":",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":key/*"
+         ]
+        ]
+       }
       }
      ],
      "Version": "2012-10-17"

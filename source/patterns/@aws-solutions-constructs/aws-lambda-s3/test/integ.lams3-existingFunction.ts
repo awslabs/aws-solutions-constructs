@@ -16,12 +16,13 @@ import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { LambdaToS3, LambdaToS3Props } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
-import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-lambda-s3';
 
 // Definitions

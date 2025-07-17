@@ -38,7 +38,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c.zip"
+     "S3Key": "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f.zip"
     },
     "Handler": ".handler",
     "Role": {
@@ -109,7 +109,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "42a35bbf0dec9ef0ac5b0dde87e71a1b8929e8d2d178dd09ccfb2c928ec0198c.zip"
+     "S3Key": "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f.zip"
     },
     "Handler": ".handler",
     "Role": {
@@ -264,6 +264,7 @@
     "testApiANYDC600770"
    ],
    "Metadata": {
+    "aws:cdk:do-not-refactor": true,
     "cfn_nag": {
      "rules_to_suppress": [
       {

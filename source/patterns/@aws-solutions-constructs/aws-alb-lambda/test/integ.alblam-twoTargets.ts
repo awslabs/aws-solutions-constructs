@@ -14,7 +14,7 @@
 // Imports
 import { Aws, App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { AlbToLambda, AlbToLambdaProps } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as elb from 'aws-cdk-lib/aws-elasticloadbalancingv2';
@@ -30,6 +30,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration test for alb with 2 Lambda targets';
 
 const props: AlbToLambdaProps = {

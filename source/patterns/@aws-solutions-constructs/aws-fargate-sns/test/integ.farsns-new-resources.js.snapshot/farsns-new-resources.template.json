@@ -868,7 +868,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs20.x",
+    "Runtime": "nodejs22.x",
     "Description": "Lambda function for removing all inbound/outbound rules from the VPC default security group"
    },
    "DependsOn": [
@@ -1097,6 +1097,30 @@
        "Effect": "Allow",
        "Resource": {
         "Ref": "testconstructSnsTopic44188529"
+       }
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey*"
+       ],
+       "Condition": {
+        "ForAnyValue:StringEquals": {
+         "kms:ResourceAliases": "alias/aws/sns"
+        }
+       },
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:aws:kms:us-east-1:",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":key/*"
+         ]
+        ]
        }
       }
      ],

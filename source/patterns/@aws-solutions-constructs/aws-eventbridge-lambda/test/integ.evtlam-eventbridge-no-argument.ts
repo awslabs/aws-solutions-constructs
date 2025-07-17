@@ -16,12 +16,14 @@ import { EventbridgeToLambda, EventbridgeToLambdaProps } from "../lib";
 import { Duration } from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as events from 'aws-cdk-lib/aws-events';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+// import * as logs from 'aws-cdk-lib/aws-logs';
+import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 
 const props: EventbridgeToLambdaProps = {
   lambdaFunctionProps: {
@@ -34,7 +36,16 @@ const props: EventbridgeToLambdaProps = {
   }
 };
 
-new EventbridgeToLambda(stack, 'test-eventbridge-lambda', props);
+const eventbridgeToLambda = new EventbridgeToLambda(stack, 'test-eventbridge-lambda', props);
+// const cfnLogGroup: logs.CfnLogGroup = eventbridgeToLambda.lambdaFunction.logGroup?.node.defaultChild as logs.ILogGroup;
+
+  defaults.addCfnSuppressRules( eventbridgeToLambda.lambdaFunction, [
+    {
+      id: 'W84',
+      reason: 'By default CloudWatchLogs LogGroups data is encrypted using the CloudWatch server-side encryption keys (AWS Managed Keys)'
+    }
+  ]);
+
 new IntegTest(stack, 'Integ', { testCases: [
   stack
 ] });

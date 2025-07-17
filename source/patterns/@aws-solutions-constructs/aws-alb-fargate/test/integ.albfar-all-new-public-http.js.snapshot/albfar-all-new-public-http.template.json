@@ -774,7 +774,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs20.x",
+    "Runtime": "nodejs22.x",
     "Description": "Lambda function for removing all inbound/outbound rules from the VPC default security group"
    },
    "DependsOn": [
@@ -1165,7 +1165,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs20.x",
+    "Runtime": "nodejs22.x",
     "Description": {
      "Fn::Join": [
       "",

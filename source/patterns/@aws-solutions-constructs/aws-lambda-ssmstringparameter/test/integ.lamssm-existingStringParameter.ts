@@ -16,13 +16,14 @@ import {App, Stack} from "aws-cdk-lib";
 import {LambdaToSsmstringparameter, LambdaToSsmstringparameterProps} from '../lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { StringParameter } from "aws-cdk-lib/aws-ssm";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-lambda-ssmstringparameter';
 const existingStringParam = new StringParameter(stack, 'myNewStringParameter', {stringValue: "test-string-value" });
 

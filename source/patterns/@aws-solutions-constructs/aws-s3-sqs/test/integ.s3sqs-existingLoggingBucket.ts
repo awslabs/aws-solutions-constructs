@@ -14,7 +14,7 @@
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { S3ToSqs, S3ToSqsProps } from "../lib";
 import * as defaults from '@aws-solutions-constructs/core';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App({
@@ -24,6 +24,7 @@ const app = new App({
 });
 
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
 const scrapLogBucket = defaults.CreateScrapBucket(stack, "scrapBucket");

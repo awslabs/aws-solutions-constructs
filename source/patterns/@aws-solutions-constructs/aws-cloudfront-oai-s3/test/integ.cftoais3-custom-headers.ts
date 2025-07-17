@@ -14,13 +14,14 @@
 // Imports
 import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { CloudFrontToOaiToS3 } from "../lib";
-import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-oai-s3';
 
 // custom cloudfront function

@@ -81,7 +81,20 @@ test('Test cross region deployment with new Lambda function', () => {
               "InferenceProfileArn"
             ]
           }
-        },
+        }
+      ],
+      Version: "2012-10-17"
+    },
+    PolicyName: Match.stringLikeRegexp("testlambdainferencepropsLambdaFunctionServiceRoleDefaultPolicy"),
+    Roles: [
+      {
+        "Ref": Match.stringLikeRegexp("testlambdainferencepropsLambdaFunctionServiceRole")
+      }
+    ]
+  });
+  template.hasResourceProperties("AWS::IAM::Policy", {
+    PolicyDocument: {
+      Statement: [
         {
           Action: "bedrock:Invoke*",
           Effect: "Allow",
@@ -113,7 +126,7 @@ test('Test cross region deployment with new Lambda function', () => {
       ],
       Version: "2012-10-17"
     },
-    PolicyName: Match.stringLikeRegexp("testlambdainferencepropsLambdaFunctionServiceRoleDefaultPolicy"),
+    PolicyName: Match.stringLikeRegexp("testlambdainferencepropsLambdaFunctioninlinePolicyAddedToExecutionRole"),
     Roles: [
       {
         "Ref": Match.stringLikeRegexp("testlambdainferencepropsLambdaFunctionServiceRole")

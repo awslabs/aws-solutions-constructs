@@ -1,5 +1,5 @@
 {
-  "version": "41.0.0",
+  "version": "45.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "displayName": "cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
@@ -8,7 +8,7 @@
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-current_region": {
+        "current_account-current_region-e31788a2": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
           "objectKey": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
@@ -22,7 +22,7 @@
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-current_region": {
+        "current_account-current_region-608834ce": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
           "objectKey": "e97825c838d70ceb13ba2f6223a7d94ed35687b70bfb224a0b9128e698e3f28e.zip",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
@@ -36,23 +36,23 @@
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-current_region": {
+        "current_account-current_region-aca8d54f": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
           "objectKey": "bdc104ed9cab1b5b6421713c8155f0b753380595356f710400609664d3635eca.zip",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
     },
-    "6e68678b0e6516075659b681d380bd8e64ce8608b64995ad6d5a1d4726c6926c": {
+    "7fca516db65ed38cc4fc93c327f6756fcb6ef9f86bcdd7854163f48b94e412f3": {
       "displayName": "cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket Template",
       "source": {
         "path": "cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region": {
+        "current_account-current_region-9be40000": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "6e68678b0e6516075659b681d380bd8e64ce8608b64995ad6d5a1d4726c6926c.json",
+          "objectKey": "7fca516db65ed38cc4fc93c327f6756fcb6ef9f86bcdd7854163f48b94e412f3.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

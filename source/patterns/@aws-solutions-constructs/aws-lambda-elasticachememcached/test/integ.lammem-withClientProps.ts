@@ -15,7 +15,7 @@
 import { App, Stack } from "aws-cdk-lib";
 import { LambdaToElasticachememcached, LambdaToElasticachememcachedProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as defaults from '@aws-solutions-constructs/core';
@@ -23,6 +23,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test with new resourcesfor aws-lambda-elasticachememcached';
 
 // Definitions
