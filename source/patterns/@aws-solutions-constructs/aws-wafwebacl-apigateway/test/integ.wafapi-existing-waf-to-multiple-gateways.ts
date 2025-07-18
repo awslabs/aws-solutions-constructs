@@ -13,11 +13,12 @@
 
 import { App, Stack } from "aws-cdk-lib";
 import { WafwebaclToApiGateway } from "../lib";
-import { generateIntegStackName, CreateTestApi } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, CreateTestApi, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 
 const restApiOne = CreateTestApi(stack, 'testOne');
 const restApiTwo = CreateTestApi(stack, 'testTwo');

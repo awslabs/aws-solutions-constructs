@@ -13,7 +13,7 @@
 
 import { App, Stack } from "aws-cdk-lib";
 import { LambdaToKinesisStreams } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as kinesis from 'aws-cdk-lib/aws-kinesis';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -22,6 +22,7 @@ import * as defaults from "@aws-solutions-constructs/core";
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 
 const existingStreamObj = new kinesis.Stream(stack, 'test-stream', {
   streamMode: StreamMode.ON_DEMAND,

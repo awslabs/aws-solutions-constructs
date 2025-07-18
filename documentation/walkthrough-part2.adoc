@@ -227,7 +227,7 @@ export class HelloConstructsStack extends Stack {
     // The code that defines your stack goes here
 
     const helloFunc = new lambda.Function(this, 'HelloHandler', {
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_22_X,
       code: lambda.Code.fromAsset('lambda'),
       handler: 'hello.handler'
     });
@@ -235,7 +235,7 @@ export class HelloConstructsStack extends Stack {
     const api_lambda_props: ApiGatewayToLambdaProps = {
       lambdaFunctionProps: {
         code: lambda.Code.fromAsset('lambda'),
-        runtime: lambda.Runtime.NODEJS_12_X,
+        runtime: lambda.Runtime.NODEJS_22_X,
         handler: 'hello.handler'
       },
       apiGatewayProps: {
@@ -327,14 +327,14 @@ public class HelloConstructsStack extends Stack {
         super(scope, id, props);
 
         final Function hello = Function.Builder.create(this, "HelloHandler")
-                .runtime(Runtime.NODEJS_14_X) // execution environment
+                .runtime(Runtime.NODEJS_22_X) // execution environment
                 .code(Code.fromAsset("lambda")) // code loaded from the "lambda" directory
                 .handler("hello.handler") // file is "hello", function is "handler"
                 .build();
 
         new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern", new ApiGatewayToLambdaProps.Builder()
                 .lambdaFunctionProps(new FunctionProps.Builder()
-                        .runtime(Runtime.NODEJS_14_X) // execution environment
+                        .runtime(Runtime.NODEJS_22_X) // execution environment
                         .code(Code.fromAsset("lambda")) // code loaded from the "lambda" directory
                         .handler("hello.handler") // file is "hello", function is "handler"
                         .build())
@@ -382,7 +382,7 @@ export class HelloConstructsStack extends Stack {
     // The code that defines your stack goes here
 
     const helloFunc = new lambda.Function(this, 'HelloHandler', {
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_22_X,
       code: lambda.Code.fromAsset('lambda'),
       handler: 'hello.handler'
     });
@@ -391,7 +391,7 @@ export class HelloConstructsStack extends Stack {
     const lambda_ddb_props: LambdaToDynamoDBProps = {
       lambdaFunctionProps: {
           code: lambda.Code.fromAsset(`lambda`),
-          runtime: lambda.Runtime.NODEJS_12_X,
+          runtime: lambda.Runtime.NODEJS_22_X,
           handler: 'hitcounter.handler',
           environment: {
               DOWNSTREAM_FUNCTION_NAME: helloFunc.functionName
@@ -409,7 +409,7 @@ export class HelloConstructsStack extends Stack {
     const api_lambda_props: ApiGatewayToLambdaProps = {
       lambdaFunctionProps: {
         code: lambda.Code.fromAsset('lambda'),
-        runtime: lambda.Runtime.NODEJS_12_X,
+        runtime: lambda.Runtime.NODEJS_22_X,
         handler: 'hello.handler'
       },
       apiGatewayProps: {
@@ -531,7 +531,7 @@ public class HelloConstructsStack extends Stack {
         super(scope, id, props);
 
         final Function helloFunc = Function.Builder.create(this, "HelloHandler")
-                .runtime(Runtime.NODEJS_14_X) // execution environment
+                .runtime(Runtime.NODEJS_22_X) // execution environment
                 .code(Code.fromAsset("lambda")) // code loaded from the "lambda" directory
                 .handler("hello.handler") // file is "hello", function is "handler"
                 .build();
@@ -542,7 +542,7 @@ public class HelloConstructsStack extends Stack {
         final LambdaToDynamoDB hitcounter = new LambdaToDynamoDB(this, "LambdaToDynamoDBPattern",
                 new LambdaToDynamoDBProps.Builder()
                         .lambdaFunctionProps(new FunctionProps.Builder()
-                                .runtime(Runtime.NODEJS_14_X) // execution environment
+                                .runtime(Runtime.NODEJS_22_X) // execution environment
                                 .code(Code.fromAsset("lambda")) // code loaded from the "lambda" directory
                                 .handler("hitcounter.handler") // file is "hello", function is "handler"
                                 .environment(lambdaEnvironment)
@@ -559,7 +559,7 @@ public class HelloConstructsStack extends Stack {
 
         new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern", new ApiGatewayToLambdaProps.Builder()
                 .lambdaFunctionProps(new FunctionProps.Builder()
-                        .runtime(Runtime.NODEJS_14_X) // execution environment
+                        .runtime(Runtime.NODEJS_22_X) // execution environment
                         .code(Code.fromAsset("lambda")) // code loaded from the "lambda" directory
                         .handler("hello.handler") // file is "hello", function is "handler"
                         .build())
@@ -602,7 +602,7 @@ import { LambdaToDynamoDB, LambdaToDynamoDBProps } from '@aws-solutions-construc
 
       // hello function responding to http requests
       const helloFunc = new lambda.Function(this, 'HelloHandler', {
-        runtime: lambda.Runtime.NODEJS_12_X,
+        runtime: lambda.Runtime.NODEJS_22_X,
         code: lambda.Code.fromAsset('lambda'),
         handler: 'hello.handler'
       });
@@ -611,7 +611,7 @@ import { LambdaToDynamoDB, LambdaToDynamoDBProps } from '@aws-solutions-construc
       const lambda_ddb_props: LambdaToDynamoDBProps = {
         lambdaFunctionProps: {
             code: lambda.Code.fromAsset(`lambda`),
-            runtime: lambda.Runtime.NODEJS_12_X,
+            runtime: lambda.Runtime.NODEJS_22_X,
             handler: 'hitcounter.handler',
             environment: {
                 DOWNSTREAM_FUNCTION_NAME: helloFunc.functionName
@@ -632,7 +632,7 @@ import { LambdaToDynamoDB, LambdaToDynamoDBProps } from '@aws-solutions-construc
       const api_lambda_props: ApiGatewayToLambdaProps = {
         lambdaFunctionProps: {
           code: lambda.Code.fromAsset('lambda'),
-          runtime: lambda.Runtime.NODEJS_12_X,
+          runtime: lambda.Runtime.NODEJS_22_X,
           handler: 'hello.handler'
         },
         apiGatewayProps: {
@@ -757,7 +757,7 @@ public class HelloConstructsStack extends Stack {
         super(scope, id, props);
 
         final Function helloFunc = Function.Builder.create(this, "HelloHandler")
-                .runtime(Runtime.NODEJS_14_X) // execution environment
+                .runtime(Runtime.NODEJS_22_X) // execution environment
                 .code(Code.fromAsset("lambda")) // code loaded from the "lambda" directory
                 .handler("hello.handler") // file is "hello", function is "handler"
                 .build();
@@ -768,7 +768,7 @@ public class HelloConstructsStack extends Stack {
         final LambdaToDynamoDB hitcounter = new LambdaToDynamoDB(this, "LambdaToDynamoDBPattern",
                 new LambdaToDynamoDBProps.Builder()
                         .lambdaFunctionProps(new FunctionProps.Builder()
-                                .runtime(Runtime.NODEJS_14_X) // execution environment
+                                .runtime(Runtime.NODEJS_22_X) // execution environment
                                 .code(Code.fromAsset("lambda")) // code loaded from the "lambda" directory
                                 .handler("hitcounter.handler") // file is "hello", function is "handler"
                                 .environment(lambdaEnvironment)
@@ -788,7 +788,7 @@ public class HelloConstructsStack extends Stack {
 
         new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern", new ApiGatewayToLambdaProps.Builder()
                 .lambdaFunctionProps(new FunctionProps.Builder()
-                        .runtime(Runtime.NODEJS_14_X) // execution environment
+                        .runtime(Runtime.NODEJS_22_X) // execution environment
                         .code(Code.fromAsset("lambda")) // code loaded from the "lambda" directory
                         .handler("hello.handler") // file is "hello", function is "handler"
                         .build())
@@ -831,7 +831,7 @@ export class HelloConstructsStack extends Stack {
 
     // hello function responding to http requests
     const helloFunc = new lambda.Function(this, 'HelloHandler', {
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_22_X,
       code: lambda.Code.fromAsset('lambda'),
       handler: 'hello.handler'
     });
@@ -840,7 +840,7 @@ export class HelloConstructsStack extends Stack {
     const lambda_ddb_props: LambdaToDynamoDBProps = {
       lambdaFunctionProps: {
         code: lambda.Code.fromAsset(`lambda`),
-        runtime: lambda.Runtime.NODEJS_12_X,
+        runtime: lambda.Runtime.NODEJS_22_X,
         handler: 'hitcounter.handler',
         environment: {
           DOWNSTREAM_FUNCTION_NAME: helloFunc.functionName
@@ -977,7 +977,7 @@ public class HelloConstructsStack extends Stack {
         super(scope, id, props);
 
         final Function helloFunc = Function.Builder.create(this, "HelloHandler")
-                .runtime(Runtime.NODEJS_14_X) // execution environment
+                .runtime(Runtime.NODEJS_22_X) // execution environment
                 .code(Code.fromAsset("lambda")) // code loaded from the "lambda" directory
                 .handler("hello.handler") // file is "hello", function is "handler"
                 .build();
@@ -988,7 +988,7 @@ public class HelloConstructsStack extends Stack {
         final LambdaToDynamoDB hitcounter = new LambdaToDynamoDB(this, "LambdaToDynamoDBPattern",
                 new LambdaToDynamoDBProps.Builder()
                         .lambdaFunctionProps(new FunctionProps.Builder()
-                                .runtime(Runtime.NODEJS_14_X) // execution environment
+                                .runtime(Runtime.NODEJS_22_X) // execution environment
                                 .code(Code.fromAsset("lambda")) // code loaded from the "lambda" directory
                                 .handler("hitcounter.handler") // file is "hitcounter", function is "handler"
                                 .environment(lambdaEnvironment)

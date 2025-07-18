@@ -16,13 +16,14 @@ import * as path from "path";
 import { CfnTable } from 'aws-cdk-lib/aws-glue';
 import { App, Stack } from 'aws-cdk-lib';
 import { KinesisstreamsToGluejob } from '../lib';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import { Asset } from 'aws-cdk-lib/aws-s3-assets';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-kinesisstream-gluejob';
 
 const fieldSchema: CfnTable.ColumnProperty [] = [{

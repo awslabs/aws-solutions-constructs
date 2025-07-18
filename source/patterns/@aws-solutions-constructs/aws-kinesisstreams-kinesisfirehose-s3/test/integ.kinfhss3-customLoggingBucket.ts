@@ -14,13 +14,14 @@
 import { App, Stack, RemovalPolicy, Duration } from "aws-cdk-lib";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import { KinesisStreamsToKinesisFirehoseToS3 } from "../lib";
-import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SetConsistentFeatureFlags, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 
 new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-kinesisfirehose-s3', {
   bucketProps: {

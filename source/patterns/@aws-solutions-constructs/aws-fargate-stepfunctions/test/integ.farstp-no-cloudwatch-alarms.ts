@@ -16,6 +16,7 @@ import { Aws, App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { FargateToStepfunctions, FargateToStepfunctionsProps } from "../lib";
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as defaults from '@aws-solutions-constructs/core';
+import { SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
@@ -23,6 +24,7 @@ const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test with existing VPC and Service and a new state machine with no CloudWatch alarms';
 
 const existingVpc = defaults.getTestVpc(stack);

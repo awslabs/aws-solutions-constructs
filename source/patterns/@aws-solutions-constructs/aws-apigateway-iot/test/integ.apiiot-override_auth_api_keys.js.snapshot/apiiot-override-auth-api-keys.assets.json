@@ -1,15 +1,16 @@
 {
-  "version": "36.0.0",
+  "version": "45.0.0",
   "files": {
-    "bd8d61d750e3d1c1e55f8d2925f60125b4e617dfdaf0bf42ebf709b34feec5ab": {
+    "989409246f4a1ed1eca477b95a9124778d3e37f10403c15ae16ead8e27b8fbbb": {
+      "displayName": "apiiot-override-auth-api-keys Template",
       "source": {
         "path": "apiiot-override-auth-api-keys.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region": {
+        "current_account-current_region-deec2dc0": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "bd8d61d750e3d1c1e55f8d2925f60125b4e617dfdaf0bf42ebf709b34feec5ab.json",
+          "objectKey": "989409246f4a1ed1eca477b95a9124778d3e37f10403c15ae16ead8e27b8fbbb.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

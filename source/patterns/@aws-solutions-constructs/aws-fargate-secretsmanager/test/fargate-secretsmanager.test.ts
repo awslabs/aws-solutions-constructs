@@ -227,7 +227,8 @@ test('New service/new secret, private API, new VPC', () => {
         {
           Action: [
             "secretsmanager:PutSecretValue",
-            "secretsmanager:UpdateSecret"
+            "secretsmanager:UpdateSecret",
+            "secretsmanager:UpdateSecretVersionStage"
           ],
           Effect: "Allow",
           Resource: {
@@ -398,6 +399,7 @@ test('Existing service/new secret, public API, existing VPC', () => {
   });
 
   const template = Template.fromStack(stack);
+
   template.hasResourceProperties("AWS::ECS::Service", {
     ServiceName: serviceName
   });
@@ -462,7 +464,8 @@ test('Existing service/new secret, public API, existing VPC', () => {
         {
           Action: [
             "secretsmanager:PutSecretValue",
-            "secretsmanager:UpdateSecret"
+            "secretsmanager:UpdateSecret",
+            "secretsmanager:UpdateSecretVersionStage"
           ],
           Effect: "Allow",
           Resource: {

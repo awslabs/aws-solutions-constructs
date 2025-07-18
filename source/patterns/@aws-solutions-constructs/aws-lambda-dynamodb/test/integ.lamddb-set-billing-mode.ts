@@ -15,7 +15,7 @@ import { App, Stack } from "aws-cdk-lib";
 import { LambdaToDynamoDB } from "../lib";
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
 
@@ -23,6 +23,7 @@ const app = new App();
 
 // Change the billing mode to PROVISIONED
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 
 new LambdaToDynamoDB(stack, 'test-lambda-dynamodb-stack', {
   dynamoTableProps: {

@@ -13,7 +13,7 @@
 
 import { Duration, App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { IotToKinesisFirehoseToS3 } from "../lib";
-import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
@@ -21,6 +21,7 @@ const app = new App();
 
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 
 new IotToKinesisFirehoseToS3(stack, 'test-iot-kinesisfirehose-s3', {
   iotTopicRuleProps: {

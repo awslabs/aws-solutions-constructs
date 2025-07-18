@@ -16,13 +16,14 @@ import { CfnJob } from 'aws-cdk-lib/aws-glue';
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Bucket, BucketEncryption, CfnBucket } from 'aws-cdk-lib/aws-s3';
 import { App, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
-import { generateIntegStackName, SinkStoreType } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SinkStoreType, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { KinesisstreamsToGluejob } from '../lib';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-kinesisstream-gluejob';
 
 const scriptBucket = new Bucket(stack, 'existingScriptLocation', {

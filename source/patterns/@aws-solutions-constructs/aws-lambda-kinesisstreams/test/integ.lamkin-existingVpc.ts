@@ -13,13 +13,14 @@
 
 import { App, Stack } from "aws-cdk-lib";
 import { LambdaToKinesisStreams } from "../lib";
-import { buildVpc, DefaultPublicPrivateVpcProps, generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { buildVpc, DefaultPublicPrivateVpcProps, generateIntegStackName, suppressCustomHandlerCfnNagWarnings, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from "@aws-solutions-constructs/core";
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 
 const existingVpc = buildVpc(stack, {
   defaultVpcProps: DefaultPublicPrivateVpcProps()

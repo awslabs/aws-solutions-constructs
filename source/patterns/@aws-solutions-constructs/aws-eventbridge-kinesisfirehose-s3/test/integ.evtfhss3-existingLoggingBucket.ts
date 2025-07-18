@@ -13,7 +13,7 @@
 
 import { App, Stack, RemovalPolicy, Duration } from "aws-cdk-lib";
 import { EventbridgeToKinesisFirehoseToS3 } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as events from 'aws-cdk-lib/aws-events';
 import * as defaults from '@aws-solutions-constructs/core';
@@ -22,6 +22,7 @@ const app = new App();
 
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
 const logBucket = defaults.CreateScrapBucket(stack, "scrapBucket");

@@ -14,7 +14,7 @@
 // Imports
 import { Aws, App, Stack } from "aws-cdk-lib";
 import { FargateToOpenSearch, FargateToOpenSearchProps } from "../lib";
-import { generateIntegStackName, getTestVpc, CreateFargateService } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, getTestVpc, CreateFargateService, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as defaults from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
@@ -24,6 +24,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test with existing VPC, Service and OpenSearch Service domain';
 
 const existingVpc = getTestVpc(stack);

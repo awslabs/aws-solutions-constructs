@@ -14,7 +14,7 @@
 // Imports
 import { Aws, App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { AlbToLambda, AlbToLambdaProps } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as defaults from '@aws-solutions-constructs/core';
@@ -29,11 +29,15 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for private HTTP API with a existing function and ALB';
 
 const myVpc = defaults.getTestVpc(stack);
 
-const testSg = new SecurityGroup(stack, 'lambda-sg', { vpc: myVpc, allowAllOutbound: false});
+const testSg = new SecurityGroup(stack, 'lambda-sg', {
+  vpc: myVpc,
+  allowAllOutbound: false
+});
 
 const lambdaFunction = defaults.buildLambdaFunction(stack, {
   lambdaFunctionProps: {
@@ -41,7 +45,7 @@ const lambdaFunction = defaults.buildLambdaFunction(stack, {
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     vpc: myVpc,
-    securityGroups: [ testSg ]
+    securityGroups: [testSg]
   }
 });
 
@@ -78,19 +82,21 @@ defaults.addCfnGuardSuppressRules(albToLambda.listener, ["ELBV2_LISTENER_SSL_POL
 
 const newSecurityGroup = albToLambda.loadBalancer.connections.securityGroups[0].node.defaultChild as CfnSecurityGroup;
 defaults.addCfnSuppressRules(newSecurityGroup, [
-  { id: 'W29', reason: 'CDK created rule that blocks all traffic.'},
-  { id: 'W2', reason: 'Rule does not apply for ELB.'},
-  { id: 'W9', reason: 'Rule does not apply for ELB.'}
+  { id: 'W29', reason: 'CDK created rule that blocks all traffic.' },
+  { id: 'W2', reason: 'Rule does not apply for ELB.' },
+  { id: 'W9', reason: 'Rule does not apply for ELB.' }
 ]);
 
 defaults.addCfnSuppressRules(testSg, [
-  { id: 'W29', reason: 'CDK created rule that blocks all traffic.'},
+  { id: 'W29', reason: 'CDK created rule that blocks all traffic.' },
 ]);
 
 defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 
 // Synth
-new IntegTest(stack, 'Integ', { testCases: [
-  stack
-] });
+new IntegTest(stack, 'Integ', {
+  testCases: [
+    stack
+  ]
+});

@@ -14,12 +14,13 @@
 import { App, RemovalPolicy, Stack } from "aws-cdk-lib";
 import * as kms from 'aws-cdk-lib/aws-kms';
 import { IotToS3, IotToS3Props } from "../lib";
-import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, suppressCustomHandlerCfnNagWarnings, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 const existingKey = new kms.Key(stack, `existingKey`, {
   enableKeyRotation: true,
   removalPolicy: RemovalPolicy.DESTROY

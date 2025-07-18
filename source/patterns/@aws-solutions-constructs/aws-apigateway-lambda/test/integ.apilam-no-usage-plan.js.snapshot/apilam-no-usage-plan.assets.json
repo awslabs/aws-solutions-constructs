@@ -1,28 +1,30 @@
 {
-  "version": "40.0.0",
+  "version": "45.0.0",
   "files": {
     "0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f": {
+      "displayName": "test-apigateway-lambda/LambdaFunction/Code",
       "source": {
         "path": "asset.0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f",
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-current_region": {
+        "current_account-current_region-86d36d19": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
           "objectKey": "0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f.zip",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
     },
-    "3a6415e3df08844304f115c22dc5326fffdb2e72d603a024e1f5c0730c13d837": {
+    "8a512710d7499ce035c5d9d7a58fcb59ec31f6b1452d4261d7f7af4a2d1be130": {
+      "displayName": "apilam-no-usage-plan Template",
       "source": {
         "path": "apilam-no-usage-plan.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region": {
+        "current_account-current_region-b2db4150": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "3a6415e3df08844304f115c22dc5326fffdb2e72d603a024e1f5c0730c13d837.json",
+          "objectKey": "8a512710d7499ce035c5d9d7a58fcb59ec31f6b1452d4261d7f7af4a2d1be130.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

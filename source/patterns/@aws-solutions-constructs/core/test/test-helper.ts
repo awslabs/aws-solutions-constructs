@@ -302,3 +302,87 @@ export function CreateShortUniqueTestName(stub: string) {
 export function SuppressCfnNagLambdaWarnings(stack: Stack) {
   Aspects.of(stack).add(new CfnNagLambdaAspect());
 }
+
+/**
+ * Used to assume explicit control over feature flags in integ-runner tests
+ *
+ * @param stack - The stack for the integration test
+ */
+export function SetConsistentFeatureFlags(stack: Stack) {
+  stack.node.setContext("@aws-cdk/aws-lambda:createNewPoliciesWithAddToRolePolicy", true);
+  stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
+
+  stack.node.setContext("@aws-cdk/core:checkSecretUsage", true);
+  stack.node.setContext("@aws-cdk/core:target-partitions", [
+    "aws",
+    "aws-cn"
+  ]);
+  stack.node.setContext("@aws-cdk-containers/ecs-service-extensions:enableDefaultLogDriver", true);
+  stack.node.setContext("@aws-cdk/aws-ec2:uniqueImdsv2TemplateName", true);
+  stack.node.setContext("@aws-cdk/aws-ecs:arnFormatIncludesClusterName", true);
+  stack.node.setContext("@aws-cdk/aws-iam:minimizePolicies", true);
+  stack.node.setContext("@aws-cdk/core:validateSnapshotRemovalPolicy", true);
+  stack.node.setContext("@aws-cdk/aws-codepipeline:crossAccountKeyAliasStackSafeResourceName", true);
+  stack.node.setContext("@aws-cdk/aws-s3:createDefaultLoggingPolicy", true);
+  stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", true);
+  stack.node.setContext("@aws-cdk/aws-apigateway:disableCloudWatchRole", true);
+  stack.node.setContext("@aws-cdk/core:enablePartitionLiterals", true);
+  stack.node.setContext("@aws-cdk/aws-events:eventsTargetQueueSameAccount", true);
+  stack.node.setContext("@aws-cdk/aws-ecs:disableExplicitDeploymentControllerForCircuitBreaker", true);
+  stack.node.setContext("@aws-cdk/aws-iam:importedRoleStackSafeDefaultPolicyName", true);
+  stack.node.setContext("@aws-cdk/aws-route53-patters:useCertificate", true);
+  stack.node.setContext("@aws-cdk/customresources:installLatestAwsSdkDefault", false);
+  stack.node.setContext("@aws-cdk/aws-rds:databaseProxyUniqueResourceName", true);
+  stack.node.setContext("@aws-cdk/aws-codedeploy:removeAlarmsFromDeploymentGroup", true);
+  stack.node.setContext("@aws-cdk/aws-apigateway:authorizerChangeDeploymentLogicalId", true);
+  stack.node.setContext("@aws-cdk/aws-ec2:launchTemplateDefaultUserData", true);
+  stack.node.setContext("@aws-cdk/aws-secretsmanager:useAttachedSecretResourcePolicyForSecretTargetAttachments", true);
+  stack.node.setContext("@aws-cdk/aws-redshift:columnId", true);
+  stack.node.setContext("@aws-cdk/aws-stepfunctions-tasks:enableEmrServicePolicyV2", true);
+  stack.node.setContext("@aws-cdk/aws-ec2:restrictDefaultSecurityGroup", true);
+  stack.node.setContext("@aws-cdk/aws-apigateway:requestValidatorUniqueId", true);
+  stack.node.setContext("@aws-cdk/aws-kms:aliasNameRef", true);
+  stack.node.setContext("@aws-cdk/aws-autoscaling:generateLaunchTemplateInsteadOfLaunchConfig", true);
+  stack.node.setContext("@aws-cdk/core:includePrefixInUniqueNameGeneration", true);
+  stack.node.setContext("@aws-cdk/aws-efs:denyAnonymousAccess", true);
+  stack.node.setContext("@aws-cdk/aws-opensearchservice:enableOpensearchMultiAzWithStandby", true);
+  stack.node.setContext("@aws-cdk/aws-lambda-nodejs:useLatestRuntimeVersion", true);
+  stack.node.setContext("@aws-cdk/aws-efs:mountTargetOrderInsensitiveLogicalId", true);
+  stack.node.setContext("@aws-cdk/aws-rds:auroraClusterChangeScopeOfInstanceParameterGroupWithEachParameters", true);
+  stack.node.setContext("@aws-cdk/aws-appsync:useArnForSourceApiAssociationIdentifier", true);
+  stack.node.setContext("@aws-cdk/aws-rds:preventRenderingDeprecatedCredentials", true);
+  stack.node.setContext("@aws-cdk/aws-codepipeline-actions:useNewDefaultBranchForCodeCommitSource", true);
+  stack.node.setContext("@aws-cdk/aws-cloudwatch-actions:changeLambdaPermissionLogicalIdForLambdaAction", true);
+  stack.node.setContext("@aws-cdk/aws-codepipeline:crossAccountKeysDefaultValueToFalse", true);
+  stack.node.setContext("@aws-cdk/aws-codepipeline:defaultPipelineTypeToV2", true);
+  stack.node.setContext("@aws-cdk/aws-kms:reduceCrossAccountRegionPolicyScope", true);
+  stack.node.setContext("@aws-cdk/aws-eks:nodegroupNameAttribute", true);
+  stack.node.setContext("@aws-cdk/aws-ec2:ebsDefaultGp3Volume", true);
+  stack.node.setContext("@aws-cdk/aws-ecs:removeDefaultDeploymentAlarm", true);
+  stack.node.setContext("@aws-cdk/custom-resources:logApiResponseDataPropertyTrueDefault", false);
+  stack.node.setContext("@aws-cdk/aws-s3:keepNotificationInImportedBucket", false);
+  stack.node.setContext("@aws-cdk/aws-ecs:enableImdsBlockingDeprecatedFeature", false);
+  stack.node.setContext("@aws-cdk/aws-ecs:disableEcsImdsBlocking", true);
+  stack.node.setContext("@aws-cdk/aws-ecs:reduceEc2FargateCloudWatchPermissions", true);
+  stack.node.setContext("@aws-cdk/aws-dynamodb:resourcePolicyPerReplica", true);
+  stack.node.setContext("@aws-cdk/aws-ec2:ec2SumTImeoutEnabled", true);
+  stack.node.setContext("@aws-cdk/aws-appsync:appSyncGraphQLAPIScopeLambdaPermission", true);
+  stack.node.setContext("@aws-cdk/aws-rds:setCorrectValueForDatabaseInstanceReadReplicaInstanceResourceId", true);
+  stack.node.setContext("@aws-cdk/core:cfnIncludeRejectComplexResourceUpdateCreatePolicyIntrinsics", true);
+  stack.node.setContext("@aws-cdk/aws-lambda-nodejs:sdkV3ExcludeSmithyPackages", true);
+  stack.node.setContext("@aws-cdk/aws-stepfunctions-tasks:fixRunEcsTaskPolicy", true);
+  stack.node.setContext("@aws-cdk/aws-ec2:bastionHostUseAmazonLinux2023ByDefault", true);
+  stack.node.setContext("@aws-cdk/aws-route53-targets:userPoolDomainNameMethodWithoutCustomResource", true);
+  stack.node.setContext("@aws-cdk/aws-elasticloadbalancingV2:albDualstackWithoutPublicIpv4SecurityGroupRulesDefault", true);
+  stack.node.setContext("@aws-cdk/aws-iam:oidcRejectUnauthorizedConnections", true);
+  stack.node.setContext("@aws-cdk/core:enableAdditionalMetadataCollection", true);
+  stack.node.setContext("@aws-cdk/aws-s3:setUniqueReplicationRoleName", true);
+  stack.node.setContext("@aws-cdk/aws-events:requireEventBusPolicySid", true);
+  stack.node.setContext("@aws-cdk/core:aspectPrioritiesMutating", true);
+  stack.node.setContext("@aws-cdk/aws-dynamodb:retainTableReplica", true);
+  stack.node.setContext("@aws-cdk/aws-stepfunctions:useDistributedMapResultWriterV2", true);
+  stack.node.setContext("@aws-cdk/s3-notifications:addS3TrustKeyPolicyForSnsSubscriptions", true);
+  stack.node.setContext("@aws-cdk/aws-ec2:requirePrivateSubnetsForEgressOnlyInternetGateway", true);
+  stack.node.setContext("@aws-cdk/aws-s3:publicAccessBlockedByDefault", true);
+  stack.node.setContext("@aws-cdk/aws-lambda:useCdkManagedLogGroup", false);
+}

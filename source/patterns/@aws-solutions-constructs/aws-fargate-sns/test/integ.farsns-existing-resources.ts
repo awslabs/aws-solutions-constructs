@@ -14,7 +14,7 @@
 // Imports
 import { Aws, App, Stack } from "aws-cdk-lib";
 import { FargateToSns, FargateToSnsProps } from "../lib";
-import { generateIntegStackName, getTestVpc, CreateFargateService, addCfnSuppressRules, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, getTestVpc, CreateFargateService, addCfnSuppressRules, suppressCustomHandlerCfnNagWarnings, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
@@ -24,6 +24,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: 'us-east-1' },
 });
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test with existing VPC, Service and Topic';
 
 const existingVpc = getTestVpc(stack);
