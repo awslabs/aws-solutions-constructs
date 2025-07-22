@@ -1,0 +1,14 @@
+name: PR Feedback AutoBuild
+on: pull_request
+jobs:
+  Hello-World-Job:
+    runs-on:
+      - codebuild-githubautobuild-for-cdk-v2-${{ github.run_id }}-${{ github.run_attempt }}
+        buildspec-override:true
+    steps:
+      - name: Get current folder
+        run: pwd
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: ./deployment/v2/build-patterns.sh
