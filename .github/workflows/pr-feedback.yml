@@ -8,5 +8,7 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
+      - run: echo "===== pr-feedback.yml"
       - run: ls
       - run: pwd
+      - run: docker ps
