@@ -1,0 +1,12 @@
+name: PR Feedback AutoBuild
+on: pull_request
+jobs:
+  Hello-World-Job:
+    runs-on:
+      - codebuild-githubautobuild-for-cdk-v2-${{ github.run_id }}-${{ github.run_attempt }}
+        buildspec-override:true
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: ./deployment/v2/build-patterns.sh
+      - run: ./deployment/v2/build-cdk-dist.sh
