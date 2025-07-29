@@ -14,7 +14,7 @@
 import { Stack } from 'aws-cdk-lib';
 import * as waf from "aws-cdk-lib/aws-wafv2";
 import * as defaults from '..';
-import { Template } from 'aws-cdk-lib/assertions';
+import { Match, Template } from 'aws-cdk-lib/assertions';
 import { buildWebacl } from '..';
 
 test('Test construct with default props', () => {
@@ -318,4 +318,46 @@ test('Test WebACL bad props', () => {
 
   // Assertion
   expect(app).toThrowError('Error - Either provide existingWebaclObj or webaclProps, but not both.\n');
+});
+
+
+test('Test defaultaction block', () => {
+
+  const stack = new Stack();
+
+  // Build WAF web ACL
+  const propsWithBlock: waf.CfnWebACLProps = {
+    scope: 'CLOUDFRONT',
+    defaultAction: {
+      block: {}
+    },
+    visibilityConfig: {
+      cloudWatchMetricsEnabled: false,
+      metricName: 'webACL',
+      sampledRequestsEnabled: true
+    },
+    rules: [
+      defaults.wrapManagedRuleSet("AWSManagedRulesCommonRuleSet", "AWS", 0),
+      defaults.wrapManagedRuleSet("AWSManagedRulesWordPressRuleSet", "AWS", 1),
+    ]
+  };
+
+  defaults.buildWebacl(stack, 'CLOUDFRONT', {
+    webaclProps: propsWithBlock
+  });
+
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
+    DefaultAction: {
+      Block: {}
+    },
+  });
+
+  // The following will throw an assertion error
+  template.hasResourceProperties("AWS::WAFv2::WebACL", {
+    DefaultAction: Match.objectLike({
+      Allow: Match.absent()
+    }),
+  });
 });

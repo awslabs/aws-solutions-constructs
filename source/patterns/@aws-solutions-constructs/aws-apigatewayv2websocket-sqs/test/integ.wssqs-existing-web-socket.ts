@@ -20,10 +20,12 @@ import { WebSocketLambdaIntegration } from "aws-cdk-lib/aws-apigatewayv2-integra
 import { WebSocketIamAuthorizer } from 'aws-cdk-lib/aws-apigatewayv2-authorizers';
 import * as apigwv2 from 'aws-cdk-lib/aws-apigatewayv2';
 import * as defaults from '@aws-solutions-constructs/core';
+import { SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, defaults.generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-apigateway-sqs';
 
 const mockConnectLambda = defaults.deployLambdaFunction(stack, {

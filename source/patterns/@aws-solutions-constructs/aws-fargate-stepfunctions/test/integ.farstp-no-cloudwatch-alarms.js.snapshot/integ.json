@@ -1,5 +1,5 @@
 {
-  "version": "39.0.0",
+  "version": "45.0.0",
   "testCases": {
     "farstp-no-cloudwatch-alarms/Integ/DefaultTest": {
       "stacks": [
@@ -8,5 +8,6 @@
       "assertionStack": "farstp-no-cloudwatch-alarms/Integ/DefaultTest/DeployAssert",
       "assertionStackName": "farstpnocloudwatchalarmsIntegDefaultTestDeployAssertC4578F22"
     }
-  }
+  },
+  "minimumCliVersion": "2.1020.2"
 }

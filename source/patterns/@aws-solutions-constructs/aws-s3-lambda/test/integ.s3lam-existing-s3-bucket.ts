@@ -14,7 +14,7 @@
 import { App, Stack } from "aws-cdk-lib";
 import { S3ToLambda, S3ToLambdaProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { CreateScrapBucket, suppressCustomHandlerCfnNagWarnings } from "@aws-solutions-constructs/core";
+import { CreateScrapBucket, suppressCustomHandlerCfnNagWarnings, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { generateIntegStackName } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
@@ -27,6 +27,7 @@ const app = new App({
 
 // Empty arguments
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
 const myBucket = CreateScrapBucket(stack, "scrapBucket");

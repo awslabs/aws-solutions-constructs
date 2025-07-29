@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.87.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.86.0...v2.87.0) (2025-07-29)
+
+Built on CDK 2.206.0
+
+### Bug Fixes
+
+* "@aws-solutions-constructs/aws-wafwebacl-cloudfront" invalid template defaultaction ([#1361](https://github.com/awslabs/aws-solutions-constructs/issues/1361)) ([77ee2f3](https://github.com/awslabs/aws-solutions-constructs/commit/77ee2f3cc9a7fabf89a728a214ef054542dcf655))
+
 ## [2.86.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.85.6...v2.86.0) (2025-07-14)
 
 Built on CDK 2.193.0

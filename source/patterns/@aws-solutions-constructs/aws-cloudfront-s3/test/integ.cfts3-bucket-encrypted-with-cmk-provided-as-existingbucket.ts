@@ -14,15 +14,15 @@
 // Imports
 import { App, Stack, RemovalPolicy, aws_kms } from "aws-cdk-lib";
 import { CloudFrontToS3, CloudFrontToS3Props } from "../lib";
-import { buildS3Bucket, generateIntegStackName, suppressCustomHandlerCfnNagWarnings } from '@aws-solutions-constructs/core';
+import { buildS3Bucket, generateIntegStackName, suppressCustomHandlerCfnNagWarnings, SetConsistentFeatureFlags  } from '@aws-solutions-constructs/core';
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
-stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-s3';
+SetConsistentFeatureFlags(stack);
 
 // Definitions
 const encryptionKey = new aws_kms.Key(stack, 'cmkKey', {

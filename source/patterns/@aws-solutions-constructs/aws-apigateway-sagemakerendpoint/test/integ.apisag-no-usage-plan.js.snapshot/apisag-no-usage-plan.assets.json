@@ -1,15 +1,16 @@
 {
-  "version": "39.0.0",
+  "version": "45.0.0",
   "files": {
-    "7c2150d1f0ed20f31f0c7bd3e0d446225384266c0d34c3223e1cd2b4d9bb2cf6": {
+    "6390ddc110123ebd4807735763ee8f2c381d6d0347dea2f0b72b549be6099e0d": {
+      "displayName": "apisag-no-usage-plan Template",
       "source": {
         "path": "apisag-no-usage-plan.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region": {
+        "current_account-current_region-d30cc160": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "7c2150d1f0ed20f31f0c7bd3e0d446225384266c0d34c3223e1cd2b4d9bb2cf6.json",
+          "objectKey": "6390ddc110123ebd4807735763ee8f2c381d6d0347dea2f0b72b549be6099e0d.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

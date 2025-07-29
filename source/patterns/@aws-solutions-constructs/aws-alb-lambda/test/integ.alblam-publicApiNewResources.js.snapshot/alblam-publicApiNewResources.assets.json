@@ -1,13 +1,14 @@
 {
-  "version": "40.0.0",
+  "version": "45.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
+      "displayName": "alblam-publicApiNewResources/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
       "source": {
         "path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-us-east-1": {
+        "current_account-us-east-1-b3ca7882": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
           "objectKey": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip",
           "region": "us-east-1",
@@ -16,12 +17,13 @@
       }
     },
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "alblam-publicApiNewResources/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
       "source": {
         "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-us-east-1": {
+        "current_account-us-east-1-e650c2de": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
           "objectKey": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip",
           "region": "us-east-1",
@@ -30,12 +32,13 @@
       }
     },
     "44065ab998484f0809423b22009edee6d159633b21d16657230931448f4bec08": {
+      "displayName": "test-one/LambdaFunction/Code",
       "source": {
         "path": "asset.44065ab998484f0809423b22009edee6d159633b21d16657230931448f4bec08",
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-us-east-1": {
+        "current_account-us-east-1-913f00a8": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
           "objectKey": "44065ab998484f0809423b22009edee6d159633b21d16657230931448f4bec08.zip",
           "region": "us-east-1",
@@ -43,15 +46,16 @@
         }
       }
     },
-    "3c84d6901d177dd45f6bec66792cfda609f744e57d78d42f050939e5864facf0": {
+    "8874fe49f99e3ac0566db879639cbcb182faa27eacf33cb0a9bb468122c3490c": {
+      "displayName": "alblam-publicApiNewResources Template",
       "source": {
         "path": "alblam-publicApiNewResources.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-us-east-1": {
+        "current_account-us-east-1-11e3f222": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "3c84d6901d177dd45f6bec66792cfda609f744e57d78d42f050939e5864facf0.json",
+          "objectKey": "8874fe49f99e3ac0566db879639cbcb182faa27eacf33cb0a9bb468122c3490c.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }

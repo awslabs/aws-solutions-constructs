@@ -14,12 +14,13 @@
 import { App, Stack } from "aws-cdk-lib";
 import { IotToS3, IotToS3Props } from "../lib";
 import * as defaults from '@aws-solutions-constructs/core';
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import { BucketEncryption } from "aws-cdk-lib/aws-s3";
 
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
 const existingBucket = defaults.CreateScrapBucket(stack, "scrapBucket", {

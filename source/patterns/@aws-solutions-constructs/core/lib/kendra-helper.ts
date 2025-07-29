@@ -74,7 +74,9 @@ export function AddMultipleKendraDataSources(scope: Construct,
 
   const returnDataSources: kendra.CfnDataSource[] = [];
   clientDataSourceProps.forEach((props, index) => {
-    returnDataSources.push(AddKendraDataSource(scope, `${id}${index}`, kendraIndex, props));
+    const additionalDataSource = AddKendraDataSource(scope, `${id}${index}`, kendraIndex, props);
+    additionalDataSource.addDependency(kendraIndex);
+    returnDataSources.push(additionalDataSource);
   });
   return returnDataSources;
 }

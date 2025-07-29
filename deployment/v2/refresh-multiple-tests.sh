@@ -57,6 +57,7 @@ aws-kinesisfirehose-s3
 aws-kinesisstreams-gluejob
 aws-kinesisstreams-kinesisfirehose-s3
 aws-kinesisstreams-lambda
+aws-lambda-bedrockinferenceprofile
 aws-lambda-dynamodb
 aws-lambda-elasticachememcached
 aws-lambda-elasticsearch-kibana

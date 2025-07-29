@@ -14,12 +14,13 @@
 // Imports
 import { App, Stack } from "aws-cdk-lib";
 import { ApiGatewayToSqs } from "../lib";
-import { generateIntegStackName, buildQueue } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, buildQueue, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-apigateway-sqs';
 
 const buildQueueResponse = buildQueue(stack, 'existing-queue', {});

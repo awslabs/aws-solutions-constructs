@@ -16,12 +16,13 @@ import { App, Stack } from "aws-cdk-lib";
 import { ApiGatewayToDynamoDBProps, ApiGatewayToDynamoDB } from "../lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import { BillingMode } from "aws-cdk-lib/aws-dynamodb";
-import { addCfnGuardSuppressRules, generateIntegStackName } from '@aws-solutions-constructs/core';
+import { addCfnGuardSuppressRules, generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-apigateway-dynamodb';
 
 const oddPartitionKeyName = 'oddName';

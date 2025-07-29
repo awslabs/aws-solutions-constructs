@@ -64,6 +64,7 @@ test('Test deployment w/ logging enabled', () => {
   // Assertion
   const template = Template.fromStack(stack);
   template.resourceCountIs("AWS::Logs::LogGroup", 1);
+
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
   expect(buildStateMachineResponse.stateMachine).toBeDefined();
 

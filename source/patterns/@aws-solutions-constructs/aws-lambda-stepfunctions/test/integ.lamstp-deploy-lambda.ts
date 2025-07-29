@@ -15,7 +15,7 @@ import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { LambdaToStepfunctions, LambdaToStepfunctionsProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as sftasks from 'aws-cdk-lib/aws-stepfunctions-tasks';
-import { generateIntegStackName, deployLambdaFunction } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, deployLambdaFunction, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as sfn from 'aws-cdk-lib/aws-stepfunctions';
 import * as defaults from '@aws-solutions-constructs/core';
@@ -23,6 +23,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 // Setup the app and stack
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 
 const taskFunction = deployLambdaFunction(stack, {
   runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,

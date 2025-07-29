@@ -15,7 +15,7 @@
 import { App, Stack } from "aws-cdk-lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import {LambdaToKinesisFirehose } from "../lib";
-import { generateIntegStackName } from '@aws-solutions-constructs/core';
+import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
 import { GetTestFirehoseDestination } from './test-helper';
@@ -24,6 +24,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 // Setup
 const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename));
+SetConsistentFeatureFlags(stack);
 
 const destination = GetTestFirehoseDestination(stack, 'destination-firehose');
 

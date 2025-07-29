@@ -1,15 +1,16 @@
 {
-  "version": "36.0.0",
+  "version": "45.0.0",
   "files": {
-    "5ca94ddc5ede55315f8c051ef4804df391fb7a31ef4daed4d53b2b71861207a5": {
+    "d8f689b5e2ad9fd6adf81394cba92231e7e607162a0b1b48ebc0233ec5d14561": {
+      "displayName": "apisag-apigateway-sagemakerendpoint-overwrite Template",
       "source": {
         "path": "apisag-apigateway-sagemakerendpoint-overwrite.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region": {
+        "current_account-current_region-1cc59259": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "5ca94ddc5ede55315f8c051ef4804df391fb7a31ef4daed4d53b2b71861207a5.json",
+          "objectKey": "d8f689b5e2ad9fd6adf81394cba92231e7e607162a0b1b48ebc0233ec5d14561.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

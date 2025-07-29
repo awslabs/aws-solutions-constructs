@@ -14,7 +14,7 @@
 // Imports
 import { Aws, App, Stack, RemovalPolicy } from "aws-cdk-lib";
 import { AlbToLambda, AlbToLambdaProps } from "../lib";
-import { generateIntegStackName } from "@aws-solutions-constructs/core";
+import { generateIntegStackName, SetConsistentFeatureFlags } from "@aws-solutions-constructs/core";
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as defaults from "@aws-solutions-constructs/core";
@@ -29,6 +29,7 @@ const app = new App();
 const stack = new Stack(app, generateIntegStackName(__filename), {
   env: { account: Aws.ACCOUNT_ID, region: "us-east-1" },
 });
+SetConsistentFeatureFlags(stack);
 stack.templateOptions.description =
   "Integration Test for public HTTP API with a existing function and ALB";
 

@@ -10,7 +10,7 @@ const nullVersionMarker = process.argv[2];
 const targetSolutionsConstructsVersion = process.argv[3];
 
 // these versions need to be sourced from a config file
-const awsCdkLibVersion = '2.193.0';
+const awsCdkLibVersion = '2.206.0';
 
 for (const file of process.argv.splice(4)) {
   const pkg = JSON.parse(fs.readFileSync(file).toString());
