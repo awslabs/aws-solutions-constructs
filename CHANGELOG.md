@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.90.4](https://github.com/awslabs/aws-solutions-constructs/compare/v2.90.3...v2.90.4) (2025-08-05)
+
 ## [2.90.3](https://github.com/awslabs/aws-solutions-constructs/compare/v2.90.2...v2.90.3) (2025-08-04)
 
 Built on CDK 2.206.0
