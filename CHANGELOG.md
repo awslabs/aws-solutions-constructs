@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.90.4](https://github.com/awslabs/aws-solutions-constructs/compare/v2.90.3...v2.90.4) (2025-08-05)
+
+* docs: correct spelling of solutions in index.html ([a795a40](https://github.com/awslabs/aws-solutions-constructs/pull/1379/commits/a795a40b81e9d8b3188c6c1a087a2950b8325ad0))
+
 ## [2.90.3](https://github.com/awslabs/aws-solutions-constructs/compare/v2.90.2...v2.90.3) (2025-08-04)
 
 Built on CDK 2.206.0
