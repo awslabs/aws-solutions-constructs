@@ -28,7 +28,7 @@ import {BehaviorOptions} from "aws-cdk-lib/aws-cloudfront/lib/distribution";
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: api.RestApi,
+export function DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint: api.RestApiBase,
   loggingBucket: s3.Bucket | undefined,
   setHttpSecurityHeaders: boolean,
   cfFunction?: cloudfront.IFunction,
