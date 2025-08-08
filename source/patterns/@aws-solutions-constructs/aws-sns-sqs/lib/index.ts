@@ -161,7 +161,8 @@ export interface ConstructKeys {
   readonly topicKey?: kms.Key,
   readonly queueKey?: kms.Key,
   readonly encryptTopicWithCmk: boolean,
-  readonly encryptQueueWithCmk: boolean
+  readonly encryptQueueWithCmk: boolean,
+  readonly constructProps: sqs.QueueProps | any
 }
 
 /**
@@ -224,6 +225,7 @@ export class SnsToSqs extends Construct {
       maxReceiveCount: props.maxReceiveCount,
       enableEncryptionWithCustomerManagedKey: activeKeys.encryptQueueWithCmk,
       encryptionKey: activeKeys.queueKey,
+      constructQueueProps: activeKeys.constructProps
     });
     this.sqsQueue = buildQueueResponse.queue;
     this.deadLetterQueue = buildQueueResponse.dlq;
@@ -255,6 +257,7 @@ export class SnsToSqs extends Construct {
     let queueKey: kms.Key | undefined;
     let encryptQueueWithCmk: boolean = false;
     let singleKey: kms.Key | undefined;
+    let constructProps: Partial<sqs.QueueProps> = {};
 
     // First - confirm that only 1 interface is being used
     let useDeprecatedInterface: boolean = false;
@@ -324,7 +327,10 @@ export class SnsToSqs extends Construct {
       if (DoWeNeedACmk(props.existingQueueObj, props.queueProps?.encryptionMasterKey, props.encryptQueueWithCmk)) {
         queueKey = props.existingQueueEncryptionKey ?? buildEncryptionKey(scope, `${id}queue`, props.queueEncryptionKeyProps);
         encryptQueueWithCmk = true;
+      } else if (!props.queueProps?.encryptionMasterKey) {
+        constructProps = { encryption: sqs.QueueEncryption.SQS_MANAGED };
       }
+
     }
 
     return {
@@ -333,7 +339,8 @@ export class SnsToSqs extends Construct {
       topicKey,
       queueKey,
       encryptQueueWithCmk,
-      encryptTopicWithCmk
+      encryptTopicWithCmk,
+      constructProps
     };
   }
 
