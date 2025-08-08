@@ -155,7 +155,7 @@ export interface SnsToSqsProps {
   readonly topicEncryptionKeyProps?: kms.KeyProps;
 }
 
-export interface ConstructKeys {
+export interface KeyConfiguration {
   readonly useDeprecatedInterface: boolean,
   readonly singleKey?: kms.Key,
   readonly topicKey?: kms.Key,
@@ -193,7 +193,7 @@ export class SnsToSqs extends Construct {
     defaults.CheckSqsProps(props);
     this.uniquePropChecks(props);
 
-    const activeKeys = SnsToSqs.createRequiredKeys(scope, id, props);
+    const activeKeys = SnsToSqs.configureKeys(scope, id, props);
     if (!activeKeys.useDeprecatedInterface) {
       this.queueEncryptionKey = activeKeys.queueKey;
       this.topicEncryptionKey = activeKeys.topicKey;
@@ -251,7 +251,7 @@ export class SnsToSqs extends Construct {
   *      and queueKey will ALWAYS be set, for the old interface they will be set to the same key as singleKey
   * -If the client provides no key info, this function will use the FeatureFlag to determine which interface to use
   */
-  public static createRequiredKeys(scope: Construct, id: string, props: SnsToSqsProps): ConstructKeys {
+  public static configureKeys(scope: Construct, id: string, props: SnsToSqsProps): KeyConfiguration {
     let topicKey: kms.Key | undefined;
     let encryptTopicWithCmk: boolean = false;
     let queueKey: kms.Key | undefined;
