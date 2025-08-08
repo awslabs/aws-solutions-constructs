@@ -279,7 +279,7 @@ test('Test deployment with SNS managed KMS key', () => {
     queueProps: {
       encryptionMasterKey: new kms.Key(stack, 'test-key', {}),
     },
-    // This could probably be considered a bug, this is the old interface and 
+    // This could probably be considered a bug, this is the old interface and
     // this test uses the new interface. Theoretically this should throw an error.
     // But the scenario correctly uses the new interface and displays a message that
     // this setting is ignored. To change it at this point would cause currently
