@@ -622,7 +622,7 @@ test('test CreateRequiredKeys for no arguments', () => {
   const stack = new Stack();
   stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", false);
 
-  const result = SnsToSqs.createRequiredKeys(stack, 'test', {});
+  const result = SnsToSqs.configureKeys(stack, 'test', {});
 
   expect(result.useDeprecatedInterface).toBeTruthy();
   expect(result.encryptQueueWithCmk).toBeTruthy();
@@ -636,7 +636,7 @@ test('test CreateRequiredKeys when Topic is provided', () => {
   const stack = new Stack();
   stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", false);
 
-  const result = SnsToSqs.createRequiredKeys(stack, 'test', {
+  const result = SnsToSqs.configureKeys(stack, 'test', {
     existingTopicObj: {} as sns.Topic
   });
 
@@ -652,7 +652,7 @@ test('test CreateRequiredKeys when Queue is provided', () => {
   const stack = new Stack();
   stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", false);
 
-  const result = SnsToSqs.createRequiredKeys(stack, 'test', {
+  const result = SnsToSqs.configureKeys(stack, 'test', {
     existingQueueObj: {} as sqs.Queue
   });
 
@@ -668,7 +668,7 @@ test('test CreateRequiredKeys when Topic props have a key', () => {
   const stack = new Stack();
   stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", false);
 
-  const result = SnsToSqs.createRequiredKeys(stack, 'test', {
+  const result = SnsToSqs.configureKeys(stack, 'test', {
     topicProps: {
       masterKey: {} as kms.Key
     }
@@ -686,7 +686,7 @@ test('test CreateRequiredKeys when Queue props have a key', () => {
   const stack = new Stack();
   stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", false);
 
-  const result = SnsToSqs.createRequiredKeys(stack, 'test', {
+  const result = SnsToSqs.configureKeys(stack, 'test', {
     queueProps: {
       encryptionMasterKey: {} as kms.Key
     }

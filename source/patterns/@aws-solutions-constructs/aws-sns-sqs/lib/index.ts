@@ -155,13 +155,14 @@ export interface SnsToSqsProps {
   readonly topicEncryptionKeyProps?: kms.KeyProps;
 }
 
-export interface ConstructKeys {
+export interface KeyConfiguration {
   readonly useDeprecatedInterface: boolean,
   readonly singleKey?: kms.Key,
   readonly topicKey?: kms.Key,
   readonly queueKey?: kms.Key,
   readonly encryptTopicWithCmk: boolean,
-  readonly encryptQueueWithCmk: boolean
+  readonly encryptQueueWithCmk: boolean,
+  readonly constructProps: sqs.QueueProps | any
 }
 
 /**
@@ -192,7 +193,7 @@ export class SnsToSqs extends Construct {
     defaults.CheckSqsProps(props);
     this.uniquePropChecks(props);
 
-    const activeKeys = SnsToSqs.createRequiredKeys(scope, id, props);
+    const activeKeys = SnsToSqs.configureKeys(scope, id, props);
     if (!activeKeys.useDeprecatedInterface) {
       this.queueEncryptionKey = activeKeys.queueKey;
       this.topicEncryptionKey = activeKeys.topicKey;
@@ -224,6 +225,7 @@ export class SnsToSqs extends Construct {
       maxReceiveCount: props.maxReceiveCount,
       enableEncryptionWithCustomerManagedKey: activeKeys.encryptQueueWithCmk,
       encryptionKey: activeKeys.queueKey,
+      constructQueueProps: activeKeys.constructProps
     });
     this.sqsQueue = buildQueueResponse.queue;
     this.deadLetterQueue = buildQueueResponse.dlq;
@@ -249,12 +251,13 @@ export class SnsToSqs extends Construct {
   *      and queueKey will ALWAYS be set, for the old interface they will be set to the same key as singleKey
   * -If the client provides no key info, this function will use the FeatureFlag to determine which interface to use
   */
-  public static createRequiredKeys(scope: Construct, id: string, props: SnsToSqsProps): ConstructKeys {
+  public static configureKeys(scope: Construct, id: string, props: SnsToSqsProps): KeyConfiguration {
     let topicKey: kms.Key | undefined;
     let encryptTopicWithCmk: boolean = false;
     let queueKey: kms.Key | undefined;
     let encryptQueueWithCmk: boolean = false;
     let singleKey: kms.Key | undefined;
+    let constructProps: Partial<sqs.QueueProps> = {};
 
     // First - confirm that only 1 interface is being used
     let useDeprecatedInterface: boolean = false;
@@ -324,7 +327,10 @@ export class SnsToSqs extends Construct {
       if (DoWeNeedACmk(props.existingQueueObj, props.queueProps?.encryptionMasterKey, props.encryptQueueWithCmk)) {
         queueKey = props.existingQueueEncryptionKey ?? buildEncryptionKey(scope, `${id}queue`, props.queueEncryptionKeyProps);
         encryptQueueWithCmk = true;
+      } else if (!props.queueProps?.encryptionMasterKey) {
+        constructProps = { encryption: sqs.QueueEncryption.SQS_MANAGED };
       }
+
     }
 
     return {
@@ -333,7 +339,8 @@ export class SnsToSqs extends Construct {
       topicKey,
       queueKey,
       encryptQueueWithCmk,
-      encryptTopicWithCmk
+      encryptTopicWithCmk,
+      constructProps
     };
   }
 
