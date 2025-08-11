@@ -55,6 +55,9 @@ const specApi = new apigateway.SpecRestApi(stack, 'SpecRestApi', {
             '200': {
               description: 'Success'
             }
+          },
+          "x-amazon-apigateway-auth": {
+            "type": "AWS_IAM"
           }
         }
       }
@@ -77,6 +80,10 @@ new CloudFrontToApiGateway(stack, 'test-cloudfront-apigateway', {
 });
 
 defaults.SuppressCfnNagLambdaWarnings(stack);
+
+const newStage = specApi.deploymentStage;
+defaults.addCfnSuppressRules(newStage, [{ id: "W64", reason: "Test Resource" }]);
+defaults.addCfnSuppressRules(newStage, [{ id: "W69", reason: "Test Resource" }]);
 
 defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 // Synth

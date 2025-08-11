@@ -150,6 +150,9 @@
          "200": {
           "description": "Success"
          }
+        },
+        "x-amazon-apigateway-auth": {
+         "type": "AWS_IAM"
         }
        }
       }
@@ -158,7 +161,7 @@
     "Name": "SpecRestApi"
    }
   },
-  "SpecRestApiDeployment33C0029A95c73403f845a35e86d05ddc2b5a92a2": {
+  "SpecRestApiDeployment33C0029Aef6a0d56ca5e7d88309ebf32f4553012": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Automatically created by the RestApi construct",
@@ -174,12 +177,26 @@
    "Type": "AWS::ApiGateway::Stage",
    "Properties": {
     "DeploymentId": {
-     "Ref": "SpecRestApiDeployment33C0029A95c73403f845a35e86d05ddc2b5a92a2"
+     "Ref": "SpecRestApiDeployment33C0029Aef6a0d56ca5e7d88309ebf32f4553012"
     },
     "RestApiId": {
      "Ref": "SpecRestApiB69335EA"
     },
     "StageName": "prod"
+   },
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W64",
+       "reason": "Test Resource"
+      },
+      {
+       "id": "W69",
+       "reason": "Test Resource"
+      }
+     ]
+    }
    }
   },
   "testcloudfrontapigatewaySetHttpSecurityHeadersD8DBA642": {

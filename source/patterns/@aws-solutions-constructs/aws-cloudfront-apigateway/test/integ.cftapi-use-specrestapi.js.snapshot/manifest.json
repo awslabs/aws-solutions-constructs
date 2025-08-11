@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b114ce2369f2073524a2bd9410362a76299736917042fa27255aea89f5742850.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0c03a9947910a0a43ebf112fc915b745b0bc8c87af750d53b5c1947c58111921.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -166,7 +166,7 @@
         "/cftapi-use-specrestapi/SpecRestApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "SpecRestApiDeployment33C0029A95c73403f845a35e86d05ddc2b5a92a2"
+            "data": "SpecRestApiDeployment33C0029Aef6a0d56ca5e7d88309ebf32f4553012"
           }
         ],
         "/cftapi-use-specrestapi/SpecRestApi/DeploymentStage.prod": [
@@ -336,6 +336,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "SpecRestApiDeployment33C0029A95c73403f845a35e86d05ddc2b5a92a2": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpecRestApiDeployment33C0029A95c73403f845a35e86d05ddc2b5a92a2",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },
