@@ -18,6 +18,6 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'text/plain' },
-      body: `Hello from Project Vesper! You've hit ${event.path}\n`
+      body: `Hello from AWS Solutions Constructs! You've hit ${event.path}\n`
     };
 };
