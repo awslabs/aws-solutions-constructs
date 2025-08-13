@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.91.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.90.4...v2.91.0) (2025-08-13)
+
+Built on CDK 2.210.0
+
+### Features
+
+* **aws-cloudfront-apigateway:** accomodate existing specrestapi ([#1385](https://github.com/awslabs/aws-solutions-constructs/issues/1385)) ([50d6f51](https://github.com/awslabs/aws-solutions-constructs/commit/50d6f51dd46db06e0b64117dfbaa4e11bc33f278))
+
+
+### Bug Fixes
+
+* **aws-lambda-bedrockinferenceprofile:** remove account number from model arn in a single region deployment ([#1390](https://github.com/awslabs/aws-solutions-constructs/issues/1390)) ([506d131](https://github.com/awslabs/aws-solutions-constructs/commit/506d131784b3cd4e38856f82c55f854403ea8567))
+* **aws-sns-sqs:** switch sns-sqs to use SQS_MANAGED key for queue ([#1384](https://github.com/awslabs/aws-solutions-constructs/issues/1384)) ([b4c1fb5](https://github.com/awslabs/aws-solutions-constructs/commit/b4c1fb58bccfc67ddaf761cbf0aea243257056f2))
+
 ## [2.90.4](https://github.com/awslabs/aws-solutions-constructs/compare/v2.90.3...v2.90.4) (2025-08-05)
 
 * docs: correct spelling of solutions in index.html ([a795a40](https://github.com/awslabs/aws-solutions-constructs/pull/1379/commits/a795a40b81e9d8b3188c6c1a087a2950b8325ad0))

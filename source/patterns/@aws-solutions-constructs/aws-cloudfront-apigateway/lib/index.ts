@@ -27,7 +27,7 @@ export interface CloudFrontToApiGatewayProps {
    *
    * @default - None
    */
-  readonly existingApiGatewayObj: api.RestApi,
+  readonly existingApiGatewayObj: api.RestApiBase,
   /**
    * Optional user provided props to override the default props
    *
@@ -65,7 +65,7 @@ export interface CloudFrontToApiGatewayProps {
 
 export class CloudFrontToApiGateway extends Construct {
   public readonly cloudFrontWebDistribution: cloudfront.Distribution;
-  public readonly apiGateway: api.RestApi;
+  public readonly apiGateway: api.RestApiBase;
   public readonly cloudFrontFunction?: cloudfront.Function;
   public readonly cloudFrontLoggingBucket?: s3.Bucket;
 

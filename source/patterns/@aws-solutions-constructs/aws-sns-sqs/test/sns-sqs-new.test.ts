@@ -51,6 +51,43 @@ test('Pattern deployment w/ new Topic, new Queue and default props', () => {
   });
 });
 
+test('Pattern deployment w/ new Topic, new Queue encrypted with SQS_MANAGED key', () => {
+  // Initial Setup
+  const stack = new Stack();
+  stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", true);
+
+  const props: SnsToSqsProps = {
+    encryptQueueWithCmk: false
+  };
+  const testConstruct = new SnsToSqs(stack, 'test-sns-sqs', props);
+
+  CheckKeyProperty(testConstruct.topicEncryptionKey, keyType.cmk);
+  CheckKeyProperty(testConstruct.encryptionKey, keyType.none);
+
+  expect(testConstruct.queueEncryptionKey).toBeUndefined();
+  expect(testConstruct.snsTopic).toBeDefined();
+  expect(testConstruct.sqsQueue).toBeDefined();
+  expect(testConstruct.queueEncryptionKey?.keyId).not.toEqual(testConstruct.topicEncryptionKey?.keyId);
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs("AWS::KMS::Key", 1);
+  template.resourceCountIs("AWS::SQS::Queue", 2);
+  template.resourceCountIs("AWS::SNS::Topic", 1);
+  template.resourceCountIs("AWS::SNS::Subscription", 1);
+
+  CheckTopicKeyType(template, keyType.cmk);
+
+  // Confirm queue uses SQS_MANAGED key
+  template.hasResourceProperties("AWS::SQS::Queue", {
+    SqsManagedSseEnabled: true,
+  });
+
+  // Confirm subscription has proper target
+  template.hasResourceProperties("AWS::SNS::Subscription", {
+    Protocol: "sqs",
+  });
+});
+
 test('Pattern deployment w/ new topic, new queue, and overridden props', () => {
   // Initial Setup
   const stack = new Stack();
@@ -242,6 +279,11 @@ test('Test deployment with SNS managed KMS key', () => {
     queueProps: {
       encryptionMasterKey: new kms.Key(stack, 'test-key', {}),
     },
+    // This could probably be considered a bug, this is the old interface and
+    // this test uses the new interface. Theoretically this should throw an error.
+    // But the scenario correctly uses the new interface and displays a message that
+    // this setting is ignored. To change it at this point would cause currently
+    // working code to not compile, which is not acceptable.
     enableEncryptionWithCustomerManagedKey: false
   });
 
@@ -303,68 +345,6 @@ test('Test deployment with CMK encrypted SNS Topic (avoids interface)', () => {
   template.hasResourceProperties("AWS::KMS::Key", {
     Description: testDescription
   });
-});
-
-test('Pattern deployment w/ existing topic and FIFO queue', () => {
-  // Initial Setup
-  const stack = new Stack();
-  stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", true);
-
-  const topic = new sns.Topic(stack, 'TestTopic', {
-    contentBasedDeduplication: true,
-    displayName: 'Customer subscription topic',
-    fifo: true,
-    topicName: 'customerTopic',
-  });
-
-  const props: SnsToSqsProps = {
-    encryptQueueWithCmk: false,
-    existingTopicObj: topic,
-    queueProps: {
-      fifo: true,
-    },
-    deadLetterQueueProps: {
-      encryption: sqs.QueueEncryption.UNENCRYPTED,
-      fifo: true,
-    }
-  };
-
-  const app = () => {
-    new SnsToSqs(stack, 'test-sns-sqs', props);
-  };
-
-  // Assertion
-  expect(app).toThrowError("SQS queue encrypted by AWS managed KMS key cannot be used as SNS subscription");
-});
-
-test('Pattern deployment w/ existing topic and Standard queue', () => {
-  // Initial Setup
-  const stack = new Stack();
-  stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", true);
-
-  const topic = new sns.Topic(stack, 'TestTopic', {
-    displayName: 'Customer subscription topic',
-    fifo: false,
-    topicName: 'customerTopic',
-  });
-
-  const props: SnsToSqsProps = {
-    encryptQueueWithCmk: false,
-    existingTopicObj: topic,
-    queueProps: {
-      fifo: false,
-    },
-    deadLetterQueueProps: {
-      encryption: sqs.QueueEncryption.UNENCRYPTED,
-      fifo: false,
-    }
-  };
-  const app = () => {
-    new SnsToSqs(stack, 'test-sns-sqs', props);
-  };
-
-  // Assertion
-  expect(app).toThrowError("SQS queue encrypted by AWS managed KMS key cannot be used as SNS subscription");
 });
 
 test('Check sqsSubscriptionProps are used', () => {
@@ -1015,7 +995,7 @@ test('test CreateRequiredKeys for no arguments', () => {
   const stack = new Stack();
   stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", true);
 
-  const result = SnsToSqs.createRequiredKeys(stack, 'test', {});
+  const result = SnsToSqs.configureKeys(stack, 'test', {});
 
   expect(result.useDeprecatedInterface).toBeFalsy();
   expect(result.encryptQueueWithCmk).toBeTruthy();
@@ -1029,7 +1009,7 @@ test('test CreateRequiredKeys when Topic is provided', () => {
   const stack = new Stack();
   stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", true);
 
-  const result = SnsToSqs.createRequiredKeys(stack, 'test', {
+  const result = SnsToSqs.configureKeys(stack, 'test', {
     existingTopicObj: {} as sns.Topic
   });
 
@@ -1045,7 +1025,7 @@ test('test CreateRequiredKeys when Queue is provided', () => {
   const stack = new Stack();
   stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", true);
 
-  const result = SnsToSqs.createRequiredKeys(stack, 'test', {
+  const result = SnsToSqs.configureKeys(stack, 'test', {
     existingQueueObj: {} as sqs.Queue
   });
 
@@ -1061,7 +1041,7 @@ test('test CreateRequiredKeys when Queue encryption is explicitly disabled', () 
   const stack = new Stack();
   stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", true);
 
-  const result = SnsToSqs.createRequiredKeys(stack, 'test', {
+  const result = SnsToSqs.configureKeys(stack, 'test', {
     encryptQueueWithCmk: false
   });
 
@@ -1077,7 +1057,7 @@ test('test CreateRequiredKeys when Topic encryption is explicitly disabled', () 
   const stack = new Stack();
   stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", true);
 
-  const result = SnsToSqs.createRequiredKeys(stack, 'test', {
+  const result = SnsToSqs.configureKeys(stack, 'test', {
     encryptTopicWithCmk: false
   });
 
@@ -1093,7 +1073,7 @@ test('test CreateRequiredKeys when Topic props have a key', () => {
   const stack = new Stack();
   stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", true);
 
-  const result = SnsToSqs.createRequiredKeys(stack, 'test', {
+  const result = SnsToSqs.configureKeys(stack, 'test', {
     topicProps: {
       masterKey: {} as kms.Key
     }
@@ -1111,7 +1091,7 @@ test('test CreateRequiredKeys when Queue props have a key', () => {
   const stack = new Stack();
   stack.node.setContext("@aws-cdk/aws-sns-subscriptions:restrictSqsDescryption", true);
 
-  const result = SnsToSqs.createRequiredKeys(stack, 'test', {
+  const result = SnsToSqs.configureKeys(stack, 'test', {
     queueProps: {
       encryptionMasterKey: {} as kms.Key
     }

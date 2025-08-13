@@ -78,7 +78,7 @@ export interface CloudFrontDistributionForApiGatewayResponse {
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
 export function CloudFrontDistributionForApiGateway(scope: Construct,
-  apiEndPoint: api.RestApi,
+  apiEndPoint: api.RestApiBase,
   cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   httpSecurityHeaders: boolean = true,
   cloudFrontLoggingBucketProps?: s3.BucketProps,
