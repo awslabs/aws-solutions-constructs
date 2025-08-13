@@ -175,11 +175,7 @@ test('Create single region Inference Profile', () => {
             {
               "Ref": "AWS::Region"
             },
-            ":",
-            {
-              "Ref": "AWS::AccountId"
-            },
-            ":foundation-model/amazon.nova-lite-v1:0"
+            "::foundation-model/amazon.nova-lite-v1:0"
           ]
         ]
       }

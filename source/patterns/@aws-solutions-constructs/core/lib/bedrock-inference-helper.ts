@@ -36,7 +36,7 @@ export function buildInferenceProfile(scope: Construct, id: string, props: Build
   const crossRegion = IsCrossRegionProfile(props.deployCrossRegionProfile);
   const inferenceSourceArn = crossRegion ?
     `arn:${cdk.Aws.PARTITION}:bedrock:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:inference-profile/${areaMap.mapping.findInMap(regionPrefix, "prefix")}.${props.bedrockModelId}` :
-    `arn:${cdk.Aws.PARTITION}:bedrock:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:foundation-model/${props.bedrockModelId}`;
+    `arn:${cdk.Aws.PARTITION}:bedrock:${cdk.Aws.REGION}::foundation-model/${props.bedrockModelId}`;
 
   const constructInferenceProps: bedrock.CfnApplicationInferenceProfileProps = {
     modelSource: {
