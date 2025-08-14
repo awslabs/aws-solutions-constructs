@@ -7,7 +7,7 @@
 :info_title: aws-sns-sqs
 
 
-image:https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
+image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-the-badge[Stability:Stable]
 
 ____
 All classes are under active development and subject to non-backward
@@ -179,7 +179,9 @@ for the SNS topic.
 |encryptTopicWithCmk |`boolean` |Whether to encrypt the Topic with a
 customer managed KMS key (CMK). This is the default behavior, and this
 property defaults to true - if it is explicitly set to false then the
-Topic is encrypted with an Amazon managed KMS key. For a completely
+Topic is encrypted using SQS_MANAGED encryption. NOTE - other constructs
+with SQS queues default to AWS managed KMS key encryption, but an SNS
+subscription does not work with that configuration. For a completely
 unencrypted Topic (not recommended), create the Topic separately from
 the construct and pass it in using the existingTopicObject.
 
