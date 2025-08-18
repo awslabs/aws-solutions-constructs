@@ -289,22 +289,7 @@ export class ApiGatewayToDynamoDB extends Construct {
     defaults.CheckDynamoDBProps(props);
     defaults.CheckApiProps(props);
 
-    if (this.CheckCreateRequestProps(props)) {
-      throw new Error(`The 'allowCreateOperation' property must be set to true when setting any of the following: ` +
-        `'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses'`);
-    }
-    if (this.CheckReadRequestProps(props)) {
-      throw new Error(`The 'allowReadOperation' property must be set to true or undefined when setting any of the following: ` +
-        `'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'`);
-    }
-    if (this.CheckUpdateRequestProps(props)) {
-      throw new Error(`The 'allowUpdateOperation' property must be set to true when setting any of the following: ` +
-        `'updateRequestTemplate', 'additionalUpdateRequestTemplates', 'updateIntegrationResponses'`);
-    }
-    if (this.CheckDeleteRequestProps(props)) {
-      throw new Error(`The 'allowDeleteOperation' property must be set to true when setting any of the following: ` +
-        `'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'`);
-    }
+    this.CheckAllResutsProps(props);
 
     // Set the default props for DynamoDB table
     const dynamoTableProps: dynamodb.TableProps = defaults.consolidateProps(
@@ -343,71 +328,29 @@ export class ApiGatewayToDynamoDB extends Construct {
 
     // Setup API Gateway Method
     // Create
-    if (this.ImplementCreateOperation(props)) {
-      // ImplementCreateOperation has confirmed that createRequestTemplate exists)
-      const createRequestTemplate = props.createRequestTemplate!.replace("${Table}", this.dynamoTable.tableName);
-      this.addActionToPolicy("dynamodb:PutItem");
-      const createMethodOptions: api.MethodOptions = props.createMethodResponses ? { methodResponses: props.createMethodResponses } : {};
-      defaults.addProxyMethodToApiResource({
-        service: "dynamodb",
-        action: "PutItem",
-        apiGatewayRole: this.apiGatewayRole,
-        apiMethod: "POST",
-        apiResource: this.apiGateway.root,
-        requestTemplate: createRequestTemplate,
-        additionalRequestTemplates: props.additionalCreateRequestTemplates,
-        integrationResponses: props.createIntegrationResponses,
-        methodOptions: createMethodOptions
-      });
+    if (this.CreateOperationRequired(props)) {
+      this.ImplementCreateOperation(props);
     }
     // Read
-    if (this.ImplementReaOperation(props)) {
-      const readRequestTemplate = props.readRequestTemplate ??
-        `{ \
-          "TableName": "${this.dynamoTable.tableName}", \
-          "KeyConditionExpression": "${partitionKeyName} = :v1", \
-          "ExpressionAttributeValues": { \
-            ":v1": { \
-              "S": "$input.params('${resourceName}')" \
-            } \
-          } \
-        }`;
-
-      this.addActionToPolicy("dynamodb:Query");
-      const readMethodOptions: api.MethodOptions = props.readMethodResponses ? { methodResponses: props.readMethodResponses } : {};
-      defaults.addProxyMethodToApiResource({
-        service: "dynamodb",
-        action: "Query",
-        apiGatewayRole: this.apiGatewayRole,
-        apiMethod: "GET",
-        apiResource: apiGatewayResource,
-        requestTemplate: readRequestTemplate,
-        additionalRequestTemplates: props.additionalReadRequestTemplates,
-        integrationResponses: props.readIntegrationResponses,
-        methodOptions: readMethodOptions
-      });
+    if (this.ReadOperationRequired(props)) {
+      this.ImplementReadOperation(props, partitionKeyName, resourceName, apiGatewayResource);
     }
     // Update
-    if (this.ImplementUpdateOperation(props)) {
-      // ImplementUpdateOperation confirmed the existence of updateRequestTemplate
-      const updateRequestTemplate = props.updateRequestTemplate!.replace("${Table}", this.dynamoTable.tableName);
-      this.addActionToPolicy("dynamodb:UpdateItem");
-      const updateMethodOptions: api.MethodOptions = props.updateMethodResponses ? { methodResponses: props.updateMethodResponses } : {};
-      defaults.addProxyMethodToApiResource({
-        service: "dynamodb",
-        action: "UpdateItem",
-        apiGatewayRole: this.apiGatewayRole,
-        apiMethod: "PUT",
-        apiResource: apiGatewayResource,
-        requestTemplate: updateRequestTemplate,
-        additionalRequestTemplates: props.additionalUpdateRequestTemplates,
-        integrationResponses: props.updateIntegrationResponses,
-        methodOptions: updateMethodOptions
-      });
+    if (this.UpdateOperationRequired(props)) {
+      this.ImplementUpdateOperation(props, apiGatewayResource);
     }
     // Delete
-    if (this.ImplementDeleteOperation(props)) {
-      const deleteRequestTemplate = props.deleteRequestTemplate ??
+    if (this.DeleteOperationRequired(props)) {
+      this.ImplementDeleteOperation(props, partitionKeyName, resourceName, apiGatewayResource);
+    }
+  }
+
+  private ImplementDeleteOperation(props: ApiGatewayToDynamoDBProps,
+                                    partitionKeyName: string,
+                                    resourceName: string,
+                                    apiGatewayResource:
+                                    api.Resource): void {
+    const deleteRequestTemplate = props.deleteRequestTemplate ??
         `{ \
           "TableName": "${this.dynamoTable.tableName}", \
           "Key": { \
@@ -418,19 +361,103 @@ export class ApiGatewayToDynamoDB extends Construct {
           "ReturnValues": "ALL_OLD" \
         }`;
 
-      this.addActionToPolicy("dynamodb:DeleteItem");
-      const deleteMethodOptions: api.MethodOptions = props.deleteMethodResponses ? { methodResponses: props.deleteMethodResponses } : {};
-      defaults.addProxyMethodToApiResource({
-        service: "dynamodb",
-        action: "DeleteItem",
-        apiGatewayRole: this.apiGatewayRole,
-        apiMethod: "DELETE",
-        apiResource: apiGatewayResource,
-        requestTemplate: deleteRequestTemplate,
-        additionalRequestTemplates: props.additionalDeleteRequestTemplates,
-        integrationResponses: props.deleteIntegrationResponses,
-        methodOptions: deleteMethodOptions
-      });
+    this.addActionToPolicy("dynamodb:DeleteItem");
+    const deleteMethodOptions: api.MethodOptions = props.deleteMethodResponses ? { methodResponses: props.deleteMethodResponses } : {};
+    defaults.addProxyMethodToApiResource({
+      service: "dynamodb",
+      action: "DeleteItem",
+      apiGatewayRole: this.apiGatewayRole,
+      apiMethod: "DELETE",
+      apiResource: apiGatewayResource,
+      requestTemplate: deleteRequestTemplate,
+      additionalRequestTemplates: props.additionalDeleteRequestTemplates,
+      integrationResponses: props.deleteIntegrationResponses,
+      methodOptions: deleteMethodOptions
+    });
+  }
+
+  private ImplementUpdateOperation(props: ApiGatewayToDynamoDBProps, apiGatewayResource: api.Resource): void {
+    // ImplementUpdateOperation confirmed the existence of updateRequestTemplate
+    const updateRequestTemplate = props.updateRequestTemplate!.replace("${Table}", this.dynamoTable.tableName);
+    this.addActionToPolicy("dynamodb:UpdateItem");
+    const updateMethodOptions: api.MethodOptions = props.updateMethodResponses ? { methodResponses: props.updateMethodResponses } : {};
+    defaults.addProxyMethodToApiResource({
+      service: "dynamodb",
+      action: "UpdateItem",
+      apiGatewayRole: this.apiGatewayRole,
+      apiMethod: "PUT",
+      apiResource: apiGatewayResource,
+      requestTemplate: updateRequestTemplate,
+      additionalRequestTemplates: props.additionalUpdateRequestTemplates,
+      integrationResponses: props.updateIntegrationResponses,
+      methodOptions: updateMethodOptions
+    });
+  }
+
+  private ImplementReadOperation(props: ApiGatewayToDynamoDBProps,
+                                  partitionKeyName: string,
+                                  resourceName: string,
+                                  apiGatewayResource: api.Resource): void {
+    const readRequestTemplate = props.readRequestTemplate ??
+        `{ \
+          "TableName": "${this.dynamoTable.tableName}", \
+          "KeyConditionExpression": "${partitionKeyName} = :v1", \
+          "ExpressionAttributeValues": { \
+            ":v1": { \
+              "S": "$input.params('${resourceName}')" \
+            } \
+          } \
+        }`;
+
+    this.addActionToPolicy("dynamodb:Query");
+    const readMethodOptions: api.MethodOptions = props.readMethodResponses ? { methodResponses: props.readMethodResponses } : {};
+    defaults.addProxyMethodToApiResource({
+      service: "dynamodb",
+      action: "Query",
+      apiGatewayRole: this.apiGatewayRole,
+      apiMethod: "GET",
+      apiResource: apiGatewayResource,
+      requestTemplate: readRequestTemplate,
+      additionalRequestTemplates: props.additionalReadRequestTemplates,
+      integrationResponses: props.readIntegrationResponses,
+      methodOptions: readMethodOptions
+    });
+  }
+
+  private ImplementCreateOperation(props: ApiGatewayToDynamoDBProps): void {
+    // ImplementCreateOperation has confirmed that createRequestTemplate exists)
+    const createRequestTemplate = props.createRequestTemplate!.replace("${Table}", this.dynamoTable.tableName);
+    this.addActionToPolicy("dynamodb:PutItem");
+    const createMethodOptions: api.MethodOptions = props.createMethodResponses ? { methodResponses: props.createMethodResponses } : {};
+    defaults.addProxyMethodToApiResource({
+      service: "dynamodb",
+      action: "PutItem",
+      apiGatewayRole: this.apiGatewayRole,
+      apiMethod: "POST",
+      apiResource: this.apiGateway.root,
+      requestTemplate: createRequestTemplate,
+      additionalRequestTemplates: props.additionalCreateRequestTemplates,
+      integrationResponses: props.createIntegrationResponses,
+      methodOptions: createMethodOptions
+    });
+  }
+
+  private CheckAllResutsProps(props: ApiGatewayToDynamoDBProps): void {
+    if (this.CheckCreateRequestProps(props)) {
+      throw new Error(`The 'allowCreateOperation' property must be set to true when setting any of the following: ` +
+        `'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses'`);
+    }
+    if (this.CheckReadRequestProps(props)) {
+      throw new Error(`The 'allowReadOperation' property must be set to true or undefined when setting any of the following: ` +
+        `'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'`);
+    }
+    if (this.CheckUpdateRequestProps(props)) {
+      throw new Error(`The 'allowUpdateOperation' property must be set to true when setting any of the following: ` +
+        `'updateRequestTemplate', 'additionalUpdateRequestTemplates', 'updateIntegrationResponses'`);
+    }
+    if (this.CheckDeleteRequestProps(props)) {
+      throw new Error(`The 'allowDeleteOperation' property must be set to true when setting any of the following: ` +
+        `'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'`);
     }
   }
 
@@ -464,28 +491,28 @@ export class ApiGatewayToDynamoDB extends Construct {
     return false;
   }
 
-  private ImplementCreateOperation(props: ApiGatewayToDynamoDBProps): boolean {
+  private CreateOperationRequired(props: ApiGatewayToDynamoDBProps): boolean {
     if (props.allowCreateOperation && props.allowCreateOperation === true && props.createRequestTemplate) {
       return true;
     }
     return false;
   }
 
-  private ImplementReaOperation(props: ApiGatewayToDynamoDBProps): boolean {
+  private ReadOperationRequired(props: ApiGatewayToDynamoDBProps): boolean {
     if (props.allowReadOperation === undefined || props.allowReadOperation === true) {
       return true;
     }
     return false;
   }
 
-  private ImplementUpdateOperation(props: ApiGatewayToDynamoDBProps): boolean {
+  private UpdateOperationRequired(props: ApiGatewayToDynamoDBProps): boolean {
     if (props.allowUpdateOperation && props.allowUpdateOperation === true && props.updateRequestTemplate) {
       return true;
     }
     return false;
   }
 
-  private ImplementDeleteOperation(props: ApiGatewayToDynamoDBProps): boolean {
+  private DeleteOperationRequired(props: ApiGatewayToDynamoDBProps): boolean {
     if (props.allowDeleteOperation && props.allowDeleteOperation === true) {
       return true;
     }
