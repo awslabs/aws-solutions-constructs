@@ -441,7 +441,7 @@ test('test getPartitionKeyNameFromTable()', () => {
   expect(testKeyName).toEqual(partitionKeyName);
 });
 
-test('Test that PointInTimeRecovery is not set when PointInTimeRecoverySpecification is provided', () => {
+test('Test that PointInTimeRecoverySpecification is not set when PointInTimeRecovery is provided', () => {
   const defaultProps: dynamodb.TableProps = defaults.GetDefaultTableProps({
     partitionKey: {
       name: 'donotuse',
@@ -463,7 +463,7 @@ test('Test that PointInTimeRecovery is not set when PointInTimeRecoverySpecifica
   expect(moreDefaultProps.pointInTimeRecoverySpecification).toBeDefined();
 });
 
-test('Test that PointInTimeRecovery is not set when PointInTimeRecoverySpecification is provided for table with stream', () => {
+test('Test that PointInTimeRecoverySpecification is not set when PointInTimeRecovery is provided for table with stream', () => {
   const defaultProps: dynamodb.TableProps = defaults.GetDefaultTableWithStreamProps({
     partitionKey: {
       name: 'donotuse',
@@ -542,9 +542,15 @@ test('Test fail DynamoDB table check (for interface AND obj)', () => {
 
 test('Test fail DynamoDB pointInTimeRecoverySpecification and pointInTimeRecovery both specified', () => {
   const props: defaults.DynamoDBProps = {
-    pointInTimeRecovery: true,
-    pointInTimeRecoverySpecification: {
-      pointInTimeRecoveryEnabled: true
+    dynamoTableProps: {
+      partitionKey: {
+        name: 'table_id',
+        type: dynamodb.AttributeType.STRING
+      },
+      pointInTimeRecovery: true,
+      pointInTimeRecoverySpecification: {
+        pointInTimeRecoveryEnabled: true
+      }
     }
   };
 
