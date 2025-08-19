@@ -11,8 +11,6 @@
  *  and limitations under the License.
  */
 
-// import * as pipes from 'aws-cdk-lib/aws-pipes';
-
 export function defaultPipesProps(): any {
   return {};
 }

@@ -104,11 +104,27 @@ export function CheckOpenApiProps(props: OpenApiProps) {
     errorFound = true;
   }
 
-  if (props.apiIntegrations === undefined || props.apiIntegrations.length < 1) {
+  const integrationValidation = validateApiIntegrations(props.apiIntegrations);
+  if (integrationValidation.errorFound) {
+    errorMessages += integrationValidation.errorMessages;
+    errorFound = true;
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+
+}
+
+function validateApiIntegrations(apiIntegrations: ApiIntegration[]): { errorFound: boolean; errorMessages: string } {
+  let errorMessages = '';
+  let errorFound = false;
+
+  if (apiIntegrations === undefined || apiIntegrations.length < 1) {
     errorMessages += 'At least one ApiIntegration must be specified in the apiIntegrations property\n';
     errorFound = true;
   } else {
-    props.apiIntegrations.forEach((apiIntegration: ApiIntegration) => {
+    apiIntegrations.forEach((apiIntegration: ApiIntegration) => {
       if (!apiIntegration.id) {
         errorMessages += 'Each ApiIntegration must have a non-empty id property\n';
         errorFound = true;
@@ -123,10 +139,7 @@ export function CheckOpenApiProps(props: OpenApiProps) {
     });
   }
 
-  if (errorFound) {
-    throw new Error(errorMessages);
-  }
-
+  return { errorFound, errorMessages };
 }
 
 export interface ObtainApiDefinitionProps {
@@ -187,7 +200,7 @@ export function ObtainApiDefinition(scope: Construct, props: ObtainApiDefinition
     throw new Error("No definition provided (this code should be unreachable)");
   }
 
-  return newApiDefinition!;
+  return newApiDefinition;
 }
 
 function InlineTemplateWriter(rawInlineSpec: any, templateValues: resources.TemplateValue[]) {
