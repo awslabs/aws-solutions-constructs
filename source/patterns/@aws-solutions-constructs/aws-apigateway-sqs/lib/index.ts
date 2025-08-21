@@ -286,18 +286,7 @@ export class ApiGatewayToSqs extends Construct {
     defaults.CheckSqsProps(props);
     defaults.CheckApiProps(props);
 
-    if (this.CheckCreateRequestProps(props)) {
-      throw new Error(`The 'allowCreateOperation' property must be set to true when setting any of the following: ` +
-        `'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses', 'messageSchema'`);
-    }
-    if (this.CheckReadRequestProps(props)) {
-      throw new Error(`The 'allowReadOperation' property must be set to true or undefined when setting any of the following: ` +
-        `'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'`);
-    }
-    if (this.CheckDeleteRequestProps(props)) {
-      throw new Error(`The 'allowDeleteOperation' property must be set to true when setting any of the following: ` +
-        `'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'`);
-    }
+    this.CheckAllRequestProps(props);
 
     // Setup the queue
     const buildQueueResponse = defaults.buildQueue(this, 'queue', {
@@ -326,7 +315,7 @@ export class ApiGatewayToSqs extends Construct {
 
     // Create
     const createRequestTemplate = props.createRequestTemplate ?? this.defaultCreateRequestTemplate;
-    if (props.allowCreateOperation && props.allowCreateOperation === true) {
+    if (defaults.CheckBooleanWithDefault(props.allowCreateOperation, false)) {
       let createMethodOptions: api.MethodOptions = {};
 
       // If the client supplied model definitions, set requestModels
@@ -374,7 +363,7 @@ export class ApiGatewayToSqs extends Construct {
     // Read
     const readRequestTemplate = props.readRequestTemplate ?? this.defaultReadRequestTemplate;
     const readMethodOptions: api.MethodOptions = props.readMethodResponses ? { methodResponses: props.readMethodResponses } : {};
-    if (props.allowReadOperation === undefined || props.allowReadOperation === true) {
+    if (defaults.CheckBooleanWithDefault(props.allowReadOperation, true)) {
       this.addActionToPolicy("sqs:ReceiveMessage");
       defaults.addProxyMethodToApiResource({
         service: "sqs",
@@ -393,7 +382,7 @@ export class ApiGatewayToSqs extends Construct {
     // Delete
     const deleteRequestTemplate = props.deleteRequestTemplate ?? this.defaultDeleteRequestTemplate;
     const deleteMethodOptions: api.MethodOptions = props.deleteMethodResponses ? { methodResponses: props.deleteMethodResponses } : {};
-    if (props.allowDeleteOperation && props.allowDeleteOperation === true) {
+    if (defaults.CheckBooleanWithDefault(props.allowDeleteOperation, false)) {
       const apiGatewayResource = this.apiGateway.root.addResource('message');
       this.addActionToPolicy("sqs:DeleteMessage");
       defaults.addProxyMethodToApiResource({
@@ -410,6 +399,22 @@ export class ApiGatewayToSqs extends Construct {
       });
     }
   }
+
+  private CheckAllRequestProps(props: ApiGatewayToSqsProps): void {
+    if (this.CheckCreateRequestProps(props)) {
+      throw new Error(`The 'allowCreateOperation' property must be set to true when setting any of the following: ` +
+        `'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses', 'messageSchema'`);
+    }
+    if (this.CheckReadRequestProps(props)) {
+      throw new Error(`The 'allowReadOperation' property must be set to true or undefined when setting any of the following: ` +
+        `'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'`);
+    }
+    if (this.CheckDeleteRequestProps(props)) {
+      throw new Error(`The 'allowDeleteOperation' property must be set to true when setting any of the following: ` +
+        `'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'`);
+    }
+  }
+
   private CheckReadRequestProps(props: ApiGatewayToSqsProps): boolean {
     if ((props.readRequestTemplate || props.additionalReadRequestTemplates || props.readIntegrationResponses)
       && props.allowReadOperation === false) {

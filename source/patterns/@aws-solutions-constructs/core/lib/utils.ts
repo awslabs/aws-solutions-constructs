@@ -352,7 +352,7 @@ export function CheckBooleanWithDefault(value: boolean | undefined, defaultValue
   if (value === undefined) {
     return defaultValue;
   } else {
-    return value;
+    return value as boolean;
   }
 }
 
@@ -360,6 +360,6 @@ export function CheckStringWithDefault(value: string | undefined, defaultValue: 
   if (value === undefined) {
     return defaultValue;
   } else {
-    return value;
+    return value as string;
   }
 }

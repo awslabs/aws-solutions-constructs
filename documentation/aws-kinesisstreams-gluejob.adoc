@@ -7,7 +7,7 @@
 :info_title: aws-kinesisstreams-gluejob
 
 
-image:https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
+image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-the-badge[Stability:Stable]
 
 ____
 All classes are under active development and subject to non-backward
@@ -130,7 +130,7 @@ Kinesis stream.
 |Existing instance of AWS Glue Table. If this is set, tableProps and
 fieldSchema are ignored.
 
-StableProps?
+|tableProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_glue.TableProps.html[`CfnTableProps`]
 |User provided AWS Glue Table props to override default props used to
 create a Glue Table.
@@ -213,7 +213,7 @@ Glue Job.
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_glue.CfnDatabase.html[`CfnDatabase`]
 |Returns an instance of AWS Glue Database created by the construct.
 
-Stable
+|table
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_glue.CfnTable.html[`CfnTable`]
 |Returns an instance of the AWS Glue Table created by the construct
 

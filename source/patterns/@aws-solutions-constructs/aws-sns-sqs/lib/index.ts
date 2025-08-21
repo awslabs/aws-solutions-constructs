@@ -251,21 +251,85 @@ export class SnsToSqs extends Construct {
   *      and queueKey will ALWAYS be set, for the old interface they will be set to the same key as singleKey
   * -If the client provides no key info, this function will use the FeatureFlag to determine which interface to use
   */
-  public static configureKeys(scope: Construct, id: string, props: SnsToSqsProps): KeyConfiguration {
+  private static CreateRequiredKeysForCurrentInterface(scope: Construct, id: string, props: SnsToSqsProps): {
+    topicKey: kms.Key | undefined;
+    queueKey: kms.Key | undefined;
+    encryptTopicWithCmk: boolean;
+    encryptQueueWithCmk: boolean;
+    constructProps: Partial<sqs.QueueProps>;
+  } {
+    if (props.queueProps?.encryption) {
+      throw new Error('The new interface of SnsToSqs does not support managing encryption using the queueProps.encryption setting. ' +
+        'To use a totally unencrypted queue (not recommended), create the queue separately and pass in the existingQueueObj prop'
+      );
+    }
+
     let topicKey: kms.Key | undefined;
-    let encryptTopicWithCmk: boolean = false;
     let queueKey: kms.Key | undefined;
+    let encryptTopicWithCmk: boolean = false;
     let encryptQueueWithCmk: boolean = false;
-    let singleKey: kms.Key | undefined;
     let constructProps: Partial<sqs.QueueProps> = {};
 
-    // First - confirm that only 1 interface is being used
+    if (DoWeNeedACmk(props.existingTopicObj, props.topicProps?.masterKey, props.encryptTopicWithCmk)) {
+      topicKey = props.existingTopicEncryptionKey ?? buildEncryptionKey(scope, `${id}topic`, props.topicEncryptionKeyProps);
+      encryptTopicWithCmk = true;
+    }
+
+    if (DoWeNeedACmk(props.existingQueueObj, props.queueProps?.encryptionMasterKey, props.encryptQueueWithCmk)) {
+      queueKey = props.existingQueueEncryptionKey ?? buildEncryptionKey(scope, `${id}queue`, props.queueEncryptionKeyProps);
+      encryptQueueWithCmk = true;
+    } else if (!props.queueProps?.encryptionMasterKey) {
+      constructProps = { encryption: sqs.QueueEncryption.SQS_MANAGED };
+    }
+
+    return {
+      topicKey,
+      queueKey,
+      encryptTopicWithCmk,
+      encryptQueueWithCmk,
+      constructProps
+    };
+  }
+
+  private static CreateRequiredKeysForDeprecatedInterface(scope: Construct, id: string, props: SnsToSqsProps): {
+    singleKey: kms.Key | undefined;
+    topicKey: kms.Key | undefined;
+    queueKey: kms.Key | undefined;
+    encryptQueueWithCmk: boolean;
+    encryptTopicWithCmk: boolean;
+  } {
+    const queueKeyNeeded =
+      DoWeNeedACmk(props.existingQueueObj, props.queueProps?.encryptionMasterKey, props.enableEncryptionWithCustomerManagedKey);
+    const topicKeyNeeded =
+      DoWeNeedACmk(props.existingTopicObj, props.topicProps?.masterKey, props.enableEncryptionWithCustomerManagedKey);
+
+    let singleKey: kms.Key | undefined;
+    let topicKey: kms.Key | undefined;
+    let queueKey: kms.Key | undefined;
+
+    if (queueKeyNeeded || topicKeyNeeded) {
+      // We need to encrypt the resources with a single key
+      singleKey = props.encryptionKey ?? buildEncryptionKey(scope, id, props.encryptionKeyProps);
+      topicKey = topicKeyNeeded ? singleKey : undefined;
+      queueKey = queueKeyNeeded ? singleKey : undefined;
+    }
+
+    return {
+      singleKey,
+      topicKey,
+      queueKey,
+      encryptQueueWithCmk: queueKeyNeeded,
+      encryptTopicWithCmk: topicKeyNeeded
+    };
+  }
+
+  private static chooseInterfaceBasedOnArguments(props: SnsToSqsProps): { useDeprecatedInterface: boolean; useCurrentInterface: boolean } {
     let useDeprecatedInterface: boolean = false;
     let useCurrentInterface: boolean = false;
-    if (props.enableEncryptionWithCustomerManagedKey || props.enableEncryptionWithCustomerManagedKey || props.encryptionKeyProps) {
+    if (props.enableEncryptionWithCustomerManagedKey || props.encryptionKey || props.encryptionKeyProps) {
       useDeprecatedInterface = true;
       defaults.printWarning(
-        'The enableEncryptionWithCustomerManagedKey, enableEncryptionWithCustomerManagedKey and encryptionKeyProps props values for SnsToSqsProps ' +
+        'The enableEncryptionWithCustomerManagedKey, encryptionKey, and encryptionKeyProps props values for SnsToSqsProps ' +
         'are deprecated. Consider moving to encryptQueueWithCmk, queueEncryptionKeyProps, existingQueueEncryptionKey, encryptTopicWithCmk, ' +
         'topicEncryptionKeyProps and existingTopicEncryptionKey.'
       );
@@ -281,6 +345,19 @@ export class SnsToSqs extends Construct {
     if (useCurrentInterface && useDeprecatedInterface) {
       throw new Error('Cannot specify both deprecated key props and new key props');
     }
+    return { useDeprecatedInterface, useCurrentInterface };
+  }
+
+  public static configureKeys(scope: Construct, id: string, props: SnsToSqsProps): KeyConfiguration {
+    let topicKey: kms.Key | undefined;
+    let encryptTopicWithCmk: boolean = false;
+    let queueKey: kms.Key | undefined;
+    let encryptQueueWithCmk: boolean = false;
+    let singleKey: kms.Key | undefined;
+    let constructProps: Partial<sqs.QueueProps> = {};
+
+    // First - confirm that only 1 interface is being used
+    let { useDeprecatedInterface, useCurrentInterface } = SnsToSqs.chooseInterfaceBasedOnArguments(props);
 
     // If neither are set, use the feature flag choose the functionality
     if (!useCurrentInterface && !useDeprecatedInterface) {
@@ -293,44 +370,22 @@ export class SnsToSqs extends Construct {
     }
 
     // If Deprecated functionality
-    // Use code from above to create single key
     if (useDeprecatedInterface) {
-      const queueKeyNeeded =
-        DoWeNeedACmk(props.existingQueueObj, props.queueProps?.encryptionMasterKey, props.enableEncryptionWithCustomerManagedKey);
-      const topicKeyNeeded =
-        DoWeNeedACmk(props.existingTopicObj, props.topicProps?.masterKey, props.enableEncryptionWithCustomerManagedKey);
-
-      if (queueKeyNeeded || topicKeyNeeded) {
-
-        // We need to encrypt the resources with a single key
-        singleKey = props.encryptionKey ?? buildEncryptionKey(scope, id, props.encryptionKeyProps);
-        topicKey = topicKeyNeeded ? singleKey : undefined;
-        queueKey = queueKeyNeeded ? singleKey : undefined;
-        encryptQueueWithCmk = queueKeyNeeded;
-        encryptTopicWithCmk = topicKeyNeeded;
-      }
+      const deprecatedKeys = SnsToSqs.CreateRequiredKeysForDeprecatedInterface(scope, id, props);
+      singleKey = deprecatedKeys.singleKey;
+      topicKey = deprecatedKeys.topicKey;
+      queueKey = deprecatedKeys.queueKey;
+      encryptQueueWithCmk = deprecatedKeys.encryptQueueWithCmk;
+      encryptTopicWithCmk = deprecatedKeys.encryptTopicWithCmk;
     }
 
     if (useCurrentInterface) {
-
-      if (props.queueProps?.encryption) {
-        throw new Error('The new interface of SnsToSqs does not support managing encryption using the queueProps.encryption setting. ' +
-          'To use a totally unencrypted queue (not recommended), create the queue separately and pass in the existingQueueObj prop'
-        );
-      }
-
-      if (DoWeNeedACmk(props.existingTopicObj, props.topicProps?.masterKey, props.encryptTopicWithCmk)) {
-        topicKey = props.existingTopicEncryptionKey ?? buildEncryptionKey(scope, `${id}topic`, props.topicEncryptionKeyProps);
-        encryptTopicWithCmk = true;
-      }
-
-      if (DoWeNeedACmk(props.existingQueueObj, props.queueProps?.encryptionMasterKey, props.encryptQueueWithCmk)) {
-        queueKey = props.existingQueueEncryptionKey ?? buildEncryptionKey(scope, `${id}queue`, props.queueEncryptionKeyProps);
-        encryptQueueWithCmk = true;
-      } else if (!props.queueProps?.encryptionMasterKey) {
-        constructProps = { encryption: sqs.QueueEncryption.SQS_MANAGED };
-      }
-
+      const currentKeys = SnsToSqs.CreateRequiredKeysForCurrentInterface(scope, id, props);
+      topicKey = currentKeys.topicKey;
+      queueKey = currentKeys.queueKey;
+      encryptTopicWithCmk = currentKeys.encryptTopicWithCmk;
+      encryptQueueWithCmk = currentKeys.encryptQueueWithCmk;
+      constructProps = currentKeys.constructProps;
     }
 
     return {
