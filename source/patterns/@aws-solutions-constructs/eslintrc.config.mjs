@@ -34,8 +34,8 @@ export default [
         format: ["PascalCase"],
         leadingUnderscore: "forbid",
         trailingUnderscore: "forbid"
-      }],
-      "@typescript-eslint/naming-convention": ["error", {
+      },
+      {
         selector: ["variable", "parameter"],
         format: ["camelCase", "UPPER_CASE"],
         leadingUnderscore: "forbid",
