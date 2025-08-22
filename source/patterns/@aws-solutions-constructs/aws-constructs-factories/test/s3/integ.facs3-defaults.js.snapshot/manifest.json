@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a224a72c637a9da9474b2b5abbe4119dedf3a2ae7129dc6bc94b76e6110c687c.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b0d725fa9063557ca8c85def553a8e2c07a7d79a4b991f3379370759afc91150.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -185,12 +185,6 @@
             "data": "integtesttestS3BucketPolicy54E2DE38"
           }
         ],
-        "/facs3-defaults/LatestNodeRuntimeMap": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LatestNodeRuntimeMap"
-          }
-        ],
         "/facs3-defaults/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -235,19 +229,9 @@
       "properties": {
         "module": "aws-cdk-lib",
         "flags": {
-          "@aws-cdk/core:enableStackNameDuplicates": {
+          "@aws-cdk/aws-signer:signingProfileNamePassedToCfn": {
             "recommendedValue": true,
-            "explanation": "Allow multiple stacks with the same name",
-            "unconfiguredBehavesLike": {
-              "v2": true
-            }
-          },
-          "aws-cdk:enableDiffNoFail": {
-            "recommendedValue": true,
-            "explanation": "Make `cdk diff` not fail when there are differences",
-            "unconfiguredBehavesLike": {
-              "v2": true
-            }
+            "explanation": "Pass signingProfileName to CfnSigningProfile"
           },
           "@aws-cdk/core:newStyleStackSynthesis": {
             "recommendedValue": true,
@@ -263,41 +247,6 @@
               "v2": true
             }
           },
-          "@aws-cdk/aws-ecr-assets:dockerIgnoreSupport": {
-            "recommendedValue": true,
-            "explanation": "DockerImageAsset properly supports `.dockerignore` files by default",
-            "unconfiguredBehavesLike": {
-              "v2": true
-            }
-          },
-          "@aws-cdk/aws-secretsmanager:parseOwnedSecretName": {
-            "recommendedValue": true,
-            "explanation": "Fix the referencing of SecretsManager names from ARNs",
-            "unconfiguredBehavesLike": {
-              "v2": true
-            }
-          },
-          "@aws-cdk/aws-kms:defaultKeyPolicies": {
-            "recommendedValue": true,
-            "explanation": "Tighten default KMS key policies",
-            "unconfiguredBehavesLike": {
-              "v2": true
-            }
-          },
-          "@aws-cdk/aws-s3:grantWriteWithoutAcl": {
-            "recommendedValue": true,
-            "explanation": "Remove `PutObjectAcl` from Bucket.grantWrite",
-            "unconfiguredBehavesLike": {
-              "v2": true
-            }
-          },
-          "@aws-cdk/aws-ecs-patterns:removeDefaultDesiredCount": {
-            "recommendedValue": true,
-            "explanation": "Do not specify a default DesiredCount for ECS services",
-            "unconfiguredBehavesLike": {
-              "v2": true
-            }
-          },
           "@aws-cdk/aws-rds:lowercaseDbIdentifier": {
             "recommendedValue": true,
             "explanation": "Force lowercasing of RDS Cluster names in CDK",
@@ -308,13 +257,6 @@
           "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": {
             "recommendedValue": true,
             "explanation": "Allow adding/removing multiple UsagePlanKeys independently",
-            "unconfiguredBehavesLike": {
-              "v2": true
-            }
-          },
-          "@aws-cdk/aws-efs:defaultEncryptionAtRest": {
-            "recommendedValue": true,
-            "explanation": "Enable this feature flag to have elastic file systems encrypted at rest by default.",
             "unconfiguredBehavesLike": {
               "v2": true
             }
@@ -715,10 +657,7 @@
           },
           "@aws-cdk/cognito:logUserPoolClientSecretValue": {
             "recommendedValue": false,
-            "explanation": "When disabled, the value of the user pool client secret will not be logged in the custom resource lambda function logs.",
-            "unconfiguredBehavesLike": {
-              "v2": false
-            }
+            "explanation": "When disabled, the value of the user pool client secret will not be logged in the custom resource lambda function logs."
           },
           "@aws-cdk/pipelines:reduceCrossAccountActionRoleTrustScope": {
             "recommendedValue": true,
@@ -744,10 +683,7 @@
           },
           "@aws-cdk/aws-ec2-alpha:useResourceIdForVpcV2Migration": {
             "recommendedValue": false,
-            "explanation": "When enabled, use resource IDs for VPC V2 migration",
-            "unconfiguredBehavesLike": {
-              "v2": false
-            }
+            "explanation": "When enabled, use resource IDs for VPC V2 migration"
           },
           "@aws-cdk/aws-s3:publicAccessBlockedByDefault": {
             "userValue": true,
@@ -757,10 +693,7 @@
           "@aws-cdk/aws-lambda:useCdkManagedLogGroup": {
             "userValue": true,
             "recommendedValue": true,
-            "explanation": "When enabled, CDK creates and manages loggroup for the lambda function",
-            "unconfiguredBehavesLike": {
-              "v2": false
-            }
+            "explanation": "When enabled, CDK creates and manages loggroup for the lambda function"
           }
         }
       }
