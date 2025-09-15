@@ -44,14 +44,18 @@ underlying resources as factories, so clients can create individual
 resources that are well-architected. There are factories to create:
 
 https://docs.aws.amazon.com/solutions/latest/constructs/aws-constructs-factories.html#s3-buckets[Amazon
-S3 buckets] - Create a well architected S3 bucket (e.g. - includes an
-access logging bucket)
+S3 buckets] - 
 https://docs.aws.amazon.com/solutions/latest/constructs/aws-constructs-factories.html#step-functions-state-machines[AWS
 Step Functions state machines] - Create a well architected Step
 Functions state machine and log group (e.g. log group has
 /aws/vendedlogs/ name prefix to avoid resource policy issues)
 
-<<sqs-queues-docs, Launch an SQS Queue>>
+<<s3-bucket--docs, Launch an SQS Queue>> - Create a well architected S3 bucket (e.g. - includes an
+access logging bucket)
+<<step-functions-state-machines-docs, Launch an SQS Queue>> -  - Create a well architected Step
+Functions state machine and log group (e.g. log group has
+/aws/vendedlogs/ name prefix to avoid resource policy issues)
+<<sqs-queues-docs, Launch an SQS Queue>> - Create a well architected SQS queue (with configured Dead Letter Queue)
 
 [[s3-buckets-docs]]
 == S3 Buckets
@@ -183,7 +187,7 @@ to the access log bucket)
 
 image::aws-constructs-factories.png["Diagram showing the S3 bucket and Access Log bucket created by the factory.",scaledwidth=100%]
 
-[[step-functions-state-machine-docs]]
+[[step-functions-state-machines-docs]]
 == Step Functions State Machines
 
 Create fully well-architected Step Functions state machine with log
