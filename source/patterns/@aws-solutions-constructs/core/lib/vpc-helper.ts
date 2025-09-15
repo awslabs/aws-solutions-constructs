@@ -46,7 +46,7 @@ export interface BuildVpcProps {
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
-export function buildVpc(scope: Construct, props: BuildVpcProps): ec2.IVpc {
+export function buildVpc(scope: Construct, props: BuildVpcProps, id?: string): ec2.IVpc {
   if (props?.existingVpc) {
     return props?.existingVpc;
   }
@@ -55,10 +55,16 @@ export function buildVpc(scope: Construct, props: BuildVpcProps): ec2.IVpc {
 
   cumulativeProps = consolidateProps(cumulativeProps, props?.userVpcProps, props?.constructVpcProps);
 
-  const vpc = new ec2.Vpc(scope, "Vpc", cumulativeProps);
+  // Stay compatible with VPCs created before ID was added as an argument
+  // TODO: we need a unit test for an id argument
+  const vpcId = id ?  `vpc-${id}` : "Vpc";
+  const vpc = new ec2.Vpc(scope, vpcId, cumulativeProps);
 
   // Add VPC FlowLogs with the default setting of trafficType:ALL and destination: CloudWatch Logs
-  const flowLog: ec2.FlowLog = vpc.addFlowLog("FlowLog");
+  // Stay compatible with VPCs created before ID was added as an argument
+  // TODO: we need a unit test for an id argument
+  const flowLogId = id ?  `flowlog-${id}` : "FlowLog";
+  const flowLog: ec2.FlowLog = vpc.addFlowLog(flowLogId);
 
   SuppressMapPublicIpWarnings(vpc);
   SuppressEncryptedLogWarnings(flowLog);

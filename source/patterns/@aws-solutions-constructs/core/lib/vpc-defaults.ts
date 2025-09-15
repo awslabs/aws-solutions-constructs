@@ -26,6 +26,24 @@ export function DefaultPublicPrivateVpcProps(): ec2.VpcProps {
   } as ec2.VpcProps;
 }
 
+const isolatedSubnets: ec2.SubnetConfiguration = {
+  cidrMask: 18,
+  name: "isolated",
+  subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
+};
+
+const privateSubnets: ec2.SubnetConfiguration = {
+  cidrMask: 18,
+  name: "private",
+  subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+};
+
+const publicSubnets: ec2.SubnetConfiguration = {
+  cidrMask: 24,
+  name: "public",
+  subnetType: ec2.SubnetType.PUBLIC,
+};
+
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
  */
@@ -33,14 +51,10 @@ export function DefaultIsolatedVpcProps(): ec2.VpcProps {
   return {
     natGateways: 0,
     subnetConfiguration: [
-      {
-        cidrMask: 18,
-        name: "isolated",
-        subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
-      }
+      isolatedSubnets
     ]
   } as ec2.VpcProps;
-}
+};
 
 /**
  * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
@@ -49,16 +63,8 @@ export function DefaultPrivateVpcProps(): ec2.VpcProps {
   return {
     natGateways: 0,
     subnetConfiguration: [
-      {
-        cidrMask: 18,
-        name: "private",
-        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
-      },
-      {
-        cidrMask: 24,
-        name: "public",
-        subnetType: ec2.SubnetType.PUBLIC,
-      }
+      privateSubnets,
+      publicSubnets
     ]
   } as ec2.VpcProps;
 }

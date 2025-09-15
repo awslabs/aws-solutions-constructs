@@ -43,13 +43,6 @@ This AWS Solutions Construct exposes the same code used to create our
 underlying resources as factories, so clients can create individual
 resources that are well-architected. There are factories to create:
 
-https://docs.aws.amazon.com/solutions/latest/constructs/aws-constructs-factories.html#s3-buckets[Amazon
-S3 buckets] - 
-https://docs.aws.amazon.com/solutions/latest/constructs/aws-constructs-factories.html#step-functions-state-machines[AWS
-Step Functions state machines] - Create a well architected Step
-Functions state machine and log group (e.g. log group has
-/aws/vendedlogs/ name prefix to avoid resource policy issues)
-
 <<s3-bucket--docs, Launch an SQS Queue>> - Create a well architected S3 bucket (e.g. - includes an
 access logging bucket)
 
