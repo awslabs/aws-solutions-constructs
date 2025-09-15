@@ -51,6 +51,9 @@ Step Functions state machines] - Create a well architected Step
 Functions state machine and log group (e.g. log group has
 /aws/vendedlogs/ name prefix to avoid resource policy issues)
 
+<<sqs-queues-docs, Launch an SQS Queue>>
+
+[[s3-buckets-docs]]
 == S3 Buckets
 
 Create fully well-architected S3 buckets with as little as one function
@@ -180,6 +183,7 @@ to the access log bucket)
 
 image::aws-constructs-factories.png["Diagram showing the S3 bucket and Access Log bucket created by the factory.",scaledwidth=100%]
 
+[[step-functions-state-machine-docs]]
 == Step Functions State Machines
 
 Create fully well-architected Step Functions state machine with log
@@ -303,6 +307,7 @@ name collisions.
 
 image::sf-architecture.png["Diagram showing the State Machine, CloudWatch Logs and Alarms, and IAM Role launched by the factory.",scaledwidth=100%]
 
+[[sqs-queues-docs]]
 == SQS Queues
 
 Create SQS queues complete with DLQs and KMS CMKs with one function
