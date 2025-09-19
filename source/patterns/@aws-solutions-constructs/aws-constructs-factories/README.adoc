@@ -52,6 +52,8 @@ Functions state machine and log group (e.g. log group has
 
 <<sqs-queues-docs, Launch an SQS Queue>> - Create a well architected SQS queue (with configured Dead Letter Queue)
 
+<<vpc-docs, Launch a VPC>> - Create a well architected VPC 
+
 [[s3-buckets-docs]]
 == S3 Buckets
 
@@ -418,6 +420,103 @@ can override)
 
 
 image::sqs-architecture.png["Diagram showing the KMS keys, SQS Queue and Dead Letter Queue launched by the factory.",scaledwidth=100%]
+
+[[vpc-docs]]
+== Virtual Private Cloud (VPC)
+
+Creates a VPC with a flow log enabled and any requested VPC Endpoints configured
+
+====
+[role="tablist"]
+Typescript::
++
+[source,typescript]
+----
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { ConstructsFactories } from '@aws-solutions-constructs/aws-constructs-factories';
+
+const factories = new ConstructsFactories(this, 'MyFactories');
+
+factories.vpcFactory('new-vpc', {
+  subnetTypes: [
+    ec2.SubnetType.PRIVATE_ISOLATED
+]});
+
+----
+
+Python::
++
+[source,python]
+----
+Pending
+----
+
+Java::
++
+[source,java]
+----
+Pendiong
+----
+====
+
+== VpcFactory Function Signature
+
+[source,typescript]
+----
+VpcFactory(id: string, props: VpcFactoryProps): VpcFactoryResponse
+----
+
+== VpcFactoryProps
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|vpcProps? |ec2.VpcProps {vbar} any|Optional user provided props to override
+the default props for the vpc.
+
+|subnetTypes? |ec2.SubnetType[] | Optional - Determines the various groups of subnets
+that will be created in the VPC. Multiple types of subnets can be specified. If this value is
+populated, then vpcProps.subnetConfiguration must be undefined.
+
+|subnetIPAddresses? |number | Optional - the number of available IP addresses to required
+in each subnet. This value is used to calculate the cidrMask. If omitted, the cidrMask uses The
+CDK default of 17 (up to 32763 addresses).
+
+|endPoints? |ServiceEndpointTypes[] |Optional - A list of all VPC service endpoints
+to launch in the VPC. They are specified using an enum defined by this factory.  @default - None
+
+|===
+
+== VpcFactoryResponse
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|vpc |ec2.Vpc |The vpc created by the factory.
+
+|===
+
+== Default settings
+
+The minimal implementation of the VPC requires the client to specify what types of subnets
+to launch. Any values not specified default to the default values implemented by the CDK L2
+VPC construct:
+
+* A Virtual Private Cloud
+** All requested subnet layers. By default each subnet type is deployed to 2 Availability
+Zones. To use more AZs, create an enviroment for your stack (account and region) and set maxAZs
+on vpcProps. PUBLIC subnets will cause the construct to deploy an Internet Gateway. PRIVATE_WITH_EGRESS
+subnets will cause the construct to deploy a Nat Gateway in each AZ, as well as an Internet Gateway.
+** A configured VPC Flow log in CloudWatch Logs
+** All VPC Endpoints that are specified in endPoints. Interface endpoints are deployed with recommended
+Security Groups.
+
+== Architecture
+
+
+image::vpc-architecture.png["Diagram showing the VPC, Subnets, Route Tables, Internet Gateway, NAT Gateways, Interface Endpoint and Flow Log.",scaledwidth=100%]
+
 
 // github block
 
