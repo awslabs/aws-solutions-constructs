@@ -15,35 +15,39 @@
 import { Construct } from 'constructs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as defaults from '@aws-solutions-constructs/core';
+import { PropsBuilder } from '@aws-solutions-constructs/core';
 
-export enum VpcType {
-  ISOLATED,
-  PRIVATE,
-  PUBLIC
-}
 export interface VpcFactoryProps {
   readonly vpcProps?: ec2.VpcProps | any,
-  readonly vpcType?: VpcType,
+  readonly subnetTypes?: ec2.SubnetType[],
+  readonly subnetIPAddresses?: number,
   readonly endPoints?: ServiceEndpointTypes[]
 }
 export enum ServiceEndpointTypes {
-  DYNAMODB = "DDB",
-  SNS = "SNS",
-  SQS = "SQS",
-  S3 = "S3",
-  STEP_FUNCTIONS = "STEP_FUNCTIONS",
-  SAGEMAKER_RUNTIME = "SAGEMAKER_RUNTIME",
-  SECRETS_MANAGER = "SECRETS_MANAGER",
-  SSM = "SSM",
-  ECR_API = "ECR_API",
-  ECR_DKR = "ECR_DKR",
-  EVENTS = "CLOUDWATCH_EVENTS",
-  KINESIS_FIREHOSE = "KINESIS_FIREHOSE",
-  KINESIS_STREAMS = "KINESIS_STREAMS",
-  BEDROCK = "BEDROCK",
-  BEDROCK_RUNTIME = "BEDROCK_RUNTIME",
-  KENDRA = "KENDRA"
+  DYNAMODB,
+  SNS,
+  SQS,
+  S3,
+  STEP_FUNCTIONS,
+  SAGEMAKER_RUNTIME,
+  SECRETS_MANAGER,
+  SSM,
+  ECR_API,
+  ECR_DKR,
+  EVENTS,
+  KINESIS_FIREHOSE,
+  KINESIS_STREAMS,
+  BEDROCK,
+  BEDROCK_RUNTIME,
+  KENDRA
 }
+
+const subnetNameMap: Record<ec2.SubnetType, string> = {
+  [ec2.SubnetType.PUBLIC]: "public",
+  [ec2.SubnetType.PRIVATE_WITH_EGRESS]: "private",
+  [ec2.SubnetType.PRIVATE_ISOLATED]: "isolated",
+  [ec2.SubnetType.PRIVATE_WITH_NAT]: "deprecated_private",
+};
 
 const serviceEndpointTypeMap: Record<ServiceEndpointTypes, defaults.ServiceEndpointTypes> = {
   [ServiceEndpointTypes.DYNAMODB]: defaults.ServiceEndpointTypes.DYNAMODB,
@@ -72,28 +76,17 @@ export interface VpcFactoryResponse {
 }
 
 export class VpcFactory {
-
   public static factory(scope: Construct, id: string, props: VpcFactoryProps): VpcFactoryResponse {
+    // In this, confirm they don't ask me to do it while providing it themselves
     defaults.CheckVpcProps(props);
+    this.CheckVpcFactoryProps(props);
 
-    let vpcType: VpcType;
-    if (props.vpcType) {
-      vpcType = props.vpcType;
-    } else {
-      vpcType = VpcType.ISOLATED;
-    }
-    const constructVpcProps = (props.endPoints && (props.endPoints.length > 0)) ?
-      {
-        enableDnsHostnames: true,
-        enableDnsSupport: true,
-      } :
-      {};
+    const constructProps = this.CreateConstructProps(props);
 
-    const defaultProps = this.chooseDefaultProps(vpcType);
     const newVpc = defaults.buildVpc(scope, {
-      defaultVpcProps: defaultProps,
+      defaultVpcProps: {}, // all defaults are CDK L2 Vpc construct defaults
       userVpcProps: props.vpcProps,
-      constructVpcProps,
+      constructVpcProps: constructProps,
     }, id);
 
     if (props.endPoints) {
@@ -104,20 +97,127 @@ export class VpcFactory {
     }
 
     return {
-      vpc: newVpc,
+      vpc: newVpc
     };
   }
 
-  static chooseDefaultProps(vpcType: VpcType) {
-    switch (vpcType) {
-      case VpcType.ISOLATED:
-        return defaults.DefaultIsolatedVpcProps();
-      case VpcType.PRIVATE:
-        return defaults.DefaultPrivateVpcProps();
-      case VpcType.PUBLIC:
-        return defaults.DefaultPublicPrivateVpcProps();
-      default:
-        throw new Error("Invalid VPC Type");
+  private static CreateConstructProps(props: VpcFactoryProps): ec2.VpcProps | undefined {
+
+    if (props.vpcProps?.subnetConfiguration) {
+      // Client has provided the subnet configuration, so is granted
+      // full control (and responsbility for) the subnets - so no ConstructsProps required/allowed
+      return undefined;
+    } else {
+      // Client has ceded responsibility for the subnetConfiguration to us, based upon
+      // values they included in VpcFactoryProps
+      const subnetTypes: ec2.SubnetConfiguration[] = [];
+
+      props.subnetTypes?.forEach(subnetType => {
+        const configurationBuilder: PropsBuilder<ec2.SubnetConfiguration> = {
+          subnetType,
+          name: subnetNameMap[subnetType]
+        };
+        if (props.subnetIPAddresses) {
+          configurationBuilder.cidrMask = defaults.calculateIpMaskSize(props.subnetIPAddresses);
+        }
+        subnetTypes.push({ ...configurationBuilder as ec2.SubnetConfiguration });
+      });
+      return {
+        subnetConfiguration: subnetTypes
+      };
     }
   }
+
+  private static CheckVpcFactoryProps(props: VpcFactoryProps) {
+    let errorMessages = '';
+    let errorFound = false;
+
+    if (props.vpcProps?.subnetConfiguration && (props.subnetTypes || props.subnetIPAddresses)) {
+      errorMessages += 'Error - Either provide complete subnetConfiguration in props.vpcProps.subnetConfiguration or subnetConfiguration info in props.subnetTypes and props.subnetIPAddresses, but not both\n';
+      errorFound = true;
+    }
+
+    if (!(props.vpcProps && props.vpcProps.subnetConfiguration) && (!props.subnetTypes || (props.subnetTypes.length === 0))) {
+      errorMessages += 'Error - subnet types must be provided in either props.vpcProps.subnetConfiguration or props.subnetTypes\n';
+      errorFound = true;
+    }
+
+    if (props.vpcProps && props.endPoints &&
+      (!defaults.CheckBooleanWithDefault(props.vpcProps.enableDnsHostnames, true)
+      || !defaults.CheckBooleanWithDefault(props.vpcProps.enableDnsSupport, true)))
+    {
+      errorMessages += 'Error - VPC endpoints require that enableDnsHostnames and enableDnsSupport are both enabled\n';
+      errorFound = true;
+    }
+
+    if (errorFound) {
+      throw new Error(errorMessages);
+    }
+  }
+
 }
+
+// export class VpcFactory {
+
+//   public static factory(scope: Construct, id: string, props: VpcFactoryProps): VpcFactoryResponse {
+//     // In this, confirm they don't ask me to do it while providing it themselves
+//     defaults.CheckVpcProps(props);
+
+//     const vpcProps = this.CreateSubnetConfigurations(props);
+
+//     const newVpc = defaults.buildVpc(scope, {
+//       defaultVpcProps: {},
+//       userVpcProps: {},
+//       constructVpcProps: vpcProps,
+//     }, id);
+
+//     if (props.endPoints) {
+//       props.endPoints.forEach((endPoint: ServiceEndpointTypes) => {
+//         const coreEndpointType = serviceEndpointTypeMap[endPoint];
+//         defaults.AddAwsServiceEndpoint(scope, newVpc, coreEndpointType);
+//       });
+//     }
+
+//     return {
+//       vpc: newVpc,
+//     };
+//   }
+
+//   private static CreateSubnetConfigurations(props: VpcFactoryProps): ec2.VpcProps {
+//     // If they have included vpcProps, then give them full control of the VPC
+//     if (props.vpcProps) {
+//       return props.vpcProps;
+//     } else {
+//       // Construct a VpcProps from the values provided
+//       const subnetTypes: ec2.SubnetConfiguration[] = [];
+
+//       // For each subnet defined
+//       //  Create a SubnetConfiguration
+//       //  Set the name
+//       //  Set the type
+//       //  Set the mask
+
+
+//       props.subnetTypes?.forEach(subnetType => {
+//         let newConfiguration: ec2.SubnetConfiguration = {
+//           subnetType,
+//           name: subnetNameMap[subnetType]
+//         };
+//         if (props.subnetIPAddresses) {
+//           newConfiguration = defaults.overrideProps(newConfiguration, { cidrMask: this.calculateIpMaskSize(props.subnetIPAddresses) });
+//         }
+//         subnetTypes.push(newConfiguration);
+//       });
+//       const defaultProps: ec2.VpcProps = {
+//         subnetConfiguration: subnetTypes
+//       };
+//       const constructVpcProps = (props.endPoints && (props.endPoints.length > 0)) ?
+//         {
+//           enableDnsHostnames: true,
+//           enableDnsSupport: true,
+//         } :
+//         {};
+//     }
+//   }
+
+// }

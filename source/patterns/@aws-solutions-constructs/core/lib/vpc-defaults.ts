@@ -26,19 +26,19 @@ export function DefaultPublicPrivateVpcProps(): ec2.VpcProps {
   } as ec2.VpcProps;
 }
 
-const isolatedSubnets: ec2.SubnetConfiguration = {
+export const isolatedSubnets: ec2.SubnetConfiguration = {
   cidrMask: 18,
   name: "isolated",
   subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
 };
 
-const privateSubnets: ec2.SubnetConfiguration = {
+export const privateSubnets: ec2.SubnetConfiguration = {
   cidrMask: 18,
   name: "private",
   subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
 };
 
-const publicSubnets: ec2.SubnetConfiguration = {
+export const publicSubnets: ec2.SubnetConfiguration = {
   cidrMask: 24,
   name: "public",
   subnetType: ec2.SubnetType.PUBLIC,

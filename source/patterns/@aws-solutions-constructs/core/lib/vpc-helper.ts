@@ -23,6 +23,12 @@ import { buildSecurityGroup } from "./security-group-helper";
 import { consolidateProps, addCfnSuppressRules, suppressVpcCustomerHandlerRoleWarnings } from "./utils";
 import * as cdk from 'aws-cdk-lib';
 
+// Defined ONCE in our code in core somewhere
+// Definitely code to be leveraged without necessarily understanding it
+export type PropsBuilder<T> = {
+  -readonly [P in keyof T]?: T[P];
+};
+
 export interface BuildVpcProps {
   /**
    * Existing instance of a VPC, if this is set then the all Props are ignored
@@ -57,13 +63,13 @@ export function buildVpc(scope: Construct, props: BuildVpcProps, id?: string): e
 
   // Stay compatible with VPCs created before ID was added as an argument
   // TODO: we need a unit test for an id argument
-  const vpcId = id ?  `vpc-${id}` : "Vpc";
+  const vpcId = id ? `vpc-${id}` : "Vpc";
   const vpc = new ec2.Vpc(scope, vpcId, cumulativeProps);
 
   // Add VPC FlowLogs with the default setting of trafficType:ALL and destination: CloudWatch Logs
   // Stay compatible with VPCs created before ID was added as an argument
   // TODO: we need a unit test for an id argument
-  const flowLogId = id ?  `flowlog-${id}` : "FlowLog";
+  const flowLogId = id ? `flowlog-${id}` : "FlowLog";
   const flowLog: ec2.FlowLog = vpc.addFlowLog(flowLogId);
 
   SuppressMapPublicIpWarnings(vpc);
@@ -307,4 +313,31 @@ export function CheckVpcProps(propsObject: VpcPropsSet | any) {
   if (errorFound) {
     throw new Error(errorMessages);
   }
+}
+
+export function calculateIpMaskSize(ipAddressCount: number): number {
+  // Validate input
+  if (ipAddressCount <= 0) {
+    throw new Error('IP address count must be greater than 0');
+  }
+
+  // AWS VPC subnets reserve 5 IP addresses (network, broadcast, and 3 AWS reserved)
+  // Formula: ipAddressCount = 2^(32 - maskSize) - 5
+  // Solving for maskSize: maskSize = 32 - log2(ipAddressCount + 5)
+
+  const totalAddressesNeeded = ipAddressCount + 5;
+
+  // Calculate the required mask size
+  const maskSize = 32 - Math.ceil(Math.log2(totalAddressesNeeded));
+
+  // Validate the mask size is within valid CIDR range (16-28 for subnets in AWS)
+  if (maskSize < 16) {
+    throw new Error(`Requested IP count (${ipAddressCount}) requires a mask size smaller than /16, which is not supported for VPC subnets`);
+  }
+
+  if (maskSize > 28) {
+    throw new Error(`Requested IP count (${ipAddressCount}) requires a mask size larger than /28, which is not practical for VPC subnets`);
+  }
+
+  return maskSize;
 }
