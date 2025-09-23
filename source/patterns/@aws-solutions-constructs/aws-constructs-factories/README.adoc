@@ -9,14 +9,6 @@
 
 image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-the-badge[Stability:Stable]
 
-____
-All classes are under active development and subject to non-backward
-compatible changes or removal in any future version. These are not
-subject to the https://semver.org/[Semantic Versioning] model. This
-means that while you may use them, you may need to update your source
-code when upgrading to a newer version of this package.
-____
-
 [width="100%",cols="<50%,<50%",options="header",]
 |===
 |*Reference Documentation*:
@@ -43,14 +35,18 @@ This AWS Solutions Construct exposes the same code used to create our
 underlying resources as factories, so clients can create individual
 resources that are well-architected. There are factories to create:
 
-https://docs.aws.amazon.com/solutions/latest/constructs/aws-constructs-factories.html#s3-buckets[Amazon
-S3 buckets] - Create a well architected S3 bucket (e.g. - includes an
+<<s3-bucket--docs, Launch an S3 Bucket>> - Create a well architected S3 bucket (e.g. - includes an
 access logging bucket)
-https://docs.aws.amazon.com/solutions/latest/constructs/aws-constructs-factories.html#step-functions-state-machines[AWS
-Step Functions state machines] - Create a well architected Step
+
+<<step-functions-state-machines-docs, Launch an Step Functions State Machine>> -  - Create a well architected Step
 Functions state machine and log group (e.g. log group has
 /aws/vendedlogs/ name prefix to avoid resource policy issues)
 
+<<sqs-queues-docs, Launch an SQS Queue>> - Create a well architected SQS queue (with configured Dead Letter Queue)
+
+<<vpc-docs, Launch a VPC>> - Create a well architected VPC 
+
+[[s3-buckets-docs]]
 == S3 Buckets
 
 Create fully well-architected S3 buckets with as little as one function
@@ -180,6 +176,7 @@ to the access log bucket)
 
 image::aws-constructs-factories.png["Diagram showing the S3 bucket and Access Log bucket created by the factory.",scaledwidth=100%]
 
+[[step-functions-state-machines-docs]]
 == Step Functions State Machines
 
 Create fully well-architected Step Functions state machine with log
@@ -241,13 +238,17 @@ stateMachineFactory(id: string, props: StateMachineFactoryProps): StateMachineFa
 |===
 |*Name* |*Type* |*Description*
 |stateMachineProps
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachineProps.html[`sfn.StateMachineProps`]
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachineProps.html[sfn.StateMachineProps]
 |The CDK properties that define the state machine. This property is
 required and must include a definitionBody or definition (definition is
 deprecated)
 
+|logGroupProps
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html[`ogs.LogGroupProps]
+|An existing LogGroup to which the new state machine will write log entries. Default: LogGroup will use default AWS settings
+
 |logGroup?
-|[]`logs.LogGroup`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroup.html)
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroup.html[logs.LogGroup]
 |An existing LogGroup to which the new state machine will write log
 entries. Default: none, the construct will create a new log group.
 
@@ -267,13 +268,13 @@ factories you can ignore it
 [width="100%",cols="<30%,<35%,35%",options="header",]
 |===
 |*Name* |*Type* |*Description*
-|stateMachineProps
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachineProps.html[`sfn.StateMachineProps`]
-|
+|stateMachine
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachine.html[`sfn.StateMachine]
+|The state machine created by the factory (the state machine role is available as a property on this resource
 
-|logGroup
-|[]`logs.LogGroupProps`](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html)
-|
+|logGroup?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroup.html[`logs.LogGroup`]
+|The log group that will receive log messages from the state machine.
 
 |cloudwatchAlarms?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_cloudwatch.Alarm.html[`cloudwatch.Alarm[\]`]
@@ -303,6 +304,7 @@ name collisions.
 
 image::sf-architecture.png["Diagram showing the State Machine, CloudWatch Logs and Alarms, and IAM Role launched by the factory.",scaledwidth=100%]
 
+[[sqs-queues-docs]]
 == SQS Queues
 
 Create SQS queues complete with DLQs and KMS CMKs with one function
@@ -350,7 +352,7 @@ SqsQueueFactory(id: string, props: SqsQueueFactoryProps): SqsQueueFactoryRespons
 [width="100%",cols="<30%,<35%,35%",options="header",]
 |===
 |*Name* |*Type* |*Description*
-|queueProps? |sqs.QueueProps |Optional user provided props to override
+|queueProps? |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.QueueProps.html[sqs.QueueProps] |Optional user provided props to override
 the default props for the primary queue.
 
 |enableEncryptionWithCustomerManagedKey? |boolean |If no key is
@@ -360,17 +362,17 @@ are defined: queueProps.encryptionMasterKey, encryptionKey or
 encryptionKeyProps. default - False if queueProps.encryptionMasterKey,
 encryptionKey, and encryptionKeyProps are all undefined.
 
-|encryptionKey? |kms.Key |An optional, imported encryption key to
+|encryptionKey? |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.Key.html[kms.Key] |An optional, imported encryption key to
 encrypt the SQS Queue with. Default - none
 
-|encryptionKeyProps? |kms.KeyProps |Optional user provided properties to
+|encryptionKeyProps? |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.KeyProps.html[kms.KeyProps] |Optional user provided properties to
 override the default properties for the KMS encryption key used to
 encrypt the SQS Queue with. @default - None
 
 |deployDeadLetterQueue? |boolean |Whether to deploy a secondary queue to
 be used as a dead letter queue.
 
-|deadLetterQueueProps? |sqs.QueueProps |Optional user provided
+|deadLetterQueueProps? |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.QueueProps.html[sqs.QueueProps] |Optional user provided
 properties for the dead letter queue
 
 |maxReceiveCount? |number |The number of times a message can be
@@ -384,12 +386,12 @@ https://github.com/awslabs/aws-solutions-constructs/blob/8b30791902e09db2f7c4941
 [width="100%",cols="<30%,<35%,35%",options="header",]
 |===
 |*Name* |*Type* |*Description*
-|queue |sqs.Queue |The queue created by the factory.
+|queue |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.Queue.html[sqs.Queue] |The queue created by the factory.
 
-|key |kms.IKey |The key used to encrypt the queue, if the queue was
+|key |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.IKey.html[kms.IKey] |The key used to encrypt the queue, if the queue was
 configured to use a CMK
 
-|deadLetterQueue? |sqs.DeadLetterQueue |The dead letter queue associated
+|deadLetterQueue? |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.DeadLetterQueue.html[sqs.DeadLetterQueue] |The dead letter queue associated
 with the queue created by the factory
 |===
 
@@ -414,6 +416,119 @@ can override)
 
 
 image::sqs-architecture.png["Diagram showing the KMS keys, SQS Queue and Dead Letter Queue launched by the factory.",scaledwidth=100%]
+
+[[vpc-docs]]
+== Virtual Private Cloud (VPC)
+
+Creates a VPC with a flow log enabled and any requested VPC Endpoints configured.
+
+====
+[role="tablist"]
+Typescript::
++
+[source,typescript]
+----
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { ConstructsFactories } from '@aws-solutions-constructs/aws-constructs-factories';
+
+const factories = new ConstructsFactories(this, 'MyFactories');
+
+// This will create a VPC with subnets that cannot interact with the Internet,
+// e.g. - there is no Internet Gateway, nor NAT Gateway(s)
+factories.vpcFactory('new-vpc', {
+  subnetTypes: [
+    ec2.SubnetType.PRIVATE_ISOLATED
+]});
+
+----
+
+Python::
++
+[source,python]
+----
+Pending
+----
+
+Java::
++
+[source,java]
+----
+Pendiong
+----
+====
+
+== VpcFactory Function Signature
+
+[source,typescript]
+----
+VpcFactory(id: string, props: VpcFactoryProps): VpcFactoryResponse
+----
+
+== VpcFactoryProps
+
+This construct can either create subnets wholly based on the subnetTypes and subnetIPAddresses
+specified in attributes of the VpcFactoryProps object ddefined below; or wholly based on values
+passed in the VpcProps.subnetConfiguration property passed in the vpcProps property of VpcFactoryProps. It
+cannot combine and blend those two sources - so clients must provide subnet configuration information
+in one, and only one, of vpcProps.subnetConfiguration or the direct VpcFactoryProps attributes (vpcProps.subnetTypes, vpcProps.subnetIPAddresses).
+Other vpcProps attributes can be combined with a subnetConfiguration generated from the direct VpcFactoryProps attributes.
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|vpcProps? |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.Vpc.html[ec2.VpcProps] {vbar} any|Optional user provided props to override
+the default props for the vpc. If this property defines subnetConfiguration, then subnetTypes and subnetIPAddrresses
+must be undefined.
+
+|subnetTypes?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.SubnetType.html[ec2.SubnetType[\]]
+| Optional - Determines the various groups of subnets
+that will be created in the VPC. Multiple types of subnets can be specified. If this value is
+populated, then vpcProps.subnetConfiguration must be undefined.
+
+|subnetIPAddresses? |number | Optional - the number of available IP addresses to required
+in each subnet. This value is used to calculate the cidrMask. If omitted, the cidrMask uses The
+CDK default of 17 (up to 32763 addresses). If this value is populated, then vpcProps.subnetConfiguration
+must be undefined.
+
+|endPoints? |ServiceEndpointTypes[] |Optional - A list of all VPC service endpoints
+to launch in the VPC. They are specified using ServiceEndpointTypes,
+an enum defined in the Factories construct. @default - None
+
+|===
+
+== VpcFactoryResponse
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|vpc |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.Vpc.html[ec2.Vpc] |The vpc created by the factory.
+
+|===
+
+== Default settings
+
+The minimal implementation of the VPC requires the client to specify what types of subnets
+to launch. Any values not specified default to the default values implemented by the CDK L2
+VPC construct:
+
+* A Virtual Private Cloud
+** All requested subnet layers. By default each subnet type is deployed to 2 Availability
+Zones. To use more AZs, create an enviroment for your stack (account and region) and set maxAZs
+on vpcProps. PUBLIC subnets will cause the construct to deploy an Internet Gateway. PRIVATE_WITH_EGRESS
+subnets will cause the construct to deploy a Nat Gateway in each AZ, as well as an Internet Gateway.
+** A configured VPC Flow log in CloudWatch Logs
+** All VPC Endpoints that are specified in endPoints. Interface endpoints are deployed with recommended
+Security Groups.
+
+== Architecture
+
+Wnile the architecture deployed will vary depending on the Subnet configuration, the diagram below
+represents what is deployed if the client requests PUBLIC and PRIVATE_WITH_EGRESS subnet.
+
+image::vpc-architecture.png["Diagram showing the VPC, Subnets, Route Tables, Internet Gateway, NAT Gateways, Interface Endpoint and Flow Log.",scaledwidth=100%]
+
 
 // github block
 
