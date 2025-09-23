@@ -77,7 +77,6 @@ export interface VpcFactoryResponse {
 
 export class VpcFactory {
   public static factory(scope: Construct, id: string, props: VpcFactoryProps): VpcFactoryResponse {
-    // In this, confirm they don't ask me to do it while providing it themselves
     defaults.CheckVpcProps(props);
     this.CheckVpcFactoryProps(props);
 
@@ -109,21 +108,21 @@ export class VpcFactory {
       return undefined;
     } else {
       // Client has ceded responsibility for the subnetConfiguration to us, based upon
-      // values they included in VpcFactoryProps
-      const subnetTypes: ec2.SubnetConfiguration[] = [];
-
-      props.subnetTypes?.forEach(subnetType => {
+      // values they included in VpcFactoryProps. We map the array of subnet types they passed
+      // into an array of ec2.SubnetConfiguration, adding a cidrMask if appropriate
+      const subnetTyps = props.subnetTypes?.map(t => {
         const configurationBuilder: PropsBuilder<ec2.SubnetConfiguration> = {
-          subnetType,
-          name: subnetNameMap[subnetType]
+          subnetType: t,
+          name: subnetNameMap[t]
         };
         if (props.subnetIPAddresses) {
           configurationBuilder.cidrMask = defaults.calculateIpMaskSize(props.subnetIPAddresses);
-        }
-        subnetTypes.push({ ...configurationBuilder as ec2.SubnetConfiguration });
+        };
+        return configurationBuilder as ec2.SubnetConfiguration;
       });
+
       return {
-        subnetConfiguration: subnetTypes
+        subnetConfiguration: subnetTyps
       };
     }
   }
