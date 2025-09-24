@@ -19,7 +19,7 @@ import * as kms from 'aws-cdk-lib/aws-kms';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
-import { buildEncryptionKey } from "@aws-solutions-constructs/core";
+import { buildEncryptionKey, ConstructsFeatureFlagsReport } from "@aws-solutions-constructs/core";
 import { FeatureFlags } from 'aws-cdk-lib/core';
 import { SNS_SUBSCRIPTIONS_SQS_DECRYPTION_POLICY } from 'aws-cdk-lib/cx-api';
 
@@ -189,6 +189,7 @@ export class SnsToSqs extends Construct {
    */
   constructor(scope: Construct, id: string, props: SnsToSqsProps) {
     super(scope, id);
+    ConstructsFeatureFlagsReport.ensure(this);
     defaults.CheckSnsProps(props);
     defaults.CheckSqsProps(props);
     this.uniquePropChecks(props);

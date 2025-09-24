@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.93.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.92.2...v2.93.0) (2025-09-24)
+
+Built on CDK 2.214.0
+
+### Features
+
+* **aws-constructs-factories:** add a vpc factory ([#1408](https://github.com/awslabs/aws-solutions-constructs/issues/1408)) ([24b6dbd](https://github.com/awslabs/aws-solutions-constructs/commit/24b6dbd59c808bc0ba0eb448e7fcef482b767b80))
+* **core:** add the infrastructure to allow constructs specific feature flags in cdk.json ([#1407](https://github.com/awslabs/aws-solutions-constructs/issues/1407)) ([90c2664](https://github.com/awslabs/aws-solutions-constructs/commit/90c2664e2227261430b0ab2c7df0a7e4b1caf598))
+
 ## [2.92.2](https://github.com/awslabs/aws-solutions-constructs/compare/v2.92.1...v2.92.2) (2025-09-10)
 
 Built on CDK 2.214.0

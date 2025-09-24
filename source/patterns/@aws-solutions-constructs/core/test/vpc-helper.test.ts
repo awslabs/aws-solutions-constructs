@@ -17,6 +17,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { Template } from 'aws-cdk-lib/assertions';
 import { AddAwsServiceEndpoint, ServiceEndpointTypes } from '../lib/vpc-helper';
 import { DefaultPublicPrivateVpcProps, DefaultIsolatedVpcProps } from '../lib/vpc-defaults';
+import { calculateIpMaskSize } from '../lib/vpc-helper';
 
 test("Test minimal deployment with no properties", () => {
   // Stack
@@ -283,3 +284,40 @@ test('Test fail Vpc check with vpcProps', () => {
   // Assertion
   expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
+
+test('Correctly calculate several masks', () => {
+  const testCases = [
+    { ipCount: 10, expectedMask: 28 },
+    { ipCount: 50, expectedMask: 26 },
+    { ipCount: 100, expectedMask: 25 },
+    { ipCount: 250, expectedMask: 24 },
+    { ipCount: 500, expectedMask: 23 },
+    { ipCount: 1000, expectedMask: 22 },
+    { ipCount: 2000, expectedMask: 21 },
+    { ipCount: 4000, expectedMask: 20 }
+  ];
+
+  testCases.forEach(testCase => {
+    expect(calculateIpMaskSize(testCase.ipCount)).toEqual(testCase.expectedMask);
+  });
+});
+
+test('catch masks too big', () => {
+  const ipAddressCount = 2;
+  const app = () => {
+    calculateIpMaskSize(ipAddressCount);
+  };
+
+  expect(app).toThrowError(`Requested IP count (${ipAddressCount}) requires a mask size larger than /28, which is not practical for VPC subnets`);
+
+});
+
+test('catch masks too small', () => {
+  const ipAddressCount = 256000;
+  const app = () => {
+    calculateIpMaskSize(ipAddressCount);
+  };
+
+  expect(app).toThrowError(`Requested IP count (${ipAddressCount}) requires a mask size smaller than /16, which is not supported for VPC subnets`);
+});
+
