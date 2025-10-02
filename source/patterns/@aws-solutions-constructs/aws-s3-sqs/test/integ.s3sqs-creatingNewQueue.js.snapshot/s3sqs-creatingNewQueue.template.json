@@ -596,7 +596,12 @@
       {
        "Action": "s3:PutBucketNotification",
        "Effect": "Allow",
-       "Resource": "*"
+       "Resource": {
+        "Fn::GetAtt": [
+         "tests3sqsS3BucketFF76CDA6",
+         "Arn"
+        ]
+       }
       }
      ],
      "Version": "2012-10-17"
@@ -633,7 +638,7 @@
       "Arn"
      ]
     },
-    "Runtime": "python3.11",
+    "Runtime": "python3.13",
     "Timeout": 300
    },
    "DependsOn": [

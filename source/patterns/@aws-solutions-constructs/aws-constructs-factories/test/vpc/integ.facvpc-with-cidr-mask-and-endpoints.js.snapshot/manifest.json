@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d6c3f4972705e3de83e006528391b5d64da853529e9d6c6cda3391b35477e14c.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0ea529a5cd7e2baf4f1d18379159f96b9f55ad4166c659d4d9cebb2d0d942445.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -456,6 +456,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "integtestintegtestSQSsecuritygroup71442008"
+          }
+        ],
+        "/facvpc-with-cidr-mask-and-endpoints/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
           }
         ],
         "/facvpc-with-cidr-mask-and-endpoints/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
