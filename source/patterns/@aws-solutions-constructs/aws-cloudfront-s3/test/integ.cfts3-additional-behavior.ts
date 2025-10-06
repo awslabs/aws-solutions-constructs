@@ -34,7 +34,7 @@ const additionalBucket = defaults.CreateScrapBucket(stack, "scrapBucket", {
 
 const originAccessControl = new CfnOriginAccessControl(stack, 'CloudFrontOac', {
   originAccessControlConfig: {
-    name: defaults.generatePhysicalOacName('aws-cloudfront-s3-', [__filename]),
+    name: defaults.generatePhysicalOacName('aws-cloudfront-s3-', ["spare"]),
     originAccessControlOriginType: 's3',
     signingBehavior: 'always',
     signingProtocol: 'sigv4',
