@@ -908,7 +908,7 @@ test('logCloudFrontAccessLog property is used correctly', () => {
   expect(construct.cloudFrontLoggingBucketAccessLogBucket).not.toBeDefined();
 });
 
-test.only('additionalBehaviors have correct origin', () => {
+test('additionalBehaviors have correct origin', () => {
   const stack = new cdk.Stack();
 
   const additionalBucket = defaults.CreateScrapBucket(stack, "scrapBucket", {
