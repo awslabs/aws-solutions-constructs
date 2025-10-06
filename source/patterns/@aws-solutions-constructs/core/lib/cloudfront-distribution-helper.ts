@@ -87,7 +87,7 @@ export function CloudFrontDistributionForApiGateway(scope: Construct,
 
   const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
 
-  const getLoggingBucketResponse = getLoggingBucket(scope,  { cloudFrontLoggingBucketProps, cloudFrontDistributionProps });
+  const getLoggingBucketResponse = getLoggingBucket(scope, { cloudFrontLoggingBucketProps, cloudFrontDistributionProps });
 
   const defaultprops = DefaultCloudFrontWebDistributionForApiGatewayProps(apiEndPoint,
     getLoggingBucketResponse.logBucket,
@@ -101,7 +101,7 @@ export function CloudFrontDistributionForApiGateway(scope: Construct,
   const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
 
-  return { distribution: cfDistribution, cloudfrontFunction, loggingBucket: getLoggingBucketResponse.logBucket};
+  return { distribution: cfDistribution, cloudfrontFunction, loggingBucket: getLoggingBucketResponse.logBucket };
 }
 
 export interface CreateCloudFrontDistributionForS3Props {
@@ -109,7 +109,7 @@ export interface CreateCloudFrontDistributionForS3Props {
   readonly cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   readonly httpSecurityHeaders?: boolean,
   readonly cloudFrontLoggingBucketProps?: s3.BucketProps,
-  readonly  cloudFrontLoggingBucketS3AccessLogBucketProps?: s3.BucketProps,
+  readonly cloudFrontLoggingBucketS3AccessLogBucketProps?: s3.BucketProps,
   readonly responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
   readonly logCloudFrontAccessLog?: boolean
 }
@@ -167,7 +167,15 @@ export function createCloudFrontDistributionForS3(
       undefined
   );
 
-  const cfprops = consolidateProps(defaultprops, props.cloudFrontDistributionProps);
+  // Create construct props that assign the origin to any additional behaviors without origins
+  // This is the block added, let's make it easier to grok, perhaps break out ==============
+  const constructProps: any = {};
+
+  if (props.cloudFrontDistributionProps?.additionalBehaviors) {
+    constructProps.additionalBehaviors = ClarifyOriginsForAdditionalBehaviors(props.cloudFrontDistributionProps.additionalBehaviors, origin);
+  }
+
+  const cfprops = consolidateProps(defaultprops, props.cloudFrontDistributionProps, constructProps);
   // Create the Cloudfront Distribution
   const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
   updateSecurityPolicy(cfDistribution);
@@ -188,16 +196,33 @@ export function createCloudFrontDistributionForS3(
     cloudfrontFunction,
     loggingBucket: getLoggingBucketResponse.logBucket,
     loggingBucketS3AccesssLogBucket: getLoggingBucketResponse.logBucketAccessLogBucket,
-    originAccessControl};
+    originAccessControl
+  };
+}
+
+function ClarifyOriginsForAdditionalBehaviors(behaviors: any, constructOrigin: cloudfront.IOrigin): any {
+  const constructBehaviorOrigin: { [key: string]: { origin: cloudfront.IOrigin } } = {};
+
+  // Iterate through all additional behaviors
+  for (const [behaviorName, behavior] of Object.entries(behaviors)) {
+    // Check if the behavior doesn't have an origin defined
+    if (!(behavior as any).origin) {
+      // Add the behavior to constructBehaviorOrigin with the default origin
+      constructBehaviorOrigin[behaviorName] = {
+        origin: constructOrigin
+      };
+    }
+  }
+  return constructBehaviorOrigin;
 }
 
 export interface CreateCloudFrontOaiDistributionForS3Props {
-  readonly originPath?:  string,
+  readonly originPath?: string,
   readonly sourceBucket: s3.IBucket,
   readonly cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
   readonly httpSecurityHeaders?: boolean,
   readonly cloudFrontLoggingBucketProps?: s3.BucketProps,
-  readonly  cloudFrontLoggingBucketS3AccessLogBucketProps?: s3.BucketProps,
+  readonly cloudFrontLoggingBucketS3AccessLogBucketProps?: s3.BucketProps,
   readonly responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
   readonly logCloudFrontAccessLog?: boolean
 }
@@ -226,7 +251,7 @@ export function createCloudFrontOaiDistributionForS3(
         does not support. This requires both the bucket and its objects to be public. AWS strongly recommends against configuring
         buckets and objects for public access. As such a configuration uses neither OAC nor OAI, it can be launched with the
         aws-cloudfron-s3 construct in any region.`);
-   }
+  }
 
   const getLoggingBucketResponse = getLoggingBucket(scope, {
     cloudFrontDistributionProps: props.cloudFrontDistributionProps,

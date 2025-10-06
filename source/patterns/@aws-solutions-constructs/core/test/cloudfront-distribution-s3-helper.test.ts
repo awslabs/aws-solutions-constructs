@@ -12,7 +12,7 @@
  */
 
 import { Match, Template } from 'aws-cdk-lib/assertions';
-import { Stack } from 'aws-cdk-lib';
+import { RemovalPolicy, Stack } from 'aws-cdk-lib';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { createCloudFrontDistributionForS3, createCloudFrontOaiDistributionForS3 } from '../lib/cloudfront-distribution-helper';
@@ -469,6 +469,68 @@ test('Is logCloudFrontAccessLog observed', () => {
 
   // Content Bucket, Content Bucket Access Log, CloudFront Log, NO CloudFront Log Access Log
   template.resourceCountIs("AWS::S3::Bucket", 3);
+});
+
+test('check default and custom origins for additional behaviors', () => {
+  const stack = new Stack();
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
+
+  const additionalBucket = defaults.CreateScrapBucket(stack, "second-bucket", {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
+
+  });
+
+  const originAccessControl = new cloudfront.CfnOriginAccessControl(stack, 'second-oac', {
+    originAccessControlConfig: {
+      name: defaults.generatePhysicalOacName('aws-cloudfront-s3-', [__filename]),
+      originAccessControlOriginType: 's3',
+      signingBehavior: 'always',
+      signingProtocol: 'sigv4',
+      description: 'Origin access control provisioned by aws-cloudfront-s3'
+    }
+  });
+
+  const additionalOrigin = new defaults.S3OacOrigin(additionalBucket, {
+    originAccessControl
+  });
+
+  createCloudFrontDistributionForS3(stack, 'sample-cf-distro', {
+    sourceBucket: buildS3BucketResponse.bucket,
+    cloudFrontDistributionProps: {
+      additionalBehaviors: {
+        '/assets/public/*': {
+          origin: additionalOrigin,
+          cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
+        },
+        'ngsw.json': {
+          cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
+        }
+      }
+    }
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      CacheBehaviors: [
+        {
+          CachePolicyId: "4135ea2d-6df8-44a3-9df3-4b5a84be39ad",
+          Compress: true,
+          PathPattern: "/assets/public/*",
+          TargetOriginId: "CloudFrontDistributionOrigin223EBF2F9",
+          ViewerProtocolPolicy: "allow-all"
+        },
+        {
+          CachePolicyId: "4135ea2d-6df8-44a3-9df3-4b5a84be39ad",
+          Compress: true,
+          PathPattern: "ngsw.json",
+          TargetOriginId: "CloudFrontDistributionOrigin176EC3A12",
+          ViewerProtocolPolicy: "allow-all"
+        }
+      ]
+    }
+  });
 });
 
 // ---------------------------
@@ -1002,4 +1064,91 @@ test('Test CloudFront insertHttpHeaders bad props', () => {
 
   // Assertion
   expect(app).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
+});
+
+test("test CloudFrontS3 props - logS3AccessLogs", () => {
+  const props: defaults.CloudfrontS3Props = {
+    logS3AccessLogs: false,
+    bucketProps: {
+      serverAccessLogsBucket: {} as Bucket
+    }
+  };
+
+  const app = () => {
+    defaults.CheckCloudfrontS3Props(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - logS3AccessLogs is false, but a log bucket was provided in bucketProps.\n');
+
+});
+
+test("test CloudFrontS3 props - loggingBucketProps", () => {
+  const props: defaults.CloudfrontS3Props = {
+    loggingBucketProps: {
+      bucketName: "somename"
+    },
+    bucketProps: {
+      serverAccessLogsBucket: {} as Bucket
+    }
+  };
+
+  const app = () => {
+    defaults.CheckCloudfrontS3Props(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - bothlog bucket props and an existing log bucket were provided.\n');
+
+});
+
+test("test CloudFrontS3 props - cloudFrontLoggingBucketAccessLogBucketProps", () => {
+  const props: defaults.CloudfrontS3Props = {
+    cloudFrontLoggingBucketAccessLogBucketProps: {
+      bucketName: "somename"
+    },
+    cloudFrontLoggingBucketProps: {
+      serverAccessLogsBucket: {} as Bucket
+    }
+  };
+
+  const app = () => {
+    defaults.CheckCloudfrontS3Props(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - an existing CloudFront log bucket S3 access log bucket and cloudFrontLoggingBucketAccessLogBucketProps were provided\n');
+
+});
+
+test("test CloudFrontS3 props - serverAccessLogsBucket", () => {
+  const props: defaults.CloudfrontS3Props = {
+    cloudFrontLoggingBucketAccessLogBucketProps: {},
+    logCloudFrontAccessLog: false
+  };
+
+  const app = () => {
+    defaults.CheckCloudfrontS3Props(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - cloudFrontLoggingBucketAccessLogBucketProps were provided but logCloudFrontAccessLog was false\n');
+
+});
+
+test("test CloudFrontS3 props - serverAccessLogsBucket", () => {
+  const props: defaults.CloudfrontS3Props = {
+    cloudFrontLoggingBucketProps: {
+      serverAccessLogsBucket: {} as Bucket,
+    },
+    logCloudFrontAccessLog: false
+  };
+
+  const app = () => {
+    defaults.CheckCloudfrontS3Props(props);
+  };
+
+  // Assertion
+  expect(app).toThrowError('Error - props.cloudFrontLoggingBucketProps.serverAccessLogsBucket was provided but logCloudFrontAccessLog was false\n');
+
 });

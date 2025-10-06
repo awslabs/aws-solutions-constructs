@@ -20,6 +20,7 @@ import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Key } from "aws-cdk-lib/aws-kms";
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
+import { CachePolicy, CfnOriginAccessControl } from "aws-cdk-lib/aws-cloudfront";
 
 function deploy(stack: cdk.Stack, props?: CloudFrontToS3Props) {
   return new CloudFrontToS3(stack, 'test-cloudfront-s3', {
@@ -905,4 +906,63 @@ test('logCloudFrontAccessLog property is used correctly', () => {
   template.resourceCountIs("AWS::S3::Bucket", 3);
   expect(construct.cloudFrontLoggingBucket).toBeDefined();
   expect(construct.cloudFrontLoggingBucketAccessLogBucket).not.toBeDefined();
+});
+
+test.only('additionalBehaviors have correct origin', () => {
+  const stack = new cdk.Stack();
+
+  const additionalBucket = defaults.CreateScrapBucket(stack, "scrapBucket", {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
+  });
+
+  const originAccessControl = new CfnOriginAccessControl(stack, 'CloudFrontOac', {
+    originAccessControlConfig: {
+      name: defaults.generatePhysicalOacName('aws-cloudfront-s3-', [__filename]),
+      originAccessControlOriginType: 's3',
+      signingBehavior: 'always',
+      signingProtocol: 'sigv4',
+      description: 'Origin access control provisioned by aws-cloudfront-s3'
+    }
+  });
+
+  const additionalOrigin = new defaults.S3OacOrigin(additionalBucket, {
+    originAccessControl
+  });
+
+  new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+    cloudFrontDistributionProps: {
+      additionalBehaviors: {
+        '/assets/public/*': {
+          origin: additionalOrigin,
+          cachePolicy: CachePolicy.CACHING_DISABLED,
+        },
+        'ngsw.json': {
+          cachePolicy: CachePolicy.CACHING_DISABLED,
+        }
+      }
+    }
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties("AWS::CloudFront::Distribution", {
+    DistributionConfig: {
+      CacheBehaviors: [
+        {
+          CachePolicyId: "4135ea2d-6df8-44a3-9df3-4b5a84be39ad",
+          Compress: true,
+          PathPattern: "/assets/public/*",
+          TargetOriginId: "testcloudfronts3CloudFrontDistributionOrigin21D78391C",
+          ViewerProtocolPolicy: "allow-all"
+        },
+        {
+          CachePolicyId: "4135ea2d-6df8-44a3-9df3-4b5a84be39ad",
+          Compress: true,
+          PathPattern: "ngsw.json",
+          TargetOriginId: "testcloudfronts3CloudFrontDistributionOrigin124051039",
+          ViewerProtocolPolicy: "allow-all"
+        }
+      ],
+    }
+  });
 });
