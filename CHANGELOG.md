@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.94.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.93.0...v2.94.0) (2025-10-07)
+
+
+### Features
+
+* **aws-cloudfront-s3:** add origin to additionalBehaviors when not specified ([#1417](https://github.com/awslabs/aws-solutions-constructs/issues/1417)) ([cc31325](https://github.com/awslabs/aws-solutions-constructs/commit/cc313252cad706dcc84ba1e2b0ae760e332dfce2))
+
 ## [2.93.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.92.2...v2.93.0) (2025-09-24)
 
 Built on CDK 2.214.0
