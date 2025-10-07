@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/095f2bd7ad5b35f48bcd953b05621a0da995fddd8b1336b954a58f36d471fa5f.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/654fb14ead09944a74f41f9e1862d6ef68265f65179db25cf52b0ffcf9a3d4c6.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -136,10 +136,7 @@
         "/facvpc-defaults/integ-test/vpc-test/publicSubnet1/Subnet": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "integtestvpctestpublicSubnet1Subnet632D1035",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_REPLACE"
-            ]
+            "data": "integtestvpctestpublicSubnet1Subnet632D1035"
           }
         ],
         "/facvpc-defaults/integ-test/vpc-test/publicSubnet1/RouteTable": [
@@ -151,10 +148,7 @@
         "/facvpc-defaults/integ-test/vpc-test/publicSubnet1/RouteTableAssociation": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "integtestvpctestpublicSubnet1RouteTableAssociation9D1696E3",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_REPLACE"
-            ]
+            "data": "integtestvpctestpublicSubnet1RouteTableAssociation9D1696E3"
           }
         ],
         "/facvpc-defaults/integ-test/vpc-test/publicSubnet1/DefaultRoute": [
@@ -194,10 +188,7 @@
         "/facvpc-defaults/integ-test/vpc-test/publicSubnet2/Subnet": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "integtestvpctestpublicSubnet2Subnet7F557FDF",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_REPLACE"
-            ]
+            "data": "integtestvpctestpublicSubnet2Subnet7F557FDF"
           }
         ],
         "/facvpc-defaults/integ-test/vpc-test/publicSubnet2/RouteTable": [
@@ -209,10 +200,7 @@
         "/facvpc-defaults/integ-test/vpc-test/publicSubnet2/RouteTableAssociation": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "integtestvpctestpublicSubnet2RouteTableAssociation5DEF2E6E",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_REPLACE"
-            ]
+            "data": "integtestvpctestpublicSubnet2RouteTableAssociation5DEF2E6E"
           }
         ],
         "/facvpc-defaults/integ-test/vpc-test/publicSubnet2/DefaultRoute": [
@@ -455,6 +443,12 @@
             "data": "integtestvpctestflowlogtestFlowLogE4CFB5D7"
           }
         ],
+        "/facvpc-defaults/LatestNodeRuntimeMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LatestNodeRuntimeMap"
+          }
+        ],
         "/facvpc-defaults/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -483,114 +477,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
-          }
-        ],
-        "integtestvpctestpublicSubnet1EIP4E55E0D5": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "integtestvpctestpublicSubnet1EIP4E55E0D5",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "integtestvpctestpublicSubnet1NATGatewayE20858E6": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "integtestvpctestpublicSubnet1NATGatewayE20858E6",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "integtestvpctestpublicSubnet2EIP1E37A150": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "integtestvpctestpublicSubnet2EIP1E37A150",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "integtestvpctestpublicSubnet2NATGateway47721003": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "integtestvpctestpublicSubnet2NATGateway47721003",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "integtestvpctestprivateSubnet1SubnetE4FEDA30": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "integtestvpctestprivateSubnet1SubnetE4FEDA30",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "integtestvpctestprivateSubnet1RouteTable3AD8652B": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "integtestvpctestprivateSubnet1RouteTable3AD8652B",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "integtestvpctestprivateSubnet1RouteTableAssociationF48FB207": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "integtestvpctestprivateSubnet1RouteTableAssociationF48FB207",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "integtestvpctestprivateSubnet1DefaultRouteAA68AAEA": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "integtestvpctestprivateSubnet1DefaultRouteAA68AAEA",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "integtestvpctestprivateSubnet2SubnetECA23869": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "integtestvpctestprivateSubnet2SubnetECA23869",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "integtestvpctestprivateSubnet2RouteTableA06CE4CD": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "integtestvpctestprivateSubnet2RouteTableA06CE4CD",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "integtestvpctestprivateSubnet2RouteTableAssociation30C51978": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "integtestvpctestprivateSubnet2RouteTableAssociation30C51978",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
-          }
-        ],
-        "integtestvpctestprivateSubnet2DefaultRouteDA7642C8": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "integtestvpctestprivateSubnet2DefaultRouteDA7642C8",
-            "trace": [
-              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
-            ]
           }
         ]
       },
