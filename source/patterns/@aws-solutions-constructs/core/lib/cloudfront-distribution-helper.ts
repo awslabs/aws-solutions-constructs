@@ -168,7 +168,6 @@ export function createCloudFrontDistributionForS3(
   );
 
   // Create construct props that assign the origin to any additional behaviors without origins
-  // This is the block added, let's make it easier to grok, perhaps break out ==============
   const constructProps: any = {};
 
   if (props.cloudFrontDistributionProps?.additionalBehaviors) {
