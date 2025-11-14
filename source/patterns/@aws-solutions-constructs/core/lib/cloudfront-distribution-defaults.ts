@@ -20,7 +20,6 @@ import * as api from 'aws-cdk-lib/aws-apigateway';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import { FunctionEventType, IOrigin } from 'aws-cdk-lib/aws-cloudfront';
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
-import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cdk from 'aws-cdk-lib';
 import {BehaviorOptions} from "aws-cdk-lib/aws-cloudfront/lib/distribution";
@@ -80,43 +79,6 @@ export function DefaultCloudFrontWebDistributionForS3Props(
     enableLogging: true,
     logBucket: loggingBucket,
     defaultRootObject: 'index.html'
-  };
-}
-
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
-export function DefaultCloudFrontDistributionForMediaStoreProps(mediastoreContainer: mediastore.CfnContainer,
-  loggingBucket: s3.Bucket | undefined,
-  originRequestPolicy: cloudfront.OriginRequestPolicy,
-  setHttpSecurityHeaders: boolean,
-  customHeaders?: Record<string, string>,
-  cfFunction?: cloudfront.IFunction,
-  responseHeadersPolicy?: cloudfront.ResponseHeadersPolicy
-): cloudfront.DistributionProps {
-
-  const mediaStoreContainerUrlWithoutProtocol = cdk.Fn.select(1, cdk.Fn.split('://', mediastoreContainer.attrEndpoint));
-  const mediaStoreContainerDomainName = cdk.Fn.select(0, cdk.Fn.split('/', mediaStoreContainerUrlWithoutProtocol));
-
-  const httpOrigin: origins.HttpOrigin = customHeaders ?
-    new origins.HttpOrigin(mediaStoreContainerDomainName, { customHeaders }) :
-    new origins.HttpOrigin(mediaStoreContainerDomainName);
-
-  let defaultBehavior: BehaviorOptions = {
-    origin: httpOrigin,
-    viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-    allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
-    cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS,
-    originRequestPolicy,
-    ...getFunctionAssociationsProp(setHttpSecurityHeaders, cfFunction),
-  };
-  if (responseHeadersPolicy) {
-    defaultBehavior = {...defaultBehavior, responseHeadersPolicy };
-  }
-  return {
-    defaultBehavior,
-    enableLogging: true,
-    logBucket: loggingBucket
   };
 }
 
