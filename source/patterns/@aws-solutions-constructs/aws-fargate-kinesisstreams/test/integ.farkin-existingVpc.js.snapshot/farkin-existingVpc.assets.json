@@ -1,5 +1,5 @@
 {
-  "version": "45.0.0",
+  "version": "48.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "farkin-existingVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -15,16 +15,16 @@
         }
       }
     },
-    "7789231728ee8f589ba16149d96f80449a8caf462e99c90b5c43c59753f7413e": {
+    "c8180eda91e8bcf518bd545a7439710df41e6e50fb50edb9cbaa5505774416d4": {
       "displayName": "farkin-existingVpc Template",
       "source": {
         "path": "farkin-existingVpc.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-8e83ae4d": {
+        "current_account-current_region-d6fe515f": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "7789231728ee8f589ba16149d96f80449a8caf462e99c90b5c43c59753f7413e.json",
+          "objectKey": "c8180eda91e8bcf518bd545a7439710df41e6e50fb50edb9cbaa5505774416d4.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

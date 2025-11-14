@@ -1,5 +1,5 @@
 {
-  "version": "45.0.0",
+  "version": "48.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "lamsqslam-deployProducerFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -43,16 +43,16 @@
         }
       }
     },
-    "bef5b80ba599a3e5006a14fef839a42c82b9a847897d1da60cbf08923189ef04": {
+    "4ae7faa4cd8bca9527d03a5c1b12b9f8ab61844ac9aa153b8f30405946edc4a1": {
       "displayName": "lamsqslam-deployProducerFunctionWithVpc Template",
       "source": {
         "path": "lamsqslam-deployProducerFunctionWithVpc.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-d8be45c7": {
+        "current_account-current_region-f2c9cfb2": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "bef5b80ba599a3e5006a14fef839a42c82b9a847897d1da60cbf08923189ef04.json",
+          "objectKey": "4ae7faa4cd8bca9527d03a5c1b12b9f8ab61844ac9aa153b8f30405946edc4a1.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

@@ -164,7 +164,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f.zip"
+     "S3Key": "0772ffe05bd3b2e012dc5086ab3b6dd03c8a0268fc1c81326f5e72b0a4c6b51e.zip"
     },
     "Environment": {
      "Variables": {
@@ -502,16 +502,6 @@
        "Resource": {
         "Fn::GetAtt": [
          "testiotlambdadynamodbstackVpcFlowLogLogGroup0BA54CDB",
-         "Arn"
-        ]
-       }
-      },
-      {
-       "Action": "iam:PassRole",
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "testiotlambdadynamodbstackVpcFlowLogIAMRole84CD262B",
          "Arn"
         ]
        }
