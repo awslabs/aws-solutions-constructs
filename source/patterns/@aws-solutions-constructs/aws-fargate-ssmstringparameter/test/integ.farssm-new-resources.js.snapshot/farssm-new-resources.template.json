@@ -482,16 +482,6 @@
          "Arn"
         ]
        }
-      },
-      {
-       "Action": "iam:PassRole",
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "VpcFlowLogIAMRole6A475D41",
-         "Arn"
-        ]
-       }
       }
      ],
      "Version": "2012-10-17"

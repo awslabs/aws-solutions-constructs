@@ -21,11 +21,9 @@ import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cdk from 'aws-cdk-lib';
 import * as api from 'aws-cdk-lib/aws-apigateway';
-import * as mediastore from 'aws-cdk-lib/aws-mediastore';
 import {
   DefaultCloudFrontWebDistributionForS3Props,
   DefaultCloudFrontWebDistributionForApiGatewayProps,
-  DefaultCloudFrontDistributionForMediaStoreProps
 } from './cloudfront-distribution-defaults';
 import { addCfnSuppressRules, consolidateProps, generatePhysicalOacName } from './utils';
 import { createCloudFrontLoggingBucket } from './s3-bucket-helper';
@@ -304,77 +302,6 @@ export function createCloudFrontOaiDistributionForS3(
     loggingBucketS3AccesssLogBucket: getLoggingBucketResponse.logBucketAccessLogBucket,
     originAccessIdentity: constructOai
   };
-}
-
-export interface CloudFrontDistributionForMediaStoreResponse {
-  readonly distribution: cloudfront.Distribution,
-  readonly loggingBucket?: s3.Bucket,
-  readonly requestPolicy: cloudfront.OriginRequestPolicy,
-  readonly cloudfrontFunction?: cloudfront.Function
-}
-
-/**
- * @internal This is an internal core function and should not be called directly by Solutions Constructs clients.
- */
-export function CloudFrontDistributionForMediaStore(scope: Construct,
-  mediaStoreContainer: mediastore.CfnContainer,
-  cloudFrontDistributionProps?: cloudfront.DistributionProps | any,
-  httpSecurityHeaders: boolean = true,
-  cloudFrontLoggingBucketProps?: s3.BucketProps,
-  responseHeadersPolicyProps?: cloudfront.ResponseHeadersPolicyProps
-): CloudFrontDistributionForMediaStoreResponse {
-
-  let originRequestPolicy: cloudfront.OriginRequestPolicy;
-
-  const getLoggingBucketResponse = getLoggingBucket(scope, { cloudFrontDistributionProps, cloudFrontLoggingBucketProps });
-
-  if (cloudFrontDistributionProps
-    && cloudFrontDistributionProps.defaultBehavior
-    && cloudFrontDistributionProps.defaultBehavior.originRequestPolicy) {
-    originRequestPolicy = cloudFrontDistributionProps.defaultBehavior.originRequestPolicy;
-  } else {
-    const originRequestPolicyProps: cloudfront.OriginRequestPolicyProps = {
-      headerBehavior: {
-        behavior: 'whitelist',
-        headers: [
-          'Access-Control-Allow-Origin',
-          'Access-Control-Request-Method',
-          'Access-Control-Request-Header',
-          'Origin'
-        ]
-      },
-      queryStringBehavior: {
-        behavior: 'all'
-      },
-      cookieBehavior: {
-        behavior: 'none'
-      },
-      comment: 'Policy for Constructs CloudFrontDistributionForMediaStore',
-      originRequestPolicyName: `${cdk.Aws.STACK_NAME}-${cdk.Aws.REGION}-CloudFrontDistributionForMediaStore`
-    };
-
-    originRequestPolicy = new cloudfront.OriginRequestPolicy(scope, 'CloudfrontOriginRequestPolicy', originRequestPolicyProps);
-  }
-
-  const cloudfrontFunction = getCloudfrontFunction(httpSecurityHeaders, scope);
-
-  const defaultprops = DefaultCloudFrontDistributionForMediaStoreProps(
-    mediaStoreContainer,
-    getLoggingBucketResponse.logBucket,
-    originRequestPolicy,
-    httpSecurityHeaders,
-    cloudFrontDistributionProps?.customHeaders,
-    cloudfrontFunction,
-    responseHeadersPolicyProps ? new cloudfront.ResponseHeadersPolicy(scope, 'ResponseHeadersPolicy', responseHeadersPolicyProps) : undefined
-  );
-
-  const cfprops: cloudfront.DistributionProps = consolidateProps(defaultprops, cloudFrontDistributionProps);
-
-  // Create the CloudFront Distribution
-  const cfDistribution = new cloudfront.Distribution(scope, 'CloudFrontDistribution', cfprops);
-  updateSecurityPolicy(cfDistribution);
-
-  return { distribution: cfDistribution, loggingBucket: getLoggingBucketResponse.logBucket, requestPolicy: originRequestPolicy, cloudfrontFunction };
 }
 
 /**

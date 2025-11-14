@@ -1,5 +1,5 @@
 {
-  "version": "45.0.0",
+  "version": "48.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "farsns-new-resources/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -16,16 +16,16 @@
         }
       }
     },
-    "f83b835a6a5bfeb1400d030af78f9c496d2989adcc0e98c6512f487c68415d57": {
+    "313acbf14e1a228f850581e59e6fea9ab21c1e84d239e861863646d0125b2715": {
       "displayName": "farsns-new-resources Template",
       "source": {
         "path": "farsns-new-resources.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-us-east-1-109468b4": {
+        "current_account-us-east-1-515138df": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "f83b835a6a5bfeb1400d030af78f9c496d2989adcc0e98c6512f487c68415d57.json",
+          "objectKey": "313acbf14e1a228f850581e59e6fea9ab21c1e84d239e861863646d0125b2715.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }

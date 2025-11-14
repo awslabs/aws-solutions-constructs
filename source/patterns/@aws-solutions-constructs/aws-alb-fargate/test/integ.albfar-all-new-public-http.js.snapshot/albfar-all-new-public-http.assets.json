@@ -1,5 +1,5 @@
 {
-  "version": "45.0.0",
+  "version": "48.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "albfar-all-new-public-http/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -31,16 +31,16 @@
         }
       }
     },
-    "4b3ef63b53d1069df49d12e9dec9333bb8c1b321cbfa909534fa4052511e74f6": {
+    "50bd82c96701cda96677b58ad615ccd80c768b0ef642c64bbfc672acdf5933ff": {
       "displayName": "albfar-all-new-public-http Template",
       "source": {
         "path": "albfar-all-new-public-http.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-us-east-1-c1c983a4": {
+        "current_account-us-east-1-44ea88de": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "4b3ef63b53d1069df49d12e9dec9333bb8c1b321cbfa909534fa4052511e74f6.json",
+          "objectKey": "50bd82c96701cda96677b58ad615ccd80c768b0ef642c64bbfc672acdf5933ff.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }
