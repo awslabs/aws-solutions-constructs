@@ -203,6 +203,7 @@ set the following defaults:
 all responses from CloudFront Distribution
 * CloudFront originPath set to `'/'`
 * Create an Origin Access Control to access S3 bucket
+* The construct will assign the origin created by the construct to any `DistributionProps.additionalBehaviors` provided that do not have an origin specified.
 
 === Amazon S3 Bucket
 
