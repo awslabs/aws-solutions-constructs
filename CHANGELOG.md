@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.95.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.94.0...v2.95.0) (2025-11-14)
 
+Built on CDK 2.223.0
+
+### ⚠ BREAKING CHANGES
+
+* **aws-cloudfront-mediastore:** removed construct - Mediastore service was deprecated 11/13/2026 ([#1425](https://github.com/awslabs/aws-solutions-constructs/pull/1425)) ([f2be598](https://github.com/awslabs/aws-solutions-constructs/commit/f2be5985942bc15393cc59435df8fd03462418ea))
 
 ### Features
 
