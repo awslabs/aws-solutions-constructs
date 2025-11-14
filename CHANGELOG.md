@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.95.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.94.0...v2.95.0) (2025-11-14)
+
+
+### Features
+
+* **aws-lambda-transcribe:** new construct ([#1424](https://github.com/awslabs/aws-solutions-constructs/issues/1424)) ([8106d25](https://github.com/awslabs/aws-solutions-constructs/commit/8106d2546001c12e14b8db1a08c4e0efb09ed878))
+
 ## [2.94.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.93.0...v2.94.0) (2025-10-07)
 
 Built on CDK 2.219.0
