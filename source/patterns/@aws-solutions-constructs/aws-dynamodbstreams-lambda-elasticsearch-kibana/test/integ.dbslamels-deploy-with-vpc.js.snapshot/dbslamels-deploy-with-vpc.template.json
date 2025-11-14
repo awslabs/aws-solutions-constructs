@@ -1180,16 +1180,6 @@
          "Arn"
         ]
        }
-      },
-      {
-       "Action": "iam:PassRole",
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "testddbstreamslambdaeskVpcFlowLogIAMRole8B3A466E",
-         "Arn"
-        ]
-       }
       }
      ],
      "Version": "2012-10-17"

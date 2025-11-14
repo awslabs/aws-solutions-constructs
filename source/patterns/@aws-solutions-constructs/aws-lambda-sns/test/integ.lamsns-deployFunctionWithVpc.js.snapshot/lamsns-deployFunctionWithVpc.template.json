@@ -176,7 +176,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "0904d3723480fed2daf7885caa427b930881caae6879d1e6b0d395020173ef6f.zip"
+     "S3Key": "4085f2fc7cce70548a05ffc5162591a6b42f88398292e9c4b2739feed32a1640.zip"
     },
     "Environment": {
      "Variables": {
@@ -573,16 +573,6 @@
        "Resource": {
         "Fn::GetAtt": [
          "VpcFlowLogLogGroup7B5C56B9",
-         "Arn"
-        ]
-       }
-      },
-      {
-       "Action": "iam:PassRole",
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "VpcFlowLogIAMRole6A475D41",
          "Arn"
         ]
        }

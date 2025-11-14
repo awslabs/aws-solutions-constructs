@@ -66,16 +66,6 @@ test('all defaults', () => {
               "Arn"
             ]
           }
-        },
-        {
-          Action: "iam:PassRole",
-          Effect: "Allow",
-          Resource: {
-            "Fn::GetAtt": [
-              Match.stringLikeRegexp("targetvpctestflowlogtestIAMRole"),
-              "Arn"
-            ]
-          }
         }
       ],
     },
