@@ -1,5 +1,5 @@
 {
-  "version": "45.0.0",
+  "version": "48.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "lamevt-deployFunctionWithNewEventBus/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -29,16 +29,16 @@
         }
       }
     },
-    "ca22b55499a463d88dfa0b18210761e9b601284904f09fadd63bd3fca55d9457": {
+    "eaaaf2d5cf64ed0d4937b85b09c35ffbc63dc8928563fe47f59864cfc34dfb68": {
       "displayName": "lamevt-deployFunctionWithNewEventBus Template",
       "source": {
         "path": "lamevt-deployFunctionWithNewEventBus.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-68ee4ed8": {
+        "current_account-current_region-d1b21bd2": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "ca22b55499a463d88dfa0b18210761e9b601284904f09fadd63bd3fca55d9457.json",
+          "objectKey": "eaaaf2d5cf64ed0d4937b85b09c35ffbc63dc8928563fe47f59864cfc34dfb68.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

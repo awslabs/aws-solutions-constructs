@@ -1,5 +1,5 @@
 {
-  "version": "45.0.0",
+  "version": "48.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "farfhs-existingFargateService/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -29,16 +29,16 @@
         }
       }
     },
-    "11bd3a68d29b145be1008abb147f08da72954d0e78f0adac284dfa134c81228b": {
+    "4cb99aaf25b415eccf6ed9c545ede5fad69db061c38be470e9b7baded6ea7004": {
       "displayName": "farfhs-existingFargateService Template",
       "source": {
         "path": "farfhs-existingFargateService.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-5500f683": {
+        "current_account-current_region-1137e121": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "11bd3a68d29b145be1008abb147f08da72954d0e78f0adac284dfa134c81228b.json",
+          "objectKey": "4cb99aaf25b415eccf6ed9c545ede5fad69db061c38be470e9b7baded6ea7004.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

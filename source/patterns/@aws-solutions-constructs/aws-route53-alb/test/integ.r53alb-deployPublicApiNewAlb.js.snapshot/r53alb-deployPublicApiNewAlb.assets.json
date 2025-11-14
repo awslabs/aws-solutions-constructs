@@ -1,5 +1,5 @@
 {
-  "version": "45.0.0",
+  "version": "48.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "r53alb-deployPublicApiNewAlb/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -31,16 +31,16 @@
         }
       }
     },
-    "c466578d561e76894c5323c1c5cd06a36e391606f502e049e70b1393771947b6": {
+    "d750dae23e1bab812f028db91c2d585c2281c76ce900aa5af31ebc677ceb0747": {
       "displayName": "r53alb-deployPublicApiNewAlb Template",
       "source": {
         "path": "r53alb-deployPublicApiNewAlb.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-us-east-1-7b7c92de": {
+        "current_account-us-east-1-e5c0c1b8": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "c466578d561e76894c5323c1c5cd06a36e391606f502e049e70b1393771947b6.json",
+          "objectKey": "d750dae23e1bab812f028db91c2d585c2281c76ce900aa5af31ebc677ceb0747.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }

@@ -1,5 +1,5 @@
 {
-  "version": "45.0.0",
+  "version": "48.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "lamkin-newVpcFromProps/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -29,16 +29,16 @@
         }
       }
     },
-    "509b7b3c6e99836caaa5235d2d20d212bd0edaca842223b86e631327a7613709": {
+    "e93ead385e98075b2ee53b465779cb9d476f25f67eeecf006c64e23e565c3d7b": {
       "displayName": "lamkin-newVpcFromProps Template",
       "source": {
         "path": "lamkin-newVpcFromProps.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-650e1f2b": {
+        "current_account-current_region-0e7a7179": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "509b7b3c6e99836caaa5235d2d20d212bd0edaca842223b86e631327a7613709.json",
+          "objectKey": "e93ead385e98075b2ee53b465779cb9d476f25f67eeecf006c64e23e565c3d7b.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

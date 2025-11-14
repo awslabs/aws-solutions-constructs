@@ -1,5 +1,5 @@
 {
-  "version": "45.0.0",
+  "version": "48.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "r53alb-deployPrivateApiExistingZone/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -31,16 +31,16 @@
         }
       }
     },
-    "5258b29f860dd4231458999eabcb40fa08c1ba4640a0b0971b8c31ec5d3ed5ef": {
+    "581a997f3ffae856721ae630766f0015ef9c208eaeb725b2b0c43cf6b652634c": {
       "displayName": "r53alb-deployPrivateApiExistingZone Template",
       "source": {
         "path": "r53alb-deployPrivateApiExistingZone.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-us-east-1-a36cfd62": {
+        "current_account-us-east-1-6c1dddb8": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "5258b29f860dd4231458999eabcb40fa08c1ba4640a0b0971b8c31ec5d3ed5ef.json",
+          "objectKey": "581a997f3ffae856721ae630766f0015ef9c208eaeb725b2b0c43cf6b652634c.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }

@@ -1,5 +1,5 @@
 {
-  "version": "45.0.0",
+  "version": "48.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "faropn-existing-resources/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -16,16 +16,16 @@
         }
       }
     },
-    "9c1018d27dea54758372438e53e73f7a0d080a77e5bb42de1a953bf666eb78ff": {
+    "dddb8b08d1a7de25fb579e4537cfe2bc50853fbbf7eb3e9eb548d8610d27c8e2": {
       "displayName": "faropn-existing-resources Template",
       "source": {
         "path": "faropn-existing-resources.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-us-east-1-e2a6bd2d": {
+        "current_account-us-east-1-942ccb88": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "9c1018d27dea54758372438e53e73f7a0d080a77e5bb42de1a953bf666eb78ff.json",
+          "objectKey": "dddb8b08d1a7de25fb579e4537cfe2bc50853fbbf7eb3e9eb548d8610d27c8e2.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }

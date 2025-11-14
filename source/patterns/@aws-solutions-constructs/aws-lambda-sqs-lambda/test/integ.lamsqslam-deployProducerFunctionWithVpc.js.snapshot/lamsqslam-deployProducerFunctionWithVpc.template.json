@@ -603,16 +603,6 @@
          "Arn"
         ]
        }
-      },
-      {
-       "Action": "iam:PassRole",
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "testlambdasqsVpcFlowLogIAMRole79FE4957",
-         "Arn"
-        ]
-       }
       }
      ],
      "Version": "2012-10-17"
