@@ -37,7 +37,9 @@ find source/patterns -name "README.adoc" -type f | while read file; do
     
     # Copy the file with the new name
     cp "$file" "documentation/${parent_dir}.adoc"
-    cp "${dir_name}/${parent_dir}.png" "documentation/images/"
+    for img in "${dir_name}"/aws-*.png; do
+        cp "$img" "documentation/images/"
+    done
 
     # remove the copyright notices, as the web site will add another
     perl -i -0pe "s/© Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.\n/\n/g" "documentation/${parent_dir}.adoc"
