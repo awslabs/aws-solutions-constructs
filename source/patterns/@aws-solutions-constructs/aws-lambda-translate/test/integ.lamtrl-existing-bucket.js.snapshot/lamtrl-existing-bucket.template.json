@@ -544,6 +544,12 @@
       },
       "DESTINATION_BUCKET_NAME": {
        "Ref": "testlambdatranslatestacktestlambdatranslatestackdestinationbucketS3BucketF474A865"
+      },
+      "DATA_ACCESS_ROLE_ARN": {
+       "Fn::GetAtt": [
+        "testlambdatranslatestackLambdaFunctionServiceRoleAFC37061",
+        "Arn"
+       ]
       }
      }
     },
@@ -625,10 +631,11 @@
      "Statement": [
       {
        "Action": [
-        "translate:List*",
-        "translate:Read*",
+        "iam:PassRole",
         "translate:StartTextTranslationJob",
-        "translate:StopTextTranslationJob"
+        "translate:StopTextTranslationJob",
+        "translate:TranslateDocument",
+        "translate:TranslateText"
        ],
        "Effect": "Allow",
        "Resource": "*"

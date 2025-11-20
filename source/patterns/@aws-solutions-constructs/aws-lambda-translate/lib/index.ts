@@ -261,6 +261,7 @@ export class LambdaToTranslate extends Construct {
 
       this.lambdaFunction.addEnvironment(sourceBucketEnvName, sourceBucket.bucketName);
       this.lambdaFunction.addEnvironment(destinationBucketEnvName, destinationBucket.bucketName);
+      this.lambdaFunction.addEnvironment("DATA_ACCESS_ROLE_ARN", this.lambdaFunction.role!.roleArn);
 
       // Grant Lambda permissions to S3 buckets
       sourceBucket.grantRead(this.lambdaFunction.grantPrincipal);
@@ -268,16 +269,21 @@ export class LambdaToTranslate extends Construct {
     }
 
     // Grant Lambda permissions to Translate service
-    const translateActions = props.additionalPermissions || ['translate:List*', 'translate:Read*'];
+    const translateActions =  ['translate:TranslateText', 'translate:TranslateDocument'];
 
     // Add async job permissions if asyncJobs is true
     if (props.asyncJobs) {
-      if (!translateActions.includes('translate:StartTextTranslationJob')) {
         translateActions.push('translate:StartTextTranslationJob');
-      }
-      if (!translateActions.includes('translate:StopTextTranslationJob')) {
         translateActions.push('translate:StopTextTranslationJob');
-      }
+        translateActions.push('iam:PassRole');
+    }
+
+    if (props.additionalPermissions) {
+      props.additionalPermissions.forEach(permission => {
+        if (!translateActions.includes(permission)) {
+          translateActions.push(permission);
+        }
+      });
     }
 
     this.lambdaFunction.addToRolePolicy(new iam.PolicyStatement({

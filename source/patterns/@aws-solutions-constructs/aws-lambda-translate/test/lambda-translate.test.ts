@@ -52,7 +52,7 @@ test('Test deployment with no optional parameters', () => {
       Statement: Match.arrayWith([
         Match.objectLike({
           Effect: 'Allow',
-          Action: Match.arrayWith(['translate:List*', 'translate:Read*'])
+          Action: Match.arrayWith(['translate:TranslateText', 'translate:TranslateDocument'])
         })
       ])
     }
@@ -85,8 +85,8 @@ test('Test deployment with asyncJobs enabled', () => {
         Match.objectLike({
           Effect: 'Allow',
           Action: Match.arrayWith([
-            'translate:List*',
-            'translate:Read*',
+            'translate:TranslateText',
+            'translate:TranslateDocument',
             'translate:StartTextTranslationJob',
             'translate:StopTextTranslationJob'
           ])
@@ -198,7 +198,7 @@ test('Test deployment with additionalPermissions', () => {
   const stack = new Stack(app, "test-stack");
 
   deployTestConstructStructure(stack, {
-    additionalPermissions: ['translate:TranslateText', 'translate:TranslateDocument']
+    additionalPermissions: ['translate:CreateParallelData', 'translate:DeleteParallelData']
   });
 
   const template = Template.fromStack(stack);
@@ -210,7 +210,9 @@ test('Test deployment with additionalPermissions', () => {
           Effect: 'Allow',
           Action: Match.arrayWith([
             'translate:TranslateText',
-            'translate:TranslateDocument'
+            'translate:TranslateDocument',
+            'translate:CreateParallelData',
+            'translate:DeleteParallelData'
           ])
         })
       ])

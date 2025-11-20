@@ -18,6 +18,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
+import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
 
 // Setup
 const app = new App();
@@ -26,19 +27,22 @@ SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-lambda-translate with asyncJobs';
 
 // Definitions
-new LambdaToTranslate(stack, 'test-lambda-translate-stack', {
+const testConstruct = new LambdaToTranslate(stack, 'test-lambda-translate-stack', {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_20_X,
-    handler: 'index.handler',
-    code: lambda.Code.fromInline(`
-      exports.handler = async (event) => {
-        console.log('Lambda function executed with async jobs');
-        return { statusCode: 200, body: 'Hello from Lambda!' };
-      };
-    `)
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    handler: 'async-index.handler'
   },
   asyncJobs: true
 });
+
+// Deploy the test file to the source bucket using aws-s3-deployment
+if (testConstruct.sourceBucket) {
+  new s3deploy.BucketDeployment(stack, 'DeployTestFile', {
+    sources: [s3deploy.Source.asset(`${__dirname}/content`)],
+    destinationBucket: testConstruct.sourceBucket,
+  });
+}
 
 defaults.SuppressCfnNagLambdaWarnings(stack);
 

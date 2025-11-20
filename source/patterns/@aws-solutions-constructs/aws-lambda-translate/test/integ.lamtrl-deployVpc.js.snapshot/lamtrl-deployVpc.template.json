@@ -134,7 +134,10 @@
    "Type": "AWS::Lambda::Function",
    "Properties": {
     "Code": {
-     "ZipFile": "\n      exports.handler = async (event) => {\n        console.log('Lambda function executed in VPC');\n        return { statusCode: 200, body: 'Hello from Lambda!' };\n      };\n    "
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "6b5e7cd71f0da225feff4d1b7607da6f331479e62ec0a288710279c0beb22e68.zip"
     },
     "Environment": {
      "Variables": {
@@ -243,8 +246,8 @@
      "Statement": [
       {
        "Action": [
-        "translate:List*",
-        "translate:Read*"
+        "translate:TranslateDocument",
+        "translate:TranslateText"
        ],
        "Effect": "Allow",
        "Resource": "*"

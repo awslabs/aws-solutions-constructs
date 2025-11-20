@@ -28,14 +28,9 @@ stack.templateOptions.description = 'Integration Test for aws-lambda-translate w
 // Definitions
 new LambdaToTranslate(stack, 'test-lambda-translate-stack', {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_20_X,
-    handler: 'index.handler',
-    code: lambda.Code.fromInline(`
-      exports.handler = async (event) => {
-        console.log('Lambda function executed');
-        return { statusCode: 200, body: 'Hello from Lambda!' };
-      };
-    `)
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    handler: 'index.handler'
   },
   useSameBucket: true
 });

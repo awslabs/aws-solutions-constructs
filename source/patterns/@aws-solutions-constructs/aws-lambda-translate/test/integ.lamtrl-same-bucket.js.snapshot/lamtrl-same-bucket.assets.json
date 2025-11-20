@@ -1,16 +1,30 @@
 {
   "version": "48.0.0",
   "files": {
-    "69dfdb4f2fb00ee6da1f558f65b8a69a78228a7bc7c824630b12ce46bb3f76a6": {
+    "6b5e7cd71f0da225feff4d1b7607da6f331479e62ec0a288710279c0beb22e68": {
+      "displayName": "test-lambda-translate-stack/LambdaFunction/Code",
+      "source": {
+        "path": "asset.6b5e7cd71f0da225feff4d1b7607da6f331479e62ec0a288710279c0beb22e68",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-current_region-80a59981": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "6b5e7cd71f0da225feff4d1b7607da6f331479e62ec0a288710279c0beb22e68.zip",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    },
+    "0778353ec9242d168dc2bac52d50acad6605e7b88f107874f1fba6371ecadad0": {
       "displayName": "lamtrl-same-bucket Template",
       "source": {
         "path": "lamtrl-same-bucket.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-e64fa2a1": {
+        "current_account-current_region-b64ad4d5": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "69dfdb4f2fb00ee6da1f558f65b8a69a78228a7bc7c824630b12ce46bb3f76a6.json",
+          "objectKey": "0778353ec9242d168dc2bac52d50acad6605e7b88f107874f1fba6371ecadad0.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
