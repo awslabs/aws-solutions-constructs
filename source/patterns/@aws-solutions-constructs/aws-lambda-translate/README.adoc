@@ -285,10 +285,10 @@ storage after 90 days
 == Architecture
 
 image::aws-lambda-translate.png["Diagram showing the Lambda functionAmazon Translate service, and IAM role created by the construct",scaledwidth=100%]
-<center>**Default Implementation**</center>
+<p style="text-align: center;">**Default Implementation**</p>
 
 image::aws-lambda-translate-async.png["Diagram showing the Lambda function, source and destination S3 buckets (when asyncJobs is true), Amazon Translate service, and IAM roles created by the construct",scaledwidth=100%]
-<center>**Default Implementation when asyncJobs = true**</center>
+<p style="text-align: center;">**Default Implementation when asyncJobs = true**</p>
 
 // github block
 
