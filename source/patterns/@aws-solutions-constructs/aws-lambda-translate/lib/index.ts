@@ -79,7 +79,7 @@ export interface LambdaToTranslateProps {
   /**
    * Optional array of additional IAM permissions to grant to the Lambda function for Amazon Translate.
    *
-   * @default - ['translate:List*', 'translate:Read*']
+   * @default - ['translate:TranslateText', 'translate:TranslateDocument']
    */
   readonly additionalPermissions?: string[];
   /**
