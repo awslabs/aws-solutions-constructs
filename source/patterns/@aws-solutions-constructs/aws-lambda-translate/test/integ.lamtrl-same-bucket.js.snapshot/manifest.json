@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0778353ec9242d168dc2bac52d50acad6605e7b88f107874f1fba6371ecadad0.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4b7c5720ba7f3bfd6b36d8daafbef6c56d88b44ac0aad81f40b9e678ef3b3537.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -34,6 +34,195 @@
         "lamtrl-same-bucket.assets"
       ],
       "metadata": {
+        "/lamtrl-same-bucket/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3LoggingBucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "retain",
+              "enforceSSL": true
+            }
+          }
+        ],
+        "/lamtrl-same-bucket/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3LoggingBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3LoggingBucketEF52D1D4"
+          }
+        ],
+        "/lamtrl-same-bucket/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3LoggingBucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
+        "/lamtrl-same-bucket/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3LoggingBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3LoggingBucketPolicy308DE110"
+          }
+        ],
+        "/lamtrl-same-bucket/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3Bucket": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "encryption": "S3_MANAGED",
+              "versioned": true,
+              "blockPublicAccess": "*",
+              "removalPolicy": "retain",
+              "enforceSSL": true,
+              "lifecycleRules": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                }
+              ],
+              "serverAccessLogsBucket": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addLifecycleRule": [
+                {
+                  "noncurrentVersionTransitions": [
+                    {
+                      "storageClass": "*"
+                    }
+                  ]
+                },
+                "*",
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamtrl-same-bucket/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3Bucket51973FD7"
+          }
+        ],
+        "/lamtrl-same-bucket/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3Bucket/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "bucket": "*"
+            }
+          }
+        ],
+        "/lamtrl-same-bucket/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3BucketPolicy8D30C760"
+          }
+        ],
+        "/lamtrl-same-bucket/test-lambda-translate-stack/test-lambda-translate-stack-translate-service-role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "assumedBy": {
+                "principalAccount": "*",
+                "assumeRoleAction": "*"
+              }
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/lamtrl-same-bucket/test-lambda-translate-stack/test-lambda-translate-stack-translate-service-role/Importtest-lambda-translate-stack-translate-service-role": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/lamtrl-same-bucket/test-lambda-translate-stack/test-lambda-translate-stack-translate-service-role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdatranslatestacktestlambdatranslatestacktranslateservicerole8DA2B665"
+          }
+        ],
+        "/lamtrl-same-bucket/test-lambda-translate-stack/test-lambda-translate-stack-translate-service-role/DefaultPolicy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          }
+        ],
+        "/lamtrl-same-bucket/test-lambda-translate-stack/test-lambda-translate-stack-translate-service-role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdatranslatestacktestlambdatranslatestacktranslateserviceroleDefaultPolicy33BB4F3C"
+          }
+        ],
         "/lamtrl-same-bucket/test-lambda-translate-stack/LambdaFunctionServiceRole": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -110,6 +299,33 @@
                 {
                   "removeInEdge": true
                 }
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addEnvironment": [
+                "*",
+                "*"
               ]
             }
           }

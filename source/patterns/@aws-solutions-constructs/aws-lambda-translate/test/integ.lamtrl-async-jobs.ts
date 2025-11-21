@@ -41,6 +41,7 @@ if (testConstruct.sourceBucket) {
   new s3deploy.BucketDeployment(stack, 'DeployTestFile', {
     sources: [s3deploy.Source.asset(`${__dirname}/content`)],
     destinationBucket: testConstruct.sourceBucket,
+    destinationKeyPrefix: 'source'
   });
 }
 

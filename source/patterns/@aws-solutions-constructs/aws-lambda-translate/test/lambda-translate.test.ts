@@ -52,13 +52,22 @@ test('Test deployment with no optional parameters', () => {
       Statement: Match.arrayWith([
         Match.objectLike({
           Effect: 'Allow',
-          Action: Match.arrayWith(['translate:TranslateText', 'translate:TranslateDocument'])
+          Action: ['translate:TranslateText', 'translate:TranslateDocument']
         })
       ])
     }
   });
 
+  // Ensure we didn't create the async jobs infrastructure
+  template.resourceCountIs("AWS::IAM::Role", 1);
   template.resourceCountIs('AWS::S3::Bucket', 0);
+  template.resourcePropertiesCountIs("AWS::Lambda::Function", {
+    Environment: Match.objectLike({
+      Variables: {
+        "SOURCE_BUCKET_NAME": Match.anyValue()
+      }
+    }),
+  }, 0);
 });
 
 test('Test deployment with asyncJobs enabled', () => {
@@ -76,31 +85,62 @@ test('Test deployment with asyncJobs enabled', () => {
   expect(construct.destinationLoggingBucket).toBeDefined();
 
   const template = Template.fromStack(stack);
+
   template.resourceCountIs('AWS::S3::Bucket', 4); // 2 main buckets + 2 logging buckets
 
-  // Check async job permissions
+  // Check lambda functon permissions
   template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: Match.arrayWith([
         Match.objectLike({
           Effect: 'Allow',
           Action: Match.arrayWith([
-            'translate:TranslateText',
-            'translate:TranslateDocument',
-            'translate:StartTextTranslationJob',
-            'translate:StopTextTranslationJob'
+            "translate:TranslateText",
+            "translate:TranslateDocument",
+            "iam:PassRole",
+            "translate:DescribeTextTranslationJob",
+            "translate:ListTextTranslationJobs",
+            "translate:StartTextTranslationJob",
+            "translate:StopTextTranslationJob"
           ])
         })
       ])
     }
   });
 
+  // Check translate service permissions
+  template.hasResourceProperties('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Effect: 'Allow',
+          Action: Match.arrayWith([
+            "s3:GetObject*",
+            "s3:GetBucket*",
+            "s3:List*",
+            "s3:DeleteObject*",
+            "s3:PutObject",
+            "s3:PutObjectLegalHold",
+            "s3:PutObjectRetention",
+            "s3:PutObjectTagging",
+            "s3:PutObjectVersionTagging",
+            "s3:Abort*"
+          ])
+        })
+      ])
+    }
+  });
+
+  // Check that there are 2 separate policies
+  template.resourceCountIs("AWS::IAM::Policy", 2);
+  // TODO - we really need to link the policies above to a the proper roles
   // Check environment variables
   template.hasResourceProperties('AWS::Lambda::Function', {
     Environment: {
       Variables: Match.objectLike({
         SOURCE_BUCKET_NAME: Match.anyValue(),
-        DESTINATION_BUCKET_NAME: Match.anyValue()
+        DESTINATION_BUCKET_NAME: Match.anyValue(),
+        DATA_ACCESS_ROLE_ARN: Match.anyValue(),
       })
     }
   });
@@ -227,7 +267,8 @@ test('Test custom environment variable names', () => {
   deployTestConstructStructure(stack, {
     asyncJobs: true,
     sourceBucketEnvironmentVariableName: 'CUSTOM_SOURCE',
-    destinationBucketEnvironmentVariableName: 'CUSTOM_DEST'
+    destinationBucketEnvironmentVariableName: 'CUSTOM_DEST',
+    dataAccessRoleArnEnvironmentVariableName: 'CUSTOM_ARN'
   });
 
   const template = Template.fromStack(stack);
@@ -236,7 +277,8 @@ test('Test custom environment variable names', () => {
     Environment: {
       Variables: Match.objectLike({
         CUSTOM_SOURCE: Match.anyValue(),
-        CUSTOM_DEST: Match.anyValue()
+        CUSTOM_DEST: Match.anyValue(),
+        CUSTOM_ARN: Match.anyValue()
       })
     }
   });
@@ -317,35 +359,4 @@ test('Test error when destination props provided with useSameBucket', () => {
   }).toThrow('Destination bucket properties cannot be provided when useSameBucket is true');
 });
 
-test('Test Lambda function has correct IAM permissions for S3', () => {
-  const app = new App();
-  const stack = new Stack(app, "test-stack");
-
-  deployTestConstructStructure(stack, { asyncJobs: true });
-
-  const template = Template.fromStack(stack);
-
-  // Check read permissions for source bucket
-  template.hasResourceProperties('AWS::IAM::Policy', {
-    PolicyDocument: {
-      Statement: Match.arrayWith([
-        Match.objectLike({
-          Effect: 'Allow',
-          Action: Match.arrayWith(['s3:GetObject*', 's3:GetBucket*', 's3:List*'])
-        })
-      ])
-    }
-  });
-
-  // Check write permissions for destination bucket
-  template.hasResourceProperties('AWS::IAM::Policy', {
-    PolicyDocument: {
-      Statement: Match.arrayWith([
-        Match.objectLike({
-          Effect: 'Allow',
-          Action: Match.arrayWith(['s3:PutObject', 's3:PutObjectLegalHold'])
-        })
-      ])
-    }
-  });
-});
+// TODO: Check new Translate role

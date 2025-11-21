@@ -109,6 +109,12 @@ export interface LambdaToTranslateProps {
    */
   readonly destinationBucketEnvironmentVariableName?: string;
   /**
+   * Optional Name for the role to pass to Batch translate jobs. Only set if asyncJobs is true
+   *
+   * @default - DATA_ACCESS_ROLE_ARN
+   */
+  readonly dataAccessRoleArnEnvironmentVariableName?: string;
+  /**
    * Optional user provided props to override the default props for the source S3 Logging Bucket. Only valid when asyncJobs is true.
    *
    * @default - Default props are used
@@ -136,16 +142,24 @@ export interface LambdaToTranslateProps {
   readonly logDestinationS3AccessLogs?: boolean;
 }
 
+interface EnvironmentVariableDefinition {
+  defaultName: string,
+  clientNameOverride?: string,
+  value: string
+}
+
 /**
  * @summary The LambdaToTranslate class.
  */
 export class LambdaToTranslate extends Construct {
   public readonly lambdaFunction: lambda.Function;
+  // Buckets will be set if this construct creates them, if existing buckets are passed in, these will not be set
   public readonly sourceBucket?: s3.Bucket;
   public readonly destinationBucket?: s3.Bucket;
   public readonly sourceLoggingBucket?: s3.Bucket;
   public readonly destinationLoggingBucket?: s3.Bucket;
   public readonly vpc?: ec2.IVpc;
+  // Interfaces will always be set, either with the new bucket or the existingBucket interfaces passed in props
   public readonly sourceBucketInterface?: s3.IBucket;
   public readonly destinationBucketInterface?: s3.IBucket;
 
@@ -168,29 +182,6 @@ export class LambdaToTranslate extends Construct {
     defaults.CheckLambdaProps(props);
     defaults.CheckTranslateProps(props);
 
-    // Check S3 bucket props if asyncJobs is true
-    if (props.asyncJobs) {
-      // Check source bucket props
-      const sourceS3Props = {
-        existingBucketObj: props.existingSourceBucketObj,
-        bucketProps: props.sourceBucketProps,
-        loggingBucketProps: props.sourceLoggingBucketProps,
-        logS3AccessLogs: props.logSourceS3AccessLogs
-      };
-      defaults.CheckS3Props(sourceS3Props);
-
-      // Check destination bucket props (only if not using same bucket)
-      if (!props.useSameBucket) {
-        const destinationS3Props = {
-          existingBucketObj: props.existingDestinationBucketObj,
-          bucketProps: props.destinationBucketProps,
-          loggingBucketProps: props.destinationLoggingBucketProps,
-          logS3AccessLogs: props.logDestinationS3AccessLogs
-        };
-        defaults.CheckS3Props(destinationS3Props);
-      }
-    }
-
     // Setup VPC if required
     if (props.deployVpc || props.existingVpc) {
       this.vpc = defaults.buildVpc(scope, {
@@ -209,18 +200,21 @@ export class LambdaToTranslate extends Construct {
       }
     }
 
-    // Setup the Lambda function
-    this.lambdaFunction = defaults.buildLambdaFunction(this, {
-      existingLambdaObj: props.existingLambdaObj,
-      lambdaFunctionProps: props.lambdaFunctionProps,
-      vpc: this.vpc,
-    });
+    const lambdaFunctionRoleActions = ['translate:TranslateText', 'translate:TranslateDocument'];
+    const lambdaEnvironmentVariables: EnvironmentVariableDefinition[] = [];
 
-    // Setup S3 buckets if asyncJobs is true
+    // Asyncrhonous jobs involve addtional configuration, including:
+    //   Action permissions for the Lambda Function
+    //   Ah IAM role to pass to Translate
+    //   Destination and Source buckets
+    //   Environment Variables for the Lambda function
     if (props.asyncJobs) {
+      CheckTranslateS3Props(props);
+
       // Setup source S3 Bucket
-      let sourceBucket: s3.IBucket;
-      if (!props.existingSourceBucketObj) {
+      if (props.existingSourceBucketObj) {
+        this.sourceBucketInterface = props.existingSourceBucketObj;
+      } else {
         const buildSourceBucketResponse = defaults.buildS3Bucket(this, {
           bucketProps: props.sourceBucketProps,
           loggingBucketProps: props.sourceLoggingBucketProps,
@@ -228,19 +222,18 @@ export class LambdaToTranslate extends Construct {
         }, `${id}-source-bucket`);
         this.sourceBucket = buildSourceBucketResponse.bucket;
         this.sourceLoggingBucket = buildSourceBucketResponse.loggingBucket;
-        sourceBucket = this.sourceBucket;
-      } else {
-        sourceBucket = props.existingSourceBucketObj;
+        this.sourceBucketInterface = this.sourceBucket;
       }
-      this.sourceBucketInterface = sourceBucket;
 
       // Setup destination S3 Bucket
-      let destinationBucket: s3.IBucket;
       if (props.useSameBucket) {
-        destinationBucket = sourceBucket;
-        this.destinationBucketInterface = sourceBucket;
+        this.destinationBucketInterface = this.sourceBucketInterface;
+        this.destinationBucket = this.sourceBucket;
+        this.destinationLoggingBucket = this.sourceLoggingBucket;
       } else {
-        if (!props.existingDestinationBucketObj) {
+        if (props.existingDestinationBucketObj) {
+          this.destinationBucketInterface = props.existingDestinationBucketObj;
+        } else {
           const buildDestinationBucketResponse = defaults.buildS3Bucket(this, {
             bucketProps: props.destinationBucketProps,
             loggingBucketProps: props.destinationLoggingBucketProps,
@@ -248,48 +241,91 @@ export class LambdaToTranslate extends Construct {
           }, `${id}-destination-bucket`);
           this.destinationBucket = buildDestinationBucketResponse.bucket;
           this.destinationLoggingBucket = buildDestinationBucketResponse.loggingBucket;
-          destinationBucket = this.destinationBucket;
-        } else {
-          destinationBucket = props.existingDestinationBucketObj;
+          this.destinationBucketInterface = this.destinationBucket;
         }
-        this.destinationBucketInterface = destinationBucket;
       }
 
-      // Configure environment variables
-      const sourceBucketEnvName = props.sourceBucketEnvironmentVariableName || 'SOURCE_BUCKET_NAME';
-      const destinationBucketEnvName = props.destinationBucketEnvironmentVariableName || 'DESTINATION_BUCKET_NAME';
+      // Set up role that is sent to the Translate service
+      const translateServiceRole = new iam.Role(this, `${id}-translate-service-role`, {
+        assumedBy: new iam.ServicePrincipal('translate.amazonaws.com'),
+      });
+      this.destinationBucketInterface.grantReadWrite(translateServiceRole);
+      this.sourceBucketInterface.grantRead(translateServiceRole);
 
-      this.lambdaFunction.addEnvironment(sourceBucketEnvName, sourceBucket.bucketName);
-      this.lambdaFunction.addEnvironment(destinationBucketEnvName, destinationBucket.bucketName);
-      this.lambdaFunction.addEnvironment("DATA_ACCESS_ROLE_ARN", this.lambdaFunction.role!.roleArn);
+      // expose everything we just created as environment variables
+      lambdaEnvironmentVariables.push({
+        defaultName: "SOURCE_BUCKET_NAME",
+        clientNameOverride: props.sourceBucketEnvironmentVariableName,
+        value: this.sourceBucketInterface.bucketName
+      });
+      lambdaEnvironmentVariables.push({
+        defaultName: "DESTINATION_BUCKET_NAME",
+        clientNameOverride: props.destinationBucketEnvironmentVariableName,
+        value: this.destinationBucketInterface.bucketName
+      });
+      lambdaEnvironmentVariables.push({
+        defaultName: "DATA_ACCESS_ROLE_ARN",
+        clientNameOverride: props.dataAccessRoleArnEnvironmentVariableName,
+        value: translateServiceRole.roleArn
+      });
 
-      // Grant Lambda permissions to S3 buckets
-      sourceBucket.grantRead(this.lambdaFunction.grantPrincipal);
-      destinationBucket.grantWrite(this.lambdaFunction.grantPrincipal);
+      // Give the Lambda function additional permissions
+      lambdaFunctionRoleActions.push("iam:PassRole");
+      lambdaFunctionRoleActions.push("translate:DescribeTextTranslationJob");
+      lambdaFunctionRoleActions.push("translate:ListTextTranslationJobs");
+      lambdaFunctionRoleActions.push("translate:StartTextTranslationJob");
+      lambdaFunctionRoleActions.push("translate:StopTextTranslationJob");
+
     }
 
-    // Grant Lambda permissions to Translate service
-    const translateActions =  ['translate:TranslateText', 'translate:TranslateDocument'];
-
-    // Add async job permissions if asyncJobs is true
-    if (props.asyncJobs) {
-        translateActions.push('translate:StartTextTranslationJob');
-        translateActions.push('translate:StopTextTranslationJob');
-        translateActions.push('iam:PassRole');
-    }
+    // Now we know everything the Lambda Function needs, we can configure it
+    this.lambdaFunction = defaults.buildLambdaFunction(this, {
+      existingLambdaObj: props.existingLambdaObj,
+      lambdaFunctionProps: props.lambdaFunctionProps,
+      vpc: this.vpc,
+    });
 
     if (props.additionalPermissions) {
       props.additionalPermissions.forEach(permission => {
-        if (!translateActions.includes(permission)) {
-          translateActions.push(permission);
+        if (!lambdaFunctionRoleActions.includes(permission)) {
+          lambdaFunctionRoleActions.push(permission);
         }
       });
     }
 
     this.lambdaFunction.addToRolePolicy(new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
-      actions: translateActions,
+      actions: lambdaFunctionRoleActions,
       resources: ['*']
     }));
+
+    // Configure environment variables
+    lambdaEnvironmentVariables.forEach(variable => {
+      const varName = variable.clientNameOverride || variable.defaultName;
+      this.lambdaFunction.addEnvironment(varName, variable.value);
+    });
+
+  }
+}
+
+function CheckTranslateS3Props(props: LambdaToTranslateProps) {
+  // Check source bucket props
+  const sourceS3Props = {
+    existingBucketObj: props.existingSourceBucketObj,
+    bucketProps: props.sourceBucketProps,
+    loggingBucketProps: props.sourceLoggingBucketProps,
+    logS3AccessLogs: props.logSourceS3AccessLogs
+  };
+  defaults.CheckS3Props(sourceS3Props);
+
+  // Check destination bucket props (only if not using same bucket)
+  if (!props.useSameBucket) {
+    const destinationS3Props = {
+      existingBucketObj: props.existingDestinationBucketObj,
+      bucketProps: props.destinationBucketProps,
+      loggingBucketProps: props.destinationLoggingBucketProps,
+      logS3AccessLogs: props.logDestinationS3AccessLogs
+    };
+    defaults.CheckS3Props(destinationS3Props);
   }
 }

@@ -1,6 +1,284 @@
 {
  "Description": "Integration Test for aws-lambda-translate with useSameBucket",
  "Resources": {
+  "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3LoggingBucketEF52D1D4": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"
+       }
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "VersioningConfiguration": {
+     "Status": "Enabled"
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W35",
+       "reason": "This S3 bucket is used as the access logging bucket for another bucket"
+      }
+     ]
+    }
+   }
+  },
+  "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3LoggingBucketPolicy308DE110": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3LoggingBucketEF52D1D4"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3LoggingBucketEF52D1D4",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3LoggingBucketEF52D1D4",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "s3:PutObject",
+       "Condition": {
+        "ArnLike": {
+         "aws:SourceArn": {
+          "Fn::GetAtt": [
+           "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3Bucket51973FD7",
+           "Arn"
+          ]
+         }
+        },
+        "StringEquals": {
+         "aws:SourceAccount": {
+          "Ref": "AWS::AccountId"
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "logging.s3.amazonaws.com"
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3LoggingBucketEF52D1D4",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3Bucket51973FD7": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"
+       }
+      }
+     ]
+    },
+    "LifecycleConfiguration": {
+     "Rules": [
+      {
+       "NoncurrentVersionTransitions": [
+        {
+         "StorageClass": "GLACIER",
+         "TransitionInDays": 90
+        }
+       ],
+       "Status": "Enabled"
+      }
+     ]
+    },
+    "LoggingConfiguration": {
+     "DestinationBucketName": {
+      "Ref": "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3LoggingBucketEF52D1D4"
+     }
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "VersioningConfiguration": {
+     "Status": "Enabled"
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain"
+  },
+  "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3BucketPolicy8D30C760": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3Bucket51973FD7"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3Bucket51973FD7",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3Bucket51973FD7",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "testlambdatranslatestacktestlambdatranslatestacktranslateservicerole8DA2B665": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "translate.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "testlambdatranslatestacktestlambdatranslatestacktranslateserviceroleDefaultPolicy33BB4F3C": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3Bucket51973FD7",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3Bucket51973FD7",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testlambdatranslatestacktestlambdatranslatestacktranslateserviceroleDefaultPolicy33BB4F3C",
+    "Roles": [
+     {
+      "Ref": "testlambdatranslatestacktestlambdatranslatestacktranslateservicerole8DA2B665"
+     }
+    ]
+   }
+  },
   "testlambdatranslatestackLambdaFunctionServiceRoleAFC37061": {
    "Type": "AWS::IAM::Role",
    "Properties": {
@@ -70,11 +348,23 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "6b5e7cd71f0da225feff4d1b7607da6f331479e62ec0a288710279c0beb22e68.zip"
+     "S3Key": "798d98e03ae94cc38aaa7cfc8e874dda1c6b7a09bd48cfb7398cbfa6b87ff7aa.zip"
     },
     "Environment": {
      "Variables": {
-      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+      "SOURCE_BUCKET_NAME": {
+       "Ref": "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3Bucket51973FD7"
+      },
+      "DESTINATION_BUCKET_NAME": {
+       "Ref": "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3Bucket51973FD7"
+      },
+      "DATA_ACCESS_ROLE_ARN": {
+       "Fn::GetAtt": [
+        "testlambdatranslatestacktestlambdatranslatestacktranslateservicerole8DA2B665",
+        "Arn"
+       ]
+      }
      }
     },
     "Handler": "index.handler",
@@ -154,6 +444,11 @@
      "Statement": [
       {
        "Action": [
+        "iam:PassRole",
+        "translate:DescribeTextTranslationJob",
+        "translate:ListTextTranslationJobs",
+        "translate:StartTextTranslationJob",
+        "translate:StopTextTranslationJob",
         "translate:TranslateDocument",
         "translate:TranslateText"
        ],
