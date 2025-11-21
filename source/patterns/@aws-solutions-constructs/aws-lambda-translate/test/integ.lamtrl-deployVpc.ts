@@ -28,10 +28,11 @@ stack.templateOptions.description = 'Integration Test for aws-lambda-translate w
 // Definitions
 new LambdaToTranslate(stack, 'test-lambda-translate-stack', {
   lambdaFunctionProps: {
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {\'statusCode\': 200, \'body\': \'\'}; }'),
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
-  },  deployVpc: true
+  },
+  deployVpc: true
 });
 
 defaults.SuppressCfnNagLambdaWarnings(stack);

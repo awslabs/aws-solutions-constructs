@@ -334,29 +334,3 @@ test('Test deployment with existing S3 buckets', () => {
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::S3::Bucket', 4);
 });
-
-test('Test error when S3 props provided without asyncJobs', () => {
-  const app = new App();
-  const stack = new Stack(app, "test-stack");
-
-  expect(() => {
-    deployTestConstructStructure(stack, {
-      sourceBucketProps: {}
-    });
-  }).toThrow('S3 bucket properties can only be provided when asyncJobs is true');
-});
-
-test('Test error when destination props provided with useSameBucket', () => {
-  const app = new App();
-  const stack = new Stack(app, "test-stack");
-
-  expect(() => {
-    deployTestConstructStructure(stack, {
-      asyncJobs: true,
-      useSameBucket: true,
-      destinationBucketProps: {}
-    });
-  }).toThrow('Destination bucket properties cannot be provided when useSameBucket is true');
-});
-
-// TODO: Check new Translate role
