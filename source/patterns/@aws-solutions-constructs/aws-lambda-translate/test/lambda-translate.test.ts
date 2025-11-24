@@ -85,6 +85,7 @@ test('Test deployment with asyncJobs enabled', () => {
   expect(construct.destinationLoggingBucket).toBeDefined();
 
   const template = Template.fromStack(stack);
+  defaults.printWarning(`\n\n==dbg==\n${JSON.stringify(template)}\n\n==dbg===\n\n`);
 
   template.resourceCountIs('AWS::S3::Bucket', 4); // 2 main buckets + 2 logging buckets
 
@@ -115,7 +116,12 @@ test('Test deployment with asyncJobs enabled', () => {
           }
         })
       ])
-    }
+    },
+    Roles: [
+      {
+        Ref: Match.stringLikeRegexp("testlambdatranslateLambdaFunctionServiceRole.*")
+      }
+    ]
   });
 
   // Check translate service permissions
@@ -138,12 +144,16 @@ test('Test deployment with asyncJobs enabled', () => {
           ])
         })
       ])
-    }
+    },
+    Roles: [
+      {
+        Ref: Match.stringLikeRegexp("testlambdatranslatetestlambdatranslatetranslateservicerole.*")
+      }]
   });
 
   // Check that there are 2 separate policies
   template.resourceCountIs("AWS::IAM::Policy", 2);
-  // TODO - we really need to link the policies above to a the proper roles
+
   // Check environment variables
   template.hasResourceProperties('AWS::Lambda::Function', {
     Environment: {
