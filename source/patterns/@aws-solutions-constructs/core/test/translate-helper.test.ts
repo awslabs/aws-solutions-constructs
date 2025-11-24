@@ -35,13 +35,12 @@ test('Test deployment with asyncJobs enabled', () => {
   expect(configuration.lambdaIamActionsRequired).toEqual(expect.arrayContaining([
     'translate:TranslateText',
     'translate:TranslateDocument',
-    'iam:PassRole',
     'translate:DescribeTextTranslationJob',
     'translate:ListTextTranslationJobs',
     'translate:StartTextTranslationJob',
     'translate:StopTextTranslationJob'
   ]));
-  expect(configuration.lambdaIamActionsRequired).toHaveLength(7);
+  expect(configuration.lambdaIamActionsRequired).toHaveLength(6);
 
   const template = Template.fromStack(stack);
 
@@ -182,13 +181,12 @@ test('Test deployment with useSameBucket', () => {
   expect(configuration.lambdaIamActionsRequired).toEqual(expect.arrayContaining([
     'translate:TranslateText',
     'translate:TranslateDocument',
-    'iam:PassRole',
     'translate:DescribeTextTranslationJob',
     'translate:ListTextTranslationJobs',
     'translate:StartTextTranslationJob',
     'translate:StopTextTranslationJob'
   ]));
-  expect(configuration.lambdaIamActionsRequired).toHaveLength(7);
+  expect(configuration.lambdaIamActionsRequired).toHaveLength(6);
   expect(configuration.sourceBucket?.bucket).toBe(configuration.destinationBucket?.bucket);
   expect(configuration.sourceBucket?.bucketInterface).toBe(configuration.destinationBucket?.bucketInterface);
   expect(configuration.sourceBucket?.loggingBucket).toBe(configuration.destinationBucket?.loggingBucket);

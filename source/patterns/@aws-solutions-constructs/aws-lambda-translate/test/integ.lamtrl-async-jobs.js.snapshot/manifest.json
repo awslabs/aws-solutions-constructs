@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/b5c91e8339dbb222d624d27cbc319d1dd018256268fe502195fe40d2d602a3bb.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/533a0dd60ac91ea78b45870b0de71314aa645912736ed41a0a872d09fef1d3a9.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -355,6 +355,22 @@
                 "*"
               ]
             }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachInlinePolicy": [
+                "*"
+              ]
+            }
           }
         ],
         "/lamtrl-async-jobs/test-lambda-translate-stack/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
@@ -502,6 +518,44 @@
             "data": "testlambdatranslatestackLambdaFunctioninlinePolicyAddedToExecutionRole1C55F8370"
           }
         ],
+        "/lamtrl-async-jobs/test-lambda-translate-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-2": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "statements": "*"
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "attachToRole": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamtrl-async-jobs/test-lambda-translate-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-2/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdatranslatestackLambdaFunctioninlinePolicyAddedToExecutionRole293B3974D"
+          }
+        ],
         "/lamtrl-async-jobs/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
@@ -514,19 +568,19 @@
             "data": "CheckBootstrapVersion"
           }
         ],
-        "DeployTestFileAwsCliLayer88DB58D2": [
+        "DeployContentAwsCliLayerBE56FB53": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "DeployTestFileAwsCliLayer88DB58D2",
+            "data": "DeployContentAwsCliLayerBE56FB53",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]
           }
         ],
-        "DeployTestFileCustomResourceB71F621A": [
+        "DeployContentCustomResource4B79A32C": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "DeployTestFileCustomResourceB71F621A",
+            "data": "DeployContentCustomResource4B79A32C",
             "trace": [
               "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
             ]

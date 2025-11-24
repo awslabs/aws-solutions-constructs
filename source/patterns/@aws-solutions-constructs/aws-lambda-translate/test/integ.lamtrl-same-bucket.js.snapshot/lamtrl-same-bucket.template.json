@@ -441,7 +441,6 @@
      "Statement": [
       {
        "Action": [
-        "iam:PassRole",
         "translate:DescribeTextTranslationJob",
         "translate:ListTextTranslationJobs",
         "translate:StartTextTranslationJob",
@@ -456,6 +455,32 @@
      "Version": "2012-10-17"
     },
     "PolicyName": "testlambdatranslatestackLambdaFunctioninlinePolicyAddedToExecutionRole1C55F8370",
+    "Roles": [
+     {
+      "Ref": "testlambdatranslatestackLambdaFunctionServiceRoleAFC37061"
+     }
+    ]
+   }
+  },
+  "testlambdatranslatestackLambdaFunctioninlinePolicyAddedToExecutionRole293B3974D": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "iam:PassRole",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "testlambdatranslatestacktestlambdatranslatestacktranslateservicerole8DA2B665",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testlambdatranslatestackLambdaFunctioninlinePolicyAddedToExecutionRole293B3974D",
     "Roles": [
      {
       "Ref": "testlambdatranslatestackLambdaFunctionServiceRoleAFC37061"

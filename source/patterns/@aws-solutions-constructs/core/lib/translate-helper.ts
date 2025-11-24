@@ -43,7 +43,7 @@ export interface TranslateConfiguration {
 export interface BucketDetails {
   readonly bucket?: s3.Bucket,
   readonly bucketInterface: s3.IBucket,
-  readonly loggingBucket?: s3.Bucket,
+  readonly loggingBucket?: s3.Bucket
 }
 
 export function ConfigureTranslateSupport(scope: Construct, id: string, props: TranslateProps): TranslateConfiguration {
@@ -119,7 +119,6 @@ export function ConfigureTranslateSupport(scope: Construct, id: string, props: T
     }, false);
 
     // Give the Lambda function additional permissions
-    configuration.lambdaIamActionsRequired.push("iam:PassRole");
     configuration.lambdaIamActionsRequired.push("translate:DescribeTextTranslationJob");
     configuration.lambdaIamActionsRequired.push("translate:ListTextTranslationJobs");
     configuration.lambdaIamActionsRequired.push("translate:StartTextTranslationJob");

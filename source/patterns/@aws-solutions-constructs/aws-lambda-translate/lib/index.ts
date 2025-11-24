@@ -238,6 +238,7 @@ export class LambdaToTranslate extends Construct {
     });
 
     // Add all actions from translate configuration and client to the Lambda function
+    // PassRole is handled separately, because it must specify role being passed as the resource
     const lambdaFunctionRoleActions: string[] = [];
     translateConfiguration.lambdaIamActionsRequired.forEach(action => {
       lambdaFunctionRoleActions.push(action);
@@ -256,6 +257,15 @@ export class LambdaToTranslate extends Construct {
       actions: lambdaFunctionRoleActions,
       resources: ['*']
     }));
+
+    // Add PassRole in it's own statement
+    if (translateConfiguration.translateRole) {
+    this.lambdaFunction.addToRolePolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ["iam:PassRole"],
+      resources: [translateConfiguration.translateRole.roleArn]
+    }));
+    }
 
     // Configure environment variables
     lambdaEnvironmentVariables.forEach(variable => {

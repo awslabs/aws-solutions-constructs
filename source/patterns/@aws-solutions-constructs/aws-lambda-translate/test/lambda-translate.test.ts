@@ -97,12 +97,22 @@ test('Test deployment with asyncJobs enabled', () => {
           Action: Match.arrayWith([
             "translate:TranslateText",
             "translate:TranslateDocument",
-            "iam:PassRole",
             "translate:DescribeTextTranslationJob",
             "translate:ListTextTranslationJobs",
             "translate:StartTextTranslationJob",
             "translate:StopTextTranslationJob"
-          ])
+          ]),
+          Resource: '*'
+        }),
+        Match.objectLike({
+          Effect: 'Allow',
+          Action: "iam:PassRole",
+          Resource: {
+            "Fn::GetAtt": [
+              "testlambdatranslatetestlambdatranslatetranslateservicerole4A23BEA1",
+              "Arn"
+            ]
+          }
         })
       ])
     }
