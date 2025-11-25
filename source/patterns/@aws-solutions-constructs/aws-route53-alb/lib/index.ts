@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-// Imports
+// Import statements
 import * as defaults from "@aws-solutions-constructs/core";
 import * as elb from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import * as s3 from "aws-cdk-lib/aws-s3";
