@@ -20,7 +20,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 function deployTestConstructStructure(stack: Stack, props?: any) {
   return new LambdaToTranslate(stack, 'test-lambda-translate', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_20_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromInline('exports.handler = async () => {};')
     },
@@ -43,7 +43,7 @@ test('Test deployment with no optional parameters', () => {
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::Lambda::Function', {
-    Runtime: 'nodejs20.x'
+    Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING
   });
 
   // Check default Translate permissions
@@ -85,7 +85,6 @@ test('Test deployment with asyncJobs enabled', () => {
   expect(construct.destinationLoggingBucket).toBeDefined();
 
   const template = Template.fromStack(stack);
-  defaults.printWarning(`\n\n==dbg==\n${JSON.stringify(template)}\n\n==dbg===\n\n`);
 
   template.resourceCountIs('AWS::S3::Bucket', 4); // 2 main buckets + 2 logging buckets
 

@@ -31,7 +31,7 @@ const existingBucket = defaults.CreateScrapBucket(stack, 'existing-bucket');
 // Definitions
 new LambdaToTranslate(stack, 'test-lambda-translate-stack', {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_20_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromInline(`
       exports.handler = async (event) => {
