@@ -1,28 +1,30 @@
 {
-  "version": "38.0.1",
+  "version": "48.0.0",
   "files": {
     "b2acf8c9fc806153dd62e2f9c3fd5d6042e7764d4584e06403b29a8b863d0bac": {
+      "displayName": "enrichment-function/Code",
       "source": {
         "path": "asset.b2acf8c9fc806153dd62e2f9c3fd5d6042e7764d4584e06403b29a8b863d0bac",
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-current_region": {
+        "current_account-current_region-03aa6700": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
           "objectKey": "b2acf8c9fc806153dd62e2f9c3fd5d6042e7764d4584e06403b29a8b863d0bac.zip",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
     },
-    "0eb5dfa4e7d186e1c36d51eefa8b6f155d8786ab1e73dfed34da54c5e192dbd2": {
+    "a839b6c736301dc546ebc157f0abffe32f26fdf41df9120b4c1142e5d9454b84": {
+      "displayName": "dbspstp-lambda-function-enrichment Template",
       "source": {
         "path": "dbspstp-lambda-function-enrichment.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region": {
+        "current_account-current_region-dca6961c": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "0eb5dfa4e7d186e1c36d51eefa8b6f155d8786ab1e73dfed34da54c5e192dbd2.json",
+          "objectKey": "a839b6c736301dc546ebc157f0abffe32f26fdf41df9120b4c1142e5d9454b84.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

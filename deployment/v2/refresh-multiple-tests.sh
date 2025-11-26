@@ -30,6 +30,7 @@ aws-cognito-apigateway-lambda
 aws-constructs-factories
 aws-dynamodbstreams-lambda
 aws-dynamodbstreams-lambda-elasticsearch-kibana
+aws-dynamodbstreams-pipes-stepfunctions
 aws-eventbridge-kinesisfirehose-s3
 aws-eventbridge-kinesisstreams
 aws-eventbridge-lambda
@@ -86,6 +87,7 @@ aws-s3-stepfunctions
 aws-sns-lambda
 aws-sns-sqs
 aws-sqs-lambda
+aws-sqs-pipes-stepfunctions
 aws-wafwebacl-alb
 aws-wafwebacl-apigateway
 aws-wafwebacl-appsync
