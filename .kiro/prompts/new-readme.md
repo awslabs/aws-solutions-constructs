@@ -29,7 +29,7 @@ You are tasked with creating a README.adoc file for a new AWS Solutions Construc
    **Overview:**
    - Brief description of what the construct does
    - Minimal deployable examples in TypeScript, Python, and Java
-   - Use realistic runtime versions (NODEJS_20_X, PYTHON_3_11, etc.)
+   - Use realistic runtime versions (NODEJS_22_X, PYTHON_3_11, etc.)
 
    **Pattern Construct Props:**
    - Table with columns: Name, Type, Description

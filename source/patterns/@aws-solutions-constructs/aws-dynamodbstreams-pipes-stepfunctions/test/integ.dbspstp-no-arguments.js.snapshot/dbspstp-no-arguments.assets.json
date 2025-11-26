@@ -1,15 +1,16 @@
 {
-  "version": "38.0.1",
+  "version": "48.0.0",
   "files": {
-    "10d491a681303161dde8f48f68c46e40ae69ff8001688a8efa33084d64190ceb": {
+    "2d12e1f872990a7ef1264a8fb1e4c60df71edf66129b6fc543409b3c5781b95b": {
+      "displayName": "dbspstp-no-arguments Template",
       "source": {
         "path": "dbspstp-no-arguments.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region": {
+        "current_account-current_region-8f86cab9": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "10d491a681303161dde8f48f68c46e40ae69ff8001688a8efa33084d64190ceb.json",
+          "objectKey": "2d12e1f872990a7ef1264a8fb1e4c60df71edf66129b6fc543409b3c5781b95b.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

@@ -138,7 +138,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs20.x",
+    "Runtime": "nodejs22.x",
     "TracingConfig": {
      "Mode": "Active"
     }
@@ -758,6 +758,9 @@
      "AutomatedSnapshotStartHour": 1
     }
    },
+   "DependsOn": [
+    "testddbstreamslambdaeskLambdaToElasticSearchCognitoKibanaConfigureRole9DE845CD"
+   ],
    "Metadata": {
     "cfn_nag": {
      "rules_to_suppress": [

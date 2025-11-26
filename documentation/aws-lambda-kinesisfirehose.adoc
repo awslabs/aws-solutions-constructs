@@ -54,7 +54,7 @@ const existingFirehoseDeliveryStream = previouslyCreatedKinesisFirehoseToS3Const
 
 new LambdaToKinesisFirehose(this, 'LambdaToFirehosePattern', {
   lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_20_X,
+      runtime: lambda.Runtime.NODEJS_22_X,
       handler: 'index.handler',
       code: lambda.Code.fromAsset(`lambda`)
   },
@@ -106,7 +106,7 @@ existingFirehoseDeliveryStream = previouslyCreatedKinesisFirehoseToS3Construct.k
 new LambdaToKinesisFirehose(this, "LambdaToFirehosePattern", new LambdaToKinesisFirehoseProps.Builder()
         .existingKinesisFirehose(existingFirehoseDeliveryStream)
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_20_X)
+                .runtime(Runtime.NODEJS_22_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())
@@ -208,6 +208,10 @@ not change this Stream.
 
 
 image::images/aws-lambda-kinesisfirehose.png["Diagram showing the Lambda function, Kinesis firehose and IAM role created by the construct",scaledwidth=100%]
+
+== Example Lambda Function Implementation
+
+While Solutions Constructs does not publish code for the Lambda function to call Firehose, here is an example of calling Firehose: https://github.com/awsdocs/aws-doc-sdk-examples/blob/main/python/example_code/firehose/scenarios/firehose-put-actions/firehose.py['example']. (this example is in Python, but examples in other languages can also be found at this site)
 
 == Github
 

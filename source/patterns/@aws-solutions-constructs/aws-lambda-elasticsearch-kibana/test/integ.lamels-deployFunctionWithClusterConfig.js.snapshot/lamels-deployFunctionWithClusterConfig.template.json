@@ -156,7 +156,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs20.x",
+    "Runtime": "nodejs22.x",
     "TracingConfig": {
      "Mode": "Active"
     },
@@ -789,6 +789,9 @@
      ]
     }
    },
+   "DependsOn": [
+    "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleD2E8341A"
+   ],
    "Metadata": {
     "cfn_nag": {
      "rules_to_suppress": [

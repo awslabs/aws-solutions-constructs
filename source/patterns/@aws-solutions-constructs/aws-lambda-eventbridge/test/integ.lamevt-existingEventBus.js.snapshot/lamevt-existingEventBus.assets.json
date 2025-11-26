@@ -1,5 +1,5 @@
 {
-  "version": "45.0.0",
+  "version": "48.0.0",
   "files": {
     "b5faf4ff1ebde477120133d1e645d20d7c3d4952b76c3b586100069b94b2f146": {
       "displayName": "LambdaFunction/Code",
@@ -15,16 +15,16 @@
         }
       }
     },
-    "1cb1e3d7e3b5e292c93f7ecbbf11d5fa6c72462ce792ab92d0070d387312b3a4": {
+    "83c6cddc92ff97082f256b60ccdae2699d3cdf862515a040e255ec48bcf98e9e": {
       "displayName": "lamevt-existingEventBus Template",
       "source": {
         "path": "lamevt-existingEventBus.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-d99e307b": {
+        "current_account-current_region-932ced6a": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "1cb1e3d7e3b5e292c93f7ecbbf11d5fa6c72462ce792ab92d0070d387312b3a4.json",
+          "objectKey": "83c6cddc92ff97082f256b60ccdae2699d3cdf862515a040e255ec48bcf98e9e.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

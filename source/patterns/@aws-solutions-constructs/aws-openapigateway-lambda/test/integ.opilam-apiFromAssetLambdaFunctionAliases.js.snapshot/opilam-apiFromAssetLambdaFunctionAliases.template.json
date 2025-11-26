@@ -84,7 +84,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs20.x",
+    "Runtime": "nodejs22.x",
     "TracingConfig": {
      "Mode": "Active"
     }
@@ -135,7 +135,7 @@
     ]
    }
   },
-  "LambdaFunctionCurrentVersion7D5C86E3e1fbde6f17ee9d8a6083dfbb39f7780b": {
+  "LambdaFunctionCurrentVersion7D5C86E3ab117ee7249b84f5d859e397b08f1209": {
    "Type": "AWS::Lambda::Version",
    "Properties": {
     "FunctionName": {
@@ -255,7 +255,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs20.x",
+    "Runtime": "nodejs22.x",
     "TracingConfig": {
      "Mode": "Active"
     }
@@ -351,7 +351,7 @@
     },
     "FunctionVersion": {
      "Fn::GetAtt": [
-      "LambdaFunctionCurrentVersion7D5C86E3e1fbde6f17ee9d8a6083dfbb39f7780b",
+      "LambdaFunctionCurrentVersion7D5C86E3ab117ee7249b84f5d859e397b08f1209",
       "Version"
      ]
     },
@@ -476,7 +476,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs20.x",
+    "Runtime": "nodejs22.x",
     "Timeout": 60,
     "TracingConfig": {
      "Mode": "Active"

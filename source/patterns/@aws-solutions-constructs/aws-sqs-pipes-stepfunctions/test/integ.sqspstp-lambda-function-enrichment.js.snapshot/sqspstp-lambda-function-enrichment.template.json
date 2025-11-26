@@ -38,7 +38,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "33adcab38bd8c4e154734b436a40ee81920a89cd6c787ce62302c33df5e1dfcb.zip"
+     "S3Key": "947efcc93dea6b762c3fca8bf09476c9d8fd2490afbd3e08e668328245340cb8.zip"
     },
     "Handler": "index.handler",
     "Role": {
@@ -47,7 +47,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs20.x"
+    "Runtime": "nodejs22.x"
    },
    "DependsOn": [
     "enrichmentfunctionServiceRoleF21A0515"
@@ -115,7 +115,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs20.x"
+    "Runtime": "nodejs22.x"
    },
    "DependsOn": [
     "lambdas3stptestServiceRoleF17BB6C7"
