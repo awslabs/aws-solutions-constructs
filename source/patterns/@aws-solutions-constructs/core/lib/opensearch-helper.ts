@@ -86,6 +86,7 @@ export function buildOpenSearch(scope: Construct, props: BuildOpenSearchProps): 
   // default behavior, but Sonarqube cannot follow the program flow to confirm this.
   // This is confirmed by the 'Check that TLS 1.2 is the default' test in aws-lambda-opensearch
   const opensearchDomain = new opensearch.CfnDomain(scope, `OpenSearchDomain`, finalCfnDomainProps); // NOSONAR
+  opensearchDomain.node.addDependency(cognitoDashboardConfigureRole);
 
   addCfnSuppressRules(opensearchDomain, [
     {

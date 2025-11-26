@@ -87,6 +87,7 @@ export function buildElasticSearch(scope: Construct, props: BuildElasticSearchPr
   // default behavior, but Sonarqube cannot follow the program flow to confirm this.
   // This is confirmed by the 'Check that TLS 1.2 is the default' test in aws-lambda-elasticsearch
   const esDomain = new elasticsearch.CfnDomain(scope, `ElasticsearchDomain`, finalCfnDomainProps); // NOSONAR
+  esDomain.node.addDependency(cognitoKibanaConfigureRole);
 
   addCfnSuppressRules(esDomain, [
     {

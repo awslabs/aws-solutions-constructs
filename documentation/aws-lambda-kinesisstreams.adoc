@@ -50,7 +50,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new LambdaToKinesisStreams(this, 'LambdaToKinesisStreams', {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_20_X,
+    runtime: lambda.Runtime.NODEJS_22_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`lambda`)
   }
@@ -93,7 +93,7 @@ import software.amazon.awsconstructs.services.lambdakinesisstreams.*;
 
 new LambdaToKinesisStreams(this, "LambdaToKinesisStreams", new LambdaToKinesisStreamsProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_20_X)
+                .runtime(Runtime.NODEJS_22_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())
@@ -206,6 +206,10 @@ Managed CMK
 
 
 image::images/aws-lambda-kinesisstreams.png["Diagram showing the Lambda function, Kinesis data stream and IAM role created by the construct",scaledwidth=100%]
+
+== Example Lambda Function Implementation
+
+While Solutions Constructs does not publish code for the Lambda function to call Kinesis, here is an example of calling Kinesis PutRecords: https://github.com/awsdocs/aws-doc-sdk-examples/blob/main/javascriptv3/example_code/transcribe/src/transcribe_create_job.js['example']. (this example is in JavaScript, but examples in other languages can also be found at this site)
 
 == Github
 

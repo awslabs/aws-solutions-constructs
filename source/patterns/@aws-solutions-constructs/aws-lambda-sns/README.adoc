@@ -48,7 +48,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new LambdaToSns(this, 'test-lambda-sns', {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_20_X,
+    runtime: lambda.Runtime.NODEJS_22_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`lambda`)
   }
@@ -90,7 +90,7 @@ import software.amazon.awsconstructs.services.lambdasns.*;
 
 new LambdaToSns(this, "test-lambda-sns-stack", new LambdaToSnsProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_20_X)
+                .runtime(Runtime.NODEJS_22_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())
@@ -217,6 +217,10 @@ and higher functions)
 
 
 image::aws-lambda-sns.png["Diagram showing the Lambda function, SNS topic and IAM role created by the construct",scaledwidth=100%]
+
+== Example Lambda Function Implementation
+
+While Solutions Constructs does not publish code for the Lambda function to call SNS, here are many examples: https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/javascriptv3/example_code/sns/actions['example']. (these examples are in JavaScript, but examples in other languages can also be found at this site)
 
 // github block
 

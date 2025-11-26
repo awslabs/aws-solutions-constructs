@@ -75,6 +75,7 @@ aws-lambda-sqs-lambda
 aws-lambda-ssmstringparameter
 aws-lambda-stepfunctions
 aws-lambda-transcribe
+aws-lambda-translate
 aws-openapigateway-lambda
 aws-route53-alb
 aws-route53-apigateway

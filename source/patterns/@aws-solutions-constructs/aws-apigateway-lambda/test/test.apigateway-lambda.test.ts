@@ -195,7 +195,7 @@ test('Confirm suppression of Usage Plan', () => {
   const props: ApiGatewayToLambdaProps = {
     lambdaFunctionProps: {
        code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {\'statusCode\': 200, \'body\': \'\'}; }'),
-       runtime: lambda.Runtime.NODEJS_20_X,
+       runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
        handler: 'index.handler',
     },
     createUsagePlan: false

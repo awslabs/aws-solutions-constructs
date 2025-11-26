@@ -25,7 +25,7 @@ SetConsistentFeatureFlags(stack);
 // This function fails ON PURPOSE so that we can test the DLQ functionality in this stack
 const badFunction = new lambda.Function(stack, 'bad-function', {
   code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); throw new Error("JUST BREAK");'),
-  runtime: lambda.Runtime.NODEJS_20_X,
+  runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
   handler: 'index.handler',
 }
 );

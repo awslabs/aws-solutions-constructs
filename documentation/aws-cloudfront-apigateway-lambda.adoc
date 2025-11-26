@@ -52,7 +52,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 new CloudFrontToApiGatewayToLambda(this, 'test-cloudfront-apigateway-lambda', {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`lambda`),
-    runtime: lambda.Runtime.NODEJS_20_X,
+    runtime: lambda.Runtime.NODEJS_22_X,
     handler: 'index.handler'
   },
   apiGatewayProps: {
@@ -109,7 +109,7 @@ import software.amazon.awsconstructs.services.cloudfrontapigatewaylambda.CloudFr
 
 new CloudFrontToApiGatewayToLambda(this, "ApiGatewayToLambdaPattern", new CloudFrontToApiGatewayToLambdaProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_20_X) // execution environment
+                .runtime(Runtime.NODEJS_22_X) // execution environment
                 .code(Code.fromAsset("lambda")) // code loaded from the `lambda` directory (under root, next to `src`)
                 .handler("hello.handler") // file is `hello`, function is `handler`
                 .build())

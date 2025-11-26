@@ -50,7 +50,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 const constructProps: LambdaToSecretsmanagerProps = {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_20_X,
+    runtime: lambda.Runtime.NODEJS_22_X,
     code: lambda.Code.fromAsset(`lambda`),
     handler: 'index.handler'
   },
@@ -95,7 +95,7 @@ import software.amazon.awsconstructs.services.lambdasecretsmanager.*;
 
 new LambdaToSecretsmanager(this, "test-lambda-secretsmanager-stack", new LambdaToSecretsmanagerProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_20_X)
+                .runtime(Runtime.NODEJS_22_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())
@@ -209,6 +209,10 @@ and higher functions)
 
 
 image::aws-lambda-secretsmanager.png["Diagram showing the Lambda function, Secrets Manager secret, CloudWatch log group and IAM role created by the construct",scaledwidth=100%]
+
+== Example Lambda Function Implementation
+
+While Solutions Constructs does not publish code for the Lambda function to get a Secret from Secrets Manager, there is example code available here: https://github.com/awsdocs/aws-doc-sdk-examples/blob/main/javascriptv3/example_code/secrets-manager/actions/get-secret-value.js['example']. (this example is in JavaScript, but examples in other languages can also be found at this site)
 
 // github block
 

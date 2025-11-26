@@ -50,7 +50,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 const constructProps: LambdaToDynamoDBProps = {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`lambda`),
-    runtime: lambda.Runtime.NODEJS_20_X,
+    runtime: lambda.Runtime.NODEJS_22_X,
     handler: 'index.handler'
   },
 };
@@ -92,7 +92,7 @@ import software.amazon.awsconstructs.services.lambdadynamodb.*;
 
 new LambdaToDynamoDB(this, "test_lambda_dynamodb_stack", new LambdaToDynamoDBProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_20_X)
+                .runtime(Runtime.NODEJS_22_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())
@@ -205,6 +205,10 @@ Key
 
 
 image::aws-lambda-dynamodb.png["Diagram showing the Lambda function, CloudWatch log group, DynamoDB table and IAM role created by the construct",scaledwidth=100%]
+
+== Example Lambda Function Implementation
+
+While Solutions Constructs does not publish code for the Lambda function to call DynamoDB, here is a DynamoDB example for CreateTableCommand, PutCommand, GetCommand, DeleteCommand, UpdateCommand, and more: https://github.com/awsdocs/aws-doc-sdk-examples/blob/main/javascriptv3/example_code/dynamodb/scenarios/basic.js['example']. (this example is in JavaScript, but examples in other languages can also be found at this site)
 
 // github block
 

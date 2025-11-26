@@ -39,7 +39,7 @@ test('check lambda function properties', () => {
   new LambdaToDynamoDB(stack, 'test', {
     lambdaFunctionProps: {
       code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: lambda.Runtime.NODEJS_20_X,
+      runtime: lambda.Runtime.NODEJS_22_X,
       handler: 'index.handler'
     }
   });
@@ -47,7 +47,7 @@ test('check lambda function properties', () => {
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: "index.handler",
-    Runtime: "nodejs20.x"
+    Runtime: "nodejs22.x"
   });
 });
 ```
@@ -144,7 +144,7 @@ SetConsistentFeatureFlags(stack);
 new LambdaToDynamoDB(stack, 'test', {
   lambdaFunctionProps: {
     code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-    runtime: lambda.Runtime.NODEJS_20_X,
+    runtime: lambda.Runtime.NODEJS_22_X,
     handler: 'index.handler'
   }
 });

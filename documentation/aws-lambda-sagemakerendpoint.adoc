@@ -134,7 +134,7 @@ new LambdaToSagemakerEndpoint(this, "LambdaToSagemakerEndpointPattern",
                         .executionRoleArn("executionRoleArn")
                         .build())
                 .lambdaFunctionProps(new FunctionProps.Builder()
-                        .runtime(Runtime.NODEJS_20_X)
+                        .runtime(Runtime.NODEJS_22_X)
                         .code(Code.fromAsset("lambda"))
                         .handler("index.handler")
                         .timeout(Duration.minutes(5))
@@ -265,6 +265,10 @@ and higher functions).
 
 
 image::images/aws-lambda-sagemakerendpoint.png["Diagram showing the Lambda function, SageMaker endpoint, CloudWatch log group and IAM roles created by the construct",scaledwidth=100%]
+
+== Example Lambda Function Implementation
+
+While Solutions Constructs does not publish code for the Lambda function to interact with SageMaker, this repo has several SageMaker examples: https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/javascriptv3/example_code/sagemaker['examples']. (these examples are in JavaScript, but examples in other languages can also be found at this site)
 
 == Github
 

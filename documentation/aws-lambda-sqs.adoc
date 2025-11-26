@@ -48,7 +48,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new LambdaToSqs(this, 'LambdaToSqsPattern', {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_20_X,
+    runtime: lambda.Runtime.NODEJS_22_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`lambda`)
   }
@@ -90,7 +90,7 @@ import software.amazon.awsconstructs.services.lambdasqs.*;
 
 new LambdaToSqs(this, "test-lambda-sqs-stack", new LambdaToSqsProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_20_X)
+                .runtime(Runtime.NODEJS_22_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())
@@ -237,6 +237,10 @@ KMS Key.
 
 
 image::images/aws-lambda-sqs.png["Diagram showing the Lambda function, SQS queue and dlq, CloudWatch log group and IAM role created by the construct",scaledwidth=100%]
+
+== Example Lambda Function Implementation
+
+While Solutions Constructs does not publish code for the Lambda function interact with SQS, here many examples: https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/javascriptv3/example_code/sqs/actions['examples']. (these examples are in JavaScript, but examples in other languages can also be found at this site)
 
 == Github
 

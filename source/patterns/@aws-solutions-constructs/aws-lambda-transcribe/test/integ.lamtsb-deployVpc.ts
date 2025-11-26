@@ -28,7 +28,7 @@ stack.templateOptions.description = 'Integration Test for aws-lambda-transcribe 
 // Definitions
 new LambdaToTranscribe(stack, 'test-lambda-transcribe-vpc', {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_20_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromInline(`
       exports.handler = async (event) => {

@@ -127,7 +127,7 @@ test('Check State Machine IAM Policy with 2 Lambda fuctions in State Machine Def
   // State Machine definition
   const taskOne = new sfnTasks.LambdaInvoke(stack, 'task-one', {
     lambdaFunction: new lambda.Function(stack, 'first-function', {
-      runtime: lambda.Runtime.NODEJS_20_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromInline(`exports.handler = async (event) => {return;}`)
     }),
@@ -135,7 +135,7 @@ test('Check State Machine IAM Policy with 2 Lambda fuctions in State Machine Def
 
   const taskTwo = new sfnTasks.LambdaInvoke(stack, 'task-two', {
     lambdaFunction: new lambda.Function(stack, 'second-function', {
-      runtime: lambda.Runtime.NODEJS_20_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromInline(`exports.handler = async (event) => {return;}`)
     }),

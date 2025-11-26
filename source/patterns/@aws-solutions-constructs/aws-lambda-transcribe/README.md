@@ -33,7 +33,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new LambdaToTranscribe(this, 'LambdaToTranscribePattern', {
     lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_20_X,
+        runtime: lambda.Runtime.NODEJS_22_X,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`lambda`)
     }
@@ -70,7 +70,7 @@ import software.amazon.awsconstructs.services.lambdatranscribe.*;
 
 new LambdaToTranscribe(this, "LambdaToTranscribePattern", new LambdaToTranscribeProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_20_X)
+                .runtime(Runtime.NODEJS_22_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())

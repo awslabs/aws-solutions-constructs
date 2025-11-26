@@ -333,7 +333,7 @@ test('Create a pipe with Lambda function enrichment', () => {
   const enrichmentFunction = new lambda.Function(stack, 'enrichment-function', {
     code: lambda.Code.fromAsset(`${__dirname}/lambda-test`),
     handler: "index.handler",
-    runtime: lambda.Runtime.NODEJS_20_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
   });
 
   const pipeResponse = defaults.BuildPipe(stack, pipeId, {

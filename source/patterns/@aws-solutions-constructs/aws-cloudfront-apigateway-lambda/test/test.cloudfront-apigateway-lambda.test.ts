@@ -398,7 +398,7 @@ test('Confirm suppression of Usage Plan', () => {
     apiGatewayProps: { defaultMethodOptions: { authorizationType: 'AWS_NONE' }},
     lambdaFunctionProps: {
        code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {\'statusCode\': 200, \'body\': \'\'}; }'),
-       runtime: lambda.Runtime.NODEJS_20_X,
+       runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
        handler: 'index.handler',
     },
     createUsagePlan: false

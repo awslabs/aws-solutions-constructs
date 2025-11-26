@@ -20,7 +20,7 @@ import * as defaults from '@aws-solutions-constructs/core';
 function deployTestConstructStructure(stack: Stack, props?: any) {
   return new LambdaToTranscribe(stack, 'test-lambda-transcribe', {
     lambdaFunctionProps: {
-      runtime: lambda.Runtime.NODEJS_20_X,
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
       handler: 'index.handler',
       code: lambda.Code.fromInline('exports.handler = async () => {};')
     },
@@ -45,7 +45,7 @@ test('Test deployment with no optional parameters', () => {
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::Lambda::Function', {
-    Runtime: 'nodejs20.x'
+    Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
   });
   template.resourceCountIs('AWS::S3::Bucket', 4); // 2 main buckets + 2 logging buckets
 });
@@ -393,7 +393,7 @@ test('Test error on both existing Lambda and Lambda props', () => {
   const stack = new Stack(app, "test-stack");
 
   const existingLambda = new lambda.Function(stack, 'existing-lambda', {
-    runtime: lambda.Runtime.NODEJS_20_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromInline('exports.handler = async () => {};')
   });
