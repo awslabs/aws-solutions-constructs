@@ -1,0 +1,20 @@
+{
+  "version": "48.0.0",
+  "files": {
+    "d751ef91131cafbf8cd0d969daa995a9c0fd82ec6586bc7eee9dc4ef71962eb1": {
+      "displayName": "lamtrl-async-jobs Template",
+      "source": {
+        "path": "lamtrl-async-jobs.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region-70f09f54": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "d751ef91131cafbf8cd0d969daa995a9c0fd82ec6586bc7eee9dc4ef71962eb1.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

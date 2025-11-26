@@ -51,7 +51,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 new LambdaToTranscribe(this, 'LambdaToTranscribePattern', {
     lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_20_X,
+        runtime: lambda.Runtime.NODEJS_22_X,
         handler: 'index.handler',
         code: lambda.Code.fromAsset(`lambda`)
     }
@@ -92,7 +92,7 @@ import software.amazon.awsconstructs.services.lambdatranscribe.*;
 
 new LambdaToTranscribe(this, "LambdaToTranscribePattern", new LambdaToTranscribeProps.Builder()
         .lambdaFunctionProps(new FunctionProps.Builder()
-                .runtime(Runtime.NODEJS_20_X)
+                .runtime(Runtime.NODEJS_22_X)
                 .code(Code.fromAsset("lambda"))
                 .handler("index.handler")
                 .build())
@@ -277,7 +277,7 @@ image::aws-lambda-transcribe.png["Diagram showing the Lambda function, source an
 
 == Example Lambda Function Implementation
 
-While Solutions Constructs does not publish code for the Lambda function to call Transcribe, there is an example of calling Transcribe https://github.com/awsdocs/aws-doc-sdk-examples/blob/main/javascriptv3/example_code/transcribe/src/transcribe_create_job.js['here'].
+While Solutions Constructs does not publish code for the Lambda function to call Transcribe, here is an example of calling Transcribe: https://github.com/awsdocs/aws-doc-sdk-examples/blob/main/javascriptv3/example_code/transcribe/src/transcribe_create_job.js['example']. (this example is in JavaScript, but examples in other languages can also be found at this site)
 
 // github block
 

@@ -465,7 +465,7 @@ test('test state machine enrichment', () => {
 test('Test lambda function enrichment', () => {
   const stack = new Stack();
   const enrichmentFunction = new lambda.Function(stack, 'enrichment-function', {
-    runtime: lambda.Runtime.NODEJS_20_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
     code: lambda.Code.fromInline(`exports.handler = async (event) => {return;}`)
   });

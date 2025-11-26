@@ -55,7 +55,7 @@ test('Test cross region deployment with new Lambda function', () => {
         "Arn"
       ]
     },
-    Runtime: "nodejs20.x",
+    Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
     Timeout: 30,
     TracingConfig: {
       Mode: "Active"
@@ -172,7 +172,7 @@ test('Test single region deployment with new Lambda function', () => {
         "Arn"
       ]
     },
-    Runtime: "nodejs20.x",
+    Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
     Timeout: 30,
     TracingConfig: {
       Mode: "Active"

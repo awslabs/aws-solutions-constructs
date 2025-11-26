@@ -52,7 +52,7 @@ const startState = new stepfunctions.Pass(this, 'StartState');
 
 new LambdaToStepfunctions(this, 'LambdaToStepfunctionsPattern', {
   lambdaFunctionProps: {
-    runtime: lambda.Runtime.NODEJS_20_X,
+    runtime: lambda.Runtime.NODEJS_22_X,
     handler: 'index.handler',
     code: lambda.Code.fromAsset(`lambda`)
   },
@@ -106,7 +106,7 @@ final Pass startState = new Pass(this, "StartState");
 new LambdaToStepfunctions(this, "test-lambda-stepfunctions-stack",
         new LambdaToStepfunctionsProps.Builder()
                 .lambdaFunctionProps(new FunctionProps.Builder()
-                        .runtime(Runtime.NODEJS_20_X)
+                        .runtime(Runtime.NODEJS_22_X)
                         .code(Code.fromAsset("lambda"))
                         .handler("index.handler")
                         .build())
@@ -225,6 +225,10 @@ and higher functions)
 
 
 image::aws-lambda-stepfunctions.png["Diagram showing the Lambda function, Step Functions state machine and IAM role created by the construct",scaledwidth=100%]
+
+== Example Lambda Function Implementation
+
+While Solutions Constructs does not publish code for the Lambda function to work with Step Functions, here are several examples: https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/python/example_code/stepfunctions['examples']. (these examples are in Python, but examples in other languages can also be found at this site)
 
 // github block
 

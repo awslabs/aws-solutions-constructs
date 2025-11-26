@@ -801,7 +801,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs20.x",
+    "Runtime": "nodejs22.x",
     "TracingConfig": {
      "Mode": "Active"
     },
@@ -1438,6 +1438,9 @@
      ]
     }
    },
+   "DependsOn": [
+    "testlambdaelasticsearchkibana4CognitoDashboardConfigureRoleB36C775C"
+   ],
    "Metadata": {
     "cfn_nag": {
      "rules_to_suppress": [

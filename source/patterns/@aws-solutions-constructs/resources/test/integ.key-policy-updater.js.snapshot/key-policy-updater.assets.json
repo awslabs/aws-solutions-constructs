@@ -1,5 +1,5 @@
 {
-  "version": "45.0.0",
+  "version": "48.0.0",
   "files": {
     "e97825c838d70ceb13ba2f6223a7d94ed35687b70bfb224a0b9128e698e3f28e": {
       "displayName": "LambdaFunction/Code",
@@ -29,16 +29,16 @@
         }
       }
     },
-    "f243ed85384d9205794ec55461263bc42ba4bfe1862d8f29cd8106103dc5f22a": {
+    "84538d5fd11511f4330c052e26418640452ea53c8541c34df5f362486d1e1af8": {
       "displayName": "key-policy-updater Template",
       "source": {
         "path": "key-policy-updater.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-bbb958a5": {
+        "current_account-current_region-9f23197e": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "f243ed85384d9205794ec55461263bc42ba4bfe1862d8f29cd8106103dc5f22a.json",
+          "objectKey": "84538d5fd11511f4330c052e26418640452ea53c8541c34df5f362486d1e1af8.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

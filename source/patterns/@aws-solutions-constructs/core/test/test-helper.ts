@@ -127,7 +127,7 @@ export function CreateTestStateMachineDefinitionBody(scope: Construct, id: strin
     code: new lambda.InlineCode(
       "exports.handler = async (event) => console.log(event)"
     ),
-    runtime: lambda.Runtime.NODEJS_20_X,
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: "index.handler",
   });
 
