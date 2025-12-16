@@ -30,7 +30,7 @@ export interface S3ToLambdaProps {
    */
   readonly existingLambdaObj?: lambda.Function,
   /**
-   * Optional user provided props to override the default props for the Lambda function.
+   * Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
    *
    * @default - Default props are used
    */

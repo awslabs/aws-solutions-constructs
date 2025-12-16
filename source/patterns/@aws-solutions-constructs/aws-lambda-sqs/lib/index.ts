@@ -30,7 +30,7 @@ export interface LambdaToSqsProps {
    */
   readonly existingLambdaObj?: lambda.Function;
   /**
-   * User provided props to override the default props for the Lambda function.
+   * Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
    *
    * @default - Default properties are used.
    */
@@ -42,7 +42,8 @@ export interface LambdaToSqsProps {
    */
   readonly existingQueueObj?: sqs.Queue;
   /**
-   * Optional user-provided props to override the default props for the SQS queue.
+   * Optional - user provided properties to override the default properties for the
+   * SQS queue. Providing both this and `existingQueueObj` will cause an error.
    *
    * @default - Default props are used
    */

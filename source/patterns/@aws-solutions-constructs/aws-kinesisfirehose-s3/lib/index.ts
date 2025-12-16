@@ -26,14 +26,13 @@ import * as kms from "aws-cdk-lib/aws-kms";
  */
 export interface KinesisFirehoseToS3Props {
   /**
-   * Optional user provided props to override the default props for the S3 Bucket.
+   * Optional user provided props to override the default props for the S3 Bucket, providing both this and `existingBucketObj` will cause an error.
    *
    * @default - Default props are used
    */
   readonly bucketProps?: s3.BucketProps;
   /**
-   * Optional existing instance of S3 Bucket,
-   * providing both this and bucketProps will cause an error. Providing both this and bucketProps will cause an error.
+   * Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps is an error.
    *
    * @default - None
    */

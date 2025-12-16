@@ -39,7 +39,8 @@ export interface SqsToPipesToStepfunctionsProps {
    */
   readonly existingQueueObj?: sqs.Queue,
   /**
-   * Optional user provided properties to override the default properties for the SQS queue.
+   * Optional - user provided properties to override the default properties for the SQS queue.
+   * Providing both this and `existingQueueObj` will cause an error.
    */
   readonly queueProps?: sqs.QueueProps,
   /**

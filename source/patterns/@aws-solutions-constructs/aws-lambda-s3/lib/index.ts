@@ -24,25 +24,25 @@ import { Construct } from 'constructs';
  */
 export interface LambdaToS3Props {
   /**
-   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
+   * Optional - instance of an existing Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
   readonly existingLambdaObj?: lambda.Function;
   /**
-   * Optional user provided props to override the default props for the Lambda function.
+   * Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
    *
    * @default - Default properties are used.
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
+   * Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps is an error.
    *
    * @default - None
    */
   readonly existingBucketObj?: s3.IBucket;
   /**
-   * Optional user provided props to override the default props for the S3 Bucket.
+   * Optional user provided props to override the default props for the S3 Bucket, providing both this and `existingBucketObj` will cause an error.
    *
    * @default - Default props are used
    */
