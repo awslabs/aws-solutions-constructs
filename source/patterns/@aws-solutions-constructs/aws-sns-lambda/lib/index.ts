@@ -24,25 +24,25 @@ import { SnsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
  */
 export interface SnsToLambdaProps {
   /**
-   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
+   * Optional - instance of an existing Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
   readonly existingLambdaObj?: lambda.Function;
   /**
-   * User provided props to override the default props for the Lambda function.
+   * Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
    *
    * @default - Default properties are used.
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * Existing instance of SNS Topic object, providing both this and topicProps will cause an error..
+   * Optional - existing instance of SNS topic object, providing both this and `topicProps` will cause an error.
    *
    * @default - Default props are used
    */
   readonly existingTopicObj?: sns.Topic;
   /**
-   * Optional user provided properties to override the default properties for the SNS topic.
+   * Optional - user provided properties to override the default properties for the SNS topic. Providing both this and `existingTopicObj` is an error.
    *
    * @default - Default properties are used.
    */

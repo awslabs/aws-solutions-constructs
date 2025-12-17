@@ -82,8 +82,7 @@ new ApiGatewayToSqs(this, "ApiGatewayToSqsPattern", new ApiGatewayToSqsProps.Bui
 |*Name* |*Type* |*Description*
 |apiGatewayProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.RestApiProps.html[`api.RestApiProps`]
-|Optional user-provided props to override the default props for the API
-Gateway.
+|Optional - user provided props to override the default props for the API Gateway.
 
 |createUsagePlan? |boolean |Whether to create a Usage Plan attached to
 the API. Must be true if
@@ -92,8 +91,7 @@ true (to match legacy behavior)
 
 |queueProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.QueueProps.html[`sqs.QueueProps`]
-|Optional user-provided props to override the default props for the
-queue.
+|Optional - user provided properties to override the default properties for the SQS queue. Providing both this and `existingQueueObj` will cause an error.
 
 |deployDeadLetterQueue? |`boolean` |Whether to deploy a secondary queue
 to be used as a dead letter queue. Defaults to `true`.

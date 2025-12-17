@@ -106,17 +106,15 @@ new EventbridgeToKinesisFirehoseToS3(this, "test-eventbridge-firehose-s3",
 |*Name* |*Type* |*Description*
 |existingEventBusInterface?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.IEventBus.html[`events.IEventBus`]
-|Optional user-provided custom EventBus for construct to use. Providing
-both this and `eventBusProps` results an error.
+|Optional - user provided custom event bus for this construct to use. Providing both this and `eventBusProps` is
+an error.
 
 |eventBusProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.EventBusProps.html[`events.EventBusProps`]
-|Optional user-provided properties to override the default properties
-when creating a custom EventBus. Setting this value to `{}` will
-create a custom EventBus using all default properties. If neither this
-nor `existingEventBusInterface` is provided the construct will use the
-`default` EventBus. Providing both this and `existingEventBusInterface`
-results an error.
+|Optional - user provided properties to override the default properties when creating a custom EventBus. Setting
+this value to `{}` will create a custom EventBus using all default properties. If neither this nor
+`existingEventBusInterface` is provided the construct will use the default EventBus. Providing both this and
+`existingEventBusInterface` results an error.
 
 |eventRuleProps
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.RuleProps.html[`events.RuleProps`]
@@ -129,12 +127,12 @@ Firehose Delivery Stream
 
 |existingBucketObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
-|Existing instance of S3 Bucket object. If this is provided, then also
+|Optional - existing instance of S3 Bucket. If this is provided, then also
 providing bucketProps is an error.
 
 |bucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
-|User provided props to override the default props for the S3 Bucket.
+|Optional user provided props to override the default props for the S3 Bucket, providing both this and `existingBucketObj` will cause an error.
 
 |logGroupProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html[`logs.LogGroupProps`]

@@ -160,13 +160,11 @@ the new feature flag) will use the new functionality.
 |*Name* |*Type* |*Description*
 |existingTopicObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sns.Topic.html[`sns.Topic`]
-|An optional, existing SNS topic to be used instead of the default
-topic. Providing both this and `topicProps` will cause an error.
+|Optional - existing instance of SNS topic object, providing both this and `topicProps` will cause an error.
 
 |topicProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sns.TopicProps.html[`sns.TopicProps`]
-|Optional user provided properties to override the default properties
-for the SNS topic.
+|Optional - user provided properties to override the default properties for the SNS topic. Providing both this and `existingTopicObj` is an error.
 
 |encryptTopicWithCmk |`boolean` |Whether to encrypt the Topic with a
 customer managed KMS key (CMK). This is the default behavior, and this
@@ -195,8 +193,7 @@ queue. Providing both this and `queueProps` will cause an error.
 
 |queueProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.QueueProps.html[`sqs.QueueProps`]
-|Optional user provided properties to override the default properties
-for the SQS queue.
+|Optional - user provided properties to override the default properties for the SQS queue. Providing both this and `existingQueueObj` will cause an error.
 
 |encryptQueueWithCmk |`boolean` |Whether to encrypt the Queue with a
 customer managed KMS key (CMK). This is the default behavior, and this

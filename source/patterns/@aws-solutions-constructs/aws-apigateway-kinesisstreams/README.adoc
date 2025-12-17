@@ -84,8 +84,7 @@ new ApiGatewayToKinesisStreams(this, "test-apigw-kinesis", new ApiGatewayToKines
 |*Name* |*Type* |*Description*
 |apiGatewayProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.RestApiProps.html[`api.RestApiProps`]
-|Optional user-provided props to override the default props for the API
-Gateway.
+|Optional - user provided props to override the default props for the API Gateway.
 
 |putRecordRequestTemplate? |`string` |API Gateway request template for
 the PutRecord action. If not provided, a default one will be used.

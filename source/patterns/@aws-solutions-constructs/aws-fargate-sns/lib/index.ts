@@ -100,7 +100,7 @@ export interface FargateToSnsProps {
    */
   readonly existingTopicObject?: sns.Topic;
   /**
-   * Optional user provided properties to override the default properties for the SNS topic.
+   * Optional - user provided properties to override the default properties for the SNS topic. Providing both this and `existingTopicObj` is an error.
    *
    * @default - Default properties are used.
    */

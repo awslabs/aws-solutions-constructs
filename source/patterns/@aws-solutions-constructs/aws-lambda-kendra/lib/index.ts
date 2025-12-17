@@ -52,13 +52,13 @@ export interface LambdaToKendraProps {
    */
   readonly existingKendraIndexObj?: kendra.CfnIndex;
   /**
-   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
+   * Optional - instance of an existing Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
   readonly existingLambdaObj?: lambda.Function;
   /**
-   * User provided props to override the default props for the Lambda function.
+   * Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
    *
    * @default - Default properties are used.
    */

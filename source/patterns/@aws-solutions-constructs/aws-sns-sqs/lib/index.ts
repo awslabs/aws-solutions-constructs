@@ -28,13 +28,14 @@ import { SNS_SUBSCRIPTIONS_SQS_DECRYPTION_POLICY } from 'aws-cdk-lib/cx-api';
  */
 export interface SnsToSqsProps {
   /**
-   * Existing instance of SNS topic object, providing both this and topicProps will cause an error..
+   * Optional - existing instance of SNS topic object, providing both this and `topicProps` will cause an error.
    *
    * @default - Default props are used
    */
   readonly existingTopicObj?: sns.Topic;
   /**
-   * Optional user provided properties to override the default properties for the SNS topic.
+   * Optional - user provided properties to override the default properties for the SNS topic.
+   * Providing both this and `existingTopicObj` is an error.
    *
    * @default - Default properties are used.
    */
@@ -46,7 +47,8 @@ export interface SnsToSqsProps {
    */
   readonly existingQueueObj?: sqs.Queue;
   /**
-   * Optional user provided properties
+   * Optional - user provided properties to override the default properties for the SQS queue.
+   * Providing both this and `existingQueueObj` will cause an error.
    *
    * @default - Default props are used
    */

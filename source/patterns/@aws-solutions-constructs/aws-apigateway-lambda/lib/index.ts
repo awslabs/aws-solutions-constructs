@@ -31,13 +31,13 @@ export interface ApiGatewayToLambdaProps {
    */
   readonly existingLambdaObj?: lambda.Function,
   /**
-   * User provided props to override the default props for the Lambda function.
+   * Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
    *
    * @default - Default props are used.
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps,
   /**
-   * Optional user-provided props to override the default props for the API.
+   * Optional - user-provided props to override the default props for the API Gateway API.
    *
    * @default - Default props are used.
    */

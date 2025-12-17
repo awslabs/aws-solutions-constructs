@@ -32,13 +32,14 @@ export interface DynamoDBStreamsToPipesToStepfunctionsProps {
   // *******************
 
   /**
-   * Optional user provided props to override the default props
+   * Optional user provided props to override the default props for the DynamoDB Table. Providing both this and
+   * `existingTableInterface` is an error.
    *
-   * @default - Default props are used
+   * @default - Partition key ID: string
    */
   readonly dynamoTableProps?: dynamodb.TableProps,
   /**
-   * Existing instance of DynamoDB table object, providing both this and `dynamoTableProps` will cause an error.
+   * Optional - existing DynamoDB table, providing both this and `dynamoTableProps` will cause an error.
    *
    * @default - None
    */

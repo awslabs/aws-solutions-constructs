@@ -28,11 +28,14 @@ export interface WafwebaclToApiGatewayProps {
    */
   readonly existingApiGatewayInterface: api.IRestApi,
   /**
-   * Existing instance of a WAF web ACL, an error will occur if this and props is set
+   * Optional - existing instance of a WAF web ACL, providing both this and `webaclProps` is an error.
    */
   readonly existingWebaclObj?: waf.CfnWebACL,
   /**
-   * Optional user-provided props to override the default props for the AWS WAF web ACL.
+   * Optional user-provided props to override the default props for the AWS WAF web ACL. Providing both this and
+   * existingWebaclObj is an error. To use a different collection of managed rule sets, specify a new rules
+   * property. Use our link:../core/lib/waf-defaults.ts[wrapManagedRuleSet(managedGroupName: string, vendorName:
+   * string, priority: number)] function from core to create an array entry from each desired managed rule set.
    *
    * @default - Default properties are used.
    */
@@ -62,7 +65,8 @@ export class WafwebaclToApiGateway extends Construct {
       webaclProps: props.webaclProps,
     });
 
-    const resourceArn = `arn:${Aws.PARTITION}:apigateway:${Aws.REGION}::/restapis/${props.existingApiGatewayInterface.restApiId}/stages/${props.existingApiGatewayInterface.deploymentStage.stageName}`;
+    const resourceArn = `arn:${Aws.PARTITION}:apigateway:${Aws.REGION}::/restapis/` +
+      `${props.existingApiGatewayInterface.restApiId}/stages/${props.existingApiGatewayInterface.deploymentStage.stageName}`;
 
     const aclAssociationId = `${id}-WebACLAssociation`;
     const aclAssociationProps: waf.CfnWebACLAssociationProps = {

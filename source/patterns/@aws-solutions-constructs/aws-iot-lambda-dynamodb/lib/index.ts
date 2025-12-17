@@ -26,7 +26,7 @@ import * as defaults from '@aws-solutions-constructs/core';
  */
 export interface IotToLambdaToDynamoDBProps {
   /**
-   * Existing instance of Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
+   * Optional - instance of an existing Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
    *
    * @default - None
    */
@@ -44,9 +44,10 @@ export interface IotToLambdaToDynamoDBProps {
    */
   readonly iotTopicRuleProps: iot.CfnTopicRuleProps,
   /**
-   * Optional user provided props to override the default props
+   * Optional user provided props to override the default props for the DynamoDB Table. Providing both this and
+   * `existingTableInterface` is an error.
    *
-   * @default - Default props are used
+   * @default - Partition key ID: string
    */
   readonly dynamoTableProps?: dynamodb.TableProps,
   /**

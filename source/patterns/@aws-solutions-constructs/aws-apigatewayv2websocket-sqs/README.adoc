@@ -132,9 +132,7 @@ cause an error.
 
 |queueProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.QueueProps.html[`sqs.QueueProps`]
-|Optional user-provided props to override the default props for the
-queue. Providing both existingQueueObj and queueProps will cause an
-error.
+|Optional - user provided properties to override the default properties for the SQS queue. Providing both this and `existingQueueObj` will cause an error.
 
 |existingQueueObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.Queue.html[`sqs.Queue`]
