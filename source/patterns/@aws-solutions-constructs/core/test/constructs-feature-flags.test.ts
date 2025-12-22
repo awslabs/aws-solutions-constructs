@@ -16,6 +16,15 @@ import * as cdk from 'aws-cdk-lib';
 import { ArtifactType } from '@aws-cdk/cloud-assembly-schema';
 import { ConstructsFeatureFlagsReport } from '../lib/constructs-feature-flags';
 
+test('ensures feature flag report when scope is app', () => {
+  const app = new cdk.App();
+  ConstructsFeatureFlagsReport.ensure(app);
+  const assembly = app.synth();
+  const manifest = assembly.manifest;
+  const featureFlagArtifact = Object.values(manifest.artifacts || {}).find(artifact => ((artifact.type === ArtifactType.FEATURE_FLAG_REPORT) && ((artifact.properties! as any).module === '@aws-solutions-constructs')));
+  expect(featureFlagArtifact).toBeDefined();
+});
+
 test('test ConstructsFeatureFlagsReport synthesis and manifest output', () => {
   const app = new cdk.App();
   const stack = new cdk.Stack(app, 'TestStack');
@@ -58,4 +67,15 @@ test('test ConstructsFeatureFlagsReport synthesis and manifest output', () => {
     expect(constructsFlag).toHaveProperty('explanation');
   });
 
+});
+
+test('ensures feature flag report when scope is stack->stage->app', () => {
+  const app = new cdk.App();
+  const stage = new cdk.Stage(app, 'TestStage');
+  const stack = new cdk.Stack(stage, 'TestStack');
+  ConstructsFeatureFlagsReport.ensure(stack);
+  const assembly = app.synth();
+  const manifest = assembly.manifest;
+  const featureFlagArtifact = Object.values(manifest.artifacts || {}).find(artifact => ((artifact.type === ArtifactType.FEATURE_FLAG_REPORT) && ((artifact.properties! as any).module === '@aws-solutions-constructs')));
+  expect(featureFlagArtifact).toBeDefined();
 });
