@@ -28,12 +28,8 @@ const QUEUE_USE_SSE = "@aws-solutions-constructs/aws-sqs:QueueUseSse";
 export class ConstructsFeatureFlagsReport extends Construct {
 
   public static ensure(scope: Construct) {
-    let app: Construct | undefined = scope;
-    while (app && !App.isApp(app)) {
-      app = App.of(app);
-    }
-
-    if (!app) {
+    const app = scope.node.root;
+    if (!app || !App.isApp(app)) {
       throw new Error('Invalid scope provided to ConstructsFeatureFlagsReport');
     }
     const id = 'AwsSolutionsFeatureFlagsReport';
