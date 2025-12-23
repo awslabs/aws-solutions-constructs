@@ -91,17 +91,12 @@ test('New service/new table, public API, new VPC', () => {
             "dynamodb:DescribeTable"
           ],
           Effect: "Allow",
-          Resource: [
-            {
-              "Fn::GetAtt": [
-                "testconstructDynamoTable67BDAFC5",
-                "Arn"
-              ]
-            },
-            {
-              Ref: "AWS::NoValue"
-            }
-          ]
+          Resource: {
+            "Fn::GetAtt": [
+              "testconstructDynamoTable67BDAFC5",
+              "Arn"
+            ]
+          },
         }
       ]
     }
@@ -215,17 +210,12 @@ test('New service/new table, private API, new VPC', () => {
             "dynamodb:DescribeTable"
           ],
           Effect: "Allow",
-          Resource: [
-            {
-              "Fn::GetAtt": [
-                "testconstructDynamoTable67BDAFC5",
-                "Arn"
-              ]
-            },
-            {
-              Ref: "AWS::NoValue"
-            }
-          ]
+          Resource: {
+            "Fn::GetAtt": [
+              "testconstructDynamoTable67BDAFC5",
+              "Arn"
+            ]
+          },
         }
       ]
     }
@@ -300,17 +290,12 @@ test('New service/existing table, private API, existing VPC', () => {
         {
           Action: "dynamodb:*",
           Effect: "Allow",
-          Resource: [
-            {
-              "Fn::GetAtt": [
-                "MyTable794EDED1",
-                "Arn"
-              ]
-            },
-            {
-              Ref: "AWS::NoValue"
-            }
-          ]
+          Resource: {
+            "Fn::GetAtt": [
+              "MyTable794EDED1",
+              "Arn"
+            ]
+          }
         }
       ]
     }
@@ -451,17 +436,12 @@ test('Existing service/new table, public API, existing VPC', () => {
             "dynamodb:DescribeTable"
           ],
           Effect: "Allow",
-          Resource: [
-            {
-              "Fn::GetAtt": [
-                "testconstructDynamoTable67BDAFC5",
-                "Arn"
-              ]
-            },
-            {
-              Ref: "AWS::NoValue"
-            }
-          ]
+          Resource: {
+            "Fn::GetAtt": [
+              "testconstructDynamoTable67BDAFC5",
+              "Arn"
+            ]
+          },
         }
       ]
     }
@@ -593,17 +573,12 @@ test('Existing service/existing table, private API, existing VPC', () => {
             "dynamodb:DescribeTable"
           ],
           Effect: "Allow",
-          Resource: [
-            {
-              "Fn::GetAtt": [
-                "MyTabletD7ADAF4F",
-                "Arn"
-              ]
-            },
-            {
-              Ref: "AWS::NoValue"
-            }
-          ]
+          Resource: {
+            "Fn::GetAtt": [
+              "MyTabletD7ADAF4F",
+              "Arn"
+            ]
+          },
         }
       ]
     }
@@ -738,7 +713,7 @@ test('Confirm that CheckVpcProps was called', () => {
       },
     },
     existingVpc: defaults.getTestVpc(stack),
-    vpcProps: {  },
+    vpcProps: {},
   };
 
   const app = () => {
