@@ -296,12 +296,15 @@ export class ApiGatewayToDynamoDB extends Construct {
     const dynamoTableProps: dynamodb.TableProps = defaults.consolidateProps(
       defaults.GetDefaultTableProps(props.dynamoTableProps),
       props.dynamoTableProps);
-    let partitionKeyName = dynamoTableProps.partitionKey.name;
+    let partitionKeyName;
 
     if (props.existingTableObj) {
       partitionKeyName = getPartitionKeyNameFromTable(props.existingTableObj);
+    } else if (dynamoTableProps.partitionKey) {
+      partitionKeyName = dynamoTableProps.partitionKey.name;
+    } else {
+      throw new Error('Error - Solutions Constructs only support single partition keys at this time');
     }
-
     const resourceName = props.resourceName ?? partitionKeyName;
 
     // Since we are only invoking this function with an existing Table or tableProps,
