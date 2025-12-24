@@ -78,8 +78,6 @@ test('New service/new table, public API, new VPC', () => {
         {
           Action: [
             "dynamodb:BatchGetItem",
-            "dynamodb:GetRecords",
-            "dynamodb:GetShardIterator",
             "dynamodb:Query",
             "dynamodb:GetItem",
             "dynamodb:Scan",
@@ -89,6 +87,19 @@ test('New service/new table, public API, new VPC', () => {
             "dynamodb:UpdateItem",
             "dynamodb:DeleteItem",
             "dynamodb:DescribeTable"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "testconstructDynamoTable67BDAFC5",
+              "Arn"
+            ]
+          },
+        },
+        {
+          Action: [
+            "dynamodb:GetRecords",
+            "dynamodb:GetShardIterator",
           ],
           Effect: "Allow",
           Resource: {
@@ -201,13 +212,24 @@ test('New service/new table, private API, new VPC', () => {
         {
           Action: [
             "dynamodb:BatchGetItem",
-            "dynamodb:GetRecords",
-            "dynamodb:GetShardIterator",
             "dynamodb:Query",
             "dynamodb:GetItem",
             "dynamodb:Scan",
             "dynamodb:ConditionCheckItem",
             "dynamodb:DescribeTable"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "testconstructDynamoTable67BDAFC5",
+              "Arn"
+            ]
+          },
+        },
+        {
+          Action: [
+            "dynamodb:GetRecords",
+            "dynamodb:GetShardIterator",
           ],
           Effect: "Allow",
           Resource: {
@@ -423,8 +445,6 @@ test('Existing service/new table, public API, existing VPC', () => {
         {
           Action: [
             "dynamodb:BatchGetItem",
-            "dynamodb:GetRecords",
-            "dynamodb:GetShardIterator",
             "dynamodb:Query",
             "dynamodb:GetItem",
             "dynamodb:Scan",
@@ -434,6 +454,19 @@ test('Existing service/new table, public API, existing VPC', () => {
             "dynamodb:UpdateItem",
             "dynamodb:DeleteItem",
             "dynamodb:DescribeTable"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "testconstructDynamoTable67BDAFC5",
+              "Arn"
+            ]
+          },
+        },
+        {
+          Action: [
+            "dynamodb:GetRecords",
+            "dynamodb:GetShardIterator",
           ],
           Effect: "Allow",
           Resource: {
