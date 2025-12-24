@@ -80,8 +80,8 @@ new S3ToSns(this, "S3ToSNSPattern", new S3ToSnsProps.Builder()
 |===
 |*Name* |*Type* |*Description*
 |existingBucketObj?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html[`s3.Bucket`]
-|Existing instance of S3 Bucket object. If this is provided, then also
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
+|Optional - existing instance of S3 Bucket. If this is provided, then also
 providing bucketProps is an error.
 
 |bucketProps?
@@ -110,10 +110,7 @@ logs. Enabling Access Logging is a best practice. default - true
 
 |existingTopicObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sns.Topic.html[`sns.Topic`]
-|An optional, existing SNS topic to be used instead of the default
-topic. Providing both this and `topicProps` will cause an error. If the
-SNS Topic is encrypted with a Customer-Managed KMS Key, the key must be
-specified in the `existingTopicEncryptionKey` property.
+|Optional - existing instance of SNS topic object, providing both this and `topicProps` will cause an error. If the SNS Topic is encrypted with a Customer-Managed KMS Key, the key must be specified in the `existingTopicEncryptionKey` property.
 
 |existingTopicEncryptionKey?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.Key.html[`kms.Key`]
@@ -123,8 +120,7 @@ property also needs to be set with same key.
 
 |topicProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sns.TopicProps.html[`sns.TopicProps`]
-|Optional user provided props to override the default props for the SNS
-topic.
+|Optional - user provided properties to override the default properties for the SNS topic. Providing both this and `existingTopicObj` is an error.
 
 |enableEncryptionWithCustomerManagedKey? |`boolean` |If no key is
 provided, this flag determines whether the topic is encrypted with a new

@@ -27,7 +27,7 @@ import * as logs from 'aws-cdk-lib/aws-logs';
  */
 export interface ApiGatewayToSqsProps {
   /**
-   * Optional user-provided props to override the default props for the API Gateway.
+   * Optional - user provided props to override the default props for the API Gateway.
    *
    * @default - Default properties are used.
    */
@@ -46,7 +46,8 @@ export interface ApiGatewayToSqsProps {
    */
   readonly existingQueueObj?: sqs.Queue;
   /**
-   * User provided props to override the default props for the SQS queue.
+   * Optional - user provided properties to override the default properties for the SQS queue.
+   * Providing both this and `existingQueueObj` will cause an error.
    *
    * @default - Default props are used
    */

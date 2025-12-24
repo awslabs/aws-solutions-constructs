@@ -13,8 +13,16 @@
 
 // Imports
 import * as cdk from 'aws-cdk-lib';
-import { ArtifactType } from '@aws-cdk/cloud-assembly-schema';
+import { ArtifactType, AssemblyManifest, ArtifactManifest } from '@aws-cdk/cloud-assembly-schema';
 import { ConstructsFeatureFlagsReport } from '../lib/constructs-feature-flags';
+
+test('ensures feature flag report when scope is app', () => {
+  const app = new cdk.App();
+  ConstructsFeatureFlagsReport.ensure(app);
+  const assembly = app.synth();
+  const featureFlagArtifact = extractConstructFeatureFlagArtifact(assembly.manifest);
+  expect(featureFlagArtifact).toBeDefined();
+});
 
 test('test ConstructsFeatureFlagsReport synthesis and manifest output', () => {
   const app = new cdk.App();
@@ -27,12 +35,7 @@ test('test ConstructsFeatureFlagsReport synthesis and manifest output', () => {
   const assembly = app.synth();
 
   // Examine the manifest output
-  const manifest = assembly.manifest;
-
-  // Verify the manifest contains our feature flag report artifact
-  const featureFlagArtifact = Object.values(manifest.artifacts || {}).find(
-    artifact => ((artifact.type === ArtifactType.FEATURE_FLAG_REPORT) && ((artifact.properties! as any).module === '@aws-solutions-constructs'))
-  );
+  const featureFlagArtifact = extractConstructFeatureFlagArtifact(assembly.manifest);
 
   expect(featureFlagArtifact).toBeDefined();
 
@@ -59,3 +62,25 @@ test('test ConstructsFeatureFlagsReport synthesis and manifest output', () => {
   });
 
 });
+
+test('ensures feature flag report when scope is stack->stage->app', () => {
+  const app = new cdk.App();
+  const stage = new cdk.Stage(app, 'TestStage');
+  const stack = new cdk.Stack(stage, 'TestStack');
+  ConstructsFeatureFlagsReport.ensure(stack);
+  const assembly = app.synth();
+  const featureFlagArtifact = extractConstructFeatureFlagArtifact(assembly.manifest);
+  expect(featureFlagArtifact).toBeDefined();
+});
+
+function extractConstructFeatureFlagArtifact(manifest: AssemblyManifest): ArtifactManifest | undefined {
+  if (!manifest.artifacts) {
+    return undefined;
+  }
+  const allArtifacts = Object.values(manifest.artifacts);
+  return allArtifacts.find(artifact => isConstructsFeatureFlagReport(artifact));
+}
+
+function isConstructsFeatureFlagReport(artifact: ArtifactManifest) {
+  return ((artifact.type === ArtifactType.FEATURE_FLAG_REPORT) && ((artifact.properties! as any).module === '@aws-solutions-constructs'));
+}

@@ -180,7 +180,7 @@ export function deployGlueJob(scope: Construct, glueJobProps: glue.CfnJobProps, 
   });
 
   const jobRole = glueJobProps.role ?
-    Role.fromRoleArn(scope, 'JobRole', glueJobProps.role) :
+    Role.fromRoleArn(scope, 'JobRole', (typeof glueJobProps.role === "string") ? glueJobProps.role : (glueJobProps.role as Role).roleArn) :
     defaults.createGlueJobRole(scope);
 
   glueJobPolicy.attachToRole(jobRole);

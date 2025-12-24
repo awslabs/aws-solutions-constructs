@@ -33,7 +33,8 @@ export interface LambdaToSqsToLambdaProps {
    */
   readonly existingProducerLambdaObj?: lambda.Function;
   /**
-   * Optional user-provided properties to override the default properties for the producer Lambda function.
+   * Optional - user provided props to override the default props for the producer Lambda function. Providing
+   * both this and `existingProducerLambdaObj` is an error.
    *
    * @default - Default properties are used.
    */
@@ -46,7 +47,8 @@ export interface LambdaToSqsToLambdaProps {
    */
   readonly existingQueueObj?: sqs.Queue;
   /**
-   * Optional user-provided properties to override the default properties for the SQS queue.
+   * Optional - user provided properties to override the default properties for the SQS queue.
+   * Providing both this and `existingQueueObj` will cause an error.
    *
    * @default - Default props are used.
    */
@@ -79,7 +81,8 @@ export interface LambdaToSqsToLambdaProps {
    */
   readonly existingConsumerLambdaObj?: lambda.Function;
   /**
-   * Optional user-provided properties to override the default properties for the consumer Lambda function.
+   * Optional - user provided props to override the default props for the consumer
+   * Lambda function. Providing both this and `existingConsumerLambdaObj` is an error.
    * @default - Default properties are used.
    */
   readonly consumerLambdaFunctionProps?: lambda.FunctionProps;

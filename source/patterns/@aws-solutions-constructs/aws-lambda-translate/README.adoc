@@ -107,13 +107,12 @@ new LambdaToTranslate(this, "LambdaToTranslatePattern", new LambdaToTranslatePro
 |*Name* |*Type* |*Description*
 |existingLambdaObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html[`lambda.Function`]
-|Existing instance of Lambda Function object, providing both this and
+|Optional - instance of an existing Lambda Function object, providing both this and
 `lambdaFunctionProps` will cause an error.
 
 |lambdaFunctionProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html[`lambda.FunctionProps`]
-|Optional user provided props to override the default props for the
-Lambda function.
+|Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
 
 |asyncJobs? |`boolean` |Whether to enable asynchronous translation jobs. When true, source and destination S3 buckets will be created and the Lambda function will be granted permissions to start and stop translation jobs. Default: false
 

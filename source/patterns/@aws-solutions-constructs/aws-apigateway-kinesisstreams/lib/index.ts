@@ -26,7 +26,7 @@ import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
  */
 export interface ApiGatewayToKinesisStreamsProps {
   /**
-   * Optional user-provided props to override the default props for the API Gateway.
+   * Optional - user provided props to override the default props for the API Gateway.
    *
    * @default - Default properties are used.
    */

@@ -83,17 +83,12 @@
         "dynamodb:UpdateItem"
        ],
        "Effect": "Allow",
-       "Resource": [
-        {
-         "Fn::GetAtt": [
-          "testlambdadynamodbstackDynamoTable8138E93B",
-          "Arn"
-         ]
-        },
-        {
-         "Ref": "AWS::NoValue"
-        }
-       ]
+       "Resource": {
+        "Fn::GetAtt": [
+         "testlambdadynamodbstackDynamoTable8138E93B",
+         "Arn"
+        ]
+       }
       }
      ],
      "Version": "2012-10-17"

@@ -64,13 +64,15 @@ export interface CloudFrontToOaiToS3Props {
   // S3 Content Bucket
   // =====================
   /**
-   * Existing instance of S3 Content Bucket object, providing both this and `bucketProps` will cause an error.
+   * Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps is an error.
    *
    * @default - None
    */
   readonly existingBucketObj?: s3.IBucket,
   /**
-   * Optional user provided props to override the default props for the S3 Content Bucket.
+   * Optional user provided props to override the default props for the S3 Content Bucket, providing both this and
+   * `existingBucketObj` will cause an error. Note - to log S3 access for this bucket to an existing S3 bucket, put
+   * the existing log bucket in bucketProps: `serverAccessLogsBucket`
    *
    * @default - Default props are used
    */

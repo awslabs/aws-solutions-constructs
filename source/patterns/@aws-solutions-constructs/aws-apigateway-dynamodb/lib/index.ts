@@ -25,9 +25,10 @@ import * as logs from 'aws-cdk-lib/aws-logs';
  */
 export interface ApiGatewayToDynamoDBProps {
   /**
-   * Optional user provided props to override the default props
+   * Optional user provided props to override the default props for the DynamoDB Table. Providing both this and
+   * `existingTableInterface` is an error.
    *
-   * @default - Default props are used
+   * @default - Partition key ID: string
    */
   readonly dynamoTableProps?: dynamodb.TableProps;
   /**
@@ -37,7 +38,7 @@ export interface ApiGatewayToDynamoDBProps {
    */
   readonly existingTableObj?: dynamodb.Table;
   /**
-   * Optional user-provided props to override the default props for the API Gateway.
+   * Optional - user provided props to override the default props for the API Gateway.
    *
    * @default - Default properties are used.
    */
@@ -295,12 +296,15 @@ export class ApiGatewayToDynamoDB extends Construct {
     const dynamoTableProps: dynamodb.TableProps = defaults.consolidateProps(
       defaults.GetDefaultTableProps(props.dynamoTableProps),
       props.dynamoTableProps);
-    let partitionKeyName = dynamoTableProps.partitionKey.name;
+    let partitionKeyName;
 
     if (props.existingTableObj) {
       partitionKeyName = getPartitionKeyNameFromTable(props.existingTableObj);
+    } else if (dynamoTableProps.partitionKey) {
+      partitionKeyName = dynamoTableProps.partitionKey.name;
+    } else {
+      throw new Error('Error - Solutions Constructs only support single partition keys at this time');
     }
-
     const resourceName = props.resourceName ?? partitionKeyName;
 
     // Since we are only invoking this function with an existing Table or tableProps,

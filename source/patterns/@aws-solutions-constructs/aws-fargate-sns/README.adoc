@@ -166,8 +166,7 @@ service. This must be the container in the existingFargateServiceObject
 
 |topicProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sns.TopicProps.html[sns.TopicProps]
-|Optional user provided properties to override the default properties
-for the SNS topic.
+|Optional - user provided properties to override the default properties for the SNS topic. Providing both this and `existingTopicObj` is an error.
 
 |topicArnEnvironmentVariableName? |string |Optional Name for the
 container environment variable set to the ARN of the topic. Default:

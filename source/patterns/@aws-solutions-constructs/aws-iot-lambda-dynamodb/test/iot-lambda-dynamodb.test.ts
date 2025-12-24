@@ -222,8 +222,6 @@ test('check lambda function policy ', () => {
         {
           Action: [
             "dynamodb:BatchGetItem",
-            "dynamodb:GetRecords",
-            "dynamodb:GetShardIterator",
             "dynamodb:Query",
             "dynamodb:GetItem",
             "dynamodb:Scan",
@@ -235,17 +233,25 @@ test('check lambda function policy ', () => {
             "dynamodb:DescribeTable"
           ],
           Effect: "Allow",
-          Resource: [
-            {
-              "Fn::GetAtt": [
-                "testiotlambdadynamodbstackLambdaToDynamoDBDynamoTableE17E5733",
-                "Arn"
-              ]
-            },
-            {
-              Ref: "AWS::NoValue"
-            }
-          ]
+          Resource: {
+            "Fn::GetAtt": [
+              "testiotlambdadynamodbstackLambdaToDynamoDBDynamoTableE17E5733",
+              "Arn"
+            ]
+          },
+        },
+        {
+          Action: [
+            "dynamodb:GetRecords",
+            "dynamodb:GetShardIterator",
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "testiotlambdadynamodbstackLambdaToDynamoDBDynamoTableE17E5733",
+              "Arn"
+            ]
+          },
         }
       ],
       Version: "2012-10-17"
@@ -355,7 +361,7 @@ test('check lambda function custom environment variable', () => {
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::Lambda::Function', {
     Handler: 'index.handler',
-    Runtime:  defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
+    Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING,
     Environment: {
       Variables: {
         AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',

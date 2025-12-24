@@ -27,14 +27,14 @@ import * as logs from 'aws-cdk-lib/aws-logs';
  */
 export interface S3ToStepfunctionsProps {
   /**
-   * Existing instance of S3 Bucket object, providing both this and `bucketProps` will cause an error.
+   * Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps is an error.
    * The Amazon EventBridge property must be enabled in the existing bucket for the construct to work.
    *
    * @default - None
    */
   readonly existingBucketObj?: s3.IBucket,
   /**
-   * Optional user provided props to override the default props for the S3 Bucket.
+   * Optional user provided props to override the default props for the S3 Bucket, providing both this and `existingBucketObj` will cause an error.
    *
    * @default - Default props are used
    */

@@ -82,8 +82,8 @@ new ApiGatewayToDynamoDB(this, "test-api-gateway-dynamodb-default", new ApiGatew
 |*Name* |*Type* |*Description*
 |dynamoTableProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.TableProps.html[`dynamodb.TableProps`]
-|Optional user provided props to override the default props for DynamoDB
-Table.
+|Optional user provided props to override the default props for the DynamoDB Table. Providing both this and
+`existingTableInterface` is an error.
 
 |existingTableObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.Table.html[`dynamodb.Table`]
@@ -92,8 +92,7 @@ Table.
 
 |apiGatewayProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_apigateway.RestApiProps.html[`api.RestApiProps`]
-|Optional user-provided props to override the default props for the API
-Gateway.
+|Optional - user provided props to override the default props for the API Gateway.
 
 |createUsagePlan? |boolean |Whether to create a Usage Plan attached to
 the API. Must be true if

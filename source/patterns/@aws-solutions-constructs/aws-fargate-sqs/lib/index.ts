@@ -107,7 +107,8 @@ export interface FargateToSqsProps {
    */
   readonly existingQueueObj?: sqs.Queue;
   /**
-   * Optional user-provided props to override the default props for the SQS queue.
+   * Optional - user provided properties to override the default properties for the SQS queue.
+   * Providing both this and `existingQueueObj` will cause an error.
    *
    * @default - Default props are used
    */
