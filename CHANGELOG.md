@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.97.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.96.0...v2.97.0) (2025-12-24)
+
+Built on CDK 2.233.0
+
+### Bug Fixes
+
+* **core:** support feature flags report from within Stage ([#1442](https://github.com/awslabs/aws-solutions-constructs/issues/1442)) ([9db68fc](https://github.com/awslabs/aws-solutions-constructs/commit/9db68fceb458fc0b303831804742db1a2298dda2)), closes [#1440](https://github.com/awslabs/aws-solutions-constructs/issues/1440)
+
 ## [2.96.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.95.1...v2.96.0) (2025-11-26)
 
 Built on CDK 2.223.0
