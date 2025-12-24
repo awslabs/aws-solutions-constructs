@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/2342bbe7bfb1d8a7b3f50e45c45790456ce0b3230c68bcc15228e6f64a9c913e.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/50e9251587a2b66dfa9a971b38856fffa81a4ba8cdab99ba71889acec503c353.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -279,10 +279,6 @@
             "data": {
               "addGlobalSecondaryIndex": [
                 {
-                  "partitionKey": {
-                    "name": "*",
-                    "type": "S"
-                  },
                   "indexName": "*"
                 }
               ]
