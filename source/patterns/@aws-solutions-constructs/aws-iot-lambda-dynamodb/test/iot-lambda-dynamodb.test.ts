@@ -222,8 +222,6 @@ test('check lambda function policy ', () => {
         {
           Action: [
             "dynamodb:BatchGetItem",
-            "dynamodb:GetRecords",
-            "dynamodb:GetShardIterator",
             "dynamodb:Query",
             "dynamodb:GetItem",
             "dynamodb:Scan",
@@ -233,6 +231,19 @@ test('check lambda function policy ', () => {
             "dynamodb:UpdateItem",
             "dynamodb:DeleteItem",
             "dynamodb:DescribeTable"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "testiotlambdadynamodbstackLambdaToDynamoDBDynamoTableE17E5733",
+              "Arn"
+            ]
+          },
+        },
+        {
+          Action: [
+            "dynamodb:GetRecords",
+            "dynamodb:GetShardIterator",
           ],
           Effect: "Allow",
           Resource: {

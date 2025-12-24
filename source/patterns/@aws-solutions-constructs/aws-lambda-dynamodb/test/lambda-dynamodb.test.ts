@@ -172,6 +172,7 @@ test('check lambda function policy default table permissions', () => {
   deployNewFunc(stack);
 
   const template = Template.fromStack(stack);
+
   template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: [
@@ -186,8 +187,6 @@ test('check lambda function policy default table permissions', () => {
         {
           Action: [
             "dynamodb:BatchGetItem",
-            "dynamodb:GetRecords",
-            "dynamodb:GetShardIterator",
             "dynamodb:Query",
             "dynamodb:GetItem",
             "dynamodb:Scan",
@@ -197,6 +196,19 @@ test('check lambda function policy default table permissions', () => {
             "dynamodb:UpdateItem",
             "dynamodb:DeleteItem",
             "dynamodb:DescribeTable"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "testlambdadynamodbstackDynamoTable8138E93B",
+              "Arn"
+            ]
+          },
+        },
+        {
+          Action: [
+            "dynamodb:GetRecords",
+            "dynamodb:GetShardIterator",
           ],
           Effect: "Allow",
           Resource: {
@@ -350,13 +362,24 @@ test('check lambda function policy ReadOnly table permissions', () => {
         {
           Action: [
             "dynamodb:BatchGetItem",
-            "dynamodb:GetRecords",
-            "dynamodb:GetShardIterator",
             "dynamodb:Query",
             "dynamodb:GetItem",
             "dynamodb:Scan",
             "dynamodb:ConditionCheckItem",
             "dynamodb:DescribeTable"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "testlambdadynamodbstackDynamoTable8138E93B",
+              "Arn"
+            ]
+          },
+        },
+        {
+          Action: [
+            "dynamodb:GetRecords",
+            "dynamodb:GetShardIterator",
           ],
           Effect: "Allow",
           Resource: {
@@ -451,8 +474,6 @@ test('check lambda function policy ReadWrite table permissions', () => {
         {
           Action: [
             "dynamodb:BatchGetItem",
-            "dynamodb:GetRecords",
-            "dynamodb:GetShardIterator",
             "dynamodb:Query",
             "dynamodb:GetItem",
             "dynamodb:Scan",
@@ -462,6 +483,19 @@ test('check lambda function policy ReadWrite table permissions', () => {
             "dynamodb:UpdateItem",
             "dynamodb:DeleteItem",
             "dynamodb:DescribeTable"
+          ],
+          Effect: "Allow",
+          Resource: {
+            "Fn::GetAtt": [
+              "testlambdadynamodbstackDynamoTable8138E93B",
+              "Arn"
+            ]
+          },
+        },
+        {
+          Action: [
+            "dynamodb:GetRecords",
+            "dynamodb:GetShardIterator",
           ],
           Effect: "Allow",
           Resource: {
