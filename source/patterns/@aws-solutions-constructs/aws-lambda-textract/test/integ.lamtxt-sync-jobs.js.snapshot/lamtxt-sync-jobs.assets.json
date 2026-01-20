@@ -1,0 +1,20 @@
+{
+  "version": "48.0.0",
+  "files": {
+    "df6b5df44cc6fd73bacac402911a0585f0075f24c6965913dc989a3044c8ac1d": {
+      "displayName": "lamtxt-sync-jobs Template",
+      "source": {
+        "path": "lamtxt-sync-jobs.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region-c2546a6a": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "df6b5df44cc6fd73bacac402911a0585f0075f24c6965913dc989a3044c8ac1d.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
