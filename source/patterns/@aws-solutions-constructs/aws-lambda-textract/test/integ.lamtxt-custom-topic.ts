@@ -32,7 +32,7 @@ new LambdaToTextract(stack, 'test-lambda-translate-stack', {
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   },
-  topicProps: {
+  notificationTopicProps: {
     topicName: 'customized-topic'
   },
   asyncJobs: true

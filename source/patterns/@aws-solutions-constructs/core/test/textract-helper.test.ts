@@ -32,7 +32,7 @@ test('Test deployment with asyncJobs enabled', () => {
   expect(configuration.destinationBucket?.bucketInterface).toBeDefined();
   expect(configuration.destinationBucket?.loggingBucket).toBeDefined();
   expect(configuration.textractRole).toBeDefined();
-  expect(configuration.snsTopic).toBeDefined();
+  expect(configuration.snsNotificationTopic).toBeDefined();
 
   expect(configuration.lambdaIamActionsRequired).toEqual(expect.arrayContaining([
     'textract:DetectDocumentText',
@@ -162,6 +162,114 @@ test('Test deployment with asyncJobs enabled', () => {
   template.resourceCountIs("AWS::IAM::Role", 1);
 });
 
+test('Test deployment with AWS managed destination bucket', () => {
+  const app = new App();
+  const stack = new Stack(app, "test-stack");
+
+  const configuration = defaults.ConfigureTextractSupport(stack, 'test', {
+    asyncJobs: true,
+    createCustomerManagedOutputBucket: false
+  });
+
+  expect(configuration.sourceBucket).toBeDefined();
+  expect(configuration.sourceBucket?.bucket).toBeDefined();
+  expect(configuration.sourceBucket?.bucketInterface).toBeDefined();
+  expect(configuration.sourceBucket?.loggingBucket).toBeDefined();
+  expect(configuration.destinationBucket).not.toBeDefined();
+  expect(configuration.textractRole).toBeDefined();
+  expect(configuration.snsNotificationTopic).toBeDefined();
+
+  expect(configuration.lambdaIamActionsRequired).toEqual(expect.arrayContaining([
+    'textract:DetectDocumentText',
+    'textract:AnalyzeDocument',
+    'textract:AnalyzeExpense',
+    'textract:AnalyzeID',
+    'texttract:StartDocumentTextDetection',
+    'texttract:GetDocumentTextDetection',
+    'textract:StartDocumentAnalysis',
+    'textract:GetDocumentAnalysis',
+    'textract:StartExpenseAnalysis',
+    'textract:GetExpenseAnalysis',
+    'textract:StartLendingAnalysis',
+    'textract:GetLendingAnalysis'
+  ]));
+  expect(configuration.lambdaIamActionsRequired).toHaveLength(12);
+
+  const template = Template.fromStack(stack);
+
+  template.resourceCountIs('AWS::S3::Bucket', 2); // Source bucket and it's logging bucket
+  template.resourceCountIs('AWS::SNS::Topic', 1); // SNS topic for async job notifications
+
+  // Check textract service permissions
+  template.hasResourceProperties('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Effect: 'Allow',
+          Action: Match.arrayWith([
+            "s3:GetObject*",
+            "s3:GetBucket*",
+            "s3:List*",
+          ]),
+          Resource: [
+            {
+              "Fn::GetAtt": [
+                Match.stringLikeRegexp("testsourcebucketS3Bucket.*"),
+                "Arn"
+              ]
+            },
+            {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      Match.stringLikeRegexp("testsourcebucketS3Bucket.*"),
+                      "Arn"
+                    ]
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          ]
+        }),
+        Match.objectLike({
+          Effect: 'Allow',
+          Action: "sns:Publish",
+          Resource: {
+            Ref: Match.stringLikeRegexp("SnsTopic")
+          }
+        })
+      ])
+    },
+    Roles: [
+      {
+        Ref: Match.stringLikeRegexp("testtextractservicerole.*")
+      }
+    ]
+  });
+
+  template.hasResourceProperties("AWS::IAM::Role", {
+    AssumeRolePolicyDocument: {
+      Statement: [
+        {
+          Action: "sts:AssumeRole",
+          Effect: "Allow",
+          Principal: {
+            Service: "textract.amazonaws.com"
+          }
+        }
+      ],
+      Version: "2012-10-17"
+    }
+  });
+
+  // Check that there just 1 policy and Role
+  template.resourceCountIs("AWS::IAM::Policy", 1);
+  template.resourceCountIs("AWS::IAM::Role", 1);
+});
+
 test('Test deployment without asyncJobs enabled', () => {
   const app = new App();
   const stack = new Stack(app, "test-stack");
@@ -171,7 +279,7 @@ test('Test deployment without asyncJobs enabled', () => {
   expect(configuration.sourceBucket).not.toBeDefined();
   expect(configuration.destinationBucket).not.toBeDefined();
   expect(configuration.textractRole).not.toBeDefined();
-  expect(configuration.snsTopic).not.toBeDefined();
+  expect(configuration.snsNotificationTopic).not.toBeDefined();
   expect(configuration.lambdaIamActionsRequired).toEqual(expect.arrayContaining([
     'textract:DetectDocumentText',
     'textract:AnalyzeDocument',
@@ -202,7 +310,7 @@ test('Test deployment with useSameBucket', () => {
   expect(configuration.destinationBucket?.bucketInterface).toBeDefined();
   expect(configuration.destinationBucket?.loggingBucket).toBeDefined();
   expect(configuration.textractRole).toBeDefined();
-  expect(configuration.snsTopic).toBeDefined();
+  expect(configuration.snsNotificationTopic).toBeDefined();
 
   expect(configuration.lambdaIamActionsRequired).toEqual(expect.arrayContaining([
     'textract:DetectDocumentText',
@@ -381,7 +489,7 @@ test('Test deployment with existing Source bucket and useSameBucket', () => {
   expect(configuration.destinationBucket?.loggingBucket).not.toBeDefined();
   expect(configuration.destinationBucket?.bucketInterface).toBe(existingSourceBucket);
   expect(configuration.sourceBucket?.bucketInterface).toBe(existingSourceBucket);
-  expect(configuration.snsTopic).toBeDefined();
+  expect(configuration.snsNotificationTopic).toBeDefined();
 
   const template = Template.fromStack(stack);
 
@@ -408,7 +516,7 @@ test('Test deployment with existing Destination bucket', () => {
   expect(configuration.destinationBucket?.bucketInterface).toBeDefined();
   expect(configuration.destinationBucket?.loggingBucket).not.toBeDefined();
   expect(configuration.destinationBucket?.bucketInterface).toBe(existingDestinationBucket);
-  expect(configuration.snsTopic).toBeDefined();
+  expect(configuration.snsNotificationTopic).toBeDefined();
 
   const template = Template.fromStack(stack);
 
@@ -452,8 +560,10 @@ test('Test SNS topic is created for async architectures', () => {
 
   const configuration = defaults.ConfigureTextractSupport(stack, 'test', { asyncJobs: true });
 
-  expect(configuration.snsTopic).toBeDefined();
-  expect(configuration.snsTopic!.topicArn).toBeDefined();
+  expect(configuration.snsNotificationTopic).toBeDefined();
+  expect(configuration.snsNotificationTopic!.topicArn).toBeDefined();
+  // Even if no CMK, the topic will alway be encrypted with aws managed key
+  expect(configuration.notificationTopicEncryptionKey).toBeDefined();
 
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::SNS::Topic', 1);
@@ -483,13 +593,32 @@ test('Test SNS topic is created for async architectures', () => {
   });
 });
 
+test('Test SNS topic encryption key is created and exposed', () => {
+  const app = new App();
+  const stack = new Stack(app, "test-stack");
+
+  const configuration = defaults.ConfigureTextractSupport(stack, 'test', {
+    asyncJobs: true,
+    enableNotificationTopicEncryptionWithCustomerManagedKey: true
+  });
+
+  expect(configuration.snsNotificationTopic).toBeDefined();
+  expect(configuration.snsNotificationTopic!.topicArn).toBeDefined();
+  expect(configuration.notificationTopicEncryptionKey).toBeDefined();
+
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::SNS::Topic', 1);
+  template.resourceCountIs('AWS::KMS::Key', 1);
+
+});
+
 test('Test SNS topic is NOT created for synchronous architectures', () => {
   const app = new App();
   const stack = new Stack(app, "test-stack");
 
   const configuration = defaults.ConfigureTextractSupport(stack, 'test', {});
 
-  expect(configuration.snsTopic).not.toBeDefined();
+  expect(configuration.snsNotificationTopic).not.toBeDefined();
 
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::SNS::Topic', 0);
@@ -745,14 +874,14 @@ test("CheckTextractProps calls CheckS3Props() for destination bucket", () => {
   }).toThrow('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
-test("CheckTextractProps throws error when asyncJobs is false and existingTopicObj is provided", () => {
+test("CheckTextractProps throws error when asyncJobs is false and existingNotificationTopicObj is provided", () => {
   const app = new App();
   const stack = new Stack(app, "test-stack");
   const topic = defaults.buildTopic(stack, 'test-topic', {}).topic;
 
   const props = {
     asyncJobs: false,
-    existingTopicObj: topic
+    existingNotificationTopicObj: topic
   };
 
   expect(() => {
@@ -765,9 +894,9 @@ test("CheckTextractProps throws error when asyncJobs is false and existingTopicE
   const stack = new Stack(app, "test-stack");
   const key = defaults.buildEncryptionKey(stack, 'test-key');
 
-  const props = {
+  const props: defaults.TextractProps = {
     asyncJobs: false,
-    existingTopicEncryptionKey: key
+    notificationTopicEncryptionKey: key
   };
 
   expect(() => {
@@ -775,10 +904,10 @@ test("CheckTextractProps throws error when asyncJobs is false and existingTopicE
   }).toThrow('SNS topic properties can only be provided when asyncJobs is true');
 });
 
-test("CheckTextractProps throws error when asyncJobs is false and topicProps is provided", () => {
+test("CheckTextractProps throws error when asyncJobs is false and notificationTopicProps is provided", () => {
   const props = {
     asyncJobs: false,
-    topicProps: {}
+    notificationTopicProps: {}
   };
 
   expect(() => {
@@ -786,14 +915,14 @@ test("CheckTextractProps throws error when asyncJobs is false and topicProps is 
   }).toThrow('SNS topic properties can only be provided when asyncJobs is true');
 });
 
-test("CheckTextractProps throws error when asyncJobs is false and encryptionKey is provided", () => {
+test("CheckTextractProps throws error when asyncJobs is false and notificationTopicEncryptionKey is provided", () => {
   const app = new App();
   const stack = new Stack(app, "test-stack");
   const key = defaults.buildEncryptionKey(stack, 'test-key');
 
-  const props = {
+  const props: defaults.TextractProps = {
     asyncJobs: false,
-    encryptionKey: key
+    notificationTopicEncryptionKey: key
   };
 
   expect(() => {
@@ -801,10 +930,10 @@ test("CheckTextractProps throws error when asyncJobs is false and encryptionKey 
   }).toThrow('SNS topic properties can only be provided when asyncJobs is true');
 });
 
-test("CheckTextractProps throws error when asyncJobs is false and encryptionKeyProps is provided", () => {
-  const props = {
+test("CheckTextractProps throws error when asyncJobs is false and notificationTopicEncryptionKeyProps is provided", () => {
+  const props: defaults.TextractProps = {
     asyncJobs: false,
-    encryptionKeyProps: {}
+    notificationTopicEncryptionKeyProps: {}
   };
 
   expect(() => {
@@ -812,10 +941,10 @@ test("CheckTextractProps throws error when asyncJobs is false and encryptionKeyP
   }).toThrow('SNS topic properties can only be provided when asyncJobs is true');
 });
 
-test("CheckTextractProps throws error when asyncJobs is false and enableEncryptionWithCustomerManagedKey is provided", () => {
+test("CheckTextractProps throws error when asyncJobs is false and enableNotificationTopicEncryptionWithCustomerManagedKey is provided", () => {
   const props = {
     asyncJobs: false,
-    enableEncryptionWithCustomerManagedKey: true
+    enableNotificationTopicEncryptionWithCustomerManagedKey: true
   };
 
   expect(() => {
@@ -828,21 +957,21 @@ test("CheckTextractProps calls CheckSnsProps() for SNS topic", () => {
   const stack = new Stack(app, "test-stack");
   const topic = defaults.buildTopic(stack, 'test-topic', {}).topic;
 
-  const props = {
+  const props: defaults.TextractProps = {
     asyncJobs: true,
-    topicProps: {},
-    existingTopicObj: topic
+    notificationTopicProps: {},
+    existingNotificationTopicObj: topic
   };
 
   expect(() => {
     defaults.CheckTextractProps(props);
-  }).toThrow('Error - Either provide topicProps or existingTopicObj, but not both.\n');
+  }).toThrow('Error - Either provide notificationTopicProps or existingNotificationTopicObj, but not both.\n');
 });
 
 test("CheckTextractProps accepts SNS properties when asyncJobs is true", () => {
   const props = {
     asyncJobs: true,
-    topicProps: {
+    notificationTopicProps: {
       topicName: 'my-topic'
     }
   };
@@ -852,14 +981,14 @@ test("CheckTextractProps accepts SNS properties when asyncJobs is true", () => {
   }).not.toThrow();
 });
 
-test("CheckTextractProps accepts existingTopicObj when asyncJobs is true", () => {
+test("CheckTextractProps accepts existingNotificationTopicObj when asyncJobs is true", () => {
   const app = new App();
   const stack = new Stack(app, "test-stack");
   const topic = defaults.buildTopic(stack, 'test-topic', {}).topic;
 
   const props = {
     asyncJobs: true,
-    existingTopicObj: topic
+    existingNotificationTopicObj: topic
   };
 
   expect(() => {
@@ -872,10 +1001,10 @@ test("CheckTextractProps accepts encryption properties when asyncJobs is true", 
   const stack = new Stack(app, "test-stack");
   const key = defaults.buildEncryptionKey(stack, 'test-key');
 
-  const props = {
+  const props: defaults.TextractProps = {
     asyncJobs: true,
-    encryptionKey: key,
-    enableEncryptionWithCustomerManagedKey: true
+    notificationTopicEncryptionKey: key,
+    enableNotificationTopicEncryptionWithCustomerManagedKey: true
   };
 
   expect(() => {
@@ -898,16 +1027,16 @@ test('Test ConfigureTextractSupport with custom SNS topic properties', () => {
 
   const configuration = defaults.ConfigureTextractSupport(stack, 'test', {
     asyncJobs: true,
-    topicProps: {
+    notificationTopicProps: {
       topicName: 'custom-textract-topic',
       displayName: 'Custom Textract Notifications'
     },
-    encryptionKey: customKey,
-    enableEncryptionWithCustomerManagedKey: true
+    notificationTopicEncryptionKey: customKey,
+    enableNotificationTopicEncryptionWithCustomerManagedKey: true
   });
 
   // Verify SNS topic was created
-  expect(configuration.snsTopic).toBeDefined();
+  expect(configuration.snsNotificationTopic).toBeDefined();
 
   const template = Template.fromStack(stack);
 
@@ -947,12 +1076,12 @@ test('Test ConfigureTextractSupport with existing SNS topic', () => {
 
   const configuration = defaults.ConfigureTextractSupport(stack, 'test', {
     asyncJobs: true,
-    existingTopicObj: existingTopic
+    existingNotificationTopicObj: existingTopic
   });
 
   // Verify the existing topic is used
-  expect(configuration.snsTopic).toBeDefined();
-  expect(configuration.snsTopic).toBe(existingTopic);
+  expect(configuration.snsNotificationTopic).toBeDefined();
+  expect(configuration.snsNotificationTopic).toBe(existingTopic);
 
   const template = Template.fromStack(stack);
 
@@ -968,4 +1097,88 @@ test('Test ConfigureTextractSupport with existing SNS topic', () => {
   // Verify no additional topics were created by ConfigureTextractSupport
   const topics = template.findResources('AWS::SNS::Topic');
   expect(Object.keys(topics).length).toBe(1);
+});
+
+test("CheckTextractProps throws error when createCustomerManagedOutputBucket is false and existingDestinationBucketObj is provided", () => {
+  const stack = new Stack();
+  const props = {
+    asyncJobs: true,
+    createCustomerManagedOutputBucket: false,
+    existingDestinationBucketObj: CreateScrapBucket(stack, "testbucket")
+  };
+
+  expect(() => {
+    defaults.CheckTextractProps(props);
+  }).toThrow('Output bucket properties cannot be provided when createCustomerManagedOutputBucket is false');
+});
+
+test("CheckTextractProps throws error when createCustomerManagedOutputBucket is false and destinationBucketProps is provided", () => {
+  const props = {
+    asyncJobs: true,
+    createCustomerManagedOutputBucket: false,
+    destinationBucketProps: {}
+  };
+
+  expect(() => {
+    defaults.CheckTextractProps(props);
+  }).toThrow('Output bucket properties cannot be provided when createCustomerManagedOutputBucket is false');
+});
+
+test("CheckTextractProps throws error when createCustomerManagedOutputBucket is false and destinationLoggingBucketProps is provided", () => {
+  const props = {
+    asyncJobs: true,
+    createCustomerManagedOutputBucket: false,
+    destinationLoggingBucketProps: {}
+  };
+
+  expect(() => {
+    defaults.CheckTextractProps(props);
+  }).toThrow('Output bucket properties cannot be provided when createCustomerManagedOutputBucket is false');
+});
+
+test("CheckTextractProps throws error when createCustomerManagedOutputBucket is false and logDestinationS3AccessLogs is provided", () => {
+  const props = {
+    asyncJobs: true,
+    createCustomerManagedOutputBucket: false,
+    logDestinationS3AccessLogs: true
+  };
+
+  expect(() => {
+    defaults.CheckTextractProps(props);
+  }).toThrow('Output bucket properties cannot be provided when createCustomerManagedOutputBucket is false');
+});
+
+test("CheckTextractProps throws error when createCustomerManagedOutputBucket is false and useSameBucket is provided", () => {
+  const props = {
+    asyncJobs: true,
+    createCustomerManagedOutputBucket: false,
+    useSameBucket: true
+  };
+
+  expect(() => {
+    defaults.CheckTextractProps(props);
+  }).toThrow('Output bucket properties cannot be provided when createCustomerManagedOutputBucket is false');
+});
+
+test("CheckTextractProps does not throw when createCustomerManagedOutputBucket is true with destination bucket props", () => {
+  const props = {
+    asyncJobs: true,
+    createCustomerManagedOutputBucket: true,
+    destinationBucketProps: {}
+  };
+
+  expect(() => {
+    defaults.CheckTextractProps(props);
+  }).not.toThrow();
+});
+
+test("CheckTextractProps does not throw when createCustomerManagedOutputBucket is undefined with destination bucket props", () => {
+  const props = {
+    asyncJobs: true,
+    destinationBucketProps: {}
+  };
+
+  expect(() => {
+    defaults.CheckTextractProps(props);
+  }).not.toThrow();
 });

@@ -139,6 +139,8 @@ Bucket. Only valid when asyncJobs is true.
 |useSameBucket? |`boolean` |Whether to use the same S3 bucket for both source and destination files.
 When true, only the source bucket will be created and used for both purposes. Only valid when asyncJobs is true. Default: false
 
+|createCustomerManagedOutputBucket? |`boolean` |Whether to create a bucket to receive the output of Textract batch jobs. If this is yes, the construct will set up an S3 bucket for output, if this is false, then Textract jobs will send their output to an AWS managed S3 bucket. Default: true
+
 |additionalPermissions? |`string[]` |Optional array of additional IAM permissions to grant to the Lambda function for Amazon Textract. Default: ['textract:DetectDocumentText', 'textract:AnalyzeDocument', 'textract:AnalyzeExpense', 'textract:AnalyzeID']
 
 |existingVpc?
@@ -176,36 +178,36 @@ DESTINATION_BUCKET_NAME
 function environment variable set to the ARN of the IAM role used for asynchronous document analysis jobs. Only valid when asyncJobs is true. Default:
 DATA_ACCESS_ROLE_ARN
 
-|snsTopicArnEnvironmentVariableName? |`string` |Optional Name for the Lambda
+|snsNotificationTopicArnEnvironmentVariableName? |`string` |Optional Name for the Lambda
 function environment variable set to the ARN of the SNS topic used for asynchronous job completion notifications. Only valid when asyncJobs is true. Default:
 SNS_TOPIC_ARN
 
-|existingTopicObj?
+|existingNotificationTopicObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html[`sns.Topic`]
-|Optional - existing instance of SNS topic object, providing both this and `topicProps` will cause an error. Only valid when asyncJobs is true.
+|Optional - existing instance of SNS topic object, providing both this and `notificationTopicProps` will cause an error. Only valid when asyncJobs is true.
 
-|topicProps?
+|existingNotificationTopicEncryptionKey?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.Key.html[`kms.Key`]
+|If an existing topic is provided in the `existingNotificationTopicObj` property, and that topic is encrypted with a customer managed KMS key, this property must specify that key. Only valid when asyncJobs is true.
+
+|notificationTopicProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sns.TopicProps.html[`sns.TopicProps`]
-|Optional - user provided properties to override the default properties for the SNS topic. Providing both this and `existingTopicObj` is an error. Only valid when asyncJobs is true.
+|Optional - user provided properties to override the default properties for the SNS topic. Providing both this and `existingNotificationTopicObj` is an error. Only valid when asyncJobs is true.
 
-|enableEncryptionWithCustomerManagedKey? |`boolean` |If no key is
+|enableNotificationTopicEncryptionWithCustomerManagedKey? |`boolean` |If no key is
 provided, this flag determines whether the SNS Topic is encrypted with a
 new CMK or an AWS managed key. This flag is ignored if any of the
-following are defined: topicProps.masterKey, encryptionKey or
-encryptionKeyProps. Only valid when asyncJobs is true.
+following are defined: notificationTopicProps.masterKey, notificationTopicEncryptionKey or
+notificationTopicEncryptionKeyProps. Only valid when asyncJobs is true.
 
-|encryptionKey?
+|notificationTopicEncryptionKey?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.Key.html[`kms.Key`]
 |An optional, imported encryption key to encrypt the SNS Topic with. Only valid when asyncJobs is true.
 
-|encryptionKeyProps?
+|notificationTopicEncryptionKeyProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.Key.html#construct-props[`kms.KeyProps`]
 |Optional user provided properties to override the default properties
 for the KMS encryption key used to encrypt the SNS Topic with. Only valid when asyncJobs is true.
-
-|existingTopicEncryptionKey?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.Key.html[`kms.Key`]
-|If an existing topic is provided in the `existingTopicObj` property, and that topic is encrypted with a customer managed KMS key, this property must specify that key. Only valid when asyncJobs is true.
 
 |sourceLoggingBucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
@@ -253,9 +255,13 @@ logging bucket for the source bucket.
 |Returns an instance of s3.Bucket created by the construct as the
 logging bucket for the destination bucket.
 
-|snsTopic?
+|snsNotificationTopic?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sns.Topic.html[`sns.Topic`]
 |Returns an instance of the SNS topic created for asynchronous job completion notifications when asyncJobs is true.
+
+|notificationTopicEncryptionKey?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.IKey.html[`kms.IKey`]
+|Returns an instance of kms.IKey used for the SNS Topic.
 
 |vpc?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html[`ec2.IVpc`]

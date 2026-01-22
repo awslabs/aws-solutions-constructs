@@ -39,7 +39,7 @@ test('Test deployment with no optional parameters', () => {
   expect(construct.destinationBucket).not.toBeDefined();
   expect(construct.sourceBucketInterface).not.toBeDefined();
   expect(construct.destinationBucketInterface).not.toBeDefined();
-  expect(construct.snsTopic).not.toBeDefined();
+  expect(construct.snsNotificationTopic).not.toBeDefined();
   expect(construct.vpc).not.toBeDefined();
 
   const template = Template.fromStack(stack);
@@ -86,7 +86,7 @@ test('Test deployment with asyncJobs enabled', () => {
   expect(construct.destinationBucketInterface).toBeDefined();
   expect(construct.sourceLoggingBucket).toBeDefined();
   expect(construct.destinationLoggingBucket).toBeDefined();
-  expect(construct.snsTopic).toBeDefined();
+  expect(construct.snsNotificationTopic).toBeDefined();
 
   const template = Template.fromStack(stack);
 
@@ -170,6 +170,102 @@ test('Test deployment with asyncJobs enabled', () => {
       Variables: Match.objectLike({
         SOURCE_BUCKET_NAME: Match.anyValue(),
         DESTINATION_BUCKET_NAME: Match.anyValue(),
+        DATA_ACCESS_ROLE_ARN: Match.anyValue(),
+        SNS_TOPIC_ARN: Match.anyValue()
+      })
+    }
+  });
+});
+
+test('Test deployment with AWS managed destination bucket', () => {
+  const app = new App();
+  const stack = new Stack(app, "test-stack");
+
+  const construct = deployTestConstructStructure(stack, {
+    asyncJobs: true,
+    createCustomerManagedOutputBucket: false,
+  });
+
+  expect(construct.lambdaFunction).toBeDefined();
+  expect(construct.sourceBucket).toBeDefined();
+  expect(construct.sourceBucketInterface).toBeDefined();
+  expect(construct.sourceLoggingBucket).toBeDefined();
+  expect(construct.snsNotificationTopic).toBeDefined();
+
+  const template = Template.fromStack(stack);
+
+  template.resourceCountIs('AWS::S3::Bucket', 2); // 1 source buckets + 1 logging bucket
+  template.resourceCountIs('AWS::SNS::Topic', 1);
+
+  // Check lambda function permissions
+  template.hasResourceProperties('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Effect: 'Allow',
+          Action: Match.arrayWith([
+            'textract:DetectDocumentText',
+            'textract:AnalyzeDocument',
+            'textract:AnalyzeExpense',
+            'textract:AnalyzeID',
+            'texttract:StartDocumentTextDetection',
+            'texttract:GetDocumentTextDetection',
+            'textract:StartDocumentAnalysis',
+            'textract:GetDocumentAnalysis',
+            'textract:StartExpenseAnalysis',
+            'textract:GetExpenseAnalysis',
+            'textract:StartLendingAnalysis',
+            'textract:GetLendingAnalysis'
+          ]),
+          Resource: '*'
+        }),
+        Match.objectLike({
+          Effect: 'Allow',
+          Action: "iam:PassRole",
+          Resource: {
+            "Fn::GetAtt": [
+              Match.stringLikeRegexp("testlambdatextracttestlambdatextracttextractservicerole.*"),
+              "Arn"
+            ]
+          }
+        })
+      ])
+    },
+    Roles: [
+      {
+        Ref: Match.stringLikeRegexp("testlambdatextractLambdaFunctionServiceRole.*")
+      }
+    ]
+  });
+
+  // Check textract service permissions
+  template.hasResourceProperties('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Effect: 'Allow',
+          Action: Match.arrayWith([
+            "s3:GetObject*",
+            "s3:GetBucket*",
+            "s3:List*",
+          ])
+        })
+      ])
+    },
+    Roles: [
+      {
+        Ref: Match.stringLikeRegexp("testlambdatextracttestlambdatextracttextractservicerole.*")
+      }]
+  });
+
+  // Check that there are 2 separate policies
+  template.resourceCountIs("AWS::IAM::Policy", 2);
+
+  // Check environment variables
+  template.hasResourceProperties('AWS::Lambda::Function', {
+    Environment: {
+      Variables: Match.objectLike({
+        SOURCE_BUCKET_NAME: Match.anyValue(),
         DATA_ACCESS_ROLE_ARN: Match.anyValue(),
         SNS_TOPIC_ARN: Match.anyValue()
       })
@@ -318,7 +414,7 @@ test('Test custom environment variable names', () => {
     sourceBucketEnvironmentVariableName: 'CUSTOM_SOURCE',
     destinationBucketEnvironmentVariableName: 'CUSTOM_DEST',
     dataAccessRoleArnEnvironmentVariableName: 'CUSTOM_ARN',
-    snsTopicArnEnvironmentVariableName: 'CUSTOM_SNS'
+    snsNotificationTopicArnEnvironmentVariableName: 'CUSTOM_SNS'
   });
 
   const template = Template.fromStack(stack);
@@ -400,12 +496,12 @@ test('Ensure existingTopicObj is used', () => {
 
   const construct = deployTestConstructStructure(stack, {
     asyncJobs: true,
-    existingTopicObj: existingTopic
+    existingNotificationTopicObj: existingTopic
   });
 
   // Verify the existing topic is used
-  expect(construct.snsTopic).toBeDefined();
-  expect(construct.snsTopic).toBe(existingTopic);
+  expect(construct.snsNotificationTopic).toBeDefined();
+  expect(construct.snsNotificationTopic).toBe(existingTopic);
 
   const template = Template.fromStack(stack);
 
@@ -425,13 +521,13 @@ test('Ensure topicProps are used', () => {
 
   const construct = deployTestConstructStructure(stack, {
     asyncJobs: true,
-    topicProps: {
+    notificationTopicProps: {
       displayName: 'Custom Textract Notifications'
     }
   });
 
   // Verify SNS topic was created
-  expect(construct.snsTopic).toBeDefined();
+  expect(construct.snsNotificationTopic).toBeDefined();
 
   const template = Template.fromStack(stack);
 
@@ -442,4 +538,24 @@ test('Ensure topicProps are used', () => {
   template.hasResourceProperties('AWS::SNS::Topic', {
     DisplayName: 'Custom Textract Notifications'
   });
+});
+
+test('Ensure topic encryption key is exposed', () => {
+  const app = new App();
+  const stack = new Stack(app, "test-stack");
+
+  const construct = deployTestConstructStructure(stack, {
+    asyncJobs: true,
+    enableNotificationTopicEncryptionWithCustomerManagedKey: true,
+  });
+
+  // Verify SNS topic was created
+  expect(construct.snsNotificationTopic).toBeDefined();
+  expect(construct.notificationTopicEncryptionKey).toBeDefined();
+
+  const template = Template.fromStack(stack);
+
+  // Verify exactly 1 SNS topic was created
+  template.resourceCountIs('AWS::SNS::Topic', 1);
+  template.resourceCountIs('AWS::KMS::Key', 1);
 });

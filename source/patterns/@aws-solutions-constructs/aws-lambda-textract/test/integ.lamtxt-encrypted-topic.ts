@@ -32,9 +32,9 @@ new LambdaToTextract(stack, 'test-lambda-translate-stack', {
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   },
-  enableEncryptionWithCustomerManagedKey: true,
+  enableNotificationTopicEncryptionWithCustomerManagedKey: true,
   asyncJobs: true,
-  encryptionKeyProps: {
+  notificationTopicEncryptionKeyProps: {
     removalPolicy: RemovalPolicy.DESTROY
   }
 });

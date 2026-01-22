@@ -16,7 +16,7 @@ import { Construct } from 'constructs';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as kms from 'aws-cdk-lib/aws-kms';
 import { CheckS3Props, buildS3Bucket } from './s3-bucket-helper';
-import { buildTopic, CheckSnsProps } from './sns-helper';
+import { buildTopic } from './sns-helper';
 import { overrideProps } from './utils';
 import * as sns from 'aws-cdk-lib/aws-sns';
 
@@ -27,6 +27,7 @@ export interface TextractProps {
   readonly existingDestinationBucketObj?: s3.IBucket;
   readonly destinationBucketProps?: s3.BucketProps;
   readonly useSameBucket?: boolean;
+  readonly createCustomerManagedOutputBucket?: boolean;
   readonly sourceLoggingBucketProps?: s3.BucketProps;
   readonly destinationLoggingBucketProps?: s3.BucketProps;
   readonly logSourceS3AccessLogs?: boolean;
@@ -34,12 +35,13 @@ export interface TextractProps {
   readonly sourceBucketEnvironmentVariableName?: string;
   readonly destinationBucketEnvironmentVariableName?: string;
   readonly dataAccessRoleArnEnvironmentVariableName?: string;
-  readonly existingTopicObj?: sns.Topic;
-  readonly existingTopicEncryptionKey?: kms.Key;
-  readonly topicProps?: sns.TopicProps;
-  readonly enableEncryptionWithCustomerManagedKey?: boolean;
-  readonly encryptionKey?: kms.Key;
-  readonly encryptionKeyProps?: kms.KeyProps;
+  readonly snsNotificationTopicArnEnvironmentVariableName?: string;
+  readonly existingNotificationTopicObj?: sns.Topic;
+  readonly existingNotificationTopicEncryptionKey?: kms.Key;
+  readonly notificationTopicProps?: sns.TopicProps;
+  readonly enableNotificationTopicEncryptionWithCustomerManagedKey?: boolean;
+  readonly notificationTopicEncryptionKey?: kms.Key;
+  readonly notificationTopicEncryptionKeyProps?: kms.KeyProps;
 }
 
 export interface TextractBucketDetails {
@@ -53,7 +55,8 @@ export interface TextractConfiguration {
   readonly lambdaIamActionsRequired: string[],
   readonly sourceBucket?: TextractBucketDetails,
   readonly destinationBucket?: TextractBucketDetails,
-  readonly snsTopic?: sns.Topic
+  readonly snsNotificationTopic?: sns.Topic,
+  readonly notificationTopicEncryptionKey?: kms.Key,
 }
 
 const syncPermissions = [
@@ -77,21 +80,25 @@ const asyncPermissions = [
 export function ConfigureTextractSupport(scope: Construct, id: string, props: TextractProps): TextractConfiguration {
 
   let configuration: TextractConfiguration = {
-    lambdaIamActionsRequired: [ ...syncPermissions],
+    lambdaIamActionsRequired: [...syncPermissions],
   };
 
   if (props.asyncJobs) {
+    const buildTopicResponse = buildTopic(scope, id, {
+      existingTopicObj: props.existingNotificationTopicObj,
+      existingTopicEncryptionKey: props.existingNotificationTopicEncryptionKey,
+      topicProps: props.notificationTopicProps,
+      enableEncryptionWithCustomerManagedKey: props.enableNotificationTopicEncryptionWithCustomerManagedKey,
+      encryptionKey: props.notificationTopicEncryptionKey,
+      encryptionKeyProps: props.notificationTopicEncryptionKeyProps
+    });
     // Setup notification topic
     configuration = overrideProps(configuration, {
-      snsTopic: buildTopic(scope, id, {
-        existingTopicObj: props.existingTopicObj,
-        existingTopicEncryptionKey: props.existingTopicEncryptionKey,
-        topicProps: props.topicProps,
-        enableEncryptionWithCustomerManagedKey: props.enableEncryptionWithCustomerManagedKey,
-        encryptionKey: props.encryptionKey,
-        encryptionKeyProps: props.encryptionKeyProps
-      }).topic
+      snsNotificationTopic: buildTopicResponse.topic,
     });
+    if (buildTopicResponse.key) {
+      configuration = overrideProps(configuration, { notificationTopicEncryptionKey: buildTopicResponse.key });
+    }
 
     // Setup source S3 Bucket
     if (props.existingSourceBucketObj) {
@@ -115,35 +122,37 @@ export function ConfigureTextractSupport(scope: Construct, id: string, props: Te
       }, false);
     }
 
-    // Setup destination S3 Bucket
-    if (props.useSameBucket) {
-      configuration = overrideProps(configuration, {
-        destinationBucket: {
-          bucketInterface: configuration.sourceBucket?.bucketInterface,
-          bucket: configuration.sourceBucket?.bucket,
-          loggingBucket: configuration.sourceBucket?.loggingBucket,
-        }
-      }, false);
-    } else {
-      if (props.existingDestinationBucketObj) {
+    if (props.createCustomerManagedOutputBucket !== false) {
+      // Setup destination S3 Bucket
+      if (props.useSameBucket) {
         configuration = overrideProps(configuration, {
           destinationBucket: {
-            bucketInterface: props.existingDestinationBucketObj
+            bucketInterface: configuration.sourceBucket?.bucketInterface,
+            bucket: configuration.sourceBucket?.bucket,
+            loggingBucket: configuration.sourceBucket?.loggingBucket,
           }
         }, false);
       } else {
-        const buildDestinationBucketResponse = buildS3Bucket(scope, {
-          bucketProps: props.destinationBucketProps,
-          loggingBucketProps: props.destinationLoggingBucketProps,
-          logS3AccessLogs: props.logDestinationS3AccessLogs
-        }, `${id}-destination-bucket`);
-        configuration = overrideProps(configuration, {
-          destinationBucket: {
-            bucket: buildDestinationBucketResponse.bucket,
-            loggingBucket: buildDestinationBucketResponse.loggingBucket,
-            bucketInterface: buildDestinationBucketResponse.bucket,
-          }
-        }, false);
+        if (props.existingDestinationBucketObj) {
+          configuration = overrideProps(configuration, {
+            destinationBucket: {
+              bucketInterface: props.existingDestinationBucketObj
+            }
+          }, false);
+        } else {
+          const buildDestinationBucketResponse = buildS3Bucket(scope, {
+            bucketProps: props.destinationBucketProps,
+            loggingBucketProps: props.destinationLoggingBucketProps,
+            logS3AccessLogs: props.logDestinationS3AccessLogs
+          }, `${id}-destination-bucket`);
+          configuration = overrideProps(configuration, {
+            destinationBucket: {
+              bucket: buildDestinationBucketResponse.bucket,
+              loggingBucket: buildDestinationBucketResponse.loggingBucket,
+              bucketInterface: buildDestinationBucketResponse.bucket,
+            }
+          }, false);
+        }
       }
     }
 
@@ -153,7 +162,7 @@ export function ConfigureTextractSupport(scope: Construct, id: string, props: Te
     });
     configuration.destinationBucket?.bucketInterface.grantReadWrite(textractServiceRole);
     configuration.sourceBucket?.bucketInterface.grantRead(textractServiceRole);
-    configuration.snsTopic!.grantPublish(textractServiceRole);
+    configuration.snsNotificationTopic!.grantPublish(textractServiceRole);
     configuration = overrideProps(configuration, {
       textractRole: textractServiceRole
     }, false);
@@ -194,7 +203,7 @@ export function CheckTextractProps(props: TextractProps): void {
     }
 
     // Check SNS topic props
-    CheckSnsProps(props);
+    CheckTextractSnsProps(props);
   }
 
   // If asyncJobs is false, no S3 bucket props should be provided
@@ -210,8 +219,9 @@ export function CheckTextractProps(props: TextractProps): void {
     }
 
     // Check SNS topic props separately for clearer error message
-    if (props.existingTopicObj || props.topicProps || props.existingTopicEncryptionKey ||
-      props.enableEncryptionWithCustomerManagedKey !== undefined || props.encryptionKey || props.encryptionKeyProps) {
+    if (props.existingNotificationTopicObj || props.notificationTopicProps || props.existingNotificationTopicEncryptionKey ||
+      props.enableNotificationTopicEncryptionWithCustomerManagedKey !== undefined || props.notificationTopicEncryptionKey ||
+      props.notificationTopicEncryptionKeyProps) {
       errorMessages += 'SNS topic properties can only be provided when asyncJobs is true';
       errorFound = true;
     }
@@ -221,9 +231,68 @@ export function CheckTextractProps(props: TextractProps): void {
   if (props.useSameBucket) {
     if (props.existingDestinationBucketObj || props.destinationBucketProps ||
       props.destinationLoggingBucketProps || props.logDestinationS3AccessLogs !== undefined) {
-      errorMessages += 'Destination bucket properties cannot be provided when useSameBucket is true';
+      errorMessages += 'Destination bucket properties cannot be provided when useSameBucket is true\n';
       errorFound = true;
     }
+  }
+
+  // If createCustomerManagedOutputBucket is explicitly false, no output bucket properties should be provided
+  if (props.createCustomerManagedOutputBucket === false) {
+    if (props.existingDestinationBucketObj || props.destinationBucketProps ||
+      props.destinationLoggingBucketProps || props.logDestinationS3AccessLogs !== undefined ||
+      props.useSameBucket) {
+      errorMessages += 'Output bucket properties cannot be provided when createCustomerManagedOutputBucket is false';
+      errorFound = true;
+    }
+  }
+
+  if (errorFound) {
+    throw new Error(errorMessages);
+  }
+}
+
+/*
+ * Because the notification topic is a secondary resource
+ * for textract configurations, the prop names are different
+ * than when SNS is primary resource. CheckTextractSnsProps() is
+ * a clone of the CheckSnsProps() in sns-helper.ts using the
+ * Textract notification topic specific names. This has a risk of
+ * getting out of sync going forward - but this seemed a better
+ * solution than CheckSnsProps throwing error messages with the
+ * wrong property names.
+ */
+export interface TextractSnsProps {
+  readonly notificationTopicProps?: sns.TopicProps,
+  readonly existingNotificationTopicObj?: sns.Topic,
+  readonly existingNotificationTopicObject?: sns.Topic,
+  readonly notificationTopicEncryptionKey?: kms.Key,
+  readonly notificationTopicEncryptionKeyProps?: kms.KeyProps
+}
+
+export function CheckTextractSnsProps(propsObject: TextractSnsProps | any) {
+  let errorMessages = '';
+  let errorFound = false;
+
+  // FargateToSns used TopicObject instead of TopicObj - to fix would be a breaking change, so we
+  // must look for both here.
+  if (propsObject.notificationTopicProps && (propsObject.existingNotificationTopicObj || propsObject.existingNotificationTopicObject)) {
+    errorMessages += 'Error - Either provide notificationTopicProps or existingNotificationTopicObj, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.notificationTopicProps?.masterKey && propsObject.notificationTopicEncryptionKey) {
+    errorMessages += 'Error - Either provide notificationTopicProps.masterKey or notificationTopicEncryptionKey, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.notificationTopicProps?.masterKey && propsObject.notificationTopicEncryptionKeyProps) {
+    errorMessages += 'Error - Either provide notificationTopicProps.masterKey or notificationTopicEncryptionKeyProps, but not both.\n';
+    errorFound = true;
+  }
+
+  if (propsObject.notificationTopicEncryptionKey && propsObject.notificationTopicEncryptionKeyProps) {
+    errorMessages += 'Error - Either provide notificationTopicEncryptionKey or notificationTopicEncryptionKeyProps, but not both.\n';
+    errorFound = true;
   }
 
   if (errorFound) {

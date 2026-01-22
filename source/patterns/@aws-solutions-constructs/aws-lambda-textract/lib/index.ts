@@ -70,7 +70,6 @@ export interface LambdaToTextractProps {
    *
    * @default - Default props are used
    */
-  // TODO: Output bucket is optional-Textract will use AWS bucket if not specific. Add flag "useAwsManagedDestinationBucket"
   readonly destinationBucketProps?: s3.BucketProps;
   /**
    * Whether to use the same S3 bucket for both source and destination files. When true, only the source bucket will be created and used
@@ -79,6 +78,14 @@ export interface LambdaToTextractProps {
    * @default - false
    */
   readonly useSameBucket?: boolean;
+  /**
+   * Whether to create a bucket to receive the output of Textract batch jobs. If this is yes, the construct will set up an S3 bucket for
+   * output, if this is false, then Textract jobs will send their output to an AWS managed S3 bucket.
+   *
+   * @default - true
+   */
+  // TODO: Add an integration test that exercises this
+  readonly createCustomerManagedOutputBucket?: boolean;
   /**
    * Optional array of additional IAM permissions to grant to the Lambda function for Amazon Textract.
    *
@@ -124,29 +131,28 @@ export interface LambdaToTextractProps {
    *
    * @default - SNS_TOPIC_ARN
    */
-  // TODO: Improvement - group and isolate these with explanation, perhaps change name, check README.adoc
-  readonly snsTopicArnEnvironmentVariableName?: string;
+  readonly snsNotificationTopicArnEnvironmentVariableName?: string;
   /**
    * Optional - existing instance of SNS topic object, providing both this and `topicProps` will cause an error.
    * Only valid when asyncJobs is true.
    *
    * @default - None
    */
-  readonly existingTopicObj?: sns.Topic;
+  readonly existingNotificationTopicObj?: sns.Topic;
   /**
    * If an existing topic is provided in the `existingTopicObj` property, and that topic is encrypted with a customer
    * managed KMS key, this property must specify that key. Only valid when asyncJobs is true.
    *
    * @default - None
    */
-  readonly existingTopicEncryptionKey?: kms.Key;
+  readonly existingNotificationTopicEncryptionKey?: kms.Key;
   /**
    * Optional - user provided properties to override the default properties for the SNS topic.
    * Providing both this and `existingTopicObj` is an error. Only valid when asyncJobs is true.
    *
    * @default - Default properties are used.
    */
-  readonly topicProps?: sns.TopicProps;
+  readonly notificationTopicProps?: sns.TopicProps;
   /**
    * If no key is provided, this flag determines whether the SNS Topic is encrypted with a new CMK or an AWS managed key.
    * This flag is ignored if any of the following are defined: topicProps.masterKey, encryptionKey or encryptionKeyProps.
@@ -154,20 +160,20 @@ export interface LambdaToTextractProps {
    *
    * @default - None
    */
-  readonly enableEncryptionWithCustomerManagedKey?: boolean;
+  readonly enableNotificationTopicEncryptionWithCustomerManagedKey?: boolean;
   /**
    * An optional, imported encryption key to encrypt the SNS Topic with. Only valid when asyncJobs is true.
    *
    * @default - not specified.
    */
-  readonly encryptionKey?: kms.Key;
+  readonly notificationTopicEncryptionKey?: kms.Key;
   /**
    * Optional user provided properties to override the default properties for the KMS encryption key used to encrypt
    * the SNS Topic with. Only valid when asyncJobs is true.
    *
    * @default - None
    */
-  readonly encryptionKeyProps?: kms.KeyProps;
+  readonly notificationTopicEncryptionKeyProps?: kms.KeyProps;
   /**
    * Optional user provided props to override the default props for the source S3 Logging Bucket. Only valid when asyncJobs is true.
    *
@@ -202,8 +208,6 @@ export interface EnvironmentVariableDefinition {
   readonly value: string
 }
 
-// TODO: All of the properties exposed when a topic is involved must be exposed
-
 /**
  * @summary The LambdaToTextract class.
  */
@@ -214,7 +218,8 @@ export class LambdaToTextract extends Construct {
   public readonly destinationBucket?: s3.Bucket;
   public readonly sourceLoggingBucket?: s3.Bucket;
   public readonly destinationLoggingBucket?: s3.Bucket;
-  public readonly snsTopic?: sns.Topic;
+  public readonly snsNotificationTopic?: sns.Topic;
+  public readonly notificationTopicEncryptionKey?: kms.IKey;
   public readonly vpc?: ec2.IVpc;
   // Interfaces will always be set for async architectures, either with the new bucket or the existingBucket interfaces passed in props
   public readonly sourceBucketInterface?: s3.IBucket;
@@ -258,10 +263,10 @@ export class LambdaToTextract extends Construct {
       }
     }
     const lambdaEnvironmentVariables: EnvironmentVariableDefinition[] = [];
-
     const textractConfiguration = defaults.ConfigureTextractSupport(this, id, props);
 
-    this.snsTopic = textractConfiguration.snsTopic;
+    this.snsNotificationTopic = textractConfiguration.snsNotificationTopic;
+    this.notificationTopicEncryptionKey = textractConfiguration.notificationTopicEncryptionKey;
 
     if (textractConfiguration.sourceBucket) {
       // Incorporate all the configuration created (to support async jobs)
@@ -288,11 +293,11 @@ export class LambdaToTextract extends Construct {
         clientNameOverride: props.dataAccessRoleArnEnvironmentVariableName,
         value: textractConfiguration.textractRole?.roleArn!
       });
-      if (this.snsTopic) {
+      if (this.snsNotificationTopic) {
         lambdaEnvironmentVariables.push({
           defaultName: "SNS_TOPIC_ARN",
-          clientNameOverride: props.snsTopicArnEnvironmentVariableName,
-          value: this.snsTopic.topicArn
+          clientNameOverride: props.snsNotificationTopicArnEnvironmentVariableName,
+          value: this.snsNotificationTopic.topicArn
         });
       }
     }

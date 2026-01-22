@@ -37,7 +37,7 @@ new LambdaToTextract(stack, 'test-lambda-translate-stack', {
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   },
-  existingTopicObj: topic,
+  existingNotificationTopicObj: topic,
   asyncJobs: true
 });
 
