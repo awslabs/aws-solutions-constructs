@@ -67,8 +67,8 @@ const syncPermissions = [
 ];
 
 const asyncPermissions = [
-  'texttract:StartDocumentTextDetection',
-  'texttract:GetDocumentTextDetection',
+  'textract:StartDocumentTextDetection',
+  'textract:GetDocumentTextDetection',
   'textract:StartDocumentAnalysis',
   'textract:GetDocumentAnalysis',
   'textract:StartExpenseAnalysis',
@@ -160,8 +160,6 @@ export function ConfigureTextractSupport(scope: Construct, id: string, props: Te
     const textractServiceRole = new iam.Role(scope, `${id}-textract-service-role`, {
       assumedBy: new iam.ServicePrincipal('textract.amazonaws.com'),
     });
-    configuration.destinationBucket?.bucketInterface.grantReadWrite(textractServiceRole);
-    configuration.sourceBucket?.bucketInterface.grantRead(textractServiceRole);
     configuration.snsNotificationTopic!.grantPublish(textractServiceRole);
     configuration = overrideProps(configuration, {
       textractRole: textractServiceRole

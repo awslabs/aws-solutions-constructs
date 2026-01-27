@@ -39,8 +39,8 @@ test('Test deployment with asyncJobs enabled', () => {
     'textract:AnalyzeDocument',
     'textract:AnalyzeExpense',
     'textract:AnalyzeID',
-    'texttract:StartDocumentTextDetection',
-    'texttract:GetDocumentTextDetection',
+    'textract:StartDocumentTextDetection',
+    'textract:GetDocumentTextDetection',
     'textract:StartDocumentAnalysis',
     'textract:GetDocumentAnalysis',
     'textract:StartExpenseAnalysis',
@@ -58,82 +58,15 @@ test('Test deployment with asyncJobs enabled', () => {
   // Check textract service permissions
   template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
-      Statement: Match.arrayWith([
-        Match.objectLike({
-          Effect: 'Allow',
-          Action: Match.arrayWith([
-            "s3:GetObject*",
-            "s3:GetBucket*",
-            "s3:List*",
-            "s3:DeleteObject*",
-            "s3:PutObject",
-            "s3:PutObjectLegalHold",
-            "s3:PutObjectRetention",
-            "s3:PutObjectTagging",
-            "s3:PutObjectVersionTagging",
-            "s3:Abort*"
-          ]),
-          Resource: [
-            {
-              "Fn::GetAtt": [
-                Match.stringLikeRegexp("testdestinationbucketS3Bucket*."),
-                "Arn"
-              ]
-            },
-            {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Fn::GetAtt": [
-                      Match.stringLikeRegexp("testdestinationbucketS3Bucket*."),
-                      "Arn"
-                    ]
-                  },
-                  "/*"
-                ]
-              ]
-            }
-          ]
-        }),
-        Match.objectLike({
-          Effect: 'Allow',
-          Action: Match.arrayWith([
-            "s3:GetObject*",
-            "s3:GetBucket*",
-            "s3:List*",
-          ]),
-          Resource: [
-            {
-              "Fn::GetAtt": [
-                Match.stringLikeRegexp("testsourcebucketS3Bucket.*"),
-                "Arn"
-              ]
-            },
-            {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Fn::GetAtt": [
-                      Match.stringLikeRegexp("testsourcebucketS3Bucket.*"),
-                      "Arn"
-                    ]
-                  },
-                  "/*"
-                ]
-              ]
-            }
-          ]
-        }),
-        Match.objectLike({
+      Statement: [
+        {
           Effect: 'Allow',
           Action: "sns:Publish",
           Resource: {
             Ref: Match.stringLikeRegexp("SnsTopic")
           }
-        })
-      ])
+        }
+      ]
     },
     Roles: [
       {
@@ -184,8 +117,8 @@ test('Test deployment with AWS managed destination bucket', () => {
     'textract:AnalyzeDocument',
     'textract:AnalyzeExpense',
     'textract:AnalyzeID',
-    'texttract:StartDocumentTextDetection',
-    'texttract:GetDocumentTextDetection',
+    'textract:StartDocumentTextDetection',
+    'textract:GetDocumentTextDetection',
     'textract:StartDocumentAnalysis',
     'textract:GetDocumentAnalysis',
     'textract:StartExpenseAnalysis',
@@ -203,45 +136,15 @@ test('Test deployment with AWS managed destination bucket', () => {
   // Check textract service permissions
   template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
-      Statement: Match.arrayWith([
-        Match.objectLike({
-          Effect: 'Allow',
-          Action: Match.arrayWith([
-            "s3:GetObject*",
-            "s3:GetBucket*",
-            "s3:List*",
-          ]),
-          Resource: [
-            {
-              "Fn::GetAtt": [
-                Match.stringLikeRegexp("testsourcebucketS3Bucket.*"),
-                "Arn"
-              ]
-            },
-            {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Fn::GetAtt": [
-                      Match.stringLikeRegexp("testsourcebucketS3Bucket.*"),
-                      "Arn"
-                    ]
-                  },
-                  "/*"
-                ]
-              ]
-            }
-          ]
-        }),
-        Match.objectLike({
+      Statement: [
+        {
           Effect: 'Allow',
           Action: "sns:Publish",
           Resource: {
             Ref: Match.stringLikeRegexp("SnsTopic")
           }
-        })
-      ])
+        }
+      ]
     },
     Roles: [
       {
@@ -317,8 +220,8 @@ test('Test deployment with useSameBucket', () => {
     'textract:AnalyzeDocument',
     'textract:AnalyzeExpense',
     'textract:AnalyzeID',
-    'texttract:StartDocumentTextDetection',
-    'texttract:GetDocumentTextDetection',
+    'textract:StartDocumentTextDetection',
+    'textract:GetDocumentTextDetection',
     'textract:StartDocumentAnalysis',
     'textract:GetDocumentAnalysis',
     'textract:StartExpenseAnalysis',
@@ -339,74 +242,15 @@ test('Test deployment with useSameBucket', () => {
   // Check textract service permissions
   template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
-      Statement: Match.arrayWith([
-        Match.objectLike({
+      Statement: [
+        {
           Effect: 'Allow',
-          Action: Match.arrayWith([
-            "s3:GetObject*",
-            "s3:GetBucket*",
-            "s3:List*",
-            "s3:DeleteObject*",
-            "s3:PutObject",
-            "s3:PutObjectLegalHold",
-            "s3:PutObjectRetention",
-            "s3:PutObjectTagging",
-            "s3:PutObjectVersionTagging",
-            "s3:Abort*"
-          ]),
-          Resource: [
-            {
-              "Fn::GetAtt": [
-                Match.stringLikeRegexp("testsourcebucketS3Bucket*."),
-                "Arn"
-              ]
-            },
-            {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Fn::GetAtt": [
-                      Match.stringLikeRegexp("testsourcebucketS3Bucket*."),
-                      "Arn"
-                    ]
-                  },
-                  "/*"
-                ]
-              ]
-            }
-          ]
-        }),
-        Match.objectLike({
-          Effect: 'Allow',
-          Action: Match.arrayWith([
-            "s3:GetObject*",
-            "s3:GetBucket*",
-            "s3:List*",
-          ]),
-          Resource: [
-            {
-              "Fn::GetAtt": [
-                Match.stringLikeRegexp("testsourcebucketS3Bucket.*"),
-                "Arn"
-              ]
-            },
-            {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Fn::GetAtt": [
-                      Match.stringLikeRegexp("testsourcebucketS3Bucket.*"),
-                      "Arn"
-                    ]
-                  },
-                  "/*"
-                ]
-              ]
-            }
-          ]
-        })])
+          Action: "sns:Publish",
+          Resource: {
+            Ref: Match.stringLikeRegexp("SnsTopic")
+          }
+        }
+      ]
     },
     Roles: [
       {
@@ -525,23 +369,15 @@ test('Test deployment with existing Destination bucket', () => {
   // Check textract service permissions
   template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
-      Statement: Match.arrayWith([
-        Match.objectLike({
+      Statement: [
+        {
           Effect: 'Allow',
-          Action: Match.arrayWith([
-            "s3:GetObject*",
-            "s3:GetBucket*",
-            "s3:List*",
-            "s3:DeleteObject*",
-            "s3:PutObject",
-            "s3:PutObjectLegalHold",
-            "s3:PutObjectRetention",
-            "s3:PutObjectTagging",
-            "s3:PutObjectVersionTagging",
-            "s3:Abort*"
-          ])
-        })
-      ])
+          Action: "sns:Publish",
+          Resource: {
+            Ref: Match.stringLikeRegexp("SnsTopic")
+          }
+        }
+      ]
     },
     Roles: [
       {

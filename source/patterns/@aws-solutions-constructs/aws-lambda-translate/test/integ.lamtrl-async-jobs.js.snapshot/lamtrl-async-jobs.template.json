@@ -594,7 +594,7 @@
       "DESTINATION_BUCKET_NAME": {
        "Ref": "testlambdatranslatestacktestlambdatranslatestackdestinationbucketS3BucketF474A865"
       },
-      "DATA_ACCESS_ROLE_ARN": {
+      "SNS_ROLE_ARN": {
        "Fn::GetAtt": [
         "testlambdatranslatestacktestlambdatranslatestacktranslateservicerole8DA2B665",
         "Arn"

@@ -1,28 +1,28 @@
 {
   "version": "48.0.0",
   "artifacts": {
-    "lamtxt-encrypted-topic.assets": {
+    "lamtxt-no-output-bucket.assets": {
       "type": "cdk:asset-manifest",
       "properties": {
-        "file": "lamtxt-encrypted-topic.assets.json",
+        "file": "lamtxt-no-output-bucket.assets.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
       }
     },
-    "lamtxt-encrypted-topic": {
+    "lamtxt-no-output-bucket": {
       "type": "aws:cloudformation:stack",
       "environment": "aws://unknown-account/unknown-region",
       "properties": {
-        "templateFile": "lamtxt-encrypted-topic.template.json",
+        "templateFile": "lamtxt-no-output-bucket.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5e33cdbd9005138b7c48056a05421ed3b151b5cab78f2362ce9071ae67676c7c.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/cc008e44a1257a96cef931d23eb9bbc9ad929ebeee0ba69b29ea6d2049849cf5.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
-          "lamtxt-encrypted-topic.assets"
+          "lamtxt-no-output-bucket.assets"
         ],
         "lookupRole": {
           "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
@@ -31,25 +31,10 @@
         }
       },
       "dependencies": [
-        "lamtxt-encrypted-topic.assets"
+        "lamtxt-no-output-bucket.assets"
       ],
       "metadata": {
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/'test-lambda-translate-stackKey'": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "enableKeyRotation": true,
-              "removalPolicy": "destroy"
-            }
-          }
-        ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/'test-lambda-translate-stackKey'/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdatranslatestacktestlambdatranslatestackKey33FF88FA"
-          }
-        ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/SnsTopic": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/SnsTopic": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -57,13 +42,13 @@
             }
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/SnsTopic/Resource": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/SnsTopic/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdatranslatestackSnsTopic1B9064A6"
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/SnsTopic/Policy": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/SnsTopic/Policy": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -73,13 +58,13 @@
             }
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/SnsTopic/Policy/Resource": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/SnsTopic/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdatranslatestackSnsTopicPolicy253F17B2"
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3LoggingBucket": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3LoggingBucket": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -91,13 +76,13 @@
             }
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3LoggingBucket/Resource": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3LoggingBucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3LoggingBucketEF52D1D4"
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3LoggingBucket/Policy": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3LoggingBucket/Policy": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -105,13 +90,13 @@
             }
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3LoggingBucket/Policy/Resource": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3LoggingBucket/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3LoggingBucketPolicy308DE110"
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3Bucket": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3Bucket": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -149,13 +134,13 @@
             }
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3Bucket/Resource": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3Bucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3Bucket51973FD7"
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3Bucket/Policy": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3Bucket/Policy": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -163,103 +148,13 @@
             }
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3Bucket/Policy/Resource": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3Bucket/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3BucketPolicy8D30C760"
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-destination-bucketS3LoggingBucket": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "S3_MANAGED",
-              "versioned": true,
-              "blockPublicAccess": "*",
-              "removalPolicy": "retain",
-              "enforceSSL": true
-            }
-          }
-        ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-destination-bucketS3LoggingBucket/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdatranslatestacktestlambdatranslatestackdestinationbucketS3LoggingBucket7F488BE6"
-          }
-        ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-destination-bucketS3LoggingBucket/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "bucket": "*"
-            }
-          }
-        ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-destination-bucketS3LoggingBucket/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdatranslatestacktestlambdatranslatestackdestinationbucketS3LoggingBucketPolicyF333EAB1"
-          }
-        ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-destination-bucketS3Bucket": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "S3_MANAGED",
-              "versioned": true,
-              "blockPublicAccess": "*",
-              "removalPolicy": "retain",
-              "enforceSSL": true,
-              "lifecycleRules": [
-                {
-                  "noncurrentVersionTransitions": [
-                    {
-                      "storageClass": "*"
-                    }
-                  ]
-                }
-              ],
-              "serverAccessLogsBucket": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addLifecycleRule": [
-                {
-                  "noncurrentVersionTransitions": [
-                    {
-                      "storageClass": "*"
-                    }
-                  ]
-                },
-                "*",
-                "*"
-              ]
-            }
-          }
-        ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-destination-bucketS3Bucket/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdatranslatestacktestlambdatranslatestackdestinationbucketS3BucketF474A865"
-          }
-        ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-destination-bucketS3Bucket/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "bucket": "*"
-            }
-          }
-        ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-destination-bucketS3Bucket/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdatranslatestacktestlambdatranslatestackdestinationbucketS3BucketPolicy7C3A663B"
-          }
-        ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-textract-service-role": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/test-lambda-translate-stack-textract-service-role": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -302,19 +197,19 @@
             }
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-textract-service-role/Importtest-lambda-translate-stack-textract-service-role": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/test-lambda-translate-stack-textract-service-role/Importtest-lambda-translate-stack-textract-service-role": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": "*"
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-textract-service-role/Resource": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/test-lambda-translate-stack-textract-service-role/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdatranslatestacktestlambdatranslatestacktextractserviceroleE9228E64"
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-textract-service-role/DefaultPolicy": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/test-lambda-translate-stack-textract-service-role/DefaultPolicy": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": "*"
@@ -352,13 +247,13 @@
             }
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/test-lambda-translate-stack-textract-service-role/DefaultPolicy/Resource": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/test-lambda-translate-stack-textract-service-role/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdatranslatestacktestlambdatranslatestacktextractserviceroleDefaultPolicyBE282403"
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/LambdaFunctionServiceRole": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/LambdaFunctionServiceRole": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -412,14 +307,6 @@
           {
             "type": "aws:cdk:analytics:method",
             "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
               "attachInlinePolicy": [
                 "*"
               ]
@@ -450,19 +337,19 @@
             }
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": "*"
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/LambdaFunctionServiceRole/Resource": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/LambdaFunctionServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdatranslatestackLambdaFunctionServiceRoleAFC37061"
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/LambdaFunctionServiceRole/DefaultPolicy": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/LambdaFunctionServiceRole/DefaultPolicy": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": "*"
@@ -490,23 +377,15 @@
                 {}
               ]
             }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdatranslatestackLambdaFunctionServiceRoleDefaultPolicyE2920654"
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/LambdaFunction": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/LambdaFunction": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -567,13 +446,13 @@
             }
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/LambdaFunction/Resource": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/LambdaFunction/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdatranslatestackLambdaFunctionF76CF7B7"
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -605,13 +484,13 @@
             }
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdatranslatestackLambdaFunctioninlinePolicyAddedToExecutionRole07975DC58"
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-1": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-1": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -643,13 +522,13 @@
             }
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-1/Resource": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-1/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdatranslatestackLambdaFunctioninlinePolicyAddedToExecutionRole1C55F8370"
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-2": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-2": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -681,26 +560,26 @@
             }
           }
         ],
-        "/lamtxt-encrypted-topic/test-lambda-translate-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-2/Resource": [
+        "/lamtxt-no-output-bucket/test-lambda-translate-stack/LambdaFunction/inlinePolicyAddedToExecutionRole-2/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdatranslatestackLambdaFunctioninlinePolicyAddedToExecutionRole293B3974D"
           }
         ],
-        "/lamtxt-encrypted-topic/BootstrapVersion": [
+        "/lamtxt-no-output-bucket/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BootstrapVersion"
           }
         ],
-        "/lamtxt-encrypted-topic/CheckBootstrapVersion": [
+        "/lamtxt-no-output-bucket/CheckBootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
         ]
       },
-      "displayName": "lamtxt-encrypted-topic"
+      "displayName": "lamtxt-no-output-bucket"
     },
     "IntegDefaultTestDeployAssert4E6713E1.assets": {
       "type": "cdk:asset-manifest",

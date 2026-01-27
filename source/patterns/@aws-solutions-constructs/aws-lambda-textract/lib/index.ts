@@ -21,6 +21,7 @@ import * as kms from 'aws-cdk-lib/aws-kms';
 import * as defaults from '@aws-solutions-constructs/core';
 // Note: To ensure CDKv2 compatibility, keep the import statement for Construct separate
 import { Construct } from 'constructs';
+import { Duration } from 'aws-cdk-lib';
 
 /**
  * @summary The properties for the LambdaToTextract class.
@@ -84,7 +85,6 @@ export interface LambdaToTextractProps {
    *
    * @default - true
    */
-  // TODO: Add an integration test that exercises this
   readonly createCustomerManagedOutputBucket?: boolean;
   /**
    * Optional array of additional IAM permissions to grant to the Lambda function for Amazon Textract.
@@ -122,7 +122,7 @@ export interface LambdaToTextractProps {
    * Optional Name for the Lambda function environment variable set to the ARN of the IAM role used for asynchronous
    * document analysis jobs. Only valid when asyncJobs is true.
    *
-   * @default - DATA_ACCESS_ROLE_ARN
+   * @default - SNS_ROLE_ARN
    */
   readonly dataAccessRoleArnEnvironmentVariableName?: string;
   /**
@@ -257,10 +257,6 @@ export class LambdaToTextract extends Construct {
       });
 
       defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.TEXTRACT);
-      if (props.asyncJobs) {
-        defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.S3);
-        defaults.AddAwsServiceEndpoint(scope, this.vpc, defaults.ServiceEndpointTypes.SNS);
-      }
     }
     const lambdaEnvironmentVariables: EnvironmentVariableDefinition[] = [];
     const textractConfiguration = defaults.ConfigureTextractSupport(this, id, props);
@@ -289,7 +285,7 @@ export class LambdaToTextract extends Construct {
         value: this.destinationBucketInterface?.bucketName!
       });
       lambdaEnvironmentVariables.push({
-        defaultName: "DATA_ACCESS_ROLE_ARN",
+        defaultName: "SNS_ROLE_ARN",
         clientNameOverride: props.dataAccessRoleArnEnvironmentVariableName,
         value: textractConfiguration.textractRole?.roleArn!
       });
@@ -305,9 +301,13 @@ export class LambdaToTextract extends Construct {
     // Now we know everything the Lambda Function needs, we can configure it
     this.lambdaFunction = defaults.buildLambdaFunction(this, {
       existingLambdaObj: props.existingLambdaObj,
-      lambdaFunctionProps: props.lambdaFunctionProps,
+      // We want a longer default timeout for the Textract call, but will defer to client value
+      lambdaFunctionProps: defaults.overrideProps({ timeout: Duration.seconds(30) }, props.lambdaFunctionProps ?? {}),
       vpc: this.vpc,
     });
+
+    textractConfiguration.sourceBucket?.bucket?.grantRead(this.lambdaFunction);
+    textractConfiguration.destinationBucket?.bucket?.grantReadWrite(this.lambdaFunction);
 
     // Add all actions from textract configuration and client to the Lambda function
     // PassRole is handled separately, because it must specify role being passed as the resource
@@ -334,7 +334,7 @@ export class LambdaToTextract extends Construct {
     if (textractConfiguration.textractRole) {
       this.lambdaFunction.addToRolePolicy(new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
-        actions: ["iam:PassRole"],
+        actions: ["iam:PassRole", "iam:GetRole"],
         resources: [textractConfiguration.textractRole.roleArn]
       }));
     }

@@ -550,73 +550,6 @@
     "PolicyDocument": {
      "Statement": [
       {
-       "Action": [
-        "s3:Abort*",
-        "s3:DeleteObject*",
-        "s3:GetBucket*",
-        "s3:GetObject*",
-        "s3:List*",
-        "s3:PutObject",
-        "s3:PutObjectLegalHold",
-        "s3:PutObjectRetention",
-        "s3:PutObjectTagging",
-        "s3:PutObjectVersionTagging"
-       ],
-       "Effect": "Allow",
-       "Resource": [
-        {
-         "Fn::GetAtt": [
-          "testlambdatranslatestacktestlambdatranslatestackdestinationbucketS3BucketF474A865",
-          "Arn"
-         ]
-        },
-        {
-         "Fn::Join": [
-          "",
-          [
-           {
-            "Fn::GetAtt": [
-             "testlambdatranslatestacktestlambdatranslatestackdestinationbucketS3BucketF474A865",
-             "Arn"
-            ]
-           },
-           "/*"
-          ]
-         ]
-        }
-       ]
-      },
-      {
-       "Action": [
-        "s3:GetBucket*",
-        "s3:GetObject*",
-        "s3:List*"
-       ],
-       "Effect": "Allow",
-       "Resource": [
-        {
-         "Fn::GetAtt": [
-          "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3Bucket51973FD7",
-          "Arn"
-         ]
-        },
-        {
-         "Fn::Join": [
-          "",
-          [
-           {
-            "Fn::GetAtt": [
-             "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3Bucket51973FD7",
-             "Arn"
-            ]
-           },
-           "/*"
-          ]
-         ]
-        }
-       ]
-      },
-      {
        "Action": "sns:Publish",
        "Effect": "Allow",
        "Resource": {
@@ -728,6 +661,89 @@
     }
    }
   },
+  "testlambdatranslatestackLambdaFunctionServiceRoleDefaultPolicyE2920654": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3Bucket51973FD7",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3Bucket51973FD7",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdatranslatestacktestlambdatranslatestackdestinationbucketS3BucketF474A865",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdatranslatestacktestlambdatranslatestackdestinationbucketS3BucketF474A865",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testlambdatranslatestackLambdaFunctionServiceRoleDefaultPolicyE2920654",
+    "Roles": [
+     {
+      "Ref": "testlambdatranslatestackLambdaFunctionServiceRoleAFC37061"
+     }
+    ]
+   }
+  },
   "testlambdatranslatestackLambdaFunctionF76CF7B7": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -743,7 +759,7 @@
       "DESTINATION_BUCKET_NAME": {
        "Ref": "testlambdatranslatestacktestlambdatranslatestackdestinationbucketS3BucketF474A865"
       },
-      "DATA_ACCESS_ROLE_ARN": {
+      "SNS_ROLE_ARN": {
        "Fn::GetAtt": [
         "testlambdatranslatestacktestlambdatranslatestacktextractserviceroleE9228E64",
         "Arn"
@@ -762,11 +778,13 @@
      ]
     },
     "Runtime": "nodejs22.x",
+    "Timeout": 30,
     "TracingConfig": {
      "Mode": "Active"
     }
    },
    "DependsOn": [
+    "testlambdatranslatestackLambdaFunctionServiceRoleDefaultPolicyE2920654",
     "testlambdatranslatestackLambdaFunctionServiceRoleAFC37061"
    ],
    "Metadata": {
@@ -836,13 +854,13 @@
         "textract:AnalyzeID",
         "textract:DetectDocumentText",
         "textract:GetDocumentAnalysis",
+        "textract:GetDocumentTextDetection",
         "textract:GetExpenseAnalysis",
         "textract:GetLendingAnalysis",
         "textract:StartDocumentAnalysis",
+        "textract:StartDocumentTextDetection",
         "textract:StartExpenseAnalysis",
-        "textract:StartLendingAnalysis",
-        "texttract:GetDocumentTextDetection",
-        "texttract:StartDocumentTextDetection"
+        "textract:StartLendingAnalysis"
        ],
        "Effect": "Allow",
        "Resource": "*"
@@ -864,7 +882,10 @@
     "PolicyDocument": {
      "Statement": [
       {
-       "Action": "iam:PassRole",
+       "Action": [
+        "iam:GetRole",
+        "iam:PassRole"
+       ],
        "Effect": "Allow",
        "Resource": {
         "Fn::GetAtt": [

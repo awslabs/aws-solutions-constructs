@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { App, Stack } from "aws-cdk-lib";
+import { App, Duration, Stack } from "aws-cdk-lib";
 import { LambdaToTextract } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { Match, Template } from 'aws-cdk-lib/assertions';
@@ -43,6 +43,7 @@ test('Test deployment with no optional parameters', () => {
   expect(construct.vpc).not.toBeDefined();
 
   const template = Template.fromStack(stack);
+
   template.hasResourceProperties('AWS::Lambda::Function', {
     Runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_STRING
   });
@@ -65,6 +66,7 @@ test('Test deployment with no optional parameters', () => {
   template.resourceCountIs("AWS::IAM::Role", 1);
   template.resourceCountIs('AWS::S3::Bucket', 0);
   template.resourcePropertiesCountIs("AWS::Lambda::Function", {
+    timeout: 30,
     Environment: Match.objectLike({
       Variables: {
         "SOURCE_BUCKET_NAME": Match.anyValue()
@@ -104,8 +106,8 @@ test('Test deployment with asyncJobs enabled', () => {
             'textract:AnalyzeDocument',
             'textract:AnalyzeExpense',
             'textract:AnalyzeID',
-            'texttract:StartDocumentTextDetection',
-            'texttract:GetDocumentTextDetection',
+            'textract:StartDocumentTextDetection',
+            'textract:GetDocumentTextDetection',
             'textract:StartDocumentAnalysis',
             'textract:GetDocumentAnalysis',
             'textract:StartExpenseAnalysis',
@@ -117,7 +119,7 @@ test('Test deployment with asyncJobs enabled', () => {
         }),
         Match.objectLike({
           Effect: 'Allow',
-          Action: "iam:PassRole",
+          Action: ["iam:PassRole", "iam:GetRole"],
           Resource: {
             "Fn::GetAtt": [
               Match.stringLikeRegexp("testlambdatextracttestlambdatextracttextractservicerole.*"),
@@ -137,23 +139,15 @@ test('Test deployment with asyncJobs enabled', () => {
   // Check textract service permissions
   template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
-      Statement: Match.arrayWith([
-        Match.objectLike({
+      Statement: [
+        {
           Effect: 'Allow',
-          Action: Match.arrayWith([
-            "s3:GetObject*",
-            "s3:GetBucket*",
-            "s3:List*",
-            "s3:DeleteObject*",
-            "s3:PutObject",
-            "s3:PutObjectLegalHold",
-            "s3:PutObjectRetention",
-            "s3:PutObjectTagging",
-            "s3:PutObjectVersionTagging",
-            "s3:Abort*"
-          ])
-        })
-      ])
+          Action: "sns:Publish",
+          Resource: {
+            Ref: Match.stringLikeRegexp("SnsTopic")
+          }
+        }
+      ]
     },
     Roles: [
       {
@@ -170,7 +164,7 @@ test('Test deployment with asyncJobs enabled', () => {
       Variables: Match.objectLike({
         SOURCE_BUCKET_NAME: Match.anyValue(),
         DESTINATION_BUCKET_NAME: Match.anyValue(),
-        DATA_ACCESS_ROLE_ARN: Match.anyValue(),
+        SNS_ROLE_ARN: Match.anyValue(),
         SNS_TOPIC_ARN: Match.anyValue()
       })
     }
@@ -208,8 +202,8 @@ test('Test deployment with AWS managed destination bucket', () => {
             'textract:AnalyzeDocument',
             'textract:AnalyzeExpense',
             'textract:AnalyzeID',
-            'texttract:StartDocumentTextDetection',
-            'texttract:GetDocumentTextDetection',
+            'textract:StartDocumentTextDetection',
+            'textract:GetDocumentTextDetection',
             'textract:StartDocumentAnalysis',
             'textract:GetDocumentAnalysis',
             'textract:StartExpenseAnalysis',
@@ -221,7 +215,7 @@ test('Test deployment with AWS managed destination bucket', () => {
         }),
         Match.objectLike({
           Effect: 'Allow',
-          Action: "iam:PassRole",
+          Action: ["iam:PassRole", "iam:GetRole"],
           Resource: {
             "Fn::GetAtt": [
               Match.stringLikeRegexp("testlambdatextracttestlambdatextracttextractservicerole.*"),
@@ -241,16 +235,15 @@ test('Test deployment with AWS managed destination bucket', () => {
   // Check textract service permissions
   template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
-      Statement: Match.arrayWith([
-        Match.objectLike({
+      Statement: [
+        {
           Effect: 'Allow',
-          Action: Match.arrayWith([
-            "s3:GetObject*",
-            "s3:GetBucket*",
-            "s3:List*",
-          ])
-        })
-      ])
+          Action: "sns:Publish",
+          Resource: {
+            Ref: Match.stringLikeRegexp("SnsTopic")
+          }
+        }
+      ]
     },
     Roles: [
       {
@@ -266,7 +259,7 @@ test('Test deployment with AWS managed destination bucket', () => {
     Environment: {
       Variables: Match.objectLike({
         SOURCE_BUCKET_NAME: Match.anyValue(),
-        DATA_ACCESS_ROLE_ARN: Match.anyValue(),
+        SNS_ROLE_ARN: Match.anyValue(),
         SNS_TOPIC_ARN: Match.anyValue()
       })
     }
@@ -328,7 +321,7 @@ test('Test deployment with VPC and asyncJobs', () => {
   expect(construct.vpc).toBeDefined();
 
   const template = Template.fromStack(stack);
-
+  template.resourceCountIs('AWS::EC2::VPCEndpoint', 1);
   // Should have Textract, S3, and SNS endpoints
   template.hasResourceProperties('AWS::EC2::VPCEndpoint', {
     ServiceName: {
@@ -345,35 +338,6 @@ test('Test deployment with VPC and asyncJobs', () => {
     }
   });
 
-  template.hasResourceProperties('AWS::EC2::VPCEndpoint', {
-    ServiceName: {
-      "Fn::Join": [
-        "",
-        [
-          "com.amazonaws.",
-          {
-            Ref: "AWS::Region"
-          },
-          ".s3"
-        ]
-      ]
-    }
-  });
-
-  template.hasResourceProperties('AWS::EC2::VPCEndpoint', {
-    ServiceName: {
-      "Fn::Join": [
-        "",
-        [
-          "com.amazonaws.",
-          {
-            Ref: "AWS::Region"
-          },
-          ".sns"
-        ]
-      ]
-    }
-  });
 });
 
 test('Test deployment with additionalPermissions', () => {
@@ -558,4 +522,39 @@ test('Ensure topic encryption key is exposed', () => {
   // Verify exactly 1 SNS topic was created
   template.resourceCountIs('AWS::SNS::Topic', 1);
   template.resourceCountIs('AWS::KMS::Key', 1);
+});
+
+test('Test default timeout can be overridden', () => {
+  const app = new App();
+  const stack = new Stack(app, "test-stack");
+
+new LambdaToTextract(stack, 'test-lambda-textract', {
+    lambdaFunctionProps: {
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler',
+      code: lambda.Code.fromInline('exports.handler = async () => {};'),
+      timeout: Duration.minutes(5)
+    },
+  });
+
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::Lambda::Function', {
+    Timeout: 300
+  });
+
+});
+
+test('Test default timeout is 30', () => {
+  const app = new App();
+  const stack = new Stack(app, "test-stack");
+
+  deployTestConstructStructure(stack);
+
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::Lambda::Function', {
+    Timeout: 30
+  });
+
 });

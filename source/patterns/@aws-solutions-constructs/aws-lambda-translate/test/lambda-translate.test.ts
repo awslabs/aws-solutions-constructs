@@ -159,7 +159,7 @@ test('Test deployment with asyncJobs enabled', () => {
       Variables: Match.objectLike({
         SOURCE_BUCKET_NAME: Match.anyValue(),
         DESTINATION_BUCKET_NAME: Match.anyValue(),
-        DATA_ACCESS_ROLE_ARN: Match.anyValue(),
+        SNS_ROLE_ARN: Match.anyValue(),
       })
     }
   });

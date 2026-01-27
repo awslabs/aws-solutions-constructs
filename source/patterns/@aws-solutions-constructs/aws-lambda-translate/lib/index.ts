@@ -111,7 +111,7 @@ export interface LambdaToTranslateProps {
   /**
    * Optional Name for the role to pass to Batch translate jobs. Only set if asyncJobs is true
    *
-   * @default - DATA_ACCESS_ROLE_ARN
+   * @default - SNS_ROLE_ARN
    */
   readonly dataAccessRoleArnEnvironmentVariableName?: string;
   /**
@@ -224,7 +224,7 @@ export class LambdaToTranslate extends Construct {
         value: this.destinationBucketInterface?.bucketName!
       });
       lambdaEnvironmentVariables.push({
-        defaultName: "DATA_ACCESS_ROLE_ARN",
+        defaultName: "SNS_ROLE_ARN",
         clientNameOverride: props.dataAccessRoleArnEnvironmentVariableName,
         value: translateConfiguration.translateRole?.roleArn!
       });
