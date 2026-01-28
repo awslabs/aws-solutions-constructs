@@ -272,19 +272,10 @@ export class LambdaToTextract extends Construct {
       this.sourceLoggingBucket = textractConfiguration.sourceBucket.loggingBucket;
       this.sourceBucketInterface = textractConfiguration.sourceBucket.bucketInterface;
 
-      this.destinationBucket = textractConfiguration.destinationBucket?.bucket;
-      this.destinationLoggingBucket = textractConfiguration.destinationBucket?.loggingBucket;
-      this.destinationBucketInterface = textractConfiguration.destinationBucket?.bucketInterface;
-
       lambdaEnvironmentVariables.push({
         defaultName: "SOURCE_BUCKET_NAME",
         clientNameOverride: props.sourceBucketEnvironmentVariableName,
         value: this.sourceBucketInterface.bucketName
-      });
-      lambdaEnvironmentVariables.push({
-        defaultName: "DESTINATION_BUCKET_NAME",
-        clientNameOverride: props.destinationBucketEnvironmentVariableName,
-        value: this.destinationBucketInterface?.bucketName!
       });
       lambdaEnvironmentVariables.push({
         defaultName: "SNS_ROLE_ARN",
@@ -298,6 +289,18 @@ export class LambdaToTextract extends Construct {
           value: this.snsNotificationTopic.topicArn
         });
       }
+
+      if (textractConfiguration.destinationBucket) {
+        this.destinationBucket = textractConfiguration.destinationBucket?.bucket;
+        this.destinationLoggingBucket = textractConfiguration.destinationBucket?.loggingBucket;
+        this.destinationBucketInterface = textractConfiguration.destinationBucket?.bucketInterface;
+        lambdaEnvironmentVariables.push({
+          defaultName: "DESTINATION_BUCKET_NAME",
+          clientNameOverride: props.destinationBucketEnvironmentVariableName,
+          value: this.destinationBucketInterface?.bucketName!
+        });
+      }
+
     }
 
     // Now we know everything the Lambda Function needs, we can configure it
@@ -308,9 +311,12 @@ export class LambdaToTextract extends Construct {
       vpc: this.vpc,
     });
 
-    textractConfiguration.sourceBucket?.bucket?.grantRead(this.lambdaFunction);
-    textractConfiguration.destinationBucket?.bucket?.grantReadWrite(this.lambdaFunction);
-
+    if (textractConfiguration.sourceBucket) {
+      textractConfiguration.sourceBucket.bucket?.grantRead(this.lambdaFunction);
+    }
+    if (textractConfiguration.destinationBucket) {
+      textractConfiguration.destinationBucket.bucket?.grantReadWrite(this.lambdaFunction);
+    }
     // Add all actions from textract configuration and client to the Lambda function
     // PassRole is handled separately, because it must specify role being passed as the resource
     const lambdaFunctionRoleActions: string[] = [];
