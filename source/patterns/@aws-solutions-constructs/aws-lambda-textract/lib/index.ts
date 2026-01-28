@@ -89,7 +89,9 @@ export interface LambdaToTextractProps {
   /**
    * Optional array of additional IAM permissions to grant to the Lambda function for Amazon Textract.
    *
-   * @default - ['textract:DetectDocumentText', 'textract:AnalyzeDocument', 'textract:AnalyzeExpense', 'textract:AnalyzeID']
+   * @default - ['textract:DetectDocumentText', 'textract:AnalyzeDocument', 'textract:AnalyzeExpense', 'textract:AnalyzeID'].
+   * When asyncJobs is true, ['textract:Start/GetDocumentTextDetection', 'textract:Start/GetDocumentAnalysis',
+   * 'textract:Start/GetDocumentAnalysis', 'textract:Start/GetLendingAnalysis' ] are added.
    */
   readonly additionalPermissions?: string[];
   /**

@@ -141,7 +141,9 @@ When true, only the source bucket will be created and used for both purposes. On
 
 |createCustomerManagedOutputBucket? |`boolean` |Whether to create a bucket to receive the output of Textract batch jobs. If this is yes, the construct will set up an S3 bucket for output, if this is false, then Textract jobs will send their output to an AWS managed S3 bucket. Default: true
 
-|additionalPermissions? |`string[]` |Optional array of additional IAM permissions to grant to the Lambda function for Amazon Textract. Default: ['textract:DetectDocumentText', 'textract:AnalyzeDocument', 'textract:AnalyzeExpense', 'textract:AnalyzeID']
+|additionalPermissions? |`string[]` |Optional array of additional IAM permissions to grant to the Lambda function for Amazon Textract.
+Default: ['textract:DetectDocumentText', 'textract:AnalyzeDocument', 'textract:AnalyzeExpense', 'textract:AnalyzeID'] 
+When asyncJobs is true, ['textract:Start/GetDocumentTextDetection', 'textract:Start/GetDocumentAnalysis', 'textract:Start/GetDocumentAnalysis', 'textract:Start/GetLendingAnalysis' ] are added.
 
 |existingVpc?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html[`ec2.IVpc`]
