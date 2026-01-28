@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8fec6aa1fad21fc0a5b4571b62a0ebad2048c0e563dbfc003e21646ce803a472.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/5876eb634f821f0153d5797b1c4e613090477bcf5a9d474399e2acf385141ba7.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -34,18 +34,35 @@
         "lamtxt-existing-topic.assets"
       ],
       "metadata": {
-        "/lamtxt-existing-topic/MyTopic": [
+        "/lamtxt-existing-topic/SnsTopic": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
-              "topicName": "*"
+              "topicName": "*",
+              "masterKey": "*"
             }
           }
         ],
-        "/lamtxt-existing-topic/MyTopic/Resource": [
+        "/lamtxt-existing-topic/SnsTopic/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MyTopic86869434"
+            "data": "SnsTopic2C1570A4"
+          }
+        ],
+        "/lamtxt-existing-topic/SnsTopic/Policy": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": {
+              "topics": [
+                "*"
+              ]
+            }
+          }
+        ],
+        "/lamtxt-existing-topic/SnsTopic/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SnsTopicPolicy520DD923"
           }
         ],
         "/lamtxt-existing-topic/test-lambda-translate-stack/test-lambda-translate-stack-source-bucketS3LoggingBucket": [
@@ -261,6 +278,14 @@
                 "*"
               ]
             }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addToPrincipalPolicy": [
+                {}
+              ]
+            }
           }
         ],
         "/lamtxt-existing-topic/test-lambda-translate-stack/test-lambda-translate-stack-textract-service-role/Importtest-lambda-translate-stack-textract-service-role": [
@@ -293,6 +318,14 @@
             "data": {
               "attachToRole": [
                 "*"
+              ]
+            }
+          },
+          {
+            "type": "aws:cdk:analytics:method",
+            "data": {
+              "addStatements": [
+                {}
               ]
             }
           },
@@ -650,6 +683,15 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
+          }
+        ],
+        "MyTopic86869434": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyTopic86869434",
+            "trace": [
+              "!!DESTRUCTIVE_CHANGES: WILL_DESTROY"
+            ]
           }
         ]
       },

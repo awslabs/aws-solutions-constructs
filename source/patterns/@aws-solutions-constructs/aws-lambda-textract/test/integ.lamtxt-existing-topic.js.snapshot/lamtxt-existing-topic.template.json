@@ -1,10 +1,114 @@
 {
  "Description": "Integration Test for aws-lambda-translate with asyncJobs",
  "Resources": {
-  "MyTopic86869434": {
+  "SnsTopic2C1570A4": {
    "Type": "AWS::SNS::Topic",
    "Properties": {
+    "KmsMasterKeyId": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":kms:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":alias/aws/sns"
+      ]
+     ]
+    },
     "TopicName": "custom-topic"
+   }
+  },
+  "SnsTopicPolicy520DD923": {
+   "Type": "AWS::SNS::TopicPolicy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "SNS:AddPermission",
+        "SNS:DeleteTopic",
+        "SNS:GetTopicAttributes",
+        "SNS:ListSubscriptionsByTopic",
+        "SNS:Publish",
+        "SNS:Receive",
+        "SNS:RemovePermission",
+        "SNS:SetTopicAttributes",
+        "SNS:Subscribe"
+       ],
+       "Condition": {
+        "StringEquals": {
+         "AWS:SourceOwner": {
+          "Ref": "AWS::AccountId"
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       },
+       "Resource": {
+        "Ref": "SnsTopic2C1570A4"
+       },
+       "Sid": "TopicOwnerOnlyAccess"
+      },
+      {
+       "Action": [
+        "SNS:AddPermission",
+        "SNS:DeleteTopic",
+        "SNS:GetTopicAttributes",
+        "SNS:ListSubscriptionsByTopic",
+        "SNS:Publish",
+        "SNS:Receive",
+        "SNS:RemovePermission",
+        "SNS:SetTopicAttributes",
+        "SNS:Subscribe"
+       ],
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": {
+        "Ref": "SnsTopic2C1570A4"
+       },
+       "Sid": "HttpsOnly"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Topics": [
+     {
+      "Ref": "SnsTopic2C1570A4"
+     }
+    ]
    }
   },
   "testlambdatranslatestacktestlambdatranslatestacksourcebucketS3LoggingBucketEF52D1D4": {
@@ -449,7 +553,39 @@
        "Action": "sns:Publish",
        "Effect": "Allow",
        "Resource": {
-        "Ref": "MyTopic86869434"
+        "Ref": "SnsTopic2C1570A4"
+       }
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey*"
+       ],
+       "Condition": {
+        "ForAnyValue:StringEquals": {
+         "kms:ResourceAliases": "alias/aws/sns"
+        }
+       },
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":kms:",
+          {
+           "Ref": "AWS::Region"
+          },
+          ":",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":key/*"
+         ]
+        ]
        }
       }
      ],
@@ -630,7 +766,7 @@
        ]
       },
       "SNS_TOPIC_ARN": {
-       "Ref": "MyTopic86869434"
+       "Ref": "SnsTopic2C1570A4"
       }
      }
     },

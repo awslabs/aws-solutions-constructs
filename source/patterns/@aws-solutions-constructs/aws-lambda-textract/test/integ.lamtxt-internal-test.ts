@@ -12,12 +12,13 @@
  */
 
 // Imports
-import { App, Stack } from "aws-cdk-lib";
+import { App, Stack, Duration } from "aws-cdk-lib";
 import { LambdaToTextract } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
+import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
 
 // Setup
 const app = new App();
@@ -25,21 +26,22 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-lambda-translate with asyncJobs';
 
-const buildTopicResponse = defaults.buildTopic(stack, 'MyTopic', {
-  topicProps: {
-    topicName: "custom-topic"
-  }
+// Definitions
+const construct = new LambdaToTextract(stack, 'test-lambda-translate-stack', {
+  lambdaFunctionProps: {
+    code: lambda.Code.fromAsset('lambda'),
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    handler: 'index.handler',
+    timeout: Duration.seconds(45)
+  },
+  asyncJobs: true
 });
 
-// Definitions
-new LambdaToTextract(stack, 'test-lambda-translate-stack', {
-  lambdaFunctionProps: {
-    code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {\'statusCode\': 200, \'body\': \'\'}; }'),
-    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
-    handler: 'index.handler'
-  },
-  existingNotificationTopicObj: buildTopicResponse.topic,
-  asyncJobs: true
+// Upload content files to the source bucket
+new s3deploy.BucketDeployment(stack, 'DeployContent', {
+  sources: [s3deploy.Source.asset('content')],
+  destinationBucket: construct.sourceBucket!,
+  destinationKeyPrefix: '/',
 });
 
 defaults.SuppressCfnNagLambdaWarnings(stack);
