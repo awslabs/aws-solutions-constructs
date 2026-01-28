@@ -185,6 +185,8 @@ test('Test deployment with AWS managed destination bucket', () => {
   expect(construct.sourceBucketInterface).toBeDefined();
   expect(construct.sourceLoggingBucket).toBeDefined();
   expect(construct.snsNotificationTopic).toBeDefined();
+  expect(construct.destinationBucket).not.toBeDefined();
+  expect(construct.destinationBucketInterface).not.toBeDefined();
 
   const template = Template.fromStack(stack);
 
