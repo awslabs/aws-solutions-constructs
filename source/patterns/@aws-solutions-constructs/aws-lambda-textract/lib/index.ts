@@ -36,6 +36,10 @@ export interface LambdaToTextractProps {
   /**
    * Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
    *
+   * Functon will have these Textract permissions: ['textract:DetectDocumentText', 'textract:AnalyzeDocument', 'textract:AnalyzeExpense',
+   * 'textract:AnalyzeID']. When asyncJobs is true, ['textract:Start/GetDocumentTextDetection', 'textract:Start/GetDocumentAnalysis',
+   * 'textract:Start/GetDocumentAnalysis', 'textract:Start/GetLendingAnalysis' ]
+   *
    * @default - Default properties are used.
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
@@ -86,14 +90,6 @@ export interface LambdaToTextractProps {
    * @default - true
    */
   readonly createCustomerManagedOutputBucket?: boolean;
-  /**
-   * Optional array of additional IAM permissions to grant to the Lambda function for Amazon Textract.
-   *
-   * @default - ['textract:DetectDocumentText', 'textract:AnalyzeDocument', 'textract:AnalyzeExpense', 'textract:AnalyzeID'].
-   * When asyncJobs is true, ['textract:Start/GetDocumentTextDetection', 'textract:Start/GetDocumentAnalysis',
-   * 'textract:Start/GetDocumentAnalysis', 'textract:Start/GetLendingAnalysis' ] are added.
-   */
-  readonly additionalPermissions?: string[];
   /**
    * An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
    */
@@ -323,14 +319,6 @@ export class LambdaToTextract extends Construct {
     textractConfiguration.lambdaIamActionsRequired.forEach((action: string) => {
       lambdaFunctionRoleActions.push(action);
     });
-
-    if (props.additionalPermissions) {
-      props.additionalPermissions.forEach((permission: string) => {
-        if (!lambdaFunctionRoleActions.includes(permission)) {
-          lambdaFunctionRoleActions.push(permission);
-        }
-      });
-    }
 
     this.lambdaFunction.addToRolePolicy(new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,

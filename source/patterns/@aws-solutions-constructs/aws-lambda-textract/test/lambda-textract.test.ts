@@ -340,35 +340,6 @@ test('Test deployment with VPC and asyncJobs', () => {
 
 });
 
-test('Test deployment with additionalPermissions', () => {
-  const app = new App();
-  const stack = new Stack(app, "test-stack");
-
-  deployTestConstructStructure(stack, {
-    additionalPermissions: ['textract:GetDocumentAnalysis', 'textract:GetDocumentTextDetection']
-  });
-
-  const template = Template.fromStack(stack);
-
-  template.hasResourceProperties('AWS::IAM::Policy', {
-    PolicyDocument: {
-      Statement: Match.arrayWith([
-        Match.objectLike({
-          Effect: 'Allow',
-          Action: Match.arrayWith([
-            'textract:DetectDocumentText',
-            'textract:AnalyzeDocument',
-            'textract:AnalyzeExpense',
-            'textract:AnalyzeID',
-            'textract:GetDocumentAnalysis',
-            'textract:GetDocumentTextDetection'
-          ])
-        })
-      ])
-    }
-  });
-});
-
 test('Test custom environment variable names', () => {
   const app = new App();
   const stack = new Stack(app, "test-stack");
