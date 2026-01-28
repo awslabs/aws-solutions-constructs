@@ -174,7 +174,7 @@ DESTINATION_BUCKET_NAME
 
 |dataAccessRoleArnEnvironmentVariableName? |`string` |Optional Name for the Lambda
 function environment variable set to the ARN of the IAM role used for asynchronous translation jobs. Only valid when asyncJobs is true. Default:
-SNS_ROLE_ARN
+DATA_ACCESS_ROLE_ARN
 
 |sourceLoggingBucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
@@ -250,7 +250,7 @@ set the following defaults:
 * Set Environment Variables
 ** (default) SOURCE_BUCKET_NAME (when asyncJobs is true)
 ** (default) DESTINATION_BUCKET_NAME (when asyncJobs is true)
-** (default) SNS_ROLE_ARN (when asyncJobs is true)
+** (default) DATA_ACCESS_ROLE_ARN (when asyncJobs is true)
 ** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
 and higher functions)
 * Grant permissions to use Amazon Translate service (['translate:TranslateText', 'translate:TranslateDocument'] by default)
