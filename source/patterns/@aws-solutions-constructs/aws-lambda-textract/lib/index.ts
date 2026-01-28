@@ -215,7 +215,7 @@ export interface EnvironmentVariableDefinition {
  */
 export class LambdaToTextract extends Construct {
   public readonly lambdaFunction: lambda.Function;
-  // Buckets will be set if this construct creates them, if existing buckets are passed in, these will not be set
+  // Buckets will be set if this construct creates them, if existing buckets are passed in, these will not be set (async only)
   public readonly sourceBucket?: s3.Bucket;
   public readonly destinationBucket?: s3.Bucket;
   public readonly sourceLoggingBucket?: s3.Bucket;
