@@ -112,12 +112,12 @@ new LambdaToDynamoDB(this, "test_lambda_dynamodb_stack", new LambdaToDynamoDBPro
 
 |lambdaFunctionProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html[`lambda.FunctionProps`]
-|Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
+|Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` causes an error.
 
 |dynamoTableProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.TableProps.html[`dynamodb.TableProps`]
 |Optional user provided props to override the default props for the DynamoDB Table. Providing both this and
-`existingTableInterface` is an error.
+`existingTableInterface` causes an error.
 
 |existingTableObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.Table.html[`dynamodb.Table`]

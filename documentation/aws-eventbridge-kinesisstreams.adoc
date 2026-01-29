@@ -112,7 +112,7 @@ new EventbridgeToKinesisStreams(this, "test-eventbridge-kinesis-streams",
 |*Name* |*Type* |*Description*
 |existingEventBusInterface?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.IEventBus.html[`events.IEventBus`]
-|Optional - user provided custom event bus for this construct to use. Providing both this and `eventBusProps` is
+|Optional - user provided custom EventBus for this construct to use. Providing both this and `eventBusProps` is
 an error.
 
 |eventBusProps?

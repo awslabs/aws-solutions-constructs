@@ -112,7 +112,7 @@ new LambdaToTextract(this, "LambdaToTextractPattern", new LambdaToTextractProps.
 
 |lambdaFunctionProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html[`lambda.FunctionProps`]
-|Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
+|Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` causes an error.
 Function will have these Textract permissions: ['textract:DetectDocumentText', 'textract:AnalyzeDocument', 'textract:AnalyzeExpense', 'textract:AnalyzeID'].
 When asyncJobs is true, ['textract:Start/GetDocumentTextDetection', 'textract:Start/GetDocumentAnalysis',
 'textract:Start/GetDocumentAnalysis', 'textract:Start/GetLendingAnalysis' ]
@@ -122,7 +122,7 @@ When asyncJobs is true, ['textract:Start/GetDocumentTextDetection', 'textract:St
 |existingSourceBucketObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
 |Existing instance of S3 Bucket object for source documents. If this is provided, then also
-providing sourceBucketProps is an error. Only valid when asyncJobs is true.
+providing sourceBucketProps causes an error. Only valid when asyncJobs is true.
 
 |sourceBucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
@@ -132,7 +132,7 @@ Bucket. Only valid when asyncJobs is true.
 |existingDestinationBucketObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
 |Existing instance of S3 Bucket object for analysis results. If this is provided, then also
-providing destinationBucketProps is an error. Only valid when asyncJobs is true.
+providing destinationBucketProps causes an error. Only valid when asyncJobs is true.
 
 |destinationBucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
@@ -193,7 +193,7 @@ SNS_TOPIC_ARN
 
 |notificationTopicProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sns.TopicProps.html[`sns.TopicProps`]
-|Optional - user provided properties to override the default properties for the SNS topic. Providing both this and `existingNotificationTopicObj` is an error. Only valid when asyncJobs is true.
+|Optional - user provided properties to override the default properties for the SNS topic. Providing both this and `existingNotificationTopicObj` causes an error. Only valid when asyncJobs is true.
 
 |enableNotificationTopicEncryptionWithCustomerManagedKey? |`boolean` |If no key is
 provided, this flag determines whether the SNS Topic is encrypted with a

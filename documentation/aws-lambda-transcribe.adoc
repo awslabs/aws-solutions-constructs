@@ -118,7 +118,7 @@ Lambda function.
 |existingSourceBucketObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
 |Existing instance of S3 Bucket object for source audio files. If this is provided, then also
-providing sourceBucketProps is an error.
+providing sourceBucketProps causes an error.
 
 |sourceBucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
@@ -128,7 +128,7 @@ Bucket.
 |existingDestinationBucketObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
 |Existing instance of S3 Bucket object for transcription results. If this is provided, then also
-providing destinationBucketProps is an error.
+providing destinationBucketProps causes an error.
 
 |destinationBucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]

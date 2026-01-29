@@ -154,7 +154,7 @@ new LambdaToSagemakerEndpoint(this, "LambdaToSagemakerEndpointPattern",
 
 |lambdaFunctionProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html[`lambda.FunctionProps`]
-|Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
+|Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` causes an error.
 
 |existingSagemakerEndpointObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sagemaker.CfnEndpoint.html[`sagemaker.CfnEndpoint`]

@@ -147,7 +147,7 @@ public API. This has implications for the VPC and ALB.
 |loadBalancerProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationLoadBalancerProps.html[elasticloadbalancingv2.ApplicationLoadBalancerProps]
 |Optional custom properties for a new loadBalancer. Providing both this
-and existingLoadBalancer is an error. This cannot specify a VPC, it will
+and existingLoadBalancer causes an error. This cannot specify a VPC, it will
 use the VPC in existingVpc or the VPC created by the construct.
 
 |existingLoadBalancerObj?
@@ -186,12 +186,12 @@ from the first instantiation.
 VPC will be used by the new ALB and any Private Hosted Zone the
 construct creates (that’s why loadBalancerProps and
 privateHostedZoneProps can’t include a VPC). Providing both this and
-existingVpc is an error.
+existingVpc causes an error.
 
 |existingVpc?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html[ec2.IVpc]
 |An existing VPC in which to deploy the construct. Providing both this
-and vpcProps is an error. If the client provides an existing load
+and vpcProps causes an error. If the client provides an existing load
 balancer and/or existing Private Hosted Zone, those constructs must
 exist in this VPC.
 

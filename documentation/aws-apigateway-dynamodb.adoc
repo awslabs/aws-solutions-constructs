@@ -83,7 +83,7 @@ new ApiGatewayToDynamoDB(this, "test-api-gateway-dynamodb-default", new ApiGatew
 |dynamoTableProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.TableProps.html[`dynamodb.TableProps`]
 |Optional user provided props to override the default props for the DynamoDB Table. Providing both this and
-`existingTableInterface` is an error.
+`existingTableInterface` causes an error.
 
 |existingTableObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.Table.html[`dynamodb.Table`]

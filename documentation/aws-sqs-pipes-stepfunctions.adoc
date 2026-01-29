@@ -182,7 +182,7 @@ that can be done here in the sourceParameters property.
 called to enrich the message between source and target. The construct
 will configure the pipe IAM role to allow invoking the function (but
 will not affect the IArole assigned to the function). Specifying both
-this and enrichmentStateMachine is an error. Default - undefined
+this and enrichmentStateMachine causes an error. Default - undefined
 
 |enrichmentStateMachine?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachine.html[sfn.StateMachine]
@@ -190,7 +190,7 @@ this and enrichmentStateMachine is an error. Default - undefined
 configure to be called to enrich the message between source and target.
 The construct will configure the pipe IAM role to allow executing the
 state machine (but will not affect the IAM role assigned to the state
-machine). Specifying both this and enrichmentStateMachine is an error.
+machine). Specifying both this and enrichmentStateMachine causes an error.
 Default - undefined
 
 |logLevel? |PipesLogLevel |Threshold for what messages the new pipe
@@ -200,7 +200,7 @@ the level to OFF will prevent any log group from being created.
 Providing pipeProps.logConfiguration will controls all aspects of
 logging and any construct provided log configuration is disabled. If
 pipeProps.logConfiguration is provided then specifying this or
-pipeLogProps is an error.
+pipeLogProps causes an error.
 
 |pipeLogProps? |link:[logs.LogGroupProps] |Default behavior is for the
 this construct to create a new CloudWatch Logs log group for the pipe.
