@@ -97,7 +97,8 @@ export enum ServiceEndpointTypes {
   BEDROCK_RUNTIME = "BEDROCK_RUNTIME",
   KENDRA = "KENDRA",
   TRANSCRIBE = "TRANSCRIBE",
-  TRANSLATE = "TRANSLATE"
+  TRANSLATE = "TRANSLATE",
+  TEXTRACT = "TEXTRACT"
 }
 
 enum EndpointTypes {
@@ -202,6 +203,11 @@ const endpointSettings: EndpointDefinition[] = [
     endpointName: ServiceEndpointTypes.TRANSLATE,
     endpointType: EndpointTypes.INTERFACE,
     endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.TRANSLATE
+  },
+  {
+    endpointName: ServiceEndpointTypes.TEXTRACT,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.TEXTRACT
   }
 ];
 

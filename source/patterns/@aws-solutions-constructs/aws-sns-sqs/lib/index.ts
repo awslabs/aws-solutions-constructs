@@ -35,7 +35,7 @@ export interface SnsToSqsProps {
   readonly existingTopicObj?: sns.Topic;
   /**
    * Optional - user provided properties to override the default properties for the SNS topic.
-   * Providing both this and `existingTopicObj` is an error.
+   * Providing both this and `existingTopicObj` causes an error.
    *
    * @default - Default properties are used.
    */

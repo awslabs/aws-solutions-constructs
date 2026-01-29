@@ -24,7 +24,7 @@ export interface FargateToS3Props {
    * Optional custom properties for a VPC the construct will create. This VPC will
    * be used by the new Fargate service the construct creates (that's
    * why targetGroupProps can't include a VPC). Providing
-   * both this and existingVpc is an error. An S3 Interface
+   * both this and existingVpc causes an error. An S3 Interface
    * endpoint will be included in this VPC.
    *
    * @default - none
@@ -32,7 +32,7 @@ export interface FargateToS3Props {
   readonly vpcProps?: ec2.VpcProps;
   /**
    * An existing VPC in which to deploy the construct. Providing both this and
-   * vpcProps is an error. If the client provides an existing Fargate service,
+   * vpcProps causes an error. If the client provides an existing Fargate service,
    * this value must be the VPC where the service is running. An S3 Interface
    * endpoint will be added to this VPC.
    *
@@ -94,7 +94,7 @@ export interface FargateToS3Props {
    */
   readonly existingFargateServiceObject?: ecs.FargateService;
   /**
-   * Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps is an error.
+   * Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps causes an error.
    *
    * @default - None
    */

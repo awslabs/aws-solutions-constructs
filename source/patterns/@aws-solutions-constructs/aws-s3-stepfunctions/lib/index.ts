@@ -27,7 +27,7 @@ import * as logs from 'aws-cdk-lib/aws-logs';
  */
 export interface S3ToStepfunctionsProps {
   /**
-   * Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps is an error.
+   * Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps causes an error.
    * The Amazon EventBridge property must be enabled in the existing bucket for the construct to work.
    *
    * @default - None

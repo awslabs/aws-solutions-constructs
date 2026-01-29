@@ -23,7 +23,7 @@ import { CfnListener, CfnTargetGroup } from "aws-cdk-lib/aws-elasticloadbalancin
 export interface AlbToFargateProps {
   /**
    * Optional custom properties for a new loadBalancer. Providing both this and
-   * existingLoadBalancer is an error. This cannot specify a VPC, it will use the VPC
+   * existingLoadBalancer causes an error. This cannot specify a VPC, it will use the VPC
    * in existingVpc or the VPC created by the construct.
    *
    * @default - none
@@ -67,14 +67,14 @@ export interface AlbToFargateProps {
    * Optional custom properties for a VPC the construct will create. This VPC will
    * be used by the new ALB and any Private Hosted Zone the construct creates (that's
    * why loadBalancerProps and privateHostedZoneProps can't include a VPC). Providing
-   * both this and existingVpc is an error.
+   * both this and existingVpc causes an error.
    *
    * @default - none
    */
   readonly vpcProps?: ec2.VpcProps;
   /**
    * An existing VPC in which to deploy the construct. Providing both this and
-   * vpcProps is an error. If the client provides an existing load balancer and/or
+   * vpcProps causes an error. If the client provides an existing load balancer and/or
    * existing Private Hosted Zone, those constructs must exist in this VPC.
    *
    * @default - none
@@ -89,7 +89,7 @@ export interface AlbToFargateProps {
   readonly logAlbAccessLogs?: boolean;
   /**
    * Optional properties to customize the bucket used to store the ALB Access
-   * Logs. Supplying this and setting logAccessLogs to false is an error.
+   * Logs. Supplying this and setting logAccessLogs to false causes an error.
    *
    * @default - none
    */

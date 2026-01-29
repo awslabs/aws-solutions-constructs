@@ -18,14 +18,14 @@ image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-t
 [width="100%",cols="<46%,54%",options="header",]
 |===
 |*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
 Logo] Python
 |`aws_solutions_constructs.aws_cloudfront_oai_s3`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-cloudfront-oai-s3`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
 Logo] Java |`software.amazon.awsconstructs.services.cloudfrontoais3`
 |===
 
@@ -108,15 +108,13 @@ for example: `/production`. Default value is `'/'`
 
 |existingBucketObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
-|Existing instance of S3 content bucket object or interface. If this is
+|Optional - existing instance of S3 Bucket. If this is
 provided, then also providing bucketProps will cause an error.
 
 |bucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
-|Optional user provided props to override the default props for the S3
-content bucket. Note - to log S3 access for this bucket to an existing
-S3 bucket, put the existing log bucket in bucketProps:
-`serverAccessLogsBucket`
+|Optional user provided props to override the default props for the S3 Content Bucket, providing both this and `existingBucketObj` will cause an error.
+Note - to log S3 access for this bucket to an existing S3 bucket, put the existing log bucket in bucketProps: `serverAccessLogsBucket`
 
 |logS3AccessLogs? |boolean |Whether to turn on Access Logging for the S3
 bucket. Creates an S3 bucket with associated storage costs for the logs.

@@ -31,7 +31,8 @@ export interface LambdaToTranslateProps {
    */
   readonly existingLambdaObj?: lambda.Function;
   /**
-   * Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
+   * Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj`
+   * causes an error.
    *
    * @default - Default properties are used.
    */
@@ -77,9 +78,11 @@ export interface LambdaToTranslateProps {
    */
   readonly useSameBucket?: boolean;
   /**
-   * Optional array of additional IAM permissions to grant to the Lambda function for Amazon Translate.
+   * Optional array of additional IAM permissions to grant to the Lambda function for Amazon
+   * Translate. This is intended for use with Translate actions and will assign a resource of '*' - permissions for
+   * other services with specific resources should add the permssion using Function.addToRolePolicy().
    *
-   * @default - ['translate:TranslateText', 'translate:TranslateDocument']
+   * Always added - ['translate:TranslateText', 'translate:TranslateDocument']
    */
   readonly additionalPermissions?: string[];
   /**

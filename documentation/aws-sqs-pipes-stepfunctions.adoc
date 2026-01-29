@@ -18,15 +18,15 @@ image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-t
 [width="100%",cols="<46%,54%",options="header",]
 |===
 |*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
 Logo] Python
 |`aws_solutions_constructs.aws_sqs_pipes_stepfunctions`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
 Logo] Typescript
 |`@aws-solutions-constructs/aws-sqs-pipes-stepfunctions`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
 Logo] Java
 |`software.amazon.awsconstructs.services.sqspipesstepfunctions`
 |===
@@ -115,8 +115,7 @@ queue. Providing both this and `queueProps` will cause an error.
 
 |queueProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.QueueProps.html[`sqs.QueueProps`]
-|Optional user provided properties to override the default properties
-for the SQS queue.
+|Optional - user provided properties to override the default properties for the SQS queue. Providing both this and `existingQueueObj` will cause an error.
 
 |encryptQueueWithCmk |`boolean` |Whether to encrypt the Queue with a
 customer managed KMS key (CMK). This is the default behavior, and this
@@ -183,7 +182,7 @@ that can be done here in the sourceParameters property.
 called to enrich the message between source and target. The construct
 will configure the pipe IAM role to allow invoking the function (but
 will not affect the IArole assigned to the function). Specifying both
-this and enrichmentStateMachine is an error. Default - undefined
+this and enrichmentStateMachine causes an error. Default - undefined
 
 |enrichmentStateMachine?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachine.html[sfn.StateMachine]
@@ -191,7 +190,7 @@ this and enrichmentStateMachine is an error. Default - undefined
 configure to be called to enrich the message between source and target.
 The construct will configure the pipe IAM role to allow executing the
 state machine (but will not affect the IAM role assigned to the state
-machine). Specifying both this and enrichmentStateMachine is an error.
+machine). Specifying both this and enrichmentStateMachine causes an error.
 Default - undefined
 
 |logLevel? |PipesLogLevel |Threshold for what messages the new pipe
@@ -201,7 +200,7 @@ the level to OFF will prevent any log group from being created.
 Providing pipeProps.logConfiguration will controls all aspects of
 logging and any construct provided log configuration is disabled. If
 pipeProps.logConfiguration is provided then specifying this or
-pipeLogProps is an error.
+pipeLogProps causes an error.
 
 |pipeLogProps? |link:[logs.LogGroupProps] |Default behavior is for the
 this construct to create a new CloudWatch Logs log group for the pipe.

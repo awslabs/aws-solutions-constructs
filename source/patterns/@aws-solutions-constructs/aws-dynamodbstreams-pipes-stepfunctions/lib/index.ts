@@ -33,7 +33,7 @@ export interface DynamoDBStreamsToPipesToStepfunctionsProps {
 
   /**
    * Optional user provided props to override the default props for the DynamoDB Table. Providing both this and
-   * `existingTableInterface` is an error.
+   * `existingTableInterface` causes an error.
    *
    * @default - Partition key ID: string
    */
@@ -109,21 +109,21 @@ export interface DynamoDBStreamsToPipesToStepfunctionsProps {
    * PipesLogLevel.INFO, PipesLogLevel.TRACE. The default is INFO. Setting the level to OFF will prevent
    * any log group from being created. Providing pipeProps.logConfiguration will controls all aspects of
    * logging and any construct provided log configuration is disabled. If pipeProps.logConfiguration is
-   * provided then specifying this or pipeLogProps is an error.
+   * provided then specifying this or pipeLogProps causes an error.
    */
   readonly logLevel?: PipesLogLevel,
   /**
    * Optional - Lambda function that the construct will configure to be called to enrich the message
    * between source and target. The construct will configure the pipe IAM role to allow invoking the
    * function (but will not affect the IArole assigned to the function). Specifying both this and
-   * enrichmentStateMachine is an error. Default - undefined
+   * enrichmentStateMachine causes an error. Default - undefined
    */
   readonly enrichmentFunction?: lambda.Function,
   /**
    * Optional - Step Functions state machine that the construct will configure to be called to enrich the message
    * between source and target. The construct will configure the pipe IAM role to allow executing the state
    * machine (but will not affect the IAM role assigned to the state machine). Specifying both this and
-   * enrichmentStateMachine is an error. Enrichment is invoked synchronously, so this must be an EXPRESS
+   * enrichmentStateMachine causes an error. Enrichment is invoked synchronously, so this must be an EXPRESS
    * state machin. Default - undefined
    */
   readonly enrichmentStateMachine?: sfn.StateMachine,

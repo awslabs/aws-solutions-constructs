@@ -20,14 +20,14 @@ image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-t
 [width="100%",cols="<63%,37%",options="header",]
 |===
 |*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
 Logo] Python
 |`aws_solutions_constructs.aws_wafwebacl_appsync`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-wafwebacl-appsync`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
 Logo] Java |`software.amazon.awsconstructs.services.wafwebaclappsync`
 |===
 
@@ -116,17 +116,14 @@ CfnGraphQLApi and does not accept CfnGraphQLApiProps._
 
 |existingWebaclObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_waf.CfnWebACL.html[`waf.CfnWebACL`]
-|Existing instance of a WAF web ACL, an error will occur if this and
-props is set.
+|Optional - existing instance of a WAF web ACL, providing both this and `webaclProps` causes an error.
 
 |webaclProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_waf.CfnWebACLProps.html[`waf.CfnWebACLProps`]
-|Optional user-provided props to override the default props for the AWS
-WAF web ACL. To use a different collection of managed rule sets, specify
-a new rules property. Use our
-link:../core/lib/waf-defaults.ts[`wrapManagedRuleSet(managedGroupName: string, vendorName: string, priority: number)`]
-function from core to create an array entry from each desired managed
-rule set.
+|Optional user-provided props to override the default props for the AWS WAF web ACL. Providing both this and
+existingWebaclObj causes an error. To use a different collection of managed rule sets, specify a new rules property.
+Use our link:../core/lib/waf-defaults.ts[wrapManagedRuleSet(managedGroupName: string, vendorName: string,
+priority: number)] function from core to create an array entry from each desired managed rule set.
 |===
 
 == Pattern Properties

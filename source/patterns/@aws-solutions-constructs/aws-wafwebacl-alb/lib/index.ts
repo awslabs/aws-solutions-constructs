@@ -27,7 +27,7 @@ export interface WafwebaclToAlbProps {
    */
   readonly existingLoadBalancerObj: elbv2.ApplicationLoadBalancer,
   /**
-   * Optional - existing instance of a WAF web ACL, providing both this and `webaclProps` is an error.
+   * Optional - existing instance of a WAF web ACL, providing both this and `webaclProps` causes an error.
    */
   readonly existingWebaclObj?: waf.CfnWebACL,
   /**

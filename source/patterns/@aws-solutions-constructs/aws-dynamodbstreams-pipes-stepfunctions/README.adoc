@@ -18,15 +18,15 @@ image:https://img.shields.io/badge/stability-Experimental-important.svg?style=fo
 [width="100%",cols="<46%,54%",options="header",]
 |===
 |*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
 Logo] Python
 |`aws_solutions_constructs.aws_dynamodbstreams_pipes_stepfunctions`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
 Logo] Typescript
 |`@aws-solutions-constructs/aws-dynamodbstreams-pipes-stepfunctions`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
 Logo] Java
 |`software.amazon.awsconstructs.services.dynamodbstreamspipesstepfunctions`
 |===
@@ -111,7 +111,7 @@ new DynamoDBStreamsToPipesToStepfunctions(this, "DynamoDBStreamsToPipesToStepfun
 |dynamoTableProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.TableProps.html[`dynamodb.TableProps`]
 |Optional user provided props to override the default props for the DynamoDB Table. Providing both this and
-`existingTableInterface` is an error.
+`existingTableInterface` causes an error.
 
 |existingTableInterface?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.ITable.html[`dynamodb.ITable`]
@@ -170,7 +170,7 @@ sourceParameters.dynamoDbStreamParameters.
 called to enrich the message between source and target. The construct
 will configure the pipe IAM role to allow invoking the function (but
 will not affect the IArole assigned to the function). Specifying both
-this and enrichmentStateMachine is an error. Default - undefined
+this and enrichmentStateMachine causes an error. Default - undefined
 
 |enrichmentStateMachine?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachine.html[sfn.StateMachine]
@@ -178,7 +178,7 @@ this and enrichmentStateMachine is an error. Default - undefined
 configure to be called to enrich the message between source and target.
 The construct will configure the pipe IAM role to allow executing the
 state machine (but will not affect the IAM role assigned to the state
-machine). Specifying both this and enrichmentStateMachine is an error.
+machine). Specifying both this and enrichmentStateMachine causes an error.
 Default - undefined
 
 |logLevel? |PipesLogLevel |Threshold for what messages the new pipe
@@ -188,7 +188,7 @@ the level to OFF will prevent any log group from being created.
 Providing pipeProps.logConfiguration will controls all aspects of
 logging and any construct provided log configuration is disabled. If
 pipeProps.logConfiguration is provided then specifying this or
-pipeLogProps is an error.
+pipeLogProps causes an error.
 
 |pipeLogProps? |link:[logs.LogGroupProps] |Default behavior is for the
 this construct to create a new CloudWatch Logs log group for the pipe.

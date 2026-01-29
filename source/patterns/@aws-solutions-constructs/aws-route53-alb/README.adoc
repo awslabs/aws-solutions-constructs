@@ -26,13 +26,13 @@ ____
 [width="100%",cols="<46%,54%",options="header",]
 |===
 |*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
 Logo] Python |`aws_solutions_constructs.aws_route53_alb`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-route53-alb`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
 Logo] Java |`software.amazon.awsconstructs.services.route53alb`
 |===
 
@@ -138,25 +138,25 @@ or a privateHostedZoneProps value with at least the Domain Name defined.
 |Optional custom properties for a new Private Hosted Zone. Cannot be
 specified for a public API. Cannot specify a VPC, it will use the VPC in
 existingVpc or the VPC created by the construct. Providing both this and
-existingHostedZoneInterfaceis an error.
+existingHostedZoneInterfacecauses an error.
 
 |existingHostedZoneInterface?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_route53.IHostedZone.html[route53.IHostedZone]
 |Existing Public or Private Hosted Zone (type must match publicApi
-setting). Specifying both this and privateHostedZoneProps is an error.
+setting). Specifying both this and privateHostedZoneProps causes an error.
 If this is a Private Hosted Zone, the associated VPC must be provided as
 the existingVpc property
 
 |loadBalancerProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationLoadBalancerProps.html[elasticloadbalancingv2.ApplicationLoadBalancerProps]
 |Optional custom properties for a new loadBalancer. Providing both this
-and existingLoadBalancer is an error. This cannot specify a VPC, it will
+and existingLoadBalancer causes an error. This cannot specify a VPC, it will
 use the VPC in existingVpc or the VPC created by the construct.
 
 |existingLoadBalancerObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationLoadBalancer.html[elasticloadbalancingv2.ApplicationLoadBalancer]
 |Existing Application Load Balancer to incorporate into the construct
-architecture. Providing both this and loadBalancerProps is an error. The
+architecture. Providing both this and loadBalancerProps causes an error. The
 VPC containing this loadBalancer must match the VPC provided in
 existingVpc.
 
@@ -166,12 +166,12 @@ existingVpc.
 VPC will be used by the new ALB and any Private Hosted Zone the
 construct creates (that’s why loadBalancerProps and
 privateHostedZoneProps can’t include a VPC). Providing both this and
-existingVpc is an error.
+existingVpc causes an error.
 
 |existingVpc?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html[ec2.IVpc]
 |An existing VPC in which to deploy the construct. Providing both this
-and vpcProps is an error. If the client provides an existing load
+and vpcProps causes an error. If the client provides an existing load
 balancer and/or existing Private Hosted Zone, those constructs must
 exist in this VPC.
 
