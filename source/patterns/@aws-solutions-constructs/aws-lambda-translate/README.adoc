@@ -139,7 +139,10 @@ Bucket. Only valid when asyncJobs is true.
 |useSameBucket? |`boolean` |Whether to use the same S3 bucket for both source and destination files.
 When true, only the source bucket will be created and used for both purposes. Only valid when asyncJobs is true. Default: false
 
-|additionalPermissions? |`string[]` |Optional array of additional IAM permissions to grant to the Lambda function for Amazon Translate. Default: ['translate:TranslateText', 'translate:TranslateDocument']
+|additionalPermissions? |`string[]` |Optional array of additional IAM permissions to grant to the Lambda function for Amazon
+Translate. This is intended for use with Translate actions and will assign a resource of '*' - permissions for other services with
+specific resources should add the permssion using Function.addToRolePolicy(). Always added:
+['translate:TranslateText', 'translate:TranslateDocument']
 
 |existingVpc?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html[`ec2.IVpc`]
