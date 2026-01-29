@@ -39,7 +39,7 @@ export interface EventbridgeToSnsProps {
      * Optional - user provided properties to override the default properties when creating a custom EventBus. Setting
      * this value to `{}` will create a custom EventBus using all default properties. If neither this nor
      * `existingEventBusInterface` is provided the construct will use the default EventBus. Providing both this and
-     * `existingEventBusInterface` results an error.
+     * `existingEventBusInterface` causes an error.
      *
      * @default - None
      */

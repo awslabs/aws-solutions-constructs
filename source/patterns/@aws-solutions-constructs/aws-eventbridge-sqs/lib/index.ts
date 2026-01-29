@@ -26,8 +26,8 @@ import { overrideProps } from '@aws-solutions-constructs/core';
  */
 export interface EventbridgeToSqsProps {
   /**
-   * Optional - user provided custom EventBus for this construct to use. Providing both this and `eventBusProps` is
-   * an error.
+   * Optional - user provided custom EventBus for this construct to use. Providing both this and `eventBusProps` 
+   * causes an error.
    *
    * @default - None
    */
@@ -36,7 +36,7 @@ export interface EventbridgeToSqsProps {
    * Optional - user provided properties to override the default properties when creating a custom EventBus. Setting
    * this value to `{}` will create a custom EventBus using all default properties. If neither this nor
    * `existingEventBusInterface` is provided the construct will use the default EventBus. Providing both this and
-   * `existingEventBusInterface` results an error.
+   * `existingEventBusInterface` causes an error.
    *
    * @default - None
    */
