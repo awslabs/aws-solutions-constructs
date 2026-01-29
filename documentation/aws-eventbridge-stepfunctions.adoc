@@ -129,15 +129,15 @@ sfn.StateMachine
 
 |existingEventBusInterface?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.IEventBus.html[`events.IEventBus`]
-|Optional - user provided custom EventBus for this construct to use. Providing both this and `eventBusProps` is
-an error.
+|Optional - user provided custom EventBus for this construct to use. Providing both this and `eventBusProps` 
+causes an error.
 
 |eventBusProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.EventBusProps.html[`events.EventBusProps`]
 |Optional - user provided properties to override the default properties when creating a custom EventBus. Setting
 this value to `{}` will create a custom EventBus using all default properties. If neither this nor
 `existingEventBusInterface` is provided the construct will use the default EventBus. Providing both this and
-`existingEventBusInterface` results an error.
+`existingEventBusInterface` causes an error.
 
 |eventRuleProps
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.RuleProps.html[`events.RuleProps`]
