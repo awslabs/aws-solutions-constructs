@@ -65,7 +65,7 @@ export interface Route53ToAlbProps {
    */
   readonly albLoggingBucketProps?: s3.BucketProps,
   /**
-   * Custom properties for a new VPC. Providing both this and existingVpc 
+   * Custom properties for a new VPC. Providing both this and existingVpc
    * causes an error. If an existingAlb or existing Private Hosted Zone is provided, those
    * already exist in a VPC so this value cannot be provided.
    *

@@ -36,7 +36,7 @@ export interface LambdaToEventbridgeProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * Optional - user provided custom EventBus for this construct to use. Providing both this and `eventBusProps` 
+   * Optional - user provided custom EventBus for this construct to use. Providing both this and `eventBusProps`
    * causes an error.
    *
    * @default - None

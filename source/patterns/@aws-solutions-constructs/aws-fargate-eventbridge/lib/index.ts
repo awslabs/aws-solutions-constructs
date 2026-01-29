@@ -105,7 +105,7 @@ export interface FargateToEventbridgeProps {
    */
   readonly existingContainerDefinitionObject?: ecs.ContainerDefinition;
   /**
-   * Optional - user provided custom EventBus for this construct to use. Providing both this and `eventBusProps` 
+   * Optional - user provided custom EventBus for this construct to use. Providing both this and `eventBusProps`
    * causes an error.
    *
    * @default - None
