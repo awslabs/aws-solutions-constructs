@@ -18,13 +18,13 @@ image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-t
 [width="100%",cols="<46%,54%",options="header",]
 |===
 |*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
 Logo] Python |`aws_solutions_constructs.aws_lambda_sqs`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-lambda-sqs`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
 Logo] Java |`software.amazon.awsconstructs.services.lambdasqs`
 |===
 
@@ -105,14 +105,11 @@ new LambdaToSqs(this, "test-lambda-sqs-stack", new LambdaToSqsProps.Builder()
 |*Name* |*Type* |*Description*
 |existingLambdaObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html[`lambda.Function`]
-|An optional, existing Lambda function to be used instead of the default
-function. Providing both this and `lambdaFunctionProps` will cause an
-error.
+|Optional - instance of an existing Lambda Function object, providing both this and `lambdaFunctionProps` will cause an error.
 
 |lambdaFunctionProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html[`lambda.FunctionProps`]
-|Optional user-provided properties to override the default properties
-for the Lambda function.
+|Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
 
 |existingQueueObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.Queue.html[`sqs.Queue`]
@@ -121,8 +118,7 @@ queue. Providing both this and `queueProps` will cause an error.
 
 |queueProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.QueueProps.html[`sqs.QueueProps`]
-|Optional user-provided properties to override the default properties
-for the SQS queue.
+|Optional - user provided properties to override the default properties for the SQS queue. Providing both this and `existingQueueObj` will cause an error.
 
 |enableQueuePurging? |`boolean` |Whether to grant additional permissions
 to the Lambda function enabling it to purge the SQS queue. Defaults to

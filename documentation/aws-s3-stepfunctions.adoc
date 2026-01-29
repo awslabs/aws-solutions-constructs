@@ -18,14 +18,14 @@ image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-t
 [width="100%",cols="<46%,54%",options="header",]
 |===
 |*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
 Logo] Python
 |`aws_solutions_constructs.aws_s3_stepfunctions`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-s3-stepfunctions`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
 Logo] Java |`software.amazon.awsconstructs.services.s3stepfunctions`
 |===
 
@@ -114,15 +114,13 @@ new S3ToStepfunctions(this, "test_s3_stepfunctions_stack",
 |*Name* |*Type* |*Description*
 |existingBucketObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
-|Existing instance of S3 Bucket object. If this is provided, then also
-providing bucketProps is an error. *The existing bucket must have
+|Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps is an error. *The existing bucket must have
 https://docs.aws.amazon.com/AmazonS3/latest/userguide/enable-event-notifications-eventbridge.html[EventBridge
 enabled] for this to work.*
 
 |bucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
-|Optional user provided props to override the default props for the S3
-Bucket.
+|Optional user provided props to override the default props for the S3 Bucket, providing both this and `existingBucketObj` will cause an error.
 
 |stateMachineProps
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachineProps.html[`sfn.StateMachineProps`]

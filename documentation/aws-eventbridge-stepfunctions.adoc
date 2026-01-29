@@ -18,15 +18,15 @@ image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-t
 [width="100%",cols="<46%,54%",options="header",]
 |===
 |*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
 Logo] Python
 |`aws_solutions_constructs.aws_eventbridge_stepfunctions`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
 Logo] Typescript
 |`@aws-solutions-constructs/aws-eventbridge-stepfunctions`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
 Logo] Java
 |`software.amazon.awsconstructs.services.eventbridgestepfunctions`
 |===
@@ -129,17 +129,15 @@ sfn.StateMachine
 
 |existingEventBusInterface?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.IEventBus.html[`events.IEventBus`]
-|Optional user-provided custom EventBus for construct to use. Providing
-both this and `eventBusProps` results an error.
+|Optional - user provided custom event bus for this construct to use. Providing both this and `eventBusProps` is
+an error.
 
 |eventBusProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.EventBusProps.html[`events.EventBusProps`]
-|Optional user-provided properties to override the default properties
-when creating a custom EventBus. Setting this value to `{}` will
-create a custom EventBus using all default properties. If neither this
-nor `existingEventBusInterface` is provided the construct will use the
-`default` EventBus. Providing both this and `existingEventBusInterface`
-results an error.
+|Optional - user provided properties to override the default properties when creating a custom EventBus. Setting
+this value to `{}` will create a custom EventBus using all default properties. If neither this nor
+`existingEventBusInterface` is provided the construct will use the default EventBus. Providing both this and
+`existingEventBusInterface` results an error.
 
 |eventRuleProps
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.RuleProps.html[`events.RuleProps`]

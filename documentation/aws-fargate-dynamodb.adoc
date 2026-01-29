@@ -18,14 +18,14 @@ image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-t
 [width="100%",cols="<46%,54%",options="header",]
 |===
 |*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
 Logo] Python
 |`aws_solutions_constructs.aws_fargate_dynamodb`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-fargate-dynamodb`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
 Logo] Java |`software.amazon.awsconstructs.services.fargatedynamodb`
 |===
 
@@ -153,13 +153,12 @@ service. This must be the container in the existingFargateServiceObject
 
 |dynamoTableProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.TableProps.html[`dynamodb.TableProps`]
-|Optional user provided props to override the default props for DynamoDB
-Table.
+|Optional user provided props to override the default props for the DynamoDB Table. Providing both this and
+`existingTableInterface` is an error.
 
 |existingTableInterface?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.ITable.html[`dynamodb.ITable`]
-|Existing instance of DynamoDB table object or interface, providing both
-this and `dynamoTableProps` will cause an error.
+|Optional - existing DynamoDB table, providing both this and `dynamoTableProps` will cause an error.
 
 |tablePermissions? |`string` |Optional table permissions to grant to the
 Fargate service. One of the following may be specified: `All`, `Read`,

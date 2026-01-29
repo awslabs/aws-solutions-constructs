@@ -18,13 +18,13 @@ image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-t
 [width="100%",cols="<46%,54%",options="header",]
 |===
 |*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
 Logo] Python |`aws_solutions_constructs.aws_s3_sqs`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-s3-sqs`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
 Logo] Java |`software.amazon.awsconstructs.services.s3sqs`
 |===
 
@@ -80,14 +80,13 @@ new S3ToSqs(this, "S3ToSQSPattern", new S3ToSqsProps.Builder()
 |===
 |*Name* |*Type* |*Description*
 |existingBucketObj?
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.Bucket`]
-|Existing instance of S3 Bucket object. If this is provided, then also
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
+|Optional - existing instance of S3 Bucket. If this is provided, then also
 providing bucketProps is an error.
 
 |bucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
-|Optional user provided props to override the default props for the S3
-Bucket.
+|Optional user provided props to override the default props for the S3 Bucket, providing both this and `existingBucketObj` will cause an error.
 
 |s3EventTypes?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.EventType.html[`s3.EventType[\]`]
@@ -108,8 +107,7 @@ managed CMK.
 
 |queueProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.QueueProps.html[`sqs.QueueProps`]
-|Optional user provided props to override the default props for the SQS
-queue.
+|Optional - user provided properties to override the default properties for the SQS queue. Providing both this and `existingQueueObj` will cause an error.
 
 |deadLetterQueueProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sqs.QueueProps.html[`sqs.QueueProps`]
