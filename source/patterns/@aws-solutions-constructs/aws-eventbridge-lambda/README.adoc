@@ -127,11 +127,11 @@ new EventbridgeToLambda(this, "test-eventbridge-lambda",
 
 |lambdaFunctionProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html[`lambda.FunctionProps`]
-|Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
+|Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` causes an error.
 
 |existingEventBusInterface?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.IEventBus.html[`events.IEventBus`]
-|Optional - user provided custom event bus for this construct to use. Providing both this and `eventBusProps` is
+|Optional - user provided custom EventBus for this construct to use. Providing both this and `eventBusProps` is
 an error.
 
 |eventBusProps?

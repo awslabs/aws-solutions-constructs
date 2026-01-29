@@ -29,8 +29,8 @@ export interface EventbridgeToSnsProps {
      */
     readonly topicProps?: sns.TopicProps;
     /**
-     * Optional - user provided custom event bus for this construct to use. Providing both this and `eventBusProps`
-     * is an error.
+     * Optional - user provided custom EventBus for this construct to use. Providing both this and `eventBusProps`
+     * causes an error.
      *
      * @default - None
      */

@@ -211,7 +211,7 @@ api.JsonSchemaType.OBJECT, required: ['`firstProperty`',
 { firstProperty: { type: api.JsonSchemaType.STRING },
 antotherProperty: { type: api.JsonSchemaType.STRING } } } Only
 relevant for create operation, if allowCreateOperation is not true, then
-supplying this is an error. Sending this value causes this construct to
+supplying this causes an error. Sending this value causes this construct to
 turn on validation for the request body. @default - None
 |===
 

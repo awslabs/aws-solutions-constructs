@@ -29,13 +29,14 @@ export interface LambdaToEventbridgeProps {
    */
   readonly existingLambdaObj?: lambda.Function;
   /**
-   * Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
+   * Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj`
+   * causes an error.
    *
    * @default - Default properties are used.
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * Optional - user provided custom event bus for this construct to use. Providing both this and `eventBusProps` is
+   * Optional - user provided custom EventBus for this construct to use. Providing both this and `eventBusProps` is
    * an error.
    *
    * @default - None

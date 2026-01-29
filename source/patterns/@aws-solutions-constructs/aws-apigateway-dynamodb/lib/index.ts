@@ -26,7 +26,7 @@ import * as logs from 'aws-cdk-lib/aws-logs';
 export interface ApiGatewayToDynamoDBProps {
   /**
    * Optional user provided props to override the default props for the DynamoDB Table. Providing both this and
-   * `existingTableInterface` is an error.
+   * `existingTableInterface` causes an error.
    *
    * @default - Partition key ID: string
    */

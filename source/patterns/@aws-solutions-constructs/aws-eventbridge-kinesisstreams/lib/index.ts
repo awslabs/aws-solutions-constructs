@@ -25,7 +25,7 @@ import { overrideProps } from '@aws-solutions-constructs/core';
  */
 export interface EventbridgeToKinesisStreamsProps {
   /**
-   * Optional - user provided custom event bus for this construct to use. Providing both this and `eventBusProps` is
+   * Optional - user provided custom EventBus for this construct to use. Providing both this and `eventBusProps` is
    * an error.
    *
    * @default - None

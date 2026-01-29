@@ -32,7 +32,7 @@ export interface FargateToKinesisStreamsProps {
    */
   readonly publicApi: boolean;
   /**
-   * Optional custom properties for a new VPC the construct will create. Providing both this and `existingVpc` is an error.
+   * Optional custom properties for a new VPC the construct will create. Providing both this and `existingVpc` causes an error.
    *
    * An Amazon Kinesis Streams Interface Endpoint will be added to this VPC.
    *
@@ -40,7 +40,7 @@ export interface FargateToKinesisStreamsProps {
    */
   readonly vpcProps?: ec2.VpcProps;
   /**
-   * An existing VPC in which to deploy the Fargate Service. Providing both this and `vpcProps` is an error.
+   * An existing VPC in which to deploy the Fargate Service. Providing both this and `vpcProps` causes an error.
    * If the client provides an existing Fargate Service in the `existingFargateServiceObject` property,
    * this value must be the VPC where the service is running.
    *

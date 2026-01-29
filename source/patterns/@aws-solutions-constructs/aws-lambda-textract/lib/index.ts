@@ -34,7 +34,8 @@ export interface LambdaToTextractProps {
    */
   readonly existingLambdaObj?: lambda.Function;
   /**
-   * Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
+   * Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj`
+   * causes an error.
    *
    * Functon will have these Textract permissions: ['textract:DetectDocumentText', 'textract:AnalyzeDocument', 'textract:AnalyzeExpense',
    * 'textract:AnalyzeID']. When asyncJobs is true, ['textract:Start/GetDocumentTextDetection', 'textract:Start/GetDocumentAnalysis',
@@ -146,7 +147,7 @@ export interface LambdaToTextractProps {
   readonly existingNotificationTopicEncryptionKey?: kms.Key;
   /**
    * Optional - user provided properties to override the default properties for the SNS topic.
-   * Providing both this and `existingTopicObj` is an error. Only valid when asyncJobs is true.
+   * Providing both this and `existingTopicObj` causes an error. Only valid when asyncJobs is true.
    *
    * @default - Default properties are used.
    */

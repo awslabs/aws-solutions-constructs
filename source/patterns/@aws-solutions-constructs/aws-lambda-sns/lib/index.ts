@@ -31,7 +31,8 @@ export interface LambdaToSnsProps {
    */
   readonly existingLambdaObj?: lambda.Function;
   /**
-   * Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
+   * Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj`
+   * causes an error.
    *
    * @default - Default properties are used.
    */
@@ -43,7 +44,8 @@ export interface LambdaToSnsProps {
    */
   readonly existingTopicObj?: sns.Topic;
   /**
-   * Optional - user provided properties to override the default properties for the SNS topic. Providing both this and `existingTopicObj` is an error.
+   * Optional - user provided properties to override the default properties for the SNS topic. Providing both this and `existingTopicObj`
+   * causes an error.
    *
    * @default - Default properties are used.
    */

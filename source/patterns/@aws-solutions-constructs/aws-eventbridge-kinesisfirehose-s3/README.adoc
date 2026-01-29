@@ -106,7 +106,7 @@ new EventbridgeToKinesisFirehoseToS3(this, "test-eventbridge-firehose-s3",
 |*Name* |*Type* |*Description*
 |existingEventBusInterface?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.IEventBus.html[`events.IEventBus`]
-|Optional - user provided custom event bus for this construct to use. Providing both this and `eventBusProps` is
+|Optional - user provided custom EventBus for this construct to use. Providing both this and `eventBusProps` is
 an error.
 
 |eventBusProps?
@@ -128,7 +128,7 @@ Firehose Delivery Stream
 |existingBucketObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
 |Optional - existing instance of S3 Bucket. If this is provided, then also
-providing bucketProps is an error.
+providing bucketProps causes an error.
 
 |bucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]

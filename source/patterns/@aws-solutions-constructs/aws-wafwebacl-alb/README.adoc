@@ -132,7 +132,7 @@ applicationLoadBalancerProps._
 
 |existingWebaclObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_waf.CfnWebACL.html[`waf.CfnWebACL`]
-|Optional - existing instance of a WAF web ACL, providing both this and `webaclProps` is an error.
+|Optional - existing instance of a WAF web ACL, providing both this and `webaclProps` causes an error.
 
 |webaclProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_waf.CfnWebACLProps.html[`waf.CfnWebACLProps`]

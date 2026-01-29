@@ -250,7 +250,7 @@ export interface ApiGatewayToSqsProps {
    *  }
    *
    * Only relevant for create operation, if allowCreateOperation is not true, then supplying this
-   * is an error.
+   * causes an error.
    *
    * Sending this value causes this construct to turn on validation for the request body.
    *

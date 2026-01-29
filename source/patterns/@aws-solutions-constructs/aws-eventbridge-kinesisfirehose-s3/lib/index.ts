@@ -27,7 +27,7 @@ import { KinesisFirehoseToS3 } from '@aws-solutions-constructs/aws-kinesisfireho
  */
 export interface EventbridgeToKinesisFirehoseToS3Props {
   /**
-   * Optional - user provided custom event bus for this construct to use. Providing both this and `eventBusProps` is
+   * Optional - user provided custom EventBus for this construct to use. Providing both this and `eventBusProps` is
    * an error.
    *
    * @default - None
@@ -55,7 +55,7 @@ export interface EventbridgeToKinesisFirehoseToS3Props {
    */
   readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any;
   /**
-   * Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps is an error.
+   * Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps causes an error.
    *
    * @default - None
    */

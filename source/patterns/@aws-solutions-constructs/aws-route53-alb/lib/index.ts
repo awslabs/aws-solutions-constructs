@@ -38,14 +38,14 @@ export interface Route53ToAlbProps {
   readonly existingHostedZoneInterface?: r53.IHostedZone,
   /**
    * Custom properties for a new ALB. Providing both this and existingLoadBalancerObj
-   * is an error. These properties cannot include a VPC.
+   * causes an error. These properties cannot include a VPC.
    *
    * @default - None
    */
   readonly loadBalancerProps?: elb.ApplicationLoadBalancerProps | any,
   /**
    * An existing Application Load Balancer. Providing both this and loadBalancerProps
-   * is an error. This ALB must exist in the same VPC specified in existingVPC
+   * causes an error. This ALB must exist in the same VPC specified in existingVPC
    *
    * @default - None
    */
@@ -59,7 +59,7 @@ export interface Route53ToAlbProps {
   readonly logAlbAccessLogs?: boolean,
   /**
    * Optional properties to customize the bucket used to store the ALB Access
-   * Logs. Supplying this and setting logAccessLogs to false is an error.
+   * Logs. Supplying this and setting logAccessLogs to false causes an error.
    *
    * @default - none
    */
@@ -73,7 +73,7 @@ export interface Route53ToAlbProps {
    */
   readonly vpcProps?: ec2.VpcProps,
   /**
-   * An existing VPC. Providing both this and vpcProps is an error. If an existingAlb or existing
+   * An existing VPC. Providing both this and vpcProps causes an error. If an existingAlb or existing
    * Private Hosted Zone is provided, this value must be the VPC associated with those resources.
    *
    * @default - None

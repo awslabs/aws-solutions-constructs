@@ -24,7 +24,7 @@ export interface FargateToSnsProps {
    * Optional custom properties for a VPC the construct will create. This VPC will
    * be used by the new Fargate service the construct creates (that's
    * why targetGroupProps can't include a VPC). Providing
-   * both this and existingVpc is an error. An SNS Interface
+   * both this and existingVpc causes an error. An SNS Interface
    * endpoint will be included in this VPC.
    *
    * @default - none
@@ -32,7 +32,7 @@ export interface FargateToSnsProps {
   readonly vpcProps?: ec2.VpcProps;
   /**
    * An existing VPC in which to deploy the construct. Providing both this and
-   * vpcProps is an error. If the client provides an existing Fargate service,
+   * vpcProps causes an error. If the client provides an existing Fargate service,
    * this value must be the VPC where the service is running. An SNS Interface
    * endpoint will be added to this VPC.
    *
@@ -100,7 +100,8 @@ export interface FargateToSnsProps {
    */
   readonly existingTopicObject?: sns.Topic;
   /**
-   * Optional - user provided properties to override the default properties for the SNS topic. Providing both this and `existingTopicObj` is an error.
+   * Optional - user provided properties to override the default properties for the SNS topic. Providing both this and `existingTopicObj`
+   * causes an error.
    *
    * @default - Default properties are used.
    */

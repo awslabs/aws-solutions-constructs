@@ -28,7 +28,7 @@ export interface FargateToEventbridgeProps {
    * Optional custom properties for a VPC the construct will create. This VPC will
    * be used by the new Fargate service the construct creates (that's
    * why targetGroupProps can't include a VPC). Providing
-   * both this and existingVpc is an error. A Step Functions Interface
+   * both this and existingVpc causes an error. A Step Functions Interface
    * endpoint will be included in this VPC.
    *
    * @default - A set of defaults from vpc-defaults.ts: DefaultPublicPrivateVpcProps() for public APIs
@@ -37,7 +37,7 @@ export interface FargateToEventbridgeProps {
   readonly vpcProps?: ec2.VpcProps;
   /**
    * An existing VPC in which to deploy the construct. Providing both this and
-   * vpcProps is an error. If the client provides an existing Fargate service,
+   * vpcProps causes an error. If the client provides an existing Fargate service,
    * this value must be the VPC where the service is running. A Step Functions Interface
    * endpoint will be added to this VPC.
    *
@@ -105,7 +105,7 @@ export interface FargateToEventbridgeProps {
    */
   readonly existingContainerDefinitionObject?: ecs.ContainerDefinition;
   /**
-   * Optional - user provided custom event bus for this construct to use. Providing both this and `eventBusProps` is
+   * Optional - user provided custom EventBus for this construct to use. Providing both this and `eventBusProps` is
    * an error.
    *
    * @default - None

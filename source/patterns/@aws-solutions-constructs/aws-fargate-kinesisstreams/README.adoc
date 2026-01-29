@@ -104,13 +104,13 @@ existing VPC is specified in the `existingVpc` property.
 |vpcProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.VpcProps.html[`ec2.VpcProps`]
 |Optional custom properties for a new VPC the construct will create.
-Providing both this and `existingVpc` is an error. An Amazon Kinesis
+Providing both this and `existingVpc` causes an error. An Amazon Kinesis
 Streams Interface Endpoint will be added to this VPC.
 
 |existingVpc?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html[`ec2.IVpc`]
 |An existing VPC in which to deploy the Fargate Service. Providing both
-this and `vpcProps` is an error. If the client provides an existing
+this and `vpcProps` causes an error. If the client provides an existing
 Fargate Service in the `existingFargateServiceObject` property, this
 value must be the VPC where the service is running. An Amazon Kinesis
 Streams Interface Endpoint will be added to this VPC.

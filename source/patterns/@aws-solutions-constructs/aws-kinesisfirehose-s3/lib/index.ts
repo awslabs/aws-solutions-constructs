@@ -32,7 +32,7 @@ export interface KinesisFirehoseToS3Props {
    */
   readonly bucketProps?: s3.BucketProps;
   /**
-   * Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps is an error.
+   * Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps causes an error.
    *
    * @default - None
    */

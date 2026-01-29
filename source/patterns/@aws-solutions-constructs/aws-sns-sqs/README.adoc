@@ -164,7 +164,7 @@ the new feature flag) will use the new functionality.
 
 |topicProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sns.TopicProps.html[`sns.TopicProps`]
-|Optional - user provided properties to override the default properties for the SNS topic. Providing both this and `existingTopicObj` is an error.
+|Optional - user provided properties to override the default properties for the SNS topic. Providing both this and `existingTopicObj` causes an error.
 
 |encryptTopicWithCmk |`boolean` |Whether to encrypt the Topic with a
 customer managed KMS key (CMK). This is the default behavior, and this

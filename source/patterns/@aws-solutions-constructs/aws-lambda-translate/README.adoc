@@ -112,14 +112,14 @@ new LambdaToTranslate(this, "LambdaToTranslatePattern", new LambdaToTranslatePro
 
 |lambdaFunctionProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html[`lambda.FunctionProps`]
-|Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
+|Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` causes an error.
 
 |asyncJobs? |`boolean` |Whether to enable asynchronous translation jobs. When true, source and destination S3 buckets will be created and the Lambda function will be granted permissions to start and stop translation jobs. Default: false
 
 |existingSourceBucketObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
 |Existing instance of S3 Bucket object for source files. If this is provided, then also
-providing sourceBucketProps is an error. Only valid when asyncJobs is true.
+providing sourceBucketProps causes an error. Only valid when asyncJobs is true.
 
 |sourceBucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
@@ -129,7 +129,7 @@ Bucket. Only valid when asyncJobs is true.
 |existingDestinationBucketObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
 |Existing instance of S3 Bucket object for translation results. If this is provided, then also
-providing destinationBucketProps is an error. Only valid when asyncJobs is true.
+providing destinationBucketProps causes an error. Only valid when asyncJobs is true.
 
 |destinationBucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
