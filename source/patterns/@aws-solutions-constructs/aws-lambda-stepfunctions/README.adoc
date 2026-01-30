@@ -133,7 +133,10 @@ new LambdaToStepfunctions(this, "test-lambda-stepfunctions-stack",
 
 |stateMachineProps
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachineProps.html[`sfn.StateMachineProps`]
-|User provided props for the sfn.StateMachine.
+|User provided props for the sfn.StateMachine. This or existingStateMachine is required. If you provide
+a value for logs.destination, it must be an ILogGroup even though the prop type is ILogGroupRef. The CDK
+change to ILogGroupRef in v2.235.0 is incompatible with our interface without introducing breaking changes,
+so we still require an ILogGroup (as this implements ILogGroupRef, you can just assign it to logs.destination)
 
 |createCloudWatchAlarms |`boolean` |Whether to create recommended
 CloudWatch alarms

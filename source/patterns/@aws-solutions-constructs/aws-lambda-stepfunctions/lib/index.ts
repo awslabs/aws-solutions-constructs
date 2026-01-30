@@ -39,7 +39,10 @@ export interface LambdaToStepfunctionsProps {
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
-   * User provided StateMachineProps to override the defaults
+   * User provided props for the sfn.StateMachine. This or existingStateMachine is required. If you provide
+   * a value for logs.destination, it must be an ILogGroup even though the prop type is ILogGroupRef. The CDK
+   * change to ILogGroupRef in v2.235.0 is incompatible with our interface without introducing breaking changes,
+   * so we still require an ILogGroup (as this implements ILogGroupRef, you can just assign it to logs.destination)
    *
    * @default - None
    */
