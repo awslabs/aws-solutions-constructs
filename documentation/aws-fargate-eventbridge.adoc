@@ -26,14 +26,14 @@ ____
 [width="100%",cols="<46%,54%",options="header",]
 |===
 |*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
 Logo] Python
 |`aws_solutions_constructs.aws_fargate_eventbridge`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-fargate-eventbridge`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
 Logo] Java |`software.amazon.awsconstructs.services.fargateeventbridge`
 |===
 
@@ -105,12 +105,12 @@ public API. This has implications for the VPC.
 |Optional custom properties for a VPC the construct will create. This
 VPC will be used by any Private Hosted Zone the construct creates
 (that’s why loadBalancerProps and privateHostedZoneProps can’t include a
-VPC). Providing both this and existingVpc is an error.
+VPC). Providing both this and existingVpc causes an error.
 
 |existingVpc?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html[ec2.IVpc]
 |An existing VPC in which to deploy the construct. Providing both this
-and vpcProps is an error. If the client provides an existing load
+and vpcProps causes an error. If the client provides an existing load
 balancer and/or existing Private Hosted Zone, those constructs must
 exist in this VPC.
 
@@ -160,17 +160,15 @@ service. This must be the container in the existingFargateServiceObject
 
 |existingEventBusInterface?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.IEventBus.html[`events.IEventBus`]
-|Optional user-provided custom event bus for construct to use. Providing
-both this and `eventBusProps` results an error.
+|Optional - user provided custom EventBus for this construct to use. Providing both this and `eventBusProps` 
+causes an error.
 
 |eventBusProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events.EventBusProps.html[`events.EventBusProps`]
-|Optional user-provided properties to override the default properties
-when creating a custom event bus. Setting this value to `{}` will
-create a custom event bus using all default properties. If neither this
-nor `existingEventBusInterface` is provided the construct will use the
-`default` event bus. Providing both this and `existingEventBusInterface`
-results an error.
+|Optional - user provided properties to override the default properties when creating a custom EventBus. Setting
+this value to `{}` will create a custom EventBus using all default properties. If neither this nor
+`existingEventBusInterface` is provided the construct will use the default EventBus. Providing both this and
+`existingEventBusInterface` causes an error.
 
 |eventBusEnvironmentVariableName? |`string` |Optional Name for the
 container environment variable set to the DynamoDB table name. Default:

@@ -29,14 +29,15 @@ export interface LambdaToDynamoDBProps {
    */
   readonly existingLambdaObj?: lambda.Function;
   /**
-   * Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` is an error.
+   * Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj`
+   * causes an error.
    *
    * @default - Default props are used
    */
   readonly lambdaFunctionProps?: lambda.FunctionProps;
   /**
    * Optional user provided props to override the default props for the DynamoDB Table. Providing both this and
-   * `existingTableInterface` is an error.
+   * `existingTableInterface` causes an error.
    *
    * @default - Partition key ID: string
    */

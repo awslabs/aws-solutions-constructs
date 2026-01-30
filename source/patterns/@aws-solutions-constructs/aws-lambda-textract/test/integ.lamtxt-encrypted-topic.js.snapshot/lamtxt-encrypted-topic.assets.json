@@ -1,0 +1,20 @@
+{
+  "version": "48.0.0",
+  "files": {
+    "5e33cdbd9005138b7c48056a05421ed3b151b5cab78f2362ce9071ae67676c7c": {
+      "displayName": "lamtxt-encrypted-topic Template",
+      "source": {
+        "path": "lamtxt-encrypted-topic.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region-9005def5": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "5e33cdbd9005138b7c48056a05421ed3b151b5cab78f2362ce9071ae67676c7c.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

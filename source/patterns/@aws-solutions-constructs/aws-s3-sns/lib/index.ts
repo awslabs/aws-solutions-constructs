@@ -27,7 +27,7 @@ import { Stack } from 'aws-cdk-lib';
  */
 export interface S3ToSnsProps {
     /**
-     * Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps is an error.
+     * Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps causes an error.
      *
      * @default - None
      */
@@ -80,7 +80,7 @@ export interface S3ToSnsProps {
     readonly existingTopicEncryptionKey?: kms.Key;
     /**
      * Optional - user provided properties to override the default properties for the SNS topic. Providing both this and
-     * `existingTopicObj` is an error.
+     * `existingTopicObj` causes an error.
      *
      * @default - Default props are used
      */

@@ -18,14 +18,14 @@ image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-t
 [width="100%",cols="<46%,54%",options="header",]
 |===
 |*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
 Logo] Python
 |`aws_solutions_constructs.aws_iot_kinesisfirehose_s3`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-iot-kinesisfirehose-s3`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
 Logo] Java
 |`software.amazon.awsconstructs.services.iotkinesisfirehoses3`
 |===
@@ -126,7 +126,7 @@ Firehose Delivery Stream
 
 |existingBucketObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
-|Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps is an error.
+|Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps causes an error.
 `bucketProps` will cause an error.
 
 |bucketProps?

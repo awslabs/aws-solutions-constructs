@@ -18,14 +18,14 @@ image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-t
 [width="100%",cols="<46%,54%",options="header",]
 |===
 |*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
 Logo] Python
 |`aws_solutions_constructs.aws_route53_apigateway`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-route53-apigateway`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
 Logo] Java |`software.amazon.awsconstructs.services.route53apigateway`
 |===
 
@@ -182,12 +182,12 @@ public API. This has implications for the Hosted Zone and VPC.
 |Optional custom properties for a new Private Hosted Zone. Cannot be
 specified for a public API. Cannot specify a VPC, it will use the VPC in
 existingVpc or the VPC created by the construct. Providing both this and
-existingHostedZoneInterface is an error.
+existingHostedZoneInterface causes an error.
 
 |existingHostedZoneInterface?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_route53.IHostedZone.html[route53.IHostedZone]
 |Existing Public or Private Hosted Zone (type must match publicApi
-setting). Specifying both this and privateHostedZoneProps is an error.
+setting). Specifying both this and privateHostedZoneProps causes an error.
 If this is a Private Hosted Zone, the associated VPC must be provided as
 the existingVpc property.
 

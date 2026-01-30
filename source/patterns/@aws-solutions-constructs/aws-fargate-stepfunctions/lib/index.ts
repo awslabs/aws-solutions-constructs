@@ -30,7 +30,7 @@ export interface FargateToStepfunctionsProps {
    * Optional custom properties for a VPC the construct will create. This VPC will
    * be used by the new Fargate service the construct creates (that's
    * why targetGroupProps can't include a VPC). Providing
-   * both this and existingVpc is an error. A Step Functions Interface
+   * both this and existingVpc causes an error. A Step Functions Interface
    * endpoint will be included in this VPC.
    *
    * @default - A set of defaults from vpc-defaults.ts: DefaultPublicPrivateVpcProps() for public APIs
@@ -39,7 +39,7 @@ export interface FargateToStepfunctionsProps {
   readonly vpcProps?: ec2.VpcProps;
   /**
    * An existing VPC in which to deploy the construct. Providing both this and
-   * vpcProps is an error. If the client provides an existing Fargate service,
+   * vpcProps causes an error. If the client provides an existing Fargate service,
    * this value must be the VPC where the service is running. A Step Functions Interface
    * endpoint will be added to this VPC.
    *

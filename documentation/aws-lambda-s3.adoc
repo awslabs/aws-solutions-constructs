@@ -18,13 +18,13 @@ image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-t
 [width="100%",cols="<46%,54%",options="header",]
 |===
 |*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
 Logo] Python |`aws_solutions_constructs.aws_lambda_s3`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-lambda-s3`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
 Logo] Java |`software.amazon.awsconstructs.services.lambdas3`
 |===
 
@@ -104,23 +104,21 @@ new LambdaToS3(this, "LambdaToS3Pattern", new LambdaToS3Props.Builder()
 |*Name* |*Type* |*Description*
 |existingLambdaObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html[`lambda.Function`]
-|Existing instance of Lambda Function object, providing both this and
+|Optional - instance of an existing Lambda Function object, providing both this and
 `lambdaFunctionProps` will cause an error.
 
 |lambdaFunctionProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html[`lambda.FunctionProps`]
-|Optional user provided props to override the default props for the
-Lambda function.
+|Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` causes an error.
 
 |existingBucketObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
-|Existing instance of S3 Bucket object. If this is provided, then also
-providing bucketProps is an error.
+|Optional - existing instance of S3 Bucket. If this is provided, then also
+providing bucketProps causes an error.
 
 |bucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
-|Optional user provided props to override the default props for the S3
-Bucket.
+|Optional user provided props to override the default props for the S3 Bucket, providing both this and `existingBucketObj` will cause an error.
 
 |bucketPermissions? |`string[]` |Optional bucket permissions to
 grant to the Lambda function. One or more of the following may be

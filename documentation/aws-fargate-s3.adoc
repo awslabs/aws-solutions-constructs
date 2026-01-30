@@ -18,13 +18,13 @@ image:https://img.shields.io/badge/cfn--resources-stable-success.svg?style=for-t
 [width="100%",cols="<46%,54%",options="header",]
 |===
 |*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
 Logo] Python |`aws_solutions_constructs.aws_fargate_s3`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-fargate-s3`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
 Logo] Java |`software.amazon.awsconstructs.services.fargates3`
 |===
 
@@ -98,12 +98,12 @@ public API. This has implications for the VPC.
 |Optional custom properties for a VPC the construct will create. This
 VPC will be used by any Private Hosted Zone the construct creates
 (that’s why loadBalancerProps and privateHostedZoneProps can’t include a
-VPC). Providing both this and existingVpc is an error.
+VPC). Providing both this and existingVpc causes an error.
 
 |existingVpc?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html[ec2.IVpc]
 |An existing VPC in which to deploy the construct. Providing both this
-and vpcProps is an error. If the client provides an existing load
+and vpcProps causes an error. If the client provides an existing load
 balancer and/or existing Private Hosted Zone, those constructs must
 exist in this VPC.
 
@@ -151,15 +151,14 @@ clusterProps
 |A container definition already instantiated as part of a Fargate
 service. This must be the container in the existingFargateServiceObject
 
-|existingBucketInterface?
+|existingBucketObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
-|Existing S3 Bucket interface. Providing this property and `bucketProps`
+|Optional - existing instance of S3 Bucket. If this is provided, then also providing bucketProps
 results in an error.
 
 |bucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
-|Optional user provided props to override the default props for the S3
-Bucket.
+|Optional user provided props to override the default props for the S3 Bucket, providing both this and `existingBucketObj` will cause an error.
 
 |loggingBucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]

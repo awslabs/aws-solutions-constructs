@@ -18,15 +18,15 @@ image:https://img.shields.io/badge/stability-Experimental-important.svg?style=fo
 [width="100%",cols="<46%,54%",options="header",]
 |===
 |*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
 Logo] Python
 |`aws_solutions_constructs.aws_lambda_elasticachememcached`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
 Logo] Typescript
 |`@aws-solutions-constructs/aws-lambda-elasticachememcached`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
 Logo] Java
 |`software.amazon.awsconstructs.services.lambdaelasticachememcached`
 |===
@@ -107,13 +107,12 @@ new LambdaToElasticachememcached(this, "LambdaToCachePattern", new LambdaToElast
 |*Name* |*Type* |*Description*
 |existingLambdaObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html[`lambda.Function`]
-|Existing instance of Lambda Function object, providing both this and
+|Optional - instance of an existing Lambda Function object, providing both this and
 `lambdaFunctionProps` will cause an error.
 
 |lambdaFunctionProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html[`lambda.FunctionProps`]
-|Optional user provided props to override the default props for the
-Lambda function.
+|Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj` causes an error.
 
 |existingVpc?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html[`ec2.IVpc`]

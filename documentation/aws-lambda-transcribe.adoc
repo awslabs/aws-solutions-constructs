@@ -18,13 +18,13 @@ image:https://img.shields.io/badge/stability-Experimental-important.svg?style=fo
 [width="100%",cols="<46%,54%",options="header",]
 |===
 |*Language* |*Package*
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/python32.png[Python
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
 Logo] Python |`aws_solutions_constructs.aws_lambda_transcribe`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/typescript32.png[Typescript
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
 Logo] Typescript |`@aws-solutions-constructs/aws-lambda-transcribe`
 
-|image:https://docs.aws.amazon.com/cdk/api/latest/img/java32.png[Java
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
 Logo] Java |`software.amazon.awsconstructs.services.lambdatranscribe`
 |===
 
@@ -107,7 +107,7 @@ new LambdaToTranscribe(this, "LambdaToTranscribePattern", new LambdaToTranscribe
 |*Name* |*Type* |*Description*
 |existingLambdaObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html[`lambda.Function`]
-|Existing instance of Lambda Function object, providing both this and
+|Optional - instance of an existing Lambda Function object, providing both this and
 `lambdaFunctionProps` will cause an error.
 
 |lambdaFunctionProps?
@@ -118,7 +118,7 @@ Lambda function.
 |existingSourceBucketObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
 |Existing instance of S3 Bucket object for source audio files. If this is provided, then also
-providing sourceBucketProps is an error.
+providing sourceBucketProps causes an error.
 
 |sourceBucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
@@ -128,7 +128,7 @@ Bucket.
 |existingDestinationBucketObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
 |Existing instance of S3 Bucket object for transcription results. If this is provided, then also
-providing destinationBucketProps is an error.
+providing destinationBucketProps causes an error.
 
 |destinationBucketProps?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]

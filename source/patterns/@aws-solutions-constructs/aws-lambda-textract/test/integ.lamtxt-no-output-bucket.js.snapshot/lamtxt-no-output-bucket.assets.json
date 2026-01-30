@@ -1,0 +1,20 @@
+{
+  "version": "48.0.0",
+  "files": {
+    "cc008e44a1257a96cef931d23eb9bbc9ad929ebeee0ba69b29ea6d2049849cf5": {
+      "displayName": "lamtxt-no-output-bucket Template",
+      "source": {
+        "path": "lamtxt-no-output-bucket.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region-0fe9765c": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "cc008e44a1257a96cef931d23eb9bbc9ad929ebeee0ba69b29ea6d2049849cf5.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
