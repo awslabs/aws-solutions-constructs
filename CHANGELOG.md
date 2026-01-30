@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.98.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.97.0...v2.98.0) (2026-01-30)
+
+
+### Features
+
+* **aws-lamda-textract:** new construct ([#1449](https://github.com/awslabs/aws-solutions-constructs/issues/1449)) ([87e1e1d](https://github.com/awslabs/aws-solutions-constructs/commit/87e1e1dc544770d69743bd3895ef0aeac8bc64df))
+
 ## [2.97.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.96.0...v2.97.0) (2025-12-24)
 
 Built on CDK 2.233.0
