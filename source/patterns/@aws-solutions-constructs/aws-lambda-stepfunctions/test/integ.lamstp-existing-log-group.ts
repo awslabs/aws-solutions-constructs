@@ -63,7 +63,16 @@ const props: LambdaToStepfunctionsProps = {
 // Add the pattern
 new LambdaToStepfunctions(stack, 'test-lambda-stepfunctions-construct', props);
 
+defaults.addCfnSuppressRules(myLog, [
+  {
+    id: 'W84',
+    reason: 'Supports a shortlived test stack with no data'
+  }
+]);
+
 // Synth the app
-new IntegTest(stack, 'Integ', { testCases: [
-  stack
-] });
+new IntegTest(stack, 'Integ', {
+  testCases: [
+    stack
+  ]
+});

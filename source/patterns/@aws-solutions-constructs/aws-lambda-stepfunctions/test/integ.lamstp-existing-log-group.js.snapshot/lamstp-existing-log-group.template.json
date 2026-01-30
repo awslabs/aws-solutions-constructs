@@ -6,7 +6,17 @@
     "RetentionInDays": 731
    },
    "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W84",
+       "reason": "Supports a shortlived test stack with no data"
+      }
+     ]
+    }
+   }
   },
   "taskFunctionServiceRole31E35058": {
    "Type": "AWS::IAM::Role",
