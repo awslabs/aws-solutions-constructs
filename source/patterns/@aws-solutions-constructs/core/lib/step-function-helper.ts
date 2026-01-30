@@ -62,7 +62,17 @@ export function buildStateMachine(scope: Construct, id: string | undefined, prop
 
   // If they sent a logGroup in stateMachineProps
   if (props.stateMachineProps.logs?.destination) {
-    logGroup = props.stateMachineProps.logs?.destination;
+    // In CDK v2.235.0+, logs.destination is ILogGroupRef, but we need ILogGroup
+    // We need to verify it's actually an ILogGroup (has the full interface)
+    const destination = props.stateMachineProps.logs.destination;
+
+    // Type guard: Check if destination has ILogGroup methods
+    if ('addMetricFilter' in destination && 'grantWrite' in destination) {
+      logGroup = destination as logs.ILogGroup;
+    } else {
+      throw new Error('The provided log group destination must be a full ILogGroup (not just ILogGroupRef). ' +
+        'Please provide a LogGroup created with new LogGroup() or LogGroup.fromLogGroupArn().');
+    }
     consolidatedStateMachineProps = props.stateMachineProps;
   } else {
     // Three possibilities
