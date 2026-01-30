@@ -154,7 +154,10 @@ Defaults to 15.
 
 |stateMachineProps
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachineProps.html[`sfn.StateMachineProps`]
-|User provided props for the sfn.StateMachine.
+|User provided props for the sfn.StateMachine. This or existingStateMachine is required. If you provide
+a value for logs.destination, it must be an ILogGroup even though the prop type is ILogGroupRef. The CDK
+change to ILogGroupRef in v2.235.0 is incompatible with our interface without introducing breaking changes,
+so we still require an ILogGroup (as this implements ILogGroupRef, you can just assign it to logs.destination)
 
 |createCloudWatchAlarms? |`boolean` |Whether to create recommended
 CloudWatch alarms
@@ -170,7 +173,8 @@ CloudWatchLogs LogGroup for the state machine.
 target, roleArn and enrichment settings are set by the construct and
 cannot be overriden here. The construct will generate default
 sourceParameters, targetParameters and logConfiguration (found
-link:link[here]) that can be overriden by populating those values in
+https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-pipes-pipe.html#cfn-pipes-pipe-logconfiguration[here])
+that can be overriden by populating those values in
 these props. If the client wants to implement enrichment or a filter,
 this is where that information can be provided. Any other props can be
 freely overridden. If a client wants to set values such as batchSize,
@@ -202,8 +206,8 @@ logging and any construct provided log configuration is disabled. If
 pipeProps.logConfiguration is provided then specifying this or
 pipeLogProps causes an error.
 
-|pipeLogProps? |link:[logs.LogGroupProps] |Default behavior is for the
-this construct to create a new CloudWatch Logs log group for the pipe.
+|pipeLogProps? |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs.LogGroupProps.html[`logs.LogGroupProps`] |
+Default behavior is for this construct to create a new CloudWatch Logs log group for the pipe.
 These props are used to override defaults set by AWS or this construct.
 If there are concerns about the cost of log storage, this is where a
 client can specify a shorter retention duration (in days)
