@@ -319,7 +319,7 @@ storage after 90 days
 
 * Lambda function will have permissions to call ['textract:DetectDocumentText', 'textract:AnalyzeDocument', 'textract:AnalyzeExpense', 'textract:AnalyzeID'] operations
 
-===== When asyncJobs is true
+**When asyncJobs is true**
 
 *  Lambda function will add permissions to call [ 'textract:StartDocumentTextDetection', 'textract:GetDocumentTextDetection', 'textract:StartDocumentAnalysis', 'textract:GetDocumentAnalysis', 'textract:StartExpenseAnalysis', 'textract:GetExpenseAnalysis', 'textract:StartLendingAnalysis', 'textract:GetLendingAnalysis' ]
 * When asyncJobs is true, an SNS topic will be created and the Lambda function is granted permission to call ['sns:Publish']
