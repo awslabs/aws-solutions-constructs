@@ -99,7 +99,7 @@ certificate = acm.Certificate.from_certificate_arn(
 # MyStack(app, 'id', env=cdk.Environment(account='123456789012', region='us-east-1'))
 AlbToLambda(self, 'new-construct',
             lambda_function_props=_lambda.FunctionProps(
-                runtime=_lambda.Runtime.PYTHON_3_11,
+                runtime=_lambda.Runtime.PYTHON_3_14,
                 code=_lambda.Code.from_asset('lambda'),
                 handler='index.handler',
             ),
