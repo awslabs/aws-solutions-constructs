@@ -98,7 +98,8 @@ export enum ServiceEndpointTypes {
   KENDRA = "KENDRA",
   TRANSCRIBE = "TRANSCRIBE",
   TRANSLATE = "TRANSLATE",
-  TEXTRACT = "TEXTRACT"
+  TEXTRACT = "TEXTRACT",
+  POLLY = "POLLY"
 }
 
 enum EndpointTypes {
@@ -208,6 +209,11 @@ const endpointSettings: EndpointDefinition[] = [
     endpointName: ServiceEndpointTypes.TEXTRACT,
     endpointType: EndpointTypes.INTERFACE,
     endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.TEXTRACT
+  },
+  {
+    endpointName: ServiceEndpointTypes.POLLY,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.POLLY
   }
 ];
 
