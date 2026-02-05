@@ -390,6 +390,26 @@
   "ExistingTopicAA6FD6BC": {
    "Type": "AWS::SNS::Topic",
    "Properties": {
+    "KmsMasterKeyId": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":kms:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":alias/aws/sns"
+      ]
+     ]
+    },
     "TopicName": "existing-polly-topic"
    }
   },
@@ -502,6 +522,38 @@
        "Effect": "Allow",
        "Resource": {
         "Ref": "ExistingTopicAA6FD6BC"
+       }
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey*"
+       ],
+       "Condition": {
+        "ForAnyValue:StringEquals": {
+         "kms:ResourceAliases": "alias/aws/sns"
+        }
+       },
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":kms:",
+          {
+           "Ref": "AWS::Region"
+          },
+          ":",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":key/*"
+         ]
+        ]
        }
       }
      ],

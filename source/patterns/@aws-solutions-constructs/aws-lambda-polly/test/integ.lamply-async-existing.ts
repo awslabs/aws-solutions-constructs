@@ -15,6 +15,7 @@ import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { LambdaToPolly, LambdaToPollyProps } from '../lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as sns from 'aws-cdk-lib/aws-sns';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import { generateIntegStackName, SetConsistentFeatureFlags, CreateScrapBucket } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as defaults from '@aws-solutions-constructs/core';
@@ -29,7 +30,8 @@ const existingBucket = CreateScrapBucket(stack, 'existing-bucket', {
   autoDeleteObjects: true
 });
 const existingTopic = new sns.Topic(stack, 'ExistingTopic', {
-  topicName: 'existing-polly-topic'
+  topicName: 'existing-polly-topic',
+  masterKey: kms.Alias.fromAliasName(stack, 'SnsKey', 'alias/aws/sns')
 });
 
 const props: LambdaToPollyProps = {
