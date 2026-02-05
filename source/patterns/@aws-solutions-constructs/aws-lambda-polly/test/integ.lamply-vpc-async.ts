@@ -43,6 +43,7 @@ const props: LambdaToPollyProps = {
 new LambdaToPolly(stack, 'test-lambda-polly-vpc-async', props);
 
 defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 
 new IntegTest(stack, 'Integ', { testCases: [
   stack

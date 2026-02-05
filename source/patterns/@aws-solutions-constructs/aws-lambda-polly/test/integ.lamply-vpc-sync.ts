@@ -32,6 +32,7 @@ const props: LambdaToPollyProps = {
 };
 
 new LambdaToPolly(stack, 'test-lambda-polly-vpc-sync', props);
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::VpcRestrictDefaultSGCustomResourceProvider');
 
 new IntegTest(stack, 'Integ', {
   testCases: [
