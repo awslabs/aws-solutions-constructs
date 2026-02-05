@@ -87,11 +87,11 @@ export function ConfigurePollySupport(scope: Construct, id: string, props: Polly
       encryptionKey: props.topicEncryptionKey,
       encryptionKeyProps: props.topicEncryptionKeyProps
     });
-    
+
     configuration = overrideProps(configuration, {
       snsNotificationTopic: buildTopicResponse.topic,
     });
-    
+
     if (buildTopicResponse.key) {
       configuration = overrideProps(configuration, { notificationTopicEncryptionKey: buildTopicResponse.key });
     }
@@ -109,7 +109,7 @@ export function ConfigurePollySupport(scope: Construct, id: string, props: Polly
         loggingBucketProps: props.loggingBucketProps,
         logS3AccessLogs: props.logS3AccessLogs
       }, `${id}-output-bucket`);
-      
+
       configuration = overrideProps(configuration, {
         destinationBucket: {
           bucket: buildBucketResponse.bucket,
@@ -186,7 +186,7 @@ export function CheckPollyProps(props: PollyProps): void {
 
     if (props.existingTopicObj || props.topicProps ||
       props.existingTopicEncryptionKey || props.topicEncryptionKey ||
-      props.topicEncryptionKeyProps || 
+      props.topicEncryptionKeyProps ||
       props.enableTopicEncryptionWithCustomerManagedKey !== undefined ||
       props.topicEnvironmentVariableName) {
       errorMessages += 'Error - Topic properties can only be provided when asyncJobs is true.\n';

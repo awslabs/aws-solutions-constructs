@@ -43,23 +43,23 @@ This implementation plan breaks down the aws-lambda-polly construct into discret
     - Test IAM action list generation
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6_
 
-- [ ] 4. Implement core Polly validation function
-  - [ ] 4.1 Create `CheckPollyProps()` function in `core/lib/polly-helper.ts`
+- [x] 4. Implement core Polly validation function
+  - [x] 4.1 Create `CheckPollyProps()` function in `core/lib/polly-helper.ts`
     - Validate bucket props only provided when asyncJobs is true
     - Validate topic props only provided when asyncJobs is true
     - Validate conflicting bucket props (existing vs new)
     - Validate conflicting topic props (existing vs new)
     - _Requirements: 13.2, 13.3, 13.5, 13.6_
   
-  - [ ] 4.2 Write unit tests for `CheckPollyProps()`
+  - [x] 4.2 Write unit tests for `CheckPollyProps()`
     - Test error thrown for bucket props without asyncJobs
     - Test error thrown for topic props without asyncJobs
     - Test error thrown for conflicting bucket props
     - Test error thrown for conflicting topic props
     - _Requirements: 13.2, 13.3, 13.5, 13.6_
 
-- [ ] 5. Implement main construct props interface
-  - [ ] 5.1 Create `lib/index.ts` with `LambdaToPollyProps` interface
+- [x] 5. Implement main construct props interface
+  - [x] 5.1 Create `lib/index.ts` with `LambdaToPollyProps` interface
     - Add Lambda configuration props (existingLambdaObj, lambdaFunctionProps)
     - Add asyncJobs flag
     - Add S3 bucket props (existingBucketObj, bucketProps, bucketEnvironmentVariableName)
@@ -70,62 +70,62 @@ This implementation plan breaks down the aws-lambda-polly construct into discret
     - Include JSDoc comments matching aws-lambda-textract patterns
     - _Requirements: 1.1, 1.2, 2.1, 3.1, 3.2, 4.1, 4.2, 8.1, 9.1, 9.3, 10.1, 10.2, 10.3, 11.1, 11.3, 12.2, 12.3, 12.4_
 
-- [ ] 6. Implement main construct class
-  - [ ] 6.1 Create `LambdaToPolly` class with public properties
+- [x] 6. Implement main construct class
+  - [x] 6.1 Create `LambdaToPolly` class with public properties
     - Add lambdaFunction property
     - Add destinationBucket, loggingBucket, destinationBucketInterface properties (async only)
     - Add snsNotificationTopic, notificationTopicEncryptionKey properties (async only)
     - Add vpc property
     - _Requirements: 1.5, 3.5, 3.6, 3.7, 4.5, 10.5, 12.7_
   
-  - [ ] 6.2 Implement constructor validation
+  - [x] 6.2 Implement constructor validation
     - Set CDK context for S3 server access logs
     - Call CheckLambdaProps()
     - Call CheckVpcProps()
     - Call CheckPollyProps()
     - _Requirements: 1.3, 10.6, 13.1, 13.2, 13.3, 13.4, 13.5, 13.6_
   
-  - [ ] 6.3 Implement VPC configuration
+  - [x] 6.3 Implement VPC configuration
     - Build VPC when deployVpc or existingVpc provided
     - Add Polly interface endpoint to VPC
     - _Requirements: 10.1, 10.2, 10.3, 10.4_
   
-  - [ ] 6.4 Implement Polly configuration
+  - [x] 6.4 Implement Polly configuration
     - Call ConfigurePollySupport() helper
     - Extract bucket, topic, and encryption key from result
     - Store environment variables from result
     - _Requirements: 2.1, 2.2, 3.1, 3.2, 3.4, 4.1, 4.2, 4.4_
   
-  - [ ] 6.5 Implement Lambda function creation
+  - [x] 6.5 Implement Lambda function creation
     - Call buildLambdaFunction() with props and VPC
     - _Requirements: 1.1, 1.2, 1.4_
   
-  - [ ] 6.6 Implement IAM permissions
+  - [x] 6.6 Implement IAM permissions
     - Add Polly IAM actions from configuration
     - Grant S3 read/write permissions (async only)
     - Grant SNS publish permissions (async only)
     - _Requirements: 5.1, 5.2, 6.1, 6.2, 6.3, 6.4, 7.1, 7.2, 7.4, 8.1, 8.2_
   
-  - [ ] 6.7 Implement environment variables
+  - [x] 6.7 Implement environment variables
     - Set bucket and topic environment variables from configuration
     - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5_
   
-  - [ ] 6.8 Implement VPC endpoints
+  - [x] 6.8 Implement VPC endpoints
     - Add S3 gateway endpoint when VPC and asyncJobs
     - _Requirements: 10.5_
 
-- [ ] 7. Checkpoint - Ensure all tests pass
+- [x] 7. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 8. Write unit tests for construct
-  - [ ] 8.1 Test default synchronous mode
+- [x] 8. Write unit tests for construct
+  - [x] 8.1 Test default synchronous mode
     - Verify Lambda function created
     - Verify only sync Polly permissions granted
     - Verify no bucket or topic created
     - Verify no environment variables set
     - _Requirements: 1.4, 2.4, 2.5, 2.6, 5.1, 9.5_
   
-  - [ ] 8.2 Test asynchronous mode with defaults
+  - [x] 8.2 Test asynchronous mode with defaults
     - Verify Lambda function created
     - Verify bucket created with encryption, versioning, logging
     - Verify topic created with encryption
@@ -135,149 +135,149 @@ This implementation plan breaks down the aws-lambda-polly construct into discret
     - Verify default environment variables set
     - _Requirements: 2.1, 2.2, 2.3, 3.4, 4.4, 5.1, 6.1, 6.2, 6.3, 7.1, 7.2, 8.1, 9.2, 9.4, 11.1_
   
-  - [ ] 8.3 Test with existing Lambda function
+  - [x] 8.3 Test with existing Lambda function
     - Verify existing Lambda used
     - _Requirements: 1.2_
   
-  - [ ] 8.4 Test with existing bucket and topic (async mode)
+  - [x] 8.4 Test with existing bucket and topic (async mode)
     - Verify existing bucket used
     - Verify existing topic used
     - Verify bucket interface property set
     - _Requirements: 3.2, 4.2_
   
-  - [ ] 8.5 Test custom environment variable names
+  - [x] 8.5 Test custom environment variable names
     - Verify custom bucket env var name used
     - Verify custom topic env var name used
     - _Requirements: 9.1, 9.3_
   
-  - [ ] 8.6 Test VPC deployment
+  - [x] 8.6 Test VPC deployment
     - Verify VPC created when deployVpc true
     - Verify existing VPC used when provided
     - Verify Polly interface endpoint created
     - Verify S3 gateway endpoint created when asyncJobs
     - _Requirements: 10.1, 10.2, 10.4, 10.5_
   
-  - [ ] 8.7 Test logging configuration
+  - [x] 8.7 Test logging configuration
     - Verify access logging enabled by default
     - Verify access logging can be disabled
     - Verify logging bucket created
     - _Requirements: 11.1, 11.2, 11.4_
   
-  - [ ] 8.8 Test encryption configuration
+  - [x] 8.8 Test encryption configuration
     - Verify AWS-managed encryption by default
     - Verify customer-managed key when specified
     - Verify encryption key property exposed
     - _Requirements: 12.4, 12.5, 12.6_
   
-  - [ ] 8.9 Test validation errors
+  - [x] 8.9 Test validation errors
     - Verify error for conflicting Lambda props
     - Verify error for conflicting VPC props
     - Verify error for bucket props without asyncJobs
     - Verify error for topic props without asyncJobs
     - _Requirements: 1.3, 10.6, 13.1, 13.5, 13.6_
 
-- [ ] 9. Write property-based tests
-  - [ ] 9.1 Property test for Lambda function props application
+- [x] 9. Write property-based tests
+  - [x] 9.1 Property test for Lambda function props application
     - **Property 1: Lambda Function Props Application**
     - **Validates: Requirements 1.1**
     - Generate random valid Lambda props
     - Verify props applied to synthesized template
     - Run 100+ iterations
   
-  - [ ] 9.2 Property test for custom bucket props application
+  - [x] 9.2 Property test for custom bucket props application
     - **Property 2: Custom Bucket Props Application**
     - **Validates: Requirements 3.1**
     - Generate random valid bucket props with asyncJobs true
     - Verify props applied to synthesized template
     - Run 100+ iterations
   
-  - [ ] 9.3 Property test for custom topic props application
+  - [x] 9.3 Property test for custom topic props application
     - **Property 3: Custom Topic Props Application**
     - **Validates: Requirements 4.1**
     - Generate random valid topic props with asyncJobs true
     - Verify props applied to synthesized template
     - Run 100+ iterations
   
-  - [ ] 9.4 Property test for custom bucket environment variable names
+  - [x] 9.4 Property test for custom bucket environment variable names
     - **Property 4: Custom Environment Variable Names**
     - **Validates: Requirements 9.1**
     - Generate random valid env var names with asyncJobs true
     - Verify Lambda has env var with custom name
     - Run 100+ iterations
   
-  - [ ] 9.5 Property test for custom topic environment variable names
+  - [x] 9.5 Property test for custom topic environment variable names
     - **Property 5: Custom Topic Environment Variable Names**
     - **Validates: Requirements 9.3**
     - Generate random valid env var names with asyncJobs true
     - Verify Lambda has env var with custom name
     - Run 100+ iterations
   
-  - [ ] 9.6 Property test for custom VPC props application
+  - [x] 9.6 Property test for custom VPC props application
     - **Property 6: Custom VPC Props Application**
     - **Validates: Requirements 10.3**
     - Generate random valid VPC props with deployVpc true
     - Verify props applied to synthesized template
     - Run 100+ iterations
   
-  - [ ] 9.7 Property test for custom logging bucket props application
+  - [x] 9.7 Property test for custom logging bucket props application
     - **Property 7: Custom Logging Bucket Props Application**
     - **Validates: Requirements 11.3**
     - Generate random valid logging bucket props with asyncJobs true
     - Verify props applied to synthesized template
     - Run 100+ iterations
   
-  - [ ] 9.8 Property test for custom encryption key props application
+  - [x] 9.8 Property test for custom encryption key props application
     - **Property 8: Custom Encryption Key Props Application**
     - **Validates: Requirements 12.3**
     - Generate random valid key props with asyncJobs true
     - Verify props applied to synthesized template
     - Run 100+ iterations
 
-- [ ] 10. Checkpoint - Ensure all tests pass
+- [x] 10. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 11. Write integration tests
-  - [ ] 11.1 Integration test for default synchronous mode
+- [x] 11. Write integration tests
+  - [x] 11.1 Integration test for default synchronous mode
     - Deploy construct with minimal props
     - Verify Lambda function created
     - Verify no bucket or topic created
     - Capture snapshot
     - _Requirements: 1.4, 2.4, 2.5, 5.1_
   
-  - [ ] 11.2 Integration test for asynchronous mode with defaults
+  - [x] 11.2 Integration test for asynchronous mode with defaults
     - Deploy construct with asyncJobs true
     - Verify Lambda, bucket, and topic created
     - Verify permissions and environment variables
     - Capture snapshot
     - _Requirements: 2.1, 2.2, 2.3, 3.4, 4.4_
   
-  - [ ] 11.3 Integration test for asynchronous mode with existing resources
+  - [x] 11.3 Integration test for asynchronous mode with existing resources
     - Create bucket and topic separately
     - Deploy construct with existing resources
     - Verify construct uses existing resources
     - Capture snapshot
     - _Requirements: 3.2, 4.2_
   
-  - [ ] 11.4 Integration test for VPC deployment with asyncJobs enabled
+  - [x] 11.4 Integration test for VPC deployment with asyncJobs enabled
     - Deploy construct with deployVpc and asyncJobs true
     - Verify VPC, endpoints, Lambda, bucket, topic created
     - Capture snapshot
     - _Requirements: 10.1, 10.4, 10.5_
   
-  - [ ] 11.5 Integration test for VPC deployment with asyncJobs disabled
+  - [x] 11.5 Integration test for VPC deployment with asyncJobs disabled
     - Deploy construct with deployVpc true and asyncJobs false
     - Verify VPC, Polly endpoint, Lambda created
     - Verify no S3 endpoint, bucket, or topic created
     - Capture snapshot
     - _Requirements: 10.1, 10.4_
   
-  - [ ] 11.6 Integration test for custom encryption configuration
+  - [x] 11.6 Integration test for custom encryption configuration
     - Deploy construct with customer-managed KMS key
     - Verify topic encrypted with custom key
     - Capture snapshot
     - _Requirements: 12.2, 12.4_
   
-  - [ ] 11.7 Integration test for custom logging configuration
+  - [x] 11.7 Integration test for custom logging configuration
     - Deploy construct with custom logging bucket props
     - Verify logging bucket created with custom props
     - Capture snapshot
@@ -286,8 +286,8 @@ This implementation plan breaks down the aws-lambda-polly construct into discret
 - [ ] 12. Final checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 13. Create README.adoc documentation
-  - [ ] 13.1 Create README.adoc with standard structure
+- [x] 13. Create README.adoc documentation
+  - [x] 13.1 Create README.adoc with standard structure
     - Add stability badge and package information table
     - Add overview section with minimal deployable example in TypeScript, Python, and Java
     - Add Pattern Construct Props table with all props, types, and descriptions

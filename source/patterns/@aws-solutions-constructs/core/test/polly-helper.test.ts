@@ -204,7 +204,7 @@ test('Test environment variable generation with default names', () => {
   const configuration = defaults.ConfigurePollySupport(stack, 'test', { asyncJobs: true });
 
   expect(configuration.environmentVariables).toHaveLength(2);
-  
+
   const bucketEnvVar = configuration.environmentVariables.find(v => v.defaultName === 'OUTPUT_BUCKET_NAME');
   expect(bucketEnvVar).toBeDefined();
   expect(bucketEnvVar?.clientNameOverride).toBeUndefined();
@@ -227,7 +227,7 @@ test('Test environment variable generation with custom names', () => {
   });
 
   expect(configuration.environmentVariables).toHaveLength(2);
-  
+
   const bucketEnvVar = configuration.environmentVariables.find(v => v.defaultName === 'OUTPUT_BUCKET_NAME');
   expect(bucketEnvVar).toBeDefined();
   expect(bucketEnvVar?.clientNameOverride).toBe('MY_CUSTOM_BUCKET');
