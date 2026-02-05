@@ -1,30 +1,16 @@
 {
   "version": "48.0.0",
   "files": {
-    "41072cb254b71351c2841c5991baf6051cb266fec0e550fc6292f6db071065b9": {
-      "displayName": "test-lambda-polly-custom-encryption/LambdaFunction/Code",
-      "source": {
-        "path": "asset.41072cb254b71351c2841c5991baf6051cb266fec0e550fc6292f6db071065b9",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-2eeaded1": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "41072cb254b71351c2841c5991baf6051cb266fec0e550fc6292f6db071065b9.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "62efeb2ee52f88475aac991c22493fadb4ef25f16b3fd061df724fb085af2963": {
+    "6d6af75eb77bfa66ec18fe0d0577111e6006fdff4a4faa02b97edc227e998906": {
       "displayName": "lamply-custom-encryption Template",
       "source": {
         "path": "lamply-custom-encryption.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-1cfc664e": {
+        "current_account-current_region-31bd945e": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "62efeb2ee52f88475aac991c22493fadb4ef25f16b3fd061df724fb085af2963.json",
+          "objectKey": "6d6af75eb77bfa66ec18fe0d0577111e6006fdff4a4faa02b97edc227e998906.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

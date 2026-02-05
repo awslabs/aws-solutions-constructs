@@ -15,30 +15,16 @@
         }
       }
     },
-    "41072cb254b71351c2841c5991baf6051cb266fec0e550fc6292f6db071065b9": {
-      "displayName": "test-lambda-polly-custom-logging/LambdaFunction/Code",
-      "source": {
-        "path": "asset.41072cb254b71351c2841c5991baf6051cb266fec0e550fc6292f6db071065b9",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-2eeaded1": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "41072cb254b71351c2841c5991baf6051cb266fec0e550fc6292f6db071065b9.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "1883e581fe5f9b6e40380c5c439f4d79e50942cc8a9204746219ffb18d0470a0": {
+    "39b530183c3b68798ecf6c9a633de487fb1eeec17a0579079bbebd485e968437": {
       "displayName": "lamply-custom-logging Template",
       "source": {
         "path": "lamply-custom-logging.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-758f3dea": {
+        "current_account-current_region-c194feaa": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "1883e581fe5f9b6e40380c5c439f4d79e50942cc8a9204746219ffb18d0470a0.json",
+          "objectKey": "39b530183c3b68798ecf6c9a633de487fb1eeec17a0579079bbebd485e968437.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
