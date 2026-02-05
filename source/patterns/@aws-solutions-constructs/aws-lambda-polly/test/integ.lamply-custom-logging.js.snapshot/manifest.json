@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/39b530183c3b68798ecf6c9a633de487fb1eeec17a0579079bbebd485e968437.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/45e115c7caa766207396fbc2264f1f1aa92e4a267e489c525bd321fcfb694e66.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -164,7 +164,7 @@
               "encryption": "S3_MANAGED",
               "versioned": true,
               "blockPublicAccess": "*",
-              "removalPolicy": "retain",
+              "removalPolicy": "destroy",
               "enforceSSL": true,
               "lifecycleRules": [
                 {
@@ -175,7 +175,8 @@
                   ]
                 }
               ],
-              "serverAccessLogsBucket": "*"
+              "serverAccessLogsBucket": "*",
+              "autoDeleteObjects": true
             }
           },
           {
@@ -213,6 +214,18 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdapollycustomloggingtestlambdapollycustomloggingoutputbucketS3BucketPolicy7488B8A5"
+          }
+        ],
+        "/lamply-custom-logging/test-lambda-polly-custom-logging/test-lambda-polly-custom-logging-output-bucketS3Bucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/lamply-custom-logging/test-lambda-polly-custom-logging/test-lambda-polly-custom-logging-output-bucketS3Bucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdapollycustomloggingtestlambdapollycustomloggingoutputbucketS3BucketAutoDeleteObjectsCustomResourceD45B8E81"
           }
         ],
         "/lamply-custom-logging/test-lambda-polly-custom-logging/LambdaFunctionServiceRole": [

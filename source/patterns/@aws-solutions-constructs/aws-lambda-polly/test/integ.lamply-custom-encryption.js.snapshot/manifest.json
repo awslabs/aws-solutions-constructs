@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6d6af75eb77bfa66ec18fe0d0577111e6006fdff4a4faa02b97edc227e998906.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/9984e434b105712eb8e25c974cfb3c5bb514087bebf33784a07bff8bddf6e39f.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -133,8 +133,9 @@
               "encryption": "S3_MANAGED",
               "versioned": true,
               "blockPublicAccess": "*",
-              "removalPolicy": "retain",
-              "enforceSSL": true
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "autoDeleteObjects": true
             }
           }
         ],
@@ -158,6 +159,18 @@
             "data": "testlambdapollycustomencryptiontestlambdapollycustomencryptionoutputbucketS3LoggingBucketPolicy46274621"
           }
         ],
+        "/lamply-custom-encryption/test-lambda-polly-custom-encryption/test-lambda-polly-custom-encryption-output-bucketS3LoggingBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/lamply-custom-encryption/test-lambda-polly-custom-encryption/test-lambda-polly-custom-encryption-output-bucketS3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdapollycustomencryptiontestlambdapollycustomencryptionoutputbucketS3LoggingBucketAutoDeleteObjectsCustomResource0F605053"
+          }
+        ],
         "/lamply-custom-encryption/test-lambda-polly-custom-encryption/test-lambda-polly-custom-encryption-output-bucketS3Bucket": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -165,7 +178,7 @@
               "encryption": "S3_MANAGED",
               "versioned": true,
               "blockPublicAccess": "*",
-              "removalPolicy": "retain",
+              "removalPolicy": "destroy",
               "enforceSSL": true,
               "lifecycleRules": [
                 {
@@ -176,7 +189,8 @@
                   ]
                 }
               ],
-              "serverAccessLogsBucket": "*"
+              "serverAccessLogsBucket": "*",
+              "autoDeleteObjects": true
             }
           },
           {
@@ -214,6 +228,18 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdapollycustomencryptiontestlambdapollycustomencryptionoutputbucketS3BucketPolicyAAB3AA8A"
+          }
+        ],
+        "/lamply-custom-encryption/test-lambda-polly-custom-encryption/test-lambda-polly-custom-encryption-output-bucketS3Bucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/lamply-custom-encryption/test-lambda-polly-custom-encryption/test-lambda-polly-custom-encryption-output-bucketS3Bucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdapollycustomencryptiontestlambdapollycustomencryptionoutputbucketS3BucketAutoDeleteObjectsCustomResource016C155A"
           }
         ],
         "/lamply-custom-encryption/test-lambda-polly-custom-encryption/LambdaFunctionServiceRole": [
@@ -481,6 +507,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdapollycustomencryptionLambdaFunctioninlinePolicyAddedToExecutionRole14DC70ACE"
+          }
+        ],
+        "/lamply-custom-encryption/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
+        "/lamply-custom-encryption/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/lamply-custom-encryption/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
           }
         ],
         "/lamply-custom-encryption/BootstrapVersion": [

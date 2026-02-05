@@ -1,16 +1,30 @@
 {
   "version": "48.0.0",
   "files": {
-    "6d6af75eb77bfa66ec18fe0d0577111e6006fdff4a4faa02b97edc227e998906": {
+    "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "lamply-custom-encryption/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
+      "source": {
+        "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-current_region-e31788a2": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    },
+    "9984e434b105712eb8e25c974cfb3c5bb514087bebf33784a07bff8bddf6e39f": {
       "displayName": "lamply-custom-encryption Template",
       "source": {
         "path": "lamply-custom-encryption.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-31bd945e": {
+        "current_account-current_region-22bcd53c": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "6d6af75eb77bfa66ec18fe0d0577111e6006fdff4a4faa02b97edc227e998906.json",
+          "objectKey": "9984e434b105712eb8e25c974cfb3c5bb514087bebf33784a07bff8bddf6e39f.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

@@ -32,10 +32,16 @@ const props: LambdaToPollyProps = {
   loggingBucketProps: {
     removalPolicy: RemovalPolicy.DESTROY,
     autoDeleteObjects: true
+  },
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
   }
 };
 
 new LambdaToPolly(stack, 'test-lambda-polly-custom-logging', props);
+
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 
 new IntegTest(stack, 'Integ', { testCases: [
   stack

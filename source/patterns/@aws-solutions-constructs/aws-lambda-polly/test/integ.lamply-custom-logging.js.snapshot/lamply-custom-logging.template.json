@@ -327,12 +327,18 @@
      "IgnorePublicAcls": true,
      "RestrictPublicBuckets": true
     },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     }
+    ],
     "VersioningConfiguration": {
      "Status": "Enabled"
     }
    },
-   "UpdateReplacePolicy": "Retain",
-   "DeletionPolicy": "Retain"
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
   },
   "testlambdapollycustomloggingtestlambdapollycustomloggingoutputbucketS3BucketPolicy7488B8A5": {
    "Type": "AWS::S3::BucketPolicy",
@@ -375,11 +381,69 @@
          ]
         }
        ]
+      },
+      {
+       "Action": [
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:PutBucketPolicy"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdapollycustomloggingtestlambdapollycustomloggingoutputbucketS3Bucket20DC4532",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdapollycustomloggingtestlambdapollycustomloggingoutputbucketS3Bucket20DC4532",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
       }
      ],
      "Version": "2012-10-17"
     }
    }
+  },
+  "testlambdapollycustomloggingtestlambdapollycustomloggingoutputbucketS3BucketAutoDeleteObjectsCustomResourceD45B8E81": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "testlambdapollycustomloggingtestlambdapollycustomloggingoutputbucketS3Bucket20DC4532"
+    }
+   },
+   "DependsOn": [
+    "testlambdapollycustomloggingtestlambdapollycustomloggingoutputbucketS3BucketPolicy7488B8A5"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
   },
   "testlambdapollycustomloggingLambdaFunctionServiceRoleA669CB7E": {
    "Type": "AWS::IAM::Role",
@@ -694,7 +758,25 @@
    },
    "DependsOn": [
     "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
-   ]
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "CDK generated custom resource"
+      },
+      {
+       "id": "W89",
+       "reason": "CDK generated custom resource"
+      },
+      {
+       "id": "W92",
+       "reason": "CDK generated custom resource"
+      }
+     ]
+    }
+   }
   }
  },
  "Parameters": {

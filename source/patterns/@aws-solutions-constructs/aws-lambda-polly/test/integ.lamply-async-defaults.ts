@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { App, Stack } from 'aws-cdk-lib';
+import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { LambdaToPolly, LambdaToPollyProps } from '../lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
@@ -28,10 +28,20 @@ const props: LambdaToPollyProps = {
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler'
   },
-  asyncJobs: true
+  asyncJobs: true,
+  loggingBucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  },
+  bucketProps: {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true
+  }
 };
 
 new LambdaToPolly(stack, 'test-lambda-polly-async-defaults', props);
+
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 
 new IntegTest(stack, 'Integ', { testCases: [
   stack

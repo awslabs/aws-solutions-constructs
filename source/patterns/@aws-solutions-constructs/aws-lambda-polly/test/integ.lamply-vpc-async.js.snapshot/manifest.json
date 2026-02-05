@@ -66,7 +66,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fa309070b99b0bb3c113700b0686f53bc397b6cc0c078acd43ecde9709b0f25f.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/12aeaa10a565c59443095837547e650d7c5670880208fc7d90f0747c77e0f23d.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -119,8 +119,9 @@
               "encryption": "S3_MANAGED",
               "versioned": true,
               "blockPublicAccess": "*",
-              "removalPolicy": "retain",
-              "enforceSSL": true
+              "removalPolicy": "destroy",
+              "enforceSSL": true,
+              "autoDeleteObjects": true
             }
           }
         ],
@@ -144,6 +145,18 @@
             "data": "testlambdapollyvpcasynctestlambdapollyvpcasyncoutputbucketS3LoggingBucketPolicyD7E89701"
           }
         ],
+        "/lamply-vpc-async/test-lambda-polly-vpc-async/test-lambda-polly-vpc-async-output-bucketS3LoggingBucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/lamply-vpc-async/test-lambda-polly-vpc-async/test-lambda-polly-vpc-async-output-bucketS3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdapollyvpcasynctestlambdapollyvpcasyncoutputbucketS3LoggingBucketAutoDeleteObjectsCustomResourceA081379A"
+          }
+        ],
         "/lamply-vpc-async/test-lambda-polly-vpc-async/test-lambda-polly-vpc-async-output-bucketS3Bucket": [
           {
             "type": "aws:cdk:analytics:construct",
@@ -151,7 +164,7 @@
               "encryption": "S3_MANAGED",
               "versioned": true,
               "blockPublicAccess": "*",
-              "removalPolicy": "retain",
+              "removalPolicy": "destroy",
               "enforceSSL": true,
               "lifecycleRules": [
                 {
@@ -162,7 +175,8 @@
                   ]
                 }
               ],
-              "serverAccessLogsBucket": "*"
+              "serverAccessLogsBucket": "*",
+              "autoDeleteObjects": true
             }
           },
           {
@@ -200,6 +214,18 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdapollyvpcasynctestlambdapollyvpcasyncoutputbucketS3BucketPolicy0C0A603A"
+          }
+        ],
+        "/lamply-vpc-async/test-lambda-polly-vpc-async/test-lambda-polly-vpc-async-output-bucketS3Bucket/AutoDeleteObjectsCustomResource": [
+          {
+            "type": "aws:cdk:analytics:construct",
+            "data": "*"
+          }
+        ],
+        "/lamply-vpc-async/test-lambda-polly-vpc-async/test-lambda-polly-vpc-async-output-bucketS3Bucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "testlambdapollyvpcasynctestlambdapollyvpcasyncoutputbucketS3BucketAutoDeleteObjectsCustomResourceE5DCAC89"
           }
         ],
         "/lamply-vpc-async/test-lambda-polly-vpc-async/LambdaFunctionServiceRole": [
@@ -835,6 +861,24 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "lamplyvpcasyncPOLLYsecuritygroup60D8992A"
+          }
+        ],
+        "/lamply-vpc-async/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+          {
+            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+            "data": true
+          }
+        ],
+        "/lamply-vpc-async/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/lamply-vpc-async/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
           }
         ],
         "/lamply-vpc-async/BootstrapVersion": [

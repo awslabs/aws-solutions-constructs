@@ -15,16 +15,30 @@
         }
       }
     },
-    "fa309070b99b0bb3c113700b0686f53bc397b6cc0c078acd43ecde9709b0f25f": {
+    "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
+      "displayName": "lamply-vpc-async/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
+      "source": {
+        "path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "current_account-current_region-e31788a2": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    },
+    "12aeaa10a565c59443095837547e650d7c5670880208fc7d90f0747c77e0f23d": {
       "displayName": "lamply-vpc-async Template",
       "source": {
         "path": "lamply-vpc-async.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-fb4bb102": {
+        "current_account-current_region-04573535": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "fa309070b99b0bb3c113700b0686f53bc397b6cc0c078acd43ecde9709b0f25f.json",
+          "objectKey": "12aeaa10a565c59443095837547e650d7c5670880208fc7d90f0747c77e0f23d.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

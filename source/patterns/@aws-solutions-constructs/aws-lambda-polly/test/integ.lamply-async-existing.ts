@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { App, Stack } from 'aws-cdk-lib';
+import { App, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { LambdaToPolly, LambdaToPollyProps } from '../lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as sns from 'aws-cdk-lib/aws-sns';
@@ -24,7 +24,10 @@ const stack = new Stack(app, generateIntegStackName(__filename));
 SetConsistentFeatureFlags(stack);
 
 // Create existing bucket and topic
-const existingBucket = CreateScrapBucket(stack, 'existing-bucket');
+const existingBucket = CreateScrapBucket(stack, 'existing-bucket', {
+  removalPolicy: RemovalPolicy.DESTROY,
+  autoDeleteObjects: true
+});
 const existingTopic = new sns.Topic(stack, 'ExistingTopic', {
   topicName: 'existing-polly-topic'
 });
@@ -41,6 +44,8 @@ const props: LambdaToPollyProps = {
 };
 
 new LambdaToPolly(stack, 'test-lambda-polly-async-existing', props);
+
+defaults.suppressCustomHandlerCfnNagWarnings(stack, 'Custom::S3AutoDeleteObjectsCustomResourceProvider');
 
 new IntegTest(stack, 'Integ', { testCases: [
   stack
