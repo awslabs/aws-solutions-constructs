@@ -1,19 +1,19 @@
 {
   "version": "48.0.0",
   "artifacts": {
-    "lamplyasyncexistingIntegDefaultTestDeployAssertEA9D0643.assets": {
+    "lamplyasyncexistingtopicIntegDefaultTestDeployAssert1B92633B.assets": {
       "type": "cdk:asset-manifest",
       "properties": {
-        "file": "lamplyasyncexistingIntegDefaultTestDeployAssertEA9D0643.assets.json",
+        "file": "lamplyasyncexistingtopicIntegDefaultTestDeployAssert1B92633B.assets.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
       }
     },
-    "lamplyasyncexistingIntegDefaultTestDeployAssertEA9D0643": {
+    "lamplyasyncexistingtopicIntegDefaultTestDeployAssert1B92633B": {
       "type": "aws:cloudformation:stack",
       "environment": "aws://unknown-account/unknown-region",
       "properties": {
-        "templateFile": "lamplyasyncexistingIntegDefaultTestDeployAssertEA9D0643.template.json",
+        "templateFile": "lamplyasyncexistingtopicIntegDefaultTestDeployAssert1B92633B.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
@@ -22,7 +22,7 @@
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
-          "lamplyasyncexistingIntegDefaultTestDeployAssertEA9D0643.assets"
+          "lamplyasyncexistingtopicIntegDefaultTestDeployAssert1B92633B.assets"
         ],
         "lookupRole": {
           "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
@@ -31,37 +31,37 @@
         }
       },
       "dependencies": [
-        "lamplyasyncexistingIntegDefaultTestDeployAssertEA9D0643.assets"
+        "lamplyasyncexistingtopicIntegDefaultTestDeployAssert1B92633B.assets"
       ],
       "metadata": {
-        "/lamply-async-existing/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
+        "/lamply-async-existing-topic/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BootstrapVersion"
           }
         ],
-        "/lamply-async-existing/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
+        "/lamply-async-existing-topic/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
         ]
       },
-      "displayName": "lamply-async-existing/Integ/DefaultTest/DeployAssert"
+      "displayName": "lamply-async-existing-topic/Integ/DefaultTest/DeployAssert"
     },
-    "lamply-async-existing.assets": {
+    "lamply-async-existing-topic.assets": {
       "type": "cdk:asset-manifest",
       "properties": {
-        "file": "lamply-async-existing.assets.json",
+        "file": "lamply-async-existing-topic.assets.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
       }
     },
-    "lamply-async-existing": {
+    "lamply-async-existing-topic": {
       "type": "aws:cloudformation:stack",
       "environment": "aws://unknown-account/unknown-region",
       "properties": {
-        "templateFile": "lamply-async-existing.template.json",
+        "templateFile": "lamply-async-existing-topic.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
@@ -70,7 +70,7 @@
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
-          "lamply-async-existing.assets"
+          "lamply-async-existing-topic.assets"
         ],
         "lookupRole": {
           "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
@@ -79,10 +79,10 @@
         }
       },
       "dependencies": [
-        "lamply-async-existing.assets"
+        "lamply-async-existing-topic.assets"
       ],
       "metadata": {
-        "/lamply-async-existing/existing-bucketLog": [
+        "/lamply-async-existing-topic/existing-bucketLog": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -94,13 +94,13 @@
             }
           }
         ],
-        "/lamply-async-existing/existing-bucketLog/Resource": [
+        "/lamply-async-existing-topic/existing-bucketLog/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "existingbucketLogC09B1A39"
           }
         ],
-        "/lamply-async-existing/existing-bucketLog/Policy": [
+        "/lamply-async-existing-topic/existing-bucketLog/Policy": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -108,43 +108,43 @@
             }
           }
         ],
-        "/lamply-async-existing/existing-bucketLog/Policy/Resource": [
+        "/lamply-async-existing-topic/existing-bucketLog/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "existingbucketLogPolicy7F8A6388"
           }
         ],
-        "/lamply-async-existing/existing-bucketLog/AutoDeleteObjectsCustomResource": [
+        "/lamply-async-existing-topic/existing-bucketLog/AutoDeleteObjectsCustomResource": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": "*"
           }
         ],
-        "/lamply-async-existing/existing-bucketLog/AutoDeleteObjectsCustomResource/Default": [
+        "/lamply-async-existing-topic/existing-bucketLog/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "existingbucketLogAutoDeleteObjectsCustomResource6B4B12B4"
           }
         ],
-        "/lamply-async-existing/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+        "/lamply-async-existing-topic/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
           {
             "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
             "data": true
           }
         ],
-        "/lamply-async-existing/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+        "/lamply-async-existing-topic/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
           }
         ],
-        "/lamply-async-existing/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+        "/lamply-async-existing-topic/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
           }
         ],
-        "/lamply-async-existing/existing-bucket": [
+        "/lamply-async-existing-topic/existing-bucket": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -157,13 +157,13 @@
             }
           }
         ],
-        "/lamply-async-existing/existing-bucket/Resource": [
+        "/lamply-async-existing-topic/existing-bucket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "existingbucket2D00E3FD"
           }
         ],
-        "/lamply-async-existing/existing-bucket/Policy": [
+        "/lamply-async-existing-topic/existing-bucket/Policy": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -171,25 +171,25 @@
             }
           }
         ],
-        "/lamply-async-existing/existing-bucket/Policy/Resource": [
+        "/lamply-async-existing-topic/existing-bucket/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "existingbucketPolicy3282453C"
           }
         ],
-        "/lamply-async-existing/existing-bucket/AutoDeleteObjectsCustomResource": [
+        "/lamply-async-existing-topic/existing-bucket/AutoDeleteObjectsCustomResource": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": "*"
           }
         ],
-        "/lamply-async-existing/existing-bucket/AutoDeleteObjectsCustomResource/Default": [
+        "/lamply-async-existing-topic/existing-bucket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "existingbucketAutoDeleteObjectsCustomResource3D118CE8"
           }
         ],
-        "/lamply-async-existing/ExistingTopic": [
+        "/lamply-async-existing-topic/ExistingTopic": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -198,13 +198,13 @@
             }
           }
         ],
-        "/lamply-async-existing/ExistingTopic/Resource": [
+        "/lamply-async-existing-topic/ExistingTopic/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "ExistingTopicAA6FD6BC"
           }
         ],
-        "/lamply-async-existing/test-lambda-polly-async-existing/LambdaFunctionServiceRole": [
+        "/lamply-async-existing-topic/test-lambda-polly-async-existing/LambdaFunctionServiceRole": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -288,13 +288,13 @@
             }
           }
         ],
-        "/lamply-async-existing/test-lambda-polly-async-existing/LambdaFunctionServiceRole/Resource": [
+        "/lamply-async-existing-topic/test-lambda-polly-async-existing/LambdaFunctionServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdapollyasyncexistingLambdaFunctionServiceRole0FC8EE17"
           }
         ],
-        "/lamply-async-existing/test-lambda-polly-async-existing/LambdaFunctionServiceRole/DefaultPolicy": [
+        "/lamply-async-existing-topic/test-lambda-polly-async-existing/LambdaFunctionServiceRole/DefaultPolicy": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": "*"
@@ -340,13 +340,13 @@
             }
           }
         ],
-        "/lamply-async-existing/test-lambda-polly-async-existing/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+        "/lamply-async-existing-topic/test-lambda-polly-async-existing/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdapollyasyncexistingLambdaFunctionServiceRoleDefaultPolicy3BE25BB6"
           }
         ],
-        "/lamply-async-existing/test-lambda-polly-async-existing/LambdaFunction": [
+        "/lamply-async-existing-topic/test-lambda-polly-async-existing/LambdaFunction": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -389,13 +389,13 @@
             }
           }
         ],
-        "/lamply-async-existing/test-lambda-polly-async-existing/LambdaFunction/Resource": [
+        "/lamply-async-existing-topic/test-lambda-polly-async-existing/LambdaFunction/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdapollyasyncexistingLambdaFunction51392456"
           }
         ],
-        "/lamply-async-existing/test-lambda-polly-async-existing/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+        "/lamply-async-existing-topic/test-lambda-polly-async-existing/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -427,13 +427,13 @@
             }
           }
         ],
-        "/lamply-async-existing/test-lambda-polly-async-existing/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+        "/lamply-async-existing-topic/test-lambda-polly-async-existing/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdapollyasyncexistingLambdaFunctioninlinePolicyAddedToExecutionRole0F80ED95A"
           }
         ],
-        "/lamply-async-existing/test-lambda-polly-async-existing/LambdaFunction/inlinePolicyAddedToExecutionRole-1": [
+        "/lamply-async-existing-topic/test-lambda-polly-async-existing/LambdaFunction/inlinePolicyAddedToExecutionRole-1": [
           {
             "type": "aws:cdk:analytics:construct",
             "data": {
@@ -465,26 +465,26 @@
             }
           }
         ],
-        "/lamply-async-existing/test-lambda-polly-async-existing/LambdaFunction/inlinePolicyAddedToExecutionRole-1/Resource": [
+        "/lamply-async-existing-topic/test-lambda-polly-async-existing/LambdaFunction/inlinePolicyAddedToExecutionRole-1/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "testlambdapollyasyncexistingLambdaFunctioninlinePolicyAddedToExecutionRole148149D58"
           }
         ],
-        "/lamply-async-existing/BootstrapVersion": [
+        "/lamply-async-existing-topic/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BootstrapVersion"
           }
         ],
-        "/lamply-async-existing/CheckBootstrapVersion": [
+        "/lamply-async-existing-topic/CheckBootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
         ]
       },
-      "displayName": "lamply-async-existing"
+      "displayName": "lamply-async-existing-topic"
     },
     "Tree": {
       "type": "cdk:tree",
