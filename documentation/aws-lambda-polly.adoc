@@ -1,0 +1,296 @@
+//!!NODE_ROOT <section>
+//== aws-lambda-polly module
+
+[.topic]
+= aws-lambda-polly
+:info_doctype: section
+:info_title: aws-lambda-polly
+
+
+image:https://img.shields.io/badge/stability-Experimental-important.svg?style=for-the-badge[Stability:Experimental]
+
+[width="100%",cols="<50%,<50%",options="header",]
+|===
+|*Reference Documentation*:
+|https://docs.aws.amazon.com/solutions/latest/constructs/
+|===
+
+[width="100%",cols="<46%,54%",options="header",]
+|===
+|*Language* |*Package*
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/python32.png[Python
+Logo] Python |`aws_solutions_constructs.aws_lambda_polly`
+
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/typescript32.png[Typescript
+Logo] Typescript |`@aws-solutions-constructs/aws-lambda-polly`
+
+|image:https://docs.aws.amazon.com/images/solutions/latest/constructs/images/java32.png[Java
+Logo] Java |`software.amazon.awsconstructs.services.lambdapolly`
+|===
+
+== Overview
+
+This AWS Solutions Construct implements an AWS Lambda function connected
+to Amazon Polly text-to-speech service. For asynchronous speech synthesis tasks, the construct
+can optionally create an S3 bucket for audio output and an SNS topic for completion notifications,
+with appropriate IAM permissions for the Lambda function to interact with Amazon Polly service.
+
+Here is a minimal deployable pattern definition:
+
+====
+[role="tablist"]
+Typescript::
++
+[source,typescript]
+----
+import { Construct } from 'constructs';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { LambdaToPolly } from '@aws-solutions-constructs/aws-lambda-polly';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+
+new LambdaToPolly(this, 'LambdaToPollyPattern', {
+    lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_22_X,
+        handler: 'index.handler',
+        code: lambda.Code.fromAsset(`lambda`)
+    }
+});
+----
+
+Python::
++
+[source,python]
+----
+from aws_solutions_constructs.aws_lambda_polly import LambdaToPolly
+from aws_cdk import (
+    aws_lambda as _lambda,
+    Stack
+)
+from constructs import Construct
+
+LambdaToPolly(self, 'LambdaToPollyPattern',
+        lambda_function_props=_lambda.FunctionProps(
+            code=_lambda.Code.from_asset('lambda'),
+            runtime=_lambda.Runtime.PYTHON_3_14,
+            handler='index.handler'
+        )
+        )
+----
+
+Java::
++
+[source,java]
+----
+import software.constructs.Construct;
+
+import software.amazon.awscdk.Stack;
+import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.services.lambda.*;
+import software.amazon.awscdk.services.lambda.Runtime;
+import software.amazon.awsconstructs.services.lambdapolly.*;
+
+new LambdaToPolly(this, "LambdaToPollyPattern", new LambdaToPollyProps.Builder()
+        .lambdaFunctionProps(new FunctionProps.Builder()
+                .runtime(Runtime.NODEJS_22_X)
+                .code(Code.fromAsset("lambda"))
+                .handler("index.handler")
+                .build())
+        .build());
+----
+====
+
+== Pattern Construct Props
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|existingLambdaObj?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html[`lambda.Function`]
+|Optional - instance of an existing Lambda Function object, providing both this and
+`lambdaFunctionProps` will cause an error.
+
+|lambdaFunctionProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.FunctionProps.html[`lambda.FunctionProps`]
+|Optional - user provided props to override the default props for the Lambda function. Providing both this and `existingLambdaObj`
+causes an error.
+Function will have these Polly permissions: ['polly:SynthesizeSpeech']. When asyncJobs is true, function will also have
+['polly:StartSpeechSynthesisTask', 'polly:GetSpeechSynthesisTask', 'polly:ListSpeechSynthesisTasks'].
+
+|asyncJobs? |`boolean` |Whether to enable asynchronous speech synthesis tasks. When true, an S3 bucket for audio output and an SNS topic for
+completion notifications will be created, and the Lambda function will be granted permissions to start and monitor
+asynchronous synthesis tasks. Default: false
+
+|existingBucketObj?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
+|Existing instance of S3 Bucket object for audio output, providing both this and `bucketProps` will cause an error.
+Only valid when asyncJobs is true.
+
+|bucketProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
+|Optional user provided props to override the default props for the S3 Bucket. Only valid when asyncJobs is true.
+
+|bucketEnvironmentVariableName? |`string` |Optional Name for the Lambda
+function environment variable set to the name of the output bucket. Only valid when asyncJobs is true. Default:
+OUTPUT_BUCKET_NAME
+
+|logS3AccessLogs? |`boolean` |Whether to turn on Access Logs for the S3 bucket with the associated storage costs. Enabling Access Logging is a best practice.
+Only valid when asyncJobs is true. Default: true
+
+|loggingBucketProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.BucketProps.html[`s3.BucketProps`]
+|Optional user provided props to override the default props for the S3 Logging Bucket. Only valid when asyncJobs is true.
+
+|existingTopicObj?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sns.Topic.html[`sns.Topic`]
+|Optional - existing instance of SNS topic object, providing both this and `topicProps` will cause an error.
+Only valid when asyncJobs is true.
+
+|topicProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sns.TopicProps.html[`sns.TopicProps`]
+|Optional - user provided properties to override the default properties for the SNS topic.
+Providing both this and `existingTopicObj` causes an error. Only valid when asyncJobs is true.
+
+|topicEnvironmentVariableName? |`string` |Optional Name for the Lambda
+function environment variable set to the ARN of the SNS topic used for asynchronous
+task completion notifications. Only valid when asyncJobs is true. Default:
+SNS_TOPIC_ARN
+
+|existingTopicEncryptionKey?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.Key.html[`kms.Key`]
+|If an existing topic is provided in the `existingTopicObj` property, and that topic is encrypted with a customer
+managed KMS key, this property must specify that key. Only valid when asyncJobs is true.
+
+|topicEncryptionKey?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.Key.html[`kms.Key`]
+|An optional, imported encryption key to encrypt the SNS Topic with. Only valid when asyncJobs is true.
+
+|topicEncryptionKeyProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.Key.html#construct-props[`kms.KeyProps`]
+|Optional user provided properties to override the default properties for the KMS encryption key used to encrypt
+the SNS Topic with. Only valid when asyncJobs is true.
+
+|enableTopicEncryptionWithCustomerManagedKey? |`boolean` |If no key is
+provided, this flag determines whether the SNS Topic is encrypted with a new CMK or an AWS managed key.
+This flag is ignored if any of the following are defined: topicProps.masterKey, topicEncryptionKey or topicEncryptionKeyProps.
+Only valid when asyncJobs is true.
+
+|existingVpc?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html[`ec2.IVpc`]
+|An existing VPC for the construct to use (construct will NOT create a new VPC in this case)
+
+|vpcProps?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.VpcProps.html[`ec2.VpcProps`]
+|Properties to override default properties if deployVpc is true
+
+|deployVpc? |`boolean` |Whether to deploy a new VPC. Default: false
+|===
+
+== Pattern Properties
+
+[width="100%",cols="<30%,<35%,35%",options="header",]
+|===
+|*Name* |*Type* |*Description*
+|lambdaFunction
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda.Function.html[`lambda.Function`]
+|Returns an instance of the Lambda function created by the pattern.
+
+|destinationBucket?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html[`s3.Bucket`]
+|Returns an instance of the S3 bucket if it is created by the pattern.
+
+|loggingBucket?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.Bucket.html[`s3.Bucket`]
+|Returns an instance of s3.Bucket created by the construct as the
+logging bucket for the destination bucket.
+
+|destinationBucketInterface?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_s3.IBucket.html[`s3.IBucket`]
+|Returns an interface of s3.IBucket used by the construct for the destination bucket whether created by the pattern or supplied from the client.
+
+|snsNotificationTopic?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_sns.Topic.html[`sns.Topic`]
+|Returns an instance of the SNS topic created for asynchronous task completion notifications when asyncJobs is true.
+
+|notificationTopicEncryptionKey?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_kms.IKey.html[`kms.IKey`]
+|Returns an instance of kms.IKey used for the SNS Topic.
+
+|vpc?
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_ec2.IVpc.html[`ec2.IVpc`]
+|Returns an interface on the VPC used by the pattern (if any). This may
+be a VPC created by the pattern or the VPC supplied to the pattern
+constructor.
+|===
+
+== Default settings
+
+Out of the box implementation of the Construct without any override will
+set the following defaults:
+
+=== AWS Lambda Function
+
+* Configure limited privilege access IAM role for Lambda function
+* Enable reusing connections with Keep-Alive for NodeJs Lambda function
+* Enable X-Ray Tracing
+* Set Environment Variables
+** (default) OUTPUT_BUCKET_NAME (when asyncJobs is true)
+** (default) SNS_TOPIC_ARN (when asyncJobs is true)
+** AWS_NODEJS_CONNECTION_REUSE_ENABLED (for Node 10.x
+and higher functions)
+* Grant permissions to use Amazon Polly service (['polly:SynthesizeSpeech'] by default)
+* When asyncJobs is true, grant permissions to start and monitor asynchronous synthesis tasks (['polly:StartSpeechSynthesisTask', 'polly:GetSpeechSynthesisTask', 'polly:ListSpeechSynthesisTasks']), and read/write to the S3 bucket
+
+=== Amazon S3 Bucket (when asyncJobs is true)
+
+* Configure Access logging for S3 Bucket
+* Enable server-side encryption for S3 Bucket using AWS managed KMS Key
+* Enforce encryption of data in transit
+* Turn on the versioning for S3 Bucket
+* Don't allow public access for S3 Bucket
+* Retain the S3 Bucket when deleting the CloudFormation stack
+* Applies Lifecycle rule to move noncurrent object versions to Glacier
+storage after 90 days
+
+=== Amazon SNS Topic (when asyncJobs is true)
+
+* Configure server-side encryption using AWS managed KMS Key
+* Create topic for asynchronous task completion notifications
+
+=== Amazon Polly Service
+
+* Lambda function will have permissions to call ['polly:SynthesizeSpeech'] operation
+
+**When asyncJobs is true**
+
+* Lambda function will add permissions to call ['polly:StartSpeechSynthesisTask', 'polly:GetSpeechSynthesisTask', 'polly:ListSpeechSynthesisTasks']
+* When asyncJobs is true, an SNS topic will be created and the Lambda function is granted permission to call ['sns:Publish']
+
+=== Amazon VPC
+
+* If deployVpc is true, a minimal VPC will be created with:
+** Interface Endpoints for Amazon Polly
+** Gateway Endpoints for Amazon S3 (when asyncJobs is true)
+** Private subnets for Lambda function
+** Appropriate security groups and routing
+
+== Architecture
+
+**Default Implementation**
+
+image::images/aws-lambda-polly.png["Diagram showing the Lambda function, Amazon Polly service, and IAM role created by the construct",scaledwidth=100%]
+
+**Default Implementation when asyncJobs = true**
+
+image::images/aws-lambda-polly-async.png["Diagram showing the Lambda function, destination S3 bucket (when asyncJobs is true), SNS topic, Amazon Polly service, and IAM role created by the construct",scaledwidth=100%]
+
+== Example Lambda Function Implementation
+
+While Solutions Constructs does not publish code for the Lambda function to call Polly, here are examples of calling Polly: https://github.com/awsdocs/aws-doc-sdk-examples/blob/main/javascriptv3/example_code/polly/general-examples/src/polly_synthesize_to_s3.js[examples]. (these examples are in JavaScript, but examples in other languages can also be found at this site)
+
+== Github
+
+Go to the https://github.com/awslabs/aws-solutions-constructs/tree/main/source/patterns/%40aws-solutions-constructs/aws-lambda-polly[Github repo] for this pattern to view the code, read/create issues and pull requests and more.
+
+'''''
+
+
