@@ -80,7 +80,7 @@ LambdaToStepfunctions(
     self, 'test-lambda-stepfunctions-stack',
     lambda_function_props=_lambda.FunctionProps(
         code=_lambda.Code.from_asset('lambda'),
-        runtime=_lambda.Runtime.PYTHON_3_11,
+        runtime=_lambda.Runtime.PYTHON_3_14,
         handler='index.handler'
     ),
     state_machine_props=stepfunctions.StateMachineProps(
@@ -133,7 +133,10 @@ new LambdaToStepfunctions(this, "test-lambda-stepfunctions-stack",
 
 |stateMachineProps
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions.StateMachineProps.html[`sfn.StateMachineProps`]
-|User provided props for the sfn.StateMachine.
+|User provided props for the sfn.StateMachine. This or existingStateMachine is required. If you provide
+a value for logs.destination, it must be an ILogGroup even though the prop type is ILogGroupRef. The CDK
+change to ILogGroupRef in v2.235.0 is incompatible with our interface without introducing breaking changes,
+so we still require an ILogGroup (as this implements ILogGroupRef, you can just assign it to logs.destination)
 
 |createCloudWatchAlarms |`boolean` |Whether to create recommended
 CloudWatch alarms
@@ -227,7 +230,7 @@ image::aws-lambda-stepfunctions.png["Diagram showing the Lambda function, Step F
 
 == Example Lambda Function Implementation
 
-While Solutions Constructs does not publish code for the Lambda function to work with Step Functions, here are several examples: https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/python/example_code/stepfunctions['examples']. (these examples are in Python, but examples in other languages can also be found at this site)
+While Solutions Constructs does not publish code for the Lambda function to work with Step Functions, here are several examples: https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/python/example_code/stepfunctions[examples]. (these examples are in Python, but examples in other languages can also be found at this site)
 
 // github block
 

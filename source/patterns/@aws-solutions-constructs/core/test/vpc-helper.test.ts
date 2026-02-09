@@ -200,6 +200,36 @@ test('Test adding SAGEMAKER_RUNTIME Interface Endpoint', () => {
   });
 });
 
+test('Test adding POLLY Interface Endpoint', () => {
+  // Stack
+  const stack = new Stack();
+  // Build VPC
+  const testVpc = defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultPublicPrivateVpcProps(),
+  });
+
+  AddAwsServiceEndpoint(stack, testVpc, ServiceEndpointTypes.POLLY);
+
+  // Assertion
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::EC2::VPCEndpoint', {
+    VpcEndpointType: 'Interface',
+    ServiceName: {
+      'Fn::Join': [
+        '',
+        [
+          'com.amazonaws.',
+          {
+            Ref: 'AWS::Region',
+          },
+          '.polly',
+        ],
+      ],
+    },
+  });
+  template.resourceCountIs('AWS::EC2::VPCEndpoint', 1);
+});
+
 test('Test adding a second Endpoint of same service', () => {
   // Stack
   const stack = new Stack();

@@ -103,7 +103,7 @@ LambdaToSagemakerEndpoint(
     ),
     lambda_function_props=_lambda.FunctionProps(
         code=_lambda.Code.from_asset('lambda'),
-        runtime=_lambda.Runtime.PYTHON_3_11,
+        runtime=_lambda.Runtime.PYTHON_3_14,
         handler='index.handler',
         timeout=Duration.minutes(5),
         memory_size=128
@@ -265,7 +265,7 @@ image::aws-lambda-sagemakerendpoint.png["Diagram showing the Lambda function, Sa
 
 == Example Lambda Function Implementation
 
-While Solutions Constructs does not publish code for the Lambda function to interact with SageMaker, this repo has several SageMaker examples: https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/javascriptv3/example_code/sagemaker['examples']. (these examples are in JavaScript, but examples in other languages can also be found at this site)
+While Solutions Constructs does not publish code for the Lambda function to interact with SageMaker, this repo has several SageMaker examples: https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/javascriptv3/example_code/sagemaker[examples]. (these examples are in JavaScript, but examples in other languages can also be found at this site)
 
 // github block
 

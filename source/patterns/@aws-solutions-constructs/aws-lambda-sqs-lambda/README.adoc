@@ -78,12 +78,12 @@ LambdaToSqsToLambda(
     self, 'LambdaToSqsToLambdaPattern',
     producer_lambda_function_props=_lambda.FunctionProps(
         code=_lambda.Code.from_asset('producer_lambda'),
-        runtime=_lambda.Runtime.PYTHON_3_11,
+        runtime=_lambda.Runtime.PYTHON_3_14,
         handler='index.handler'
     ),
     consumer_lambda_function_props=_lambda.FunctionProps(
         code=_lambda.Code.from_asset('consumer_lambda'),
-        runtime=_lambda.Runtime.PYTHON_3_11,
+        runtime=_lambda.Runtime.PYTHON_3_14,
         handler='index.handler'
     )
 )
@@ -256,7 +256,7 @@ image::aws-lambda-sqs-lambda.png["Diagram showing the Lambda functions, SQS queu
 
 == Example Lambda Function Implementation
 
-While Solutions Constructs does not publish code for the Lambda function interact with SQS, here many examples: https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/javascriptv3/example_code/sqs/actions['examples']. (these examples are in JavaScript, but examples in other languages can also be found at this site)
+While Solutions Constructs does not publish code for the Lambda function interact with SQS, here many examples: https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/javascriptv3/example_code/sqs/actions[examples]. (these examples are in JavaScript, but examples in other languages can also be found at this site)
 
 // github block
 

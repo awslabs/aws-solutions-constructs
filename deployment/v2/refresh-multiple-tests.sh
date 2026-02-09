@@ -67,6 +67,7 @@ aws-lambda-kendra
 aws-lambda-kinesisfirehose
 aws-lambda-kinesisstreams
 aws-lambda-opensearch
+aws-lambda-polly
 aws-lambda-s3
 aws-lambda-sagemakerendpoint
 aws-lambda-secretsmanager
@@ -77,6 +78,7 @@ aws-lambda-ssmstringparameter
 aws-lambda-stepfunctions
 aws-lambda-transcribe
 aws-lambda-translate
+aws-lambda-textract
 aws-openapigateway-lambda
 aws-route53-alb
 aws-route53-apigateway

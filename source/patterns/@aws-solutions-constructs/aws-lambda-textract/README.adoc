@@ -72,7 +72,7 @@ from constructs import Construct
 LambdaToTextract(self, 'LambdaToTextractPattern',
         lambda_function_props=_lambda.FunctionProps(
             code=_lambda.Code.from_asset('lambda'),
-            runtime=_lambda.Runtime.PYTHON_3_11,
+            runtime=_lambda.Runtime.PYTHON_3_14,
             handler='index.handler'
         )
         )
@@ -317,10 +317,13 @@ storage after 90 days
 
 === Amazon Textract Service
 
-* Lambda function will have permissions to ['textract:DetectDocumentText', 'textract:AnalyzeDocument', 'textract:AnalyzeExpense', 'textract:AnalyzeID'] operations by default
-* When asyncJobs is true, Lambda function will have permissions to start and get status of document analysis jobs
-* A role granting access to the source and destination buckets will be created to pass to Textract for asynchronous job calls
-* When asyncJobs is true, an SNS topic will be created for job completion notifications
+* Lambda function will have permissions to call ['textract:DetectDocumentText', 'textract:AnalyzeDocument', 'textract:AnalyzeExpense', 'textract:AnalyzeID'] operations
+
+**When asyncJobs is true**
+
+*  Lambda function will add permissions to call [ 'textract:StartDocumentTextDetection', 'textract:GetDocumentTextDetection', 'textract:StartDocumentAnalysis', 'textract:GetDocumentAnalysis', 'textract:StartExpenseAnalysis', 'textract:GetExpenseAnalysis', 'textract:StartLendingAnalysis', 'textract:GetLendingAnalysis' ]
+* When asyncJobs is true, an SNS topic will be created and the Lambda function is granted permission to call ['sns:Publish']
+
 
 === Amazon VPC
 
