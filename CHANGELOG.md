@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.99.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.98.0...v2.99.0) (2026-02-09)
+
+
+### Features
+
+* **aws-lambda-polly:** new construct ([#1458](https://github.com/awslabs/aws-solutions-constructs/issues/1458)) ([f1bc9f8](https://github.com/awslabs/aws-solutions-constructs/commit/f1bc9f8989de626e35a3db34e4e5c2399f093232))
+
 ## [2.98.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.97.0...v2.98.0) (2026-01-30)
 
 Built on CDK 2.234.0
