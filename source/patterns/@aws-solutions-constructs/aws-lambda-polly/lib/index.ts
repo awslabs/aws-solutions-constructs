@@ -63,7 +63,7 @@ export interface LambdaToPollyProps {
    *
    * @default - Default props are used
    */
-  readonly bucketProps?: s3.BucketProps | any;
+  readonly bucketProps?: s3.BucketProps;
   /**
    * Optional Name for the Lambda function environment variable set to the name of the output bucket. Only valid when asyncJobs is true.
    *
@@ -82,7 +82,7 @@ export interface LambdaToPollyProps {
    *
    * @default - Default props are used
    */
-  readonly loggingBucketProps?: s3.BucketProps | any;
+  readonly loggingBucketProps?: s3.BucketProps;
   /**
    * Optional - existing instance of SNS topic object, providing both this and `topicProps` will cause an error.
    * Only valid when asyncJobs is true.

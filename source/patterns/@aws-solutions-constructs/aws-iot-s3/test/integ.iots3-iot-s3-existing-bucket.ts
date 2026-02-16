@@ -24,9 +24,7 @@ SetConsistentFeatureFlags(stack);
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
 const existingBucket = defaults.CreateScrapBucket(stack, "scrapBucket", {
-  bucketProps: {
     encryption: BucketEncryption.KMS_MANAGED,
-  }
 });
 
 const props: IotToS3Props = {
