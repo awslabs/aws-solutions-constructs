@@ -117,6 +117,8 @@ export class CloudFrontToApiGatewayToLambda extends Construct {
     super(scope, id);
     defaults.CheckLambdaProps(props);
     defaults.CheckApiProps(props);
+    defaults.ValidateLambdaRestApiProps(props.apiGatewayProps);
+    defaults.ValidateDistributionProps(props.cloudFrontDistributionProps);
 
     // CheckCloudFrontProps() is called by internal aws-cloudfront-apigateway construct
     if (!props.apiGatewayProps?.defaultMethodOptions?.authorizationType) {

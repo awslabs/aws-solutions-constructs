@@ -32,7 +32,7 @@ const deployStackWithNewResources = (stack: cdk.Stack, publicApi: boolean) => {
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
     vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName: CLUSTER_NAME },
-    containerDefinitionProps: { CONTAINER_NAME },
+    containerDefinitionProps: { containerName: CONTAINER_NAME },
     fargateTaskDefinitionProps: { family: FAMILY_NAME },
     fargateServiceProps: { serviceName: SERVICE_NAME },
     openSearchDomainName: DOMAIN_NAME,
@@ -48,7 +48,7 @@ test('Test domain and cognito domain name', () => {
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
     vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName: CLUSTER_NAME },
-    containerDefinitionProps: { CONTAINER_NAME },
+    containerDefinitionProps: { containerName: CONTAINER_NAME },
     fargateTaskDefinitionProps: { family: FAMILY_NAME },
     fargateServiceProps: { serviceName: SERVICE_NAME },
     openSearchDomainName: DOMAIN_NAME,
@@ -190,7 +190,7 @@ test('Test custom environment variable name', () => {
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
     vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName: CLUSTER_NAME },
-    containerDefinitionProps: { CONTAINER_NAME },
+    containerDefinitionProps: { containerName:  CONTAINER_NAME },
     fargateTaskDefinitionProps: { family: FAMILY_NAME },
     fargateServiceProps: { serviceName: SERVICE_NAME },
     openSearchDomainName: DOMAIN_NAME,
@@ -226,7 +226,7 @@ test('Test custom environment variable name', () => {
           ]
         },
         MemoryReservation: 512,
-        Name: "test-construct-container",
+        Name: CONTAINER_NAME,
         PortMappings: [
           {
             ContainerPort: 8080,
@@ -304,7 +304,7 @@ test('New service/new domain, public API, new VPC', () => {
           ]
         },
         MemoryReservation: 512,
-        Name: "test-construct-container",
+        Name: "custom-container-name",
         PortMappings: [
           {
             ContainerPort: 8080,
@@ -381,7 +381,7 @@ test('New service/new domain, private API, new VPC', () => {
           ]
         },
         MemoryReservation: 512,
-        Name: "test-construct-container",
+        Name: "custom-container-name",
         PortMappings: [
           {
             ContainerPort: 8080,

@@ -83,6 +83,8 @@ export class CognitoToApiGatewayToLambda extends Construct {
   constructor(scope: Construct, id: string, props: CognitoToApiGatewayToLambdaProps) {
     super(scope, id);
     defaults.CheckLambdaProps(props);
+    defaults.ValidateLambdaRestApiProps(props.apiGatewayProps);
+    defaults.ValidateUserPoolClientProps(props.cognitoUserPoolClientProps);
 
     // This Construct requires that the auth type be COGNITO regardless of what is specified in the props
     if (props.apiGatewayProps) {

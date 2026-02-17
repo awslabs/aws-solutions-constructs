@@ -57,6 +57,7 @@ export class WafwebaclToAppsync extends Construct {
   constructor(scope: Construct, id: string, props: WafwebaclToAppsyncProps) {
     super(scope, id);
     defaults.CheckWafWebAclProps(props);
+    defaults.ValidateCfnWebACLProps(props.webaclProps);
 
     // Build the Web ACL
     this.webacl = defaults.buildWebacl(this, "REGIONAL", {

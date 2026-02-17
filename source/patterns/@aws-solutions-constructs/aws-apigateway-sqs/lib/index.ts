@@ -286,6 +286,8 @@ export class ApiGatewayToSqs extends Construct {
     super(scope, id);
     defaults.CheckSqsProps(props);
     defaults.CheckApiProps(props);
+    defaults.ValidateRestApiProps(props.apiGatewayProps);
+    defaults.ValidateQueueProps(props.queueProps);
 
     this.CheckAllRequestProps(props);
 

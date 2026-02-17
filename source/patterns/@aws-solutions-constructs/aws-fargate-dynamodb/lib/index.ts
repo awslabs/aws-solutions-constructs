@@ -144,6 +144,9 @@ export class FargateToDynamoDB extends Construct {
     defaults.CheckFargateProps(props);
     defaults.CheckDynamoDBProps(props);
     defaults.CheckVpcProps(props);
+    defaults.ValidateContainerDefinitionProps(props.containerDefinitionProps);
+    defaults.ValidateFargateTaskDefinitionProps(props.fargateTaskDefinitionProps);
+    defaults.ValidateFargateServiceProps(props.fargateServiceProps);
 
     // Other permissions for constructs are accepted as arrays, turning tablePermissions into
     // an array to use the same validation function.

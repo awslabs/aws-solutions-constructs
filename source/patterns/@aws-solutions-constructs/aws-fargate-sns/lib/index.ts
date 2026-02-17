@@ -157,6 +157,9 @@ export class FargateToSns extends Construct {
     defaults.CheckFargateProps(props);
     defaults.CheckSnsProps(props);
     defaults.CheckVpcProps(props);
+    defaults.ValidateContainerDefinitionProps(props.containerDefinitionProps);
+    defaults.ValidateFargateTaskDefinitionProps(props.fargateTaskDefinitionProps);
+    defaults.ValidateFargateServiceProps(props.fargateServiceProps);
 
     this.vpc = defaults.buildVpc(scope, {
       existingVpc: props.existingVpc,

@@ -151,6 +151,7 @@ export class CloudFrontToS3 extends Construct {
     defaults.CheckS3Props(props);
     defaults.CheckCloudFrontProps(props);
     defaults.CheckCloudfrontS3Props(props);
+    defaults.ValidateDistributionProps(props.cloudFrontDistributionProps);
 
     let originBucket: s3.IBucket;
 

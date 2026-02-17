@@ -56,16 +56,40 @@ interface InterfaceConfig {
  */
 const INTERFACES_TO_EXTRACT: InterfaceConfig[] = [
   {
-    interfaceName: 'BucketProps',
-    module: 'aws-s3',
-    filePath: 'aws-s3/lib/bucket.d.ts',
-    exportName: 'validBucketProps'
+    interfaceName: 'ApplicationLoadBalancerProps',
+    module: 'aws-elasticloadbalancingv2',
+    filePath: 'aws-elasticloadbalancingv2/lib/alb/application-load-balancer.d.ts',
+    exportName: 'validApplicationLoadBalancerProps'
   },
   {
-    interfaceName: 'FunctionProps',
-    module: 'aws-lambda',
-    filePath: 'aws-lambda/lib/function.d.ts',
-    exportName: 'validFunctionProps'
+    interfaceName: 'ApplicationListenerProps',
+    module: 'aws-elasticloadbalancingv2',
+    filePath: 'aws-elasticloadbalancingv2/lib/alb/application-listener.d.ts',
+    exportName: 'validApplicationListenerProps'
+  },
+  {
+    interfaceName: 'ContainerDefinitionProps',
+    module: 'aws-ecs',
+    filePath: 'aws-ecs/lib/container-definition.d.ts',
+    exportName: 'validContainerDefinitionProps'
+  },
+  {
+    interfaceName: 'FargateTaskDefinitionProps',
+    module: 'aws-ecs',
+    filePath: 'aws-ecs/lib/fargate/fargate-task-definition.d.ts',
+    exportName: 'validFargateTaskDefinitionProps'
+  },
+  {
+    interfaceName: 'FargateServiceProps',
+    module: 'aws-ecs',
+    filePath: 'aws-ecs/lib/fargate/fargate-service.d.ts',
+    exportName: 'validFargateServiceProps'
+  },
+  {
+    interfaceName: 'LambdaRestApiProps',
+    module: 'aws-apigateway',
+    filePath: 'aws-apigateway/lib/lambda-api.d.ts',
+    exportName: 'validLambdaRestApiProps'
   },
   {
     interfaceName: 'RestApiProps',
@@ -74,22 +98,28 @@ const INTERFACES_TO_EXTRACT: InterfaceConfig[] = [
     exportName: 'validRestApiProps'
   },
   {
-    interfaceName: 'QueueProps',
-    module: 'aws-sqs',
-    filePath: 'aws-sqs/lib/queue.d.ts',
-    exportName: 'validQueueProps'
+    interfaceName: 'DistributionProps',
+    module: 'aws-cloudfront',
+    filePath: 'aws-cloudfront/lib/distribution.d.ts',
+    exportName: 'validDistributionProps'
   },
   {
-    interfaceName: 'TableProps',
-    module: 'aws-dynamodb',
-    filePath: 'aws-dynamodb/lib/table.d.ts',
-    exportName: 'validTableProps'
+    interfaceName: 'UserPoolClientProps',
+    module: 'aws-cognito',
+    filePath: 'aws-cognito/lib/user-pool-client.d.ts',
+    exportName: 'validUserPoolClientProps'
   },
   {
-    interfaceName: 'StreamProps',
-    module: 'aws-kinesis',
-    filePath: 'aws-kinesis/lib/stream.d.ts',
-    exportName: 'validStreamProps'
+    interfaceName: 'DynamoEventSourceProps',
+    module: 'aws-lambda-event-sources',
+    filePath: 'aws-lambda-event-sources/lib/dynamodb.d.ts',
+    exportName: 'validDynamoEventSourceProps'
+  },
+  {
+    interfaceName: 'CfnPipeProps',
+    module: 'aws-pipes',
+    filePath: 'aws-pipes/lib/pipes.generated.d.ts',
+    exportName: 'validCfnPipeProps'
   },
   {
     interfaceName: 'CfnDeliveryStreamProps',
@@ -98,16 +128,82 @@ const INTERFACES_TO_EXTRACT: InterfaceConfig[] = [
     exportName: 'validCfnDeliveryStreamProps'
   },
   {
-    interfaceName: 'LogGroupProps',
-    module: 'aws-logs',
-    filePath: 'aws-logs/lib/log-group.d.ts',
-    exportName: 'validLogGroupProps'
+    interfaceName: 'StreamProps',
+    module: 'aws-kinesis',
+    filePath: 'aws-kinesis/lib/stream.d.ts',
+    exportName: 'validStreamProps'
+  },
+  {
+    interfaceName: 'CfnJobProps',
+    module: 'aws-glue',
+    filePath: 'aws-glue/lib/glue.generated.d.ts',
+    exportName: 'validCfnJobProps'
+  },
+  {
+    interfaceName: 'KinesisEventSourceProps',
+    module: 'aws-lambda-event-sources',
+    filePath: 'aws-lambda-event-sources/lib/kinesis.d.ts',
+    exportName: 'validKinesisEventSourceProps'
+  },
+  {
+    interfaceName: 'CfnCacheClusterProps',
+    module: 'aws-elasticache',
+    filePath: 'aws-elasticache/lib/elasticache.generated.d.ts',
+    exportName: 'validCfnCacheClusterProps'
+  },
+  {
+    interfaceName: 'CfnIndexProps',
+    module: 'aws-kendra',
+    filePath: 'aws-kendra/lib/kendra.generated.d.ts',
+    exportName: 'validCfnIndexProps'
+  },
+  {
+    interfaceName: 'CfnDataSourceProps',
+    module: 'aws-kendra',
+    filePath: 'aws-kendra/lib/kendra.generated.d.ts',
+    exportName: 'validCfnDataSourceProps'
   },
   {
     interfaceName: 'TopicProps',
     module: 'aws-sns',
     filePath: 'aws-sns/lib/topic.d.ts',
     exportName: 'validTopicProps'
+  },
+  {
+    interfaceName: 'KeyProps',
+    module: 'aws-kms',
+    filePath: 'aws-kms/lib/key.d.ts',
+    exportName: 'validKeyProps'
+  },
+  {
+    interfaceName: 'VpcProps',
+    module: 'aws-ec2',
+    filePath: 'aws-ec2/lib/vpc.d.ts',
+    exportName: 'validVpcProps'
+  },
+  {
+    interfaceName: 'CfnModelProps',
+    module: 'aws-sagemaker',
+    filePath: 'aws-sagemaker/lib/sagemaker.generated.d.ts',
+    exportName: 'validCfnModelProps'
+  },
+  {
+    interfaceName: 'PrivateHostedZoneProps',
+    module: 'aws-route53',
+    filePath: 'aws-route53/lib/hosted-zone.d.ts',
+    exportName: 'validPrivateHostedZoneProps'
+  },
+  {
+    interfaceName: 'QueueProps',
+    module: 'aws-sqs',
+    filePath: 'aws-sqs/lib/queue.d.ts',
+    exportName: 'validQueueProps'
+  },
+  {
+    interfaceName: 'CfnWebACLProps',
+    module: 'aws-wafv2',
+    filePath: 'aws-wafv2/lib/wafv2.generated.d.ts',
+    exportName: 'validCfnWebACLProps'
   }
 ];
 
@@ -183,10 +279,12 @@ function findInterfaceFile(config: InterfaceConfig): string {
 
 /**
  * Extracts property names from a TypeScript interface using the TS Compiler API.
+ * Now includes properties from parent interfaces (extends clause), including cross-file inheritance.
  * 
- * Why: We need to parse TypeScript AST to reliably extract interface members.
+ * Why: We need to parse TypeScript AST to reliably extract interface members,
+ *      including inherited properties that users can set.
  * How: Uses the visitor pattern to traverse the AST and find interface declarations.
- *      Exits early once the target interface is found for performance.
+ *      Recursively extracts properties from parent interfaces, following imports to other files.
  * 
  * The TypeScript AST (Abstract Syntax Tree) represents code as a tree structure:
  * - Each node represents a language construct (interface, property, etc.)
@@ -194,51 +292,201 @@ function findInterfaceFile(config: InterfaceConfig): string {
  * 
  * @param sourceFile - Parsed TypeScript source file (AST root)
  * @param interfaceName - Name of the interface to search for
- * @returns Array of property names found in the interface
+ * @returns Array of property names found in the interface and its parents
  */
 function extractInterfaceProperties(sourceFile: ts.SourceFile, interfaceName: string): string[] {
-  const properties: string[] = [];
-  let found = false;
+  const allProperties = new Set<string>();
+  const visited = new Set<string>();
+  const fileCache = new Map<string, ts.SourceFile>();
+  
+  // Cache the initial source file
+  fileCache.set(sourceFile.fileName, sourceFile);
 
   /**
-   * Recursive visitor function that traverses the AST.
+   * Extracts import mappings from a source file.
+   * Maps imported names to their module paths.
    * 
-   * Why: The interface we want could be anywhere in the file.
-   * How: Checks each node, and if it's not what we want, visits its children.
-   *      Returns early once the interface is found to avoid unnecessary traversal.
-   * 
-   * This is the "visitor pattern" - a common way to traverse tree structures.
+   * @param file - Source file to extract imports from
+   * @returns Map of imported name to module path
    */
-  function visit(node: ts.Node): void {
-    // Early exit if we've already found the interface
-    if (found) {
-      return;
-    }
-
-    // Check if this node is an interface declaration with the name we're looking for
-    if (ts.isInterfaceDeclaration(node) && node.name.text === interfaceName) {
-      // Found it! Now extract all property names from this interface
-      node.members.forEach(member => {
-        // Check if this member is a property signature (not a method, index signature, etc.)
-        if (ts.isPropertySignature(member) && member.name) {
-          // Check if the property name is a simple identifier (not computed)
-          if (ts.isIdentifier(member.name)) {
-            properties.push(member.name.text);
+  function extractImports(file: ts.SourceFile): Map<string, string> {
+    const imports = new Map<string, string>();
+    
+    file.statements.forEach(statement => {
+      if (ts.isImportDeclaration(statement)) {
+        const moduleSpecifier = statement.moduleSpecifier;
+        if (ts.isStringLiteral(moduleSpecifier)) {
+          const modulePath = moduleSpecifier.text;
+          
+          // Extract named imports
+          if (statement.importClause?.namedBindings) {
+            const namedBindings = statement.importClause.namedBindings;
+            if (ts.isNamedImports(namedBindings)) {
+              namedBindings.elements.forEach(element => {
+                imports.set(element.name.text, modulePath);
+              });
+            }
           }
         }
-      });
-      // Mark as found so we don't continue traversing
-      found = true;
-      return;
-    }
-    // Continue traversing the tree by visiting all child nodes
-    // Only if we haven't found the interface yet
-    ts.forEachChild(node, visit);
+      }
+    });
+    
+    return imports;
   }
 
-  // Start the traversal from the root of the AST
-  visit(sourceFile);
-  return properties;
+  /**
+   * Resolves an import path to an absolute file path.
+   * 
+   * @param currentFilePath - Path of the file containing the import
+   * @param importPath - The import path to resolve
+   * @returns Absolute path to the imported file, or null if not found
+   */
+  function resolveImportPath(currentFilePath: string, importPath: string): string | null {
+    const currentDir = path.dirname(currentFilePath);
+    
+    // Handle relative imports (e.g., './base-load-balancer', '../shared/base-load-balancer')
+    if (importPath.startsWith('.')) {
+      const resolvedPath = path.resolve(currentDir, importPath);
+      
+      // Try with .d.ts extension
+      if (fs.existsSync(resolvedPath + '.d.ts')) {
+        return resolvedPath + '.d.ts';
+      }
+      // Try as-is (might already have extension)
+      if (fs.existsSync(resolvedPath)) {
+        return resolvedPath;
+      }
+      // Try with /index.d.ts
+      if (fs.existsSync(path.join(resolvedPath, 'index.d.ts'))) {
+        return path.join(resolvedPath, 'index.d.ts');
+      }
+    }
+    
+    return null;
+  }
+
+  /**
+   * Loads and parses a TypeScript source file.
+   * 
+   * @param filePath - Path to the file to load
+   * @returns Parsed source file, or null if file cannot be loaded
+   */
+  function loadSourceFile(filePath: string): ts.SourceFile | null {
+    // Check cache first
+    if (fileCache.has(filePath)) {
+      return fileCache.get(filePath)!;
+    }
+    
+    try {
+      if (!fs.existsSync(filePath)) {
+        return null;
+      }
+      
+      const sourceCode = fs.readFileSync(filePath, 'utf-8');
+      const sourceFile = ts.createSourceFile(
+        filePath,
+        sourceCode,
+        ES2020,
+        true
+      );
+      
+      fileCache.set(filePath, sourceFile);
+      return sourceFile;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  /**
+   * Recursively extracts properties from an interface and its parents.
+   * 
+   * @param targetName - Name of the interface to extract properties from
+   * @param currentFile - Source file to search in
+   */
+  function extractFromInterface(targetName: string, currentFile: ts.SourceFile): void {
+    // Avoid infinite loops from circular references
+    const visitKey = `${currentFile.fileName}:${targetName}`;
+    if (visited.has(visitKey)) {
+      return;
+    }
+    visited.add(visitKey);
+
+    let interfaceNode: ts.InterfaceDeclaration | undefined;
+
+    // Find the interface declaration
+    function findInterface(node: ts.Node): void {
+      if (interfaceNode) {
+        return; // Already found
+      }
+
+      if (ts.isInterfaceDeclaration(node) && node.name.text === targetName) {
+        interfaceNode = node;
+        return;
+      }
+
+      ts.forEachChild(node, findInterface);
+    }
+
+    findInterface(currentFile);
+
+    if (!interfaceNode) {
+      // Interface not found in current file - try to find it in imports
+      const imports = extractImports(currentFile);
+      const importPath = imports.get(targetName);
+      
+      if (importPath) {
+        const resolvedPath = resolveImportPath(currentFile.fileName, importPath);
+        if (resolvedPath) {
+          const importedFile = loadSourceFile(resolvedPath);
+          if (importedFile) {
+            // Recursively extract from the imported file
+            extractFromInterface(targetName, importedFile);
+            return;
+          }
+        }
+      }
+      
+      // Interface not found anywhere - skip it
+      return;
+    }
+
+    // Extract properties from this interface
+    interfaceNode.members.forEach(member => {
+      if (ts.isPropertySignature(member) && member.name) {
+        if (ts.isIdentifier(member.name)) {
+          allProperties.add(member.name.text);
+        }
+      }
+    });
+
+    // Extract properties from parent interfaces (extends clause)
+    if (interfaceNode.heritageClauses) {
+      interfaceNode.heritageClauses.forEach(clause => {
+        // heritageClauses can be 'extends' or 'implements'
+        if (clause.token === ts.SyntaxKind.ExtendsKeyword) {
+          clause.types.forEach(type => {
+            // Get the parent interface name
+            if (ts.isIdentifier(type.expression)) {
+              const parentName = type.expression.text;
+              // Recursively extract from parent in the same file first
+              extractFromInterface(parentName, currentFile);
+            } else if (ts.isPropertyAccessExpression(type.expression)) {
+              // Handle cases like aws_cdk.IResource - just get the last part
+              if (ts.isIdentifier(type.expression.name)) {
+                const parentName = type.expression.name.text;
+                extractFromInterface(parentName, currentFile);
+              }
+            }
+          });
+        }
+      });
+    }
+  }
+
+  // Start extraction from the target interface
+  extractFromInterface(interfaceName, sourceFile);
+
+  return Array.from(allProperties).sort();
 }
 
 /**

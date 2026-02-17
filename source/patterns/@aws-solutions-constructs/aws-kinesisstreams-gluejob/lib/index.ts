@@ -175,6 +175,8 @@ export class KinesisstreamsToGluejob extends Construct {
 
     defaults.CheckGlueProps(props);
     defaults.CheckKinesisStreamProps(props);
+    defaults.ValidateStreamProps(props.kinesisStreamProps);
+    defaults.ValidateCfnJobProps(props.glueJobProps);
 
     this.kinesisStream = defaults.buildKinesisStream(this, {
       existingStreamObj: props.existingStreamObj,

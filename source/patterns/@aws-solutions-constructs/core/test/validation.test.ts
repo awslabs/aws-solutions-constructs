@@ -14,28 +14,62 @@
 // Imports
 import * as defaults from '../';
 
-test('ValidateBucketProps - props object is undefined', () => {
-  // Should not throw
-  expect(() => defaults.ValidateBucketProps()).not.toThrow();
+test('ValidateApplicationLoadBalancerProps - props object is undefined', () => {
+  expect(() => defaults.ValidateApplicationLoadBalancerProps()).not.toThrow();
 });
 
-test('ValidateBucketProps - valid property', () => {
-  // Should not throw
-  expect(() => defaults.ValidateBucketProps({ bucketName: 'my-bucket' })).not.toThrow();
+test('ValidateApplicationLoadBalancerProps - valid property', () => {
+  expect(() => defaults.ValidateApplicationLoadBalancerProps({ ipAddressType: 'ipv4' })).not.toThrow();
 });
 
-test('ValidateBucketProps - invalid property', () => {
-  expect(() => defaults.ValidateBucketProps({ invalidProp: 'value' }))
-    .toThrow(/ERROR - invalidProp is not a valid property of BucketProps/);
+test('ValidateApplicationLoadBalancerProps - invalid property', () => {
+  expect(() => defaults.ValidateApplicationLoadBalancerProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of ApplicationLoadBalancerProps/);
 });
 
-test('ValidateFunctionProps - valid property', () => {
-  expect(() => defaults.ValidateFunctionProps({ runtime: 'nodejs20.x' })).not.toThrow();
+test('ValidateApplicationListenerProps - valid property', () => {
+  expect(() => defaults.ValidateApplicationListenerProps({ port: 443 })).not.toThrow();
 });
 
-test('ValidateFunctionProps - invalid property', () => {
-  expect(() => defaults.ValidateFunctionProps({ invalidProp: 'value' }))
-    .toThrow(/ERROR - invalidProp is not a valid property of FunctionProps/);
+test('ValidateApplicationListenerProps - invalid property', () => {
+  expect(() => defaults.ValidateApplicationListenerProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of ApplicationListenerProps/);
+});
+
+test('ValidateContainerDefinitionProps - valid property', () => {
+  expect(() => defaults.ValidateContainerDefinitionProps({ memoryLimitMiB: 512 })).not.toThrow();
+});
+
+test('ValidateContainerDefinitionProps - invalid property', () => {
+  expect(() => defaults.ValidateContainerDefinitionProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of ContainerDefinitionProps/);
+});
+
+test('ValidateFargateTaskDefinitionProps - valid property', () => {
+  expect(() => defaults.ValidateFargateTaskDefinitionProps({ cpu: 256 })).not.toThrow();
+});
+
+test('ValidateFargateTaskDefinitionProps - invalid property', () => {
+  expect(() => defaults.ValidateFargateTaskDefinitionProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of FargateTaskDefinitionProps/);
+});
+
+test('ValidateFargateServiceProps - valid property', () => {
+  expect(() => defaults.ValidateFargateServiceProps({ platformVersion: {} as any })).not.toThrow();
+});
+
+test('ValidateFargateServiceProps - invalid property', () => {
+  expect(() => defaults.ValidateFargateServiceProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of FargateServiceProps/);
+});
+
+test('ValidateLambdaRestApiProps - valid property', () => {
+  expect(() => defaults.ValidateLambdaRestApiProps({ proxy: false })).not.toThrow();
+});
+
+test('ValidateLambdaRestApiProps - invalid property', () => {
+  expect(() => defaults.ValidateLambdaRestApiProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of LambdaRestApiProps/);
 });
 
 test('ValidateRestApiProps - valid property', () => {
@@ -47,31 +81,31 @@ test('ValidateRestApiProps - invalid property', () => {
     .toThrow(/ERROR - invalidProp is not a valid property of RestApiProps/);
 });
 
-test('ValidateQueueProps - valid property', () => {
-  expect(() => defaults.ValidateQueueProps({ queueName: 'my-queue' })).not.toThrow();
+test('ValidateDistributionProps - valid property', () => {
+  expect(() => defaults.ValidateDistributionProps({ comment: 'My distribution' })).not.toThrow();
 });
 
-test('ValidateQueueProps - invalid property', () => {
-  expect(() => defaults.ValidateQueueProps({ invalidProp: 'value' }))
-    .toThrow(/ERROR - invalidProp is not a valid property of QueueProps/);
+test('ValidateDistributionProps - invalid property', () => {
+  expect(() => defaults.ValidateDistributionProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of DistributionProps/);
 });
 
-test('ValidateTableProps - valid property', () => {
-  expect(() => defaults.ValidateTableProps({ tableName: 'my-table' })).not.toThrow();
+test('ValidateUserPoolClientProps - valid property', () => {
+  expect(() => defaults.ValidateUserPoolClientProps({ userPoolClientName: 'my-client' })).not.toThrow();
 });
 
-test('ValidateTableProps - invalid property', () => {
-  expect(() => defaults.ValidateTableProps({ invalidProp: 'value' }))
-    .toThrow(/ERROR - invalidProp is not a valid property of TableProps/);
+test('ValidateUserPoolClientProps - invalid property', () => {
+  expect(() => defaults.ValidateUserPoolClientProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of UserPoolClientProps/);
 });
 
-test('ValidateStreamProps - valid property', () => {
-  expect(() => defaults.ValidateStreamProps({ streamName: 'my-stream' })).not.toThrow();
+test('ValidateCfnPipeProps - valid property', () => {
+  expect(() => defaults.ValidateCfnPipeProps({ name: 'my-pipe' })).not.toThrow();
 });
 
-test('ValidateStreamProps - invalid property', () => {
-  expect(() => defaults.ValidateStreamProps({ invalidProp: 'value' }))
-    .toThrow(/ERROR - invalidProp is not a valid property of StreamProps/);
+test('ValidateCfnPipeProps - invalid property', () => {
+  expect(() => defaults.ValidateCfnPipeProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of CfnPipeProps/);
 });
 
 test('ValidateCfnDeliveryStreamProps - valid property', () => {
@@ -83,13 +117,58 @@ test('ValidateCfnDeliveryStreamProps - invalid property', () => {
     .toThrow(/ERROR - invalidProp is not a valid property of CfnDeliveryStreamProps/);
 });
 
-test('ValidateLogGroupProps - valid property', () => {
-  expect(() => defaults.ValidateLogGroupProps({ logGroupName: 'my-log-group' })).not.toThrow();
+test('ValidateStreamProps - valid property', () => {
+  expect(() => defaults.ValidateStreamProps({ streamName: 'my-stream' })).not.toThrow();
 });
 
-test('ValidateLogGroupProps - invalid property', () => {
-  expect(() => defaults.ValidateLogGroupProps({ invalidProp: 'value' }))
-    .toThrow(/ERROR - invalidProp is not a valid property of LogGroupProps/);
+test('ValidateStreamProps - invalid property', () => {
+  expect(() => defaults.ValidateStreamProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of StreamProps/);
+});
+
+test('ValidateCfnJobProps - valid property', () => {
+  expect(() => defaults.ValidateCfnJobProps({ name: 'my-job' })).not.toThrow();
+});
+
+test('ValidateCfnJobProps - invalid property', () => {
+  expect(() => defaults.ValidateCfnJobProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of CfnJobProps/);
+});
+
+test('ValidateKinesisEventSourceProps - valid property', () => {
+  expect(() => defaults.ValidateKinesisEventSourceProps({ startingPositionTimestamp: 123456 })).not.toThrow();
+});
+
+test('ValidateKinesisEventSourceProps - invalid property', () => {
+  expect(() => defaults.ValidateKinesisEventSourceProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of KinesisEventSourceProps/);
+});
+
+test('ValidateCfnCacheClusterProps - valid property', () => {
+  expect(() => defaults.ValidateCfnCacheClusterProps({ cacheNodeType: 'cache.t2.micro' })).not.toThrow();
+});
+
+test('ValidateCfnCacheClusterProps - invalid property', () => {
+  expect(() => defaults.ValidateCfnCacheClusterProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of CfnCacheClusterProps/);
+});
+
+test('ValidateCfnIndexProps - valid property', () => {
+  expect(() => defaults.ValidateCfnIndexProps({ name: 'my-index' })).not.toThrow();
+});
+
+test('ValidateCfnIndexProps - invalid property', () => {
+  expect(() => defaults.ValidateCfnIndexProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of CfnIndexProps/);
+});
+
+test('ValidateCfnDataSourceProps - valid property', () => {
+  expect(() => defaults.ValidateCfnDataSourceProps({ name: 'my-datasource' })).not.toThrow();
+});
+
+test('ValidateCfnDataSourceProps - invalid property', () => {
+  expect(() => defaults.ValidateCfnDataSourceProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of CfnDataSourceProps/);
 });
 
 test('ValidateTopicProps - valid property', () => {
@@ -99,4 +178,58 @@ test('ValidateTopicProps - valid property', () => {
 test('ValidateTopicProps - invalid property', () => {
   expect(() => defaults.ValidateTopicProps({ invalidProp: 'value' }))
     .toThrow(/ERROR - invalidProp is not a valid property of TopicProps/);
+});
+
+test('ValidateKeyProps - valid property', () => {
+  expect(() => defaults.ValidateKeyProps({ description: 'My key' })).not.toThrow();
+});
+
+test('ValidateKeyProps - invalid property', () => {
+  expect(() => defaults.ValidateKeyProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of KeyProps/);
+});
+
+test('ValidateVpcProps - valid property', () => {
+  expect(() => defaults.ValidateVpcProps({ maxAzs: 2 })).not.toThrow();
+});
+
+test('ValidateVpcProps - invalid property', () => {
+  expect(() => defaults.ValidateVpcProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of VpcProps/);
+});
+
+test('ValidateCfnModelProps - valid property', () => {
+  expect(() => defaults.ValidateCfnModelProps({ modelName: 'my-model' })).not.toThrow();
+});
+
+test('ValidateCfnModelProps - invalid property', () => {
+  expect(() => defaults.ValidateCfnModelProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of CfnModelProps/);
+});
+
+test('ValidatePrivateHostedZoneProps - valid property', () => {
+  expect(() => defaults.ValidatePrivateHostedZoneProps({ zoneName: 'example.com' })).not.toThrow();
+});
+
+test('ValidatePrivateHostedZoneProps - invalid property', () => {
+  expect(() => defaults.ValidatePrivateHostedZoneProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of PrivateHostedZoneProps/);
+});
+
+test('ValidateQueueProps - valid property', () => {
+  expect(() => defaults.ValidateQueueProps({ queueName: 'my-queue' })).not.toThrow();
+});
+
+test('ValidateQueueProps - invalid property', () => {
+  expect(() => defaults.ValidateQueueProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of QueueProps/);
+});
+
+test('ValidateCfnWebACLProps - valid property', () => {
+  expect(() => defaults.ValidateCfnWebACLProps({ name: 'my-webacl' })).not.toThrow();
+});
+
+test('ValidateCfnWebACLProps - invalid property', () => {
+  expect(() => defaults.ValidateCfnWebACLProps({ invalidProp: 'value' }))
+    .toThrow(/ERROR - invalidProp is not a valid property of CfnWebACLProps/);
 });

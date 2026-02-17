@@ -172,7 +172,7 @@ test("Test for errors when creating a private hosted zone", () => {
       existingHostedZoneInterface: newZone,
       existingApiGatewayInterface: regionalRestApiResponse.api,
       privateHostedZoneProps: {
-        domainName: "test-example.com"
+        zoneName: "test-example.com"
       },
       existingCertificateInterface: certificate
     });
@@ -186,7 +186,6 @@ test("Test for errors when creating a private hosted zone", () => {
     new Route53ToApiGateway(stack, "api-stack6", {
       publicApi: false,
       privateHostedZoneProps: {
-        domainName: "test.example.com"
       },
       existingApiGatewayInterface: regionalRestApiResponse.api,
       existingCertificateInterface: certificate

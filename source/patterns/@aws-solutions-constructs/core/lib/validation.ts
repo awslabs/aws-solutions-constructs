@@ -21,98 +21,271 @@
 // It also provides functions that will perform the validation on each Props object type
 // parsed
 
-// BucketProps from aws-cdk-lib/aws-s3
-export const validBucketProps: Set<string> = new Set([
-  'encryption',
-  'encryptionKey',
-  'enforceSSL',
-  'bucketKeyEnabled',
-  'bucketName',
-  'removalPolicy',
-  'autoDeleteObjects',
-  'versioned',
-  'objectLockEnabled',
-  'objectLockDefaultRetention',
-  'eventBridgeEnabled',
-  'lifecycleRules',
-  'transitionDefaultMinimumObjectSize',
-  'websiteIndexDocument',
-  'websiteErrorDocument',
-  'websiteRedirect',
-  'websiteRoutingRules',
-  'accessControl',
-  'publicReadAccess',
-  'blockPublicAccess',
-  'metrics',
-  'cors',
-  'serverAccessLogsBucket',
-  'serverAccessLogsPrefix',
-  'targetObjectKeyFormat',
-  'inventories',
-  'objectOwnership',
-  'transferAcceleration',
-  'notificationsHandlerRole',
-  'notificationsSkipDestinationValidation',
-  'intelligentTieringConfigurations',
-  'minimumTLSVersion',
-  'replicationRole',
-  'replicationRules'
+// ApplicationLoadBalancerProps from aws-cdk-lib/aws-elasticloadbalancingv2
+export const validApplicationLoadBalancerProps: Set<string> = new Set([
+  'clientKeepAlive',
+  'crossZoneEnabled',
+  'deletionProtection',
+  'denyAllIgwTraffic',
+  'desyncMitigationMode',
+  'dropInvalidHeaderFields',
+  'http2Enabled',
+  'idleTimeout',
+  'internetFacing',
+  'ipAddressType',
+  'loadBalancerName',
+  'minimumCapacityUnit',
+  'preserveHostHeader',
+  'preserveXffClientPort',
+  'securityGroup',
+  'vpc',
+  'vpcSubnets',
+  'wafFailOpen',
+  'xAmznTlsVersionAndCipherSuiteHeaders',
+  'xffHeaderProcessingMode'
 ]);
 
-// FunctionProps from aws-cdk-lib/aws-lambda
-export const validFunctionProps: Set<string> = new Set([
-  'runtime',
-  'code',
-  'handler'
+// ApplicationListenerProps from aws-cdk-lib/aws-elasticloadbalancingv2
+export const validApplicationListenerProps: Set<string> = new Set([
+  'certificates',
+  'defaultAction',
+  'defaultTargetGroups',
+  'loadBalancer',
+  'mutualAuthentication',
+  'open',
+  'port',
+  'protocol',
+  'sslPolicy'
+]);
+
+// ContainerDefinitionProps from aws-cdk-lib/aws-ecs
+export const validContainerDefinitionProps: Set<string> = new Set([
+  'command',
+  'containerName',
+  'cpu',
+  'credentialSpecs',
+  'disableNetworking',
+  'dnsSearchDomains',
+  'dnsServers',
+  'dockerLabels',
+  'dockerSecurityOptions',
+  'enableRestartPolicy',
+  'entryPoint',
+  'environment',
+  'environmentFiles',
+  'essential',
+  'extraHosts',
+  'gpuCount',
+  'healthCheck',
+  'hostname',
+  'image',
+  'inferenceAcceleratorResources',
+  'interactive',
+  'linuxParameters',
+  'logging',
+  'memoryLimitMiB',
+  'memoryReservationMiB',
+  'portMappings',
+  'privileged',
+  'pseudoTerminal',
+  'readonlyRootFilesystem',
+  'restartAttemptPeriod',
+  'restartIgnoredExitCodes',
+  'secrets',
+  'startTimeout',
+  'stopTimeout',
+  'systemControls',
+  'taskDefinition',
+  'ulimits',
+  'user',
+  'versionConsistency',
+  'workingDirectory'
+]);
+
+// FargateTaskDefinitionProps from aws-cdk-lib/aws-ecs
+export const validFargateTaskDefinitionProps: Set<string> = new Set([
+  'cpu',
+  'enableFaultInjection',
+  'ephemeralStorageGiB',
+  'executionRole',
+  'family',
+  'memoryLimitMiB',
+  'pidMode',
+  'proxyConfiguration',
+  'runtimePlatform',
+  'taskRole',
+  'volumes'
+]);
+
+// FargateServiceProps from aws-cdk-lib/aws-ecs
+export const validFargateServiceProps: Set<string> = new Set([
+  'assignPublicIp',
+  'availabilityZoneRebalancing',
+  'bakeTime',
+  'canaryConfiguration',
+  'capacityProviderStrategies',
+  'circuitBreaker',
+  'cloudMapOptions',
+  'cluster',
+  'deploymentAlarms',
+  'deploymentController',
+  'deploymentStrategy',
+  'desiredCount',
+  'enableECSManagedTags',
+  'enableExecuteCommand',
+  'healthCheckGracePeriod',
+  'lifecycleHooks',
+  'linearConfiguration',
+  'maxHealthyPercent',
+  'minHealthyPercent',
+  'platformVersion',
+  'propagateTags',
+  'securityGroups',
+  'serviceConnectConfiguration',
+  'serviceName',
+  'taskDefinition',
+  'taskDefinitionRevision',
+  'volumeConfigurations',
+  'vpcSubnets'
+]);
+
+// LambdaRestApiProps from aws-cdk-lib/aws-apigateway
+export const validLambdaRestApiProps: Set<string> = new Set([
+  'apiKeySourceType',
+  'binaryMediaTypes',
+  'cloneFrom',
+  'cloudWatchRole',
+  'cloudWatchRoleRemovalPolicy',
+  'defaultCorsPreflightOptions',
+  'defaultIntegration',
+  'defaultMethodOptions',
+  'deploy',
+  'deployOptions',
+  'description',
+  'disableExecuteApiEndpoint',
+  'domainName',
+  'endpointConfiguration',
+  'endpointExportName',
+  'endpointTypes',
+  'failOnWarnings',
+  'handler',
+  'integrationOptions',
+  'minCompressionSize',
+  'minimumCompressionSize',
+  'parameters',
+  'policy',
+  'proxy',
+  'restApiName',
+  'retainDeployments'
 ]);
 
 // RestApiProps from aws-cdk-lib/aws-apigateway
 export const validRestApiProps: Set<string> = new Set([
+  'apiKeySourceType',
   'binaryMediaTypes',
-  'minimumCompressionSize',
-  'minCompressionSize',
   'cloneFrom',
-  'apiKeySourceType'
+  'cloudWatchRole',
+  'cloudWatchRoleRemovalPolicy',
+  'defaultCorsPreflightOptions',
+  'defaultIntegration',
+  'defaultMethodOptions',
+  'deploy',
+  'deployOptions',
+  'description',
+  'disableExecuteApiEndpoint',
+  'domainName',
+  'endpointConfiguration',
+  'endpointExportName',
+  'endpointTypes',
+  'failOnWarnings',
+  'minCompressionSize',
+  'minimumCompressionSize',
+  'parameters',
+  'policy',
+  'restApiName',
+  'retainDeployments'
 ]);
 
-// QueueProps from aws-cdk-lib/aws-sqs
-export const validQueueProps: Set<string> = new Set([
-  'queueName',
-  'retentionPeriod',
-  'deliveryDelay',
-  'maxMessageSizeBytes',
-  'receiveMessageWaitTime',
-  'visibilityTimeout',
-  'deadLetterQueue',
-  'encryption',
-  'encryptionMasterKey',
-  'dataKeyReuse',
-  'fifo',
-  'contentBasedDeduplication',
-  'deduplicationScope',
-  'fifoThroughputLimit',
-  'removalPolicy',
-  'enforceSSL',
-  'redriveAllowPolicy'
+// DistributionProps from aws-cdk-lib/aws-cloudfront
+export const validDistributionProps: Set<string> = new Set([
+  'additionalBehaviors',
+  'certificate',
+  'comment',
+  'defaultBehavior',
+  'defaultRootObject',
+  'domainNames',
+  'enableIpv6',
+  'enableLogging',
+  'enabled',
+  'errorResponses',
+  'geoRestriction',
+  'httpVersion',
+  'logBucket',
+  'logFilePrefix',
+  'logIncludesCookies',
+  'minimumProtocolVersion',
+  'priceClass',
+  'publishAdditionalMetrics',
+  'sslSupportMethod',
+  'webAclId'
 ]);
 
-// TableProps from aws-cdk-lib/aws-dynamodb
-export const validTableProps: Set<string> = new Set([
-  'tableName',
-  'kinesisStream',
-  'kinesisPrecisionTimestamp'
+// UserPoolClientProps from aws-cdk-lib/aws-cognito
+export const validUserPoolClientProps: Set<string> = new Set([
+  'accessTokenValidity',
+  'analytics',
+  'authFlows',
+  'authSessionValidity',
+  'disableOAuth',
+  'enablePropagateAdditionalUserContextData',
+  'enableTokenRevocation',
+  'generateSecret',
+  'idTokenValidity',
+  'oAuth',
+  'preventUserExistenceErrors',
+  'readAttributes',
+  'refreshTokenRotationGracePeriod',
+  'refreshTokenValidity',
+  'supportedIdentityProviders',
+  'userPool',
+  'userPoolClientName',
+  'writeAttributes'
 ]);
 
-// StreamProps from aws-cdk-lib/aws-kinesis
-export const validStreamProps: Set<string> = new Set([
-  'streamName',
-  'retentionPeriod',
-  'shardCount',
-  'encryption',
-  'encryptionKey',
-  'streamMode',
-  'removalPolicy',
-  'shardLevelMetrics'
+// DynamoEventSourceProps from aws-cdk-lib/aws-lambda-event-sources
+export const validDynamoEventSourceProps: Set<string> = new Set([
+  'batchSize',
+  'bisectBatchOnError',
+  'enabled',
+  'filterEncryption',
+  'filters',
+  'maxBatchingWindow',
+  'maxRecordAge',
+  'metricsConfig',
+  'onFailure',
+  'parallelizationFactor',
+  'provisionedPollerConfig',
+  'reportBatchItemFailures',
+  'retryAttempts',
+  'startingPosition',
+  'tumblingWindow'
+]);
+
+// CfnPipeProps from aws-cdk-lib/aws-pipes
+export const validCfnPipeProps: Set<string> = new Set([
+  'description',
+  'desiredState',
+  'enrichment',
+  'enrichmentParameters',
+  'kmsKeyIdentifier',
+  'logConfiguration',
+  'name',
+  'roleArn',
+  'source',
+  'sourceParameters',
+  'tags',
+  'target',
+  'targetParameters'
 ]);
 
 // CfnDeliveryStreamProps from aws-cdk-lib/aws-kinesisfirehose
@@ -137,31 +310,239 @@ export const validCfnDeliveryStreamProps: Set<string> = new Set([
   'tags'
 ]);
 
-// LogGroupProps from aws-cdk-lib/aws-logs
-export const validLogGroupProps: Set<string> = new Set([
+// StreamProps from aws-cdk-lib/aws-kinesis
+export const validStreamProps: Set<string> = new Set([
+  'encryption',
   'encryptionKey',
-  'logGroupName',
-  'dataProtectionPolicy',
-  'deletionProtectionEnabled',
-  'fieldIndexPolicies',
-  'retention',
-  'logGroupClass',
-  'removalPolicy'
+  'removalPolicy',
+  'retentionPeriod',
+  'shardCount',
+  'shardLevelMetrics',
+  'streamMode',
+  'streamName'
+]);
+
+// CfnJobProps from aws-cdk-lib/aws-glue
+export const validCfnJobProps: Set<string> = new Set([
+  'allocatedCapacity',
+  'command',
+  'connections',
+  'defaultArguments',
+  'description',
+  'executionClass',
+  'executionProperty',
+  'glueVersion',
+  'jobMode',
+  'jobRunQueuingEnabled',
+  'logUri',
+  'maintenanceWindow',
+  'maxCapacity',
+  'maxRetries',
+  'name',
+  'nonOverridableArguments',
+  'notificationProperty',
+  'numberOfWorkers',
+  'role',
+  'securityConfiguration',
+  'tags',
+  'timeout',
+  'workerType'
+]);
+
+// KinesisEventSourceProps from aws-cdk-lib/aws-lambda-event-sources
+export const validKinesisEventSourceProps: Set<string> = new Set([
+  'batchSize',
+  'bisectBatchOnError',
+  'enabled',
+  'filterEncryption',
+  'filters',
+  'maxBatchingWindow',
+  'maxRecordAge',
+  'metricsConfig',
+  'onFailure',
+  'parallelizationFactor',
+  'provisionedPollerConfig',
+  'reportBatchItemFailures',
+  'retryAttempts',
+  'startingPosition',
+  'startingPositionTimestamp',
+  'tumblingWindow'
+]);
+
+// CfnCacheClusterProps from aws-cdk-lib/aws-elasticache
+export const validCfnCacheClusterProps: Set<string> = new Set([
+  'autoMinorVersionUpgrade',
+  'azMode',
+  'cacheNodeType',
+  'cacheParameterGroupName',
+  'cacheSecurityGroupNames',
+  'cacheSubnetGroupName',
+  'clusterName',
+  'engine',
+  'engineVersion',
+  'ipDiscovery',
+  'logDeliveryConfigurations',
+  'networkType',
+  'notificationTopicArn',
+  'numCacheNodes',
+  'port',
+  'preferredAvailabilityZone',
+  'preferredAvailabilityZones',
+  'preferredMaintenanceWindow',
+  'snapshotArns',
+  'snapshotName',
+  'snapshotRetentionLimit',
+  'snapshotWindow',
+  'tags',
+  'transitEncryptionEnabled',
+  'vpcSecurityGroupIds'
+]);
+
+// CfnIndexProps from aws-cdk-lib/aws-kendra
+export const validCfnIndexProps: Set<string> = new Set([
+  'capacityUnits',
+  'description',
+  'documentMetadataConfigurations',
+  'edition',
+  'name',
+  'roleArn',
+  'serverSideEncryptionConfiguration',
+  'tags',
+  'userContextPolicy',
+  'userTokenConfigurations'
+]);
+
+// CfnDataSourceProps from aws-cdk-lib/aws-kendra
+export const validCfnDataSourceProps: Set<string> = new Set([
+  'customDocumentEnrichmentConfiguration',
+  'dataSourceConfiguration',
+  'description',
+  'indexId',
+  'languageCode',
+  'name',
+  'roleArn',
+  'schedule',
+  'tags',
+  'type'
 ]);
 
 // TopicProps from aws-cdk-lib/aws-sns
 export const validTopicProps: Set<string> = new Set([
-  'displayName',
-  'topicName',
-  'masterKey',
   'contentBasedDeduplication',
-  'fifo',
-  'loggingConfigs',
-  'messageRetentionPeriodInDays',
+  'displayName',
   'enforceSSL',
+  'fifo',
+  'fifoThroughputScope',
+  'loggingConfigs',
+  'masterKey',
+  'messageRetentionPeriodInDays',
   'signatureVersion',
-  'tracingConfig',
-  'fifoThroughputScope'
+  'topicName',
+  'tracingConfig'
+]);
+
+// KeyProps from aws-cdk-lib/aws-kms
+export const validKeyProps: Set<string> = new Set([
+  'admins',
+  'alias',
+  'description',
+  'enableKeyRotation',
+  'enabled',
+  'keySpec',
+  'keyUsage',
+  'multiRegion',
+  'pendingWindow',
+  'policy',
+  'removalPolicy',
+  'rotationPeriod'
+]);
+
+// VpcProps from aws-cdk-lib/aws-ec2
+export const validVpcProps: Set<string> = new Set([
+  'availabilityZones',
+  'cidr',
+  'createInternetGateway',
+  'defaultInstanceTenancy',
+  'enableDnsHostnames',
+  'enableDnsSupport',
+  'flowLogs',
+  'gatewayEndpoints',
+  'ipAddresses',
+  'ipProtocol',
+  'ipv6Addresses',
+  'maxAzs',
+  'natGatewayProvider',
+  'natGatewaySubnets',
+  'natGateways',
+  'reservedAzs',
+  'restrictDefaultSecurityGroup',
+  'subnetConfiguration',
+  'vpcName',
+  'vpnConnections',
+  'vpnGateway',
+  'vpnGatewayAsn',
+  'vpnRoutePropagation'
+]);
+
+// CfnModelProps from aws-cdk-lib/aws-sagemaker
+export const validCfnModelProps: Set<string> = new Set([
+  'containers',
+  'enableNetworkIsolation',
+  'executionRoleArn',
+  'inferenceExecutionConfig',
+  'modelName',
+  'primaryContainer',
+  'tags',
+  'vpcConfig'
+]);
+
+// PrivateHostedZoneProps from aws-cdk-lib/aws-route53
+export const validPrivateHostedZoneProps: Set<string> = new Set([
+  'addTrailingDot',
+  'comment',
+  'queryLogsLogGroupArn',
+  'vpc',
+  'zoneName'
+]);
+
+// QueueProps from aws-cdk-lib/aws-sqs
+export const validQueueProps: Set<string> = new Set([
+  'contentBasedDeduplication',
+  'dataKeyReuse',
+  'deadLetterQueue',
+  'deduplicationScope',
+  'deliveryDelay',
+  'encryption',
+  'encryptionMasterKey',
+  'enforceSSL',
+  'fifo',
+  'fifoThroughputLimit',
+  'maxMessageSizeBytes',
+  'queueName',
+  'receiveMessageWaitTime',
+  'redriveAllowPolicy',
+  'removalPolicy',
+  'retentionPeriod',
+  'visibilityTimeout'
+]);
+
+// CfnWebACLProps from aws-cdk-lib/aws-wafv2
+export const validCfnWebACLProps: Set<string> = new Set([
+  'applicationConfig',
+  'associationConfig',
+  'captchaConfig',
+  'challengeConfig',
+  'customResponseBodies',
+  'dataProtectionConfig',
+  'defaultAction',
+  'description',
+  'name',
+  'onSourceDDoSProtectionConfig',
+  'rules',
+  'scope',
+  'tags',
+  'tokenDomains',
+  'visibilityConfig'
 ]);
 
 // Shared validation implementation
@@ -178,38 +559,102 @@ export function ValidateProps(target: any | undefined, validProps: Set<string>, 
 }
 
 // Validation functions
-export function ValidateBucketProps(target?: any): void {
-  ValidateProps(target, validBucketProps, 'BucketProps');
+export function ValidateApplicationLoadBalancerProps(target?: any): void {
+  ValidateProps(target, validApplicationLoadBalancerProps, 'ApplicationLoadBalancerProps');
 }
 
-export function ValidateFunctionProps(target?: any): void {
-  ValidateProps(target, validFunctionProps, 'FunctionProps');
+export function ValidateApplicationListenerProps(target?: any): void {
+  ValidateProps(target, validApplicationListenerProps, 'ApplicationListenerProps');
+}
+
+export function ValidateContainerDefinitionProps(target?: any): void {
+  ValidateProps(target, validContainerDefinitionProps, 'ContainerDefinitionProps');
+}
+
+export function ValidateFargateTaskDefinitionProps(target?: any): void {
+  ValidateProps(target, validFargateTaskDefinitionProps, 'FargateTaskDefinitionProps');
+}
+
+export function ValidateFargateServiceProps(target?: any): void {
+  ValidateProps(target, validFargateServiceProps, 'FargateServiceProps');
+}
+
+export function ValidateLambdaRestApiProps(target?: any): void {
+  ValidateProps(target, validLambdaRestApiProps, 'LambdaRestApiProps');
 }
 
 export function ValidateRestApiProps(target?: any): void {
   ValidateProps(target, validRestApiProps, 'RestApiProps');
 }
 
-export function ValidateQueueProps(target?: any): void {
-  ValidateProps(target, validQueueProps, 'QueueProps');
+export function ValidateDistributionProps(target?: any): void {
+  ValidateProps(target, validDistributionProps, 'DistributionProps');
 }
 
-export function ValidateTableProps(target?: any): void {
-  ValidateProps(target, validTableProps, 'TableProps');
+export function ValidateUserPoolClientProps(target?: any): void {
+  ValidateProps(target, validUserPoolClientProps, 'UserPoolClientProps');
 }
 
-export function ValidateStreamProps(target?: any): void {
-  ValidateProps(target, validStreamProps, 'StreamProps');
+export function ValidateDynamoEventSourceProps(target?: any): void {
+  ValidateProps(target, validDynamoEventSourceProps, 'DynamoEventSourceProps');
+}
+
+export function ValidateCfnPipeProps(target?: any): void {
+  ValidateProps(target, validCfnPipeProps, 'CfnPipeProps');
 }
 
 export function ValidateCfnDeliveryStreamProps(target?: any): void {
   ValidateProps(target, validCfnDeliveryStreamProps, 'CfnDeliveryStreamProps');
 }
 
-export function ValidateLogGroupProps(target?: any): void {
-  ValidateProps(target, validLogGroupProps, 'LogGroupProps');
+export function ValidateStreamProps(target?: any): void {
+  ValidateProps(target, validStreamProps, 'StreamProps');
+}
+
+export function ValidateCfnJobProps(target?: any): void {
+  ValidateProps(target, validCfnJobProps, 'CfnJobProps');
+}
+
+export function ValidateKinesisEventSourceProps(target?: any): void {
+  ValidateProps(target, validKinesisEventSourceProps, 'KinesisEventSourceProps');
+}
+
+export function ValidateCfnCacheClusterProps(target?: any): void {
+  ValidateProps(target, validCfnCacheClusterProps, 'CfnCacheClusterProps');
+}
+
+export function ValidateCfnIndexProps(target?: any): void {
+  ValidateProps(target, validCfnIndexProps, 'CfnIndexProps');
+}
+
+export function ValidateCfnDataSourceProps(target?: any): void {
+  ValidateProps(target, validCfnDataSourceProps, 'CfnDataSourceProps');
 }
 
 export function ValidateTopicProps(target?: any): void {
   ValidateProps(target, validTopicProps, 'TopicProps');
+}
+
+export function ValidateKeyProps(target?: any): void {
+  ValidateProps(target, validKeyProps, 'KeyProps');
+}
+
+export function ValidateVpcProps(target?: any): void {
+  ValidateProps(target, validVpcProps, 'VpcProps');
+}
+
+export function ValidateCfnModelProps(target?: any): void {
+  ValidateProps(target, validCfnModelProps, 'CfnModelProps');
+}
+
+export function ValidatePrivateHostedZoneProps(target?: any): void {
+  ValidateProps(target, validPrivateHostedZoneProps, 'PrivateHostedZoneProps');
+}
+
+export function ValidateQueueProps(target?: any): void {
+  ValidateProps(target, validQueueProps, 'QueueProps');
+}
+
+export function ValidateCfnWebACLProps(target?: any): void {
+  ValidateProps(target, validCfnWebACLProps, 'CfnWebACLProps');
 }

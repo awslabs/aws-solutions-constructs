@@ -39,4 +39,8 @@ echo "==========================================================================
 echo "installing..."
 npm install --legacy-peer-deps
 
+cd scripts
+npm run generate:validation
+cd ..
+
 cd $starting_dir
