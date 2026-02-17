@@ -40,6 +40,7 @@ echo "installing..."
 npm install --legacy-peer-deps
 
 cd scripts
+tsc --version
 npm run generate:validation
 cd ..
 
