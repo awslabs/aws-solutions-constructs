@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest --coverage",
-    "generate:validation": "tsc && node dist/generate-validation.js"
+    "generate:validation": "tsc && node dist/src/generate-validation.js"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
@@ -17,6 +17,7 @@
     "typescript": "4.7.4"
   },
   "dependencies": {
-    "aws-cdk-lib": "2.238.0"
-  }
+    "aws-cdk-lib": "0.0.0"
+  },
+  "peerDependencies": {}
 }
