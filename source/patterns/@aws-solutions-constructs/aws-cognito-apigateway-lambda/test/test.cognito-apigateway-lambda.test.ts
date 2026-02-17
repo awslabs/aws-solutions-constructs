@@ -464,3 +464,43 @@ test('Confirm CheckLambdaProps is being called', () => {
   };
   expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });
+
+test('Test that ValidateLambdaRestApiProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const testProps: CognitoToApiGatewayToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler'
+    },
+    apiGatewayProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new CognitoToApiGatewayToLambda(stack, 'test-construct', testProps);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateUserPoolClientProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const testProps: CognitoToApiGatewayToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler'
+    },
+    cognitoUserPoolClientProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new CognitoToApiGatewayToLambda(stack, 'test-construct', testProps);
+  };
+
+  expect(app).toThrowError();
+});

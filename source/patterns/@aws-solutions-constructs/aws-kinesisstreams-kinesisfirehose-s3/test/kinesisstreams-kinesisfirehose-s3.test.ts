@@ -273,3 +273,18 @@ test('Confirm call to CheckKinesisStreamProps', () => {
   // Assertion
   expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });
+
+test('Test that ValidateCfnDeliveryStreamProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: KinesisStreamsToKinesisFirehoseToS3Props = {
+    kinesisFirehoseProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});

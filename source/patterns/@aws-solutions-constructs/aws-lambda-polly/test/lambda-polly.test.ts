@@ -12,7 +12,7 @@
  */
 
 import { App, Stack } from "aws-cdk-lib";
-import { LambdaToPolly } from "../lib";
+import { LambdaToPolly, LambdaToPollyProps } from "../lib";
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { Match, Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
@@ -684,4 +684,65 @@ describe('Test validation errors', () => {
       });
     }).toThrow('Error - Topic properties can only be provided when asyncJobs is true.');
   });
+});
+
+test('Test that ValidateTopicProps() is being called', () => {
+  const stack = new Stack();
+  const props: LambdaToPollyProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler'
+    },
+    topicProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new LambdaToPolly(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateKeyProps() is being called', () => {
+  const stack = new Stack();
+  const props: LambdaToPollyProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler'
+    },
+    topicEncryptionKeyProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new LambdaToPolly(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateVpcProps() is being called', () => {
+  const stack = new Stack();
+  const props: LambdaToPollyProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler'
+    },
+    deployVpc: true,
+    vpcProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new LambdaToPolly(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
 });

@@ -13,7 +13,7 @@
 
 // Imports
 import * as cdk from "aws-cdk-lib";
-import { WafwebaclToApiGateway } from "../lib";
+import { WafwebaclToApiGateway, WafwebaclToApiGatewayProps } from "../lib";
 import * as api from 'aws-cdk-lib/aws-apigateway';
 import * as waf from "aws-cdk-lib/aws-wafv2";
 import * as defaults from '@aws-solutions-constructs/core';
@@ -311,4 +311,21 @@ test('Test existing web ACL', () => {
   });
 
   template.resourceCountIs("AWS::WAFv2::WebACL", 1);
+});
+
+test('Test that ValidateCfnWebACLProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const restApi = new api.RestApi(stack, 'test-api', {});
+  const props: WafwebaclToApiGatewayProps = {
+    existingApiGatewayInterface: restApi,
+    webaclProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new WafwebaclToApiGateway(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
 });

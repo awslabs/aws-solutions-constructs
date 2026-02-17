@@ -739,3 +739,61 @@ test('Confirm that CheckVpcProps was called', () => {
   // Assertion
   expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
+
+test('Test that ValidateContainerDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
+
+  const props: FargateToKinesisFirehoseProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    existingKinesisFirehose: destination.kinesisFirehose,
+    containerDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToKinesisFirehose(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateFargateTaskDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
+  const props: FargateToKinesisFirehoseProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    existingKinesisFirehose: destination.kinesisFirehose,
+    fargateTaskDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToKinesisFirehose(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateFargateServiceProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const destination = GetTestFirehoseDestination(stack, 'test-destination');
+  const props: FargateToKinesisFirehoseProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    existingKinesisFirehose: destination.kinesisFirehose,
+    fargateServiceProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToKinesisFirehose(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});

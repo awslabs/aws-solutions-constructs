@@ -919,3 +919,18 @@ test('Confirm suppression of Usage Plan', () => {
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::ApiGateway::UsagePlan', 0);
 });
+
+test('Test that ValidateRestApiProps() is being called', () => {
+  const stack = new Stack();
+  const testProps: ApiGatewayToSqsProps = {
+    apiGatewayProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new ApiGatewayToSqs(stack, 'test-construct', testProps);
+  };
+
+  expect(app).toThrowError();
+});

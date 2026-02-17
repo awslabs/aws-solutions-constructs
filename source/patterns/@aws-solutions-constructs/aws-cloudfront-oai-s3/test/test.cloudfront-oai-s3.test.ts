@@ -813,3 +813,18 @@ test('logCloudFrontAccessLog property is used correctly', () => {
   expect(construct.cloudFrontLoggingBucket).toBeDefined();
   expect(construct.cloudFrontLoggingBucketAccessLogBucket).not.toBeDefined();
 });
+
+test('Test that ValidateDistributionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: CloudFrontToOaiToS3Props = {
+    cloudFrontDistributionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new CloudFrontToOaiToS3(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});

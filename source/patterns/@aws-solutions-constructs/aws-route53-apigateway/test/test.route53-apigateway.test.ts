@@ -19,6 +19,7 @@ import * as defaults from "@aws-solutions-constructs/core";
 import * as acm from "aws-cdk-lib/aws-certificatemanager";
 import { Template } from 'aws-cdk-lib/assertions';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 
 // Deploying Public/Private Existing Hosted Zones
 function deployApi(
@@ -360,4 +361,25 @@ test("Integration test for A record creation in Private Hosted Zone ", () => {
     },
     Name: "RestApi"
   });
+});
+
+test('Test that ValidatePrivateHostedZoneProps() is being called', () => {
+  const stack = new cdk.Stack();
+
+  // Definitions
+  const props: Route53ToApiGatewayProps = {
+    publicApi: false,
+    existingHostedZoneInterface: {} as route53.IHostedZone,
+    existingApiGatewayInterface: {} as apigateway.IRestApi,
+    existingCertificateInterface: {} as acm.ICertificate,
+    privateHostedZoneProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new Route53ToApiGateway(stack, "api-stack", props);
+  };
+
+  expect(app).toThrowError();
 });

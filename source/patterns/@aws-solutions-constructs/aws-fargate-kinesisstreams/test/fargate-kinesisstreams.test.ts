@@ -650,3 +650,54 @@ test('Confirm that CheckKinesisStreamsProps was called', () => {
   // Assertion
   expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });
+
+test('Test that ValidateContainerDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToKinesisStreamsProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    containerDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToKinesisStreams(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateFargateTaskDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToKinesisStreamsProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    fargateTaskDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToKinesisStreams(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateFargateServiceProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToKinesisStreamsProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    fargateServiceProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToKinesisStreams(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});

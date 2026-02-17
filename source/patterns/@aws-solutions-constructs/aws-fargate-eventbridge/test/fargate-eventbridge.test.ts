@@ -418,3 +418,54 @@ test('Confirm CheckEventBridgeProps is being called', () => {
   };
   expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });
+
+test('Test that ValidateContainerDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToEventbridgeProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    containerDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToEventbridge(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateFargateTaskDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToEventbridgeProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    fargateTaskDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToEventbridge(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateFargateServiceProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToEventbridgeProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    fargateServiceProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToEventbridge(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});

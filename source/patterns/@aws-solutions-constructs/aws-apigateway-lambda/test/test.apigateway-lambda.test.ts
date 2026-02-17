@@ -205,3 +205,23 @@ test('Confirm suppression of Usage Plan', () => {
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::ApiGateway::UsagePlan', 0);
 });
+
+test('Test that ValidateLambdaRestApiProps() is being called', () => {
+  const stack = new Stack();
+  const props: ApiGatewayToLambdaProps = {
+    lambdaFunctionProps: {
+      code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {\'statusCode\': 200, \'body\': \'\'}; }'),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler',
+    },
+    apiGatewayProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new ApiGatewayToLambda(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});

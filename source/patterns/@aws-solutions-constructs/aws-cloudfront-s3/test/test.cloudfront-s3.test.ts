@@ -966,3 +966,18 @@ test('additionalBehaviors have correct origin', () => {
     }
   });
 });
+
+test('Test that ValidateDistributionProps() is being called', () => {
+  const stack = new Stack();
+  const props: CloudFrontToS3Props = {
+    cloudFrontDistributionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new CloudFrontToS3(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});

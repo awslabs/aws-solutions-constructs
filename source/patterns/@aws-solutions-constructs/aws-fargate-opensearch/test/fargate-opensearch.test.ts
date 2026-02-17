@@ -765,3 +765,57 @@ test('Confirm that CheckVpcProps was called', () => {
   // Assertion
   expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
+
+test('Test that ValidateContainerDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToOpenSearchProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    openSearchDomainName: 'testdomain',
+    containerDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToOpenSearch(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateFargateTaskDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToOpenSearchProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    openSearchDomainName: 'testdomain',
+    fargateTaskDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToOpenSearch(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateFargateServiceProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToOpenSearchProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    openSearchDomainName: 'testdomain',
+    fargateServiceProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToOpenSearch(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});

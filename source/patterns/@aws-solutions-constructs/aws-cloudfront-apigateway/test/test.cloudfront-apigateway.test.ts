@@ -289,3 +289,25 @@ test("Confirm CheckCloudFrontProps is being called", () => {
     });
   }).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
 });
+
+test('Test that ValidateDistributionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const inProps: lambda.FunctionProps = {
+    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+    handler: 'index.handler'
+  };
+  const func = defaults.deployLambdaFunction(stack, inProps);
+  const regionalLambdaRestApiResponse = defaults.RegionalLambdaRestApi(stack, func);
+
+  const app = () => {
+    new CloudFrontToApiGateway(stack, 'test-construct', {
+      existingApiGatewayObj: regionalLambdaRestApiResponse.api,
+      cloudFrontDistributionProps: {
+        invalidProperty: true
+      }
+    });
+  };
+
+  expect(app).toThrowError();
+});

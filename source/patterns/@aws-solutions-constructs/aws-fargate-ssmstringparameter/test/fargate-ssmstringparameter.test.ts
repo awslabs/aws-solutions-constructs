@@ -844,3 +844,63 @@ function createSsmParameterStore(stack: cdk.Stack) {
     stringValue,
   });
 }
+
+test('Test that ValidateContainerDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToSsmstringparameterProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    stringParameterProps: {
+      stringValue: 'test-value'
+    },
+    containerDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToSsmstringparameter(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateFargateTaskDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToSsmstringparameterProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    stringParameterProps: {
+      stringValue: 'test-value'
+    },
+    fargateTaskDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToSsmstringparameter(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateFargateServiceProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToSsmstringparameterProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    stringParameterProps: {
+      stringValue: 'test-value'
+    },
+    fargateServiceProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToSsmstringparameter(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});

@@ -239,3 +239,26 @@ test('s3 bucket with one content bucket and no logging bucket', () => {
   const template = Template.fromStack(stack);
   template.resourceCountIs("AWS::S3::Bucket", 1);
 });
+
+test('Test that ValidateCfnDeliveryStreamProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: IotToKinesisFirehoseToS3Props = {
+    iotTopicRuleProps: {
+      topicRulePayload: {
+        ruleDisabled: false,
+        description: "Test rule",
+        sql: "SELECT * FROM 'test/topic'",
+        actions: []
+      }
+    },
+    kinesisFirehoseProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new IotToKinesisFirehoseToS3(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});

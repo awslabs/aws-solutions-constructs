@@ -650,3 +650,23 @@ test('Confirm call to CheckSagemakerProps', () => {
   // Assertion
   expect(app).toThrowError('Error - Either provide endpointProps or existingSagemakerEndpointObj, but not both.\n');
 });
+
+test('Test that ValidateCfnModelProps() is being called', () => {
+  const stack = new Stack();
+  const props: LambdaToSagemakerEndpointProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler'
+    },
+    modelProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new LambdaToSagemakerEndpoint(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});

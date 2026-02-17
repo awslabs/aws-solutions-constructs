@@ -387,3 +387,66 @@ test('Deploy 2 constructs', () => {
   Template.fromStack(stack);
   // No checks, as our main concern is this has no collisions
 });
+
+test('Test that ValidateContainerDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const startState = new stepfunctions.Pass(stack, 'StartState');
+  const props: FargateToStepfunctionsProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    stateMachineProps: {
+      definition: startState
+    },
+    containerDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToStepfunctions(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateFargateTaskDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const startState = new stepfunctions.Pass(stack, 'StartState');
+  const props: FargateToStepfunctionsProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    stateMachineProps: {
+      definition: startState
+    },
+    fargateTaskDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToStepfunctions(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateFargateServiceProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const startState = new stepfunctions.Pass(stack, 'StartState');
+  const props: FargateToStepfunctionsProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    stateMachineProps: {
+      definition: startState
+    },
+    fargateServiceProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToStepfunctions(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});

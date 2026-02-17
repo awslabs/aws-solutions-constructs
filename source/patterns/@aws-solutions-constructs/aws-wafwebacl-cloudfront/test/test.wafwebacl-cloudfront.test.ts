@@ -13,7 +13,7 @@
 
 // Imports
 import * as cdk from "aws-cdk-lib";
-import { WafwebaclToCloudFront } from "../lib";
+import { WafwebaclToCloudFront, WafwebaclToCloudFrontProps  } from "../lib";
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as s3 from "aws-cdk-lib/aws-s3";
@@ -359,4 +359,25 @@ test('Test defaultaction block', () => {
       Allow: Match.absent()
     }),
   });
+});
+
+test('Test that ValidateCfnWebACLProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const existingDistribution = new cloudfront.Distribution(stack, 'test-dist', {
+    defaultBehavior: {
+      origin: new origins.HttpOrigin('example.com')
+    }
+  });
+  const props: WafwebaclToCloudFrontProps = {
+    existingCloudFrontWebDistribution: existingDistribution,
+    webaclProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new WafwebaclToCloudFront(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
 });

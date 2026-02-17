@@ -13,7 +13,7 @@
 
 // Imports
 import * as cdk from "aws-cdk-lib";
-import { WafwebaclToAppsync } from "../lib";
+import { WafwebaclToAppsync, WafwebaclToAppsyncProps } from "../lib";
 import * as waf from "aws-cdk-lib/aws-wafv2";
 import * as defaults from "@aws-solutions-constructs/core";
 import * as appsync from "aws-cdk-lib/aws-appsync";
@@ -321,4 +321,20 @@ test("Test existing web ACL", () => {
   });
 
   template.resourceCountIs("AWS::WAFv2::WebACL", 1);
+});
+
+test('Test that ValidateCfnWebACLProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: WafwebaclToAppsyncProps = {
+    existingAppsyncApi: deployAppsyncGraphqlApi(stack),
+    webaclProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new WafwebaclToAppsync(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
 });

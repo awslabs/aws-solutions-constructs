@@ -347,3 +347,18 @@ test("Confirm that ValidateCfnDeliveryStreamProps is being called", () => {
   expect(app).toThrowError("ERROR - badAttribute is not a valid property of CfnDeliveryStreamProps");
 });
 
+
+test('Test that ValidateCfnDeliveryStreamProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: KinesisFirehoseToS3Props = {
+    kinesisFirehoseProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new KinesisFirehoseToS3(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});

@@ -929,3 +929,40 @@ test('Confirm call to CheckKinesisStreamProps', () => {
   // Assertion
   expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });
+
+test('Test that ValidateStreamProps() is being called', () => {
+  const stack = new Stack();
+  const props: KinesisstreamsToGluejobProps = {
+    glueJobProps: {
+      command: {
+        name: 'testJob',
+        scriptLocation: 's3://fakebucket/fakepath.py'
+      },
+      role: 'arn:aws:iam::123456789012:role/test-role'
+    },
+    kinesisStreamProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new KinesisstreamsToGluejob(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateCfnJobProps() is being called', () => {
+  const stack = new Stack();
+  const props: KinesisstreamsToGluejobProps = {
+    glueJobProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new KinesisstreamsToGluejob(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});

@@ -408,3 +408,44 @@ test('Confirm suppression of Usage Plan', () => {
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::ApiGateway::UsagePlan', 0);
 });
+
+test('Test that ValidateLambdaRestApiProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: CloudFrontToApiGatewayToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler'
+    },
+    apiGatewayProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new CloudFrontToApiGatewayToLambda(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateDistributionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: CloudFrontToApiGatewayToLambdaProps = {
+    apiGatewayProps: { defaultMethodOptions: { authorizationType: 'AWS_NONE' }},
+    lambdaFunctionProps: {
+       code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {\'statusCode\': 200, \'body\': \'\'}; }'),
+       runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+       handler: 'index.handler',
+    },
+    cloudFrontDistributionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new CloudFrontToApiGatewayToLambda(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});

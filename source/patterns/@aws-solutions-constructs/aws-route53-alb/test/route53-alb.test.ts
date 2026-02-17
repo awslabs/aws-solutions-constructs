@@ -426,3 +426,46 @@ test('Check publicApi and without an existing hosted zone is an error', () => {
   // Assertion
   expect(app).toThrowError();
 });
+
+test('Test that ValidatePrivateHostedZoneProps() is being called', () => {
+  const stack = new Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+  const testVpc = defaults.getTestVpc(stack);
+  const props: Route53ToAlbProps = {
+    existingVpc: testVpc,
+    publicApi: false,
+    privateHostedZoneProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new Route53ToAlb(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
+
+test('Test that ValidateApplicationLoadBalancerProps() is being called', () => {
+  const stack = new Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+  const testVpc = defaults.getTestVpc(stack);
+  const props: Route53ToAlbProps = {
+    existingVpc: testVpc,
+    publicApi: false,
+    privateHostedZoneProps: {
+      zoneName: 'test.example.com'
+    },
+    loadBalancerProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new Route53ToAlb(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError();
+});
