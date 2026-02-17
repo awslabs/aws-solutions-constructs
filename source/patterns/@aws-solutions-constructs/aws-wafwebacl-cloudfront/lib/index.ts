@@ -61,7 +61,7 @@ export class WafwebaclToCloudFront extends Construct {
   constructor(scope: Construct, id: string, props: WafwebaclToCloudFrontProps) {
     super(scope, id);
     defaults.CheckWafWebAclProps(props);
-    defaults.ValidateCfnWebACLProps(props.webaclProps);
+    defaults.ValidateCfnWebACLProps(this, props.webaclProps);
 
     // All our tests are based upon this behavior being on, so we're setting
     // context here rather than assuming the client will set it

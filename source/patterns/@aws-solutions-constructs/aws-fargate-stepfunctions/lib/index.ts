@@ -144,9 +144,9 @@ export class FargateToStepfunctions extends Construct {
     defaults.CheckFargateProps(props);
     defaults.CheckVpcProps(props);
     defaults.CheckStateMachineProps(props);
-    defaults.ValidateContainerDefinitionProps(props.containerDefinitionProps);
-    defaults.ValidateFargateTaskDefinitionProps(props.fargateTaskDefinitionProps);
-    defaults.ValidateFargateServiceProps(props.fargateServiceProps);
+    defaults.ValidateContainerDefinitionProps(this, props.containerDefinitionProps);
+    defaults.ValidateFargateTaskDefinitionProps(this, props.fargateTaskDefinitionProps);
+    defaults.ValidateFargateServiceProps(this, props.fargateServiceProps);
 
     this.vpc = defaults.buildVpc(scope, {
       existingVpc: props.existingVpc,

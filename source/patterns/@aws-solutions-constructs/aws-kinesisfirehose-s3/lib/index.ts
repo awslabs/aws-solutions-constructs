@@ -94,7 +94,7 @@ export class KinesisFirehoseToS3 extends Construct {
     this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
     defaults.CheckS3Props(props);
-    defaults.ValidateCfnDeliveryStreamProps(props.kinesisFirehoseProps);
+    defaults.ValidateCfnDeliveryStreamProps(this, props.kinesisFirehoseProps);
 
     const firehoseId = 'KinesisFirehose';
 

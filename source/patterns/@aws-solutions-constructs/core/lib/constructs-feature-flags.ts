@@ -20,7 +20,8 @@ import { Construct } from 'constructs';
 import { App, attachCustomSynthesis, ISynthesisSession } from 'aws-cdk-lib';
 import { ArtifactType, FeatureFlag } from '@aws-cdk/cloud-assembly-schema';
 
-const QUEUE_USE_SSE = "@aws-solutions-constructs/aws-sqs:QueueUseSse";
+export const QUEUE_USE_SSE = "@aws-solutions-constructs/aws-sqs:QueueUseSse";
+export const DISABLE_PROPERTY_VALIDATION = "@aws-solutions-constructs/core:DisablePropertyValidation";
 
 /**
  * A CDK L3 construct that creates resources for Solutions Feature Flags reporting
@@ -60,7 +61,12 @@ export class ConstructsFeatureFlagsReport extends Construct {
           recommendedValue: true,
           explanation: "Change the default behavior for the construct to encrypt the queue using Server Side Encryption (SSE)",
           userValue: this.node.tryGetContext(QUEUE_USE_SSE)
-        }
+        },
+        [DISABLE_PROPERTY_VALIDATION]: {
+          recommendedValue: false,
+          explanation: "Suppress the validation of property names on incoming arguments of type any (suppress runtime type validation)",
+          userValue: this.node.tryGetContext(DISABLE_PROPERTY_VALIDATION)
+        },
       };
     }
 }

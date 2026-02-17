@@ -107,10 +107,10 @@ export class LambdaToKendra extends Construct {
     super(scope, id);
     defaults.CheckVpcProps(props);
     defaults.CheckLambdaProps(props);
-    defaults.ValidateCfnIndexProps(props.kendraIndexProps);
+    defaults.ValidateCfnIndexProps(this, props.kendraIndexProps);
     if (props.kendraDataSourcesProps) {
       props.kendraDataSourcesProps.forEach((dataSourceProps) => {
-        defaults.ValidateCfnDataSourceProps(dataSourceProps);
+        defaults.ValidateCfnDataSourceProps(this, dataSourceProps);
       });
     }
 

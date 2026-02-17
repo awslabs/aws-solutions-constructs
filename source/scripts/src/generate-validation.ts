@@ -517,12 +517,13 @@ ${properties.map(prop => `  '${prop}'`).join(',\n')}
 
     // Generate the validation function that uses the shared ValidateProps implementation
     // Pass the Props type name for better error messages
+    // Scope is required - it will be used to check feature flags
     // Target is optional - validation is skipped if target is undefined
-    validationFunctions.push(`export function ${functionName}(target?: any): void {
-  ValidateProps(target, ${exportName}, '${config.interfaceName}');
+    validationFunctions.push(`export function ${functionName}(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, ${exportName}, '${config.interfaceName}');
 }`);
   }
-  console.log('returning the new text');
+
   // Assemble the complete file with header, Sets, shared function, and specific functions
   return `/**
  *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
@@ -547,11 +548,20 @@ ${properties.map(prop => `  '${prop}'`).join(',\n')}
 // It also provides functions that will perform the validation on each Props object type
 // parsed
 
+import { Construct } from 'constructs';
+import * as cdk from 'aws-cdk-lib';
+import { DISABLE_PROPERTY_VALIDATION } from './constructs-feature-flags';
+
 ${propsSets.join('\n\n')}
 
 // Shared validation implementation
+// Scope is required for feature flag checking
 // Target can be undefined - validation is skipped if target is undefined
-export function ValidateProps(target: any | undefined, validProps: Set<string>, propsTypeName: string): void {
+export function ValidateProps(scope: Construct, target: any | undefined, validProps: Set<string>, propsTypeName: string): void {
+  // Check if validation is disabled via feature flag
+  if (cdk.FeatureFlags.of(scope).isEnabled(DISABLE_PROPERTY_VALIDATION)) {
+    return;
+  }
   if (!target) {
     return;
   }

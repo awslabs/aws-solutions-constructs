@@ -21,6 +21,10 @@
 // It also provides functions that will perform the validation on each Props object type
 // parsed
 
+import { Construct } from 'constructs';
+import * as cdk from 'aws-cdk-lib';
+import { DISABLE_PROPERTY_VALIDATION } from './constructs-feature-flags';
+
 // ApplicationLoadBalancerProps from aws-cdk-lib/aws-elasticloadbalancingv2
 export const validApplicationLoadBalancerProps: Set<string> = new Set([
   'clientKeepAlive',
@@ -546,8 +550,13 @@ export const validCfnWebACLProps: Set<string> = new Set([
 ]);
 
 // Shared validation implementation
+// Scope is required for feature flag checking
 // Target can be undefined - validation is skipped if target is undefined
-export function ValidateProps(target: any | undefined, validProps: Set<string>, propsTypeName: string): void {
+export function ValidateProps(scope: Construct, target: any | undefined, validProps: Set<string>, propsTypeName: string): void {
+  // Check if validation is disabled via feature flag
+  if (cdk.FeatureFlags.of(scope).isEnabled(DISABLE_PROPERTY_VALIDATION)) {
+    return;
+  }
   if (!target) {
     return;
   }
@@ -559,102 +568,102 @@ export function ValidateProps(target: any | undefined, validProps: Set<string>, 
 }
 
 // Validation functions
-export function ValidateApplicationLoadBalancerProps(target?: any): void {
-  ValidateProps(target, validApplicationLoadBalancerProps, 'ApplicationLoadBalancerProps');
+export function ValidateApplicationLoadBalancerProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validApplicationLoadBalancerProps, 'ApplicationLoadBalancerProps');
 }
 
-export function ValidateApplicationListenerProps(target?: any): void {
-  ValidateProps(target, validApplicationListenerProps, 'ApplicationListenerProps');
+export function ValidateApplicationListenerProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validApplicationListenerProps, 'ApplicationListenerProps');
 }
 
-export function ValidateContainerDefinitionProps(target?: any): void {
-  ValidateProps(target, validContainerDefinitionProps, 'ContainerDefinitionProps');
+export function ValidateContainerDefinitionProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validContainerDefinitionProps, 'ContainerDefinitionProps');
 }
 
-export function ValidateFargateTaskDefinitionProps(target?: any): void {
-  ValidateProps(target, validFargateTaskDefinitionProps, 'FargateTaskDefinitionProps');
+export function ValidateFargateTaskDefinitionProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validFargateTaskDefinitionProps, 'FargateTaskDefinitionProps');
 }
 
-export function ValidateFargateServiceProps(target?: any): void {
-  ValidateProps(target, validFargateServiceProps, 'FargateServiceProps');
+export function ValidateFargateServiceProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validFargateServiceProps, 'FargateServiceProps');
 }
 
-export function ValidateLambdaRestApiProps(target?: any): void {
-  ValidateProps(target, validLambdaRestApiProps, 'LambdaRestApiProps');
+export function ValidateLambdaRestApiProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validLambdaRestApiProps, 'LambdaRestApiProps');
 }
 
-export function ValidateRestApiProps(target?: any): void {
-  ValidateProps(target, validRestApiProps, 'RestApiProps');
+export function ValidateRestApiProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validRestApiProps, 'RestApiProps');
 }
 
-export function ValidateDistributionProps(target?: any): void {
-  ValidateProps(target, validDistributionProps, 'DistributionProps');
+export function ValidateDistributionProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validDistributionProps, 'DistributionProps');
 }
 
-export function ValidateUserPoolClientProps(target?: any): void {
-  ValidateProps(target, validUserPoolClientProps, 'UserPoolClientProps');
+export function ValidateUserPoolClientProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validUserPoolClientProps, 'UserPoolClientProps');
 }
 
-export function ValidateDynamoEventSourceProps(target?: any): void {
-  ValidateProps(target, validDynamoEventSourceProps, 'DynamoEventSourceProps');
+export function ValidateDynamoEventSourceProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validDynamoEventSourceProps, 'DynamoEventSourceProps');
 }
 
-export function ValidateCfnPipeProps(target?: any): void {
-  ValidateProps(target, validCfnPipeProps, 'CfnPipeProps');
+export function ValidateCfnPipeProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validCfnPipeProps, 'CfnPipeProps');
 }
 
-export function ValidateCfnDeliveryStreamProps(target?: any): void {
-  ValidateProps(target, validCfnDeliveryStreamProps, 'CfnDeliveryStreamProps');
+export function ValidateCfnDeliveryStreamProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validCfnDeliveryStreamProps, 'CfnDeliveryStreamProps');
 }
 
-export function ValidateStreamProps(target?: any): void {
-  ValidateProps(target, validStreamProps, 'StreamProps');
+export function ValidateStreamProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validStreamProps, 'StreamProps');
 }
 
-export function ValidateCfnJobProps(target?: any): void {
-  ValidateProps(target, validCfnJobProps, 'CfnJobProps');
+export function ValidateCfnJobProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validCfnJobProps, 'CfnJobProps');
 }
 
-export function ValidateKinesisEventSourceProps(target?: any): void {
-  ValidateProps(target, validKinesisEventSourceProps, 'KinesisEventSourceProps');
+export function ValidateKinesisEventSourceProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validKinesisEventSourceProps, 'KinesisEventSourceProps');
 }
 
-export function ValidateCfnCacheClusterProps(target?: any): void {
-  ValidateProps(target, validCfnCacheClusterProps, 'CfnCacheClusterProps');
+export function ValidateCfnCacheClusterProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validCfnCacheClusterProps, 'CfnCacheClusterProps');
 }
 
-export function ValidateCfnIndexProps(target?: any): void {
-  ValidateProps(target, validCfnIndexProps, 'CfnIndexProps');
+export function ValidateCfnIndexProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validCfnIndexProps, 'CfnIndexProps');
 }
 
-export function ValidateCfnDataSourceProps(target?: any): void {
-  ValidateProps(target, validCfnDataSourceProps, 'CfnDataSourceProps');
+export function ValidateCfnDataSourceProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validCfnDataSourceProps, 'CfnDataSourceProps');
 }
 
-export function ValidateTopicProps(target?: any): void {
-  ValidateProps(target, validTopicProps, 'TopicProps');
+export function ValidateTopicProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validTopicProps, 'TopicProps');
 }
 
-export function ValidateKeyProps(target?: any): void {
-  ValidateProps(target, validKeyProps, 'KeyProps');
+export function ValidateKeyProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validKeyProps, 'KeyProps');
 }
 
-export function ValidateVpcProps(target?: any): void {
-  ValidateProps(target, validVpcProps, 'VpcProps');
+export function ValidateVpcProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validVpcProps, 'VpcProps');
 }
 
-export function ValidateCfnModelProps(target?: any): void {
-  ValidateProps(target, validCfnModelProps, 'CfnModelProps');
+export function ValidateCfnModelProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validCfnModelProps, 'CfnModelProps');
 }
 
-export function ValidatePrivateHostedZoneProps(target?: any): void {
-  ValidateProps(target, validPrivateHostedZoneProps, 'PrivateHostedZoneProps');
+export function ValidatePrivateHostedZoneProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validPrivateHostedZoneProps, 'PrivateHostedZoneProps');
 }
 
-export function ValidateQueueProps(target?: any): void {
-  ValidateProps(target, validQueueProps, 'QueueProps');
+export function ValidateQueueProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validQueueProps, 'QueueProps');
 }
 
-export function ValidateCfnWebACLProps(target?: any): void {
-  ValidateProps(target, validCfnWebACLProps, 'CfnWebACLProps');
+export function ValidateCfnWebACLProps(scope: Construct, target?: any): void {
+  ValidateProps(scope, target, validCfnWebACLProps, 'CfnWebACLProps');
 }

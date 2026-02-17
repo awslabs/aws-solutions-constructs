@@ -152,7 +152,7 @@ export class DynamoDBStreamsToPipesToStepfunctions extends Construct {
     defaults.CheckStateMachineProps(props);
     defaults.CheckDynamoDBProps(props);
     defaults.CheckPipesProps(props);
-    defaults.ValidateCfnPipeProps(props.pipeProps);
+    defaults.ValidateCfnPipeProps(this, props.pipeProps);
 
     if ((props.deploySqsDlqQueue === false) &&
       (props.pipeProps?.sourceParameters?.dynamoDbStreamParameters?.maximumRecordAgeInSeconds ||

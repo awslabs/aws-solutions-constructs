@@ -85,7 +85,7 @@ export class CloudFrontToApiGateway extends Construct {
     this.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
     defaults.CheckCloudFrontProps(props);
-    defaults.ValidateDistributionProps(props.cloudFrontDistributionProps);
+    defaults.ValidateDistributionProps(this, props.cloudFrontDistributionProps);
 
     this.apiGateway = props.existingApiGatewayObj;
 

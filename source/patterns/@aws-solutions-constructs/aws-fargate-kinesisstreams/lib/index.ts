@@ -153,9 +153,9 @@ export class FargateToKinesisStreams extends Construct {
       defaults.CheckFargateProps(props);
       defaults.CheckVpcProps(props);
       defaults.CheckKinesisStreamProps(props);
-      defaults.ValidateContainerDefinitionProps(props.containerDefinitionProps);
-      defaults.ValidateFargateTaskDefinitionProps(props.fargateTaskDefinitionProps);
-      defaults.ValidateFargateServiceProps(props.fargateServiceProps);
+      defaults.ValidateContainerDefinitionProps(this, props.containerDefinitionProps);
+      defaults.ValidateFargateTaskDefinitionProps(this, props.fargateTaskDefinitionProps);
+      defaults.ValidateFargateServiceProps(this, props.fargateServiceProps);
 
       // Setup the VPC
       this.vpc = defaults.buildVpc(scope, {

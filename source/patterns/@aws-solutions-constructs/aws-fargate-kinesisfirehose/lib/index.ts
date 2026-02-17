@@ -127,9 +127,9 @@ export class FargateToKinesisFirehose extends Construct {
     super(scope, id);
     defaults.CheckFargateProps(props);
     defaults.CheckVpcProps(props);
-    defaults.ValidateContainerDefinitionProps(props.containerDefinitionProps);
-    defaults.ValidateFargateTaskDefinitionProps(props.fargateTaskDefinitionProps);
-    defaults.ValidateFargateServiceProps(props.fargateServiceProps);
+    defaults.ValidateContainerDefinitionProps(this, props.containerDefinitionProps);
+    defaults.ValidateFargateTaskDefinitionProps(this, props.fargateTaskDefinitionProps);
+    defaults.ValidateFargateServiceProps(this, props.fargateServiceProps);
 
     if (!props.existingKinesisFirehose.deliveryStreamName) {
       throw new Error('existingKinesisFirehose must have a defined deliveryStreamName');
