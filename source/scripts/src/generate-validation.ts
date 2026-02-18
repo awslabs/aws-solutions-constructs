@@ -586,7 +586,79 @@ ${validationFunctions.join('\n\n')}
  * 
  * Error handling: Continues processing other interfaces if one fails.
  */
+/**
+ * Core logic for processing interfaces and generating validation file.
+ * Extracted for testability.
+ * 
+ * @param projectRoot - Root directory of the project
+ * @param interfacesToExtract - Array of interface configurations to process
+ * @returns Generated validation code
+ */
+export function processInterfacesAndGenerateCode(
+  projectRoot: string,
+  interfacesToExtract: InterfaceConfig[]
+): string {
+  const results = new Map<string, { config: InterfaceConfig; properties: string[] }>();
+
+  console.log('Extracting interface properties from aws-cdk-lib...\n');
+
+  // Process each configured interface
+  for (const config of interfacesToExtract) {
+    try {
+      const sourceFilePath = findInterfaceFile(config, projectRoot);
+      console.log(`Reading ${config.interfaceName} from: ${sourceFilePath}`);
+
+      // Read the .d.ts file as text
+      const sourceCode = fs.readFileSync(sourceFilePath, 'utf-8');
+
+      // Parse the TypeScript code into an AST (Abstract Syntax Tree)
+      const sourceFile = ts.createSourceFile(
+        sourceFilePath,
+        sourceCode,
+        ES2020,
+        true
+      );
+
+      // Extract properties from the interface using AST traversal
+      const properties = extractInterfaceProperties(sourceFile, config.interfaceName);
+
+      if (properties.length === 0) {
+        console.warn(`  ⚠ Warning: No properties found in ${config.interfaceName} interface`);
+        continue;
+      }
+
+      // Store the results for this interface
+      results.set(config.exportName, { config, properties });
+      console.log(`  ✓ Found ${properties.length} properties`);
+    } catch (error) {
+      // Log error but continue processing other interfaces
+      console.error(`  ✗ Error processing ${config.interfaceName}:`, error instanceof Error ? error.message : error);
+    }
+  }
+
+  // Ensure we successfully processed at least one interface
+  if (results.size === 0) {
+    throw new Error('No interfaces were successfully processed');
+  }
+
+  // Generate the complete validation.ts file content
+  const validationCode = generateValidationFile(results);
+
+  // Print summary of what was generated
+  console.log(`\n✓ Generated validation.ts with ${results.size} interface(s)`);
+  for (const [exportName, { properties }] of results) {
+    console.log(`  - ${exportName}: ${properties.length} properties`);
+  }
+
+  return validationCode;
+}
+
 export function main() {
+  // Skip execution in test environment unless explicitly requested
+  if (process.env.NODE_ENV === 'test') {
+    return;
+  }
+  
   try {
     const __dirname = getDirName();
     
@@ -595,68 +667,12 @@ export function main() {
     const projectRoot = path.join(__dirname, '../../..');
     const outputFilePath = path.join(projectRoot, 'patterns/@aws-solutions-constructs/core/lib/validation.ts');
 
-    const results = new Map<string, { config: InterfaceConfig; properties: string[] }>();
-
-    console.log('Extracting interface properties from aws-cdk-lib...\n');
-
-    // Process each configured interface
-    for (const config of INTERFACES_TO_EXTRACT) {
-      try {
-        const sourceFilePath = findInterfaceFile(config, __dirname);
-        console.log(`Reading ${config.interfaceName} from: ${sourceFilePath}`);
-
-        // Read the .d.ts file as text
-        const sourceCode = fs.readFileSync(sourceFilePath, 'utf-8');
-
-        // Parse the TypeScript code into an AST (Abstract Syntax Tree)
-        // ts.createSourceFile parameters:
-        // - fileName: Used for error messages
-        // - sourceText: The actual TypeScript code
-        // - languageVersion: 7 = ES2020 (numeric for compatibility across TS versions)
-        // - setParentNodes: true = enables parent node references in the AST
-        const sourceFile = ts.createSourceFile(
-          sourceFilePath,
-          sourceCode,
-          ES2020,
-          true
-        );
-
-        // Extract properties from the interface using AST traversal
-        const properties = extractInterfaceProperties(sourceFile, config.interfaceName);
-
-        if (properties.length === 0) {
-          console.warn(`  ⚠ Warning: No properties found in ${config.interfaceName} interface`);
-          continue;
-        }
-
-        // Store the results for this interface
-        results.set(config.exportName, { config, properties });
-        console.log(`  ✓ Found ${properties.length} properties`);
-      } catch (error) {
-        // Log error but continue processing other interfaces
-        console.error(`  ✗ Error processing ${config.interfaceName}:`, error instanceof Error ? error.message : error);
-      }
-    }
-
-    // Ensure we successfully processed at least one interface
-    if (results.size === 0) {
-      console.error('\nError: No interfaces were successfully processed');
-      process.exit(1);
-    }
-
-    // Generate the complete validation.ts file content
-    const validationCode = generateValidationFile(results);
+    const validationCode = processInterfacesAndGenerateCode(projectRoot, INTERFACES_TO_EXTRACT);
 
     // Write the generated code to the file system
     fs.writeFileSync(outputFilePath, validationCode, 'utf-8');
-
-    // Print summary of what was generated
-    console.log(`\n✓ Generated validation.ts with ${results.size} interface(s)`);
-    for (const [exportName, { properties }] of results) {
-      console.log(`  - ${exportName}: ${properties.length} properties`);
-    }
   } catch (error) {
-    console.error('Error:', error instanceof Error ? error.message : error);
+    console.error('\nError:', error instanceof Error ? error.message : error);
     process.exit(1);
   }
 }
