@@ -309,5 +309,5 @@ test('Test that ValidateDistributionProps() is being called', () => {
     });
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of DistributionProps/);
 });

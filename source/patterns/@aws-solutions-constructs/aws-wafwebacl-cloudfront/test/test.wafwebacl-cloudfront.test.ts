@@ -379,5 +379,5 @@ test('Test that ValidateCfnWebACLProps() is being called', () => {
     new WafwebaclToCloudFront(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnWebACLProps/);
 });

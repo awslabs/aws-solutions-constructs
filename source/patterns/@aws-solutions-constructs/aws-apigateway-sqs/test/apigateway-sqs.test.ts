@@ -932,5 +932,5 @@ test('Test that ValidateRestApiProps() is being called', () => {
     new ApiGatewayToSqs(stack, 'test-construct', testProps);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of RestApiProps/);
 });

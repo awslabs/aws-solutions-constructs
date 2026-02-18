@@ -307,5 +307,5 @@ test('Test that ValidateCfnDeliveryStreamProps() is being called', () => {
     new EventbridgeToKinesisFirehoseToS3(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnDeliveryStreamProps/);
 });

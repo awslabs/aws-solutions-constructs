@@ -949,7 +949,7 @@ test('Test that ValidateStreamProps() is being called', () => {
     new KinesisstreamsToGluejob(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of StreamProps/);
 });
 
 test('Test that ValidateCfnJobProps() is being called', () => {
@@ -964,5 +964,5 @@ test('Test that ValidateCfnJobProps() is being called', () => {
     new KinesisstreamsToGluejob(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnJobProps/);
 });

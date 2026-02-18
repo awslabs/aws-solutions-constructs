@@ -433,7 +433,7 @@ test('Test that ValidateContainerDefinitionProps() is being called', () => {
     new FargateToEventbridge(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of ContainerDefinitionProps/);
 });
 
 test('Test that ValidateFargateTaskDefinitionProps() is being called', () => {
@@ -450,7 +450,7 @@ test('Test that ValidateFargateTaskDefinitionProps() is being called', () => {
     new FargateToEventbridge(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of FargateTaskDefinitionProps/);
 });
 
 test('Test that ValidateFargateServiceProps() is being called', () => {
@@ -467,5 +467,5 @@ test('Test that ValidateFargateServiceProps() is being called', () => {
     new FargateToEventbridge(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of FargateServiceProps/);
 });

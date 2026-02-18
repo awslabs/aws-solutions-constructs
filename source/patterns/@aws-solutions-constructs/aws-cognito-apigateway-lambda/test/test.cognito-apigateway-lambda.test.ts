@@ -482,7 +482,7 @@ test('Test that ValidateLambdaRestApiProps() is being called', () => {
     new CognitoToApiGatewayToLambda(stack, 'test-construct', testProps);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of LambdaRestApiProps/);
 });
 
 test('Test that ValidateUserPoolClientProps() is being called', () => {
@@ -502,5 +502,5 @@ test('Test that ValidateUserPoolClientProps() is being called', () => {
     new CognitoToApiGatewayToLambda(stack, 'test-construct', testProps);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of UserPoolClientProps/);
 });

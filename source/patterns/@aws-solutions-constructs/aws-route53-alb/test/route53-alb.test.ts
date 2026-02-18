@@ -444,7 +444,7 @@ test('Test that ValidatePrivateHostedZoneProps() is being called', () => {
     new Route53ToAlb(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of PrivateHostedZoneProps/);
 });
 
 test('Test that ValidateApplicationLoadBalancerProps() is being called', () => {
@@ -467,5 +467,5 @@ test('Test that ValidateApplicationLoadBalancerProps() is being called', () => {
     new Route53ToAlb(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of ApplicationLoadBalancerProps/);
 });

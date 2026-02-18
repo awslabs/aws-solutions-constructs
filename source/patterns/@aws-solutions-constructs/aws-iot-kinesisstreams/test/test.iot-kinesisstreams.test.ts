@@ -277,5 +277,5 @@ test('Test that ValidateStreamProps() is being called', () => {
     new IotToKinesisStreams(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of StreamProps/);
 });

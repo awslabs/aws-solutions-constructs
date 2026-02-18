@@ -701,5 +701,5 @@ test('Test that ValidateCfnPipeProps() is being called', () => {
     new DynamoDBStreamsToPipesToStepfunctions(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnPipeProps/);
 });

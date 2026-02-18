@@ -826,5 +826,5 @@ test('Test that ValidateDistributionProps() is being called', () => {
     new CloudFrontToOaiToS3(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of DistributionProps/);
 });

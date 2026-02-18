@@ -1418,7 +1418,7 @@ test('Test that ValidateCfnIndexProps() is being called', () => {
     new LambdaToKendra(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnIndexProps/);
 });
 
 test('Test that ValidateCfnDataSourceProps() is being called', () => {
@@ -1438,5 +1438,5 @@ test('Test that ValidateCfnDataSourceProps() is being called', () => {
     new LambdaToKendra(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnDataSourceProps/);
 });

@@ -381,5 +381,5 @@ test('Test that ValidatePrivateHostedZoneProps() is being called', () => {
     new Route53ToApiGateway(stack, "api-stack", props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of PrivateHostedZoneProps/);
 });

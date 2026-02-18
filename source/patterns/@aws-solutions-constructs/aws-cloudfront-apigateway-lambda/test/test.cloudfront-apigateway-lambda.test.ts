@@ -426,7 +426,7 @@ test('Test that ValidateLambdaRestApiProps() is being called', () => {
     new CloudFrontToApiGatewayToLambda(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of LambdaRestApiProps/);
 });
 
 test('Test that ValidateDistributionProps() is being called', () => {
@@ -447,5 +447,5 @@ test('Test that ValidateDistributionProps() is being called', () => {
     new CloudFrontToApiGatewayToLambda(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of DistributionProps/);
 });

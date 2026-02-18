@@ -1108,7 +1108,7 @@ test('Test that ValidateApplicationLoadBalancerProps() is being called', () => {
     new AlbToLambda(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of ApplicationLoadBalancerProps/);
 });
 
 test('Test that ValidateApplicationListenerProps() is being called', () => {
@@ -1131,5 +1131,5 @@ test('Test that ValidateApplicationListenerProps() is being called', () => {
     new AlbToLambda(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of ApplicationListenerProps/);
 });

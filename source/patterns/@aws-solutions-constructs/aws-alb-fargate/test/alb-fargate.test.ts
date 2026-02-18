@@ -571,5 +571,5 @@ test('Test that ValidateApplicationLoadBalanerProps() is being called', () => {
     new AlbToFargate(stack, 'test-construct', testProps);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of ApplicationLoadBalancerProps/);
 });

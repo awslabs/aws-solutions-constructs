@@ -223,5 +223,5 @@ test('Test that ValidateLambdaRestApiProps() is being called', () => {
     new ApiGatewayToLambda(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of LambdaRestApiProps/);
 });

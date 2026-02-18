@@ -177,5 +177,5 @@ test('Test that ValidateKinesisEventSourceProps() is being called', () => {
     new KinesisStreamsToLambda(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of KinesisEventSourceProps/);
 });
