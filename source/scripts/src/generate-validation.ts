@@ -25,12 +25,7 @@
 import ts from 'typescript';
 import * as fs from 'fs';
 import * as path from 'path';
-import { fileURLToPath } from 'url';
-
-// ES modules don't have __dirname, so we reconstruct it from import.meta.url
-// fileURLToPath converts file:// URL to a filesystem path
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { getDirName } from './get-dirname.js';
 
 // Declared here because 7 is constant across Typescript versions, but ES2020 varies
 const ES2020 = 7;
@@ -43,7 +38,7 @@ const ES2020 = 7;
  * @property filePath - Relative path within aws-cdk-lib to the .d.ts file
  * @property exportName - The variable name for the generated Set in validation.ts
  */
-interface InterfaceConfig {
+export interface InterfaceConfig {
   interfaceName: string;
   module: string;
   filePath: string;
@@ -213,11 +208,12 @@ const INTERFACES_TO_EXTRACT: InterfaceConfig[] = [
  * Why: The script may be run from different locations, so we can't hardcode the path.
  * How: Walks up the directory tree until we find node_modules or hit the root.
  * 
+ * @param startDir - Directory to start searching from
  * @returns Absolute path to node_modules directory
  * @throws Error if node_modules is not found
  */
-function findNodeModulesPath(): string {
-  let currentDir = __dirname;
+export function findNodeModulesPath(startDir: string): string {
+  let currentDir = startDir;
   while (currentDir !== path.parse(currentDir).root) {
     const nodeModulesPath = path.join(currentDir, 'node_modules');
     if (fs.existsSync(nodeModulesPath)) {
@@ -237,15 +233,16 @@ let cachedCdkLibPath: string | null = null;
  * Why: The CDK library path doesn't change during execution, so we cache it.
  * How: Calculates the path once, then reuses the cached value on subsequent calls.
  * 
+ * @param startDir - Directory to start searching from
  * @returns Absolute path to aws-cdk-lib directory
  * @throws Error if aws-cdk-lib is not found
  */
-function findCdkLibPath(): string {
+export function findCdkLibPath(startDir: string): string {
   if (cachedCdkLibPath !== null) {
     return cachedCdkLibPath;
   }
 
-  const nodeModulesPath = findNodeModulesPath();
+  const nodeModulesPath = findNodeModulesPath(startDir);
   const cdkLibPath = path.join(nodeModulesPath, 'aws-cdk-lib');
 
   if (!fs.existsSync(cdkLibPath)) {
@@ -263,11 +260,12 @@ function findCdkLibPath(): string {
  * How: Combines cached CDK library path with the interface-specific file path.
  * 
  * @param config - Configuration specifying which interface file to find
+ * @param startDir - Directory to start searching from
  * @returns Absolute path to the .d.ts file
  * @throws Error if the specific file is not found
  */
-function findInterfaceFile(config: InterfaceConfig): string {
-  const cdkLibPath = findCdkLibPath();
+export function findInterfaceFile(config: InterfaceConfig, startDir: string): string {
+  const cdkLibPath = findCdkLibPath(startDir);
   const fullPath = path.join(cdkLibPath, config.filePath);
 
   if (fs.existsSync(fullPath)) {
@@ -294,7 +292,7 @@ function findInterfaceFile(config: InterfaceConfig): string {
  * @param interfaceName - Name of the interface to search for
  * @returns Array of property names found in the interface and its parents
  */
-function extractInterfaceProperties(sourceFile: ts.SourceFile, interfaceName: string): string[] {
+export function extractInterfaceProperties(sourceFile: ts.SourceFile, interfaceName: string): string[] {
   const allProperties = new Set<string>();
   const visited = new Set<string>();
   const fileCache = new Map<string, ts.SourceFile>();
@@ -411,23 +409,22 @@ function extractInterfaceProperties(sourceFile: ts.SourceFile, interfaceName: st
     }
     visited.add(visitKey);
 
-    let interfaceNode: ts.InterfaceDeclaration | undefined;
-
     // Find the interface declaration
-    function findInterface(node: ts.Node): void {
-      if (interfaceNode) {
-        return; // Already found
-      }
-
+    function findInterface(node: ts.Node): ts.InterfaceDeclaration | undefined {
       if (ts.isInterfaceDeclaration(node) && node.name.text === targetName) {
-        interfaceNode = node;
-        return;
+        return node;
       }
 
-      ts.forEachChild(node, findInterface);
+      let foundInterface: ts.InterfaceDeclaration | undefined;
+      ts.forEachChild(node, (child) => {
+        if (!foundInterface) {
+          foundInterface = findInterface(child);
+        }
+      });
+      return foundInterface;
     }
 
-    findInterface(currentFile);
+    const interfaceNode = findInterface(currentFile);
 
     if (!interfaceNode) {
       // Interface not found in current file - try to find it in imports
@@ -498,7 +495,7 @@ function extractInterfaceProperties(sourceFile: ts.SourceFile, interfaceName: st
  * @param results - Map of export names to their configs and extracted properties
  * @returns Complete TypeScript source code for validation.ts
  */
-function generateValidationFile(results: Map<string, { config: InterfaceConfig; properties: string[] }>): string {
+export function generateValidationFile(results: Map<string, { config: InterfaceConfig; properties: string[] }>): string {
   const propsSets: string[] = [];
   const validationFunctions: string[] = [];
 
@@ -589,11 +586,12 @@ ${validationFunctions.join('\n\n')}
  * 
  * Error handling: Continues processing other interfaces if one fails.
  */
-function main() {
+export function main() {
   try {
+    const __dirname = getDirName();
+    
     // When compiled, script is in scripts/dist, so we need to go up two levels
     // to reach the project root, then down into src/
-    // TODO: This will need changing in Constructs
     const projectRoot = path.join(__dirname, '../../..');
     const outputFilePath = path.join(projectRoot, 'patterns/@aws-solutions-constructs/core/lib/validation.ts');
 
@@ -604,7 +602,7 @@ function main() {
     // Process each configured interface
     for (const config of INTERFACES_TO_EXTRACT) {
       try {
-        const sourceFilePath = findInterfaceFile(config);
+        const sourceFilePath = findInterfaceFile(config, __dirname);
         console.log(`Reading ${config.interfaceName} from: ${sourceFilePath}`);
 
         // Read the .d.ts file as text
@@ -663,5 +661,7 @@ function main() {
   }
 }
 
-// Execute the main function
-main();
+// Execute the main function when run directly (not in test environment)
+if (process.env.NODE_ENV !== 'test') {
+  main();
+}

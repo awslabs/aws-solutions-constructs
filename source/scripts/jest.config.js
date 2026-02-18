@@ -41,7 +41,12 @@ export default {
   },
   collectCoverageFrom: [
     'src/**/*.ts',
-    '!src/**/*.d.ts'
+    '!src/**/*.d.ts',
+    '!src/get-dirname.ts'
+  ],
+  transformIgnorePatterns: [
+    'node_modules/',
+    'src/get-dirname\\.ts$'
   ],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html']
