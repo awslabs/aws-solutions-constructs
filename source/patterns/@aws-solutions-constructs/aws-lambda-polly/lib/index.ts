@@ -180,7 +180,6 @@ export class LambdaToPolly extends Construct {
     defaults.CheckLambdaProps(props);
     defaults.CheckVpcProps(props);
     defaults.CheckPollyProps(props);
-    defaults.ValidateTopicProps(this, props.topicProps);
     defaults.ValidateKeyProps(this, props.topicEncryptionKeyProps);
     defaults.ValidateVpcProps(this, props.vpcProps);
 

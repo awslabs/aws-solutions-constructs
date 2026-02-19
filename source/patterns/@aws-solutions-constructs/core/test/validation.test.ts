@@ -207,17 +207,6 @@ test('ValidateCfnDataSourceProps - invalid property', () => {
     .toThrow(/ERROR - invalidProp is not a valid property of CfnDataSourceProps/);
 });
 
-test('ValidateTopicProps - valid property', () => {
-  const stack = new cdk.Stack();
-  expect(() => defaults.ValidateTopicProps(stack, { topicName: 'my-topic' })).not.toThrow();
-});
-
-test('ValidateTopicProps - invalid property', () => {
-  const stack = new cdk.Stack();
-  expect(() => defaults.ValidateTopicProps(stack, { invalidProp: 'value' }))
-    .toThrow(/ERROR - invalidProp is not a valid property of TopicProps/);
-});
-
 test('ValidateKeyProps - valid property', () => {
   const stack = new cdk.Stack();
   expect(() => defaults.ValidateKeyProps(stack, { description: 'My key' })).not.toThrow();
@@ -260,17 +249,6 @@ test('ValidatePrivateHostedZoneProps - invalid property', () => {
   const stack = new cdk.Stack();
   expect(() => defaults.ValidatePrivateHostedZoneProps(stack, { invalidProp: 'value' }))
     .toThrow(/ERROR - invalidProp is not a valid property of PrivateHostedZoneProps/);
-});
-
-test('ValidateQueueProps - valid property', () => {
-  const stack = new cdk.Stack();
-  expect(() => defaults.ValidateQueueProps(stack, { queueName: 'my-queue' })).not.toThrow();
-});
-
-test('ValidateQueueProps - invalid property', () => {
-  const stack = new cdk.Stack();
-  expect(() => defaults.ValidateQueueProps(stack, { invalidProp: 'value' }))
-    .toThrow(/ERROR - invalidProp is not a valid property of QueueProps/);
 });
 
 test('ValidateCfnWebACLProps - valid property', () => {

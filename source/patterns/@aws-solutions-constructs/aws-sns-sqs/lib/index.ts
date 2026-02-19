@@ -195,8 +195,6 @@ export class SnsToSqs extends Construct {
     defaults.CheckSnsProps(props);
     defaults.CheckSqsProps(props);
     this.uniquePropChecks(props);
-    defaults.ValidateTopicProps(this, props.topicProps);
-    defaults.ValidateQueueProps(this, props.queueProps);
 
     const activeKeys = SnsToSqs.configureKeys(scope, id, props);
     if (!activeKeys.useDeprecatedInterface) {

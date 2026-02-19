@@ -686,26 +686,6 @@ describe('Test validation errors', () => {
   });
 });
 
-test('Test that ValidateTopicProps() is being called', () => {
-  const stack = new Stack();
-  const props: LambdaToPollyProps = {
-    lambdaFunctionProps: {
-      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
-      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
-      handler: 'index.handler'
-    },
-    topicProps: {
-      invalidProperty: true
-    }
-  };
-
-  const app = () => {
-    new LambdaToPolly(stack, 'test-construct', props);
-  };
-
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of TopicProps/);
-});
-
 test('Test that ValidateKeyProps() is being called', () => {
   const stack = new Stack();
   const props: LambdaToPollyProps = {
@@ -716,7 +696,8 @@ test('Test that ValidateKeyProps() is being called', () => {
     },
     topicEncryptionKeyProps: {
       invalidProperty: true
-    }
+    },
+    asyncJobs: true
   };
 
   const app = () => {

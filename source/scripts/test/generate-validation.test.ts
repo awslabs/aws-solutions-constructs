@@ -751,9 +751,7 @@ test('processInterfacesAndGenerateCode - processes real interfaces successfully'
     // Verify it generated code
     expect(result).toContain('auto-generated');
     expect(result).toContain('validVpcProps');
-    expect(result).toContain('validQueueProps');
     expect(result).toContain('ValidateVpcProps');
-    expect(result).toContain('ValidateQueueProps');
     
     // Verify console output
     expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('Extracting interface properties'));
