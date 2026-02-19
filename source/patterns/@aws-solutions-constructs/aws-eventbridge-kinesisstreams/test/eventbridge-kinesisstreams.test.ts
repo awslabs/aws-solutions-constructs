@@ -158,21 +158,3 @@ test('Confirm that CheckKinesisStreamProps is called', () => {
   };
   expect(app).toThrowError();
 });
-
-test('Test that ValidateStreamProps() is being called', () => {
-  const stack = new cdk.Stack();
-  const props: EventbridgeToKinesisStreamsProps = {
-    eventRuleProps: {
-      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
-    },
-    kinesisStreamProps: {
-      invalidProperty: true
-    }
-  };
-
-  const app = () => {
-    new EventbridgeToKinesisStreams(stack, 'test-construct', props);
-  };
-
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of StreamProps/);
-});

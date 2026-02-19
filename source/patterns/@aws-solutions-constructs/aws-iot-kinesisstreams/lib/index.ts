@@ -40,7 +40,7 @@ export interface IotToKinesisStreamsProps {
    *
    * @default - Default props are used
    */
-  readonly kinesisStreamProps?: kinesis.StreamProps | any;
+  readonly kinesisStreamProps?: kinesis.StreamProps;
   /**
    * Whether to create recommended CloudWatch alarms
    *
@@ -66,7 +66,6 @@ export class IotToKinesisStreams extends Construct {
   constructor(scope: Construct, id: string, props: IotToKinesisStreamsProps) {
     super(scope, id);
     defaults.CheckKinesisStreamProps(props);
-    defaults.ValidateStreamProps(this, props.kinesisStreamProps);
 
     // Set up the Kinesis Stream
     this.kinesisStream = defaults.buildKinesisStream(this, {

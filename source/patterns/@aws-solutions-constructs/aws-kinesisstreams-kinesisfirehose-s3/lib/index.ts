@@ -118,7 +118,6 @@ export class KinesisStreamsToKinesisFirehoseToS3 extends Construct {
 
     defaults.CheckKinesisStreamProps(props);
     // CheckS3Props() is called by the internal aws-kinesisfirehose-s3 construct
-    defaults.ValidateStreamProps(this, props.kinesisStreamProps);
     defaults.ValidateCfnDeliveryStreamProps(this, props.kinesisFirehoseProps);
 
     // Setup the Kinesis Stream

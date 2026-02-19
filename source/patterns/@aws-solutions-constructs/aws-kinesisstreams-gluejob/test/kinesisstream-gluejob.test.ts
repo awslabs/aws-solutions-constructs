@@ -930,45 +930,6 @@ test('Confirm call to CheckKinesisStreamProps', () => {
   expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });
 
-test('Test that ValidateStreamProps() is being called', () => {
-  const stack = new Stack();
-  const props: KinesisstreamsToGluejobProps = {
-    glueJobProps: {
-      command: {
-        name: 'testJob',
-        scriptLocation: 's3://fakebucket/fakepath.py'
-      },
-      role: 'arn:aws:iam::123456789012:role/test-role'
-    },
-    kinesisStreamProps: {
-      invalidProperty: true
-    },
-    fieldSchema: [{
-      name: "id",
-      type: "int",
-      comment: "Identifier for the record"
-    }, {
-      name: "name",
-      type: "string",
-      comment: "The name of the record"
-    }, {
-      name: "type",
-      type: "string",
-      comment: "The type of the record"
-    }, {
-      name: "numericvalue",
-      type: "int",
-      comment: "Some value associated with the record"
-    }],
-  };
-
-  const app = () => {
-    new KinesisstreamsToGluejob(stack, 'test-construct', props);
-  };
-
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of StreamProps/);
-});
-
 test('Test that ValidateCfnJobProps() is being called', () => {
   const stack = new Stack();
   const props: KinesisstreamsToGluejobProps = {

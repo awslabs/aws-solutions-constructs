@@ -256,26 +256,3 @@ test('Confirm call to CheckKinesisStreamProps', () => {
   };
   expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });
-
-test('Test that ValidateStreamProps() is being called', () => {
-  const stack = new cdk.Stack();
-  const props: IotToKinesisStreamsProps = {
-    iotTopicRuleProps: {
-      topicRulePayload: {
-        ruleDisabled: false,
-        description: "Test rule",
-        sql: "SELECT * FROM 'test/topic'",
-        actions: []
-      }
-    },
-    kinesisStreamProps: {
-      invalidProperty: true
-    }
-  };
-
-  const app = () => {
-    new IotToKinesisStreams(stack, 'test-construct', props);
-  };
-
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of StreamProps/);
-});

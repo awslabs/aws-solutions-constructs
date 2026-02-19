@@ -31,7 +31,7 @@ export interface KinesisstreamsToGluejobProps {
    *
    * @default - Default props are used
    */
-  readonly kinesisStreamProps?: StreamProps | any;
+  readonly kinesisStreamProps?: StreamProps;
   /**
    * User provides props to override the default props for Glue ETL Jobs. Providing both this and
    * existingGlueJob will cause an error.
@@ -175,7 +175,6 @@ export class KinesisstreamsToGluejob extends Construct {
 
     defaults.CheckGlueProps(props);
     defaults.CheckKinesisStreamProps(props);
-    defaults.ValidateStreamProps(this, props.kinesisStreamProps);
     defaults.ValidateCfnJobProps(this, props.glueJobProps);
 
     this.kinesisStream = defaults.buildKinesisStream(this, {

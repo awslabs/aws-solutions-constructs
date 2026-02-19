@@ -141,17 +141,6 @@ test('ValidateCfnDeliveryStreamProps - invalid property', () => {
     .toThrow(/ERROR - invalidProp is not a valid property of CfnDeliveryStreamProps/);
 });
 
-test('ValidateStreamProps - valid property', () => {
-  const stack = new cdk.Stack();
-  expect(() => defaults.ValidateStreamProps(stack, { streamName: 'my-stream' })).not.toThrow();
-});
-
-test('ValidateStreamProps - invalid property', () => {
-  const stack = new cdk.Stack();
-  expect(() => defaults.ValidateStreamProps(stack, { invalidProp: 'value' }))
-    .toThrow(/ERROR - invalidProp is not a valid property of StreamProps/);
-});
-
 test('ValidateCfnJobProps - valid property', () => {
   const stack = new cdk.Stack();
   expect(() => defaults.ValidateCfnJobProps(stack, { name: 'my-job' })).not.toThrow();

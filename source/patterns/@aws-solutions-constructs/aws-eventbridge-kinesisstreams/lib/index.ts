@@ -57,7 +57,7 @@ export interface EventbridgeToKinesisStreamsProps {
    *
    * @default - Default props are used
    */
-  readonly kinesisStreamProps?: kinesis.StreamProps | any;
+  readonly kinesisStreamProps?: kinesis.StreamProps;
   /**
    * Whether to create recommended CloudWatch alarms
    *
@@ -84,7 +84,6 @@ export class EventbridgeToKinesisStreams extends Construct {
       super(scope, id);
       defaults.CheckEventBridgeProps(props);
       defaults.CheckKinesisStreamProps(props);
-      defaults.ValidateStreamProps(this, props.kinesisStreamProps);
 
       // Set up the Kinesis Stream
       this.kinesisStream = defaults.buildKinesisStream(this, {
