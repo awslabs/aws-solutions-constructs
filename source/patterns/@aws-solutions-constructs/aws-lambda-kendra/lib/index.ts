@@ -108,11 +108,9 @@ export class LambdaToKendra extends Construct {
     defaults.CheckVpcProps(props);
     defaults.CheckLambdaProps(props);
     defaults.ValidateCfnIndexProps(this, props.kendraIndexProps);
-    if (props.kendraDataSourcesProps) {
-      props.kendraDataSourcesProps.forEach((dataSourceProps) => {
-        defaults.ValidateCfnDataSourceProps(this, dataSourceProps);
-      });
-    }
+    props.kendraDataSourcesProps.forEach((dataSourceProps) => {
+      defaults.ValidateCfnDataSourceProps(this, dataSourceProps);
+    });
 
     if (props.kendraIndexProps && props.existingKendraIndexObj) {
       throw new Error('You may not provide both kendraIndexProps and existingKendraIndexObj');
