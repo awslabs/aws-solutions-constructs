@@ -678,3 +678,28 @@ test('Test sending max retry or age restraints with no DLQ is an error', () => {
   // Assertion
   expect(app).toThrowError('ERROR - Cannot define maximumRecordAgeInSeconds and maximumRetryAttempts when deploySqsDlqQueue is false\n');
 });
+
+test('Test that ValidateCfnPipeProps() is being called', () => {
+  const stack = new Stack();
+  const startState = new sfn.Pass(stack, 'StartState');
+  const props: DynamoDBStreamsToPipesToStepfunctionsProps = {
+    stateMachineProps: {
+      definition: startState
+    },
+    dynamoTableProps: {
+      partitionKey: {
+        name: 'id',
+        type: dynamodb.AttributeType.STRING
+      }
+    },
+    pipeProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new DynamoDBStreamsToPipesToStepfunctions(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnPipeProps/);
+});

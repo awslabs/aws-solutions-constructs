@@ -551,3 +551,25 @@ test('WHen providing VPC in construct and resource props, the vpcId must match',
 
   expect(app).toThrowError("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
 });
+
+test('Test that ValidateApplicationLoadBalanerProps() is being called', () => {
+    const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+  const testProps: AlbToFargateProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    listenerProps: {
+      protocol: 'HTTP'
+    },
+    loadBalancerProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new AlbToFargate(stack, 'test-construct', testProps);
+  };
+
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of ApplicationLoadBalancerProps/);
+});

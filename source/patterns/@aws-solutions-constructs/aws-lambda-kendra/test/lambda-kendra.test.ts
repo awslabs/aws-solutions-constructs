@@ -1392,3 +1392,51 @@ test('Launch with non default index type', () => {
     ]
   });
 });
+
+test('Test that ValidateCfnIndexProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: LambdaToKendraProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler'
+    },
+    kendraDataSourcesProps: [{
+      type: 'S3',
+      dataSourceConfiguration: {
+        s3Configuration: {
+          bucketName: 'unimportant',
+        }
+      }
+    }],
+    kendraIndexProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new LambdaToKendra(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnIndexProps/);
+});
+
+test('Test that ValidateCfnDataSourceProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: LambdaToKendraProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler'
+    },
+    kendraDataSourcesProps: [{
+      invalidProperty: true
+    }]
+  };
+
+  const app = () => {
+    new LambdaToKendra(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnDataSourceProps/);
+});

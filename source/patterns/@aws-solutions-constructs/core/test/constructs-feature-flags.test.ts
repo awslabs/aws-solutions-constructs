@@ -14,7 +14,7 @@
 // Imports
 import * as cdk from 'aws-cdk-lib';
 import { ArtifactType, AssemblyManifest, ArtifactManifest } from '@aws-cdk/cloud-assembly-schema';
-import { ConstructsFeatureFlagsReport } from '../lib/constructs-feature-flags';
+import { ConstructsFeatureFlagsReport, DISABLE_PROPERTY_VALIDATION } from '../lib/constructs-feature-flags';
 
 test('ensures feature flag report when scope is app', () => {
   const app = new cdk.App();
@@ -46,7 +46,7 @@ test('test ConstructsFeatureFlagsReport synthesis and manifest output', () => {
   const flags = artifactProps?.flags;
   expect(flags).toBeDefined();
   const keys = Object.keys(artifactProps?.flags);
-  expect(keys.length).toBeGreaterThanOrEqual(1);
+  expect(keys.length).toBeGreaterThanOrEqual(2);
 
   // Check every flag entry
   const FLAG_NAME_PREFIX = "@aws-solutions-constructs";
@@ -57,7 +57,7 @@ test('test ConstructsFeatureFlagsReport synthesis and manifest output', () => {
 
     // Verify the flag structure
     const constructsFlag = flags[keyName];
-    expect(constructsFlag).toHaveProperty('recommendedValue', true);
+    expect(constructsFlag).toHaveProperty('recommendedValue');
     expect(constructsFlag).toHaveProperty('explanation');
   });
 
@@ -71,6 +71,17 @@ test('ensures feature flag report when scope is stack->stage->app', () => {
   const assembly = app.synth();
   const featureFlagArtifact = extractConstructFeatureFlagArtifact(assembly.manifest);
   expect(featureFlagArtifact).toBeDefined();
+});
+
+test('ensure that feature flags can be set and accessed', () => {
+  const app = new cdk.App();
+  const stack = new cdk.Stack(app, 'TestStack');
+
+  // ConstructsFeatureFlagsReport.ensure(stack);
+  stack.node.setContext(DISABLE_PROPERTY_VALIDATION, true);
+
+  expect(cdk.FeatureFlags.of(stack).isEnabled(DISABLE_PROPERTY_VALIDATION)).toBeTruthy();
+
 });
 
 function extractConstructFeatureFlagArtifact(manifest: AssemblyManifest): ArtifactManifest | undefined {

@@ -419,3 +419,23 @@ test('Confirm call to CheckLambdaProps', () => {
   // Assertion
   expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });
+
+test('Test that ValidateCfnCacheClusterProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: LambdaToElasticachememcachedProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler'
+    },
+    cacheProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new LambdaToElasticachememcached(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnCacheClusterProps/);
+});

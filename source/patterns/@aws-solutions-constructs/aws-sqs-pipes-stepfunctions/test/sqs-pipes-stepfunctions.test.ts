@@ -555,3 +555,22 @@ test('Test sending state machine props and existing state machine is an error', 
   // Assertion
   expect(app).toThrowError('ERROR - If existingStateMachine is provided, no other state machine props are allowed\n');
 });
+
+test('Test that ValidateCfnPipeProps() is being called', () => {
+  const stack = new Stack();
+  const startState = new sfn.Pass(stack, 'StartState');
+  const props: SqsToPipesToStepfunctionsProps = {
+    stateMachineProps: {
+      definition: startState
+    },
+    pipeProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new SqsToPipesToStepfunctions(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnPipeProps/);
+});

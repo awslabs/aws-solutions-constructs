@@ -32,7 +32,7 @@ const deployStackWithNewResources = (stack: cdk.Stack, publicApi: boolean) => {
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
     vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName: CLUSTER_NAME },
-    containerDefinitionProps: { CONTAINER_NAME },
+    containerDefinitionProps: { containerName: CONTAINER_NAME },
     fargateTaskDefinitionProps: { family: FAMILY_NAME },
     fargateServiceProps: { serviceName: SERVICE_NAME },
     openSearchDomainName: DOMAIN_NAME,
@@ -48,7 +48,7 @@ test('Test domain and cognito domain name', () => {
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
     vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName: CLUSTER_NAME },
-    containerDefinitionProps: { CONTAINER_NAME },
+    containerDefinitionProps: { containerName: CONTAINER_NAME },
     fargateTaskDefinitionProps: { family: FAMILY_NAME },
     fargateServiceProps: { serviceName: SERVICE_NAME },
     openSearchDomainName: DOMAIN_NAME,
@@ -190,7 +190,7 @@ test('Test custom environment variable name', () => {
     ecrRepositoryArn: defaults.fakeEcrRepoArn,
     vpcProps: { ipAddresses: ec2.IpAddresses.cidr('172.0.0.0/16') },
     clusterProps: { clusterName: CLUSTER_NAME },
-    containerDefinitionProps: { CONTAINER_NAME },
+    containerDefinitionProps: { containerName:  CONTAINER_NAME },
     fargateTaskDefinitionProps: { family: FAMILY_NAME },
     fargateServiceProps: { serviceName: SERVICE_NAME },
     openSearchDomainName: DOMAIN_NAME,
@@ -226,7 +226,7 @@ test('Test custom environment variable name', () => {
           ]
         },
         MemoryReservation: 512,
-        Name: "test-construct-container",
+        Name: CONTAINER_NAME,
         PortMappings: [
           {
             ContainerPort: 8080,
@@ -304,7 +304,7 @@ test('New service/new domain, public API, new VPC', () => {
           ]
         },
         MemoryReservation: 512,
-        Name: "test-construct-container",
+        Name: "custom-container-name",
         PortMappings: [
           {
             ContainerPort: 8080,
@@ -381,7 +381,7 @@ test('New service/new domain, private API, new VPC', () => {
           ]
         },
         MemoryReservation: 512,
-        Name: "test-construct-container",
+        Name: "custom-container-name",
         PortMappings: [
           {
             ContainerPort: 8080,
@@ -764,4 +764,58 @@ test('Confirm that CheckVpcProps was called', () => {
   };
   // Assertion
   expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});
+
+test('Test that ValidateContainerDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToOpenSearchProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    openSearchDomainName: 'testdomain',
+    containerDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToOpenSearch(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of ContainerDefinitionProps/);
+});
+
+test('Test that ValidateFargateTaskDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToOpenSearchProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    openSearchDomainName: 'testdomain',
+    fargateTaskDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToOpenSearch(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of FargateTaskDefinitionProps/);
+});
+
+test('Test that ValidateFargateServiceProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToOpenSearchProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    openSearchDomainName: 'testdomain',
+    fargateServiceProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToOpenSearch(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of FargateServiceProps/);
 });

@@ -17,7 +17,7 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as defaults from '@aws-solutions-constructs/core';
 
 export interface S3BucketFactoryProps {
-  readonly bucketProps?: s3.BucketProps | any,
+  readonly bucketProps?: s3.BucketProps,
   readonly logS3AccessLogs?: boolean,
   readonly loggingBucketProps?: s3.BucketProps,
 }

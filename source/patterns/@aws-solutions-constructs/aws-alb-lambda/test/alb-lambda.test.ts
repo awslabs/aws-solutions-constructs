@@ -1084,3 +1084,52 @@ test('WHen providing VPC in construct and resource props, the vpcId must match',
 
   expect(app).toThrowError("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
 });
+
+test('Test that ValidateApplicationLoadBalancerProps() is being called', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+  const props: AlbToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler'
+    },
+    listenerProps: {
+      protocol: 'HTTP'
+    },
+    publicApi: true,
+    loadBalancerProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new AlbToLambda(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of ApplicationLoadBalancerProps/);
+});
+
+test('Test that ValidateApplicationListenerProps() is being called', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+  const props: AlbToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler'
+    },
+    publicApi: true,
+    listenerProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new AlbToLambda(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of ApplicationListenerProps/);
+});

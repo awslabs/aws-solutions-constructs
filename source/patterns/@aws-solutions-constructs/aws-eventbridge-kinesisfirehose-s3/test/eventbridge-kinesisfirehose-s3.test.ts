@@ -291,3 +291,21 @@ test('Confirm CheckS3Props is being called', () => {
   };
   expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
+
+test('Test that ValidateCfnDeliveryStreamProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: EventbridgeToKinesisFirehoseToS3Props = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    kinesisFirehoseProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new EventbridgeToKinesisFirehoseToS3(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnDeliveryStreamProps/);
+});

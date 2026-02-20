@@ -182,6 +182,9 @@ export class FargateToSqs extends Construct {
     defaults.CheckFargateProps(props);
     defaults.CheckSqsProps(props);
     defaults.CheckVpcProps(props);
+    defaults.ValidateContainerDefinitionProps(this, props.containerDefinitionProps);
+    defaults.ValidateFargateTaskDefinitionProps(this, props.fargateTaskDefinitionProps);
+    defaults.ValidateFargateServiceProps(this, props.fargateServiceProps);
 
     if (props.queuePermissions) {
       defaults.CheckListValues(['Read', 'Write'], props.queuePermissions, 'queue permission');

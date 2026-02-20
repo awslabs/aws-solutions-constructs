@@ -330,3 +330,18 @@ test('check resource names allow multiple instances in 1 stack', () => {
 
   // Nothing to check, the above lines shouldn't throw an error
 });
+
+test('Test that ValidateCfnDeliveryStreamProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: KinesisFirehoseToS3Props = {
+    kinesisFirehoseProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new KinesisFirehoseToS3(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnDeliveryStreamProps/);
+});
