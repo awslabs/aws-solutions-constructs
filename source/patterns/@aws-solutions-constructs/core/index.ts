@@ -78,5 +78,6 @@ export * from './lib/pipes-helper';
 export * from './lib/bedrock-inference-helper';
 export * from './lib/translate-helper';
 export * from './lib/textract-helper';
+export * from './lib/validation';
 export * from './lib/polly-helper';
 export * from './lib/constructs-feature-flags';

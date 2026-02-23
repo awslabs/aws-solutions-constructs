@@ -482,7 +482,7 @@ test('Confirm that CheckVpcProps is called', () => {
     new AlbToFargate(stack, 'new-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Confirm that CheckAlbProps is called', () => {
@@ -517,7 +517,7 @@ test('Confirm that CheckAlbProps is called', () => {
     new AlbToFargate(stack, 'new-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n');
 });
 
 test('Test sending VPC in loadBalancerProps error', () => {
@@ -531,7 +531,7 @@ test('Test sending VPC in loadBalancerProps error', () => {
     defaults.CheckAlbProps(props);
   };
 
-  expect(app).toThrowError("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
+  expect(app).toThrow("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
 });
 
 test('WHen providing VPC in construct and resource props, the vpcId must match', () => {
@@ -549,5 +549,27 @@ test('WHen providing VPC in construct and resource props, the vpcId must match',
     defaults.CheckAlbProps(props);
   };
 
-  expect(app).toThrowError("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
+  expect(app).toThrow("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
+});
+
+test('Test that ValidateApplicationLoadBalanerProps() is being called', () => {
+    const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+  const testProps: AlbToFargateProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    listenerProps: {
+      protocol: 'HTTP'
+    },
+    loadBalancerProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new AlbToFargate(stack, 'test-construct', testProps);
+  };
+
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of ApplicationLoadBalancerProps/);
 });

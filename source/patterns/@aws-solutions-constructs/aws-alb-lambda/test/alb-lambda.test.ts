@@ -681,7 +681,7 @@ test('Test providing certificateArns is an error', () => {
   const app = () => {
     new AlbToLambda(stack, 'test-one', props);
   };
-  expect(app).toThrowError(/certificateArns is deprecated. Please supply certificates using props.listenerProps.certificates/);
+  expect(app).toThrow(/certificateArns is deprecated. Please supply certificates using props.listenerProps.certificates/);
 });
 
 test('Test logging off with logBucketProperties provided is an error', () => {
@@ -710,7 +710,7 @@ test('Test logging off with logBucketProperties provided is an error', () => {
   const app = () => {
     new AlbToLambda(stack, 'test-one', props);
   };
-  expect(app).toThrowError(/Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid./);
+  expect(app).toThrow(/Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid./);
 });
 
 test('Test certificate with HTTP is an error', () => {
@@ -733,7 +733,7 @@ test('Test certificate with HTTP is an error', () => {
   const app = () => {
     new AlbToLambda(stack, 'test-one', props);
   };
-  expect(app).toThrowError(/HTTP listeners cannot use a certificate/);
+  expect(app).toThrow(/HTTP listeners cannot use a certificate/);
 });
 
 test('Test new ALB with no listenerProps is an error', () => {
@@ -755,7 +755,7 @@ test('Test new ALB with no listenerProps is an error', () => {
   };
   // Assertion
   // eslint-disable-next-line
-  expect(app).toThrowError(/When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP/);
+  expect(app).toThrow(/When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP/);
 });
 
 test('Test existing ALB with no listener with no listenerProps is an error', () => {
@@ -785,7 +785,7 @@ test('Test existing ALB with no listener with no listenerProps is an error', () 
   };
   // Assertion
   // eslint-disable-next-line
-  expect(app).toThrowError(/When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP/);
+  expect(app).toThrow(/When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP/);
 });
 
 test('Test existing ALB with a listener with listenerProps is an error', () => {
@@ -827,7 +827,7 @@ test('Test existing ALB with a listener with listenerProps is an error', () => {
     new AlbToLambda(stack, 'test-two', secondProps);
   };
   // Assertion
-  expect(app).toThrowError(/This load balancer already has a listener, listenerProps may not be specified/);
+  expect(app).toThrow(/This load balancer already has a listener, listenerProps may not be specified/);
 
 });
 
@@ -863,7 +863,7 @@ test('Test second target with no rules is an error', () => {
     new AlbToLambda(stack, 'test-two', secondProps);
   };
   // Assertion
-  expect(app).toThrowError(/When adding a second target to an existing listener, there must be rules provided/);
+  expect(app).toThrow(/When adding a second target to an existing listener, there must be rules provided/);
 });
 
 test('Test no cert for an HTTPS listener is an error', () => {
@@ -885,7 +885,7 @@ test('Test no cert for an HTTPS listener is an error', () => {
     new AlbToLambda(stack, 'test-one', props);
   };
   // Assertion
-  expect(app).toThrowError(/A listener using HTTPS protocol requires a certificate/);
+  expect(app).toThrow(/A listener using HTTPS protocol requires a certificate/);
 });
 
 test('Test existingLoadBalancerObj and loadBalancerProps is an error', () => {
@@ -920,7 +920,7 @@ test('Test existingLoadBalancerObj and loadBalancerProps is an error', () => {
     new AlbToLambda(stack, 'test-one', props);
   };
   // Assertion
-  expect(app).toThrowError(/Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both./);
+  expect(app).toThrow(/Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both./);
 });
 
 test('Test existingLoadBalancerObj and no existingVpc is an error', () => {
@@ -951,7 +951,7 @@ test('Test existingLoadBalancerObj and no existingVpc is an error', () => {
     new AlbToLambda(stack, 'test-one', props);
   };
   // Assertion
-  expect(app).toThrowError(
+  expect(app).toThrow(
     /An existing ALB is already in a VPC, that VPC must be provided in props.existingVpc for the rest of the construct to use./);
 });
 
@@ -986,7 +986,7 @@ test('Confirm that CheckLambdaProps is called', () => {
     new AlbToLambda(stack, 'new-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });
 
 test('Confirm that CheckVpcProps is called', () => {
@@ -1011,7 +1011,7 @@ test('Confirm that CheckVpcProps is called', () => {
     new AlbToLambda(stack, 'new-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Confirm that CheckAlbProps is called', () => {
@@ -1050,7 +1050,7 @@ test('Confirm that CheckAlbProps is called', () => {
     new AlbToLambda(stack, 'new-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n');
 });
 
 test('Test sending VPC in loadBalancerProps error', () => {
@@ -1064,7 +1064,7 @@ test('Test sending VPC in loadBalancerProps error', () => {
     defaults.CheckAlbProps(props);
   };
 
-  expect(app).toThrowError("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
+  expect(app).toThrow("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
 });
 
 test('WHen providing VPC in construct and resource props, the vpcId must match', () => {
@@ -1082,5 +1082,54 @@ test('WHen providing VPC in construct and resource props, the vpcId must match',
     defaults.CheckAlbProps(props);
   };
 
-  expect(app).toThrowError("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
+  expect(app).toThrow("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
+});
+
+test('Test that ValidateApplicationLoadBalancerProps() is being called', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+  const props: AlbToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler'
+    },
+    listenerProps: {
+      protocol: 'HTTP'
+    },
+    publicApi: true,
+    loadBalancerProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new AlbToLambda(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of ApplicationLoadBalancerProps/);
+});
+
+test('Test that ValidateApplicationListenerProps() is being called', () => {
+  const stack = new cdk.Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+  const props: AlbToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler'
+    },
+    publicApi: true,
+    listenerProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new AlbToLambda(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of ApplicationListenerProps/);
 });

@@ -324,7 +324,7 @@ test('Test fail SNS topic check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide topicProps or existingTopicObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide topicProps or existingTopicObj, but not both.\n');
 });
 
 test('Test fail SNS topic check with bad topic attribute name', () => {
@@ -340,7 +340,7 @@ test('Test fail SNS topic check with bad topic attribute name', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide topicProps or existingTopicObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide topicProps or existingTopicObj, but not both.\n');
 });
 
 test('Test fail SNS topic check when both encryptionKey and encryptionKeyProps are specified', () => {
@@ -357,7 +357,7 @@ test('Test fail SNS topic check when both encryptionKey and encryptionKeyProps a
     defaults.CheckSnsProps(props);
   };
 
-  expect(app).toThrowError('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
 });
 
 test('Test fail SNS topic check when both topicProps.masterKey and encryptionKeyProps are specified', () => {
@@ -376,7 +376,7 @@ test('Test fail SNS topic check when both topicProps.masterKey and encryptionKey
     defaults.CheckSnsProps(props);
   };
 
-  expect(app).toThrowError('Error - Either provide topicProps.masterKey or encryptionKeyProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide topicProps.masterKey or encryptionKeyProps, but not both.\n');
 });
 
 test('Test fail SNS topic check when both encryptionKey and topicProps.masterKey are specified', () => {
@@ -394,7 +394,7 @@ test('Test fail SNS topic check when both encryptionKey and topicProps.masterKey
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide topicProps.masterKey or encryptionKey, but not both.\n');
+  expect(app).toThrow('Error - Either provide topicProps.masterKey or encryptionKey, but not both.\n');
 });
 
 test('Test fail encryption key check', () => {
@@ -414,5 +414,5 @@ test('Test fail encryption key check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
 });

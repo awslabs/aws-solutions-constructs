@@ -346,5 +346,5 @@ test('Confirm CHeckS3Props is being called', () => {
     new IotToS3(stack, 'test-iot-s3-integration', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });

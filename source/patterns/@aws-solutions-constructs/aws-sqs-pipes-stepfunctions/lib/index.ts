@@ -171,6 +171,7 @@ export class SqsToPipesToStepfunctions extends Construct {
     defaults.CheckStateMachineProps(props);
     defaults.CheckSqsProps(props);
     defaults.CheckPipesProps(props);
+    defaults.ValidateCfnPipeProps(this, props.pipeProps);
 
     // Create the Queue
     // Setup the queue

@@ -778,10 +778,7 @@
    "Type": "AWS::Lambda::Function",
    "Properties": {
     "Code": {
-     "S3Bucket": {
-      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1"
-     },
-     "S3Key": "bbd57bdeab435eb80e47f68491febf3b4696a7765e7be0881f10422225933035.zip"
+     "ZipFile": "exports.handler = async (event) => { console.log(event); return {statusCode: 200, body: \"\"}; }"
     },
     "Environment": {
      "Variables": {

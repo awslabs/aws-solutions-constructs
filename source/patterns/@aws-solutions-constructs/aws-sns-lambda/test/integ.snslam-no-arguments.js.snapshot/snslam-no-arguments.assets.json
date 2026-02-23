@@ -1,30 +1,16 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
-    "a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c": {
-      "displayName": "test-sns-lambda/LambdaFunction/Code",
-      "source": {
-        "path": "asset.a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-d11fcfce": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "c8129fc624ade3db9a0d3f45ca77a9b82c7aa0cc09e80f47f5bc9652768c255b": {
+    "24f425c42a30b79d58886129e474557bad47a3842381b9fc1f3fa40145cce646": {
       "displayName": "snslam-no-arguments Template",
       "source": {
         "path": "snslam-no-arguments.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-543cb853": {
+        "current_account-current_region-79899c4e": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "c8129fc624ade3db9a0d3f45ca77a9b82c7aa0cc09e80f47f5bc9652768c255b.json",
+          "objectKey": "24f425c42a30b79d58886129e474557bad47a3842381b9fc1f3fa40145cce646.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

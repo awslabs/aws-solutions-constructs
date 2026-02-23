@@ -525,7 +525,7 @@ test('Confirm CheckSnsProps is being called', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
+  expect(app).toThrow(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
 });
 
 test('Confirm that CheckVpcProps was called', () => {
@@ -551,5 +551,56 @@ test('Confirm that CheckVpcProps was called', () => {
     new FargateToSns(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+});
+
+test('Test that ValidateContainerDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToSnsProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    containerDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToSns(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of ContainerDefinitionProps/);
+});
+
+test('Test that ValidateFargateTaskDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToSnsProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    fargateTaskDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToSns(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of FargateTaskDefinitionProps/);
+});
+
+test('Test that ValidateFargateServiceProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: FargateToSnsProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    fargateServiceProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToSns(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of FargateServiceProps/);
 });

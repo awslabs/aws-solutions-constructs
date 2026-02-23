@@ -143,7 +143,7 @@ test('Test exception', () => {
         subnetId: 'subnet-deadbeef',
       },
     });
-  }).toThrowError();
+  }).toThrow();
 });
 
 test('Test exception for not providing primaryContainer in modelProps', () => {
@@ -157,7 +157,7 @@ test('Test exception for not providing primaryContainer in modelProps', () => {
     });
   };
   // Assertion 1
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('Test exception for not providing modelProps', () => {
@@ -177,7 +177,7 @@ test('Test exception for not providing modelProps', () => {
     defaults.deploySagemakerEndpoint(stack, 'test',  { vpc });
   };
   // Assertion 1
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('Test exception for not providing modelProps or existingSagemkaerObj', () => {
@@ -197,7 +197,7 @@ test('Test exception for not providing modelProps or existingSagemkaerObj', () =
     defaults.BuildSagemakerEndpoint(stack, 'test', { vpc });
   };
   // Assertion 1
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('Test exception for not providing private or isolated subnets in an existing vpc', () => {
@@ -236,7 +236,7 @@ test('Test exception for not providing private or isolated subnets in an existin
     });
   };
   // Assertion 1
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 // ---------------------------
@@ -267,5 +267,5 @@ test('Test fail SageMaker endpoint check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide endpointProps or existingSagemakerEndpointObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide endpointProps or existingSagemakerEndpointObj, but not both.\n');
 });

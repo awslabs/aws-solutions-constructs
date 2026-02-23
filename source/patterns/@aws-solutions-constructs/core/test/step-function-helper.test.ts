@@ -447,7 +447,7 @@ test('Confirm cloudWatchAlarmsPrefix requires createCloudWatchAlarms', () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('Error - cloudWatchAlarmsPrefix is invalid when createCloudWatchAlarms is false\n');
+  expect(app).toThrow('Error - cloudWatchAlarmsPrefix is invalid when createCloudWatchAlarms is false\n');
 });
 
 test('Confirm existingStateMachine disables all other state machine props', () => {
@@ -459,7 +459,7 @@ test('Confirm existingStateMachine disables all other state machine props', () =
     });
   };
   // Assertion
-  expect(app).toThrowError('ERROR - If existingStateMachine is provided, no other state machine props are allowed\n');
+  expect(app).toThrow('ERROR - If existingStateMachine is provided, no other state machine props are allowed\n');
 
   const app2 = () => {
     defaults.CheckStateMachineProps({
@@ -468,7 +468,7 @@ test('Confirm existingStateMachine disables all other state machine props', () =
     });
   };
   // Assertion
-  expect(app2).toThrowError('ERROR - If existingStateMachine is provided, no other state machine props are allowed\n');
+  expect(app2).toThrow('ERROR - If existingStateMachine is provided, no other state machine props are allowed\n');
 
   const app3 = () => {
     defaults.CheckStateMachineProps({
@@ -477,7 +477,7 @@ test('Confirm existingStateMachine disables all other state machine props', () =
     });
   };
   // Assertion
-  expect(app3).toThrowError('ERROR - If existingStateMachine is provided, no other state machine props are allowed\n');
+  expect(app3).toThrow('ERROR - If existingStateMachine is provided, no other state machine props are allowed\n');
 
   const app4 = () => {
     defaults.CheckStateMachineProps({
@@ -486,6 +486,6 @@ test('Confirm existingStateMachine disables all other state machine props', () =
     });
   };
   // Assertion
-  expect(app4).toThrowError('ERROR - If existingStateMachine is provided, no other state machine props are allowed\n');
+  expect(app4).toThrow('ERROR - If existingStateMachine is provided, no other state machine props are allowed\n');
 
 });

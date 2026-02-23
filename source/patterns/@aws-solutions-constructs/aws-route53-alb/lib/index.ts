@@ -106,6 +106,8 @@ export class Route53ToAlb extends Construct {
     // NOTE: We don't call CheckAlbProps() here, because this construct creates an ALB
     // with no listener or target, so some of those checks don't apply
     this.PropsCustomCheck(props);
+    defaults.ValidatePrivateHostedZoneProps(this, props.privateHostedZoneProps);
+    defaults.ValidateApplicationLoadBalancerProps(this, props.loadBalancerProps);
 
     if (props.existingHostedZoneInterface && !props.publicApi && !props.existingVpc) {
       throw new Error('An existing Private Hosted Zone already exists in a VPC, so that VPC must be passed to the construct in props.existingVpc');

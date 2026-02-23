@@ -317,5 +317,31 @@ test('Confirm call to CheckLambdaProps', () => {
     new DynamoDBStreamsToLambda(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+});
+
+test('Test that ValidateDynamoEventSourceProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: DynamoDBStreamsToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler'
+    },
+    dynamoTableProps: {
+      partitionKey: {
+        name: 'id',
+        type: dynamodb.AttributeType.STRING
+      }
+    },
+    dynamoEventSourceProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new DynamoDBStreamsToLambda(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of DynamoEventSourceProps/);
 });

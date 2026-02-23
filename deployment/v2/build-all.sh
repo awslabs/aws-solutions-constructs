@@ -12,6 +12,14 @@ bail="--bail"
 runtarget="build+lint+test"
 cd $source_dir/
 
+
+echo "============================================================================================="
+echo "building validation.ts to ensure it is current"
+cd scripts
+npm install
+npm run generate:validation
+cd ..
+
 export PATH=$source_dir/node_modules/.bin:$PATH
 export NODE_OPTIONS="--max-old-space-size=4096 ${NODE_OPTIONS:-}"
 

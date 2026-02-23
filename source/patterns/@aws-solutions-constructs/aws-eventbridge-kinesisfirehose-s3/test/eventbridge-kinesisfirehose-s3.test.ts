@@ -128,7 +128,7 @@ test("Test bad call with existingBucket and bucketProps", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
 test('check eventbus property, snapshot & eventbus exists', () => {
@@ -173,7 +173,7 @@ test('Confirm CheckEventBridgeProps is being called', () => {
   const app = () => {
     new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-firehose-s3', props);
   };
-  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });
 
 test('check custom event bus resource with props when deploy:true', () => {
@@ -289,5 +289,23 @@ test('Confirm CheckS3Props is being called', () => {
   const app = () => {
     new EventbridgeToKinesisFirehoseToS3(stack, 'test-eventbridge-firehose-s3', props);
   };
-  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+});
+
+test('Test that ValidateCfnDeliveryStreamProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const props: EventbridgeToKinesisFirehoseToS3Props = {
+    eventRuleProps: {
+      schedule: events.Schedule.rate(cdk.Duration.minutes(5))
+    },
+    kinesisFirehoseProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new EventbridgeToKinesisFirehoseToS3(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of CfnDeliveryStreamProps/);
 });

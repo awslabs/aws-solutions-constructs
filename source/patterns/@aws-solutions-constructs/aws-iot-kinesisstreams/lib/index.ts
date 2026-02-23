@@ -40,7 +40,7 @@ export interface IotToKinesisStreamsProps {
    *
    * @default - Default props are used
    */
-  readonly kinesisStreamProps?: kinesis.StreamProps | any;
+  readonly kinesisStreamProps?: kinesis.StreamProps;
   /**
    * Whether to create recommended CloudWatch alarms
    *

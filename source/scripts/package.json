@@ -1,0 +1,23 @@
+{
+  "name": "aws-solutions-constructs-scripts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Build scripts for AWS Solutions Constructs",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --coverage",
+    "generate:validation": "tsc && node dist/src/generate-validation.js"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "@types/node": "^22.0.0",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.6",
+    "typescript": "5.9.3"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "0.0.0"
+  },
+  "peerDependencies": {}
+}

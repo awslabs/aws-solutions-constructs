@@ -26,7 +26,7 @@ SetConsistentFeatureFlags(stack);
 stack.templateOptions.description = 'Integration Test for aws-cloudfront-apigateway-lambda';
 
 const lambdaProps: lambda.FunctionProps = {
-  code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {\'statusCode\': 200, \'body\': \'\'}; }'),
   runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
   handler: 'index.handler'
 };

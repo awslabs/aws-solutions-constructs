@@ -266,10 +266,10 @@ test("buildWebSocketApiProps creates correct WebSocket API props", () => {
   const propsWithoutDefaultRoute = buildWebSocketApiProps(role, queue, false);
   expect(propsWithoutDefaultRoute.defaultRouteOptions).toBeUndefined();
 
-  expect(() => buildWebSocketApiProps(role, undefined, true)).toThrowError(
+  expect(() => buildWebSocketApiProps(role, undefined, true)).toThrow(
     "role and sqs must be provided to create a default route"
   );
-  expect(() => buildWebSocketApiProps(undefined, queue, true)).toThrowError(
+  expect(() => buildWebSocketApiProps(undefined, queue, true)).toThrow(
     "role and sqs must be provided to create a default route"
   );
 });
@@ -356,7 +356,7 @@ test("buildWebSocketQueueApi with defaultIamAuthorization is set to false and co
     },
   });
 
-  expect(printWarningSpy).toBeCalledWith(
+  expect(printWarningSpy). toHaveBeenCalledWith(
     "This construct will create a WebSocket with NO Authorizer (defaultIamAuthorization is set to false)."
   );
   printWarningSpy.mockRestore();

@@ -330,7 +330,7 @@ test('Confirm that CheckVpcProps was called', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 function createFargateConstructWithNewResources(stack: cdk.Stack, publicApi: boolean) {
@@ -386,4 +386,67 @@ test('Deploy 2 constructs', () => {
   });
   Template.fromStack(stack);
   // No checks, as our main concern is this has no collisions
+});
+
+test('Test that ValidateContainerDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const startState = new stepfunctions.Pass(stack, 'StartState');
+  const props: FargateToStepfunctionsProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    stateMachineProps: {
+      definition: startState
+    },
+    containerDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToStepfunctions(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of ContainerDefinitionProps/);
+});
+
+test('Test that ValidateFargateTaskDefinitionProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const startState = new stepfunctions.Pass(stack, 'StartState');
+  const props: FargateToStepfunctionsProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    stateMachineProps: {
+      definition: startState
+    },
+    fargateTaskDefinitionProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToStepfunctions(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of FargateTaskDefinitionProps/);
+});
+
+test('Test that ValidateFargateServiceProps() is being called', () => {
+  const stack = new cdk.Stack();
+  const startState = new stepfunctions.Pass(stack, 'StartState');
+  const props: FargateToStepfunctionsProps = {
+    publicApi: true,
+    ecrRepositoryArn: defaults.fakeEcrRepoArn,
+    stateMachineProps: {
+      definition: startState
+    },
+    fargateServiceProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new FargateToStepfunctions(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of FargateServiceProps/);
 });

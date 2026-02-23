@@ -317,7 +317,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   };
 
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 
 });
 
@@ -341,7 +341,7 @@ test("Confirm that CheckVpcProps is called", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test("Test bad call with invalid string parameter permission", () => {
@@ -362,7 +362,7 @@ test("Test bad call with invalid string parameter permission", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('Invalid String Parameter permission submitted - Reed');
+  expect(app).toThrow('Invalid String Parameter permission submitted - Reed');
 });
 
 test('Confirm call to CheckLambdaProps', () => {
@@ -387,5 +387,5 @@ test('Confirm call to CheckLambdaProps', () => {
     new LambdaToSsmstringparameter(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

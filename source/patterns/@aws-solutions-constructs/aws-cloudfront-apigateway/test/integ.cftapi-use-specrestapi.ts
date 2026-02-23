@@ -18,7 +18,6 @@ import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solution
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-import * as path from 'path';
 import * as iam from 'aws-cdk-lib/aws-iam';
 
 // Setup
@@ -32,7 +31,7 @@ const lambdaFunction = new lambda.Function(stack, 'ApiLambdaFunction', {
   functionName: 'test-api-lambda',
   runtime: lambda.Runtime.NODEJS_18_X,
   handler: 'index.handler',
-  code: lambda.Code.fromAsset(path.join(__dirname, 'lambda'))
+  code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {\'statusCode\': 200, \'body\': \'\'}; }'),
 });
 
 // Create SpecRestApi with embedded OpenAPI spec

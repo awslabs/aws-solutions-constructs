@@ -137,7 +137,7 @@ test('Confirm call to CheckLambdaProps', () => {
     new KinesisStreamsToLambda(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });
 
 test('Confirm call to CheckKinesisStreamProps', () => {
@@ -157,5 +157,25 @@ test('Confirm call to CheckKinesisStreamProps', () => {
     new KinesisStreamsToLambda(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
+});
+
+test('Test that ValidateKinesisEventSourceProps() is being called', () => {
+  const stack = new Stack();
+  const props: KinesisStreamsToLambdaProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler'
+    },
+    kinesisEventSourceProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new KinesisStreamsToLambda(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of KinesisEventSourceProps/);
 });

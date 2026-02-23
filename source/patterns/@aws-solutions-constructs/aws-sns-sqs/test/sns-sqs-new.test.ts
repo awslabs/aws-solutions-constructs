@@ -699,7 +699,7 @@ test('Confirm that CheckSqsProps is called', () => {
   };
 
   // Assertion
-  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
+  expect(app).toThrow("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });
 
 test('Confirm that Construct checks for mixed deprecated and active props', () => {
@@ -718,7 +718,7 @@ test('Confirm that Construct checks for mixed deprecated and active props', () =
   };
 
   // Assertion
-  expect(app).toThrowError(/Cannot specify both deprecated key props and new key props/);
+  expect(app).toThrow(/Cannot specify both deprecated key props and new key props/);
 });
 
 test('Confirm that Construct checks for mixed deprecated and active props', () => {
@@ -737,7 +737,7 @@ test('Confirm that Construct checks for mixed deprecated and active props', () =
   };
 
   // Assertion
-  expect(app).toThrowError(/Cannot specify both deprecated key props and new key props/);
+  expect(app).toThrow(/Cannot specify both deprecated key props and new key props/);
 });
 
 test('Confirm that queueProps and existingQueue is caught', () => {
@@ -755,7 +755,7 @@ test('Confirm that queueProps and existingQueue is caught', () => {
   };
 
   // Assertion
-  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
+  expect(app).toThrow("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });
 
 test('Confirm that existingTopic and topicProps is caught', () => {
@@ -781,7 +781,7 @@ test('Confirm that existingTopic and topicProps is caught', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
+  expect(app).toThrow(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
 });
 
 test('Confirm that CheckSqsProps is called', () => {
@@ -799,7 +799,7 @@ test('Confirm that CheckSqsProps is called', () => {
   };
 
   // Assertion
-  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
+  expect(app).toThrow("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });
 
 test('Catch queue key and queue key props', () => {
@@ -815,7 +815,7 @@ test('Catch queue key and queue key props', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - Either provide existingQueueEncryptionKey or queueEncryptionKeyProps, but not both.\n/);
+  expect(app).toThrow(/Error - Either provide existingQueueEncryptionKey or queueEncryptionKeyProps, but not both.\n/);
 });
 
 test('Catch queueProps key and construct props key', () => {
@@ -833,7 +833,7 @@ test('Catch queueProps key and construct props key', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - Either provide queueProps.encryptionMasterKey or existingQueueEncryptionKey, but not both.\n/);
+  expect(app).toThrow(/Error - Either provide queueProps.encryptionMasterKey or existingQueueEncryptionKey, but not both.\n/);
 });
 
 test('Catch queueProps key and construct props queue Key Props', () => {
@@ -851,7 +851,7 @@ test('Catch queueProps key and construct props queue Key Props', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - Either provide queueProps.encryptionMasterKey or queueEncryptionKeyProps, but not both./);
+  expect(app).toThrow(/Error - Either provide queueProps.encryptionMasterKey or queueEncryptionKeyProps, but not both./);
 });
 
 test('Catch topic key and topic key props', () => {
@@ -867,7 +867,7 @@ test('Catch topic key and topic key props', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - Either provide existingTopicEncryptionKey or topicEncryptionKeyProps, but not both.\n/);
+  expect(app).toThrow(/Error - Either provide existingTopicEncryptionKey or topicEncryptionKeyProps, but not both.\n/);
 });
 
 test('Catch topicProps key and construct props key', () => {
@@ -885,7 +885,7 @@ test('Catch topicProps key and construct props key', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - Either provide topicProps.masterKey or existingTopicEncryptionKey, but not both.\n/);
+  expect(app).toThrow(/Error - Either provide topicProps.masterKey or existingTopicEncryptionKey, but not both.\n/);
 });
 
 test('Catch topicProps key and construct props Key props', () => {
@@ -903,7 +903,7 @@ test('Catch topicProps key and construct props Key props', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - Either provide topicProps.masterKey or topicEncryptionKeyProps, but not both.\n/);
+  expect(app).toThrow(/Error - Either provide topicProps.masterKey or topicEncryptionKeyProps, but not both.\n/);
 });
 
 test('Catch encryptTopicWithCmk false with topic key props', () => {
@@ -919,7 +919,7 @@ test('Catch encryptTopicWithCmk false with topic key props', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - if encryptTopicWithCmk is false, submitting topicEncryptionKeyProps is invalid\n/);
+  expect(app).toThrow(/Error - if encryptTopicWithCmk is false, submitting topicEncryptionKeyProps is invalid\n/);
 });
 
 test('Catch encryptTopicWithCmk false with topic key', () => {
@@ -935,7 +935,7 @@ test('Catch encryptTopicWithCmk false with topic key', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - if encryptTopicWithCmk is false, submitting existingTopicEncryptionKey is invalid\n/);
+  expect(app).toThrow(/Error - if encryptTopicWithCmk is false, submitting existingTopicEncryptionKey is invalid\n/);
 });
 
 test('Catch encryptQueueWithCmk false with queue key props', () => {
@@ -951,7 +951,7 @@ test('Catch encryptQueueWithCmk false with queue key props', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - if encryptQueueWithCmk is false, submitting queueEncryptionKeyProps is invalid\n/);
+  expect(app).toThrow(/Error - if encryptQueueWithCmk is false, submitting queueEncryptionKeyProps is invalid\n/);
 });
 
 test('Catch encryptQueueWithCmk false with queue key', () => {
@@ -967,7 +967,7 @@ test('Catch encryptQueueWithCmk false with queue key', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - if encryptQueueWithCmk is false, submitting existingQueueEncryptionKey is invalid\n/);
+  expect(app).toThrow(/Error - if encryptQueueWithCmk is false, submitting existingQueueEncryptionKey is invalid\n/);
 });
 
 test('Catch queueProps.encryption on new interface', () => {
@@ -984,7 +984,7 @@ test('Catch queueProps.encryption on new interface', () => {
   };
 
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 /**

@@ -378,7 +378,7 @@ test('Test fail S3 check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
 test('Test fail existing log bucket and log bucket prop check', () => {
@@ -396,7 +396,7 @@ test('Test fail existing log bucket and log bucket prop check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide existingLoggingBucketObj or loggingBucketProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide existingLoggingBucketObj or loggingBucketProps, but not both.\n');
 });
 
 test('Test fail false logS3Accesslogs and loggingBucketProps check', () => {
@@ -412,7 +412,7 @@ test('Test fail false logS3Accesslogs and loggingBucketProps check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n');
+  expect(app).toThrow('Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n');
 });
 
 test('Test fail existingBucketObj and loggingBucketProps check', () => {
@@ -430,5 +430,5 @@ test('Test fail existingBucketObj and loggingBucketProps check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is an error.\n');
+  expect(app).toThrow('Error - If existingBucketObj is provided, supplying loggingBucketProps or logS3AccessLogs is an error.\n');
 });

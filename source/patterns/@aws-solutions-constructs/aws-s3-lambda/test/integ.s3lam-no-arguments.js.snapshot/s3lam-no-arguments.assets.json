@@ -1,20 +1,6 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
-    "a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c": {
-      "displayName": "test-s3-lambda/LambdaFunction/Code",
-      "source": {
-        "path": "asset.a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-d11fcfce": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "displayName": "s3lam-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
       "source": {
@@ -29,16 +15,16 @@
         }
       }
     },
-    "25e1d5c1ca23926857785aecc84d1963c500c8402fa9aeec12db44be04d51bb3": {
+    "08798c4a92da17ecf6ac957432a9ebd2497b59847526969e75f13b212b0cfa20": {
       "displayName": "s3lam-no-arguments Template",
       "source": {
         "path": "s3lam-no-arguments.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-65060eeb": {
+        "current_account-current_region-50651d5d": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "25e1d5c1ca23926857785aecc84d1963c500c8402fa9aeec12db44be04d51bb3.json",
+          "objectKey": "08798c4a92da17ecf6ac957432a9ebd2497b59847526969e75f13b212b0cfa20.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

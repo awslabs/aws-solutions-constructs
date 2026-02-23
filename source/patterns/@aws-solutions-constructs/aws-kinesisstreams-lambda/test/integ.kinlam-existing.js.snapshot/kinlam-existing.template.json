@@ -116,10 +116,7 @@
    "Type": "AWS::Lambda::Function",
    "Properties": {
     "Code": {
-     "S3Bucket": {
-      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-     },
-     "S3Key": "26cf7db64552331215006953bf73e5adfb49b5bf0eb2298bfe04547b76c08b88.zip"
+     "ZipFile": "exports.handler = async (event) => { console.log(event); return {statusCode: 200, body: \"\"}; }"
     },
     "Handler": "index.handler",
     "Role": {

@@ -1,20 +1,6 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
-    "4085f2fc7cce70548a05ffc5162591a6b42f88398292e9c4b2739feed32a1640": {
-      "displayName": "test-lambda-s3/LambdaFunction/Code",
-      "source": {
-        "path": "asset.4085f2fc7cce70548a05ffc5162591a6b42f88398292e9c4b2739feed32a1640",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-9a75cf4c": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "4085f2fc7cce70548a05ffc5162591a6b42f88398292e9c4b2739feed32a1640.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "displayName": "lams3-deployFunction/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
       "source": {
@@ -29,16 +15,16 @@
         }
       }
     },
-    "7a5144783b71eb38fa8cf177e1395711d93b6aa54f919b52d68501f33bb53d55": {
+    "bbfce677019a9f2241b13a0dcfe54fd3e2d58425c036cc95faff4bf68c87101d": {
       "displayName": "lams3-deployFunction Template",
       "source": {
         "path": "lams3-deployFunction.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-3c9b5247": {
+        "current_account-current_region-a14aa964": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "7a5144783b71eb38fa8cf177e1395711d93b6aa54f919b52d68501f33bb53d55.json",
+          "objectKey": "bbfce677019a9f2241b13a0dcfe54fd3e2d58425c036cc95faff4bf68c87101d.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

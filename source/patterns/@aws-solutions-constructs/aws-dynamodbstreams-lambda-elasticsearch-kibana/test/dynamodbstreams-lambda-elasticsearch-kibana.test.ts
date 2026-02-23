@@ -243,7 +243,7 @@ test('Confirm CheckVpcProps is being called', () => {
     });
   };
 
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Confirm CheckLambdaProps is being called', () => {
@@ -267,5 +267,5 @@ test('Confirm CheckLambdaProps is being called', () => {
   const app = () => {
     new DynamoDBStreamsToLambdaToElasticSearchAndKibana(stack, 'test-apigateway-lambda', props);
   };
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

@@ -867,7 +867,7 @@ test('Specifying application/json content-type in additionalRequestTemplates pro
     });
   };
 
-  expect(app).toThrowError('Request Template for the application/json content-type must be specified in the requestTemplate property and not in the additionalRequestTemplates property');
+  expect(app).toThrow('Request Template for the application/json content-type must be specified in the requestTemplate property and not in the additionalRequestTemplates property');
 });
 
 test('Test CheckApiProps', () => {
@@ -889,7 +889,7 @@ test('Test CheckApiProps', () => {
       createUsagePlan: false
     });
   };
-  expect(noErrApp).not.toThrowError();
+  expect(noErrApp).not.toThrow();
 
   const app = () => {
     defaults.CheckApiProps({
@@ -897,7 +897,7 @@ test('Test CheckApiProps', () => {
       createUsagePlan: false
     });
   };
-  expect(app).toThrowError('Error - if API key is required, then the Usage plan must be created\n');
+  expect(app).toThrow('Error - if API key is required, then the Usage plan must be created\n');
 });
 
 test('Correctly generate a SpecRestApi', () => {

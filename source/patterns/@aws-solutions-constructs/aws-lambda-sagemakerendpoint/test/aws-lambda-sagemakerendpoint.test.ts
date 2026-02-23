@@ -268,7 +268,7 @@ test('Test for error when existing Lambda function does not have vpc and deployV
     new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
   };
   // Assertion 1
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 // -------------------------------------------------------------------------------------------------------
@@ -354,7 +354,7 @@ test('Test for error with existingLambdaObj/lambdaFunctionProps=undefined (not s
     new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', props);
   };
   // Assertion 1
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 // --------------------------------------------------------------------
@@ -398,7 +398,7 @@ test('confirm CheckVpcProps is called', () => {
     new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
   };
   // Assertion 1
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 // ----------------------------------------------------------------------------------------------------------
@@ -426,7 +426,7 @@ test('Test for error with primaryContainer=undefined (not supplied by user)', ()
     new LambdaToSagemakerEndpoint(stack, 'test-lambda-sagemaker', constructProps);
   };
   // Assertion 1
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 // -------------------------------------------------------------------------------------------------
@@ -620,7 +620,7 @@ test('Confirm call to CheckLambdaProps', () => {
     new LambdaToSagemakerEndpoint(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });
 
 test('Confirm call to CheckSagemakerProps', () => {
@@ -648,5 +648,25 @@ test('Confirm call to CheckSagemakerProps', () => {
     new LambdaToSagemakerEndpoint(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide endpointProps or existingSagemakerEndpointObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide endpointProps or existingSagemakerEndpointObj, but not both.\n');
+});
+
+test('Test that ValidateCfnModelProps() is being called', () => {
+  const stack = new Stack();
+  const props: LambdaToSagemakerEndpointProps = {
+    lambdaFunctionProps: {
+      code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+      runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
+      handler: 'index.handler'
+    },
+    modelProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new LambdaToSagemakerEndpoint(stack, 'test-construct', props);
+  };
+
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of CfnModelProps/);
 });

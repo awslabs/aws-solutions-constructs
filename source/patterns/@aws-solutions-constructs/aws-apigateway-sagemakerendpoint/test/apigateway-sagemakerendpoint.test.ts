@@ -165,7 +165,7 @@ test('Confirm call to CheckApiProps', () => {
     new ApiGatewayToSageMakerEndpoint(stack, 'test-apigateway-sagemaker', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - if API key is required, then the Usage plan must be created\n');
+  expect(app).toThrow('Error - if API key is required, then the Usage plan must be created\n');
 });
 
 test('Confirm suppression of Usage Plan', () => {

@@ -511,7 +511,7 @@ test('Test fail DynamoDB table check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide existingTableObj or dynamoTableProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide existingTableObj or dynamoTableProps, but not both.\n');
 });
 
 test('Test fail DynamoDB table check (for interface AND obj)', () => {
@@ -537,7 +537,7 @@ test('Test fail DynamoDB table check (for interface AND obj)', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide existingTableInterface or existingTableObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide existingTableInterface or existingTableObj, but not both.\n');
 });
 
 test('Test fail DynamoDB pointInTimeRecoverySpecification and pointInTimeRecovery both specified', () => {
@@ -559,7 +559,7 @@ test('Test fail DynamoDB pointInTimeRecoverySpecification and pointInTimeRecover
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide pointInTimeRecovery or pointInTimeRecoverySpecification, but not both.\n');
+  expect(app).toThrow('Error - Either provide pointInTimeRecovery or pointInTimeRecoverySpecification, but not both.\n');
 });
 
 

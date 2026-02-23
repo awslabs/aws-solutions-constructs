@@ -27,9 +27,7 @@ stack.templateOptions.description = 'Integration Test for aws-kinesisstreams-kin
 stack.node.setContext("@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy", true);
 
 const existingBucket = CreateScrapBucket(stack, "scrapBucket", {
-  bucketProps: {
-    removalPolicy: RemovalPolicy.DESTROY,
-  }
+  removalPolicy: RemovalPolicy.DESTROY,
 });
 
 const myLoggingBucket: s3.IBucket = s3.Bucket.fromBucketName(stack, 'myLoggingBucket', existingBucket.bucketName);

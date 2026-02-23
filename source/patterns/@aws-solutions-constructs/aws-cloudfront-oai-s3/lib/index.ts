@@ -156,6 +156,7 @@ export class CloudFrontToOaiToS3 extends Construct {
     defaults.CheckCloudFrontProps(props);
     defaults.CheckCloudfrontS3Props(props);
     this.checkForKmsKey(props);
+    defaults.ValidateDistributionProps(this, props.cloudFrontDistributionProps);
 
     let originBucket: s3.IBucket;
 

@@ -587,7 +587,7 @@ test('Construct throws error when messageSchema is set and allowCreateOperation 
     messageSchema: '{}' as any,
   });
 
-  expect(app).toThrowError(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses', 'messageSchema'/);
+  expect(app).toThrow(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses', 'messageSchema'/);
 });
 
 test('Construct throws error when createRequestTemplate is set and allowCreateOperation is not true', () => {
@@ -596,7 +596,7 @@ test('Construct throws error when createRequestTemplate is set and allowCreateOp
     createRequestTemplate: '{}',
   });
 
-  expect(app).toThrowError(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses', 'messageSchema'/);
+  expect(app).toThrow(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses', 'messageSchema'/);
 });
 
 test('Construct throws error when additionalCreateRequestTemplates is set and allowCreateOperation is not true', () => {
@@ -605,7 +605,7 @@ test('Construct throws error when additionalCreateRequestTemplates is set and al
     additionalCreateRequestTemplates: {}
   });
 
-  expect(app).toThrowError(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses', 'messageSchema'/);
+  expect(app).toThrow(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses', 'messageSchema'/);
 });
 
 test('Construct throws error when createIntegrationResponses is set and allowCreateOperation is not true', () => {
@@ -614,7 +614,7 @@ test('Construct throws error when createIntegrationResponses is set and allowCre
     createIntegrationResponses: []
   });
 
-  expect(app).toThrowError(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses', 'messageSchema'/);
+  expect(app).toThrow(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses', 'messageSchema'/);
 });
 
 test('Construct throws error when readRequestTemplate is set and allowReadOperation is false', () => {
@@ -624,7 +624,7 @@ test('Construct throws error when readRequestTemplate is set and allowReadOperat
     readRequestTemplate: '{}',
   });
 
-  expect(app).toThrowError(/The 'allowReadOperation' property must be set to true or undefined when setting any of the following: 'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowReadOperation' property must be set to true or undefined when setting any of the following: 'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'/);
 });
 
 test('Construct throws error when additionalReadRequestTemplates is set and allowReadOperation is false', () => {
@@ -634,7 +634,7 @@ test('Construct throws error when additionalReadRequestTemplates is set and allo
     additionalReadRequestTemplates: {},
   });
 
-  expect(app).toThrowError(/The 'allowReadOperation' property must be set to true or undefined when setting any of the following: 'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowReadOperation' property must be set to true or undefined when setting any of the following: 'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'/);
 });
 
 test('Construct throws error when readIntegrationResponses is set and allowReadOperation is false', () => {
@@ -644,7 +644,7 @@ test('Construct throws error when readIntegrationResponses is set and allowReadO
     readIntegrationResponses: [],
   });
 
-  expect(app).toThrowError(/The 'allowReadOperation' property must be set to true or undefined when setting any of the following: 'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowReadOperation' property must be set to true or undefined when setting any of the following: 'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'/);
 });
 
 test('Construct throws error when deleteRequestTemplate is set and allowDeleteOperation is not true', () => {
@@ -653,7 +653,7 @@ test('Construct throws error when deleteRequestTemplate is set and allowDeleteOp
     deleteRequestTemplate: '{}',
   });
 
-  expect(app).toThrowError(/The 'allowDeleteOperation' property must be set to true when setting any of the following: 'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowDeleteOperation' property must be set to true when setting any of the following: 'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'/);
 });
 
 test('Construct throws error when additionalDeleteRequestTemplates is set and allowDeleteOperation is not true', () => {
@@ -662,7 +662,7 @@ test('Construct throws error when additionalDeleteRequestTemplates is set and al
     additionalDeleteRequestTemplates: {}
   });
 
-  expect(app).toThrowError(/The 'allowDeleteOperation' property must be set to true when setting any of the following: 'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowDeleteOperation' property must be set to true when setting any of the following: 'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'/);
 });
 
 test('Construct throws error when deleteIntegrationResponses is set and allowDeleteOperation is not true', () => {
@@ -671,7 +671,7 @@ test('Construct throws error when deleteIntegrationResponses is set and allowDel
     deleteIntegrationResponses: []
   });
 
-  expect(app).toThrowError(/The 'allowDeleteOperation' property must be set to true when setting any of the following: 'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowDeleteOperation' property must be set to true when setting any of the following: 'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'/);
 });
 
 test('Confirm the CheckSqsProps is being called', () => {
@@ -686,7 +686,7 @@ test('Confirm the CheckSqsProps is being called', () => {
     });
   };
 
-  expect(app).toThrowError(/Error - Either provide queueProps or existingQueueObj, but not both.\n/);
+  expect(app).toThrow(/Error - Either provide queueProps or existingQueueObj, but not both.\n/);
 });
 
 test('Construct uses custom createMethodResponses property', () => {
@@ -905,7 +905,7 @@ test('Confirm call to CheckApiProps', () => {
     new ApiGatewayToSqs(stack, 'test-apigateway-sqs', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - if API key is required, then the Usage plan must be created\n');
+  expect(app).toThrow('Error - if API key is required, then the Usage plan must be created\n');
 });
 
 test('Confirm suppression of Usage Plan', () => {
@@ -918,4 +918,19 @@ test('Confirm suppression of Usage Plan', () => {
 
   const template = Template.fromStack(stack);
   template.resourceCountIs('AWS::ApiGateway::UsagePlan', 0);
+});
+
+test('Test that ValidateRestApiProps() is being called', () => {
+  const stack = new Stack();
+  const testProps: ApiGatewayToSqsProps = {
+    apiGatewayProps: {
+      invalidProperty: true
+    }
+  };
+
+  const app = () => {
+    new ApiGatewayToSqs(stack, 'test-construct', testProps);
+  };
+
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of RestApiProps/);
 });

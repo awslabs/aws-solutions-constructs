@@ -36,7 +36,7 @@ const constructProps: LambdaToSagemakerEndpointProps = {
   },
   lambdaFunctionProps: {
     runtime: lambda.Runtime.PYTHON_3_8,
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+    code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {statusCode: 200, body: ""}; }'),
     handler: 'index.handler',
     timeout: Duration.minutes(5),
     memorySize: 128,

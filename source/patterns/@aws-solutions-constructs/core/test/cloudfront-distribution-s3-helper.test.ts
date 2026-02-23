@@ -1042,7 +1042,7 @@ test('Test that web site enabled buckets throw an error - oai', () => {
   };
 
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 
 });
 
@@ -1063,7 +1063,7 @@ test('Test CloudFront insertHttpHeaders bad props', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
+  expect(app).toThrow('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
 });
 
 test("test CloudFrontS3 props - logS3AccessLogs", () => {
@@ -1079,7 +1079,7 @@ test("test CloudFrontS3 props - logS3AccessLogs", () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - logS3AccessLogs is false, but a log bucket was provided in bucketProps.\n');
+  expect(app).toThrow('Error - logS3AccessLogs is false, but a log bucket was provided in bucketProps.\n');
 
 });
 
@@ -1098,7 +1098,7 @@ test("test CloudFrontS3 props - loggingBucketProps", () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - bothlog bucket props and an existing log bucket were provided.\n');
+  expect(app).toThrow('Error - bothlog bucket props and an existing log bucket were provided.\n');
 
 });
 
@@ -1117,7 +1117,7 @@ test("test CloudFrontS3 props - cloudFrontLoggingBucketAccessLogBucketProps", ()
   };
 
   // Assertion
-  expect(app).toThrowError('Error - an existing CloudFront log bucket S3 access log bucket and cloudFrontLoggingBucketAccessLogBucketProps were provided\n');
+  expect(app).toThrow('Error - an existing CloudFront log bucket S3 access log bucket and cloudFrontLoggingBucketAccessLogBucketProps were provided\n');
 
 });
 
@@ -1132,7 +1132,7 @@ test("test CloudFrontS3 props - serverAccessLogsBucket", () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - cloudFrontLoggingBucketAccessLogBucketProps were provided but logCloudFrontAccessLog was false\n');
+  expect(app).toThrow('Error - cloudFrontLoggingBucketAccessLogBucketProps were provided but logCloudFrontAccessLog was false\n');
 
 });
 
@@ -1149,6 +1149,6 @@ test("test CloudFrontS3 props - serverAccessLogsBucket", () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - props.cloudFrontLoggingBucketProps.serverAccessLogsBucket was provided but logCloudFrontAccessLog was false\n');
+  expect(app).toThrow('Error - props.cloudFrontLoggingBucketProps.serverAccessLogsBucket was provided but logCloudFrontAccessLog was false\n');
 
 });

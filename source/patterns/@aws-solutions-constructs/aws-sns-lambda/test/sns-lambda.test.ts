@@ -262,7 +262,7 @@ test('Confirm CheckSnsProps is getting called', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
+  expect(app).toThrow(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
 });
 
 test('Confirm call to CheckLambdaProps', () => {
@@ -286,5 +286,5 @@ test('Confirm call to CheckLambdaProps', () => {
     new SnsToLambda(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

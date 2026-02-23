@@ -67,10 +67,7 @@
    "Type": "AWS::Lambda::Function",
    "Properties": {
     "Code": {
-     "S3Bucket": {
-      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-     },
-     "S3Key": "0ac0535f48d1ada09cde7f11fc72195d9d32da75a2719aeb20c4e5c45b28e62e.zip"
+     "ZipFile": "exports.handler = async (event) => { console.log(event); return {statusCode: 200, body: \"Messages Lambda\"}; }"
     },
     "Environment": {
      "Variables": {
@@ -238,10 +235,7 @@
    "Type": "AWS::Lambda::Function",
    "Properties": {
     "Code": {
-     "S3Bucket": {
-      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-     },
-     "S3Key": "0ac0535f48d1ada09cde7f11fc72195d9d32da75a2719aeb20c4e5c45b28e62e.zip"
+     "ZipFile": "exports.handler = async (event) => { console.log(event); return {statusCode: 200, body: \"Photos Lambda\"}; }"
     },
     "Environment": {
      "Variables": {
@@ -409,10 +403,7 @@
    "Type": "AWS::Lambda::Function",
    "Properties": {
     "Code": {
-     "S3Bucket": {
-      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-     },
-     "S3Key": "0ac0535f48d1ada09cde7f11fc72195d9d32da75a2719aeb20c4e5c45b28e62e.zip"
+     "ZipFile": "exports.handler = async (event) => { console.log(event); return {statusCode: 200, body: \"\"}; }"
     },
     "Environment": {
      "Variables": {
@@ -786,7 +777,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "bdc104ed9cab1b5b6421713c8155f0b753380595356f710400609664d3635eca.zip"
+     "S3Key": "07a90cc3efdfc34da22208dcd9d211f06f5b0e01b21e778edc7c3966b1f61d57.zip"
     },
     "Description": "AWS CDK resource provider framework - onEvent (opilam-substringUriNames/OpenApiGatewayToLambda/ApiTemplateWriterProvider)",
     "Environment": {

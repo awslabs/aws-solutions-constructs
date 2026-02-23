@@ -124,7 +124,7 @@ test("Confirm that CheckS3Props is getting called", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 // --------------------------------------------------------------

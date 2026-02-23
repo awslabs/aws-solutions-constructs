@@ -1,44 +1,16 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
-    "075b2d402078d97c329028d1af17df69ef86062dc7ace374b10a10022db6fb8d": {
-      "displayName": "test-lambda-sqs-lambda/lambda-to-sqs/LambdaFunction/Code",
-      "source": {
-        "path": "asset.075b2d402078d97c329028d1af17df69ef86062dc7ace374b10a10022db6fb8d",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-f8513c3b": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "075b2d402078d97c329028d1af17df69ef86062dc7ace374b10a10022db6fb8d.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "d685d4fad1e8a913557eb007ae16e135281d3f192a6b557c471e160e3cc557a6": {
-      "displayName": "test-lambda-sqs-lambda/sqs-to-lambda/LambdaFunction/Code",
-      "source": {
-        "path": "asset.d685d4fad1e8a913557eb007ae16e135281d3f192a6b557c471e160e3cc557a6",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-bd057296": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "d685d4fad1e8a913557eb007ae16e135281d3f192a6b557c471e160e3cc557a6.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "61be78ebc9764e4e529a3742c8e43b5b2ae2a54d565e120de8869c25c2787d87": {
+    "cb66708526350cbdefd2ee231e20b91966897c9e8331b10d4c8e0d705954afe0": {
       "displayName": "lamsqslam-existingQueue Template",
       "source": {
         "path": "lamsqslam-existingQueue.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-b2c67f27": {
+        "current_account-current_region-e725f60a": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "61be78ebc9764e4e529a3742c8e43b5b2ae2a54d565e120de8869c25c2787d87.json",
+          "objectKey": "cb66708526350cbdefd2ee231e20b91966897c9e8331b10d4c8e0d705954afe0.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

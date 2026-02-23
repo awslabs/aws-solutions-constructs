@@ -114,6 +114,7 @@ export class EventbridgeToKinesisFirehoseToS3 extends Construct {
 
     defaults.CheckEventBridgeProps(props);
     // CheckS3Props is called by internal aws-kinesisfirehose-s3 construct
+    defaults.ValidateCfnDeliveryStreamProps(this, props.kinesisFirehoseProps);
 
     // Set up the Kinesis Firehose using KinesisFirehoseToS3 construct
     const firehoseToS3 = new KinesisFirehoseToS3(this, 'KinesisFirehoseToS3', {

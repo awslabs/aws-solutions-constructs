@@ -35,7 +35,7 @@ import * as api from "aws-cdk-lib/aws-apigateway";
 export const fakeEcrRepoArn = 'arn:aws:ecr:us-east-1:123456789012:repository/fake-repo';
 
 // Creates a bucket used for testing - minimal properties, destroyed after test
-export function CreateScrapBucket(scope: Construct, id: string, props?: BucketProps | any) {
+export function CreateScrapBucket(scope: Construct, id: string, props?: BucketProps) {
 
   if (props?.serverAccessLogsBucket) {
     throw new Error("Don't try to send a log bucket to CreateScrapBucket");

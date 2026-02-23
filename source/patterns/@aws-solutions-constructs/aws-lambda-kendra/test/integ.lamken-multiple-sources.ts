@@ -54,7 +54,7 @@ const webCrawlerSource = {
 
 new LambdaToKendra(stack, 'multiple-sources', {
   lambdaFunctionProps: {
-    code: lambda.Code.fromAsset(`lambda`),
+    code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {statusCode: 200, body: ""}; }'),
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
   },

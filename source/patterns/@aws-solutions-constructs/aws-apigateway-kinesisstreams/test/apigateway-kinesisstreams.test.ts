@@ -237,7 +237,7 @@ test('Confirm that CheckKinesisStreamProps is called', () => {
   const app = () => {
     new ApiGatewayToKinesisStreams(stack, 'test-eventbridge-kinesisstreams', props);
   };
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('Construct uses custom putRecordMethodResponses property', () => {
@@ -328,7 +328,7 @@ test('Confirm call to CheckApiProps', () => {
     new ApiGatewayToKinesisStreams(stack, 'test-apigateway-kinesis', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - if API key is required, then the Usage plan must be created\n');
+  expect(app).toThrow('Error - if API key is required, then the Usage plan must be created\n');
 });
 
 test('Confirm suppression of Usage Plan', () => {

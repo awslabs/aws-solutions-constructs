@@ -1,30 +1,16 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
-    "b5faf4ff1ebde477120133d1e645d20d7c3d4952b76c3b586100069b94b2f146": {
-      "displayName": "LambdaFunction/Code",
-      "source": {
-        "path": "asset.b5faf4ff1ebde477120133d1e645d20d7c3d4952b76c3b586100069b94b2f146",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-994336ec": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "b5faf4ff1ebde477120133d1e645d20d7c3d4952b76c3b586100069b94b2f146.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "83c6cddc92ff97082f256b60ccdae2699d3cdf862515a040e255ec48bcf98e9e": {
+    "5c1cd0c694fcce9f38027d2c2471e1abbc4f4daa44c1b89268fbd103cb5ada04": {
       "displayName": "lamevt-existingEventBus Template",
       "source": {
         "path": "lamevt-existingEventBus.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-932ced6a": {
+        "current_account-current_region-e72ebee2": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "83c6cddc92ff97082f256b60ccdae2699d3cdf862515a040e255ec48bcf98e9e.json",
+          "objectKey": "5c1cd0c694fcce9f38027d2c2471e1abbc4f4daa44c1b89268fbd103cb5ada04.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
