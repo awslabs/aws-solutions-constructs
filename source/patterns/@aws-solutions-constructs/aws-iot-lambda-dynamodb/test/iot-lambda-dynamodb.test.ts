@@ -334,7 +334,7 @@ test('Check incorrect table permission', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Invalid table permission submitted - Reed/);
+  expect(app).toThrow(/Invalid table permission submitted - Reed/);
 });
 
 test('check lambda function custom environment variable', () => {
@@ -574,7 +574,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   };
 
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 
 });
 
@@ -605,7 +605,7 @@ test("Confirm CheckVpcProps is called", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Confirm CheckLambdaProps is being called', () => {
@@ -636,7 +636,7 @@ test('Confirm CheckLambdaProps is being called', () => {
   const app = () => {
     new IotToLambdaToDynamoDB(stack, 'test-iot-lambda-ddb', props);
   };
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });
 
 // NOTE: existingTableObj was omitted from the interface for this construct,
@@ -683,5 +683,5 @@ test('Confirm CheckLambdaProps is being called', () => {
 //     new IotToLambdaToDynamoDB(stack, 'test-iot-lambda-dynamodb-stack', props);
 //   };
 
-//   expect(app).toThrowError('Error - Either provide existingTableObj or dynamoTableProps, but not both.\n');
+//   expect(app).toThrow('Error - Either provide existingTableObj or dynamoTableProps, but not both.\n');
 // });

@@ -293,7 +293,7 @@ test('Test error thrown with no private subnet configurations', () => {
     deployES(stack, 'test-domain', {}, undefined, vpc);
   };
 
-  expect(app).toThrowError('Error - No isolated or private subnets available in VPC');
+  expect(app).toThrow('Error - No isolated or private subnets available in VPC');
 });
 
 test('Test override ES version for buildElasticSearch', () => {

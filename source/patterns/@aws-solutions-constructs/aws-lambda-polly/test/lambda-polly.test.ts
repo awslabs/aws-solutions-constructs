@@ -704,7 +704,7 @@ test('Test that ValidateKeyProps() is being called', () => {
     new LambdaToPolly(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of KeyProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of KeyProps/);
 });
 
 test('Test that ValidateVpcProps() is being called', () => {
@@ -725,5 +725,5 @@ test('Test that ValidateVpcProps() is being called', () => {
     new LambdaToPolly(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of VpcProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of VpcProps/);
 });

@@ -1,30 +1,16 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
-    "9da0e8bdfa0712cb47fc2d6c6bad128e2edc58ffe5a8af5a322914f5c63609d1": {
-      "displayName": "connect/Code",
-      "source": {
-        "path": "asset.9da0e8bdfa0712cb47fc2d6c6bad128e2edc58ffe5a8af5a322914f5c63609d1",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-5053d9d0": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "9da0e8bdfa0712cb47fc2d6c6bad128e2edc58ffe5a8af5a322914f5c63609d1.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "7e04fc07890a2da7b6a497e48ac65b0c3aec51447469a72b50510e6fcc19ea0f": {
+    "d85388fe5737a2a86bdea9fd71aa9f3a3b53410364b4f4c743eba1890cdb7390": {
       "displayName": "wssqs-custom-connect-route Template",
       "source": {
         "path": "wssqs-custom-connect-route.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-a11b4020": {
+        "current_account-current_region-81ce98f7": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "7e04fc07890a2da7b6a497e48ac65b0c3aec51447469a72b50510e6fcc19ea0f.json",
+          "objectKey": "d85388fe5737a2a86bdea9fd71aa9f3a3b53410364b4f4c743eba1890cdb7390.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

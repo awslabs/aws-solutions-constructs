@@ -467,7 +467,7 @@ test('Confirm error with data source with no bucket name', () => {
     });
   };
 
-  expect(app).toThrowError(/Error - an S3 Kendra DataSource requires the DataSourceConfiguration.S3Configuration.bucketName prop/);
+  expect(app).toThrow(/Error - an S3 Kendra DataSource requires the DataSourceConfiguration.S3Configuration.bucketName prop/);
 });
 
 test('Launch with existing vpc', () => {
@@ -1103,7 +1103,7 @@ test('Confirm CheckVpcProps is being called', () => {
     new LambdaToKendra(stack, 'sample', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Confirm call to CheckLambdaProps', () => {
@@ -1136,7 +1136,7 @@ test('Confirm call to CheckLambdaProps', () => {
     new LambdaToKendra(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });
 
 test('Launch with non default index type', () => {
@@ -1418,7 +1418,7 @@ test('Test that ValidateCfnIndexProps() is being called', () => {
     new LambdaToKendra(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnIndexProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of CfnIndexProps/);
 });
 
 test('Test that ValidateCfnDataSourceProps() is being called', () => {
@@ -1438,5 +1438,5 @@ test('Test that ValidateCfnDataSourceProps() is being called', () => {
     new LambdaToKendra(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnDataSourceProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of CfnDataSourceProps/);
 });

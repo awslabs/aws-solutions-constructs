@@ -598,7 +598,7 @@ test("Test bad call with existingVpc and deployVpc", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('Confirm CheckSqsProps is being called', () => {
@@ -624,7 +624,7 @@ test('Confirm CheckSqsProps is being called', () => {
   const app = () => {
     new LambdaToSqsToLambda(stack, 'test-eventbridge-sqs', props);
   };
-  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
+  expect(app).toThrow("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });
 
 test('Confirm CheckLambdaProps is being called', () => {
@@ -652,5 +652,5 @@ test('Confirm CheckLambdaProps is being called', () => {
   const app = () => {
     new LambdaToSqsToLambda(stack, 'test-lambda-sqs-lambda', props);
   };
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

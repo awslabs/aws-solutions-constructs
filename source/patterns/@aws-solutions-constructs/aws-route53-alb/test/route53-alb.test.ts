@@ -144,7 +144,7 @@ test('Check publicApi and zone props is an error', () => {
     new Route53ToAlb(stack, 'test-error', props);
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('Check no Zone props and no existing zone interface is an error', () => {
@@ -162,7 +162,7 @@ test('Check no Zone props and no existing zone interface is an error', () => {
     new Route53ToAlb(stack, 'test-error', props);
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('Check Zone props with VPC is an error', () => {
@@ -184,7 +184,7 @@ test('Check Zone props with VPC is an error', () => {
     new Route53ToAlb(stack, 'test-error', props);
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 
 });
 
@@ -242,7 +242,7 @@ test('Check that passing an existing hosted Zone without passing an existingVPC 
     new Route53ToAlb(stack, 'test-error', props);
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 
 });
 
@@ -268,7 +268,7 @@ test('Check that passing an existing Load Balancer without passing an existingVP
     new Route53ToAlb(stack, 'test-error', props);
   };
   // Assertion
-  expect(app).toThrowError("An existing ALB already exists in a VPC, so that VPC must be passed to the construct in props.existingVpc");
+  expect(app).toThrow("An existing ALB already exists in a VPC, so that VPC must be passed to the construct in props.existingVpc");
 
 });
 
@@ -291,7 +291,7 @@ test('Check that passing an existing ALB without passing an existingVPC is an er
     new Route53ToAlb(stack, 'test-error', props);
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 
 });
 
@@ -318,7 +318,7 @@ test('Check that passing loadBalancerProps with a vpc is an error', () => {
     new Route53ToAlb(stack, 'test-error', props);
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 
 });
 
@@ -424,7 +424,7 @@ test('Check publicApi and without an existing hosted zone is an error', () => {
     new Route53ToAlb(stack, 'test-error', props);
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('Test that ValidatePrivateHostedZoneProps() is being called', () => {
@@ -444,7 +444,7 @@ test('Test that ValidatePrivateHostedZoneProps() is being called', () => {
     new Route53ToAlb(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of PrivateHostedZoneProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of PrivateHostedZoneProps/);
 });
 
 test('Test that ValidateApplicationLoadBalancerProps() is being called', () => {
@@ -467,5 +467,5 @@ test('Test that ValidateApplicationLoadBalancerProps() is being called', () => {
     new Route53ToAlb(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of ApplicationLoadBalancerProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of ApplicationLoadBalancerProps/);
 });

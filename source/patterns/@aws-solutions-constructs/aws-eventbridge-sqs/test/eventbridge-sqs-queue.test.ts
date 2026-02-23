@@ -315,7 +315,7 @@ test('Confirm CheckEventBridgeProps is being called', () => {
   const app = () => {
     new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
   };
-  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });
 
 test('check custom event bus resource with props when deploy:true', () => {
@@ -557,7 +557,7 @@ test('check that CheckSqsProps is being called', () => {
   const app = () => {
     new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
   };
-  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
+  expect(app).toThrow("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });
 
 test('Check that rule dlq is not created by default', () => {
@@ -652,7 +652,7 @@ test('Check that client cannot submit their own Rule DLQ and ask for a DLQ to be
   const app = () => {
     new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
   };
-  expect(app).toThrowError('Cannot specify both targetProps.deadLetterQueue and deployDeadLetterQueue ==  true\n');
+  expect(app).toThrow('Cannot specify both targetProps.deadLetterQueue and deployDeadLetterQueue ==  true\n');
 });
 
 test('Test that the construct uses provided eventRuleDlgKey properties', () => {
@@ -704,5 +704,5 @@ test('Test that an error is thrown when eventRuleDlqKeyProps are provided but de
   const app = () => {
     new EventbridgeToSqs(stack, 'test-eventbridge-sqs', props);
   };
-  expect(app).toThrowError('Cannot specify eventRuleDlqKeyProps without setting deployEventRuleDlq=true\n');
+  expect(app).toThrow('Cannot specify eventRuleDlqKeyProps without setting deployEventRuleDlq=true\n');
 });

@@ -265,7 +265,7 @@ test('Confirm CheckEventBridgeProps is being called', () => {
   const app = () => {
     new EventbridgeToSns(stack, 'test-eventbridge-sns', props);
   };
-  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });
 
 test('check custom event bus resource with props when deploy:true', () => {
@@ -424,5 +424,5 @@ test('Confirm CheckSnsProps is being called', () => {
     new EventbridgeToSns(stack, 'test', props);
   };
 
-  expect(app).toThrowError("Error - Either provide topicProps or existingTopicObj, but not both.\n");
+  expect(app).toThrow("Error - Either provide topicProps or existingTopicObj, but not both.\n");
 });

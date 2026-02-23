@@ -1,30 +1,16 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
-    "947efcc93dea6b762c3fca8bf09476c9d8fd2490afbd3e08e668328245340cb8": {
-      "displayName": "enrichment-function/Code",
-      "source": {
-        "path": "asset.947efcc93dea6b762c3fca8bf09476c9d8fd2490afbd3e08e668328245340cb8",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-78f7a5b7": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "947efcc93dea6b762c3fca8bf09476c9d8fd2490afbd3e08e668328245340cb8.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "9beaa02d1d3d674bf979f400ca87caf8d01b3d751d5877eaa016a67a0ad93349": {
+    "0a283c464f09cb6a65498d30464dae5a789c577435f57c02edeeefbd3584f857": {
       "displayName": "sqspstp-lambda-function-enrichment Template",
       "source": {
         "path": "sqspstp-lambda-function-enrichment.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-aa897596": {
+        "current_account-current_region-0aef3735": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "9beaa02d1d3d674bf979f400ca87caf8d01b3d751d5877eaa016a67a0ad93349.json",
+          "objectKey": "0a283c464f09cb6a65498d30464dae5a789c577435f57c02edeeefbd3584f857.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

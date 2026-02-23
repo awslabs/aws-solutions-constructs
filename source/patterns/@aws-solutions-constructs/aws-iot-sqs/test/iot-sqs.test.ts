@@ -534,5 +534,5 @@ test('Confirm CheckSqsProps is being called', () => {
   const app = () => {
     new IotToSqs(stack, 'test-iot-sqs', props);
   };
-  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
+  expect(app).toThrow("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });

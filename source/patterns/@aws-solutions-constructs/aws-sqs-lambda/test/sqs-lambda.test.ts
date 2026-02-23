@@ -90,7 +90,7 @@ test('Test error handling for existing Lambda function', () => {
     // Assertion 1
   expect(() => {
     new SqsToLambda(stack, 'test-sqs-lambda', props);
-  }).toThrowError();
+  }).toThrow();
 });
 
 test('Test error handling for new Lambda function w/o required properties', () => {
@@ -104,7 +104,7 @@ test('Test error handling for new Lambda function w/o required properties', () =
     // Assertion 1
   expect(() => {
     new SqsToLambda(stack, 'test-sqs-lambda', props);
-  }).toThrowError();
+  }).toThrow();
 });
 
 test('Pattern deployment w/ batch size', () => {
@@ -285,7 +285,7 @@ test('Confirm CheckSqsProps is called', () => {
   const app = () => {
     new SqsToLambda(stack, 'test-apigateway-lambda', props);
   };
-  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
+  expect(app).toThrow("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });
 
 test('Confirm call to CheckLambdaProps', () => {
@@ -309,5 +309,5 @@ test('Confirm call to CheckLambdaProps', () => {
     new SqsToLambda(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

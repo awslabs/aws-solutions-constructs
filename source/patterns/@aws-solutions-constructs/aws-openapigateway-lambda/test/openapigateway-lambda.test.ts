@@ -151,7 +151,7 @@ test('Throws error when both api definition asset and s3 object are specified', 
       ]
     });
   };
-  expect(app).toThrowError(incorrectDefinitionMessage);
+  expect(app).toThrow(incorrectDefinitionMessage);
 });
 
 test('Multiple Lambda Functions can be specified', () => {
@@ -248,7 +248,7 @@ test('Throws error when neither existingLambdaObj or lambdaFunctionProps is spec
       ]
     });
   };
-  expect(app).toThrowError(`ApiIntegration id:MessagesHandler must have exactly one of lambdaFunctionProps or existingLambdaObj\n`);
+  expect(app).toThrow(`ApiIntegration id:MessagesHandler must have exactly one of lambdaFunctionProps or existingLambdaObj\n`);
 });
 
 test('Two Constructs create APIs with different names', () => {
@@ -388,7 +388,7 @@ test('Throws error when no api definition is specified', () => {
       ]
     });
   };
-  expect(app).toThrowError(incorrectDefinitionMessage);
+  expect(app).toThrow(incorrectDefinitionMessage);
 });
 
 test('Throws error when no api integration is specified', () => {
@@ -404,7 +404,7 @@ test('Throws error when no api integration is specified', () => {
       apiIntegrations: []
     });
   };
-  expect(app).toThrowError('At least one ApiIntegration must be specified in the apiIntegrations property');
+  expect(app).toThrow('At least one ApiIntegration must be specified in the apiIntegrations property');
 });
 
 test('Throws error when api definition s3 bucket is specified but s3 object key is missing', () => {
@@ -418,7 +418,7 @@ test('Throws error when api definition s3 bucket is specified but s3 object key 
       apiIntegrations: []
     });
   };
-  expect(app).toThrowError('apiDefinitionBucket and apiDefinitionKey must be specified together.');
+  expect(app).toThrow('apiDefinitionBucket and apiDefinitionKey must be specified together.');
 });
 
 test('Throws error when api definition s3 object key is specified but s3 bucket is missing', () => {
@@ -428,7 +428,7 @@ test('Throws error when api definition s3 object key is specified but s3 bucket 
       apiIntegrations: []
     });
   };
-  expect(app).toThrowError('apiDefinitionBucket and apiDefinitionKey must be specified together.');
+  expect(app).toThrow('apiDefinitionBucket and apiDefinitionKey must be specified together.');
 });
 
 test('Throws error when api is defined as asset and s3 bucket is specified', () => {
@@ -456,7 +456,7 @@ test('Throws error when api is defined as asset and s3 bucket is specified', () 
       ]
     });
   };
-  expect(app).toThrowError(incorrectDefinitionMessage);
+  expect(app).toThrow(incorrectDefinitionMessage);
 });
 
 test('Throws error when api is defined as asset and s3 key is specified', () => {
@@ -484,7 +484,7 @@ test('Throws error when api is defined as asset and s3 key is specified', () => 
       ]
     });
   };
-  expect(app).toThrowError(incorrectDefinitionMessage);
+  expect(app).toThrow(incorrectDefinitionMessage);
 });
 
 test('Throws error when both api definition inline and api definition asset are specified', () => {
@@ -510,7 +510,7 @@ test('Throws error when both api definition inline and api definition asset are 
       ]
     });
   };
-  expect(app).toThrowError(incorrectDefinitionMessage);
+  expect(app).toThrow(incorrectDefinitionMessage);
 });
 
 test('Throws error when both api definition inline and s3 object are specified', () => {
@@ -533,7 +533,7 @@ test('Throws error when both api definition inline and s3 object are specified',
       ]
     });
   };
-  expect(app).toThrowError(incorrectDefinitionMessage);
+  expect(app).toThrow(incorrectDefinitionMessage);
 });
 
 test('ObtainApiDefinition from local asset', () => {

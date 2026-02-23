@@ -61,7 +61,7 @@ test('Confirm CheckWafWebAclProps is called', () => {
       existingWebaclObj: wafAcl,
       webaclProps: props
     });
-  }).toThrowError('Error - Either provide existingWebaclObj or webaclProps, but not both.\n');
+  }).toThrow('Error - Either provide existingWebaclObj or webaclProps, but not both.\n');
 });
 
 // --------------------------------------------------------------

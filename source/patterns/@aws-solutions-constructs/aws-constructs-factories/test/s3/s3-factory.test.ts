@@ -116,5 +116,5 @@ test('Catch Props Errors', () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n');
+  expect(app).toThrow('Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n');
 });

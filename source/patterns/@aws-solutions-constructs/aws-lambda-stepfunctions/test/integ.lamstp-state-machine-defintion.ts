@@ -55,7 +55,7 @@ const props: LambdaToStepfunctionsProps = {
   lambdaFunctionProps: {
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
-    code: lambda.Code.fromAsset(`${__dirname}/lambda`)
+    code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {statusCode: 200, body: ""}; }')
   },
   stateMachineProps: {
     definitionBody: startState

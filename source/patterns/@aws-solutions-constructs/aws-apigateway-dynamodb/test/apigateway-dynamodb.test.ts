@@ -645,7 +645,7 @@ test('Construct throws error when createRequestTemplate is set and allowCreateOp
     createRequestTemplate: '{}',
   });
 
-  expect(app).toThrowError(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses'/);
 });
 
 test('Construct throws error when additionalCreateRequestTemplates is set and allowCreateOperation is not true', () => {
@@ -654,7 +654,7 @@ test('Construct throws error when additionalCreateRequestTemplates is set and al
     additionalCreateRequestTemplates: {}
   });
 
-  expect(app).toThrowError(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses'/);
 });
 
 test('Construct throws error when createIntegrationResponses is set and allowCreateOperation is not true', () => {
@@ -663,7 +663,7 @@ test('Construct throws error when createIntegrationResponses is set and allowCre
     createIntegrationResponses: []
   });
 
-  expect(app).toThrowError(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowCreateOperation' property must be set to true when setting any of the following: 'createRequestTemplate', 'additionalCreateRequestTemplates', 'createIntegrationResponses'/);
 });
 
 test('Construct throws error when readRequestTemplate is set and allowReadOperation is false', () => {
@@ -673,7 +673,7 @@ test('Construct throws error when readRequestTemplate is set and allowReadOperat
     readRequestTemplate: '{}',
   });
 
-  expect(app).toThrowError(/The 'allowReadOperation' property must be set to true or undefined when setting any of the following: 'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowReadOperation' property must be set to true or undefined when setting any of the following: 'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'/);
 });
 
 test('Construct throws error when additionalReadRequestTemplates is set and allowReadOperation is false', () => {
@@ -683,7 +683,7 @@ test('Construct throws error when additionalReadRequestTemplates is set and allo
     additionalReadRequestTemplates: {},
   });
 
-  expect(app).toThrowError(/The 'allowReadOperation' property must be set to true or undefined when setting any of the following: 'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowReadOperation' property must be set to true or undefined when setting any of the following: 'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'/);
 });
 
 test('Construct throws error when readIntegrationResponses is set and allowReadOperation is false', () => {
@@ -693,7 +693,7 @@ test('Construct throws error when readIntegrationResponses is set and allowReadO
     readIntegrationResponses: [],
   });
 
-  expect(app).toThrowError(/The 'allowReadOperation' property must be set to true or undefined when setting any of the following: 'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowReadOperation' property must be set to true or undefined when setting any of the following: 'readRequestTemplate', 'additionalReadRequestTemplates', 'readIntegrationResponses'/);
 });
 
 test('Construct throws error when updateRequestTemplate is set and allowUpdateOperation is not true', () => {
@@ -702,7 +702,7 @@ test('Construct throws error when updateRequestTemplate is set and allowUpdateOp
     updateRequestTemplate: '{}',
   });
 
-  expect(app).toThrowError(/The 'allowUpdateOperation' property must be set to true when setting any of the following: 'updateRequestTemplate', 'additionalUpdateRequestTemplates', 'updateIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowUpdateOperation' property must be set to true when setting any of the following: 'updateRequestTemplate', 'additionalUpdateRequestTemplates', 'updateIntegrationResponses'/);
 });
 
 test('Construct throws error when additionalUpdateRequestTemplates is set and allowUpdateOperation is not true', () => {
@@ -711,7 +711,7 @@ test('Construct throws error when additionalUpdateRequestTemplates is set and al
     additionalUpdateRequestTemplates: {}
   });
 
-  expect(app).toThrowError(/The 'allowUpdateOperation' property must be set to true when setting any of the following: 'updateRequestTemplate', 'additionalUpdateRequestTemplates', 'updateIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowUpdateOperation' property must be set to true when setting any of the following: 'updateRequestTemplate', 'additionalUpdateRequestTemplates', 'updateIntegrationResponses'/);
 });
 
 test('Construct throws error when updateIntegrationResponses is set and allowUpdateOperation is not true', () => {
@@ -720,7 +720,7 @@ test('Construct throws error when updateIntegrationResponses is set and allowUpd
     updateIntegrationResponses: []
   });
 
-  expect(app).toThrowError(/The 'allowUpdateOperation' property must be set to true when setting any of the following: 'updateRequestTemplate', 'additionalUpdateRequestTemplates', 'updateIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowUpdateOperation' property must be set to true when setting any of the following: 'updateRequestTemplate', 'additionalUpdateRequestTemplates', 'updateIntegrationResponses'/);
 });
 
 test('Construct throws error when deleteRequestTemplate is set and allowDeleteOperation is not true', () => {
@@ -729,7 +729,7 @@ test('Construct throws error when deleteRequestTemplate is set and allowDeleteOp
     deleteRequestTemplate: '{}',
   });
 
-  expect(app).toThrowError(/The 'allowDeleteOperation' property must be set to true when setting any of the following: 'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowDeleteOperation' property must be set to true when setting any of the following: 'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'/);
 });
 
 test('Construct throws error when additionalDeleteRequestTemplates is set and allowDeleteOperation is not true', () => {
@@ -738,7 +738,7 @@ test('Construct throws error when additionalDeleteRequestTemplates is set and al
     additionalDeleteRequestTemplates: {}
   });
 
-  expect(app).toThrowError(/The 'allowDeleteOperation' property must be set to true when setting any of the following: 'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowDeleteOperation' property must be set to true when setting any of the following: 'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'/);
 });
 
 test('Construct throws error when deleteIntegrationResponses is set and allowDeleteOperation is not true', () => {
@@ -747,7 +747,7 @@ test('Construct throws error when deleteIntegrationResponses is set and allowDel
     deleteIntegrationResponses: []
   });
 
-  expect(app).toThrowError(/The 'allowDeleteOperation' property must be set to true when setting any of the following: 'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'/);
+  expect(app).toThrow(/The 'allowDeleteOperation' property must be set to true when setting any of the following: 'deleteRequestTemplate', 'additionalDeleteRequestTemplates', 'deleteIntegrationResponses'/);
 });
 
 test('Test that CheckDynamoDBProps is getting called', () => {
@@ -778,7 +778,7 @@ test('Test that CheckDynamoDBProps is getting called', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - Either provide existingTableObj or dynamoTableProps, but not both.\n/);
+  expect(app).toThrow(/Error - Either provide existingTableObj or dynamoTableProps, but not both.\n/);
 });
 
 test("provide createMethodResponses", () => {
@@ -906,7 +906,7 @@ test('Confirm call to CheckApiProps', () => {
     new ApiGatewayToDynamoDB(stack, 'test-apigateway-lambda', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - if API key is required, then the Usage plan must be created\n');
+  expect(app).toThrow('Error - if API key is required, then the Usage plan must be created\n');
 });
 
 test('Confirm suppression of Usage Plan', () => {

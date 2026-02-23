@@ -195,7 +195,7 @@ test('Test fail if existingFirehose does not have a stream name', () => {
     });
   };
 
-  expect(app).toThrowError(/existingKinesisFirehose must have a defined deliveryStreamName/);
+  expect(app).toThrow(/existingKinesisFirehose must have a defined deliveryStreamName/);
 });
 
 test('Test fail Vpc check with vpcProps yet deployVpc is false', () => {
@@ -218,7 +218,7 @@ test('Test fail Vpc check with vpcProps yet deployVpc is false', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - If deployVpc is not true, then vpcProps is ignored');
+  expect(app).toThrow('Error - If deployVpc is not true, then vpcProps is ignored');
 });
 
 test('Test fail Vpc check with vpcProps yet deployVpc is undefined', () => {
@@ -240,7 +240,7 @@ test('Test fail Vpc check with vpcProps yet deployVpc is undefined', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - If deployVpc is not true, then vpcProps is ignored');
+  expect(app).toThrow('Error - If deployVpc is not true, then vpcProps is ignored');
 });
 
 test('Confirm CheckVpcProps() is being called', () => {
@@ -269,7 +269,7 @@ test('Confirm CheckVpcProps() is being called', () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Confirm call to CheckLambdaProps', () => {
@@ -295,5 +295,5 @@ test('Confirm call to CheckLambdaProps', () => {
     new LambdaToKinesisFirehose(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

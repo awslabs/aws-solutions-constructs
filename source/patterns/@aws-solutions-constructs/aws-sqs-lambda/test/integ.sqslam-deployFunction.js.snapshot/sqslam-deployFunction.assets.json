@@ -1,30 +1,16 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
-    "4085f2fc7cce70548a05ffc5162591a6b42f88398292e9c4b2739feed32a1640": {
-      "displayName": "test-sqs-lambda/LambdaFunction/Code",
-      "source": {
-        "path": "asset.4085f2fc7cce70548a05ffc5162591a6b42f88398292e9c4b2739feed32a1640",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-9a75cf4c": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "4085f2fc7cce70548a05ffc5162591a6b42f88398292e9c4b2739feed32a1640.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "158b21e6b571c8f58f547f809888dde348f3ec507ffe033e97bb90e43c6359e1": {
+    "e14e26a8a0c956c3ad8d0e73b94c93117a446c8bb52bb5eb55557f2a12715fdb": {
       "displayName": "sqslam-deployFunction Template",
       "source": {
         "path": "sqslam-deployFunction.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-6d5e5b47": {
+        "current_account-current_region-1d506f9b": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "158b21e6b571c8f58f547f809888dde348f3ec507ffe033e97bb90e43c6359e1.json",
+          "objectKey": "e14e26a8a0c956c3ad8d0e73b94c93117a446c8bb52bb5eb55557f2a12715fdb.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

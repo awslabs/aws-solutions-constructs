@@ -523,7 +523,7 @@ test('Confirm that CheckSnsProps is called', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
+  expect(app).toThrow(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
 });
 
 test('Confirm that CheckSqsProps is called', () => {
@@ -540,7 +540,7 @@ test('Confirm that CheckSqsProps is called', () => {
   };
 
   // Assertion
-  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
+  expect(app).toThrow("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });
 
 test('Confirm that CheckSnsProps is called', () => {
@@ -565,7 +565,7 @@ test('Confirm that CheckSnsProps is called', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
+  expect(app).toThrow(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
 });
 
 test('Confirm that CheckSqsProps is called', () => {
@@ -582,7 +582,7 @@ test('Confirm that CheckSqsProps is called', () => {
   };
 
   // Assertion
-  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
+  expect(app).toThrow("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });
 
 test('Confirm that Construct checks for mixed deprecated and active props', () => {
@@ -600,7 +600,7 @@ test('Confirm that Construct checks for mixed deprecated and active props', () =
     });
   };
 
-  expect(app).toThrowError(/Cannot specify both deprecated key props and new key props/);
+  expect(app).toThrow(/Cannot specify both deprecated key props and new key props/);
 });
 
 test('Error if enableEncryption is false and encryption settings are provided', () => {
@@ -615,7 +615,7 @@ test('Error if enableEncryption is false and encryption settings are provided', 
   };
 
   // Assertion
-  expect(app).toThrowError("Error - if enableEncryptionWithCustomerManagedKey is false, submitting encryptionKey or encryptionKeyProps is invalid\n");
+  expect(app).toThrow("Error - if enableEncryptionWithCustomerManagedKey is false, submitting encryptionKey or encryptionKeyProps is invalid\n");
 });
 
 test('test CreateRequiredKeys for no arguments', () => {
@@ -825,7 +825,7 @@ test('5 Legacy Behavior - Topic Props, Existing Key', () => {
     });
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('6 Legacy Behavior - Queue Props, Existing Key', () => {
@@ -850,7 +850,7 @@ test('6 Legacy Behavior - Queue Props, Existing Key', () => {
     });
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('7 Legacy Behavior - Queue Props, Key Props provided', () => {
@@ -875,7 +875,7 @@ test('7 Legacy Behavior - Queue Props, Key Props provided', () => {
     });
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('8 Legacy Behavior - Topic Props, Queue Props, EncryptFlag True', () => {

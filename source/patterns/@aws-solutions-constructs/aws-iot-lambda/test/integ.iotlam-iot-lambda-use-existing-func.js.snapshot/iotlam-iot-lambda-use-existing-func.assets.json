@@ -1,30 +1,16 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
-    "0772ffe05bd3b2e012dc5086ab3b6dd03c8a0268fc1c81326f5e72b0a4c6b51e": {
-      "displayName": "LambdaFunction/Code",
-      "source": {
-        "path": "asset.0772ffe05bd3b2e012dc5086ab3b6dd03c8a0268fc1c81326f5e72b0a4c6b51e",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-1a238803": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "0772ffe05bd3b2e012dc5086ab3b6dd03c8a0268fc1c81326f5e72b0a4c6b51e.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "3416462b58da85753fd9053a67eb709111ce6e10e5f36503fb7d64873d389b2d": {
+    "1fd0d4d9ccb1f987b06a2849978794bd2709b55b33c2940f9d9bbc361d88e25a": {
       "displayName": "iotlam-iot-lambda-use-existing-func Template",
       "source": {
         "path": "iotlam-iot-lambda-use-existing-func.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-64e28b64": {
+        "current_account-current_region-4a634f0c": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "3416462b58da85753fd9053a67eb709111ce6e10e5f36503fb7d64873d389b2d.json",
+          "objectKey": "1fd0d4d9ccb1f987b06a2849978794bd2709b55b33c2940f9d9bbc361d88e25a.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

@@ -424,7 +424,7 @@ test('Test adding an HTTPS listener with no cert (error)', () => {
     defaults.AddListener(stack, 'test', testAlb, { });
   };
 
-  expect(app).toThrowError('A listener using HTTPS protocol requires a certificate');
+  expect(app).toThrow('A listener using HTTPS protocol requires a certificate');
 });
 
 test('Test adding an HTTP listener with a cert (error)', () => {
@@ -439,7 +439,7 @@ test('Test adding an HTTP listener with a cert (error)', () => {
     defaults.AddListener(stack, 'test', testAlb, { protocol: 'HTTP', certificates: [ testCert ] });
   };
 
-  expect(app).toThrowError('HTTP listeners cannot use a certificate');
+  expect(app).toThrow('HTTP listeners cannot use a certificate');
 });
 
 test('Test adding a HTTP listener', () => {
@@ -473,7 +473,7 @@ test('Test GetActiveListener with 0 listeners', () => {
     defaults.GetActiveListener(testAlb.listeners);
   };
 
-  expect(app).toThrowError('There are no listeners in the ALB');
+  expect(app).toThrow('There are no listeners in the ALB');
 
 });
 
@@ -517,7 +517,7 @@ test('Test use of certificateArns error', () => {
     defaults.CheckAlbProps(props);
   };
 
-  expect(app).toThrowError("certificateArns is deprecated. Please supply certificates using props.listenerProps.certificates\n");
+  expect(app).toThrow("certificateArns is deprecated. Please supply certificates using props.listenerProps.certificates\n");
 });
 
 test('Test bad first listener error', () => {
@@ -531,13 +531,13 @@ test('Test bad first listener error', () => {
     defaults.CheckAlbProps(props);
   };
 
-  expect(app).toThrowError("When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP\n");
+  expect(app).toThrow("When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP\n");
 
   const app2 = () => {
     defaults.CheckAlbProps({});
   };
 
-  expect(app2).toThrowError("When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP\n");
+  expect(app2).toThrow("When adding the first listener and target to a load balancer, listenerProps must be specified and include at least a certificate or protocol: HTTP\n");
 });
 
 test('Test second target with no rules error', () => {
@@ -552,7 +552,7 @@ test('Test second target with no rules error', () => {
     defaults.CheckAlbProps(props);
   };
 
-  expect(app).toThrowError("When adding a second target to an existing listener, there must be rules provided\n");
+  expect(app).toThrow("When adding a second target to an existing listener, there must be rules provided\n");
 });
 
 test('Test existing Load Balancer with no VPC provided error', () => {
@@ -567,7 +567,7 @@ test('Test existing Load Balancer with no VPC provided error', () => {
     defaults.CheckAlbProps(props);
   };
 
-  expect(app).toThrowError("An existing ALB is already in a VPC, that VPC must be provided in props.existingVpc for the rest of the construct to use.\n");
+  expect(app).toThrow("An existing ALB is already in a VPC, that VPC must be provided in props.existingVpc for the rest of the construct to use.\n");
 });
 
 test('Test sending listenerProps to existingListener error', () => {
@@ -582,7 +582,7 @@ test('Test sending listenerProps to existingListener error', () => {
     defaults.CheckAlbProps(props);
   };
 
-  expect(app).toThrowError("This load balancer already has a listener, listenerProps may not be specified\n");
+  expect(app).toThrow("This load balancer already has a listener, listenerProps may not be specified\n");
 });
 
 test('Test sending loadBalancerProps and existingLoadBalancerObj is an error', () => {
@@ -611,7 +611,7 @@ test('Test sending loadBalancerProps and existingLoadBalancerObj is an error', (
     defaults.CheckAlbProps(props);
   };
 
-  expect(app).toThrowError("Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n");
+  expect(app).toThrow("Error - Either provide loadBalancerProps or existingLoadBalancerObj, but not both.\n");
 });
 
 test('Test sending albLoggingBucketProps when logAlbAccessLogs is false is an error', () => {
@@ -629,7 +629,7 @@ test('Test sending albLoggingBucketProps when logAlbAccessLogs is false is an er
     defaults.CheckAlbProps(props);
   };
 
-  expect(app).toThrowError("Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n");
+  expect(app).toThrow("Error - If logAlbAccessLogs is false, supplying albLoggingBucketProps is invalid.\n");
 });
 
 test('Test sending VPC in loadBalancerProps error', () => {
@@ -643,7 +643,7 @@ test('Test sending VPC in loadBalancerProps error', () => {
     defaults.CheckAlbProps(props);
   };
 
-  expect(app).toThrowError("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
+  expect(app).toThrow("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
 });
 
 test('WHen providing VPC in construct and resource props, the vpcId must match', () => {
@@ -661,7 +661,7 @@ test('WHen providing VPC in construct and resource props, the vpcId must match',
     defaults.CheckAlbProps(props);
   };
 
-  expect(app).toThrowError("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
+  expect(app).toThrow("Any existing VPC must be defined in the construct props (props.existingVpc). A VPC specified in the loadBalancerProps must be the same VPC");
 });
 
 function CreateTestLoadBalancer(stack: Stack, vpc: ec2.IVpc): elb.ApplicationLoadBalancer {

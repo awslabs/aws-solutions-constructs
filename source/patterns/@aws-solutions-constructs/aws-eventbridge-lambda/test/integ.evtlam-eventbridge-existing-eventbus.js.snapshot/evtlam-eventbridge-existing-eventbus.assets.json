@@ -1,30 +1,16 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
-    "0772ffe05bd3b2e012dc5086ab3b6dd03c8a0268fc1c81326f5e72b0a4c6b51e": {
-      "displayName": "test-eventbridge-lambda/LambdaFunction/Code",
-      "source": {
-        "path": "asset.0772ffe05bd3b2e012dc5086ab3b6dd03c8a0268fc1c81326f5e72b0a4c6b51e",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-1a238803": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "0772ffe05bd3b2e012dc5086ab3b6dd03c8a0268fc1c81326f5e72b0a4c6b51e.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "a97a584da7d8793f019acf9fdf753c358ed91458ae5bbbaf9f858db3503aaa2b": {
+    "388ac84cd3e4a7b8876d2ae41830df678773abecd9e70d9735180bb7845ba5de": {
       "displayName": "evtlam-eventbridge-existing-eventbus Template",
       "source": {
         "path": "evtlam-eventbridge-existing-eventbus.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-e0c237c7": {
+        "current_account-current_region-211a631f": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "a97a584da7d8793f019acf9fdf753c358ed91458ae5bbbaf9f858db3503aaa2b.json",
+          "objectKey": "388ac84cd3e4a7b8876d2ae41830df678773abecd9e70d9735180bb7845ba5de.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

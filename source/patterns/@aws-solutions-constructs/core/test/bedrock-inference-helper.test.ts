@@ -197,7 +197,7 @@ test("Test for bad inference props", () => {
     });
   };
 
-  expect(app).toThrowError('Error - The construct will create the modelSource value, it cannot be specified in the props.\n');
+  expect(app).toThrow('Error - The construct will create the modelSource value, it cannot be specified in the props.\n');
 });
 
 test('Create cross region Inference Profile by default', () => {

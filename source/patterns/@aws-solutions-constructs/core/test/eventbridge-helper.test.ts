@@ -82,5 +82,5 @@ test('Test fail EventBridge bad bus props', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });

@@ -1,5 +1,5 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
     "0772ffe05bd3b2e012dc5086ab3b6dd03c8a0268fc1c81326f5e72b0a4c6b51e": {
       "displayName": "cftaplam-override-behavior-authorizerAuthFunction/Code",
@@ -29,16 +29,16 @@
         }
       }
     },
-    "67336542ef1ab4ac93b937d7aea2f3a1b08e0dc42146c237a4980c5acee1ce78": {
+    "d209e1bb8880202792679400a5b7671642e8c9fd8ee1b5d406e3cc1664532801": {
       "displayName": "cftaplam-override-behavior Template",
       "source": {
         "path": "cftaplam-override-behavior.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-55f29717": {
+        "current_account-current_region-be00a4f0": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "67336542ef1ab4ac93b937d7aea2f3a1b08e0dc42146c237a4980c5acee1ce78.json",
+          "objectKey": "d209e1bb8880202792679400a5b7671642e8c9fd8ee1b5d406e3cc1664532801.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

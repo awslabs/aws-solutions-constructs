@@ -33,7 +33,7 @@ new OpenApiGatewayToLambda(stack, 'OpenApiGatewayToLambda', {
       lambdaFunctionProps: {
         runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+        code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {statusCode: 200, body: "Messages Lambda"}; }'),
       }
     },
     {
@@ -41,7 +41,7 @@ new OpenApiGatewayToLambda(stack, 'OpenApiGatewayToLambda', {
       lambdaFunctionProps: {
         runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
         handler: 'index.handler',
-        code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),
+        code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {statusCode: 200, body: "Photos Lambda"}; }'),
       }
     }
   ]

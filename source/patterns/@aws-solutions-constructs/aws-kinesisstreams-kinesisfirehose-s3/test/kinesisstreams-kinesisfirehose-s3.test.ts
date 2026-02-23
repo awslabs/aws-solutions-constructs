@@ -182,7 +182,7 @@ test("Test bad call with existingBucket and bucketProps", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 // --------------------------------------------------------------
@@ -256,7 +256,7 @@ test("Confirm that CheckS3Props is being called", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError("Error - Either provide bucketProps or existingBucketObj, but not both.\n");
+  expect(app).toThrow("Error - Either provide bucketProps or existingBucketObj, but not both.\n");
 });
 
 test('Confirm call to CheckKinesisStreamProps', () => {
@@ -271,7 +271,7 @@ test('Confirm call to CheckKinesisStreamProps', () => {
     new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });
 
 test('Test that ValidateCfnDeliveryStreamProps() is being called', () => {
@@ -286,5 +286,5 @@ test('Test that ValidateCfnDeliveryStreamProps() is being called', () => {
     new KinesisStreamsToKinesisFirehoseToS3(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnDeliveryStreamProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of CfnDeliveryStreamProps/);
 });

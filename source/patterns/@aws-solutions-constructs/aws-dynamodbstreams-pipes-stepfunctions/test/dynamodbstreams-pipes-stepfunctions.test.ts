@@ -623,7 +623,7 @@ test('Test sending state machine props and existing state machine is an error', 
     new DynamoDBStreamsToPipesToStepfunctions(stack, 'test-dbs-pipes-states', props);
   };
   // Assertion
-  expect(app).toThrowError('ERROR - If existingStateMachine is provided, no other state machine props are allowed\n');
+  expect(app).toThrow('ERROR - If existingStateMachine is provided, no other state machine props are allowed\n');
 });
 
 test('Test sending existing table and table props is an error', () => {
@@ -652,7 +652,7 @@ test('Test sending existing table and table props is an error', () => {
     new DynamoDBStreamsToPipesToStepfunctions(stack, 'test-dbs-pipes-states', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide existingTableInterface or dynamoTableProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide existingTableInterface or dynamoTableProps, but not both.\n');
 });
 
 test('Test sending max retry or age restraints with no DLQ is an error', () => {
@@ -676,7 +676,7 @@ test('Test sending max retry or age restraints with no DLQ is an error', () => {
     new DynamoDBStreamsToPipesToStepfunctions(stack, 'test-dbs-pipes-states', props);
   };
   // Assertion
-  expect(app).toThrowError('ERROR - Cannot define maximumRecordAgeInSeconds and maximumRetryAttempts when deploySqsDlqQueue is false\n');
+  expect(app).toThrow('ERROR - Cannot define maximumRecordAgeInSeconds and maximumRetryAttempts when deploySqsDlqQueue is false\n');
 });
 
 test('Test that ValidateCfnPipeProps() is being called', () => {
@@ -701,5 +701,5 @@ test('Test that ValidateCfnPipeProps() is being called', () => {
     new DynamoDBStreamsToPipesToStepfunctions(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnPipeProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of CfnPipeProps/);
 });

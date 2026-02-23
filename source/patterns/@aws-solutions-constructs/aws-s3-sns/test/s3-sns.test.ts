@@ -273,7 +273,7 @@ test('Confirm CheckSnsProps is being called', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
+  expect(app).toThrow(/Error - Either provide topicProps or existingTopicObj, but not both.\n/);
 });
 
 test('Confirm CheckS3Props is being called', () => {
@@ -290,5 +290,5 @@ test('Confirm CheckS3Props is being called', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - Either provide bucketProps or existingBucketObj, but not both.\n/);
+  expect(app).toThrow(/Error - Either provide bucketProps or existingBucketObj, but not both.\n/);
 });

@@ -28,7 +28,7 @@ test('Error on existingLambdaObj=undefined', () => {
     new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
   };
     // Assertion 1
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('Test with lambdaFunctionProps', () => {
@@ -89,7 +89,7 @@ test('Error on lambdaFunctionProps=undefined', () => {
     new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
   };
     // Assertion 1
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('Test deployment ApiGateway AuthorizationType override', () => {
@@ -161,7 +161,7 @@ test('Confirm call to CheckLambdaProps', () => {
     new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });
 
 test('Confirm call to CheckApiProps', () => {
@@ -186,7 +186,7 @@ test('Confirm call to CheckApiProps', () => {
     new ApiGatewayToLambda(stack, 'test-apigateway-lambda', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - if API key is required, then the Usage plan must be created\n');
+  expect(app).toThrow('Error - if API key is required, then the Usage plan must be created\n');
 });
 
 test('Confirm suppression of Usage Plan', () => {
@@ -223,5 +223,5 @@ test('Test that ValidateLambdaRestApiProps() is being called', () => {
     new ApiGatewayToLambda(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of LambdaRestApiProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of LambdaRestApiProps/);
 });

@@ -317,7 +317,7 @@ test('Test WebACL bad props', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide existingWebaclObj or webaclProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide existingWebaclObj or webaclProps, but not both.\n');
 });
 
 

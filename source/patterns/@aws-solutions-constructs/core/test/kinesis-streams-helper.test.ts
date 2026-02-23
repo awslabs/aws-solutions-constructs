@@ -110,5 +110,5 @@ test('Test fail Kinesis stream check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });

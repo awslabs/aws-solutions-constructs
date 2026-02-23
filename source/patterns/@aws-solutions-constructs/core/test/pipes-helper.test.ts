@@ -217,7 +217,7 @@ test('Check for error when DLQ is off but max constraint set', () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('ERROR - retry and record age constraints cannot be specified with no DLQ\n');
+  expect(app).toThrow('ERROR - retry and record age constraints cannot be specified with no DLQ\n');
 });
 
 // =================================
@@ -619,7 +619,7 @@ test('Check for error when providing source in CfnProps', () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('ERROR - BuildPipeProps cannot specify source, target, roleArn, or enrichment');
+  expect(app).toThrow('ERROR - BuildPipeProps cannot specify source, target, roleArn, or enrichment');
 });
 
 test('Check for error when providing target in CfnProps', () => {
@@ -637,7 +637,7 @@ test('Check for error when providing target in CfnProps', () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('ERROR - BuildPipeProps cannot specify source, target, roleArn, or enrichment');
+  expect(app).toThrow('ERROR - BuildPipeProps cannot specify source, target, roleArn, or enrichment');
 });
 
 test('Check for error when providing a roleArn', () => {
@@ -655,7 +655,7 @@ test('Check for error when providing a roleArn', () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('ERROR - BuildPipeProps cannot specify source, target, roleArn, or enrichment');
+  expect(app).toThrow('ERROR - BuildPipeProps cannot specify source, target, roleArn, or enrichment');
 });
 
 test('Check for error when providing enrichment', () => {
@@ -673,7 +673,7 @@ test('Check for error when providing enrichment', () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('ERROR - BuildPipeProps cannot specify source, target, roleArn, or enrichment');
+  expect(app).toThrow('ERROR - BuildPipeProps cannot specify source, target, roleArn, or enrichment');
 });
 
 test('Check for error when log level and log configuration are both provided', () => {
@@ -692,7 +692,7 @@ test('Check for error when log level and log configuration are both provided', (
     });
   };
   // Assertion
-  expect(app).toThrowError('ERROR - BuildPipeProps cannot specify logLevel and logConfiguration');
+  expect(app).toThrow('ERROR - BuildPipeProps cannot specify logLevel and logConfiguration');
 });
 
 test('Check for error when pipeLogProps and log configuration are both provided', () => {
@@ -711,7 +711,7 @@ test('Check for error when pipeLogProps and log configuration are both provided'
     });
   };
   // Assertion
-  expect(app).toThrowError('ERROR - BuildPipeProps cannot specify pipeLogProps and logConfiguration');
+  expect(app).toThrow('ERROR - BuildPipeProps cannot specify pipeLogProps and logConfiguration');
 });
 
 test('Check for error when enrichmentFunction and enrichmentStateMachine are both provided', () => {
@@ -728,7 +728,7 @@ test('Check for error when enrichmentFunction and enrichmentStateMachine are bot
     });
   };
   // Assertion
-  expect(app).toThrowError('ERROR - Only one of enrichmentFunction or enrichmentStateMachine can be provided');
+  expect(app).toThrow('ERROR - Only one of enrichmentFunction or enrichmentStateMachine can be provided');
 });
 
 test('Check for error when pipeLogProps and log level is set to OFF', () => {
@@ -745,7 +745,7 @@ test('Check for error when pipeLogProps and log level is set to OFF', () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('ERROR - BuildPipeProps cannot specify pipeLogProps and log level OFF');
+  expect(app).toThrow('ERROR - BuildPipeProps cannot specify pipeLogProps and log level OFF');
 });
 
 test('Test all of CheckPipesProps', () => {
@@ -755,7 +755,7 @@ test('Test all of CheckPipesProps', () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('Do not set source in pipesProps. It is set by the construct.\n');
+  expect(app).toThrow('Do not set source in pipesProps. It is set by the construct.\n');
 
   const appTwo = () => {
     defaults.CheckPipesProps({
@@ -763,7 +763,7 @@ test('Test all of CheckPipesProps', () => {
     });
   };
   // Assertion
-  expect(appTwo).toThrowError('Do not set target in pipesProps. It is set by the construct.\n');
+  expect(appTwo).toThrow('Do not set target in pipesProps. It is set by the construct.\n');
 
 });
 
