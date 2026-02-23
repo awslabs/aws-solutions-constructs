@@ -621,7 +621,7 @@ test('Confirm that CheckVpcProps was called', () => {
     new FargateToKinesisStreams(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Confirm that CheckKinesisStreamsProps was called', () => {
@@ -648,7 +648,7 @@ test('Confirm that CheckKinesisStreamsProps was called', () => {
     new FargateToKinesisStreams(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });
 
 test('Test that ValidateContainerDefinitionProps() is being called', () => {
@@ -665,7 +665,7 @@ test('Test that ValidateContainerDefinitionProps() is being called', () => {
     new FargateToKinesisStreams(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of ContainerDefinitionProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of ContainerDefinitionProps/);
 });
 
 test('Test that ValidateFargateTaskDefinitionProps() is being called', () => {
@@ -682,7 +682,7 @@ test('Test that ValidateFargateTaskDefinitionProps() is being called', () => {
     new FargateToKinesisStreams(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of FargateTaskDefinitionProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of FargateTaskDefinitionProps/);
 });
 
 test('Test that ValidateFargateServiceProps() is being called', () => {
@@ -699,5 +699,5 @@ test('Test that ValidateFargateServiceProps() is being called', () => {
     new FargateToKinesisStreams(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of FargateServiceProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of FargateServiceProps/);
 });

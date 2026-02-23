@@ -302,7 +302,7 @@ test('Test no image repo or image is an error', () => {
     });
   };
 
-  expect(app).toThrowError(
+  expect(app).toThrow(
     "Not Implemented - image without repo name and version"
   );
 });
@@ -318,7 +318,7 @@ test('Check providing existing service AND props is an error', () => {
     defaults.CheckFargateProps(props);
   };
 
-  expect(app).toThrowError("If you provide an existingFargateServiceObject, you cannot provide any props defining a new service\n");
+  expect(app).toThrow("If you provide an existingFargateServiceObject, you cannot provide any props defining a new service\n");
 });
 
 test('Check providing existing image AND props is an error', () => {
@@ -331,7 +331,7 @@ test('Check providing existing image AND props is an error', () => {
     defaults.CheckFargateProps(props);
   };
 
-  expect(app).toThrowError("If you provide an existingImageObject then you cannot provide an ecrRepositoryArn nor ecrImageVersion\n");
+  expect(app).toThrow("If you provide an existingImageObject then you cannot provide an ecrRepositoryArn nor ecrImageVersion\n");
 });
 
 test('Check providing vpc in the targetGroupsProps is an error', () => {
@@ -343,7 +343,7 @@ test('Check providing vpc in the targetGroupsProps is an error', () => {
     defaults.CheckFargateProps(props);
   };
 
-  expect(app).toThrowError("Provide all VPC info at Construct level, not within clusterProps nor targetGroupProps\n");
+  expect(app).toThrow("Provide all VPC info at Construct level, not within clusterProps nor targetGroupProps\n");
 });
 
 test('Check providing taskDefinition in the fargateServiceProps is an error', () => {
@@ -355,7 +355,7 @@ test('Check providing taskDefinition in the fargateServiceProps is an error', ()
     defaults.CheckFargateProps(props);
   };
 
-  expect(app).toThrowError("The construct cannot accept an existing task definition in fargateServiceProps\n");
+  expect(app).toThrow("The construct cannot accept an existing task definition in fargateServiceProps\n");
 });
 
 test('Check providing cluster in fargateServiceProps AND clusterProps is an error', () => {
@@ -368,7 +368,7 @@ test('Check providing cluster in fargateServiceProps AND clusterProps is an erro
     defaults.CheckFargateProps(props);
   };
 
-  expect(app).toThrowError("If you provide a cluster in fargateServiceProps then you cannot provide clusterProps\n");
+  expect(app).toThrow("If you provide a cluster in fargateServiceProps then you cannot provide clusterProps\n");
 });
 
 test('Check providing vpc in clusterProps is an error', () => {
@@ -380,7 +380,7 @@ test('Check providing vpc in clusterProps is an error', () => {
     defaults.CheckFargateProps(props);
   };
 
-  expect(app).toThrowError("Provide all VPC info at Construct level, not within clusterProps nor targetGroupProps\n");
+  expect(app).toThrow("Provide all VPC info at Construct level, not within clusterProps nor targetGroupProps\n");
 });
 
 test('Check providing existing service without existing container and existing VPC is an error', () => {
@@ -393,7 +393,7 @@ test('Check providing existing service without existing container and existing V
     defaults.CheckFargateProps(props);
   };
 
-  expect(app).toThrowError(
+  expect(app).toThrow(
     "If an existing Service is indicated by supplying either existingFargateServiceObject or existingContainerDefinitionObject, then existingFargateServiceObject, existingContainerDefinitionObject, and existingVpc must all be provided\n"
   );
 });

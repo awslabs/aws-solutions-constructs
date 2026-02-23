@@ -1,30 +1,16 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
-    "a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c": {
-      "displayName": "test-lambda-dynamodb-stack/LambdaFunction/Code",
-      "source": {
-        "path": "asset.a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-d11fcfce": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "4e5c381fd35011bed23e39a4e58d97ad6de02ab74e5622f1c20c8f29987bd400": {
+    "e5cbdccad96fa29ebc32a660be6a1c67adf42c942419125c5f4fe09db50a710e": {
       "displayName": "lamddb-set-billing-mode Template",
       "source": {
         "path": "lamddb-set-billing-mode.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-97c2509d": {
+        "current_account-current_region-17ba1673": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "4e5c381fd35011bed23e39a4e58d97ad6de02ab74e5622f1c20c8f29987bd400.json",
+          "objectKey": "e5cbdccad96fa29ebc32a660be6a1c67adf42c942419125c5f4fe09db50a710e.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

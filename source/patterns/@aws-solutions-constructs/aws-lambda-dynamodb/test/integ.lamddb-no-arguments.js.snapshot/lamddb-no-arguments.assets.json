@@ -1,30 +1,16 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
-    "a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c": {
-      "displayName": "test-lambda-dynamodb-stack/LambdaFunction/Code",
-      "source": {
-        "path": "asset.a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-d11fcfce": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "a0c6248ec595d3ceec1177aa5ac5b494fdf4c66f1b88aa48086befd44f193d8c.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "743e7576a2679e396000e11039fea1e11e9c1e93db596a300de38c827a7aafd1": {
+    "dd72d443a2be15dffe860b3a80870c65da55cc6d909b4fe348bc95b317e9a02f": {
       "displayName": "lamddb-no-arguments Template",
       "source": {
         "path": "lamddb-no-arguments.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-308ed171": {
+        "current_account-current_region-7176fd1b": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "743e7576a2679e396000e11039fea1e11e9c1e93db596a300de38c827a7aafd1.json",
+          "objectKey": "dd72d443a2be15dffe860b3a80870c65da55cc6d909b4fe348bc95b317e9a02f.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

@@ -765,7 +765,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   };
 
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 
 });
 
@@ -788,7 +788,7 @@ test("Confirm CheckVpcProps is called", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Test bad table permission', () => {
@@ -808,7 +808,7 @@ test('Test bad table permission', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Invalid table permission submitted - Reed/);
+  expect(app).toThrow(/Invalid table permission submitted - Reed/);
 });
 
 test('Test that CheckDynamoDBProps is getting called', () => {
@@ -844,7 +844,7 @@ test('Test that CheckDynamoDBProps is getting called', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - Either provide existingTableObj or dynamoTableProps, but not both.\n/);
+  expect(app).toThrow(/Error - Either provide existingTableObj or dynamoTableProps, but not both.\n/);
 });
 
 test('Confirm call to CheckLambdaProps', () => {
@@ -868,5 +868,5 @@ test('Confirm call to CheckLambdaProps', () => {
     new LambdaToDynamoDB(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

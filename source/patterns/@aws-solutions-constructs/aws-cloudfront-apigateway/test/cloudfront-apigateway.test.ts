@@ -223,7 +223,7 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
   });
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('Test the deployment with securityHeadersBehavior instead of HTTP security headers', () => {
@@ -287,7 +287,7 @@ test("Confirm CheckCloudFrontProps is being called", () => {
         }
       }
     });
-  }).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
+  }).toThrow('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
 });
 
 test('Test that ValidateDistributionProps() is being called', () => {
@@ -309,5 +309,5 @@ test('Test that ValidateDistributionProps() is being called', () => {
     });
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of DistributionProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of DistributionProps/);
 });

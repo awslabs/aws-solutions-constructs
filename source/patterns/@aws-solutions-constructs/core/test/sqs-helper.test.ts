@@ -201,7 +201,7 @@ test('Test fail Dead Letter Queue check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n');
+  expect(app).toThrow('Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n');
 });
 
 test('Test explicitly turn off DLQ', () => {
@@ -249,7 +249,7 @@ test("Test fail SQS Queue check", () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide queueProps or existingQueueObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide queueProps or existingQueueObj, but not both.\n');
 });
 
 test('Test fail SQS queue check when queueProps.encryptionMasterKey and encryptionKey are both specified', () => {
@@ -266,7 +266,7 @@ test('Test fail SQS queue check when queueProps.encryptionMasterKey and encrypti
     defaults.CheckSqsProps(props);
   };
 
-  expect(app).toThrowError('Error - Either provide queueProps.encryptionMasterKey or encryptionKey, but not both.\n');
+  expect(app).toThrow('Error - Either provide queueProps.encryptionMasterKey or encryptionKey, but not both.\n');
 });
 
 test('Test fail SQS queue check when queueProps.encryptionMasterKey and encryptionKeyProps are both specified', () => {
@@ -286,7 +286,7 @@ test('Test fail SQS queue check when queueProps.encryptionMasterKey and encrypti
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide queueProps.encryptionMasterKey or encryptionKeyProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide queueProps.encryptionMasterKey or encryptionKeyProps, but not both.\n');
 });
 
 test('Test fail SQS check when both encryptionKey and encryptionKeyProps are specified', () => {
@@ -303,7 +303,7 @@ test('Test fail SQS check when both encryptionKey and encryptionKeyProps are spe
     defaults.CheckSqsProps(props);
   };
 
-  expect(app).toThrowError('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide encryptionKey or encryptionKeyProps, but not both.\n');
 });
 
 test('Test fail Dead Letter Queue check', () => {
@@ -318,7 +318,7 @@ test('Test fail Dead Letter Queue check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n');
+  expect(app).toThrow('Error - If deployDeadLetterQueue is false then deadLetterQueueProps cannot be specified.\n');
 });
 
 test('Test fail Dead Letter Queue check with queueProps fifo set to true and undefined deadLetterQueueProps', () => {
@@ -333,7 +333,7 @@ test('Test fail Dead Letter Queue check with queueProps fifo set to true and und
   };
 
   // Assertion
-  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+  expect(app).toThrow('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
     'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
 });
 
@@ -349,7 +349,7 @@ test('Test fail Dead Letter Queue check with queueProps fifo set to true and dea
   };
 
   // Assertion
-  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+  expect(app).toThrow('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
     'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
 });
 
@@ -365,7 +365,7 @@ test('Test fail Dead Letter Queue check with queueProps fifo set to false and de
   };
 
   // Assertion
-  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+  expect(app).toThrow('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
     'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
 });
 
@@ -379,7 +379,7 @@ test('Test fail Dead Letter Queue check with deadLetterQueueProps fifo set to tr
     defaults.CheckSqsProps(props);
   };
 
-  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+  expect(app).toThrow('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
     'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
 });
 
@@ -393,7 +393,7 @@ test('Test fail Dead Letter Queue check with queueProps fifo set to false', () =
     defaults.CheckSqsProps(props);
   };
 
-  expect(app).toThrowError('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
+  expect(app).toThrow('Error - If you specify a fifo: true in either queueProps or deadLetterQueueProps, you must also set fifo: ' +
     'true in the other props object. Fifo must match for the Queue and the Dead Letter Queue.\n');
 });
 
@@ -409,7 +409,7 @@ test('Test fail maxReceiveCount with no dlq', () => {
     });
   };
 
-  expect(app).toThrowError(/Error - MaxReceiveCount cannot be set if deployDeadLetterQueue is false.\n/);
+  expect(app).toThrow(/Error - MaxReceiveCount cannot be set if deployDeadLetterQueue is false.\n/);
 });
 
 test('Test that queue construct properties have priority', () => {

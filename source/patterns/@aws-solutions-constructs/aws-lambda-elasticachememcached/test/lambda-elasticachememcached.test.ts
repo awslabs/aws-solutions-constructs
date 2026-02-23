@@ -300,7 +300,7 @@ test("Test error from existingCache and no VPC", () => {
     });
   };
 
-  expect(app).toThrowError(
+  expect(app).toThrow(
     "If providing an existing Cache or Lambda Function, you must also supply the associated existingVpc"
   );
 });
@@ -322,7 +322,7 @@ test("Test error from existing function and no VPC", () => {
     });
   };
 
-  expect(app).toThrowError(
+  expect(app).toThrow(
     "If providing an existing Cache or Lambda Function, you must also supply the associated existingVpc"
   );
 });
@@ -348,7 +348,7 @@ test("Test error from existingCache and cacheProps", () => {
     });
   };
 
-  expect(app).toThrowError("Cannot specify existingCache and cacheProps");
+  expect(app).toThrow("Cannot specify existingCache and cacheProps");
 });
 
 test("Test error from trying to launch Redis", () => {
@@ -368,7 +368,7 @@ test("Test error from trying to launch Redis", () => {
     });
   };
 
-  expect(app).toThrowError("This construct can only launch memcached clusters");
+  expect(app).toThrow("This construct can only launch memcached clusters");
 });
 
 test("Test error from existingCache and no VPC", () => {
@@ -388,7 +388,7 @@ test("Test error from existingCache and no VPC", () => {
     });
   };
 
-  expect(app).toThrowError(
+  expect(app).toThrow(
     'Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n'
   );
 });
@@ -417,7 +417,7 @@ test('Confirm call to CheckLambdaProps', () => {
     new LambdaToElasticachememcached(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });
 
 test('Test that ValidateCfnCacheClusterProps() is being called', () => {
@@ -437,5 +437,5 @@ test('Test that ValidateCfnCacheClusterProps() is being called', () => {
     new LambdaToElasticachememcached(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnCacheClusterProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of CfnCacheClusterProps/);
 });

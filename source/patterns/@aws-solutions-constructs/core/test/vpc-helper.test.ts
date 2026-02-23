@@ -257,7 +257,7 @@ test('Test adding bad Endpoint', () => {
     AddAwsServiceEndpoint(stack, testVpc, 'string' as ServiceEndpointTypes);
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('Test adding Events Interface Endpoint', () => {
@@ -294,7 +294,7 @@ test('Test fail Vpc check with deployVpc', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Test fail Vpc check with vpcProps', () => {
@@ -312,7 +312,7 @@ test('Test fail Vpc check with vpcProps', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Correctly calculate several masks', () => {
@@ -338,7 +338,7 @@ test('catch masks too big', () => {
     calculateIpMaskSize(ipAddressCount);
   };
 
-  expect(app).toThrowError(`Requested IP count (${ipAddressCount}) requires a mask size larger than /28, which is not practical for VPC subnets`);
+  expect(app).toThrow(`Requested IP count (${ipAddressCount}) requires a mask size larger than /28, which is not practical for VPC subnets`);
 
 });
 
@@ -348,6 +348,6 @@ test('catch masks too small', () => {
     calculateIpMaskSize(ipAddressCount);
   };
 
-  expect(app).toThrowError(`Requested IP count (${ipAddressCount}) requires a mask size smaller than /16, which is not supported for VPC subnets`);
+  expect(app).toThrow(`Requested IP count (${ipAddressCount}) requires a mask size smaller than /16, which is not supported for VPC subnets`);
 });
 

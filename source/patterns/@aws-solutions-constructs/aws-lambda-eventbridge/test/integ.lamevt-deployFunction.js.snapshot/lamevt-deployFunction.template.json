@@ -107,10 +107,7 @@
    "Type": "AWS::Lambda::Function",
    "Properties": {
     "Code": {
-     "S3Bucket": {
-      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-     },
-     "S3Key": "b5faf4ff1ebde477120133d1e645d20d7c3d4952b76c3b586100069b94b2f146.zip"
+     "ZipFile": "exports.handler = async (event) => { console.log(event); return {statusCode: 200, body: \"\"}; }"
     },
     "Environment": {
      "Variables": {
@@ -243,10 +240,7 @@
    "Type": "AWS::Lambda::Function",
    "Properties": {
     "Code": {
-     "S3Bucket": {
-      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-     },
-     "S3Key": "b5faf4ff1ebde477120133d1e645d20d7c3d4952b76c3b586100069b94b2f146.zip"
+     "ZipFile": "exports.handler = async (event) => { console.log(event); return {statusCode: 200, body: \"\"}; }"
     },
     "Environment": {
      "Variables": {

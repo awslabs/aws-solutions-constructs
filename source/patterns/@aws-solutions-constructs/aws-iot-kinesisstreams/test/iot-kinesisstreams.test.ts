@@ -254,5 +254,5 @@ test('Confirm call to CheckKinesisStreamProps', () => {
   const app = () => {
     new IotToKinesisStreams(stack, 'test-iot-kinesisstreams', props);
   };
-  expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });

@@ -783,7 +783,7 @@ test('Test error invalid string parameter permission', () => {
     });
   };
 
-  expect(app).toThrowError('Invalid stringParameterPermissions submitted - REED');
+  expect(app).toThrow('Invalid stringParameterPermissions submitted - REED');
 });
 
 test('Test error no existing object or prop provided', () => {
@@ -807,7 +807,7 @@ test('Test error no existing object or prop provided', () => {
     });
   };
 
-  expect(app).toThrowError('existingStringParameterObj or stringParameterProps needs to be provided.');
+  expect(app).toThrow('existingStringParameterObj or stringParameterProps needs to be provided.');
 });
 
 test('Confirm that CheckVpcProps was called', () => {
@@ -833,7 +833,7 @@ test('Confirm that CheckVpcProps was called', () => {
     new FargateToSsmstringparameter(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 function createSsmParameterStore(stack: cdk.Stack) {
@@ -862,7 +862,7 @@ test('Test that ValidateContainerDefinitionProps() is being called', () => {
     new FargateToSsmstringparameter(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of ContainerDefinitionProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of ContainerDefinitionProps/);
 });
 
 test('Test that ValidateFargateTaskDefinitionProps() is being called', () => {
@@ -882,7 +882,7 @@ test('Test that ValidateFargateTaskDefinitionProps() is being called', () => {
     new FargateToSsmstringparameter(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of FargateTaskDefinitionProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of FargateTaskDefinitionProps/);
 });
 
 test('Test that ValidateFargateServiceProps() is being called', () => {
@@ -902,5 +902,5 @@ test('Test that ValidateFargateServiceProps() is being called', () => {
     new FargateToSsmstringparameter(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of FargateServiceProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of FargateServiceProps/);
 });

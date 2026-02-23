@@ -1,30 +1,16 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
-    "013657bdb16018cbdc3923aad71a2273f9175e48c3a74e732d41248f0028fbc5": {
-      "displayName": "test-lambda-stepfunctions-construct/LambdaFunction/Code",
-      "source": {
-        "path": "asset.013657bdb16018cbdc3923aad71a2273f9175e48c3a74e732d41248f0028fbc5",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-7664733c": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "013657bdb16018cbdc3923aad71a2273f9175e48c3a74e732d41248f0028fbc5.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "b71195152d7d315f147daec5ec26547b0e667b254f4f7dc485e9f6621ad40729": {
+    "8bf0ebd1a4a81f859b625ad47fbdb7c44ce039f42230f0db33412f37916df333": {
       "displayName": "lamstp-state-machine-defintion Template",
       "source": {
         "path": "lamstp-state-machine-defintion.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-bdad3048": {
+        "current_account-current_region-f647fe78": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "b71195152d7d315f147daec5ec26547b0e667b254f4f7dc485e9f6621ad40729.json",
+          "objectKey": "8bf0ebd1a4a81f859b625ad47fbdb7c44ce039f42230f0db33412f37916df333.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

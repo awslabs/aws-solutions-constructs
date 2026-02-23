@@ -1,20 +1,6 @@
 {
-  "version": "45.0.0",
+  "version": "50.0.0",
   "files": {
-    "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f": {
-      "displayName": "ApiLambdaFunction/Code",
-      "source": {
-        "path": "asset.3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-7f03e0f4": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "3a18fd3de4803f72260a058823accffd4f8d69986c6862a23cd86265f6cafa0f.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "displayName": "cftapi-use-specrestapi/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
       "source": {
@@ -29,16 +15,16 @@
         }
       }
     },
-    "0c03a9947910a0a43ebf112fc915b745b0bc8c87af750d53b5c1947c58111921": {
+    "f70e9089ab4b08d9509f58269a8cb1f6a0a12952cffa2916e7c95ec9982ecc37": {
       "displayName": "cftapi-use-specrestapi Template",
       "source": {
         "path": "cftapi-use-specrestapi.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-599bb8f4": {
+        "current_account-current_region-478604c4": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "0c03a9947910a0a43ebf112fc915b745b0bc8c87af750d53b5c1947c58111921.json",
+          "objectKey": "f70e9089ab4b08d9509f58269a8cb1f6a0a12952cffa2916e7c95ec9982ecc37.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

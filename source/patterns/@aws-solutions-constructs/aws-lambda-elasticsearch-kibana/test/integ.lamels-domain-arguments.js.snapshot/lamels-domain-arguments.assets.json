@@ -1,30 +1,16 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
-    "bbd57bdeab435eb80e47f68491febf3b4696a7765e7be0881f10422225933035": {
-      "displayName": "test-lambda-elasticsearch-kibana2/LambdaFunction/Code",
-      "source": {
-        "path": "asset.bbd57bdeab435eb80e47f68491febf3b4696a7765e7be0881f10422225933035",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-6d833b3f": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "bbd57bdeab435eb80e47f68491febf3b4696a7765e7be0881f10422225933035.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "59b71837fc30b62a4b665d00a1690ab875a403ab7a033e3bb9deecd16aaa84b5": {
+    "652d43f440b1c1f8685b33b48bc314d3aea17665ff0a7bb0e8253a436cd60cc2": {
       "displayName": "lamels-domain-arguments Template",
       "source": {
         "path": "lamels-domain-arguments.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-6c3a7549": {
+        "current_account-current_region-3eb93521": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "59b71837fc30b62a4b665d00a1690ab875a403ab7a033e3bb9deecd16aaa84b5.json",
+          "objectKey": "652d43f440b1c1f8685b33b48bc314d3aea17665ff0a7bb0e8253a436cd60cc2.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

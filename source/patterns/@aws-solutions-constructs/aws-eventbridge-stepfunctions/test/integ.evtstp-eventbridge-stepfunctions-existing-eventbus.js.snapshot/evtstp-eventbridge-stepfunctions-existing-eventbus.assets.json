@@ -1,30 +1,16 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
-    "0772ffe05bd3b2e012dc5086ab3b6dd03c8a0268fc1c81326f5e72b0a4c6b51e": {
-      "displayName": "LambdaFunction/Code",
-      "source": {
-        "path": "asset.0772ffe05bd3b2e012dc5086ab3b6dd03c8a0268fc1c81326f5e72b0a4c6b51e",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-1a238803": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "0772ffe05bd3b2e012dc5086ab3b6dd03c8a0268fc1c81326f5e72b0a4c6b51e.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "d83bcfb86902434ea31e2656e681bd1627f8ecf50fc2b18411c6ef9e3dda7cdb": {
+    "2b4193dd6877aa1fd32e8295e83e3d5ff6b52d6251d997a61bec0fbd9af50110": {
       "displayName": "evtstp-eventbridge-stepfunctions-existing-eventbus Template",
       "source": {
         "path": "evtstp-eventbridge-stepfunctions-existing-eventbus.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-b4aa253d": {
+        "current_account-current_region-9c0d87c3": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "d83bcfb86902434ea31e2656e681bd1627f8ecf50fc2b18411c6ef9e3dda7cdb.json",
+          "objectKey": "2b4193dd6877aa1fd32e8295e83e3d5ff6b52d6251d997a61bec0fbd9af50110.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

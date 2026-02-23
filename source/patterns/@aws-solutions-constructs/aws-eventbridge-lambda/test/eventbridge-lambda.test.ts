@@ -270,7 +270,7 @@ test('Confirm call to CheckLambdaProps', () => {
     new EventbridgeToLambda(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });
 
 test('Confirm CheckEventBridgeProps is being called', () => {
@@ -294,5 +294,5 @@ test('Confirm CheckEventBridgeProps is being called', () => {
   const app = () => {
     new EventbridgeToLambda(stack, 'test-eventbridge-lambda', props);
   };
-  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });

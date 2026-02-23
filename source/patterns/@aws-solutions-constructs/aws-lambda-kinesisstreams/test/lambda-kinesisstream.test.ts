@@ -245,7 +245,7 @@ test('Error is thrown when vpc is specified and existing lambda function is not 
     });
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('Construct uses existing Lambda Function', () => {
@@ -575,7 +575,7 @@ test('Confirm CheckVpcProps() is being called', () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Confirm call to CheckLambdaProps', () => {
@@ -599,7 +599,7 @@ test('Confirm call to CheckLambdaProps', () => {
     new LambdaToKinesisStreams(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });
 
 test('Confirm call to CheckKinesisStreamProps', () => {
@@ -619,5 +619,5 @@ test('Confirm call to CheckKinesisStreamProps', () => {
     new LambdaToKinesisStreams(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide existingStreamObj or kinesisStreamProps, but not both.\n');
 });

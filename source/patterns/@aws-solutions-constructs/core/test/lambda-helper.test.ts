@@ -259,7 +259,7 @@ test("Test for error if VPC in arguments AND in Lambda Function properties", () 
     defaults.deployLambdaFunction(stack, lambdaFunctionProps, undefined, fakeVpc);
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test("Test minimal deployment with an existing VPC and existing Lambda function not in a VPC", () => {
@@ -283,7 +283,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   };
 
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 
 });
 
@@ -363,7 +363,7 @@ test("Test invalid synthesized permission names", () => {
   };
 
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('Test environment variable for correct node version', () => {
@@ -586,7 +586,7 @@ test("Test fail Lambda function check", () => {
   };
 
   // Assertion
-  expect(app).toThrowError(
+  expect(app).toThrow(
     "Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n"
   );
 });

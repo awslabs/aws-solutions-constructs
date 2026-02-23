@@ -1,30 +1,16 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
-    "c7dc0cc1b24bda1d2a5345f61897eee32184906649fdb1de93853c512e129dbf": {
-      "displayName": "test-lambda-kinesisstreams/LambdaFunction/Code",
-      "source": {
-        "path": "asset.c7dc0cc1b24bda1d2a5345f61897eee32184906649fdb1de93853c512e129dbf",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-0b4831fe": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "c7dc0cc1b24bda1d2a5345f61897eee32184906649fdb1de93853c512e129dbf.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "c4cbcf25362ed20ee61f9062121bf14c683ebb14f3e448d2cc9e0e162b110152": {
+    "25ababb3f692e073a5c95a86108f4da3a65dcb1539e97ea3068f4cf842e960fe": {
       "displayName": "lamkin-existingStream Template",
       "source": {
         "path": "lamkin-existingStream.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-6f976332": {
+        "current_account-current_region-3b794e95": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "c4cbcf25362ed20ee61f9062121bf14c683ebb14f3e448d2cc9e0e162b110152.json",
+          "objectKey": "25ababb3f692e073a5c95a86108f4da3a65dcb1539e97ea3068f4cf842e960fe.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

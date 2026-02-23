@@ -69,5 +69,5 @@ test('Test fail Secret check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Either provide secretProps or existingSecretObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide secretProps or existingSecretObj, but not both.\n');
 });

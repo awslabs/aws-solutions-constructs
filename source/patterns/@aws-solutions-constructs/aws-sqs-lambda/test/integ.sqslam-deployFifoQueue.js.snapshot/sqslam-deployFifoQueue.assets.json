@@ -1,30 +1,16 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
-    "4085f2fc7cce70548a05ffc5162591a6b42f88398292e9c4b2739feed32a1640": {
-      "displayName": "test-sqs-lambda-fifo/LambdaFunction/Code",
-      "source": {
-        "path": "asset.4085f2fc7cce70548a05ffc5162591a6b42f88398292e9c4b2739feed32a1640",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-9a75cf4c": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "4085f2fc7cce70548a05ffc5162591a6b42f88398292e9c4b2739feed32a1640.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "4b66dd49211c32b1f6565a8e005c89ab0514d43bf6bb8691dc5668f76f75d677": {
+    "bfdada184e7bcfaf5020e6b2a42b12aa2a6e98c32ec26badc75355ddd17aa380": {
       "displayName": "sqslam-deployFifoQueue Template",
       "source": {
         "path": "sqslam-deployFifoQueue.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-63acbe43": {
+        "current_account-current_region-dca072e1": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "4b66dd49211c32b1f6565a8e005c89ab0514d43bf6bb8691dc5668f76f75d677.json",
+          "objectKey": "bfdada184e7bcfaf5020e6b2a42b12aa2a6e98c32ec26badc75355ddd17aa380.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

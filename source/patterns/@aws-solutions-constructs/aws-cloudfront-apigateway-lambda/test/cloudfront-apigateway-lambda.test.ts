@@ -274,7 +274,7 @@ test('Cloudfront logging bucket error when providing existing log bucket and log
   });
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('Confirm CheckLambdaProps is being called', () => {
@@ -298,7 +298,7 @@ test('Confirm CheckLambdaProps is being called', () => {
   const app = () => {
     new CloudFrontToApiGatewayToLambda(stack, 'cf-test-apigateway-lambda', props);
   };
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });
 
 test("Confirm CheckCloudFrontProps is being called", () => {
@@ -324,7 +324,7 @@ test("Confirm CheckCloudFrontProps is being called", () => {
         }
       }
     });
-  }).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
+  }).toThrow('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
 });
 
 test('confirm error thrown for AWS_IAM authorization', () => {
@@ -343,7 +343,7 @@ test('confirm error thrown for AWS_IAM authorization', () => {
   const app = () => {
     new CloudFrontToApiGatewayToLambda(stack, 'test-one', props);
   };
-  expect(app).toThrowError(/Amazon API Gateway Rest APIs integrated with Amazon CloudFront do not support AWS_IAM authorization/);
+  expect(app).toThrow(/Amazon API Gateway Rest APIs integrated with Amazon CloudFront do not support AWS_IAM authorization/);
 });
 
 test('confirm error thrown for unspecified authorization', () => {
@@ -362,7 +362,7 @@ test('confirm error thrown for unspecified authorization', () => {
   const app = () => {
     new CloudFrontToApiGatewayToLambda(stack, 'test-one', props);
   };
-  expect(app).toThrowError(/As of v2.48.0, an explicit authorization type is required for CloudFront\/API Gateway patterns/);
+  expect(app).toThrow(/As of v2.48.0, an explicit authorization type is required for CloudFront\/API Gateway patterns/);
 });
 
 test('Confirm call to CheckApiProps', () => {
@@ -388,7 +388,7 @@ test('Confirm call to CheckApiProps', () => {
     new CloudFrontToApiGatewayToLambda(stack, 'test-cloudfront-apigateway-lambda', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - if API key is required, then the Usage plan must be created\n');
+  expect(app).toThrow('Error - if API key is required, then the Usage plan must be created\n');
 });
 
 test('Confirm suppression of Usage Plan', () => {
@@ -426,7 +426,7 @@ test('Test that ValidateLambdaRestApiProps() is being called', () => {
     new CloudFrontToApiGatewayToLambda(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of LambdaRestApiProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of LambdaRestApiProps/);
 });
 
 test('Test that ValidateDistributionProps() is being called', () => {
@@ -447,5 +447,5 @@ test('Test that ValidateDistributionProps() is being called', () => {
     new CloudFrontToApiGatewayToLambda(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of DistributionProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of DistributionProps/);
 });

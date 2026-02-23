@@ -155,7 +155,7 @@ test("Confirm CheckS3Props is called", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
 test("Test existingBucketObj", () => {
@@ -363,7 +363,7 @@ test("throw exception if insertHttpSecurityHeaders and responseHeadersPolicyProp
         }
       }
     });
-  }).toThrowError();
+  }).toThrow();
 });
 
 test("Confirm CheckCloudFrontProps is being called", () => {
@@ -383,7 +383,7 @@ test("Confirm CheckCloudFrontProps is being called", () => {
         }
       }
     });
-  }).toThrowError('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
+  }).toThrow('responseHeadersPolicyProps.securityHeadersBehavior can only be passed if httpSecurityHeaders is set to `false`.');
 });
 
 test("Custom resource is provisioned if encryption key is provided as bucketProp", () => {
@@ -573,7 +573,7 @@ test('Providing loggingBucketProps and existingLoggingBucket is an error', () =>
       }
     });
   };
-  expect(app).toThrowError(/Error - bothlog bucket props and an existing log bucket were provided.\n/);
+  expect(app).toThrow(/Error - bothlog bucket props and an existing log bucket were provided.\n/);
 });
 
 test('Providing existingLoggingBucket and logS3AccessLogs=false is an error', () => {
@@ -588,7 +588,7 @@ test('Providing existingLoggingBucket and logS3AccessLogs=false is an error', ()
       logS3AccessLogs: false
     });
   };
-  expect(app).toThrowError(/Error - logS3AccessLogs is false, but a log bucket was provided in bucketProps.\n/);
+  expect(app).toThrow(/Error - logS3AccessLogs is false, but a log bucket was provided in bucketProps.\n/);
 });
 
 test('Providing loggingBucketProps and logS3AccessLogs=false is an error', () => {
@@ -603,7 +603,7 @@ test('Providing loggingBucketProps and logS3AccessLogs=false is an error', () =>
     });
   };
   // NOTE: This error is thrown by CheckS3Props(), not CheckConstructSpecificProps()
-  expect(app).toThrowError(/Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n/);
+  expect(app).toThrow(/Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n/);
 });
 
 // test('No new loggingBucket is created if existingLoggingBucket is supplied', () => {
@@ -684,7 +684,7 @@ test('Providing cloudFrontLoggingBucketProps and a log bucket in cloudFrontDistr
     });
   };
 
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 test('cloudFrontLoggingBucketProps are used correctly', () => {
   const stack = new cdk.Stack();
@@ -781,7 +781,7 @@ test('Providing cloudFrontLoggingBucketAccessLogBucketProps and cloudFrontLoggin
     });
   };
 
-  expect(app).toThrowError(
+  expect(app).toThrow(
     /Error - an existing CloudFront log bucket S3 access log bucket and cloudFrontLoggingBucketAccessLogBucketProps were provided\n/);
 });
 test('Providing cloudFrontLoggingBucketAccessLogBucketProps and logCloudFrontAccessLog=false is an error', () => {
@@ -796,7 +796,7 @@ test('Providing cloudFrontLoggingBucketAccessLogBucketProps and logCloudFrontAcc
     });
   };
 
-  expect(app).toThrowError(/Error - cloudFrontLoggingBucketAccessLogBucketProps were provided but logCloudFrontAccessLog was false\n/);
+  expect(app).toThrow(/Error - cloudFrontLoggingBucketAccessLogBucketProps were provided but logCloudFrontAccessLog was false\n/);
 });
 test('Providing logCloudFrontAccessLog=false and cloudFrontLoggingBucketProps:serverAccessLogsBucket is an error', () => {
   const stack = new cdk.Stack();
@@ -813,7 +813,7 @@ test('Providing logCloudFrontAccessLog=false and cloudFrontLoggingBucketProps:se
     });
   };
 
-  expect(app).toThrowError(/Error - props.cloudFrontLoggingBucketProps.serverAccessLogsBucket was provided but logCloudFrontAccessLog was false\n/);
+  expect(app).toThrow(/Error - props.cloudFrontLoggingBucketProps.serverAccessLogsBucket was provided but logCloudFrontAccessLog was false\n/);
 });
 test('cloudFrontLoggingBucketAccessLogBucketProps are used correctly', () => {
   const stack = new cdk.Stack();
@@ -979,5 +979,5 @@ test('Test that ValidateDistributionProps() is being called', () => {
     new CloudFrontToS3(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of DistributionProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of DistributionProps/);
 });

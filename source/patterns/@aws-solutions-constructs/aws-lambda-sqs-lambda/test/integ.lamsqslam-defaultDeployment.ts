@@ -30,12 +30,12 @@ const props: LambdaToSqsToLambdaProps = {
   producerLambdaFunctionProps: {
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
-    code: lambda.Code.fromAsset(`${__dirname}/lambda/producer-function`)
+    code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {statusCode: 200, body: ""}; }')
   },
   consumerLambdaFunctionProps: {
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
-    code: lambda.Code.fromAsset(`${__dirname}/lambda/consumer-function`)
+    code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {statusCode: 200, body: ""}; }')
   }
 };
 

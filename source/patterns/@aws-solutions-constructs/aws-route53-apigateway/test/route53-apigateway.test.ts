@@ -121,7 +121,7 @@ test("Test for errors when creating a private hosted zone", () => {
       existingCertificateInterface: certificate
     });
   // Assertion 1
-  expect(app).toThrowError(
+  expect(app).toThrow(
     "Public APIs require an existingHostedZone be passed in the Props object."
   );
 
@@ -133,7 +133,7 @@ test("Test for errors when creating a private hosted zone", () => {
     });
 
   // Assertion 2
-  expect(app).toThrowError(
+  expect(app).toThrow(
     "Must provide either existingHostedZoneInterface or privateHostedZoneProps."
   );
 
@@ -149,7 +149,7 @@ test("Test for errors when creating a private hosted zone", () => {
     });
 
   // Assertion 3
-  expect(app).toThrowError(
+  expect(app).toThrow(
     "All VPC specs must be provided at the Construct level in Route53ToApiGatewayProps"
   );
 
@@ -163,7 +163,7 @@ test("Test for errors when creating a private hosted zone", () => {
     });
 
   // Assertion 4
-  expect(app).toThrowError(
+  expect(app).toThrow(
     "Cannot provide an existing VPC to an existing Private Hosted Zone."
   );
 
@@ -179,7 +179,7 @@ test("Test for errors when creating a private hosted zone", () => {
     });
 
   // Assertion 5
-  expect(app).toThrowError(
+  expect(app).toThrow(
     "Must provide either existingHostedZoneInterface or privateHostedZoneProps, but not both."
   );
 
@@ -193,7 +193,7 @@ test("Test for errors when creating a private hosted zone", () => {
     });
 
   // Assertion 6
-  expect(app).toThrowError(
+  expect(app).toThrow(
     'Must supply zoneName for Private Hosted Zone Props.'
   );
 
@@ -208,7 +208,7 @@ test("Test for errors when creating a private hosted zone", () => {
     });
 
   // Assertion 7
-  expect(app).toThrowError(
+  expect(app).toThrow(
     'Must specify an existingVPC for the Private Hosted Zone in the construct props.'
   );
 });
@@ -381,5 +381,5 @@ test('Test that ValidatePrivateHostedZoneProps() is being called', () => {
     new Route53ToApiGateway(stack, "api-stack", props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of PrivateHostedZoneProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of PrivateHostedZoneProps/);
 });

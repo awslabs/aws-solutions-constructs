@@ -1,5 +1,5 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
     "c2b362b5f0d6d8f56ac2c011288aebd095499d839b130a932427f74232de2a32": {
       "displayName": "ApiDefinitionAsset",
@@ -11,34 +11,6 @@
         "current_account-current_region-106109ed": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
           "objectKey": "c2b362b5f0d6d8f56ac2c011288aebd095499d839b130a932427f74232de2a32.yaml",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "0ac0535f48d1ada09cde7f11fc72195d9d32da75a2719aeb20c4e5c45b28e62e": {
-      "displayName": "OpenApiGatewayToLambda/MessagesHandlerApiFunction0/Code",
-      "source": {
-        "path": "asset.0ac0535f48d1ada09cde7f11fc72195d9d32da75a2719aeb20c4e5c45b28e62e",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-3e2df10f": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "0ac0535f48d1ada09cde7f11fc72195d9d32da75a2719aeb20c4e5c45b28e62e.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "654d49d4ea47a6be417d57b94dc0310933d0e971a3e48a3080c3e48487af3e50": {
-      "displayName": "OpenApiGatewayToLambda/PhotosHandlerApiFunction1/Code",
-      "source": {
-        "path": "asset.654d49d4ea47a6be417d57b94dc0310933d0e971a3e48a3080c3e48487af3e50",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-7d15ef03": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "654d49d4ea47a6be417d57b94dc0310933d0e971a3e48a3080c3e48487af3e50.zip",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
@@ -71,30 +43,30 @@
         }
       }
     },
-    "bdc104ed9cab1b5b6421713c8155f0b753380595356f710400609664d3635eca": {
+    "07a90cc3efdfc34da22208dcd9d211f06f5b0e01b21e778edc7c3966b1f61d57": {
       "displayName": "OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/Code",
       "source": {
-        "path": "asset.bdc104ed9cab1b5b6421713c8155f0b753380595356f710400609664d3635eca",
+        "path": "asset.07a90cc3efdfc34da22208dcd9d211f06f5b0e01b21e778edc7c3966b1f61d57",
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-current_region-aca8d54f": {
+        "current_account-current_region-3e934f01": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "bdc104ed9cab1b5b6421713c8155f0b753380595356f710400609664d3635eca.zip",
+          "objectKey": "07a90cc3efdfc34da22208dcd9d211f06f5b0e01b21e778edc7c3966b1f61d57.zip",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
     },
-    "c93962dd544ddb7b58e9736ce1b6d41c241449ae759c49bbef66e0e614e5069c": {
+    "a75132dcbf2898344001dbb509e757a67884870fb29f1e73d180fdb0394059f5": {
       "displayName": "opilam-apiFromAssetNewLambdaFunctions Template",
       "source": {
         "path": "opilam-apiFromAssetNewLambdaFunctions.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-ee82fcc0": {
+        "current_account-current_region-a262dab7": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "c93962dd544ddb7b58e9736ce1b6d41c241449ae759c49bbef66e0e614e5069c.json",
+          "objectKey": "a75132dcbf2898344001dbb509e757a67884870fb29f1e73d180fdb0394059f5.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

@@ -332,7 +332,7 @@ test('Test deployment with invalid inference props', () => {
     new LambdaToBedrockinferenceprofile(stack, 'test-lambda-inferenceprops', props);
   };
 
-  expect(app).toThrowError('Error - The construct will create the modelSource value, it cannot be specified in the props.\n');
+  expect(app).toThrow('Error - The construct will create the modelSource value, it cannot be specified in the props.\n');
 });
 
 test('Test deployment with invalid Lambda props', () => {
@@ -357,7 +357,7 @@ test('Test deployment with invalid Lambda props', () => {
     new LambdaToBedrockinferenceprofile(stack, 'test-lambda-inferenceprops', props);
   };
 
-  expect(app).toThrowError(
+  expect(app).toThrow(
     "Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n"
   );
 });

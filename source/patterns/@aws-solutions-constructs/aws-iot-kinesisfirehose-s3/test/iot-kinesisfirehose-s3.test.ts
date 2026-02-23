@@ -153,7 +153,7 @@ test("Confirm CheckS3Props is being called", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError("Error - Either provide bucketProps or existingBucketObj, but not both.\n");
+  expect(app).toThrow("Error - Either provide bucketProps or existingBucketObj, but not both.\n");
 });
 
 test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
@@ -215,7 +215,7 @@ test("Test bad call with logS3AccessLogs as false and bucketProps", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n');
+  expect(app).toThrow('Error - If logS3AccessLogs is false, supplying loggingBucketProps or existingLoggingBucketObj is invalid.\n');
 });
 
 test('s3 bucket with one content bucket and no logging bucket', () => {
@@ -260,5 +260,5 @@ test('Test that ValidateCfnDeliveryStreamProps() is being called', () => {
     new IotToKinesisFirehoseToS3(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnDeliveryStreamProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of CfnDeliveryStreamProps/);
 });

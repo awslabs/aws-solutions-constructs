@@ -162,7 +162,7 @@ test('Confirm CheckEventBridgeProps is being called', () => {
   const app = () => {
     new EventbridgeToStepfunctions(stack, 'test-eventbridge-stepfunctions', props);
   };
-  expect(app).toThrowError('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide existingEventBusInterface or eventBusProps, but not both.\n');
 });
 
 test('check custom event bus resource with props when deploy:true', () => {

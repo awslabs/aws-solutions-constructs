@@ -216,7 +216,7 @@ test("Test bad call with existingBucket and bucketProps", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
 test('s3 bucket with bucket, loggingBucket, and auto delete objects', () => {
@@ -375,7 +375,7 @@ test('Confirm CheckSqsProps is called', () => {
   const app = () => {
     new S3ToSqs(stack, 'test-s3-sqs', props);
   };
-  expect(app).toThrowError("Error - Either provide queueProps or existingQueueObj, but not both.\n");
+  expect(app).toThrow("Error - Either provide queueProps or existingQueueObj, but not both.\n");
 });
 
 test('Confirm CheckS3Props is being called', () => {
@@ -389,5 +389,5 @@ test('Confirm CheckS3Props is being called', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(/Error - Either provide bucketProps or existingBucketObj, but not both.\n/);
+  expect(app).toThrow(/Error - Either provide bucketProps or existingBucketObj, but not both.\n/);
 });

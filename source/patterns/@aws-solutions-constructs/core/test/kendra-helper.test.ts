@@ -355,7 +355,7 @@ test('Confirm error if client supplies an index in the DataSource props', () => 
     AddKendraDataSource(stack, 'test-other-source', testIndex, dataSourceProps);
   };
 
-  expect(app).toThrowError(/Invalid DataSource prop specified - Construct must set the indexId prop/);
+  expect(app).toThrow(/Invalid DataSource prop specified - Construct must set the indexId prop/);
 });
 
 test('Confirm error if does not provide DataSource configuration', () => {
@@ -372,7 +372,7 @@ test('Confirm error if does not provide DataSource configuration', () => {
     AddKendraDataSource(stack, 'test-bad-source', testIndex, dataSourceProps);
   };
 
-  expect(app).toThrowError(/Error - an S3 Kendra DataSource requires an DataSourceConfiguration prop/);
+  expect(app).toThrow(/Error - an S3 Kendra DataSource requires an DataSourceConfiguration prop/);
 });
 
 test('Confirm error if does not provide S3 DataSource configuration', () => {
@@ -392,7 +392,7 @@ test('Confirm error if does not provide S3 DataSource configuration', () => {
     AddKendraDataSource(stack, 'test-bad-source', testIndex, dataSourceProps);
   };
 
-  expect(app).toThrowError(/Error - an S3 Kendra DataSource requires an DataSourceConfiguration.S3Configuration prop/);
+  expect(app).toThrow(/Error - an S3 Kendra DataSource requires an DataSourceConfiguration.S3Configuration prop/);
 });
 
 test('Confirm error if does not provide S3 Bucketname', () => {
@@ -415,7 +415,7 @@ test('Confirm error if does not provide S3 Bucketname', () => {
     AddKendraDataSource(stack, 'test-bad-source', testIndex, dataSourceProps);
   };
 
-  expect(app).toThrowError(/Error - an S3 Kendra DataSource requires the DataSourceConfiguration.S3Configuration.bucketName prop/);
+  expect(app).toThrow(/Error - an S3 Kendra DataSource requires the DataSourceConfiguration.S3Configuration.bucketName prop/);
 });
 
 test('Launch Kendra index with multiple data sources', () => {
@@ -551,5 +551,5 @@ test('Confirm successful operation of normalizeKendraPermissions()', () => {
     normalizeKendraPermissions(inputs);
   };
 
-  expect(app).toThrowError(/Invalid indexPermission value - valid values are "READ", "SUBMITFEEDBACK" and "WRITE"/);
+  expect(app).toThrow(/Invalid indexPermission value - valid values are "READ", "SUBMITFEEDBACK" and "WRITE"/);
 });

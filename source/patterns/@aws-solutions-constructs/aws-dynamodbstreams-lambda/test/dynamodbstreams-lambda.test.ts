@@ -317,7 +317,7 @@ test('Confirm call to CheckLambdaProps', () => {
     new DynamoDBStreamsToLambda(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });
 
 test('Test that ValidateDynamoEventSourceProps() is being called', () => {
@@ -343,5 +343,5 @@ test('Test that ValidateDynamoEventSourceProps() is being called', () => {
     new DynamoDBStreamsToLambda(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of DynamoEventSourceProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of DynamoEventSourceProps/);
 });

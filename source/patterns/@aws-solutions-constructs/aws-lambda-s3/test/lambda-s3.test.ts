@@ -231,7 +231,7 @@ test("Test minimal deployment with an existing VPC and existing Lambda function 
   };
 
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 
 });
 
@@ -292,7 +292,7 @@ test("Confirm that CheckS3Props is being called", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide bucketProps or existingBucketObj, but not both.\n');
 });
 
 test('Test that CheckProps() is flagging errors correctly', () => {
@@ -317,7 +317,7 @@ test('Test that CheckProps() is flagging errors correctly', () => {
   };
 
   // Assertion
-  expect(app).toThrowError(
+  expect(app).toThrow(
     'Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n'
   );
 
@@ -396,7 +396,7 @@ test('Test bad bucket permission', () => {
     new LambdaToS3(stack, 'lambda-s3', props);
   };
 
-  expect(alb).toThrowError('Invalid bucket permission submitted - Reed');
+  expect(alb).toThrow('Invalid bucket permission submitted - Reed');
 });
 
 test("Confirm that CheckVpcProps is being called", () => {
@@ -426,7 +426,7 @@ test("Confirm that CheckVpcProps is being called", () => {
     });
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Confirm call to CheckLambdaProps', () => {
@@ -450,5 +450,5 @@ test('Confirm call to CheckLambdaProps', () => {
     new LambdaToS3(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

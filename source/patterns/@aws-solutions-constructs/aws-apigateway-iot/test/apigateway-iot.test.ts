@@ -234,7 +234,7 @@ test('Test for valid iot endpoint', () => {
     new ApiGatewayToIot(stack, 'test-apigateway-iot-no-endpoint', props);
   };
   // Assertion
-  expect(app).toThrowError();
+  expect(app).toThrow();
 });
 
 test('Test for Binary Media types', () => {
@@ -530,7 +530,7 @@ test('Confirm call to CheckApiProps', () => {
     new ApiGatewayToIot(stack, 'test-apigateway-iot', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - if API key is required, then the Usage plan must be created\n');
+  expect(app).toThrow('Error - if API key is required, then the Usage plan must be created\n');
 });
 
 test('Confirm suppression of Usage Plan', () => {

@@ -1,5 +1,5 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "displayName": "lamfhs-existing-function/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
@@ -15,30 +15,16 @@
         }
       }
     },
-    "e223396f670e1c26b56c83fd2179ab8672928b9795821c6a437874a06625eb53": {
-      "displayName": "existing-function/Code",
-      "source": {
-        "path": "asset.e223396f670e1c26b56c83fd2179ab8672928b9795821c6a437874a06625eb53",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-4c4e0725": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "e223396f670e1c26b56c83fd2179ab8672928b9795821c6a437874a06625eb53.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "3b6879e4614f87ddea59e5f8bbe433fa0948b7712c21bc59e506c0599629d2a7": {
+    "c5326579090fc6ccba2072361115c118e122854a7c69e6ee3ac284e1e9c17ff3": {
       "displayName": "lamfhs-existing-function Template",
       "source": {
         "path": "lamfhs-existing-function.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-5c111c09": {
+        "current_account-current_region-941ae535": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "3b6879e4614f87ddea59e5f8bbe433fa0948b7712c21bc59e506c0599629d2a7.json",
+          "objectKey": "c5326579090fc6ccba2072361115c118e122854a7c69e6ee3ac284e1e9c17ff3.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

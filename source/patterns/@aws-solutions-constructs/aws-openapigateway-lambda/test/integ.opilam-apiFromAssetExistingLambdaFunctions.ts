@@ -34,7 +34,7 @@ const messagesLambda = defaults.buildLambdaFunction(stack, {
   lambdaFunctionProps: {
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
-    code: lambda.Code.fromAsset(`${__dirname}/messages-lambda`),
+    code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {statusCode: 200, body: "Messages Lambda"}; }'),
   }
 });
 
@@ -56,7 +56,7 @@ const photosLambda = defaults.buildLambdaFunction(stack, {
     functionName: 'PhotosExistingLambdaTestFromAsset',
     runtime: defaults.COMMERCIAL_REGION_LAMBDA_NODE_RUNTIME,
     handler: 'index.handler',
-    code: lambda.Code.fromAsset(`${__dirname}/photos-lambda`),
+    code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {statusCode: 200, body: "Photos Lambda"}; }'),
     logGroup: replacementLogGroup
   }
 });

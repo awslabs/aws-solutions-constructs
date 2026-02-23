@@ -28,8 +28,8 @@ stack.templateOptions.description = 'Integration Test for aws-lambda-sagemakeren
 
 // deploy lambda function
 const fn = defaults.deployLambdaFunction(stack, {
-  runtime: lambda.Runtime.PYTHON_3_8,
-  code: lambda.Code.fromAsset(`${__dirname}/lambda`),
+  runtime: lambda.Runtime.NODEJS_24_X,
+  code: new lambda.InlineCode('exports.handler = async (event) => { console.log(event); return {statusCode: 200, body: ""}; }'),
   handler: 'index.handler',
   timeout: Duration.minutes(5),
   memorySize: 128,

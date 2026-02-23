@@ -63,7 +63,7 @@ test('Confirm CheckWafWebAclProps is called', () => {
       existingWebaclObj: wafAcl,
       webaclProps: props
     });
-  }).toThrowError('Error - Either provide existingWebaclObj or webaclProps, but not both.\n');
+  }).toThrow('Error - Either provide existingWebaclObj or webaclProps, but not both.\n');
 });
 
 test('Test default deployment', () => {
@@ -379,5 +379,5 @@ test('Test that ValidateCfnWebACLProps() is being called', () => {
     new WafwebaclToCloudFront(stack, 'test-construct', props);
   };
 
-  expect(app).toThrowError(/ERROR - invalidProperty is not a valid property of CfnWebACLProps/);
+  expect(app).toThrow(/ERROR - invalidProperty is not a valid property of CfnWebACLProps/);
 });

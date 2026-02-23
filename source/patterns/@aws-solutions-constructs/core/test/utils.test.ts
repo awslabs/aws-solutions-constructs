@@ -124,7 +124,7 @@ test('Test consolidate props with all args', () => {
     val3: 13,
   });
 
-  expect(consoleLogSpy).toBeCalledTimes(2);
+  expect(consoleLogSpy).toHaveBeenCalledTimes(2);
 
 });
 
@@ -152,7 +152,7 @@ test('Test consolidate props with first and third args', () => {
     val3: 13,
   });
 
-  expect(consoleLogSpy).toBeCalledTimes(0);
+  expect(consoleLogSpy).toHaveBeenCalledTimes(0);
 
 });
 
@@ -181,7 +181,7 @@ test('Test consolidate props with first and second args', () => {
     val3: 13,
   });
 
-  expect(consoleLogSpy).toBeCalledTimes(2);
+  expect(consoleLogSpy).toHaveBeenCalledTimes(2);
 
 });
 
@@ -201,7 +201,7 @@ test('Test consolidate props with one arg', () => {
 
   expect(result).toEqual(arg1);
 
-  expect(consoleLogSpy).toBeCalledTimes(0);
+  expect(consoleLogSpy).toHaveBeenCalledTimes(0);
 
 });
 
@@ -251,7 +251,7 @@ test('Test successful CheckListValues', () => {
   };
 
   // Assertion
-  expect(app).not.toThrowError();
+  expect(app).not.toThrow();
 });
 
 test('Test fail OpenSearch improper vpc specification', () => {
@@ -267,7 +267,7 @@ test('Test fail OpenSearch improper vpc specification', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Error - Define VPC using construct parameters not the OpenSearch Service props\n');
+  expect(app).toThrow('Error - Define VPC using construct parameters not the OpenSearch Service props\n');
 });
 
 test('Test unsuccessful CheckListValues', () => {
@@ -277,7 +277,7 @@ test('Test unsuccessful CheckListValues', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Invalid test value submitted - three');
+  expect(app).toThrow('Invalid test value submitted - three');
 });
 
 test('ConsolidateProps does not generate warnings for construct props overrides', () => {
@@ -302,7 +302,7 @@ test('ConsolidateProps does not generate warnings for construct props overrides'
   defaults.consolidateProps(defaultProps, clientProps,  constructProps);
 
   // Assert
-  expect(consoleLogSpy).toBeCalledTimes(1);
+  expect(consoleLogSpy).toHaveBeenCalledTimes(1);
 
 });
 

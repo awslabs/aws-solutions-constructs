@@ -548,7 +548,7 @@ test('Test error for vpcProps and undefined deployVpc prop', () => {
     });
   };
 
-  expect(app).toThrowError("Error - deployVpc must be true when defining vpcProps");
+  expect(app).toThrow("Error - deployVpc must be true when defining vpcProps");
 });
 
 test('Test error for Lambda function VPC props', () => {
@@ -564,7 +564,7 @@ test('Test error for Lambda function VPC props', () => {
     });
   };
 
-  expect(app).toThrowError("Error - Define VPC using construct parameters not Lambda function props");
+  expect(app).toThrow("Error - Define VPC using construct parameters not Lambda function props");
 });
 
 test('Confirm CheckOpenSearchProps is called', () => {
@@ -584,7 +584,7 @@ test('Confirm CheckOpenSearchProps is called', () => {
     });
   };
 
-  expect(app).toThrowError("Error - Define VPC using construct parameters not the OpenSearch Service props");
+  expect(app).toThrow("Error - Define VPC using construct parameters not the OpenSearch Service props");
 });
 
 test('Test error for missing existingLambdaObj or lambdaFunctionProps', () => {
@@ -623,7 +623,7 @@ test('Confirm CheckVpcProps is being called', () => {
     });
   };
 
-  expect(app).toThrowError('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
+  expect(app).toThrow('Error - Either provide an existingVpc or some combination of deployVpc and vpcProps, but not both.\n');
 });
 
 test('Confirm call to CheckLambdaProps', () => {
@@ -648,5 +648,5 @@ test('Confirm call to CheckLambdaProps', () => {
     new LambdaToOpenSearch(stack, 'test-construct', props);
   };
   // Assertion
-  expect(app).toThrowError('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
+  expect(app).toThrow('Error - Either provide lambdaFunctionProps or existingLambdaObj, but not both.\n');
 });

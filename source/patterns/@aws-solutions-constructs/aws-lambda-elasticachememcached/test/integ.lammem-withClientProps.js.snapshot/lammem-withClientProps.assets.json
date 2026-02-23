@@ -1,5 +1,5 @@
 {
-  "version": "48.0.0",
+  "version": "50.0.0",
   "files": {
     "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
       "displayName": "lammem-withClientProps/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
@@ -15,30 +15,16 @@
         }
       }
     },
-    "69e370dcce5ccdf0f2e726ecb0826d434cccdb06e0814e8b0d907129183e5d36": {
-      "displayName": "lammem-withClientProps/LambdaFunction/Code",
-      "source": {
-        "path": "asset.69e370dcce5ccdf0f2e726ecb0826d434cccdb06e0814e8b0d907129183e5d36",
-        "packaging": "zip"
-      },
-      "destinations": {
-        "current_account-current_region-1ee44675": {
-          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "69e370dcce5ccdf0f2e726ecb0826d434cccdb06e0814e8b0d907129183e5d36.zip",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
-        }
-      }
-    },
-    "dce287e2a64ffe7f93564634980719c534ea912bafee5772c804764b1cca5b0b": {
+    "05323ca1aac6441419a0a3c489e694f181d01c9d3668d225f0a5be8d5a811257": {
       "displayName": "lammem-withClientProps Template",
       "source": {
         "path": "lammem-withClientProps.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-6128244d": {
+        "current_account-current_region-9a3455c0": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "dce287e2a64ffe7f93564634980719c534ea912bafee5772c804764b1cca5b0b.json",
+          "objectKey": "05323ca1aac6441419a0a3c489e694f181d01c9d3668d225f0a5be8d5a811257.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

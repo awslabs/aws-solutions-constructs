@@ -279,7 +279,7 @@ test('catch subnet configuration in vpcProps and separate values', () => {
     });
   };
 
-  expect(app).toThrowError('Error - Either provide complete subnetConfiguration in props.vpcProps.subnetConfiguration or subnetConfiguration info in props.subnetTypes and props.subnetIPAddresses, but not both\n');
+  expect(app).toThrow('Error - Either provide complete subnetConfiguration in props.vpcProps.subnetConfiguration or subnetConfiguration info in props.subnetTypes and props.subnetIPAddresses, but not both\n');
 });
 
 test('catch no subnet info provided', () => {
@@ -294,7 +294,7 @@ test('catch no subnet info provided', () => {
     });
   };
 
-  expect(first).toThrowError('Error - subnet types must be provided in either props.vpcProps.subnetConfiguration or props.subnetTypes\n');
+  expect(first).toThrow('Error - subnet types must be provided in either props.vpcProps.subnetConfiguration or props.subnetTypes\n');
 
   const second = () => {
     factories.vpcFactory('test', {
@@ -304,7 +304,7 @@ test('catch no subnet info provided', () => {
     });
   };
 
-  expect(second).toThrowError('Error - subnet types must be provided in either props.vpcProps.subnetConfiguration or props.subnetTypes\n');
+  expect(second).toThrow('Error - subnet types must be provided in either props.vpcProps.subnetConfiguration or props.subnetTypes\n');
 
 
   const third = () => {
@@ -312,7 +312,7 @@ test('catch no subnet info provided', () => {
     });
   };
 
-  expect(third).toThrowError('Error - subnet types must be provided in either props.vpcProps.subnetConfiguration or props.subnetTypes\n');
+  expect(third).toThrow('Error - subnet types must be provided in either props.vpcProps.subnetConfiguration or props.subnetTypes\n');
 });
 
 test('catch dns settings turned off with endpoints specified', () => {
@@ -330,5 +330,5 @@ test('catch dns settings turned off with endpoints specified', () => {
     });
   };
 
-  expect(first).toThrowError('Error - VPC endpoints require that enableDnsHostnames and enableDnsSupport are both enabled\n');
+  expect(first).toThrow('Error - VPC endpoints require that enableDnsHostnames and enableDnsSupport are both enabled\n');
 });

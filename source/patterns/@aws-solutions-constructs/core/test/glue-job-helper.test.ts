@@ -570,7 +570,7 @@ test('Test fail Glue job check', () => {
   };
 
   // Assertion
-  expect(app).toThrowError("Error - Either provide glueJobProps or existingGlueJob, but not both.\n");
+  expect(app).toThrow("Error - Either provide glueJobProps or existingGlueJob, but not both.\n");
 });
 
 test('Test bad Glue script location', () => {
@@ -600,7 +600,7 @@ test('Test bad Glue script location', () => {
   };
 
   // Assertion
-  expect(app).toThrowError('Invalid S3 URL for Glue script provided\n');
+  expect(app).toThrow('Invalid S3 URL for Glue script provided\n');
 });
 
 test('Test missing Glue script location', () => {
@@ -634,5 +634,5 @@ test('Test missing Glue script location', () => {
     'CfnJob.JobCommandProperty.scriptLocation property\n';
 
   // Assertion
-  expect(app).toThrowError(expectedError);
+  expect(app).toThrow(expectedError);
 });

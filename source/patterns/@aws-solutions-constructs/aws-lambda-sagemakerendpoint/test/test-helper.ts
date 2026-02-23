@@ -92,7 +92,7 @@ export function getSagemakerModel(stack: Stack): GetSagemakerModelResponse {
   });
 
   const modelAsset = new s3a.Asset(stack, 'SampleAsset', {
-    path: 'model/model.tar.gz',
+    path: 'test/model/model.tar.gz',
   });
 
   return { mapping: containerMap, asset: modelAsset };
