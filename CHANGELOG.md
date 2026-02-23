@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.100.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.99.0...v2.100.0) (2026-02-23)
+
+Built on CDK 2.39.0
+
+### Features
+
+* **all:** validate attributes on incoming props with '| any' type ([#1462](https://github.com/awslabs/aws-solutions-constructs/issues/1462)) ([36d415e](https://github.com/awslabs/aws-solutions-constructs/commit/36d415eea79f29b6d2d4c52612d7addc7e3171f2))
+
 ## [2.99.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.98.0...v2.99.0) (2026-02-09)
 
 Built on CDK 2.38.0
