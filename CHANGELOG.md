@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [2.100.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.100.0...v2.100.1) (2026-02-24)
+## [2.100.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.100.0...v2.100.1) (2026-02-24)
+
+Built on CDK 2.39.0
 
 ## [2.100.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.99.0...v2.100.0) (2026-02-23)
 
 Built on CDK 2.39.0
+
+
+### ⚠ BREAKING CHANGES
+
+[Property validation](https://github.com/awslabs/aws-solutions-constructs/pull/1462) correctly checks incoming attributes that have not been checked in the past. Because of this, it may identify bad arguments your code is sending to launch constructs. While this will show up as a runtime or compiler error, what it actually achieves is identifying a previously undetected bug in your code. The PR has more info about what to do if this release finds invalid attributes you have been sending to Constructs.
 
 ### Features
 
