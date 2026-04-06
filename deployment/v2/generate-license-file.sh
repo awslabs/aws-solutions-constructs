@@ -44,7 +44,7 @@ generate_license_list() {
   local LOCAL_FULL_FILE_NAME=$(getAbsoluteFilespec $RAW_LICENSE_DATA_FILE)
   local RELATIVE_PARSE_SCRIPT_SPEC=$(dirname "$0")/$PARSE_LICENSE_FILE_SCRIPT
   local PARSE_SCRIPT_ABSOLUTE_SPEC=$(getAbsoluteFilespec $RELATIVE_PARSE_SCRIPT_SPEC)
-  node $PARSE_SCRIPT_ABSOLUTE_SPEC $LOCAL_FULL_FILE_NAME >$FINAL_LICENSE_DATA_FILE
+  node $PARSE_SCRIPT_ABSOLUTE_SPEC $LOCAL_FULL_FILE_NAME 6 >$FINAL_LICENSE_DATA_FILE
   
   # Quick sanity check that the parsed output was created and is of reasonable size
   checkFileSize $FINAL_LICENSE_DATA_FILE 10000
@@ -82,7 +82,7 @@ generate_license_list() {
     # of the working directory when this script was invoked.
     local LOCAL_FULL_FILE_NAME=$(getAbsoluteFilespec $RAW_LICENSE_DATA_FILE)
     echo $PARSE_SCRIPT_ABSOLUTE_SPEC
-    node $PARSE_SCRIPT_ABSOLUTE_SPEC $LOCAL_FULL_FILE_NAME >$FINAL_LICENSE_DATA_FILE
+    node $PARSE_SCRIPT_ABSOLUTE_SPEC $LOCAL_FULL_FILE_NAME 1 >$FINAL_LICENSE_DATA_FILE
 
     # Quick sanity check that the parsed output was created and is of reasonable size
     checkFileSize $FINAL_LICENSE_DATA_FILE 1000
