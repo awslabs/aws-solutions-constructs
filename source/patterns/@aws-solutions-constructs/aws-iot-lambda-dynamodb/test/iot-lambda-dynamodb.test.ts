@@ -233,12 +233,12 @@ test('check lambda function policy ', () => {
             "dynamodb:DescribeTable"
           ],
           Effect: "Allow",
-          Resource: {
+          Resource: [{
             "Fn::GetAtt": [
               "testiotlambdadynamodbstackLambdaToDynamoDBDynamoTableE17E5733",
               "Arn"
             ]
-          },
+          }],
         },
         {
           Action: [
@@ -246,12 +246,12 @@ test('check lambda function policy ', () => {
             "dynamodb:GetShardIterator",
           ],
           Effect: "Allow",
-          Resource: {
+          Resource: [{
             "Fn::GetAtt": [
               "testiotlambdadynamodbstackLambdaToDynamoDBDynamoTableE17E5733",
               "Arn"
             ]
-          },
+          }],
         }
       ],
       Version: "2012-10-17"
