@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { Template } from 'aws-cdk-lib/assertions';
+import { Match, Template } from 'aws-cdk-lib/assertions';
 import * as defaults from '@aws-solutions-constructs/core';
 import * as cdk from "aws-cdk-lib";
 import { FargateToDynamoDB, FargateToDynamoDBProps } from "../lib";
@@ -89,12 +89,12 @@ test('New service/new table, public API, new VPC', () => {
             "dynamodb:DescribeTable"
           ],
           Effect: "Allow",
-          Resource: {
+          Resource: [{
             "Fn::GetAtt": [
               "testconstructDynamoTable67BDAFC5",
               "Arn"
             ]
-          },
+          }],
         },
         {
           Action: [
@@ -102,12 +102,12 @@ test('New service/new table, public API, new VPC', () => {
             "dynamodb:GetShardIterator",
           ],
           Effect: "Allow",
-          Resource: {
+          Resource: [{
             "Fn::GetAtt": [
               "testconstructDynamoTable67BDAFC5",
               "Arn"
             ]
-          },
+          }],
         }
       ]
     }
@@ -188,6 +188,8 @@ test('New service/new table, private API, new VPC', () => {
   });
 
   const template = Template.fromStack(stack);
+  defaults.printWarning(`\n\n==dbg==\n${JSON.stringify(template)}\n\n==dbg===\n\n`);
+
   template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',
     DesiredCount: 2,
@@ -219,12 +221,12 @@ test('New service/new table, private API, new VPC', () => {
             "dynamodb:DescribeTable"
           ],
           Effect: "Allow",
-          Resource: {
+          Resource: [{
             "Fn::GetAtt": [
               "testconstructDynamoTable67BDAFC5",
               "Arn"
             ]
-          },
+          }],
         },
         {
           Action: [
@@ -232,12 +234,12 @@ test('New service/new table, private API, new VPC', () => {
             "dynamodb:GetShardIterator",
           ],
           Effect: "Allow",
-          Resource: {
+          Resource: [{
             "Fn::GetAtt": [
               "testconstructDynamoTable67BDAFC5",
               "Arn"
             ]
-          },
+          }],
         }
       ]
     }
@@ -312,12 +314,12 @@ test('New service/existing table, private API, existing VPC', () => {
         {
           Action: "dynamodb:*",
           Effect: "Allow",
-          Resource: {
+          Resource: [{
             "Fn::GetAtt": [
               "MyTable794EDED1",
               "Arn"
             ]
-          }
+          }]
         }
       ]
     }
@@ -456,12 +458,12 @@ test('Existing service/new table, public API, existing VPC', () => {
             "dynamodb:DescribeTable"
           ],
           Effect: "Allow",
-          Resource: {
+          Resource: [{
             "Fn::GetAtt": [
               "testconstructDynamoTable67BDAFC5",
               "Arn"
             ]
-          },
+          }],
         },
         {
           Action: [
@@ -469,12 +471,12 @@ test('Existing service/new table, public API, existing VPC', () => {
             "dynamodb:GetShardIterator",
           ],
           Effect: "Allow",
-          Resource: {
+          Resource: [{
             "Fn::GetAtt": [
               "testconstructDynamoTable67BDAFC5",
               "Arn"
             ]
-          },
+          }],
         }
       ]
     }
@@ -520,7 +522,7 @@ test('Existing service/existing table, private API, existing VPC', () => {
     }
   });
 
-  const existingTable = new dynamodb.Table(stack, 'MyTablet', {
+  const existingTable = new dynamodb.Table(stack, 'MyTable', {
     tableName,
     partitionKey: {
       name: 'id',
@@ -550,7 +552,7 @@ test('Existing service/existing table, private API, existing VPC', () => {
             Name: "DYNAMODB_TABLE_ARN",
             Value: {
               "Fn::GetAtt": [
-                "MyTabletD7ADAF4F",
+                Match.stringLikeRegexp("MyTable"),
                 "Arn"
               ]
             }
@@ -558,7 +560,7 @@ test('Existing service/existing table, private API, existing VPC', () => {
           {
             Name: "DYNAMODB_TABLE_NAME",
             Value: {
-              Ref: "MyTabletD7ADAF4F"
+              Ref: Match.stringLikeRegexp("MyTable")
             }
           }
         ],
@@ -606,12 +608,12 @@ test('Existing service/existing table, private API, existing VPC', () => {
             "dynamodb:DescribeTable"
           ],
           Effect: "Allow",
-          Resource: {
+          Resource: [{
             "Fn::GetAtt": [
-              "MyTabletD7ADAF4F",
+              Match.stringLikeRegexp("MyTable"),
               "Arn"
             ]
-          },
+          }],
         }
       ]
     }
@@ -657,7 +659,7 @@ test('test error invalid table permission', () => {
     }
   });
 
-  const existingTable = new dynamodb.Table(stack, 'MyTablet', {
+  const existingTable = new dynamodb.Table(stack, 'MyTable', {
     tableName,
     partitionKey: {
       name: 'id',
@@ -695,7 +697,7 @@ test('test that DDB input args are getting checked', () => {
     }
   });
 
-  const existingTable = new dynamodb.Table(stack, 'MyTablet', {
+  const existingTable = new dynamodb.Table(stack, 'MyTable', {
     tableName,
     partitionKey: {
       name: 'id',
