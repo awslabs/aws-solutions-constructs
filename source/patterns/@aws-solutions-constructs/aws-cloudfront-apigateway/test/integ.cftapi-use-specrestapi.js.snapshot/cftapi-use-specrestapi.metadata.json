@@ -1,0 +1,264 @@
+{
+  "/cftapi-use-specrestapi/ApiLambdaFunction": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "functionName": "*",
+        "runtime": "*",
+        "handler": "*",
+        "code": "*"
+      }
+    }
+  ],
+  "/cftapi-use-specrestapi/SpecRestApi": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "apiDefinition": "*"
+      }
+    }
+  ],
+  "/cftapi-use-specrestapi/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/cftapi-use-specrestapi/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/cftapi-use-specrestapi/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/cftapi-use-specrestapi/ApiLambdaFunction/ServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "managedPolicies": [
+          {
+            "managedPolicyArn": "*"
+          }
+        ]
+      }
+    }
+  ],
+  "/cftapi-use-specrestapi/ApiLambdaFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ApiLambdaFunction69BCE939"
+    }
+  ],
+  "/cftapi-use-specrestapi/ApiLambdaFunction/ApiGatewayInvoke": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ApiLambdaFunctionApiGatewayInvokeCCD45FD6"
+    }
+  ],
+  "/cftapi-use-specrestapi/SpecRestApi/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SpecRestApiB69335EA"
+    }
+  ],
+  "/cftapi-use-specrestapi/SpecRestApi/Default": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/cftapi-use-specrestapi/SpecRestApi/Deployment": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "description": "*",
+        "api": "*",
+        "retainDeployments": "*"
+      }
+    }
+  ],
+  "/cftapi-use-specrestapi/SpecRestApi/DeploymentStage.prod": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "deployment": "*"
+      }
+    }
+  ],
+  "/cftapi-use-specrestapi/SpecRestApi/Endpoint": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SpecRestApiEndpointB31779A5"
+    }
+  ],
+  "/cftapi-use-specrestapi/test-cloudfront-apigateway/SetHttpSecurityHeaders": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "functionName": "*",
+        "code": "*"
+      }
+    }
+  ],
+  "/cftapi-use-specrestapi/test-cloudfront-apigateway/CloudfrontLoggingBucketAccessLog": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "retain",
+        "enforceSSL": true
+      }
+    }
+  ],
+  "/cftapi-use-specrestapi/test-cloudfront-apigateway/CloudfrontLoggingBucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "destroy",
+        "enforceSSL": true,
+        "autoDeleteObjects": true,
+        "objectOwnership": "ObjectWriter",
+        "serverAccessLogsBucket": "*"
+      }
+    }
+  ],
+  "/cftapi-use-specrestapi/test-cloudfront-apigateway/CloudFrontDistribution": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "defaultBehavior": {
+          "origin": "*",
+          "functionAssociations": [
+            {
+              "eventType": "viewer-response",
+              "function": "*"
+            }
+          ],
+          "viewerProtocolPolicy": "redirect-to-https"
+        },
+        "enableLogging": true,
+        "logBucket": "*"
+      }
+    }
+  ],
+  "/cftapi-use-specrestapi/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+    }
+  ],
+  "/cftapi-use-specrestapi/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+    }
+  ],
+  "/cftapi-use-specrestapi/ApiLambdaFunction/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ApiLambdaFunctionServiceRoleC4307844"
+    }
+  ],
+  "/cftapi-use-specrestapi/SpecRestApi/Deployment/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SpecRestApiDeployment33C0029Aef6a0d56ca5e7d88309ebf32f4553012"
+    }
+  ],
+  "/cftapi-use-specrestapi/SpecRestApi/DeploymentStage.prod/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SpecRestApiDeploymentStageprod6BB55B6A"
+    }
+  ],
+  "/cftapi-use-specrestapi/test-cloudfront-apigateway/SetHttpSecurityHeaders/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfrontapigatewaySetHttpSecurityHeadersD8DBA642"
+    }
+  ],
+  "/cftapi-use-specrestapi/test-cloudfront-apigateway/CloudfrontLoggingBucketAccessLog/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfrontapigatewayCloudfrontLoggingBucketAccessLog4D9DC9FB"
+    }
+  ],
+  "/cftapi-use-specrestapi/test-cloudfront-apigateway/CloudfrontLoggingBucketAccessLog/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/cftapi-use-specrestapi/test-cloudfront-apigateway/CloudfrontLoggingBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfrontapigatewayCloudfrontLoggingBucket9811F6E8"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/cftapi-use-specrestapi/test-cloudfront-apigateway/CloudfrontLoggingBucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/cftapi-use-specrestapi/test-cloudfront-apigateway/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/cftapi-use-specrestapi/test-cloudfront-apigateway/CloudFrontDistribution/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfrontapigatewayCloudFrontDistribution159820CC"
+    }
+  ],
+  "/cftapi-use-specrestapi/test-cloudfront-apigateway/CloudfrontLoggingBucketAccessLog/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfrontapigatewayCloudfrontLoggingBucketAccessLogPolicy1110B389"
+    }
+  ],
+  "/cftapi-use-specrestapi/test-cloudfront-apigateway/CloudfrontLoggingBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfrontapigatewayCloudfrontLoggingBucketPolicyAA14EB71"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/cftapi-use-specrestapi/test-cloudfront-apigateway/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfrontapigatewayCloudfrontLoggingBucketAutoDeleteObjectsCustomResourceEE183292"
+    }
+  ]
+}
