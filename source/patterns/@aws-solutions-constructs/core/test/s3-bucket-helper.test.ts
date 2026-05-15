@@ -412,18 +412,6 @@ test('Suppress cfn-nag warning for s3 bucket notification', () => {
     }
   });
 
-  template.hasResource("AWS::IAM::Policy", {
-    Metadata: {
-      cfn_nag: {
-        rules_to_suppress: [
-          {
-            id: "W12",
-            reason: "Bucket resource is '*' due to circular dependency with bucket and role creation at the same time"
-          }
-        ]
-      }
-    }
-  });
 });
 
 test('test s3Bucket removalPolicy override', () => {

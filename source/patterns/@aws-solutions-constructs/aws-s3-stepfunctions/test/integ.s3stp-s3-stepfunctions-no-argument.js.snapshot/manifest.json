@@ -1,5 +1,5 @@
 {
-  "version": "48.0.0",
+  "version": "53.0.0",
   "artifacts": {
     "s3stps3stepfunctionsnoargumentIntegDefaultTestDeployAssertB7C63989.assets": {
       "type": "cdk:asset-manifest",
@@ -33,20 +33,7 @@
       "dependencies": [
         "s3stps3stepfunctionsnoargumentIntegDefaultTestDeployAssertB7C63989.assets"
       ],
-      "metadata": {
-        "/s3stp-s3-stepfunctions-no-argument/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "s3stps3stepfunctionsnoargumentIntegDefaultTestDeployAssertB7C63989.metadata.json",
       "displayName": "s3stp-s3-stepfunctions-no-argument/Integ/DefaultTest/DeployAssert"
     },
     "s3stp-s3-stepfunctions-no-argument.assets": {
@@ -66,7 +53,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f9609142cc0069cceb9b37fda764fb652e75504dbae5efdb9fee2f068dab82c8.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ff8b2907f7124fdd3f440081a3f7d944a20ac57ef00365e8f9790b9f6c0a43cb.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -81,639 +68,7 @@
       "dependencies": [
         "s3stp-s3-stepfunctions-no-argument.assets"
       ],
-      "metadata": {
-        "/s3stp-s3-stepfunctions-no-argument/lambdas3stp-test": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "code": "*",
-              "runtime": "*",
-              "handler": "*"
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/lambdas3stp-test/ServiceRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              },
-              "managedPolicies": [
-                {
-                  "managedPolicyArn": "*"
-                }
-              ]
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/lambdas3stp-test/ServiceRole/ImportServiceRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/lambdas3stp-test/ServiceRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lambdas3stptestServiceRoleF17BB6C7"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/lambdas3stp-test/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lambdas3stptest9FBDC6CE"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/S3LoggingBucket": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "S3_MANAGED",
-              "versioned": true,
-              "blockPublicAccess": "*",
-              "removalPolicy": "destroy",
-              "enforceSSL": true,
-              "autoDeleteObjects": true
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/S3LoggingBucket/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3stepfunctionsconstructS3LoggingBucket706AEC25"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/S3LoggingBucket/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "bucket": "*"
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/S3LoggingBucket/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3stepfunctionsconstructS3LoggingBucketPolicy4FEACD99"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/S3LoggingBucket/AutoDeleteObjectsCustomResource": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3stepfunctionsconstructS3LoggingBucketAutoDeleteObjectsCustomResource3223C39A"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/S3Bucket": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "S3_MANAGED",
-              "versioned": true,
-              "blockPublicAccess": "*",
-              "removalPolicy": "destroy",
-              "enforceSSL": true,
-              "lifecycleRules": [
-                {
-                  "noncurrentVersionTransitions": [
-                    {
-                      "storageClass": "*"
-                    }
-                  ]
-                }
-              ],
-              "serverAccessLogsBucket": "*",
-              "autoDeleteObjects": true,
-              "eventBridgeEnabled": true
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addLifecycleRule": [
-                {
-                  "noncurrentVersionTransitions": [
-                    {
-                      "storageClass": "*"
-                    }
-                  ]
-                },
-                "*",
-                "*"
-              ]
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/S3Bucket/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3stepfunctionsconstructS3Bucket78CA0724"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/S3Bucket/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "bucket": "*"
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/S3Bucket/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3stepfunctionsconstructS3BucketPolicyC7A413B9"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/S3Bucket/AutoDeleteObjectsCustomResource": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3stepfunctionsconstructS3BucketAutoDeleteObjectsCustomResource1FCBE949"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/S3Bucket/Notifications/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3stepfunctionsconstructS3BucketNotificationsD6B8ACDA"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/StateMachineLogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "retention": 9999,
-              "removalPolicy": "destroy",
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/StateMachineLogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3stepfunctionsconstructtests3stepfunctionsconstructeventrulestepfunctionconstructStateMachineLogGroupE86C2CF5"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/StateMachine": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logs": {
-                "destination": "*",
-                "level": "ERROR"
-              },
-              "definitionBody": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToRolePolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToRolePolicy": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/StateMachine/Role": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/StateMachine/Role/ImportRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/StateMachine/Role/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3stepfunctionsconstructtests3stepfunctionsconstructeventrulestepfunctionconstructStateMachineRole29FAFE92"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/StateMachine/Role/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/StateMachine/Role/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3stepfunctionsconstructtests3stepfunctionsconstructeventrulestepfunctionconstructStateMachineRoleDefaultPolicy0E2A1A34"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/StateMachine/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3stepfunctionsconstructtests3stepfunctionsconstructeventrulestepfunctionconstructStateMachineCC5D0DD7"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/ExecutionFailedAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/ExecutionFailedAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3stepfunctionsconstructtests3stepfunctionsconstructeventrulestepfunctionconstructExecutionFailedAlarm511B7A93"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/ExecutionThrottledAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/ExecutionThrottledAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3stepfunctionsconstructtests3stepfunctionsconstructeventrulestepfunctionconstructExecutionThrottledAlarmF97ADDFF"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/ExecutionAbortedAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/ExecutionAbortedAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3stepfunctionsconstructtests3stepfunctionsconstructeventrulestepfunctionconstructExecutionAbortedAlarm8B04A073"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/EventsRuleRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/EventsRuleRole/ImportEventsRuleRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/EventsRuleRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3stepfunctionsconstructtests3stepfunctionsconstructeventrulestepfunctionconstructEventsRuleRoleF724FFA6"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/EventsRuleRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/EventsRuleRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3stepfunctionsconstructtests3stepfunctionsconstructeventrulestepfunctionconstructEventsRuleRoleDefaultPolicyDD60D2A3"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/EventsRule": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "targets": "*",
-              "eventBus": "*",
-              "eventPattern": {
-                "source": "*",
-                "detailType": "*",
-                "detail": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addEventPattern": [
-                {
-                  "source": "*",
-                  "detailType": "*",
-                  "detail": "*"
-                }
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addTarget": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/test-s3-stepfunctions-construct/test-s3-stepfunctions-construct-event-rule-step-function-construct/EventsRule/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3stepfunctionsconstructtests3stepfunctionsconstructeventrulestepfunctionconstructEventsRule35BD8569"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
-          {
-            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
-            "data": true
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addManagedPolicy": [
-                {
-                  "managedPolicyArn": "*"
-                }
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/ImportRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/s3stp-s3-stepfunctions-no-argument/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "s3stp-s3-stepfunctions-no-argument.metadata.json",
       "displayName": "s3stp-s3-stepfunctions-no-argument"
     },
     "Tree": {
@@ -728,6 +83,7 @@
         "module": "aws-cdk-lib",
         "flags": {
           "@aws-cdk/aws-signer:signingProfileNamePassedToCfn": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "Pass signingProfileName to CfnSigningProfile"
           },
@@ -746,6 +102,7 @@
             }
           },
           "@aws-cdk/aws-ecs-patterns:secGroupsDisablesImplicitOpenListener": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "Disable implicit openListener when custom security groups are provided"
           },
@@ -1011,6 +368,11 @@
             "recommendedValue": true,
             "explanation": "When enabled, nodegroupName attribute of the provisioned EKS NodeGroup will not have the cluster name prefix."
           },
+          "@aws-cdk/aws-eks:useNativeOidcProvider": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, EKS V2 clusters will use the native OIDC provider resource AWS::IAM::OIDCProvider instead of creating the OIDCProvider with a custom resource (iam.OpenIDConnectProvider)."
+          },
           "@aws-cdk/aws-ec2:ebsDefaultGp3Volume": {
             "userValue": true,
             "recommendedValue": true,
@@ -1042,16 +404,6 @@
             "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, stack tags need to be assigned explicitly on a Stack."
-          },
-          "@aws-cdk/aws-ecs:enableImdsBlockingDeprecatedFeature": {
-            "userValue": false,
-            "recommendedValue": false,
-            "explanation": "When set to true along with canContainersAccessInstanceRole=false in ECS cluster, new updated commands will be added to UserData to block container accessing IMDS. **Applicable to Linux only. IMPORTANT: See [details.](#aws-cdkaws-ecsenableImdsBlockingDeprecatedFeature)**"
-          },
-          "@aws-cdk/aws-ecs:disableEcsImdsBlocking": {
-            "userValue": true,
-            "recommendedValue": true,
-            "explanation": "When set to true, CDK synth will throw exception if canContainersAccessInstanceRole is false. **IMPORTANT: See [details.](#aws-cdkaws-ecsdisableEcsImdsBlocking)**"
           },
           "@aws-cdk/aws-ecs:reduceEc2FargateCloudWatchPermissions": {
             "userValue": true,
@@ -1198,6 +550,7 @@
             "explanation": "When enabled, CDK creates and manages loggroup for the lambda function"
           },
           "@aws-cdk/aws-elasticloadbalancingv2:networkLoadBalancerWithSecurityGroupByDefault": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, Network Load Balancer will be created with a security group by default."
           },
@@ -1209,12 +562,39 @@
             }
           },
           "@aws-cdk/aws-ecs-patterns:uniqueTargetGroupId": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, ECS patterns will generate unique target group IDs to prevent conflicts during load balancer replacement"
+          },
+          "@aws-cdk/aws-route53-patterns:useDistribution": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use the `Distribution` resource instead of `CloudFrontWebDistribution`"
+          },
+          "@aws-cdk/aws-cloudfront:defaultFunctionRuntimeV2_0": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use cloudfront-js-2.0 as the default runtime for CloudFront Functions"
+          },
+          "@aws-cdk/aws-elasticloadbalancingv2:usePostQuantumTlsPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, HTTPS/TLS listeners use post-quantum TLS policy by default"
+          },
+          "@aws-cdk/core:automaticL1Traits": {
+            "recommendedValue": true,
+            "explanation": "Automatically use the default L1 traits for L1 constructs`",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-batch:defaultToAL2023": {
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default imageType for EC2 Batch compute environments instead of the deprecated AL2"
           }
         }
       }
     }
   },
-  "minimumCliVersion": "2.1021.0"
+  "minimumCliVersion": "2.1117.0"
 }

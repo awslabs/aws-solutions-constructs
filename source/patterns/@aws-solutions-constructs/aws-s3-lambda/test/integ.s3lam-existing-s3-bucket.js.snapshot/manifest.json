@@ -1,5 +1,5 @@
 {
-  "version": "52.0.0",
+  "version": "53.0.0",
   "artifacts": {
     "s3lamexistings3bucketIntegDefaultTestDeployAssert7738D7BA.assets": {
       "type": "cdk:asset-manifest",
@@ -33,20 +33,7 @@
       "dependencies": [
         "s3lamexistings3bucketIntegDefaultTestDeployAssert7738D7BA.assets"
       ],
-      "metadata": {
-        "/s3lam-existing-s3-bucket/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "s3lamexistings3bucketIntegDefaultTestDeployAssert7738D7BA.metadata.json",
       "displayName": "s3lam-existing-s3-bucket/Integ/DefaultTest/DeployAssert"
     },
     "s3lam-existing-s3-bucket.assets": {
@@ -66,7 +53,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/7868a216b6fd36dc93c4f1612580cf4eb707ddc373cdecbcafb7f6438be6e1f2.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3b57c00e667572466fc4fad1df27fde90866741b96deeea51ccbdb649410fc45.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -81,334 +68,7 @@
       "dependencies": [
         "s3lam-existing-s3-bucket.assets"
       ],
-      "metadata": {
-        "/s3lam-existing-s3-bucket/scrapBucketLog": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "versioned": true,
-              "removalPolicy": "destroy",
-              "autoDeleteObjects": true,
-              "encryption": "S3_MANAGED",
-              "enforceSSL": true
-            }
-          }
-        ],
-        "/s3lam-existing-s3-bucket/scrapBucketLog/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "scrapBucketLog7B53B25C"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/scrapBucketLog/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "bucket": "*"
-            }
-          }
-        ],
-        "/s3lam-existing-s3-bucket/scrapBucketLog/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "scrapBucketLogPolicy2972C573"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/scrapBucketLog/AutoDeleteObjectsCustomResource": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/scrapBucketLog/AutoDeleteObjectsCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "scrapBucketLogAutoDeleteObjectsCustomResource307F3D47"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
-          {
-            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
-            "data": true
-          }
-        ],
-        "/s3lam-existing-s3-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/scrapBucket": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "versioned": true,
-              "removalPolicy": "destroy",
-              "autoDeleteObjects": true,
-              "encryption": "S3_MANAGED",
-              "enforceSSL": true,
-              "serverAccessLogsBucket": "*"
-            }
-          }
-        ],
-        "/s3lam-existing-s3-bucket/scrapBucket/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "scrapBucketB11863B7"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/scrapBucket/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "bucket": "*"
-            }
-          }
-        ],
-        "/s3lam-existing-s3-bucket/scrapBucket/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "scrapBucketPolicy189B0607"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/scrapBucket/AutoDeleteObjectsCustomResource": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/scrapBucket/AutoDeleteObjectsCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/scrapBucket/Notifications/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "scrapBucketNotifications065035E3"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/scrapBucket/AllowBucketNotificationsTos3lamexistings3buckettests3lambdaLambdaFunctionCA1AFC4C": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "scrapBucketAllowBucketNotificationsTos3lamexistings3buckettests3lambdaLambdaFunctionCA1AFC4CBBE7A87C"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/test-s3-lambda/LambdaFunctionServiceRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              },
-              "inlinePolicies": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/s3lam-existing-s3-bucket/test-s3-lambda/LambdaFunctionServiceRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3lambdaLambdaFunctionServiceRoleA74F4427"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/test-s3-lambda/LambdaFunction": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "role": "*",
-              "tracing": "Active",
-              "code": "*",
-              "runtime": "*",
-              "handler": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addEnvironment": [
-                "*",
-                "*",
-                {
-                  "removeInEdge": true
-                }
-              ]
-            }
-          }
-        ],
-        "/s3lam-existing-s3-bucket/test-s3-lambda/LambdaFunction/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3lambdaLambdaFunctionB56B7023"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/test-s3-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/s3lam-existing-s3-bucket/test-s3-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3lambdaLambdaFunctioninlinePolicyAddedToExecutionRole0D4909C11"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addManagedPolicy": [
-                {
-                  "managedPolicyArn": "*"
-                }
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/s3lam-existing-s3-bucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/s3lam-existing-s3-bucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/s3lam-existing-s3-bucket/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "s3lam-existing-s3-bucket.metadata.json",
       "displayName": "s3lam-existing-s3-bucket"
     },
     "Tree": {
@@ -709,6 +369,7 @@
             "explanation": "When enabled, nodegroupName attribute of the provisioned EKS NodeGroup will not have the cluster name prefix."
           },
           "@aws-cdk/aws-eks:useNativeOidcProvider": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, EKS V2 clusters will use the native OIDC provider resource AWS::IAM::OIDCProvider instead of creating the OIDCProvider with a custom resource (iam.OpenIDConnectProvider)."
           },
@@ -910,16 +571,30 @@
             "recommendedValue": true,
             "explanation": "Use the `Distribution` resource instead of `CloudFrontWebDistribution`"
           },
+          "@aws-cdk/aws-cloudfront:defaultFunctionRuntimeV2_0": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use cloudfront-js-2.0 as the default runtime for CloudFront Functions"
+          },
+          "@aws-cdk/aws-elasticloadbalancingv2:usePostQuantumTlsPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, HTTPS/TLS listeners use post-quantum TLS policy by default"
+          },
           "@aws-cdk/core:automaticL1Traits": {
             "recommendedValue": true,
             "explanation": "Automatically use the default L1 traits for L1 constructs`",
             "unconfiguredBehavesLike": {
               "v2": true
             }
+          },
+          "@aws-cdk/aws-batch:defaultToAL2023": {
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default imageType for EC2 Batch compute environments instead of the deprecated AL2"
           }
         }
       }
     }
   },
-  "minimumCliVersion": "2.1106.1"
+  "minimumCliVersion": "2.1117.0"
 }
