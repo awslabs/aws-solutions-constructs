@@ -230,6 +230,32 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
+  "tests3sqsS3BucketNotificationsHandlerPolicy1D763F36": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:PutBucketNotification",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "tests3sqsS3BucketFF76CDA6",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "tests3sqsS3BucketNotificationsHandlerPolicy1D763F36",
+    "Roles": [
+     {
+      "Ref": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
+     }
+    ]
+   }
+  },
   "tests3sqsS3BucketNotifications32539247": {
    "Type": "Custom::S3BucketNotifications",
    "Properties": {
@@ -277,6 +303,7 @@
    "DependsOn": [
     "tests3sqsqueuePolicyDDC0D745",
     "tests3sqsqueue810CCE19",
+    "tests3sqsS3BucketNotificationsHandlerPolicy1D763F36",
     "tests3sqsS3BucketPolicyA477877B"
    ]
   },
@@ -588,42 +615,6 @@
     ]
    }
   },
-  "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36": {
-   "Type": "AWS::IAM::Policy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": "s3:PutBucketNotification",
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "tests3sqsS3BucketFF76CDA6",
-         "Arn"
-        ]
-       }
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "PolicyName": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36",
-    "Roles": [
-     {
-      "Ref": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
-     }
-    ]
-   },
-   "Metadata": {
-    "cfn_nag": {
-     "rules_to_suppress": [
-      {
-       "id": "W12",
-       "reason": "Bucket resource is '*' due to circular dependency with bucket and role creation at the same time"
-      }
-     ]
-    }
-   }
-  },
   "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -642,7 +633,6 @@
     "Timeout": 300
    },
    "DependsOn": [
-    "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36",
     "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
    ],
    "Metadata": {

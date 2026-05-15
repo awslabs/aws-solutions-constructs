@@ -188,7 +188,6 @@ test('New service/new table, private API, new VPC', () => {
   });
 
   const template = Template.fromStack(stack);
-  defaults.printWarning(`\n\n==dbg==\n${JSON.stringify(template)}\n\n==dbg===\n\n`);
 
   template.hasResourceProperties("AWS::ECS::Service", {
     LaunchType: 'FARGATE',

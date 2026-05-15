@@ -1,5 +1,5 @@
 {
-  "version": "48.0.0",
+  "version": "53.0.0",
   "artifacts": {
     "s3sqsexistingLoggingBucketIntegDefaultTestDeployAssert9EECE2F2.assets": {
       "type": "cdk:asset-manifest",
@@ -33,20 +33,7 @@
       "dependencies": [
         "s3sqsexistingLoggingBucketIntegDefaultTestDeployAssert9EECE2F2.assets"
       ],
-      "metadata": {
-        "/s3sqs-existingLoggingBucket/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "s3sqsexistingLoggingBucketIntegDefaultTestDeployAssert9EECE2F2.metadata.json",
       "displayName": "s3sqs-existingLoggingBucket/Integ/DefaultTest/DeployAssert"
     },
     "s3sqs-existingLoggingBucket.assets": {
@@ -66,7 +53,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1ec24386df4742ebce2c88928f3303293dc2143115946c975dca7d852541caf2.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4b4c656fe1bd13c2619bc1355d1538894ddcab0e182fba02d2b23cdfa6a25182.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -81,387 +68,7 @@
       "dependencies": [
         "s3sqs-existingLoggingBucket.assets"
       ],
-      "metadata": {
-        "/s3sqs-existingLoggingBucket/scrapBucketLog": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "versioned": true,
-              "removalPolicy": "destroy",
-              "autoDeleteObjects": true,
-              "encryption": "S3_MANAGED",
-              "enforceSSL": true
-            }
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/scrapBucketLog/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "scrapBucketLog7B53B25C"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/scrapBucketLog/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "bucket": "*"
-            }
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/scrapBucketLog/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "scrapBucketLogPolicy2972C573"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/scrapBucketLog/AutoDeleteObjectsCustomResource": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/scrapBucketLog/AutoDeleteObjectsCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "scrapBucketLogAutoDeleteObjectsCustomResource307F3D47"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
-          {
-            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
-            "data": true
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/scrapBucket": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "versioned": true,
-              "removalPolicy": "destroy",
-              "autoDeleteObjects": true,
-              "encryption": "S3_MANAGED",
-              "enforceSSL": true,
-              "serverAccessLogsBucket": "*"
-            }
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/scrapBucket/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "scrapBucketB11863B7"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/scrapBucket/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "bucket": "*"
-            }
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/scrapBucket/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "scrapBucketPolicy189B0607"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/scrapBucket/AutoDeleteObjectsCustomResource": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/scrapBucket/AutoDeleteObjectsCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/S3Bucket": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "S3_MANAGED",
-              "versioned": true,
-              "blockPublicAccess": "*",
-              "removalPolicy": "destroy",
-              "enforceSSL": true,
-              "lifecycleRules": [
-                {
-                  "noncurrentVersionTransitions": [
-                    {
-                      "storageClass": "*"
-                    }
-                  ]
-                }
-              ],
-              "serverAccessLogsBucket": "*",
-              "autoDeleteObjects": true
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addLifecycleRule": [
-                {
-                  "noncurrentVersionTransitions": [
-                    {
-                      "storageClass": "*"
-                    }
-                  ]
-                },
-                "*",
-                "*"
-              ]
-            }
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/S3Bucket/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3sqstempS3Bucket579C3000"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/S3Bucket/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "bucket": "*"
-            }
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/S3Bucket/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3sqstempS3BucketPolicy1DE71896"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/S3Bucket/AutoDeleteObjectsCustomResource": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3sqstempS3BucketAutoDeleteObjectsCustomResource23CDC6A9"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/S3Bucket/Notifications/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3sqstempS3BucketNotificationsE2A27A09"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue-dlq": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "KMS_MANAGED",
-              "fifo": "*"
-            }
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue-dlq/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3sqstempqueuedlq19A93E90"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue-dlq/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "queues": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue-dlq/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3sqstempqueuedlqPolicyBD207BAA"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/'queueKey'": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "enableKeyRotation": true
-            }
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/'queueKey'/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3sqstempqueueKeyC7A07658"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "KMS_MANAGED",
-              "deadLetterQueue": {
-                "maxReceiveCount": "*",
-                "queue": "*"
-              },
-              "encryptionMasterKey": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:warning",
-            "data": "encryption: Automatically changed to QueueEncryption.KMS, was: QueueEncryption.KMS_MANAGED\nWhen encryptionMasterKey is provided, always set `encryption: QueueEncryption.KMS` [ack: @aws-cdk/aws-sqs:queueEncryptionChangedToKMS]"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3sqstempqueueE6526813"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "queues": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/test-s3-sqs-temp/queue/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "tests3sqstempqueuePolicy6C62431A"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addManagedPolicy": [
-                {
-                  "managedPolicyArn": "*"
-                }
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/ImportRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/s3sqs-existingLoggingBucket/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "s3sqs-existingLoggingBucket.metadata.json",
       "displayName": "s3sqs-existingLoggingBucket"
     },
     "Tree": {
@@ -476,6 +83,7 @@
         "module": "aws-cdk-lib",
         "flags": {
           "@aws-cdk/aws-signer:signingProfileNamePassedToCfn": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "Pass signingProfileName to CfnSigningProfile"
           },
@@ -494,6 +102,7 @@
             }
           },
           "@aws-cdk/aws-ecs-patterns:secGroupsDisablesImplicitOpenListener": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "Disable implicit openListener when custom security groups are provided"
           },
@@ -605,7 +214,7 @@
           "@aws-cdk/aws-iam:importedRoleStackSafeDefaultPolicyName": {
             "userValue": true,
             "recommendedValue": true,
-            "explanation": "Enable this feature to by default create default policy names for imported roles that depend on the stack the role is in."
+            "explanation": "Enable this feature to create default policy names for imported roles that depend on the stack the role is in."
           },
           "@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy": {
             "userValue": true,
@@ -759,6 +368,11 @@
             "recommendedValue": true,
             "explanation": "When enabled, nodegroupName attribute of the provisioned EKS NodeGroup will not have the cluster name prefix."
           },
+          "@aws-cdk/aws-eks:useNativeOidcProvider": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, EKS V2 clusters will use the native OIDC provider resource AWS::IAM::OIDCProvider instead of creating the OIDCProvider with a custom resource (iam.OpenIDConnectProvider)."
+          },
           "@aws-cdk/aws-ec2:ebsDefaultGp3Volume": {
             "userValue": true,
             "recommendedValue": true,
@@ -790,16 +404,6 @@
             "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, stack tags need to be assigned explicitly on a Stack."
-          },
-          "@aws-cdk/aws-ecs:enableImdsBlockingDeprecatedFeature": {
-            "userValue": false,
-            "recommendedValue": false,
-            "explanation": "When set to true along with canContainersAccessInstanceRole=false in ECS cluster, new updated commands will be added to UserData to block container accessing IMDS. **Applicable to Linux only. IMPORTANT: See [details.](#aws-cdkaws-ecsenableImdsBlockingDeprecatedFeature)**"
-          },
-          "@aws-cdk/aws-ecs:disableEcsImdsBlocking": {
-            "userValue": true,
-            "recommendedValue": true,
-            "explanation": "When set to true, CDK synth will throw exception if canContainersAccessInstanceRole is false. **IMPORTANT: See [details.](#aws-cdkaws-ecsdisableEcsImdsBlocking)**"
           },
           "@aws-cdk/aws-ecs:reduceEc2FargateCloudWatchPermissions": {
             "userValue": true,
@@ -944,10 +548,53 @@
             "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, CDK creates and manages loggroup for the lambda function"
+          },
+          "@aws-cdk/aws-elasticloadbalancingv2:networkLoadBalancerWithSecurityGroupByDefault": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, Network Load Balancer will be created with a security group by default."
+          },
+          "@aws-cdk/aws-stepfunctions-tasks:httpInvokeDynamicJsonPathEndpoint": {
+            "recommendedValue": true,
+            "explanation": "When enabled, allows using a dynamic apiEndpoint with JSONPath format in HttpInvoke tasks.",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-ecs-patterns:uniqueTargetGroupId": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, ECS patterns will generate unique target group IDs to prevent conflicts during load balancer replacement"
+          },
+          "@aws-cdk/aws-route53-patterns:useDistribution": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use the `Distribution` resource instead of `CloudFrontWebDistribution`"
+          },
+          "@aws-cdk/aws-cloudfront:defaultFunctionRuntimeV2_0": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use cloudfront-js-2.0 as the default runtime for CloudFront Functions"
+          },
+          "@aws-cdk/aws-elasticloadbalancingv2:usePostQuantumTlsPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, HTTPS/TLS listeners use post-quantum TLS policy by default"
+          },
+          "@aws-cdk/core:automaticL1Traits": {
+            "recommendedValue": true,
+            "explanation": "Automatically use the default L1 traits for L1 constructs`",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-batch:defaultToAL2023": {
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default imageType for EC2 Batch compute environments instead of the deprecated AL2"
           }
         }
       }
     }
   },
-  "minimumCliVersion": "2.1021.0"
+  "minimumCliVersion": "2.1117.0"
 }

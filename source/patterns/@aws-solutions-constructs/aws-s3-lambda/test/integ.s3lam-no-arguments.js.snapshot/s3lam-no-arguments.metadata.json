@@ -1,0 +1,524 @@
+{
+  "/s3lam-no-arguments": [
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/test/integ.s3lam-no-arguments.js:27:15)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/s3lam-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/s3lam-no-arguments/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, node internals...",
+        "(no user code in 9007199254740991 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/s3lam-no-arguments/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, node internals...",
+        "(no user code in 9007199254740991 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/LambdaFunctionServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/LambdaFunction": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "role": "*",
+        "tracing": "Active",
+        "code": "*",
+        "runtime": "*",
+        "handler": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*",
+          {
+            "removeInEdge": true
+          }
+        ]
+      }
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/S3LoggingBucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "destroy",
+        "enforceSSL": true,
+        "autoDeleteObjects": true
+      }
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/S3Bucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "destroy",
+        "enforceSSL": true,
+        "lifecycleRules": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          }
+        ],
+        "serverAccessLogsBucket": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addLifecycleRule": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          },
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/s3lam-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Bucket2 in aws-cdk-lib...",
+        "createS3AccessLoggingBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/s3-bucket-helper.js:46:27)",
+        "Object.buildS3Bucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/s3-bucket-helper.js:157:25)",
+        "new S3ToLambda (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/lib/index.js:45:52)",
+        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/test/integ.s3lam-no-arguments.js:43:19)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/s3lam-no-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Bucket2 in aws-cdk-lib...",
+        "createS3AccessLoggingBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/s3-bucket-helper.js:46:27)",
+        "Object.buildS3Bucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/s3-bucket-helper.js:157:25)",
+        "new S3ToLambda (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/lib/index.js:45:52)",
+        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/test/integ.s3lam-no-arguments.js:43:19)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/s3lam-no-arguments/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addManagedPolicy": [
+          {
+            "managedPolicyArn": "*"
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/s3lam-no-arguments/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addEventSource in aws-cdk-lib...",
+        "new S3ToLambda (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/lib/index.js:59:29)",
+        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/test/integ.s3lam-no-arguments.js:43:19)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/LambdaFunctionServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "tests3lambdaLambdaFunctionServiceRoleA74F4427"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Role2 in aws-cdk-lib...",
+        "deployLambdaFunction (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/lambda-helper.js:74:31)",
+        "Object.buildLambdaFunction (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/lambda-helper.js:41:20)",
+        "new S3ToLambda (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/lib/index.js:40:40)",
+        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/test/integ.s3lam-no-arguments.js:43:19)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/LambdaFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "tests3lambdaLambdaFunctionB56B7023"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "deployLambdaFunction (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/lambda-helper.js:118:28)",
+        "Object.buildLambdaFunction (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/lambda-helper.js:41:20)",
+        "new S3ToLambda (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/lib/index.js:40:40)",
+        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/test/integ.s3lam-no-arguments.js:43:19)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/S3LoggingBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "tests3lambdaS3LoggingBucket0C3BBFDC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Bucket2 in aws-cdk-lib...",
+        "createS3AccessLoggingBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/s3-bucket-helper.js:46:27)",
+        "Object.buildS3Bucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/s3-bucket-helper.js:157:25)",
+        "new S3ToLambda (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/lib/index.js:45:52)",
+        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/test/integ.s3lam-no-arguments.js:43:19)",
+        "...node internals..."
+      ]
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/S3LoggingBucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/S3LoggingBucket/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/S3Bucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "tests3lambdaS3BucketBE7C1B8E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Bucket2 in aws-cdk-lib...",
+        "Object.buildS3Bucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/s3-bucket-helper.js:182:22)",
+        "new S3ToLambda (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/lib/index.js:45:52)",
+        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/test/integ.s3lam-no-arguments.js:43:19)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/S3Bucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/S3Bucket/AllowBucketNotificationsTos3lamnoargumentstests3lambdaLambdaFunction7F4DB5A1": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "tests3lambdaS3BucketAllowBucketNotificationsTos3lamnoargumentstests3lambdaLambdaFunction7F4DB5A1D2077883"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addEventSource in aws-cdk-lib...",
+        "new S3ToLambda (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/lib/index.js:59:29)",
+        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/test/integ.s3lam-no-arguments.js:43:19)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/s3lam-no-arguments/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addEventSource in aws-cdk-lib...",
+        "new S3ToLambda (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/lib/index.js:59:29)",
+        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/test/integ.s3lam-no-arguments.js:43:19)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "tests3lambdaLambdaFunctioninlinePolicyAddedToExecutionRole0D4909C11"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Function2 in aws-cdk-lib...",
+        "deployLambdaFunction (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/lambda-helper.js:118:28)",
+        "Object.buildLambdaFunction (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/lambda-helper.js:41:20)",
+        "new S3ToLambda (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/lib/index.js:40:40)",
+        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/test/integ.s3lam-no-arguments.js:43:19)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/S3LoggingBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "tests3lambdaS3LoggingBucketPolicyC349F74C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Bucket2 in aws-cdk-lib...",
+        "createS3AccessLoggingBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/s3-bucket-helper.js:46:27)",
+        "Object.buildS3Bucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/s3-bucket-helper.js:157:25)",
+        "new S3ToLambda (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/lib/index.js:45:52)",
+        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/test/integ.s3lam-no-arguments.js:43:19)",
+        "...node internals..."
+      ]
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "tests3lambdaS3LoggingBucketAutoDeleteObjectsCustomResource323E9779"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Bucket2 in aws-cdk-lib...",
+        "createS3AccessLoggingBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/s3-bucket-helper.js:46:27)",
+        "Object.buildS3Bucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/s3-bucket-helper.js:157:25)",
+        "new S3ToLambda (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/lib/index.js:45:52)",
+        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/test/integ.s3lam-no-arguments.js:43:19)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/S3Bucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "tests3lambdaS3BucketPolicyE0402ABD"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Bucket2 in aws-cdk-lib...",
+        "Object.buildS3Bucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/s3-bucket-helper.js:182:22)",
+        "new S3ToLambda (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/lib/index.js:45:52)",
+        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/test/integ.s3lam-no-arguments.js:43:19)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/S3Bucket/Notifications/HandlerPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/S3Bucket/Notifications/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "tests3lambdaS3BucketNotifications1943E9B3"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addEventSource in aws-cdk-lib...",
+        "new S3ToLambda (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/lib/index.js:59:29)",
+        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/test/integ.s3lam-no-arguments.js:43:19)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/s3lam-no-arguments/test-s3-lambda/S3Bucket/Notifications/HandlerPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "tests3lambdaS3BucketNotificationsHandlerPolicy9A4507C7"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.addEventSource in aws-cdk-lib...",
+        "new S3ToLambda (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/lib/index.js:59:29)",
+        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-lambda/test/integ.s3lam-no-arguments.js:43:19)",
+        "...node internals..."
+      ]
+    }
+  ]
+}

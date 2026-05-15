@@ -414,6 +414,32 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete"
   },
+  "tests3stepfunctionsconstructS3BucketNotificationsHandlerPolicy84AE1142": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:PutBucketNotification",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "tests3stepfunctionsconstructS3Bucket78CA0724",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "tests3stepfunctionsconstructS3BucketNotificationsHandlerPolicy84AE1142",
+    "Roles": [
+     {
+      "Ref": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
+     }
+    ]
+   }
+  },
   "tests3stepfunctionsconstructS3BucketNotificationsD6B8ACDA": {
    "Type": "Custom::S3BucketNotifications",
    "Properties": {
@@ -433,6 +459,7 @@
     "SkipDestinationValidation": false
    },
    "DependsOn": [
+    "tests3stepfunctionsconstructS3BucketNotificationsHandlerPolicy84AE1142",
     "tests3stepfunctionsconstructS3BucketPolicyC7A413B9"
    ]
   },
@@ -871,42 +898,6 @@
     ]
    }
   },
-  "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36": {
-   "Type": "AWS::IAM::Policy",
-   "Properties": {
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": "s3:PutBucketNotification",
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "tests3stepfunctionsconstructS3Bucket78CA0724",
-         "Arn"
-        ]
-       }
-      }
-     ],
-     "Version": "2012-10-17"
-    },
-    "PolicyName": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36",
-    "Roles": [
-     {
-      "Ref": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
-     }
-    ]
-   },
-   "Metadata": {
-    "cfn_nag": {
-     "rules_to_suppress": [
-      {
-       "id": "W12",
-       "reason": "Bucket resource is '*' due to circular dependency with bucket and role creation at the same time"
-      }
-     ]
-    }
-   }
-  },
   "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -925,7 +916,6 @@
     "Timeout": 300
    },
    "DependsOn": [
-    "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36",
     "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
    ],
    "Metadata": {

@@ -16,7 +16,6 @@
  *  or removed outside of a major release. We recommend against calling them directly from client code.
  */
 
-import * as iam from 'aws-cdk-lib/aws-iam';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cdk from 'aws-cdk-lib';
@@ -262,8 +261,6 @@ export function buildS3Bucket(scope: Construct,
  */
 export function addCfnNagS3BucketNotificationRulesToSuppress(stackRoot: cdk.Stack, logicalId: string) {
   const notificationsResourceHandler = stackRoot.node.tryFindChild(logicalId) as lambda.Function;
-  const notificationsResourceHandlerRoleRole = notificationsResourceHandler.node.findChild('Role') as iam.Role;
-  const notificationsResourceHandlerRolePolicy = notificationsResourceHandlerRoleRole.node.findChild('DefaultPolicy') as iam.Policy;
 
   // Extract the CfnFunction from the Function
   const fnResource = notificationsResourceHandler.node.findChild('Resource') as lambda.CfnFunction;
@@ -282,14 +279,6 @@ export function addCfnNagS3BucketNotificationRulesToSuppress(stackRoot: cdk.Stac
     }
   ]);
 
-  // Extract the CfnPolicy from the iam.Policy
-  const policyResource = notificationsResourceHandlerRolePolicy.node.findChild('Resource') as iam.CfnPolicy;
-  addCfnSuppressRules(policyResource, [
-    {
-      id: 'W12',
-      reason: `Bucket resource is '*' due to circular dependency with bucket and role creation at the same time`
-    }
-  ]);
 }
 
 export interface S3Props {
