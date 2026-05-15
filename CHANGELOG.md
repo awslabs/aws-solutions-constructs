@@ -2,17 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.102.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.101.0...v2.102.0) (2026-05-15)
+
+Built on CDK 2.254.0
+
+This addresses [Issue 1477](https://github.com/awslabs/aws-solutions-constructs/issues/1477). This issue was caused by an internal CDK change in CDK v2.252.0. ** Any stack built with CDK v2.252.0 or above should use Solutions Constructs version 2.102.0 or above (this version)
+
 ## [2.101.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.100.1...v2.101.0) (2026-04-07)
 
-Built on CDK 2.48.0
+Built on CDK 2.248.0
 
 ## [2.100.1](https://github.com/awslabs/aws-solutions-constructs/compare/v2.100.0...v2.100.1) (2026-02-24)
 
-Built on CDK 2.39.0
+Built on CDK 2.239.0
 
 ## [2.100.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.99.0...v2.100.0) (2026-02-23)
 
-Built on CDK 2.39.0
+Built on CDK 2.239.0
 
 ### ⚠ BREAKING CHANGES
 
@@ -24,7 +30,7 @@ Built on CDK 2.39.0
 
 ## [2.99.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.98.0...v2.99.0) (2026-02-09)
 
-Built on CDK 2.38.0
+Built on CDK 2.238.0
 
 ### Features
 
