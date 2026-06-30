@@ -1,5 +1,5 @@
 {
-  "version": "45.0.0",
+  "version": "54.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "displayName": "fhss3-pre-existing-logging-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
@@ -15,16 +15,16 @@
         }
       }
     },
-    "dae722c6f034c171d5a6b26dd8ec8e542701196bd05b9b6ec4ca8182ad204a08": {
+    "66cb267ed437b8532152a2f4fbde1e3acc577aae59eca0dd1d24eb619513cf7b": {
       "displayName": "fhss3-pre-existing-logging-bucket Template",
       "source": {
         "path": "fhss3-pre-existing-logging-bucket.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-c663817c": {
+        "current_account-current_region-9c60f98a": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "dae722c6f034c171d5a6b26dd8ec8e542701196bd05b9b6ec4ca8182ad204a08.json",
+          "objectKey": "66cb267ed437b8532152a2f4fbde1e3acc577aae59eca0dd1d24eb619513cf7b.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

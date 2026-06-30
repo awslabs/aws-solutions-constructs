@@ -1,13 +1,4 @@
 {
-  "/s3sqs-existingQueue": [
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/test/integ.s3sqs-existingQueue.js:25:15)",
-        "...node internals..."
-      ]
-    }
-  ],
   "/s3sqs-existingQueue/test-existing-queue-dlq": [
     {
       "type": "aws:cdk:analytics:construct",
@@ -41,13 +32,13 @@
       "type": "aws:cdk:warning",
       "data": "encryption: Automatically changed to QueueEncryption.KMS, was: QueueEncryption.KMS_MANAGED\nWhen encryptionMasterKey is provided, always set `encryption: QueueEncryption.KMS` [ack: @aws-cdk/aws-sqs:queueEncryptionChangedToKMS]",
       "trace": [
-        "Annotations.addMessage (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:2399)",
-        "Annotations.addWarningV2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:1087)",
-        "WrappedClass._determineEncryptionProps (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/node_modules/aws-cdk-lib/aws-sqs/lib/queue.js:1:9336)",
-        "new Queue2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/node_modules/aws-cdk-lib/aws-sqs/lib/queue.js:1:7998)",
-        "new Queue2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/prop-injectable.js:1:855)",
-        "Object.buildQueue (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sqs-helper.js:77:19)",
-        "Object.<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/test/integ.s3sqs-existingQueue.js:27:37)",
+        "Annotations.addMessage (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:3441)",
+        "Annotations.addWarningV2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:2129)",
+        "WrappedClass._determineEncryptionProps (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/aws-sqs/lib/queue.js:1:10374)",
+        "new Queue2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/aws-sqs/lib/queue.js:1:9036)",
+        "new Queue2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/prop-injectable.js:1:855)",
+        "Object.buildQueue (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sqs-helper.js:77:19)",
+        "Object.<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/test/integ.s3sqs-existingQueue.js:27:37)",
         "Module._compile (node:internal/modules/cjs/loader:1706:14)",
         "Object..js (node:internal/modules/cjs/loader:1839:10)",
         "Module.load (node:internal/modules/cjs/loader:1441:32)",
@@ -69,43 +60,18 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "BootstrapVersion"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...aws-cdk-lib, node internals...",
-        "(no user code in 9007199254740991 frames, use --stack-trace-limit to capture more)"
-      ]
     }
   ],
   "/s3sqs-existingQueue/CheckBootstrapVersion": [
     {
       "type": "aws:cdk:logicalId",
       "data": "CheckBootstrapVersion"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...aws-cdk-lib, node internals...",
-        "(no user code in 9007199254740991 frames, use --stack-trace-limit to capture more)"
-      ]
     }
   ],
   "/s3sqs-existingQueue/test-existing-queue-dlq/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "testexistingqueuedlq5ED81675"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Queue2 in aws-cdk-lib...",
-        "buildQueue (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sqs-helper.js:77:19)",
-        "buildDeadLetterQueue (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sqs-helper.js:119:36)",
-        "Object.buildQueue (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sqs-helper.js:36:27)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/test/integ.s3sqs-existingQueue.js:27:37)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sqs-existingQueue/test-existing-queue-dlq/Policy": [
@@ -122,32 +88,12 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "testexistingqueueKey84D97AF0"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Key2 in aws-cdk-lib...",
-        "buildEncryptionKey (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/kms-helper.js:30:12)",
-        "DetermineAppropriateMasterKey (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sqs-helper.js:90:52)",
-        "Object.buildQueue (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sqs-helper.js:69:23)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/test/integ.s3sqs-existingQueue.js:27:37)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sqs-existingQueue/test-existing-queue/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "testexistingqueue42252242"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Queue2 in aws-cdk-lib...",
-        "Object.buildQueue (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sqs-helper.js:77:19)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/test/integ.s3sqs-existingQueue.js:27:37)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sqs-existingQueue/test-existing-queue/Policy": [
@@ -202,32 +148,12 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "Object.buildS3Bucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/s3-bucket-helper.js:182:22)",
-        "new S3ToSqs (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/lib/index.js:51:52)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/test/integ.s3sqs-existingQueue.js:38:19)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sqs-existingQueue/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
     {
       "type": "aws:cdk:logicalId",
       "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "Object.buildS3Bucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/s3-bucket-helper.js:182:22)",
-        "new S3ToSqs (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/lib/index.js:51:52)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/test/integ.s3sqs-existingQueue.js:38:19)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sqs-existingQueue/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role": [
@@ -271,67 +197,24 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...WrappedClass.addEventNotification in aws-cdk-lib...",
-        "/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/lib/index.js:92: (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/lib/index.js:92:4)",
-        "Array.forEach (:)",
-        "new S3ToSqs (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/lib/index.js:92:22)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/test/integ.s3sqs-existingQueue.js:38:19)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sqs-existingQueue/test-existing-queue-dlq/Policy/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "testexistingqueuedlqPolicy8E150C1F"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...WrappedClass.addToResourcePolicy in aws-cdk-lib...",
-        "applySecureQueuePolicy (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sqs-helper.js:137:11)",
-        "buildQueue (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sqs-helper.js:78:5)",
-        "buildDeadLetterQueue (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sqs-helper.js:119:36)",
-        "Object.buildQueue (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sqs-helper.js:36:27)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/test/integ.s3sqs-existingQueue.js:27:37)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sqs-existingQueue/test-existing-queue/Policy/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "testexistingqueuePolicy4D8E287E"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...WrappedClass.addToResourcePolicy in aws-cdk-lib...",
-        "applySecureQueuePolicy (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sqs-helper.js:137:11)",
-        "Object.buildQueue (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sqs-helper.js:78:5)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/test/integ.s3sqs-existingQueue.js:27:37)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sqs-existingQueue/test-s3-sqs/S3Bucket/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3sqsS3BucketFF76CDA6"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "Object.buildS3Bucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/s3-bucket-helper.js:182:22)",
-        "new S3ToSqs (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/lib/index.js:51:52)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/test/integ.s3sqs-existingQueue.js:38:19)",
-        "...node internals..."
-      ]
     },
     {
       "type": "aws:cdk:analytics:mixin",
@@ -358,33 +241,12 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...WrappedClass.addEventNotification in aws-cdk-lib...",
-        "/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/lib/index.js:92: (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/lib/index.js:92:4)",
-        "Array.forEach (:)",
-        "new S3ToSqs (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/lib/index.js:92:22)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/test/integ.s3sqs-existingQueue.js:38:19)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sqs-existingQueue/test-s3-sqs/S3Bucket/Policy/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3sqsS3BucketPolicyA477877B"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "Object.buildS3Bucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/s3-bucket-helper.js:182:22)",
-        "new S3ToSqs (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/lib/index.js:51:52)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/test/integ.s3sqs-existingQueue.js:38:19)",
-        "...node internals..."
-      ]
     },
     {
       "type": "aws:cdk:analytics:mixin",
@@ -397,16 +259,6 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3sqsS3BucketAutoDeleteObjectsCustomResource678AB073"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "Object.buildS3Bucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/s3-bucket-helper.js:182:22)",
-        "new S3ToSqs (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/lib/index.js:51:52)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/test/integ.s3sqs-existingQueue.js:38:19)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sqs-existingQueue/test-s3-sqs/S3Bucket/Notifications/HandlerPolicy": [
@@ -445,34 +297,12 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3sqsS3BucketNotifications32539247"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...WrappedClass.addEventNotification in aws-cdk-lib...",
-        "/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/lib/index.js:92: (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/lib/index.js:92:4)",
-        "Array.forEach (:)",
-        "new S3ToSqs (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/lib/index.js:92:22)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/test/integ.s3sqs-existingQueue.js:38:19)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sqs-existingQueue/test-s3-sqs/S3Bucket/Notifications/HandlerPolicy/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3sqsS3BucketNotificationsHandlerPolicy1D763F36"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...WrappedClass.addEventNotification in aws-cdk-lib...",
-        "/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/lib/index.js:92: (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/lib/index.js:92:4)",
-        "Array.forEach (:)",
-        "new S3ToSqs (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/lib/index.js:92:22)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sqs/test/integ.s3sqs-existingQueue.js:38:19)",
-        "...node internals..."
-      ]
     }
   ]
 }

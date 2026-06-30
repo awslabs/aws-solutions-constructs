@@ -1,5 +1,5 @@
 {
-  "version": "48.0.0",
+  "version": "54.0.0",
   "artifacts": {
     "r53albdeployPrivateApiExistingZoneIntegDefaultTestDeployAssert7A91C53E.assets": {
       "type": "cdk:asset-manifest",
@@ -33,20 +33,7 @@
       "dependencies": [
         "r53albdeployPrivateApiExistingZoneIntegDefaultTestDeployAssert7A91C53E.assets"
       ],
-      "metadata": {
-        "/r53alb-deployPrivateApiExistingZone/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "r53albdeployPrivateApiExistingZoneIntegDefaultTestDeployAssert7A91C53E.metadata.json",
       "displayName": "r53alb-deployPrivateApiExistingZone/Integ/DefaultTest/DeployAssert"
     },
     "r53alb-deployPrivateApiExistingZone.assets": {
@@ -66,7 +53,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/581a997f3ffae856721ae630766f0015ef9c208eaeb725b2b0c43cf6b652634c.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/52fba266f86fc54daeca3e4391568cc8b50d464ea015100dcdd892caf03d3172.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -81,579 +68,7 @@
       "dependencies": [
         "r53alb-deployPrivateApiExistingZone.assets"
       ],
-      "metadata": {
-        "/r53alb-deployPrivateApiExistingZone/Vpc": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "enableDnsHostnames": true,
-              "enableDnsSupport": true,
-              "ipAddresses": "*"
-            }
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "Vpc8378EB38"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PublicSubnet1": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": true,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": true,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {}
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addNatGateway": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PublicSubnet1/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1Subnet5C2D37C4"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PublicSubnet1/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1RouteTable6C95E38E"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PublicSubnet1/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1RouteTableAssociation97140677"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PublicSubnet1/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1DefaultRoute3DA9E72A"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PublicSubnet1/EIP": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1EIPD7E02669"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PublicSubnet1/NATGateway": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1NATGateway4D7517AA"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PublicSubnet2": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": true,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": true,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {}
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addNatGateway": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PublicSubnet2/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2Subnet691E08A3"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PublicSubnet2/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2RouteTable94F7E489"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PublicSubnet2/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2RouteTableAssociationDD5762D8"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PublicSubnet2/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2DefaultRoute97F91067"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PublicSubnet2/EIP": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2EIP3C605A87"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PublicSubnet2/NATGateway": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2NATGateway9182C01D"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PrivateSubnet1": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {}
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PrivateSubnet1/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet1Subnet536B997A"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PrivateSubnet1/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet1RouteTableB2C5B500"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PrivateSubnet1/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet1RouteTableAssociation70C59FA6"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PrivateSubnet1/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet1DefaultRouteBE02A9ED"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PrivateSubnet2": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {}
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PrivateSubnet2/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet2Subnet3788AAA1"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PrivateSubnet2/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet2RouteTableA678073B"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PrivateSubnet2/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet2RouteTableAssociationA89CAD56"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/PrivateSubnet2/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet2DefaultRoute060D2087"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/IGW": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcIGWD7BA715C"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/VPCGW": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcVPCGWBF912B6E"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/RestrictDefaultSecurityGroupCustomResource": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/FlowLog": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "resourceType": "*"
-            }
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/FlowLog/IAMRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "roleName": "*",
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/FlowLog/IAMRole/ImportIAMRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/FlowLog/IAMRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLogIAMRole6A475D41"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/FlowLog/IAMRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/FlowLog/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/FlowLog/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLogLogGroup7B5C56B9"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Vpc/FlowLog/FlowLog": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLog8FF33A73"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
-          {
-            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
-            "data": true
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/new-zone": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "zoneName": "*",
-              "vpc": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "zoneName": "*",
-              "vpc": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {}
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/new-zone/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "newzone1D011936"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/existing-zone-stack/existing-zone-stack-alb": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": "*"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/existing-zone-stack/existing-zone-stack-alb/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "existingzonestackexistingzonestackalbCFB3D7E4"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/existing-zone-stack/existing-zone-stack-alb/SecurityGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "description": "*",
-              "allowAllOutbound": false
-            }
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/existing-zone-stack/existing-zone-stack-alb/SecurityGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "existingzonestackexistingzonestackalbSecurityGroup6F32DCA5"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/existing-zone-stack/existing-zone-stack": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "S3_MANAGED",
-              "versioned": true,
-              "blockPublicAccess": "*",
-              "removalPolicy": "destroy",
-              "enforceSSL": true,
-              "autoDeleteObjects": true
-            }
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/existing-zone-stack/existing-zone-stack/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "existingzonestackEFB9F5B3"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/existing-zone-stack/existing-zone-stack/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "bucket": "*"
-            }
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/existing-zone-stack/existing-zone-stack/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "existingzonestackPolicyFEC9C88E"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/existing-zone-stack/existing-zone-stack/AutoDeleteObjectsCustomResource": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/existing-zone-stack/existing-zone-stack/AutoDeleteObjectsCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "existingzonestackAutoDeleteObjectsCustomResource5A21F306"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/existing-zone-stack/existing-zone-stack-alias": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "target": "*",
-              "zone": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "target": "*",
-              "zone": "*"
-            }
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/existing-zone-stack/existing-zone-stack-alias/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "existingzonestackexistingzonestackalias77D2E65D"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
-          {
-            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
-            "data": true
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/r53alb-deployPrivateApiExistingZone/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "r53alb-deployPrivateApiExistingZone.metadata.json",
       "displayName": "r53alb-deployPrivateApiExistingZone"
     },
     "Tree": {
@@ -668,6 +83,7 @@
         "module": "aws-cdk-lib",
         "flags": {
           "@aws-cdk/aws-signer:signingProfileNamePassedToCfn": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "Pass signingProfileName to CfnSigningProfile"
           },
@@ -686,6 +102,7 @@
             }
           },
           "@aws-cdk/aws-ecs-patterns:secGroupsDisablesImplicitOpenListener": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "Disable implicit openListener when custom security groups are provided"
           },
@@ -951,6 +368,11 @@
             "recommendedValue": true,
             "explanation": "When enabled, nodegroupName attribute of the provisioned EKS NodeGroup will not have the cluster name prefix."
           },
+          "@aws-cdk/aws-eks:useNativeOidcProvider": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, EKS V2 clusters will use the native OIDC provider resource AWS::IAM::OIDCProvider instead of creating the OIDCProvider with a custom resource (iam.OpenIDConnectProvider)."
+          },
           "@aws-cdk/aws-ec2:ebsDefaultGp3Volume": {
             "userValue": true,
             "recommendedValue": true,
@@ -982,16 +404,6 @@
             "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, stack tags need to be assigned explicitly on a Stack."
-          },
-          "@aws-cdk/aws-ecs:enableImdsBlockingDeprecatedFeature": {
-            "userValue": false,
-            "recommendedValue": false,
-            "explanation": "When set to true along with canContainersAccessInstanceRole=false in ECS cluster, new updated commands will be added to UserData to block container accessing IMDS. **Applicable to Linux only. IMPORTANT: See [details.](#aws-cdkaws-ecsenableImdsBlockingDeprecatedFeature)**"
-          },
-          "@aws-cdk/aws-ecs:disableEcsImdsBlocking": {
-            "userValue": true,
-            "recommendedValue": true,
-            "explanation": "When set to true, CDK synth will throw exception if canContainersAccessInstanceRole is false. **IMPORTANT: See [details.](#aws-cdkaws-ecsdisableEcsImdsBlocking)**"
           },
           "@aws-cdk/aws-ecs:reduceEc2FargateCloudWatchPermissions": {
             "userValue": true,
@@ -1138,6 +550,7 @@
             "explanation": "When enabled, CDK creates and manages loggroup for the lambda function"
           },
           "@aws-cdk/aws-elasticloadbalancingv2:networkLoadBalancerWithSecurityGroupByDefault": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, Network Load Balancer will be created with a security group by default."
           },
@@ -1149,12 +562,56 @@
             }
           },
           "@aws-cdk/aws-ecs-patterns:uniqueTargetGroupId": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, ECS patterns will generate unique target group IDs to prevent conflicts during load balancer replacement"
+          },
+          "@aws-cdk/aws-route53-patterns:useDistribution": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use the `Distribution` resource instead of `CloudFrontWebDistribution`"
+          },
+          "@aws-cdk/aws-cloudfront:defaultFunctionRuntimeV2_0": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use cloudfront-js-2.0 as the default runtime for CloudFront Functions"
+          },
+          "@aws-cdk/aws-elasticloadbalancingv2:usePostQuantumTlsPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, HTTPS/TLS listeners use post-quantum TLS policy by default"
+          },
+          "@aws-cdk/core:automaticL1Traits": {
+            "recommendedValue": true,
+            "explanation": "Automatically use the default L1 traits for L1 constructs`",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-batch:defaultToAL2023": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default imageType for EC2 Batch compute environments instead of the deprecated AL2"
+          },
+          "@aws-cdk/aws-eks:defaultToAL2023": {
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default AMI type for EKS managed node groups using non-GPU instance types instead of the deprecated AL2"
+          },
+          "@aws-cdk/core:annotationsInValidationReport": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Include construct annotations (warnings and errors) in the policy validation report"
+          },
+          "@aws-cdk/core:defaultCrossStackReferences": {
+            "recommendedValue": "weak",
+            "explanation": "Controls whether cross-region stack references are strong, weak, or both",
+            "unconfiguredBehavesLike": {
+              "v2": "strong"
+            }
           }
         }
       }
     }
   },
-  "minimumCliVersion": "2.1021.0"
+  "minimumCliVersion": "2.1128.1"
 }

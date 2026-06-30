@@ -1,30 +1,30 @@
 {
-  "version": "50.0.0",
+  "version": "54.0.0",
   "files": {
-    "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
+    "02b51ab524e7bcf8f477de3e71e5f9a72e448301b26ba62e9e75a14f9c55a093": {
       "displayName": "lamevt-deployFunctionWithVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
       "source": {
-        "path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
+        "path": "asset.02b51ab524e7bcf8f477de3e71e5f9a72e448301b26ba62e9e75a14f9c55a093",
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-current_region-2561d6a5": {
+        "current_account-current_region-21e1d885": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip",
+          "objectKey": "02b51ab524e7bcf8f477de3e71e5f9a72e448301b26ba62e9e75a14f9c55a093.zip",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
     },
-    "0b96663bfcfa684fc56b5462098673ba89cacdc5bdba9141bb655d3693c01187": {
+    "817f4e69f9eb558f9f24046374e0bcc024113ea8b05da1038dd1a050886b3ac6": {
       "displayName": "lamevt-deployFunctionWithVpc Template",
       "source": {
         "path": "lamevt-deployFunctionWithVpc.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-6875dd5e": {
+        "current_account-current_region-afe62727": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "0b96663bfcfa684fc56b5462098673ba89cacdc5bdba9141bb655d3693c01187.json",
+          "objectKey": "817f4e69f9eb558f9f24046374e0bcc024113ea8b05da1038dd1a050886b3ac6.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

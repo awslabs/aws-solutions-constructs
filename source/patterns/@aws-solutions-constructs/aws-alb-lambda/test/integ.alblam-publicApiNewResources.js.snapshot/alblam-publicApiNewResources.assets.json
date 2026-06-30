@@ -1,16 +1,16 @@
 {
-  "version": "50.0.0",
+  "version": "54.0.0",
   "files": {
-    "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
+    "02b51ab524e7bcf8f477de3e71e5f9a72e448301b26ba62e9e75a14f9c55a093": {
       "displayName": "alblam-publicApiNewResources/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
       "source": {
-        "path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
+        "path": "asset.02b51ab524e7bcf8f477de3e71e5f9a72e448301b26ba62e9e75a14f9c55a093",
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-us-east-1-b3ca7882": {
+        "current_account-us-east-1-763a9eab": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip",
+          "objectKey": "02b51ab524e7bcf8f477de3e71e5f9a72e448301b26ba62e9e75a14f9c55a093.zip",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }
@@ -31,16 +31,16 @@
         }
       }
     },
-    "f3b106e5367fbbeef0fa248a05703b44163e771ab3f9b530f53453fba7737aba": {
+    "306dd0ca178eacbb73bde7a9fe8adc52809aa2a32b12f2db59a2f6a2350037f5": {
       "displayName": "alblam-publicApiNewResources Template",
       "source": {
         "path": "alblam-publicApiNewResources.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-us-east-1-be292ce0": {
+        "current_account-us-east-1-49716e68": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "f3b106e5367fbbeef0fa248a05703b44163e771ab3f9b530f53453fba7737aba.json",
+          "objectKey": "306dd0ca178eacbb73bde7a9fe8adc52809aa2a32b12f2db59a2f6a2350037f5.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }

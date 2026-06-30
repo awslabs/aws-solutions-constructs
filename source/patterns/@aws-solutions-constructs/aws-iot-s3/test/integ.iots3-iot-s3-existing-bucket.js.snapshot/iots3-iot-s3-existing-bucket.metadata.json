@@ -1,0 +1,228 @@
+{
+  "/iots3-iot-s3-existing-bucket/scrapBucketLog": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "versioned": true,
+        "removalPolicy": "destroy",
+        "autoDeleteObjects": true,
+        "encryption": "S3_MANAGED",
+        "enforceSSL": true
+      }
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/scrapBucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "versioned": true,
+        "removalPolicy": "destroy",
+        "autoDeleteObjects": true,
+        "encryption": "KMS_MANAGED",
+        "enforceSSL": true,
+        "serverAccessLogsBucket": "*"
+      }
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/scrapBucketLog/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "scrapBucketLog7B53B25C"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/scrapBucketLog/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/scrapBucketLog/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/scrapBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "scrapBucketB11863B7"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/scrapBucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/scrapBucket/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/test-iot-s3-integration/iot-actions-role": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/test-iot-s3-integration/IotTopicRule": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiots3integrationIotTopicRule0C8409CE"
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/scrapBucketLog/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "scrapBucketLogPolicy2972C573"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/scrapBucketLog/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "scrapBucketLogAutoDeleteObjectsCustomResource307F3D47"
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/scrapBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "scrapBucketPolicy189B0607"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/scrapBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275"
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/test-iot-s3-integration/iot-actions-role/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiots3integrationiotactionsrole04473665"
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/test-iot-s3-integration/iot-actions-role/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/iots3-iot-s3-existing-bucket/test-iot-s3-integration/iot-actions-role/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiots3integrationiotactionsroleDefaultPolicy735A8FB6"
+    }
+  ]
+}

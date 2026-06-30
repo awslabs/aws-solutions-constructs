@@ -1,0 +1,386 @@
+{
+  "/facvpc-with-cidr-mask-and-endpoints/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "subnetConfiguration": [
+          {
+            "subnetType": "Isolated",
+            "name": "*",
+            "cidrMask": "*"
+          }
+        ]
+      }
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/integ-test-BEDROCK-security-group": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "allowAllOutbound": true
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addIngressRule": [
+          {
+            "canInlineRule": true,
+            "connections": "*",
+            "uniqueId": "*"
+          },
+          {},
+          "*",
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addIngressRule": [
+          {
+            "canInlineRule": true,
+            "connections": "*",
+            "uniqueId": "*"
+          },
+          {},
+          "*",
+          false
+        ]
+      }
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/integ-test-SQS-security-group": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "allowAllOutbound": true
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addIngressRule": [
+          {
+            "canInlineRule": true,
+            "connections": "*",
+            "uniqueId": "*"
+          },
+          {},
+          "*",
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addIngressRule": [
+          {
+            "canInlineRule": true,
+            "connections": "*",
+            "uniqueId": "*"
+          },
+          {},
+          "*",
+          false
+        ]
+      }
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestC226BCDB"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/isolatedSubnet1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/isolatedSubnet2": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/RestrictDefaultSecurityGroupCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/flowlog-test": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "resourceType": "*"
+      }
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/BEDROCK": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "service": {
+          "name": "*",
+          "port": "*",
+          "privateDnsDefault": true
+        },
+        "securityGroups": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/SQS": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "service": {
+          "name": "*",
+          "port": "*",
+          "privateDnsDefault": true
+        },
+        "securityGroups": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/integ-test-BEDROCK-security-group/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestintegtestBEDROCKsecuritygroup5ED290E1"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/integ-test-SQS-security-group/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestintegtestSQSsecuritygroup71442008"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/isolatedSubnet1/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestisolatedSubnet1Subnet5A24123C"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/isolatedSubnet1/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestisolatedSubnet1RouteTable2A4FE9B0"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/isolatedSubnet1/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestisolatedSubnet1RouteTableAssociationE8B86D3B"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/isolatedSubnet2/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestisolatedSubnet2SubnetD8536FF8"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/isolatedSubnet2/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestisolatedSubnet2RouteTable496F73FE"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/isolatedSubnet2/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestisolatedSubnet2RouteTableAssociation32520725"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/RestrictDefaultSecurityGroupCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestRestrictDefaultSecurityGroupCustomResourceAF1F4DBD"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/flowlog-test/IAMRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "roleName": "*",
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/flowlog-test/LogGroup": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/flowlog-test/FlowLog": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestflowlogtestFlowLogE4CFB5D7"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/BEDROCK/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestBEDROCK89799045"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/SQS/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestSQS51FFC3C3"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/flowlog-test/IAMRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestflowlogtestIAMRole890D5973"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/flowlog-test/IAMRole/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/flowlog-test/LogGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestflowlogtestLogGroupF847B474"
+    }
+  ],
+  "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/flowlog-test/IAMRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestflowlogtestIAMRoleDefaultPolicyD28F6B03"
+    }
+  ]
+}

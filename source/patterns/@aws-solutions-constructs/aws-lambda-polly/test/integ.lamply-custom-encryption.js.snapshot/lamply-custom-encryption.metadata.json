@@ -1,0 +1,483 @@
+{
+  "/lamply-custom-encryption/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/lamply-custom-encryption/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/lamply-custom-encryption/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/'test-lambda-polly-custom-encryptionKey'": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "enableKeyRotation": true
+      }
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/SnsTopic": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "masterKey": "*"
+      }
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/test-lambda-polly-custom-encryption-output-bucketS3LoggingBucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "destroy",
+        "enforceSSL": true,
+        "autoDeleteObjects": true
+      }
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/test-lambda-polly-custom-encryption-output-bucketS3Bucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "destroy",
+        "enforceSSL": true,
+        "lifecycleRules": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          }
+        ],
+        "serverAccessLogsBucket": "*",
+        "autoDeleteObjects": true
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addLifecycleRule": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          },
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/LambdaFunctionServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/LambdaFunction": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "role": "*",
+        "tracing": "Active",
+        "timeout": "*",
+        "code": "*",
+        "runtime": "*",
+        "handler": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*",
+          {
+            "removeInEdge": true
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamply-custom-encryption/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+    }
+  ],
+  "/lamply-custom-encryption/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/'test-lambda-polly-custom-encryptionKey'/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollycustomencryptiontestlambdapollycustomencryptionKeyD183AC70"
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/SnsTopic/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollycustomencryptionSnsTopic25956962"
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/SnsTopic/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "topics": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/test-lambda-polly-custom-encryption-output-bucketS3LoggingBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollycustomencryptiontestlambdapollycustomencryptionoutputbucketS3LoggingBucket046A03B3"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/test-lambda-polly-custom-encryption-output-bucketS3LoggingBucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/test-lambda-polly-custom-encryption-output-bucketS3LoggingBucket/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/test-lambda-polly-custom-encryption-output-bucketS3Bucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollycustomencryptiontestlambdapollycustomencryptionoutputbucketS3Bucket041787B0"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/test-lambda-polly-custom-encryption-output-bucketS3Bucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/test-lambda-polly-custom-encryption-output-bucketS3Bucket/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/LambdaFunctionServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollycustomencryptionLambdaFunctionServiceRoleAD0A4A23"
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/LambdaFunctionServiceRole/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/LambdaFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollycustomencryptionLambdaFunction37FC1EB4"
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/LambdaFunction/inlinePolicyAddedToExecutionRole-1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/SnsTopic/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollycustomencryptionSnsTopicPolicyE8A867A0"
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/test-lambda-polly-custom-encryption-output-bucketS3LoggingBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollycustomencryptiontestlambdapollycustomencryptionoutputbucketS3LoggingBucketPolicy46274621"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/test-lambda-polly-custom-encryption-output-bucketS3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollycustomencryptiontestlambdapollycustomencryptionoutputbucketS3LoggingBucketAutoDeleteObjectsCustomResource0F605053"
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/test-lambda-polly-custom-encryption-output-bucketS3Bucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollycustomencryptiontestlambdapollycustomencryptionoutputbucketS3BucketPolicyAAB3AA8A"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/test-lambda-polly-custom-encryption-output-bucketS3Bucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollycustomencryptiontestlambdapollycustomencryptionoutputbucketS3BucketAutoDeleteObjectsCustomResource016C155A"
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollycustomencryptionLambdaFunctionServiceRoleDefaultPolicyB6DA911F"
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollycustomencryptionLambdaFunctioninlinePolicyAddedToExecutionRole09A5B3D3A"
+    }
+  ],
+  "/lamply-custom-encryption/test-lambda-polly-custom-encryption/LambdaFunction/inlinePolicyAddedToExecutionRole-1/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollycustomencryptionLambdaFunctioninlinePolicyAddedToExecutionRole14DC70ACE"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "version": "48.0.0",
+  "version": "54.0.0",
   "artifacts": {
     "faropnexistingresourcesIntegDefaultTestDeployAssert753D5E58.assets": {
       "type": "cdk:asset-manifest",
@@ -33,20 +33,7 @@
       "dependencies": [
         "faropnexistingresourcesIntegDefaultTestDeployAssert753D5E58.assets"
       ],
-      "metadata": {
-        "/faropn-existing-resources/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/faropn-existing-resources/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "faropnexistingresourcesIntegDefaultTestDeployAssert753D5E58.metadata.json",
       "displayName": "faropn-existing-resources/Integ/DefaultTest/DeployAssert"
     },
     "faropn-existing-resources.assets": {
@@ -66,7 +53,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/683c97dc2cfa26db40e07728a92d3a60ce01a02dbe955af968038c07b9b2a836.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/1ac917c4796ed5330ad885b8242902d6031fe64f89536333419516942d9762f5.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -81,1013 +68,7 @@
       "dependencies": [
         "faropn-existing-resources.assets"
       ],
-      "metadata": {
-        "/faropn-existing-resources/Vpc": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "enableDnsHostnames": true,
-              "enableDnsSupport": true,
-              "ipAddresses": "*"
-            }
-          }
-        ],
-        "/faropn-existing-resources/Vpc/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "Vpc8378EB38"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PublicSubnet1": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": true,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": true,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {}
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addNatGateway": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PublicSubnet1/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1Subnet5C2D37C4"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PublicSubnet1/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1RouteTable6C95E38E"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PublicSubnet1/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1RouteTableAssociation97140677"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PublicSubnet1/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1DefaultRoute3DA9E72A"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PublicSubnet1/EIP": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1EIPD7E02669"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PublicSubnet1/NATGateway": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1NATGateway4D7517AA"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PublicSubnet2": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": true,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": true,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {}
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addNatGateway": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PublicSubnet2/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2Subnet691E08A3"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PublicSubnet2/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2RouteTable94F7E489"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PublicSubnet2/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2RouteTableAssociationDD5762D8"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PublicSubnet2/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2DefaultRoute97F91067"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PublicSubnet2/EIP": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2EIP3C605A87"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PublicSubnet2/NATGateway": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2NATGateway9182C01D"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PrivateSubnet1": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {}
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PrivateSubnet1/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet1Subnet536B997A"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PrivateSubnet1/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet1RouteTableB2C5B500"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PrivateSubnet1/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet1RouteTableAssociation70C59FA6"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PrivateSubnet1/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet1DefaultRouteBE02A9ED"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PrivateSubnet2": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {}
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PrivateSubnet2/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet2Subnet3788AAA1"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PrivateSubnet2/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet2RouteTableA678073B"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PrivateSubnet2/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet2RouteTableAssociationA89CAD56"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/PrivateSubnet2/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet2DefaultRoute060D2087"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/IGW": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcIGWD7BA715C"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/VPCGW": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcVPCGWBF912B6E"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/RestrictDefaultSecurityGroupCustomResource": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/FlowLog": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "resourceType": "*"
-            }
-          }
-        ],
-        "/faropn-existing-resources/Vpc/FlowLog/IAMRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "roleName": "*",
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/faropn-existing-resources/Vpc/FlowLog/IAMRole/ImportIAMRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/FlowLog/IAMRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLogIAMRole6A475D41"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/FlowLog/IAMRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/faropn-existing-resources/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/FlowLog/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/FlowLog/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLogLogGroup7B5C56B9"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/FlowLog/FlowLog": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLog8FF33A73"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/ECR_API": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "service": {
-                "name": "*",
-                "port": "*",
-                "privateDnsDefault": true
-              },
-              "securityGroups": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/faropn-existing-resources/Vpc/ECR_API/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcECRAPI9A3B6A2B"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/ECR_DKR": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "service": {
-                "name": "*",
-                "port": "*",
-                "privateDnsDefault": true
-              },
-              "securityGroups": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/faropn-existing-resources/Vpc/ECR_DKR/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcECRDKR604E039F"
-          }
-        ],
-        "/faropn-existing-resources/Vpc/S3": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "service": {
-                "name": "*"
-              }
-            }
-          }
-        ],
-        "/faropn-existing-resources/Vpc/S3/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcS3A5408339"
-          }
-        ],
-        "/faropn-existing-resources/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
-          {
-            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
-            "data": true
-          }
-        ],
-        "/faropn-existing-resources/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
-          }
-        ],
-        "/faropn-existing-resources/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
-          }
-        ],
-        "/faropn-existing-resources/faropn-existing-resources-ECR_API-security-group": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "allowAllOutbound": true
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addIngressRule": [
-                {
-                  "canInlineRule": true,
-                  "connections": "*",
-                  "uniqueId": "*"
-                },
-                {},
-                "*",
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addIngressRule": [
-                {
-                  "canInlineRule": true,
-                  "connections": "*",
-                  "uniqueId": "*"
-                },
-                {},
-                "*",
-                false
-              ]
-            }
-          }
-        ],
-        "/faropn-existing-resources/faropn-existing-resources-ECR_API-security-group/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "faropnexistingresourcesECRAPIsecuritygroup9E21D9FB"
-          }
-        ],
-        "/faropn-existing-resources/faropn-existing-resources-ECR_DKR-security-group": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "allowAllOutbound": true
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addIngressRule": [
-                {
-                  "canInlineRule": true,
-                  "connections": "*",
-                  "uniqueId": "*"
-                },
-                {},
-                "*",
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addIngressRule": [
-                {
-                  "canInlineRule": true,
-                  "connections": "*",
-                  "uniqueId": "*"
-                },
-                {},
-                "*",
-                false
-              ]
-            }
-          }
-        ],
-        "/faropn-existing-resources/faropn-existing-resources-ECR_DKR-security-group/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "faropnexistingresourcesECRDKRsecuritygroupCF68611A"
-          }
-        ],
-        "/faropn-existing-resources/test-cluster": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*"
-            }
-          }
-        ],
-        "/faropn-existing-resources/test-cluster/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testclusterDF8B0D19"
-          }
-        ],
-        "/faropn-existing-resources/test-taskdef": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": "*"
-          }
-        ],
-        "/faropn-existing-resources/test-taskdef/TaskRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          }
-        ],
-        "/faropn-existing-resources/test-taskdef/TaskRole/ImportTaskRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/faropn-existing-resources/test-taskdef/TaskRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testtaskdefTaskRoleB2DEF113"
-          }
-        ],
-        "/faropn-existing-resources/test-taskdef/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testtaskdefF924AD58"
-          }
-        ],
-        "/faropn-existing-resources/test-sg": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "allowAllOutbound": true,
-              "disableInlineRules": false,
-              "vpc": "*",
-              "description": "*"
-            }
-          }
-        ],
-        "/faropn-existing-resources/test-sg/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsg872EB48A"
-          }
-        ],
-        "/faropn-existing-resources/test-service": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/faropn-existing-resources/test-service/Service": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testserviceService2730C249"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/CognitoUserPool": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/CognitoUserPool/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructCognitoUserPoolA4991355"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/CognitoUserPoolClient": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "userPool": "*"
-            }
-          }
-        ],
-        "/faropn-existing-resources/test-construct/CognitoUserPoolClient/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructCognitoUserPoolClient36ACF012"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/CognitoIdentityPool": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructCognitoIdentityPool51EFD08D"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/UserPoolDomain": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructUserPoolDomain6B64F32F"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/CognitoAuthorizedRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              },
-              "inlinePolicies": "*"
-            }
-          }
-        ],
-        "/faropn-existing-resources/test-construct/CognitoAuthorizedRole/ImportCognitoAuthorizedRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/CognitoAuthorizedRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructCognitoAuthorizedRole7BA83790"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/IdentityPoolRoleMapping": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructIdentityPoolRoleMapping1391CBDD"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/CognitoDashboardConfigureRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/faropn-existing-resources/test-construct/CognitoDashboardConfigureRole/ImportCognitoDashboardConfigureRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/CognitoDashboardConfigureRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructCognitoDashboardConfigureRoleFA66EB70"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/CognitoDashboardConfigureRolePolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/faropn-existing-resources/test-construct/CognitoDashboardConfigureRolePolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructCognitoDashboardConfigureRolePolicy3EC6F1C4"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/OpenSearchDomain": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructOpenSearchDomainD2A5B104"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/StatusRedAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/faropn-existing-resources/test-construct/StatusRedAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructStatusRedAlarmFBEA96DF"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/StatusYellowAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/faropn-existing-resources/test-construct/StatusYellowAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructStatusYellowAlarm3B8C3640"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/FreeStorageSpaceTooLowAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/faropn-existing-resources/test-construct/FreeStorageSpaceTooLowAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructFreeStorageSpaceTooLowAlarm08294658"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/IndexWritesBlockedTooHighAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/faropn-existing-resources/test-construct/IndexWritesBlockedTooHighAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructIndexWritesBlockedTooHighAlarm06094A18"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/AutomatedSnapshotFailureTooHighAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/faropn-existing-resources/test-construct/AutomatedSnapshotFailureTooHighAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructAutomatedSnapshotFailureTooHighAlarm29E550A3"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/CPUUtilizationTooHighAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/faropn-existing-resources/test-construct/CPUUtilizationTooHighAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructCPUUtilizationTooHighAlarmD32179B7"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/JVMMemoryPressureTooHighAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/faropn-existing-resources/test-construct/JVMMemoryPressureTooHighAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructJVMMemoryPressureTooHighAlarmFD4175A0"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/MasterCPUUtilizationTooHighAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/faropn-existing-resources/test-construct/MasterCPUUtilizationTooHighAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructMasterCPUUtilizationTooHighAlarmAA50D0A7"
-          }
-        ],
-        "/faropn-existing-resources/test-construct/MasterJVMMemoryPressureTooHighAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/faropn-existing-resources/test-construct/MasterJVMMemoryPressureTooHighAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructMasterJVMMemoryPressureTooHighAlarm5AE37D64"
-          }
-        ],
-        "/faropn-existing-resources/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/faropn-existing-resources/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "faropn-existing-resources.metadata.json",
       "displayName": "faropn-existing-resources"
     },
     "Tree": {
@@ -1102,6 +83,7 @@
         "module": "aws-cdk-lib",
         "flags": {
           "@aws-cdk/aws-signer:signingProfileNamePassedToCfn": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "Pass signingProfileName to CfnSigningProfile"
           },
@@ -1120,6 +102,7 @@
             }
           },
           "@aws-cdk/aws-ecs-patterns:secGroupsDisablesImplicitOpenListener": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "Disable implicit openListener when custom security groups are provided"
           },
@@ -1385,6 +368,11 @@
             "recommendedValue": true,
             "explanation": "When enabled, nodegroupName attribute of the provisioned EKS NodeGroup will not have the cluster name prefix."
           },
+          "@aws-cdk/aws-eks:useNativeOidcProvider": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, EKS V2 clusters will use the native OIDC provider resource AWS::IAM::OIDCProvider instead of creating the OIDCProvider with a custom resource (iam.OpenIDConnectProvider)."
+          },
           "@aws-cdk/aws-ec2:ebsDefaultGp3Volume": {
             "userValue": true,
             "recommendedValue": true,
@@ -1416,16 +404,6 @@
             "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, stack tags need to be assigned explicitly on a Stack."
-          },
-          "@aws-cdk/aws-ecs:enableImdsBlockingDeprecatedFeature": {
-            "userValue": false,
-            "recommendedValue": false,
-            "explanation": "When set to true along with canContainersAccessInstanceRole=false in ECS cluster, new updated commands will be added to UserData to block container accessing IMDS. **Applicable to Linux only. IMPORTANT: See [details.](#aws-cdkaws-ecsenableImdsBlockingDeprecatedFeature)**"
-          },
-          "@aws-cdk/aws-ecs:disableEcsImdsBlocking": {
-            "userValue": true,
-            "recommendedValue": true,
-            "explanation": "When set to true, CDK synth will throw exception if canContainersAccessInstanceRole is false. **IMPORTANT: See [details.](#aws-cdkaws-ecsdisableEcsImdsBlocking)**"
           },
           "@aws-cdk/aws-ecs:reduceEc2FargateCloudWatchPermissions": {
             "userValue": true,
@@ -1572,6 +550,7 @@
             "explanation": "When enabled, CDK creates and manages loggroup for the lambda function"
           },
           "@aws-cdk/aws-elasticloadbalancingv2:networkLoadBalancerWithSecurityGroupByDefault": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, Network Load Balancer will be created with a security group by default."
           },
@@ -1583,12 +562,56 @@
             }
           },
           "@aws-cdk/aws-ecs-patterns:uniqueTargetGroupId": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, ECS patterns will generate unique target group IDs to prevent conflicts during load balancer replacement"
+          },
+          "@aws-cdk/aws-route53-patterns:useDistribution": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use the `Distribution` resource instead of `CloudFrontWebDistribution`"
+          },
+          "@aws-cdk/aws-cloudfront:defaultFunctionRuntimeV2_0": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use cloudfront-js-2.0 as the default runtime for CloudFront Functions"
+          },
+          "@aws-cdk/aws-elasticloadbalancingv2:usePostQuantumTlsPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, HTTPS/TLS listeners use post-quantum TLS policy by default"
+          },
+          "@aws-cdk/core:automaticL1Traits": {
+            "recommendedValue": true,
+            "explanation": "Automatically use the default L1 traits for L1 constructs`",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-batch:defaultToAL2023": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default imageType for EC2 Batch compute environments instead of the deprecated AL2"
+          },
+          "@aws-cdk/aws-eks:defaultToAL2023": {
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default AMI type for EKS managed node groups using non-GPU instance types instead of the deprecated AL2"
+          },
+          "@aws-cdk/core:annotationsInValidationReport": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Include construct annotations (warnings and errors) in the policy validation report"
+          },
+          "@aws-cdk/core:defaultCrossStackReferences": {
+            "recommendedValue": "weak",
+            "explanation": "Controls whether cross-region stack references are strong, weak, or both",
+            "unconfiguredBehavesLike": {
+              "v2": "strong"
+            }
           }
         }
       }
     }
   },
-  "minimumCliVersion": "2.1021.0"
+  "minimumCliVersion": "2.1128.1"
 }

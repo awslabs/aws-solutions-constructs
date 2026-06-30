@@ -1,5 +1,5 @@
 {
-  "version": "48.0.0",
+  "version": "54.0.0",
   "artifacts": {
     "farsnsnewresourcesIntegDefaultTestDeployAssertCC977A5A.assets": {
       "type": "cdk:asset-manifest",
@@ -33,20 +33,7 @@
       "dependencies": [
         "farsnsnewresourcesIntegDefaultTestDeployAssertCC977A5A.assets"
       ],
-      "metadata": {
-        "/farsns-new-resources/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/farsns-new-resources/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "farsnsnewresourcesIntegDefaultTestDeployAssertCC977A5A.metadata.json",
       "displayName": "farsns-new-resources/Integ/DefaultTest/DeployAssert"
     },
     "farsns-new-resources.assets": {
@@ -66,7 +53,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/313acbf14e1a228f850581e59e6fea9ab21c1e84d239e861863646d0125b2715.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1/78d5820b4ed7d7ad8e84bd8b77888cfaae45323e814d21949534307b498388ec.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -81,845 +68,7 @@
       "dependencies": [
         "farsns-new-resources.assets"
       ],
-      "metadata": {
-        "/farsns-new-resources/test-construct/SnsTopic": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "masterKey": "*"
-            }
-          }
-        ],
-        "/farsns-new-resources/test-construct/SnsTopic/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructSnsTopic44188529"
-          }
-        ],
-        "/farsns-new-resources/test-construct/SnsTopic/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "topics": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/farsns-new-resources/test-construct/SnsTopic/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructSnsTopicPolicy72FFD530"
-          }
-        ],
-        "/farsns-new-resources/Vpc": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "enableDnsHostnames": true,
-              "enableDnsSupport": true
-            }
-          }
-        ],
-        "/farsns-new-resources/Vpc/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "Vpc8378EB38"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PublicSubnet1": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": true,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": true,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {}
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addNatGateway": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/farsns-new-resources/Vpc/PublicSubnet1/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1Subnet5C2D37C4"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PublicSubnet1/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1RouteTable6C95E38E"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PublicSubnet1/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1RouteTableAssociation97140677"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PublicSubnet1/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1DefaultRoute3DA9E72A"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PublicSubnet1/EIP": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1EIPD7E02669"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PublicSubnet1/NATGateway": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1NATGateway4D7517AA"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PublicSubnet2": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": true,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": true,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {}
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addNatGateway": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/farsns-new-resources/Vpc/PublicSubnet2/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2Subnet691E08A3"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PublicSubnet2/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2RouteTable94F7E489"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PublicSubnet2/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2RouteTableAssociationDD5762D8"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PublicSubnet2/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2DefaultRoute97F91067"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PublicSubnet2/EIP": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2EIP3C605A87"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PublicSubnet2/NATGateway": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2NATGateway9182C01D"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PrivateSubnet1": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {}
-          }
-        ],
-        "/farsns-new-resources/Vpc/PrivateSubnet1/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet1Subnet536B997A"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PrivateSubnet1/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet1RouteTableB2C5B500"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PrivateSubnet1/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet1RouteTableAssociation70C59FA6"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PrivateSubnet1/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet1DefaultRouteBE02A9ED"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PrivateSubnet2": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {}
-          }
-        ],
-        "/farsns-new-resources/Vpc/PrivateSubnet2/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet2Subnet3788AAA1"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PrivateSubnet2/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet2RouteTableA678073B"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PrivateSubnet2/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet2RouteTableAssociationA89CAD56"
-          }
-        ],
-        "/farsns-new-resources/Vpc/PrivateSubnet2/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet2DefaultRoute060D2087"
-          }
-        ],
-        "/farsns-new-resources/Vpc/IGW": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcIGWD7BA715C"
-          }
-        ],
-        "/farsns-new-resources/Vpc/VPCGW": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcVPCGWBF912B6E"
-          }
-        ],
-        "/farsns-new-resources/Vpc/RestrictDefaultSecurityGroupCustomResource": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/farsns-new-resources/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
-          }
-        ],
-        "/farsns-new-resources/Vpc/FlowLog": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "resourceType": "*"
-            }
-          }
-        ],
-        "/farsns-new-resources/Vpc/FlowLog/IAMRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "roleName": "*",
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/farsns-new-resources/Vpc/FlowLog/IAMRole/ImportIAMRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/farsns-new-resources/Vpc/FlowLog/IAMRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLogIAMRole6A475D41"
-          }
-        ],
-        "/farsns-new-resources/Vpc/FlowLog/IAMRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/farsns-new-resources/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
-          }
-        ],
-        "/farsns-new-resources/Vpc/FlowLog/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/farsns-new-resources/Vpc/FlowLog/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLogLogGroup7B5C56B9"
-          }
-        ],
-        "/farsns-new-resources/Vpc/FlowLog/FlowLog": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLog8FF33A73"
-          }
-        ],
-        "/farsns-new-resources/Vpc/SNS": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "service": {
-                "name": "*",
-                "port": "*",
-                "privateDnsDefault": true
-              },
-              "securityGroups": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/farsns-new-resources/Vpc/SNS/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcSNS5B664381"
-          }
-        ],
-        "/farsns-new-resources/Vpc/ECR_API": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "service": {
-                "name": "*",
-                "port": "*",
-                "privateDnsDefault": true
-              },
-              "securityGroups": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/farsns-new-resources/Vpc/ECR_API/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcECRAPI9A3B6A2B"
-          }
-        ],
-        "/farsns-new-resources/Vpc/ECR_DKR": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "service": {
-                "name": "*",
-                "port": "*",
-                "privateDnsDefault": true
-              },
-              "securityGroups": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/farsns-new-resources/Vpc/ECR_DKR/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcECRDKR604E039F"
-          }
-        ],
-        "/farsns-new-resources/Vpc/S3": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "service": {
-                "name": "*"
-              }
-            }
-          }
-        ],
-        "/farsns-new-resources/Vpc/S3/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcS3A5408339"
-          }
-        ],
-        "/farsns-new-resources/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
-          {
-            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
-            "data": true
-          }
-        ],
-        "/farsns-new-resources/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
-          }
-        ],
-        "/farsns-new-resources/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
-          }
-        ],
-        "/farsns-new-resources/farsns-new-resources-SNS-security-group": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "allowAllOutbound": true
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addIngressRule": [
-                {
-                  "canInlineRule": true,
-                  "connections": "*",
-                  "uniqueId": "*"
-                },
-                {},
-                "*",
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addIngressRule": [
-                {
-                  "canInlineRule": true,
-                  "connections": "*",
-                  "uniqueId": "*"
-                },
-                {},
-                "*",
-                false
-              ]
-            }
-          }
-        ],
-        "/farsns-new-resources/farsns-new-resources-SNS-security-group/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "farsnsnewresourcesSNSsecuritygroup3AD224ED"
-          }
-        ],
-        "/farsns-new-resources/farsns-new-resources-ECR_API-security-group": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "allowAllOutbound": true
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addIngressRule": [
-                {
-                  "canInlineRule": true,
-                  "connections": "*",
-                  "uniqueId": "*"
-                },
-                {},
-                "*",
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addIngressRule": [
-                {
-                  "canInlineRule": true,
-                  "connections": "*",
-                  "uniqueId": "*"
-                },
-                {},
-                "*",
-                false
-              ]
-            }
-          }
-        ],
-        "/farsns-new-resources/farsns-new-resources-ECR_API-security-group/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "farsnsnewresourcesECRAPIsecuritygroup7385C115"
-          }
-        ],
-        "/farsns-new-resources/farsns-new-resources-ECR_DKR-security-group": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "allowAllOutbound": true
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addIngressRule": [
-                {
-                  "canInlineRule": true,
-                  "connections": "*",
-                  "uniqueId": "*"
-                },
-                {},
-                "*",
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addIngressRule": [
-                {
-                  "canInlineRule": true,
-                  "connections": "*",
-                  "uniqueId": "*"
-                },
-                {},
-                "*",
-                false
-              ]
-            }
-          }
-        ],
-        "/farsns-new-resources/farsns-new-resources-ECR_DKR-security-group/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "farsnsnewresourcesECRDKRsecuritygroup4A4713E3"
-          }
-        ],
-        "/farsns-new-resources/test-construct-cluster": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*"
-            }
-          }
-        ],
-        "/farsns-new-resources/test-construct-cluster/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructcluster7B6231C5"
-          }
-        ],
-        "/farsns-new-resources/test-construct-taskdef": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": "*"
-          }
-        ],
-        "/farsns-new-resources/test-construct-taskdef/TaskRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/farsns-new-resources/test-construct-taskdef/TaskRole/ImportTaskRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/farsns-new-resources/test-construct-taskdef/TaskRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructtaskdefTaskRoleC60414C4"
-          }
-        ],
-        "/farsns-new-resources/test-construct-taskdef/TaskRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/farsns-new-resources/test-construct-taskdef/TaskRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructtaskdefTaskRoleDefaultPolicyF34A1535"
-          }
-        ],
-        "/farsns-new-resources/test-construct-taskdef/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructtaskdef8BD1F9E4"
-          }
-        ],
-        "/farsns-new-resources/test-construct-sg": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "allowAllOutbound": true,
-              "disableInlineRules": false,
-              "vpc": "*",
-              "description": "*"
-            }
-          }
-        ],
-        "/farsns-new-resources/test-construct-sg/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructsgA602AA29"
-          }
-        ],
-        "/farsns-new-resources/test-construct-service": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/farsns-new-resources/test-construct-service/Service": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testconstructserviceService13074A8F"
-          }
-        ],
-        "/farsns-new-resources/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/farsns-new-resources/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "farsns-new-resources.metadata.json",
       "displayName": "farsns-new-resources"
     },
     "Tree": {
@@ -934,6 +83,7 @@
         "module": "aws-cdk-lib",
         "flags": {
           "@aws-cdk/aws-signer:signingProfileNamePassedToCfn": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "Pass signingProfileName to CfnSigningProfile"
           },
@@ -952,6 +102,7 @@
             }
           },
           "@aws-cdk/aws-ecs-patterns:secGroupsDisablesImplicitOpenListener": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "Disable implicit openListener when custom security groups are provided"
           },
@@ -1217,6 +368,11 @@
             "recommendedValue": true,
             "explanation": "When enabled, nodegroupName attribute of the provisioned EKS NodeGroup will not have the cluster name prefix."
           },
+          "@aws-cdk/aws-eks:useNativeOidcProvider": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, EKS V2 clusters will use the native OIDC provider resource AWS::IAM::OIDCProvider instead of creating the OIDCProvider with a custom resource (iam.OpenIDConnectProvider)."
+          },
           "@aws-cdk/aws-ec2:ebsDefaultGp3Volume": {
             "userValue": true,
             "recommendedValue": true,
@@ -1248,16 +404,6 @@
             "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, stack tags need to be assigned explicitly on a Stack."
-          },
-          "@aws-cdk/aws-ecs:enableImdsBlockingDeprecatedFeature": {
-            "userValue": false,
-            "recommendedValue": false,
-            "explanation": "When set to true along with canContainersAccessInstanceRole=false in ECS cluster, new updated commands will be added to UserData to block container accessing IMDS. **Applicable to Linux only. IMPORTANT: See [details.](#aws-cdkaws-ecsenableImdsBlockingDeprecatedFeature)**"
-          },
-          "@aws-cdk/aws-ecs:disableEcsImdsBlocking": {
-            "userValue": true,
-            "recommendedValue": true,
-            "explanation": "When set to true, CDK synth will throw exception if canContainersAccessInstanceRole is false. **IMPORTANT: See [details.](#aws-cdkaws-ecsdisableEcsImdsBlocking)**"
           },
           "@aws-cdk/aws-ecs:reduceEc2FargateCloudWatchPermissions": {
             "userValue": true,
@@ -1404,6 +550,7 @@
             "explanation": "When enabled, CDK creates and manages loggroup for the lambda function"
           },
           "@aws-cdk/aws-elasticloadbalancingv2:networkLoadBalancerWithSecurityGroupByDefault": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, Network Load Balancer will be created with a security group by default."
           },
@@ -1415,12 +562,56 @@
             }
           },
           "@aws-cdk/aws-ecs-patterns:uniqueTargetGroupId": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, ECS patterns will generate unique target group IDs to prevent conflicts during load balancer replacement"
+          },
+          "@aws-cdk/aws-route53-patterns:useDistribution": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use the `Distribution` resource instead of `CloudFrontWebDistribution`"
+          },
+          "@aws-cdk/aws-cloudfront:defaultFunctionRuntimeV2_0": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use cloudfront-js-2.0 as the default runtime for CloudFront Functions"
+          },
+          "@aws-cdk/aws-elasticloadbalancingv2:usePostQuantumTlsPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, HTTPS/TLS listeners use post-quantum TLS policy by default"
+          },
+          "@aws-cdk/core:automaticL1Traits": {
+            "recommendedValue": true,
+            "explanation": "Automatically use the default L1 traits for L1 constructs`",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-batch:defaultToAL2023": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default imageType for EC2 Batch compute environments instead of the deprecated AL2"
+          },
+          "@aws-cdk/aws-eks:defaultToAL2023": {
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default AMI type for EKS managed node groups using non-GPU instance types instead of the deprecated AL2"
+          },
+          "@aws-cdk/core:annotationsInValidationReport": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Include construct annotations (warnings and errors) in the policy validation report"
+          },
+          "@aws-cdk/core:defaultCrossStackReferences": {
+            "recommendedValue": "weak",
+            "explanation": "Controls whether cross-region stack references are strong, weak, or both",
+            "unconfiguredBehavesLike": {
+              "v2": "strong"
+            }
           }
         }
       }
     }
   },
-  "minimumCliVersion": "2.1021.0"
+  "minimumCliVersion": "2.1128.1"
 }

@@ -1,5 +1,5 @@
 {
-  "version": "48.0.0",
+  "version": "54.0.0",
   "artifacts": {
     "cfts3bucketencryptedwithcmkprovidedasexistingbucketIntegDefaultTestDeployAssertF6031114.assets": {
       "type": "cdk:asset-manifest",
@@ -33,20 +33,7 @@
       "dependencies": [
         "cfts3bucketencryptedwithcmkprovidedasexistingbucketIntegDefaultTestDeployAssertF6031114.assets"
       ],
-      "metadata": {
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "cfts3bucketencryptedwithcmkprovidedasexistingbucketIntegDefaultTestDeployAssertF6031114.metadata.json",
       "displayName": "cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/Integ/DefaultTest/DeployAssert"
     },
     "cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket.assets": {
@@ -66,7 +53,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a2a4a962b23dc72b8266130f8bcd16986c27c678685085ee5e997f5a98247c4e.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/aee41c6aa1dc38bd86b27f68d6ac20e5ae997161a49e419d8822a45f8b4f9d17.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -81,633 +68,7 @@
       "dependencies": [
         "cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket.assets"
       ],
-      "metadata": {
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/cmkKey": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "enableKeyRotation": true,
-              "removalPolicy": "destroy"
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/cmkKey/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "cmkKey598B20B2"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/existing-s3-bucket-encrypted-with-cmkS3LoggingBucket": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "S3_MANAGED",
-              "versioned": true,
-              "blockPublicAccess": "*",
-              "removalPolicy": "destroy",
-              "enforceSSL": true,
-              "autoDeleteObjects": true
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/existing-s3-bucket-encrypted-with-cmkS3LoggingBucket/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "existings3bucketencryptedwithcmkS3LoggingBucket2B2DE39B"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/existing-s3-bucket-encrypted-with-cmkS3LoggingBucket/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "bucket": "*"
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/existing-s3-bucket-encrypted-with-cmkS3LoggingBucket/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "existings3bucketencryptedwithcmkS3LoggingBucketPolicy4A3AC1CB"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/existing-s3-bucket-encrypted-with-cmkS3LoggingBucket/AutoDeleteObjectsCustomResource": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/existing-s3-bucket-encrypted-with-cmkS3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "existings3bucketencryptedwithcmkS3LoggingBucketAutoDeleteObjectsCustomResource2638E7B9"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
-          {
-            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
-            "data": true
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/existing-s3-bucket-encrypted-with-cmkS3Bucket": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "KMS",
-              "versioned": true,
-              "blockPublicAccess": "*",
-              "removalPolicy": "destroy",
-              "enforceSSL": true,
-              "lifecycleRules": [
-                {
-                  "noncurrentVersionTransitions": [
-                    {
-                      "storageClass": "*"
-                    }
-                  ]
-                }
-              ],
-              "serverAccessLogsBucket": "*",
-              "encryptionKey": "*",
-              "autoDeleteObjects": true
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addLifecycleRule": [
-                {
-                  "noncurrentVersionTransitions": [
-                    {
-                      "storageClass": "*"
-                    }
-                  ]
-                },
-                "*",
-                "*"
-              ]
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/existing-s3-bucket-encrypted-with-cmkS3Bucket/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "existings3bucketencryptedwithcmkS3BucketCC461491"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/existing-s3-bucket-encrypted-with-cmkS3Bucket/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "bucket": "*"
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/existing-s3-bucket-encrypted-with-cmkS3Bucket/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "existings3bucketencryptedwithcmkS3BucketPolicyA1A37425"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/existing-s3-bucket-encrypted-with-cmkS3Bucket/AutoDeleteObjectsCustomResource": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/existing-s3-bucket-encrypted-with-cmkS3Bucket/AutoDeleteObjectsCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "existings3bucketencryptedwithcmkS3BucketAutoDeleteObjectsCustomResource22D65ADB"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/CloudfrontLoggingBucketAccessLog": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "S3_MANAGED",
-              "versioned": true,
-              "blockPublicAccess": "*",
-              "removalPolicy": "destroy",
-              "enforceSSL": true,
-              "autoDeleteObjects": true
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/CloudfrontLoggingBucketAccessLog/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLog8863921C"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/CloudfrontLoggingBucketAccessLog/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "bucket": "*"
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/CloudfrontLoggingBucketAccessLog/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLogPolicy8F931BD7"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResource4FF8A4C5"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/CloudfrontLoggingBucket": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "S3_MANAGED",
-              "versioned": true,
-              "blockPublicAccess": "*",
-              "removalPolicy": "destroy",
-              "enforceSSL": true,
-              "autoDeleteObjects": true,
-              "objectOwnership": "ObjectWriter",
-              "serverAccessLogsBucket": "*"
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/CloudfrontLoggingBucket/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucket7C1787CD"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/CloudfrontLoggingBucket/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "bucket": "*"
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/CloudfrontLoggingBucket/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketPolicy5E737735"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyCloudfrontLoggingBucketAutoDeleteObjectsCustomResourceB088BCC7"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/CloudFrontOac": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyCloudFrontOac4EFECBD9"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/CloudFrontDistribution": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "defaultBehavior": {
-                "origin": "*",
-                "viewerProtocolPolicy": "redirect-to-https"
-              },
-              "enableLogging": true,
-              "logBucket": "*",
-              "defaultRootObject": "*"
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/CloudFrontDistribution/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyCloudFrontDistribution57C8A907"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/LambdaFunctionServiceRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              },
-              "inlinePolicies": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/LambdaFunctionServiceRole/ImportLambdaFunctionServiceRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/LambdaFunctionServiceRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyLambdaFunctionServiceRole85783D1D"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/LambdaFunction": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "role": "*",
-              "tracing": "Active",
-              "runtime": "*",
-              "handler": "*",
-              "description": "*",
-              "timeout": "*",
-              "memorySize": "*",
-              "code": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addEnvironment": [
-                "*",
-                "*",
-                {
-                  "removeInEdge": true
-                }
-              ]
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/LambdaFunction/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyLambdaFunction4DCD662E"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyLambdaFunctioninlinePolicyAddedToExecutionRole030BCEDF3"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/test-cloudfront-s3-cmk-encryption-keyResourceCmkPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/test-cloudfront-s3-cmk-encryption-keyResourceCmkPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeytestcloudfronts3cmkencryptionkeyResourceCmkPolicyBD4BA975"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateProvider/framework-onEvent": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "code": "*",
-              "description": "*",
-              "runtime": "*",
-              "handler": "*",
-              "timeout": "*",
-              "loggingFormat": "JSON",
-              "applicationLogLevelV2": "FATAL",
-              "logGroup": "*",
-              "vpc": "*",
-              "vpcSubnets": "*",
-              "securityGroups": "*",
-              "role": "*",
-              "functionName": "*",
-              "environmentEncryption": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addEnvironment": [
-                "*",
-                "*"
-              ]
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateProvider/framework-onEvent/ServiceRole": [
-          {
-            "type": "aws:cdk:warning",
-            "data": "Failed to add construct metadata for node [ServiceRole]. Reason: ValidationError: The result of fromAwsManagedPolicyName can not be used in this API [ack: @aws-cdk/core:addConstructMetadataFailed]"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateProvider/framework-onEvent/ServiceRole/ImportServiceRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateProvider/framework-onEvent/ServiceRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventServiceRole3D4040AD"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateProvider/framework-onEvent/ServiceRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventServiceRoleDefaultPolicy066CD751"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateProvider/framework-onEvent/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEvent8BCBFC59"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateProvider/framework-onEvent/inlinePolicyAddedToExecutionRole-0": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdateProvider/framework-onEvent/inlinePolicyAddedToExecutionRole-0/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdateProviderframeworkonEventinlinePolicyAddedToExecutionRole0055AB010"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdater": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/test-cloudfront-s3-cmk-encryption-key/KmsKeyPolicyUpdater/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testcloudfronts3cmkencryptionkeyKmsKeyPolicyUpdaterFAFEBF0F"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket.metadata.json",
       "displayName": "cfts3-bucket-encrypted-with-cmk-provided-as-existingbucket"
     },
     "Tree": {
@@ -722,6 +83,7 @@
         "module": "aws-cdk-lib",
         "flags": {
           "@aws-cdk/aws-signer:signingProfileNamePassedToCfn": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "Pass signingProfileName to CfnSigningProfile"
           },
@@ -740,6 +102,7 @@
             }
           },
           "@aws-cdk/aws-ecs-patterns:secGroupsDisablesImplicitOpenListener": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "Disable implicit openListener when custom security groups are provided"
           },
@@ -1005,6 +368,11 @@
             "recommendedValue": true,
             "explanation": "When enabled, nodegroupName attribute of the provisioned EKS NodeGroup will not have the cluster name prefix."
           },
+          "@aws-cdk/aws-eks:useNativeOidcProvider": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, EKS V2 clusters will use the native OIDC provider resource AWS::IAM::OIDCProvider instead of creating the OIDCProvider with a custom resource (iam.OpenIDConnectProvider)."
+          },
           "@aws-cdk/aws-ec2:ebsDefaultGp3Volume": {
             "userValue": true,
             "recommendedValue": true,
@@ -1182,6 +550,7 @@
             "explanation": "When enabled, CDK creates and manages loggroup for the lambda function"
           },
           "@aws-cdk/aws-elasticloadbalancingv2:networkLoadBalancerWithSecurityGroupByDefault": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, Network Load Balancer will be created with a security group by default."
           },
@@ -1193,16 +562,56 @@
             }
           },
           "@aws-cdk/aws-ecs-patterns:uniqueTargetGroupId": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, ECS patterns will generate unique target group IDs to prevent conflicts during load balancer replacement"
           },
           "@aws-cdk/aws-route53-patterns:useDistribution": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "Use the `Distribution` resource instead of `CloudFrontWebDistribution`"
+          },
+          "@aws-cdk/aws-cloudfront:defaultFunctionRuntimeV2_0": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use cloudfront-js-2.0 as the default runtime for CloudFront Functions"
+          },
+          "@aws-cdk/aws-elasticloadbalancingv2:usePostQuantumTlsPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, HTTPS/TLS listeners use post-quantum TLS policy by default"
+          },
+          "@aws-cdk/core:automaticL1Traits": {
+            "recommendedValue": true,
+            "explanation": "Automatically use the default L1 traits for L1 constructs`",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-batch:defaultToAL2023": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default imageType for EC2 Batch compute environments instead of the deprecated AL2"
+          },
+          "@aws-cdk/aws-eks:defaultToAL2023": {
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default AMI type for EKS managed node groups using non-GPU instance types instead of the deprecated AL2"
+          },
+          "@aws-cdk/core:annotationsInValidationReport": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Include construct annotations (warnings and errors) in the policy validation report"
+          },
+          "@aws-cdk/core:defaultCrossStackReferences": {
+            "recommendedValue": "weak",
+            "explanation": "Controls whether cross-region stack references are strong, weak, or both",
+            "unconfiguredBehavesLike": {
+              "v2": "strong"
+            }
           }
         }
       }
     }
   },
-  "minimumCliVersion": "2.1021.0"
+  "minimumCliVersion": "2.1128.1"
 }

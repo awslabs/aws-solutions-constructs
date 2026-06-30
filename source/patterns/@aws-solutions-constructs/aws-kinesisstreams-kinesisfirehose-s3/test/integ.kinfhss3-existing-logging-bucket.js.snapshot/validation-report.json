@@ -1,0 +1,27 @@
+{
+  "version": "54.0.0",
+  "title": "Validation Report",
+  "pluginReports": [
+    {
+      "pluginName": "Construct Annotations",
+      "conclusion": "success",
+      "violations": [
+        {
+          "ruleName": "@aws-cdk/aws-s3:accessLogsPolicyNotAdded",
+          "description": "Unable to add necessary logging permissions to imported target bucket: kinfhss3-existing-logging-bucket/myLoggingBucket [ack: @aws-cdk/aws-s3:accessLogsPolicyNotAdded]",
+          "severity": "warning",
+          "violatingConstructs": [
+            {
+              "constructPath": "kinfhss3-existing-logging-bucket/test-existing-logging-bucket-streams-firehose-s3-stack/KinesisFirehoseToS3/S3Bucket",
+              "constructFqn": "aws-cdk-lib.aws_s3.Bucket",
+              "libraryVersion": "2.259.0",
+              "stackTraces": [
+                "Run with '--debug' to include location info\nRun with '--debug' to include location info\nRun with '--debug' to include location info\nRun with '--debug' to include location info"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
