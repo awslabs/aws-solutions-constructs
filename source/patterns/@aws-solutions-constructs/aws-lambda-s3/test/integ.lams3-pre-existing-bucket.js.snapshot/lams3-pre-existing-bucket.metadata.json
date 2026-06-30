@@ -1,0 +1,322 @@
+{
+  "/lams3-pre-existing-bucket/scrapBucketLog": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "versioned": true,
+        "removalPolicy": "destroy",
+        "autoDeleteObjects": true,
+        "encryption": "S3_MANAGED",
+        "enforceSSL": true
+      }
+    }
+  ],
+  "/lams3-pre-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/lams3-pre-existing-bucket/scrapBucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "versioned": true,
+        "removalPolicy": "destroy",
+        "autoDeleteObjects": true,
+        "encryption": "S3_MANAGED",
+        "enforceSSL": true,
+        "serverAccessLogsBucket": "*"
+      }
+    }
+  ],
+  "/lams3-pre-existing-bucket/mybucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/lams3-pre-existing-bucket/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/lams3-pre-existing-bucket/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/lams3-pre-existing-bucket/scrapBucketLog/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "scrapBucketLog7B53B25C"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/lams3-pre-existing-bucket/scrapBucketLog/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/lams3-pre-existing-bucket/scrapBucketLog/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/lams3-pre-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+    }
+  ],
+  "/lams3-pre-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+    }
+  ],
+  "/lams3-pre-existing-bucket/scrapBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "scrapBucketB11863B7"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/lams3-pre-existing-bucket/scrapBucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/lams3-pre-existing-bucket/scrapBucket/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/lams3-pre-existing-bucket/test-lambda-s3-pre-existing-bucket/LambdaFunctionServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lams3-pre-existing-bucket/test-lambda-s3-pre-existing-bucket/LambdaFunction": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "role": "*",
+        "tracing": "Active",
+        "runtime": "*",
+        "handler": "*",
+        "code": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*",
+          {
+            "removeInEdge": true
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lams3-pre-existing-bucket/scrapBucketLog/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "scrapBucketLogPolicy2972C573"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/lams3-pre-existing-bucket/scrapBucketLog/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "scrapBucketLogAutoDeleteObjectsCustomResource307F3D47"
+    }
+  ],
+  "/lams3-pre-existing-bucket/scrapBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "scrapBucketPolicy189B0607"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/lams3-pre-existing-bucket/scrapBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275"
+    }
+  ],
+  "/lams3-pre-existing-bucket/test-lambda-s3-pre-existing-bucket/LambdaFunctionServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdas3preexistingbucketLambdaFunctionServiceRole9AC7CED0"
+    }
+  ],
+  "/lams3-pre-existing-bucket/test-lambda-s3-pre-existing-bucket/LambdaFunctionServiceRole/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/lams3-pre-existing-bucket/test-lambda-s3-pre-existing-bucket/LambdaFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdas3preexistingbucketLambdaFunctionA56FB2C7"
+    }
+  ],
+  "/lams3-pre-existing-bucket/test-lambda-s3-pre-existing-bucket/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lams3-pre-existing-bucket/test-lambda-s3-pre-existing-bucket/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdas3preexistingbucketLambdaFunctionServiceRoleDefaultPolicy1B2212F1"
+    }
+  ],
+  "/lams3-pre-existing-bucket/test-lambda-s3-pre-existing-bucket/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdas3preexistingbucketLambdaFunctioninlinePolicyAddedToExecutionRole0B9BFC008"
+    }
+  ]
+}

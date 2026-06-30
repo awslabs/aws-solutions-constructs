@@ -1,13 +1,4 @@
 {
-  "/s3stp-pre-existing-bucket": [
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:25:15)",
-        "...node internals..."
-      ]
-    }
-  ],
   "/s3stp-pre-existing-bucket/scrapBucketLog": [
     {
       "type": "aws:cdk:analytics:construct",
@@ -54,41 +45,18 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "BootstrapVersion"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...aws-cdk-lib, node internals...",
-        "(no user code in 9007199254740991 frames, use --stack-trace-limit to capture more)"
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/CheckBootstrapVersion": [
     {
       "type": "aws:cdk:logicalId",
       "data": "CheckBootstrapVersion"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...aws-cdk-lib, node internals...",
-        "(no user code in 9007199254740991 frames, use --stack-trace-limit to capture more)"
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/scrapBucketLog/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "scrapBucketLog7B53B25C"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "Object.CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:63:23)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:28:33)",
-        "...node internals..."
-      ]
     },
     {
       "type": "aws:cdk:analytics:mixin",
@@ -115,45 +83,18 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "Object.CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:63:23)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:28:33)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
     {
       "type": "aws:cdk:logicalId",
       "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "Object.CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:63:23)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:28:33)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/scrapBucket/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "scrapBucketB11863B7"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "Object.CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:74:26)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:28:33)",
-        "...node internals..."
-      ]
     },
     {
       "type": "aws:cdk:analytics:mixin",
@@ -217,15 +158,6 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "Object.CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:74:26)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:28:33)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/lambdas3stp-test/ServiceRole": [
@@ -248,30 +180,12 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "lambdas3stptest9FBDC6CE"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Function2 in aws-cdk-lib...",
-        "Object.CreateTestStateMachineDefinitionBody (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:117:20)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:34:34)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/scrapBucketLog/Policy/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "scrapBucketLogPolicy2972C573"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "Object.CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:63:23)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:28:33)",
-        "...node internals..."
-      ]
     },
     {
       "type": "aws:cdk:analytics:mixin",
@@ -284,30 +198,12 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "scrapBucketLogAutoDeleteObjectsCustomResource307F3D47"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "Object.CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:63:23)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:28:33)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/scrapBucket/Policy/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "scrapBucketPolicy189B0607"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "Object.CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:74:26)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:28:33)",
-        "...node internals..."
-      ]
     },
     {
       "type": "aws:cdk:analytics:mixin",
@@ -320,15 +216,6 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "Object.CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:74:26)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:28:33)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/scrapBucket/Notifications/HandlerPolicy": [
@@ -367,45 +254,18 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "scrapBucketNotifications065035E3"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "Object.CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:74:26)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:28:33)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "Object.CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:74:26)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:28:33)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/lambdas3stp-test/ServiceRole/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "lambdas3stptestServiceRoleF17BB6C7"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Function2 in aws-cdk-lib...",
-        "Object.CreateTestStateMachineDefinitionBody (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:117:20)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:34:34)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/StateMachineLogGroup": [
@@ -564,33 +424,12 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "scrapBucketNotificationsHandlerPolicy732AB18C"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "Object.CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:74:26)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:28:33)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/StateMachineLogGroup/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3stepfunctionspreexistingbucketconstructtests3stepfunctionspreexistingbucketconstructeventrulestepfunctionconstructStateMachineLogGroup9D5E3E4D"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new LogGroup2 in aws-cdk-lib...",
-        "buildLogGroup (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/cloudwatch-log-group-helper.js:31:22)",
-        "Object.buildStateMachine (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/step-function-helper.js:77:68)",
-        "new EventbridgeToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-eventbridge-stepfunctions/lib/index.js:24:52)",
-        "new S3ToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/lib/index.js:78:44)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:41:1)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/StateMachine/Role": [
@@ -640,87 +479,30 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3stepfunctionspreexistingbucketconstructtests3stepfunctionspreexistingbucketconstructeventrulestepfunctionconstructStateMachine326BB1C1"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new StateMachine2 in aws-cdk-lib...",
-        "Object.buildStateMachine (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/step-function-helper.js:82:29)",
-        "new EventbridgeToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-eventbridge-stepfunctions/lib/index.js:24:52)",
-        "new S3ToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/lib/index.js:78:44)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:41:1)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/ExecutionFailedAlarm/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3stepfunctionspreexistingbucketconstructtests3stepfunctionspreexistingbucketconstructeventrulestepfunctionconstructExecutionFailedAlarmAC11687E"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Alarm2 in aws-cdk-lib...",
-        "buildStepFunctionCWAlarms (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/step-function-helper.js:111:17)",
-        "Object.buildStateMachine (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/step-function-helper.js:96:55)",
-        "new EventbridgeToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-eventbridge-stepfunctions/lib/index.js:24:52)",
-        "new S3ToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/lib/index.js:78:44)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:41:1)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/ExecutionThrottledAlarm/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3stepfunctionspreexistingbucketconstructtests3stepfunctionspreexistingbucketconstructeventrulestepfunctionconstructExecutionThrottledAlarm630846CA"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Alarm2 in aws-cdk-lib...",
-        "buildStepFunctionCWAlarms (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/step-function-helper.js:122:17)",
-        "Object.buildStateMachine (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/step-function-helper.js:96:55)",
-        "new EventbridgeToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-eventbridge-stepfunctions/lib/index.js:24:52)",
-        "new S3ToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/lib/index.js:78:44)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:41:1)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/ExecutionAbortedAlarm/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3stepfunctionspreexistingbucketconstructtests3stepfunctionspreexistingbucketconstructeventrulestepfunctionconstructExecutionAbortedAlarmB47B3FC8"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Alarm2 in aws-cdk-lib...",
-        "buildStepFunctionCWAlarms (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/step-function-helper.js:133:17)",
-        "Object.buildStateMachine (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/step-function-helper.js:96:55)",
-        "new EventbridgeToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-eventbridge-stepfunctions/lib/index.js:24:52)",
-        "new S3ToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/lib/index.js:78:44)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:41:1)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/EventsRuleRole/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3stepfunctionspreexistingbucketconstructtests3stepfunctionspreexistingbucketconstructeventrulestepfunctionconstructEventsRuleRole3CF23446"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Role2 in aws-cdk-lib...",
-        "new EventbridgeToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-eventbridge-stepfunctions/lib/index.js:33:28)",
-        "new S3ToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/lib/index.js:78:44)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:41:1)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/EventsRuleRole/DefaultPolicy": [
@@ -757,33 +539,12 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3stepfunctionspreexistingbucketconstructtests3stepfunctionspreexistingbucketconstructeventrulestepfunctionconstructEventsRuleAA9C6DCF"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Rule2 in aws-cdk-lib...",
-        "new EventbridgeToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-eventbridge-stepfunctions/lib/index.js:56:27)",
-        "new S3ToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/lib/index.js:78:44)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:41:1)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/StateMachine/Role/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3stepfunctionspreexistingbucketconstructtests3stepfunctionspreexistingbucketconstructeventrulestepfunctionconstructStateMachineRoleE56A7030"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new StateMachine2 in aws-cdk-lib...",
-        "Object.buildStateMachine (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/step-function-helper.js:82:29)",
-        "new EventbridgeToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-eventbridge-stepfunctions/lib/index.js:24:52)",
-        "new S3ToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/lib/index.js:78:44)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:41:1)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/StateMachine/Role/DefaultPolicy": [
@@ -828,33 +589,12 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3stepfunctionspreexistingbucketconstructtests3stepfunctionspreexistingbucketconstructeventrulestepfunctionconstructEventsRuleRoleDefaultPolicyBF1D043B"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...WrappedClass.grantStartExecution in aws-cdk-lib...",
-        "new EventbridgeToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-eventbridge-stepfunctions/lib/index.js:37:27)",
-        "new S3ToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/lib/index.js:78:44)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:41:1)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3stp-pre-existing-bucket/test-s3-stepfunctions-pre-existing-bucket-construct/test-s3-stepfunctions-pre-existing-bucket-construct-event-rule-step-function-construct/StateMachine/Role/DefaultPolicy/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3stepfunctionspreexistingbucketconstructtests3stepfunctionspreexistingbucketconstructeventrulestepfunctionconstructStateMachineRoleDefaultPolicyC654D95B"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new StateMachine2 in aws-cdk-lib...",
-        "Object.buildStateMachine (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/step-function-helper.js:82:29)",
-        "new EventbridgeToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-eventbridge-stepfunctions/lib/index.js:24:52)",
-        "new S3ToStepfunctions (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/lib/index.js:78:44)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-stepfunctions/test/integ.s3stp-pre-existing-bucket.js:41:1)",
-        "...node internals..."
-      ]
     }
   ]
 }

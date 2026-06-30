@@ -1,0 +1,744 @@
+{
+  "/lambed-with-vpc/Vpc": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "natGateways": "*",
+        "subnetConfiguration": [
+          {
+            "cidrMask": "*",
+            "name": "*",
+            "subnetType": "Isolated"
+          }
+        ],
+        "enableDnsHostnames": true,
+        "enableDnsSupport": true
+      }
+    }
+  ],
+  "/lambed-with-vpc/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/lambed-with-vpc/lambed-with-vpc-BEDROCK-security-group": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "allowAllOutbound": true
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addIngressRule": [
+          {
+            "canInlineRule": true,
+            "connections": "*",
+            "uniqueId": "*"
+          },
+          {},
+          "*",
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addIngressRule": [
+          {
+            "canInlineRule": true,
+            "connections": "*",
+            "uniqueId": "*"
+          },
+          {},
+          "*",
+          false
+        ]
+      }
+    }
+  ],
+  "/lambed-with-vpc/lambed-with-vpc-BEDROCK_RUNTIME-security-group": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "allowAllOutbound": true
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addIngressRule": [
+          {
+            "canInlineRule": true,
+            "connections": "*",
+            "uniqueId": "*"
+          },
+          {},
+          "*",
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addIngressRule": [
+          {
+            "canInlineRule": true,
+            "connections": "*",
+            "uniqueId": "*"
+          },
+          {},
+          "*",
+          false
+        ]
+      }
+    }
+  ],
+  "/lambed-with-vpc/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/lambed-with-vpc/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/lambed-with-vpc/test-lambda-inferenceprops/LambdaFunctionServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lambed-with-vpc/test-lambda-inferenceprops/ReplaceDefaultSecurityGroup-security-group": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "allowAllOutbound": true
+      }
+    }
+  ],
+  "/lambed-with-vpc/test-lambda-inferenceprops/LambdaFunction": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "role": "*",
+        "tracing": "Active",
+        "timeout": "*",
+        "runtime": "*",
+        "handler": "*",
+        "code": "*",
+        "securityGroups": [
+          "*"
+        ],
+        "vpc": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*",
+          {
+            "removeInEdge": true
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lambed-with-vpc/test-lambda-inferenceprops/test-lambda-inferenceprops-area-prefix-mapping": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdainferencepropsareaprefixmapping"
+    }
+  ],
+  "/lambed-with-vpc/test-lambda-inferenceprops/test-lambda-inferenceprops-inference": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdainferencepropstestlambdainferencepropsinference01BBD7E6"
+    }
+  ],
+  "/lambed-with-vpc/test-lambda-inferenceprops/test-lambda-inferenceprops-area-region-mapping": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdainferencepropsarearegionmapping"
+    },
+    {
+      "type": "aws:cdk:info",
+      "data": "Consider making this CfnMapping a lazy mapping by providing `lazy: true`: either no findInMap was called or every findInMap could be immediately resolved without using Fn::FindInMap",
+      "trace": [
+        "Annotations.addMessage (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:3441)",
+        "Annotations.addInfo (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:2588)",
+        "CfnMapping.informLazyUse (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/cfn-mapping.js:1:2757)",
+        "CfnMapping._toCloudFormation (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/cfn-mapping.js:1:2584)",
+        "/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/refs.js:1:11028",
+        "findTokens (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:6454)",
+        "findAllReferences (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/refs.js:1:11005)",
+        "resolveReferences (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/refs.js:1:4626)",
+        "prepareApp (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/prepare-app.js:1:1514)",
+        "synthesize (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/synthesis.js:1:3580)",
+        "App.synth (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/stage.js:1:4636)",
+        "App.synth (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/app.js:1:4814)",
+        "process.<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/app.js:1:3773)",
+        "Object.onceWrapper (node:events:634:26)",
+        "process.emit (node:events:519:28)"
+      ]
+    }
+  ],
+  "/lambed-with-vpc/Vpc/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Vpc8378EB38"
+    }
+  ],
+  "/lambed-with-vpc/Vpc/isolatedSubnet1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    }
+  ],
+  "/lambed-with-vpc/Vpc/isolatedSubnet2": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    }
+  ],
+  "/lambed-with-vpc/Vpc/RestrictDefaultSecurityGroupCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/lambed-with-vpc/Vpc/FlowLog": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "resourceType": "*"
+      }
+    }
+  ],
+  "/lambed-with-vpc/Vpc/BEDROCK": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "service": {
+          "name": "*",
+          "port": "*",
+          "privateDnsDefault": true
+        },
+        "securityGroups": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lambed-with-vpc/Vpc/BEDROCK_RUNTIME": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "service": {
+          "name": "*",
+          "port": "*",
+          "privateDnsDefault": true
+        },
+        "securityGroups": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lambed-with-vpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+    }
+  ],
+  "/lambed-with-vpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+    }
+  ],
+  "/lambed-with-vpc/lambed-with-vpc-BEDROCK-security-group/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lambedwithvpcBEDROCKsecuritygroupFFB2A8D0"
+    }
+  ],
+  "/lambed-with-vpc/lambed-with-vpc-BEDROCK_RUNTIME-security-group/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lambedwithvpcBEDROCKRUNTIMEsecuritygroup807842C2"
+    }
+  ],
+  "/lambed-with-vpc/test-lambda-inferenceprops/LambdaFunctionServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdainferencepropsLambdaFunctionServiceRole102487FD"
+    }
+  ],
+  "/lambed-with-vpc/test-lambda-inferenceprops/LambdaFunctionServiceRole/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/lambed-with-vpc/test-lambda-inferenceprops/ReplaceDefaultSecurityGroup-security-group/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdainferencepropsReplaceDefaultSecurityGroupsecuritygroup143ABA1F"
+    }
+  ],
+  "/lambed-with-vpc/test-lambda-inferenceprops/LambdaFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdainferencepropsLambdaFunction2FD85C24"
+    }
+  ],
+  "/lambed-with-vpc/test-lambda-inferenceprops/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lambed-with-vpc/test-lambda-inferenceprops/LambdaFunction/inlinePolicyAddedToExecutionRole-1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lambed-with-vpc/test-lambda-inferenceprops/LambdaFunction/inlinePolicyAddedToExecutionRole-2": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lambed-with-vpc/Vpc/isolatedSubnet1/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet1SubnetE62B1B9B"
+    }
+  ],
+  "/lambed-with-vpc/Vpc/isolatedSubnet1/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet1RouteTableE442650B"
+    }
+  ],
+  "/lambed-with-vpc/Vpc/isolatedSubnet1/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet1RouteTableAssociationD259E31A"
+    }
+  ],
+  "/lambed-with-vpc/Vpc/isolatedSubnet2/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet2Subnet39217055"
+    }
+  ],
+  "/lambed-with-vpc/Vpc/isolatedSubnet2/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet2RouteTable334F9764"
+    }
+  ],
+  "/lambed-with-vpc/Vpc/isolatedSubnet2/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet2RouteTableAssociation25A4716F"
+    }
+  ],
+  "/lambed-with-vpc/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
+    }
+  ],
+  "/lambed-with-vpc/Vpc/FlowLog/IAMRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "roleName": "*",
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lambed-with-vpc/Vpc/FlowLog/LogGroup": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/lambed-with-vpc/Vpc/FlowLog/FlowLog": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcFlowLog8FF33A73"
+    }
+  ],
+  "/lambed-with-vpc/Vpc/BEDROCK/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcBEDROCKAEDCED85"
+    }
+  ],
+  "/lambed-with-vpc/Vpc/BEDROCK_RUNTIME/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcBEDROCKRUNTIMEC2C43D05"
+    }
+  ],
+  "/lambed-with-vpc/test-lambda-inferenceprops/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdainferencepropsLambdaFunctionServiceRoleDefaultPolicyB1E40609"
+    }
+  ],
+  "/lambed-with-vpc/test-lambda-inferenceprops/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdainferencepropsLambdaFunctioninlinePolicyAddedToExecutionRole09A675D51"
+    }
+  ],
+  "/lambed-with-vpc/test-lambda-inferenceprops/LambdaFunction/inlinePolicyAddedToExecutionRole-1/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdainferencepropsLambdaFunctioninlinePolicyAddedToExecutionRole1121B30C3"
+    }
+  ],
+  "/lambed-with-vpc/test-lambda-inferenceprops/LambdaFunction/inlinePolicyAddedToExecutionRole-2/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdainferencepropsLambdaFunctioninlinePolicyAddedToExecutionRole2DBB277C5"
+    }
+  ],
+  "/lambed-with-vpc/Vpc/FlowLog/IAMRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcFlowLogIAMRole6A475D41"
+    }
+  ],
+  "/lambed-with-vpc/Vpc/FlowLog/IAMRole/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/lambed-with-vpc/Vpc/FlowLog/LogGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcFlowLogLogGroup7B5C56B9"
+    }
+  ],
+  "/lambed-with-vpc/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
+    }
+  ]
+}

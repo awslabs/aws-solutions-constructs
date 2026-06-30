@@ -1,5 +1,5 @@
 {
-  "version": "48.0.0",
+  "version": "54.0.0",
   "artifacts": {
     "farkinexistingFargateServiceIntegDefaultTestDeployAssertF1F4EC2C.assets": {
       "type": "cdk:asset-manifest",
@@ -33,20 +33,7 @@
       "dependencies": [
         "farkinexistingFargateServiceIntegDefaultTestDeployAssertF1F4EC2C.assets"
       ],
-      "metadata": {
-        "/farkin-existingFargateService/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/farkin-existingFargateService/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "farkinexistingFargateServiceIntegDefaultTestDeployAssertF1F4EC2C.metadata.json",
       "displayName": "farkin-existingFargateService/Integ/DefaultTest/DeployAssert"
     },
     "farkin-existingFargateService.assets": {
@@ -66,7 +53,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/40fc31f6da3af97457e43e41c87c58be401eea9d648b8cd5ee0e07ab0085cbb3.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/20392f2247c3d0118ec2df42de6466c3782020240e19c63c60474c3a3eb6ef31.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -81,856 +68,7 @@
       "dependencies": [
         "farkin-existingFargateService.assets"
       ],
-      "metadata": {
-        "/farkin-existingFargateService/Vpc": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "enableDnsHostnames": true,
-              "enableDnsSupport": true,
-              "ipAddresses": "*"
-            }
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "Vpc8378EB38"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PublicSubnet1": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": true,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": true,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {}
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addNatGateway": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PublicSubnet1/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1Subnet5C2D37C4"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PublicSubnet1/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1RouteTable6C95E38E"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PublicSubnet1/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1RouteTableAssociation97140677"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PublicSubnet1/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1DefaultRoute3DA9E72A"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PublicSubnet1/EIP": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1EIPD7E02669"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PublicSubnet1/NATGateway": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet1NATGateway4D7517AA"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PublicSubnet2": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": true,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": true,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {}
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addNatGateway": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PublicSubnet2/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2Subnet691E08A3"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PublicSubnet2/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2RouteTable94F7E489"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PublicSubnet2/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2RouteTableAssociationDD5762D8"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PublicSubnet2/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2DefaultRoute97F91067"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PublicSubnet2/EIP": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2EIP3C605A87"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PublicSubnet2/NATGateway": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPublicSubnet2NATGateway9182C01D"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PrivateSubnet1": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {}
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PrivateSubnet1/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet1Subnet536B997A"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PrivateSubnet1/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet1RouteTableB2C5B500"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PrivateSubnet1/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet1RouteTableAssociation70C59FA6"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PrivateSubnet1/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet1DefaultRouteBE02A9ED"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PrivateSubnet2": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {}
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PrivateSubnet2/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet2Subnet3788AAA1"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PrivateSubnet2/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet2RouteTableA678073B"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PrivateSubnet2/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet2RouteTableAssociationA89CAD56"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/PrivateSubnet2/DefaultRoute": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcPrivateSubnet2DefaultRoute060D2087"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/IGW": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcIGWD7BA715C"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/VPCGW": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcVPCGWBF912B6E"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/RestrictDefaultSecurityGroupCustomResource": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/FlowLog": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "resourceType": "*"
-            }
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/FlowLog/IAMRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "roleName": "*",
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/FlowLog/IAMRole/ImportIAMRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/FlowLog/IAMRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLogIAMRole6A475D41"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/FlowLog/IAMRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/FlowLog/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/FlowLog/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLogLogGroup7B5C56B9"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/FlowLog/FlowLog": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLog8FF33A73"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/ECR_API": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "service": {
-                "name": "*",
-                "port": "*",
-                "privateDnsDefault": true
-              },
-              "securityGroups": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/ECR_API/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcECRAPI9A3B6A2B"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/ECR_DKR": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "service": {
-                "name": "*",
-                "port": "*",
-                "privateDnsDefault": true
-              },
-              "securityGroups": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/ECR_DKR/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcECRDKR604E039F"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/S3": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "service": {
-                "name": "*"
-              }
-            }
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/S3/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcS3A5408339"
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/KINESIS_STREAMS": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "service": {
-                "name": "*",
-                "port": "*",
-                "privateDnsDefault": true
-              },
-              "securityGroups": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/farkin-existingFargateService/Vpc/KINESIS_STREAMS/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcKINESISSTREAMSC07D91B5"
-          }
-        ],
-        "/farkin-existingFargateService/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
-          {
-            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
-            "data": true
-          }
-        ],
-        "/farkin-existingFargateService/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
-          }
-        ],
-        "/farkin-existingFargateService/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
-          }
-        ],
-        "/farkin-existingFargateService/farkin-existingFargateService-ECR_API-security-group": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "allowAllOutbound": true
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addIngressRule": [
-                {
-                  "canInlineRule": true,
-                  "connections": "*",
-                  "uniqueId": "*"
-                },
-                {},
-                "*",
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addIngressRule": [
-                {
-                  "canInlineRule": true,
-                  "connections": "*",
-                  "uniqueId": "*"
-                },
-                {},
-                "*",
-                false
-              ]
-            }
-          }
-        ],
-        "/farkin-existingFargateService/farkin-existingFargateService-ECR_API-security-group/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "farkinexistingFargateServiceECRAPIsecuritygroupF2455F12"
-          }
-        ],
-        "/farkin-existingFargateService/farkin-existingFargateService-ECR_DKR-security-group": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "allowAllOutbound": true
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addIngressRule": [
-                {
-                  "canInlineRule": true,
-                  "connections": "*",
-                  "uniqueId": "*"
-                },
-                {},
-                "*",
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addIngressRule": [
-                {
-                  "canInlineRule": true,
-                  "connections": "*",
-                  "uniqueId": "*"
-                },
-                {},
-                "*",
-                false
-              ]
-            }
-          }
-        ],
-        "/farkin-existingFargateService/farkin-existingFargateService-ECR_DKR-security-group/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "farkinexistingFargateServiceECRDKRsecuritygroup449EDD78"
-          }
-        ],
-        "/farkin-existingFargateService/test-cluster": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*"
-            }
-          }
-        ],
-        "/farkin-existingFargateService/test-cluster/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testclusterDF8B0D19"
-          }
-        ],
-        "/farkin-existingFargateService/test-taskdef": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": "*"
-          }
-        ],
-        "/farkin-existingFargateService/test-taskdef/TaskRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/farkin-existingFargateService/test-taskdef/TaskRole/ImportTaskRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/farkin-existingFargateService/test-taskdef/TaskRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testtaskdefTaskRoleB2DEF113"
-          }
-        ],
-        "/farkin-existingFargateService/test-taskdef/TaskRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/farkin-existingFargateService/test-taskdef/TaskRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testtaskdefTaskRoleDefaultPolicy5D591D1C"
-          }
-        ],
-        "/farkin-existingFargateService/test-taskdef/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testtaskdefF924AD58"
-          }
-        ],
-        "/farkin-existingFargateService/test-sg": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "allowAllOutbound": true,
-              "disableInlineRules": false,
-              "vpc": "*",
-              "description": "*"
-            }
-          }
-        ],
-        "/farkin-existingFargateService/test-sg/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsg872EB48A"
-          }
-        ],
-        "/farkin-existingFargateService/test-service": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/farkin-existingFargateService/test-service/Service": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testserviceService2730C249"
-          }
-        ],
-        "/farkin-existingFargateService/test-fargate-kinesisstreams/KinesisStream": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "MANAGED"
-            }
-          }
-        ],
-        "/farkin-existingFargateService/test-fargate-kinesisstreams/KinesisStream/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testfargatekinesisstreamsKinesisStreamD31BD614"
-          }
-        ],
-        "/farkin-existingFargateService/test-fargate-kinesisstreams/KinesisStreamGetRecordsIteratorAgeAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/farkin-existingFargateService/test-fargate-kinesisstreams/KinesisStreamGetRecordsIteratorAgeAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testfargatekinesisstreamsKinesisStreamGetRecordsIteratorAgeAlarm60755E90"
-          }
-        ],
-        "/farkin-existingFargateService/test-fargate-kinesisstreams/KinesisStreamReadProvisionedThroughputExceededAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/farkin-existingFargateService/test-fargate-kinesisstreams/KinesisStreamReadProvisionedThroughputExceededAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testfargatekinesisstreamsKinesisStreamReadProvisionedThroughputExceededAlarmDE16A9F2"
-          }
-        ],
-        "/farkin-existingFargateService/farkin-existingFargateService-KINESIS_STREAMS-security-group": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "allowAllOutbound": true
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addIngressRule": [
-                {
-                  "canInlineRule": true,
-                  "connections": "*",
-                  "uniqueId": "*"
-                },
-                {},
-                "*",
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addIngressRule": [
-                {
-                  "canInlineRule": true,
-                  "connections": "*",
-                  "uniqueId": "*"
-                },
-                {},
-                "*",
-                false
-              ]
-            }
-          }
-        ],
-        "/farkin-existingFargateService/farkin-existingFargateService-KINESIS_STREAMS-security-group/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "farkinexistingFargateServiceKINESISSTREAMSsecuritygroup21CA24CF"
-          }
-        ],
-        "/farkin-existingFargateService/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/farkin-existingFargateService/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "farkin-existingFargateService.metadata.json",
       "displayName": "farkin-existingFargateService"
     },
     "Tree": {
@@ -945,6 +83,7 @@
         "module": "aws-cdk-lib",
         "flags": {
           "@aws-cdk/aws-signer:signingProfileNamePassedToCfn": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "Pass signingProfileName to CfnSigningProfile"
           },
@@ -963,6 +102,7 @@
             }
           },
           "@aws-cdk/aws-ecs-patterns:secGroupsDisablesImplicitOpenListener": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "Disable implicit openListener when custom security groups are provided"
           },
@@ -1228,6 +368,11 @@
             "recommendedValue": true,
             "explanation": "When enabled, nodegroupName attribute of the provisioned EKS NodeGroup will not have the cluster name prefix."
           },
+          "@aws-cdk/aws-eks:useNativeOidcProvider": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, EKS V2 clusters will use the native OIDC provider resource AWS::IAM::OIDCProvider instead of creating the OIDCProvider with a custom resource (iam.OpenIDConnectProvider)."
+          },
           "@aws-cdk/aws-ec2:ebsDefaultGp3Volume": {
             "userValue": true,
             "recommendedValue": true,
@@ -1259,16 +404,6 @@
             "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, stack tags need to be assigned explicitly on a Stack."
-          },
-          "@aws-cdk/aws-ecs:enableImdsBlockingDeprecatedFeature": {
-            "userValue": false,
-            "recommendedValue": false,
-            "explanation": "When set to true along with canContainersAccessInstanceRole=false in ECS cluster, new updated commands will be added to UserData to block container accessing IMDS. **Applicable to Linux only. IMPORTANT: See [details.](#aws-cdkaws-ecsenableImdsBlockingDeprecatedFeature)**"
-          },
-          "@aws-cdk/aws-ecs:disableEcsImdsBlocking": {
-            "userValue": true,
-            "recommendedValue": true,
-            "explanation": "When set to true, CDK synth will throw exception if canContainersAccessInstanceRole is false. **IMPORTANT: See [details.](#aws-cdkaws-ecsdisableEcsImdsBlocking)**"
           },
           "@aws-cdk/aws-ecs:reduceEc2FargateCloudWatchPermissions": {
             "userValue": true,
@@ -1415,6 +550,7 @@
             "explanation": "When enabled, CDK creates and manages loggroup for the lambda function"
           },
           "@aws-cdk/aws-elasticloadbalancingv2:networkLoadBalancerWithSecurityGroupByDefault": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, Network Load Balancer will be created with a security group by default."
           },
@@ -1426,12 +562,56 @@
             }
           },
           "@aws-cdk/aws-ecs-patterns:uniqueTargetGroupId": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, ECS patterns will generate unique target group IDs to prevent conflicts during load balancer replacement"
+          },
+          "@aws-cdk/aws-route53-patterns:useDistribution": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use the `Distribution` resource instead of `CloudFrontWebDistribution`"
+          },
+          "@aws-cdk/aws-cloudfront:defaultFunctionRuntimeV2_0": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use cloudfront-js-2.0 as the default runtime for CloudFront Functions"
+          },
+          "@aws-cdk/aws-elasticloadbalancingv2:usePostQuantumTlsPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, HTTPS/TLS listeners use post-quantum TLS policy by default"
+          },
+          "@aws-cdk/core:automaticL1Traits": {
+            "recommendedValue": true,
+            "explanation": "Automatically use the default L1 traits for L1 constructs`",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-batch:defaultToAL2023": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default imageType for EC2 Batch compute environments instead of the deprecated AL2"
+          },
+          "@aws-cdk/aws-eks:defaultToAL2023": {
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default AMI type for EKS managed node groups using non-GPU instance types instead of the deprecated AL2"
+          },
+          "@aws-cdk/core:annotationsInValidationReport": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Include construct annotations (warnings and errors) in the policy validation report"
+          },
+          "@aws-cdk/core:defaultCrossStackReferences": {
+            "recommendedValue": "weak",
+            "explanation": "Controls whether cross-region stack references are strong, weak, or both",
+            "unconfiguredBehavesLike": {
+              "v2": "strong"
+            }
           }
         }
       }
     }
   },
-  "minimumCliVersion": "2.1021.0"
+  "minimumCliVersion": "2.1128.1"
 }

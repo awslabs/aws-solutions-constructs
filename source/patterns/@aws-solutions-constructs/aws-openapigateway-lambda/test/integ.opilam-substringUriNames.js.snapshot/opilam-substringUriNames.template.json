@@ -777,7 +777,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "07a90cc3efdfc34da22208dcd9d211f06f5b0e01b21e778edc7c3966b1f61d57.zip"
+     "S3Key": "e16ffb3b34af185b8b30c88fdb19faa13b6c42bb38580485c4e84b384ee48b63.zip"
     },
     "Description": "AWS CDK resource provider framework - onEvent (opilam-substringUriNames/OpenApiGatewayToLambda/ApiTemplateWriterProvider)",
     "Environment": {
@@ -801,7 +801,7 @@
       "Arn"
      ]
     },
-    "Runtime": "nodejs22.x",
+    "Runtime": "nodejs24.x",
     "Timeout": 900
    },
    "DependsOn": [

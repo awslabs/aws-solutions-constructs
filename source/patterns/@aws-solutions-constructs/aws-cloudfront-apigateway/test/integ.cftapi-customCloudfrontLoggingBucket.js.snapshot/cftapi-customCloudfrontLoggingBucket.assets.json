@@ -1,5 +1,5 @@
 {
-  "version": "53.0.0",
+  "version": "54.0.0",
   "files": {
     "0772ffe05bd3b2e012dc5086ab3b6dd03c8a0268fc1c81326f5e72b0a4c6b51e": {
       "displayName": "cftapi-customCloudfrontLoggingBucket-apiFunction/Code",
@@ -29,16 +29,16 @@
         }
       }
     },
-    "f6ed9a8a4bfe96cef1ab77ccf039af0ceb5e3be2088b8e838dcc398dc365ad86": {
+    "caad291cfba4f90df71fc047e9ad7f7dca800b59cdfbfaeccdac99c1e7701da6": {
       "displayName": "cftapi-customCloudfrontLoggingBucket Template",
       "source": {
         "path": "cftapi-customCloudfrontLoggingBucket.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-556fbdab": {
+        "current_account-current_region-4ddbaf27": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "f6ed9a8a4bfe96cef1ab77ccf039af0ceb5e3be2088b8e838dcc398dc365ad86.json",
+          "objectKey": "caad291cfba4f90df71fc047e9ad7f7dca800b59cdfbfaeccdac99c1e7701da6.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

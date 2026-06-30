@@ -1,0 +1,762 @@
+{
+  "/opilam-apiFromAssetWithCognitoAuth/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/ApiDefinitionAsset/AssetBucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/MessagesHandlerApiFunction0ServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/MessagesHandlerApiFunction0": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "role": "*",
+        "tracing": "Active",
+        "runtime": "*",
+        "handler": "*",
+        "code": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*",
+          {
+            "removeInEdge": true
+          }
+        ]
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/PhotosHandlerApiFunction1ServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/PhotosHandlerApiFunction1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "role": "*",
+        "tracing": "Active",
+        "runtime": "*",
+        "handler": "*",
+        "code": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*",
+          {
+            "removeInEdge": true
+          }
+        ]
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/LambdaFunctionServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/LambdaFunction": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "role": "*",
+        "tracing": "Active",
+        "runtime": "*",
+        "handler": "*",
+        "code": "*",
+        "timeout": "*",
+        "memorySize": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*",
+          {
+            "removeInEdge": true
+          }
+        ]
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": "*"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiAccessLogGroup": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "retention": 9999
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/SpecRestApi": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "cloudWatchRole": false,
+        "deployOptions": {
+          "accessLogDestination": "*",
+          "accessLogFormat": "*",
+          "loggingLevel": "INFO",
+          "dataTraceEnabled": false,
+          "tracingEnabled": true
+        },
+        "restApiName": "*",
+        "apiDefinition": "*"
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/LambdaRestApiCloudWatchRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/LambdaRestApiAccount": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaLambdaRestApiAccount71EC7DA6"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/MessagesHandlerApiFunction0ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0ServiceRoleB5DC63A9"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/MessagesHandlerApiFunction0/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0E78C5307"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/MessagesHandlerApiFunction0/inlinePolicyAddedToExecutionRole-0": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/MessagesHandlerApiFunction0/OpenApiGatewayToLambdaPermitAPIGInvocation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0OpenApiGatewayToLambdaPermitAPIGInvocationC5ACBCDF"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/PhotosHandlerApiFunction1ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaPhotosHandlerApiFunction1ServiceRoleA572C749"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/PhotosHandlerApiFunction1/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaPhotosHandlerApiFunction1C42C52E8"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/PhotosHandlerApiFunction1/inlinePolicyAddedToExecutionRole-0": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/PhotosHandlerApiFunction1/OpenApiGatewayToLambdaPermitAPIGInvocation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaPhotosHandlerApiFunction1OpenApiGatewayToLambdaPermitAPIGInvocation5B0B1DC7"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiOutputAsset/AssetBucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/LambdaFunctionServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaLambdaFunctionServiceRoleACE09A85"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/LambdaFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaLambdaFunctionC7227471"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaApiTemplateWriterPolicy5B3085E5"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "code": "*",
+        "description": "*",
+        "runtime": "*",
+        "handler": "*",
+        "timeout": "*",
+        "loggingFormat": "JSON",
+        "applicationLogLevelV2": "FATAL",
+        "logGroup": "*",
+        "vpc": "*",
+        "vpcSubnets": "*",
+        "securityGroups": "*",
+        "role": "*",
+        "functionName": "*",
+        "environmentEncryption": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaApiTemplateWriterCustomResource957D1BA4"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiAccessLogGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaApiAccessLogGroupE21284EC"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/SpecRestApi/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaSpecRestApi27C18064"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/SpecRestApi/Default": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/SpecRestApi/Deployment": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "description": "*",
+        "api": "*",
+        "retainDeployments": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToLogicalId": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToLogicalId": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToLogicalId": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/SpecRestApi/DeploymentStage.prod": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "deployment": "*",
+        "accessLogDestination": "*",
+        "accessLogFormat": "*",
+        "loggingLevel": "INFO",
+        "dataTraceEnabled": false,
+        "tracingEnabled": true
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/SpecRestApi/Endpoint": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaSpecRestApiEndpointD1FA5E3A"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/SpecRestApi/UsagePlan": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "apiStages": [
+          {
+            "api": "*"
+          }
+        ]
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/LambdaRestApiCloudWatchRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaLambdaRestApiCloudWatchRoleBC7E6D95"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/MessagesHandlerApiFunction0/inlinePolicyAddedToExecutionRole-0/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaMessagesHandlerApiFunction0inlinePolicyAddedToExecutionRole035380347"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/PhotosHandlerApiFunction1/inlinePolicyAddedToExecutionRole-0/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaPhotosHandlerApiFunction1inlinePolicyAddedToExecutionRole0D189A0E2"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/LambdaFunction/Code/AssetBucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaLambdaFunctioninlinePolicyAddedToExecutionRole02B56CE3C"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/ServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "managedPolicies": [
+          {
+            "managedPolicyArn": "*"
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventEF37D730"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/inlinePolicyAddedToExecutionRole-0": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/SpecRestApi/Deployment/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaSpecRestApiDeploymentC8BD0775d25e717744ab7d508aee3a1c3b7aa9b2"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/SpecRestApi/DeploymentStage.prod/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaSpecRestApiDeploymentStageprodB962CBBB"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/SpecRestApi/UsagePlan/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaSpecRestApiUsagePlan44F6F5C6"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventServiceRoleFEE201A1"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/ServiceRole/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/Code/AssetBucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/inlinePolicyAddedToExecutionRole-0/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventinlinePolicyAddedToExecutionRole03000DF90"
+    }
+  ],
+  "/opilam-apiFromAssetWithCognitoAuth/OpenApiGatewayToLambda/ApiTemplateWriterProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OpenApiGatewayToLambdaApiTemplateWriterProviderframeworkonEventServiceRoleDefaultPolicyB630DBDA"
+    }
+  ]
+}

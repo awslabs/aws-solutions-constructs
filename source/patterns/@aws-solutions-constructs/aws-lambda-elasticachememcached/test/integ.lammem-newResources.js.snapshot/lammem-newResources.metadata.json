@@ -1,0 +1,485 @@
+{
+  "/lammem-newResources/Vpc": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "natGateways": "*",
+        "subnetConfiguration": [
+          {
+            "cidrMask": "*",
+            "name": "*",
+            "subnetType": "Isolated"
+          }
+        ]
+      }
+    }
+  ],
+  "/lammem-newResources/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/lammem-newResources/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/lammem-newResources/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/lammem-newResources/lammem-newResources/lammem-newResources-cachesg": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "allowAllOutbound": true
+      }
+    }
+  ],
+  "/lammem-newResources/lammem-newResources/lammem-newResources-ingress": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lammemnewResourceslammemnewResourcesingress6740B3EB"
+    }
+  ],
+  "/lammem-newResources/lammem-newResources/ec-subnetgroup-lammem-newResources": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lammemnewResourcesecsubnetgrouplammemnewResourcesBFA66192"
+    }
+  ],
+  "/lammem-newResources/lammem-newResources/lammem-newResources-cluster": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lammemnewResourceslammemnewResourcescluster026E518E"
+    }
+  ],
+  "/lammem-newResources/lammem-newResources/LambdaFunctionServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lammem-newResources/lammem-newResources/ReplaceDefaultSecurityGroup-security-group": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "allowAllOutbound": true
+      }
+    }
+  ],
+  "/lammem-newResources/lammem-newResources/LambdaFunction": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "role": "*",
+        "tracing": "Active",
+        "runtime": "*",
+        "handler": "*",
+        "code": "*",
+        "securityGroups": [
+          "*",
+          "*"
+        ],
+        "vpc": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*",
+          {
+            "removeInEdge": true
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lammem-newResources/Vpc/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Vpc8378EB38"
+    }
+  ],
+  "/lammem-newResources/Vpc/isolatedSubnet1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    }
+  ],
+  "/lammem-newResources/Vpc/isolatedSubnet2": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    }
+  ],
+  "/lammem-newResources/Vpc/RestrictDefaultSecurityGroupCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/lammem-newResources/Vpc/FlowLog": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "resourceType": "*"
+      }
+    }
+  ],
+  "/lammem-newResources/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+    }
+  ],
+  "/lammem-newResources/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+    }
+  ],
+  "/lammem-newResources/lammem-newResources/lammem-newResources-cachesg/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lammemnewResourceslammemnewResourcescachesg08EE8773"
+    }
+  ],
+  "/lammem-newResources/lammem-newResources/LambdaFunctionServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lammemnewResourcesLambdaFunctionServiceRoleDB5D0991"
+    }
+  ],
+  "/lammem-newResources/lammem-newResources/LambdaFunctionServiceRole/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/lammem-newResources/lammem-newResources/ReplaceDefaultSecurityGroup-security-group/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lammemnewResourcesReplaceDefaultSecurityGroupsecuritygroup6C020299"
+    }
+  ],
+  "/lammem-newResources/lammem-newResources/LambdaFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lammemnewResourcesLambdaFunction960422D5"
+    }
+  ],
+  "/lammem-newResources/lammem-newResources/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lammem-newResources/Vpc/isolatedSubnet1/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet1SubnetE62B1B9B"
+    }
+  ],
+  "/lammem-newResources/Vpc/isolatedSubnet1/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet1RouteTableE442650B"
+    }
+  ],
+  "/lammem-newResources/Vpc/isolatedSubnet1/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet1RouteTableAssociationD259E31A"
+    }
+  ],
+  "/lammem-newResources/Vpc/isolatedSubnet2/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet2Subnet39217055"
+    }
+  ],
+  "/lammem-newResources/Vpc/isolatedSubnet2/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet2RouteTable334F9764"
+    }
+  ],
+  "/lammem-newResources/Vpc/isolatedSubnet2/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet2RouteTableAssociation25A4716F"
+    }
+  ],
+  "/lammem-newResources/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
+    }
+  ],
+  "/lammem-newResources/Vpc/FlowLog/IAMRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "roleName": "*",
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lammem-newResources/Vpc/FlowLog/LogGroup": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/lammem-newResources/Vpc/FlowLog/FlowLog": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcFlowLog8FF33A73"
+    }
+  ],
+  "/lammem-newResources/lammem-newResources/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lammemnewResourcesLambdaFunctionServiceRoleDefaultPolicyBEBDF814"
+    }
+  ],
+  "/lammem-newResources/lammem-newResources/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lammemnewResourcesLambdaFunctioninlinePolicyAddedToExecutionRole03F480433"
+    }
+  ],
+  "/lammem-newResources/Vpc/FlowLog/IAMRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcFlowLogIAMRole6A475D41"
+    }
+  ],
+  "/lammem-newResources/Vpc/FlowLog/IAMRole/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/lammem-newResources/Vpc/FlowLog/LogGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcFlowLogLogGroup7B5C56B9"
+    }
+  ],
+  "/lammem-newResources/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
+    }
+  ]
+}

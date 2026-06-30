@@ -1,0 +1,1064 @@
+{
+  "/farfhs-existingVpc/Vpc": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/farfhs-existingVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/farfhs-existingVpc/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/farfhs-existingVpc/farfhs-existingVpc-KINESIS_FIREHOSE-security-group": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "allowAllOutbound": true
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addIngressRule": [
+          {
+            "canInlineRule": true,
+            "connections": "*",
+            "uniqueId": "*"
+          },
+          {},
+          "*",
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addIngressRule": [
+          {
+            "canInlineRule": true,
+            "connections": "*",
+            "uniqueId": "*"
+          },
+          {},
+          "*",
+          false
+        ]
+      }
+    }
+  ],
+  "/farfhs-existingVpc/farfhs-existingVpc-ECR_API-security-group": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "allowAllOutbound": true
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addIngressRule": [
+          {
+            "canInlineRule": true,
+            "connections": "*",
+            "uniqueId": "*"
+          },
+          {},
+          "*",
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addIngressRule": [
+          {
+            "canInlineRule": true,
+            "connections": "*",
+            "uniqueId": "*"
+          },
+          {},
+          "*",
+          false
+        ]
+      }
+    }
+  ],
+  "/farfhs-existingVpc/farfhs-existingVpc-ECR_DKR-security-group": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "allowAllOutbound": true
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addIngressRule": [
+          {
+            "canInlineRule": true,
+            "connections": "*",
+            "uniqueId": "*"
+          },
+          {},
+          "*",
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addIngressRule": [
+          {
+            "canInlineRule": true,
+            "connections": "*",
+            "uniqueId": "*"
+          },
+          {},
+          "*",
+          false
+        ]
+      }
+    }
+  ],
+  "/farfhs-existingVpc/test-fargate-kinesisstreams-cluster": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*"
+      }
+    }
+  ],
+  "/farfhs-existingVpc/test-fargate-kinesisstreams-taskdef": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": "*"
+    }
+  ],
+  "/farfhs-existingVpc/test-fargate-kinesisstreams-sg": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "allowAllOutbound": true,
+        "disableInlineRules": false,
+        "vpc": "*",
+        "description": "*"
+      }
+    }
+  ],
+  "/farfhs-existingVpc/test-fargate-kinesisstreams-service": [
+    {
+      "type": "aws:cdk:warning",
+      "data": "Enable the 'circuitBreaker' property to trigger a quicker deployment failure if tasks are failing to come start (without this setting deployments may take up to 3 hours to fail). [ack: @aws-cdk/aws-ecs:shouldUseCircuitBreaker]",
+      "trace": [
+        "Annotations.addMessage (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:3441)",
+        "Annotations.addWarningV2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:2129)",
+        "new BaseService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/aws-ecs/lib/base/base-service.js:1:14671)",
+        "new BaseService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/no-box-stack-traces.js:1:345)",
+        "new FargateService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/aws-ecs/lib/fargate/fargate-service.js:1:7829)",
+        "new FargateService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/prop-injectable.js:1:855)",
+        "Object.CreateFargateService (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/fargate-helper.js:83:24)",
+        "new FargateToKinesisFirehose (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-fargate-kinesisfirehose/lib/index.js:34:59)",
+        "Object.<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-fargate-kinesisfirehose/test/integ.farfhs-existingVpc.js:28:1)",
+        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
+        "Object..js (node:internal/modules/cjs/loader:1839:10)",
+        "Module.load (node:internal/modules/cjs/loader:1441:32)",
+        "Function._load (node:internal/modules/cjs/loader:1263:12)",
+        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
+        "node:internal/main/run_main_module:36:49"
+      ]
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/farfhs-existingVpc/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/farfhs-existingVpc/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Vpc8378EB38"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PublicSubnet1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": true,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": true,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {}
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addNatGateway": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PublicSubnet2": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": true,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": true,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {}
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addNatGateway": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PrivateSubnet1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {}
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PrivateSubnet2": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {}
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/IGW": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcIGWD7BA715C"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/VPCGW": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcVPCGWBF912B6E"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/RestrictDefaultSecurityGroupCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/FlowLog": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "resourceType": "*"
+      }
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/KINESIS_FIREHOSE": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "service": {
+          "name": "*",
+          "port": "*",
+          "privateDnsDefault": true
+        },
+        "securityGroups": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/ECR_API": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "service": {
+          "name": "*",
+          "port": "*",
+          "privateDnsDefault": true
+        },
+        "securityGroups": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/ECR_DKR": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "service": {
+          "name": "*",
+          "port": "*",
+          "privateDnsDefault": true
+        },
+        "securityGroups": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/S3": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "service": {
+          "name": "*"
+        }
+      }
+    }
+  ],
+  "/farfhs-existingVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+    }
+  ],
+  "/farfhs-existingVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/S3LoggingBucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "destroy",
+        "enforceSSL": true,
+        "autoDeleteObjects": true
+      }
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/S3Bucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "destroy",
+        "enforceSSL": true,
+        "lifecycleRules": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          }
+        ],
+        "serverAccessLogsBucket": "*",
+        "autoDeleteObjects": true
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addLifecycleRule": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          },
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/firehose-log-group": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "retention": 9999
+      }
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/KinesisFirehoseRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/KinesisFirehosePolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/KinesisFirehose": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "destinationfirehoseKinesisFirehoseE8EB5D91"
+    }
+  ],
+  "/farfhs-existingVpc/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+    }
+  ],
+  "/farfhs-existingVpc/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+    }
+  ],
+  "/farfhs-existingVpc/farfhs-existingVpc-KINESIS_FIREHOSE-security-group/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "farfhsexistingVpcKINESISFIREHOSEsecuritygroup14103283"
+    }
+  ],
+  "/farfhs-existingVpc/farfhs-existingVpc-ECR_API-security-group/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "farfhsexistingVpcECRAPIsecuritygroup51B9740B"
+    }
+  ],
+  "/farfhs-existingVpc/farfhs-existingVpc-ECR_DKR-security-group/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "farfhsexistingVpcECRDKRsecuritygroup0940D84A"
+    }
+  ],
+  "/farfhs-existingVpc/test-fargate-kinesisstreams-cluster/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testfargatekinesisstreamsclusterEA5A2AD7"
+    }
+  ],
+  "/farfhs-existingVpc/test-fargate-kinesisstreams-taskdef/TaskRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/farfhs-existingVpc/test-fargate-kinesisstreams-taskdef/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testfargatekinesisstreamstaskdef402FE0B3"
+    }
+  ],
+  "/farfhs-existingVpc/test-fargate-kinesisstreams-sg/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testfargatekinesisstreamssgBA506AC6"
+    }
+  ],
+  "/farfhs-existingVpc/test-fargate-kinesisstreams-service/Service": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testfargatekinesisstreamsserviceService5AE7AADF"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PublicSubnet1/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet1Subnet5C2D37C4"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PublicSubnet1/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet1RouteTable6C95E38E"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PublicSubnet1/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet1RouteTableAssociation97140677"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PublicSubnet1/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet1DefaultRoute3DA9E72A"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PublicSubnet1/EIP": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet1EIPD7E02669"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PublicSubnet1/NATGateway": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet1NATGateway4D7517AA"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PublicSubnet2/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet2Subnet691E08A3"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PublicSubnet2/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet2RouteTable94F7E489"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PublicSubnet2/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet2RouteTableAssociationDD5762D8"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PublicSubnet2/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet2DefaultRoute97F91067"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PublicSubnet2/EIP": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet2EIP3C605A87"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PublicSubnet2/NATGateway": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPublicSubnet2NATGateway9182C01D"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PrivateSubnet1/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPrivateSubnet1Subnet536B997A"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PrivateSubnet1/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPrivateSubnet1RouteTableB2C5B500"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PrivateSubnet1/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPrivateSubnet1RouteTableAssociation70C59FA6"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PrivateSubnet1/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPrivateSubnet1DefaultRouteBE02A9ED"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PrivateSubnet2/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPrivateSubnet2Subnet3788AAA1"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PrivateSubnet2/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPrivateSubnet2RouteTableA678073B"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PrivateSubnet2/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPrivateSubnet2RouteTableAssociationA89CAD56"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/PrivateSubnet2/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcPrivateSubnet2DefaultRoute060D2087"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/FlowLog/IAMRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "roleName": "*",
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/FlowLog/LogGroup": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/FlowLog/FlowLog": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcFlowLog8FF33A73"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/KINESIS_FIREHOSE/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcKINESISFIREHOSE4115B5D1"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/ECR_API/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcECRAPI9A3B6A2B"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/ECR_DKR/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcECRDKR604E039F"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/S3/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcS3A5408339"
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/S3LoggingBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "destinationfirehoseS3LoggingBucket19A32AC0"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/S3LoggingBucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/S3LoggingBucket/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/S3Bucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "destinationfirehoseS3BucketEC05EE08"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/S3Bucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/S3Bucket/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/firehose-log-group/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "destinationfirehosefirehoseloggroup874764AF"
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/firehose-log-group/firehose-log-stream": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "logGroup": "*"
+      }
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/KinesisFirehoseRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "destinationfirehoseKinesisFirehoseRole5542AE95"
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/KinesisFirehosePolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "destinationfirehoseKinesisFirehosePolicyCEB14055"
+    }
+  ],
+  "/farfhs-existingVpc/test-fargate-kinesisstreams-taskdef/TaskRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testfargatekinesisstreamstaskdefTaskRole9811F3BE"
+    }
+  ],
+  "/farfhs-existingVpc/test-fargate-kinesisstreams-taskdef/TaskRole/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/FlowLog/IAMRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcFlowLogIAMRole6A475D41"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/FlowLog/IAMRole/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/FlowLog/LogGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcFlowLogLogGroup7B5C56B9"
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/S3LoggingBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "destinationfirehoseS3LoggingBucketPolicyE4970A90"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "destinationfirehoseS3LoggingBucketAutoDeleteObjectsCustomResourceDE2506F2"
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/S3Bucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "destinationfirehoseS3BucketPolicy19ACA86F"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "destinationfirehoseS3BucketAutoDeleteObjectsCustomResource87C9D64B"
+    }
+  ],
+  "/farfhs-existingVpc/destination-firehose/firehose-log-group/firehose-log-stream/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "destinationfirehosefirehoseloggroupfirehoselogstreamC03C78F6"
+    }
+  ],
+  "/farfhs-existingVpc/test-fargate-kinesisstreams-taskdef/TaskRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testfargatekinesisstreamstaskdefTaskRoleDefaultPolicyAE7EF3E4"
+    }
+  ],
+  "/farfhs-existingVpc/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
+    }
+  ]
+}

@@ -1,31 +1,31 @@
 {
-  "version": "50.0.0",
+  "version": "54.0.0",
   "files": {
-    "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200": {
+    "02b51ab524e7bcf8f477de3e71e5f9a72e448301b26ba62e9e75a14f9c55a093": {
       "displayName": "lamels-deployFunctionWithVpcProps/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
       "source": {
-        "path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
+        "path": "asset.02b51ab524e7bcf8f477de3e71e5f9a72e448301b26ba62e9e75a14f9c55a093",
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-us-east-1-b3ca7882": {
+        "current_account-us-east-1-763a9eab": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip",
+          "objectKey": "02b51ab524e7bcf8f477de3e71e5f9a72e448301b26ba62e9e75a14f9c55a093.zip",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }
       }
     },
-    "8ca062080b3b72fe4c94fa1b16c512638f8d8d80bae53228d8caabcef9d84e62": {
+    "30ff471a64c96ce8f4bc4c4c771d437b7af011a76ac57b232f332b0cb018fd08": {
       "displayName": "lamels-deployFunctionWithVpcProps Template",
       "source": {
         "path": "lamels-deployFunctionWithVpcProps.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-us-east-1-59e24a81": {
+        "current_account-us-east-1-9a9f5aa3": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "8ca062080b3b72fe4c94fa1b16c512638f8d8d80bae53228d8caabcef9d84e62.json",
+          "objectKey": "30ff471a64c96ce8f4bc4c4c771d437b7af011a76ac57b232f332b0cb018fd08.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }

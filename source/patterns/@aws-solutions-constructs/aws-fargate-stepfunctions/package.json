@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-fargate-stepfunctions",
-  "version": "0.0.0",
+  "version": "2.102.0",
   "description": "CDK Constructs for AWS Fargate to Amazon Step Functions integration",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -54,14 +54,14 @@
     }
   },
   "dependencies": {
-    "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-solutions-constructs/core": "2.102.0",
     "constructs": "^10.0.0"
   },
   "devDependencies": {
-    "@aws-cdk/integ-tests-alpha": "0.0.0-alpha.0",
+    "@aws-cdk/integ-tests-alpha": "2.260.0-alpha.0",
     "@types/node": "^20.0.0",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "0.0.0"
+    "aws-cdk-lib": "2.260.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -78,9 +78,9 @@
     ]
   },
   "peerDependencies": {
-    "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-solutions-constructs/core": "2.102.0",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "^0.0.0"
+    "aws-cdk-lib": "^2.260.0"
   },
   "keywords": [
     "aws",

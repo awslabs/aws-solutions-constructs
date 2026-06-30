@@ -1,0 +1,812 @@
+{
+  "/lamtsb-deployVpc/Vpc": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "natGateways": "*",
+        "subnetConfiguration": [
+          {
+            "cidrMask": "*",
+            "name": "*",
+            "subnetType": "Isolated"
+          }
+        ],
+        "enableDnsHostnames": true,
+        "enableDnsSupport": true
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/lamtsb-deployVpc/lamtsb-deployVpc-TRANSCRIBE-security-group": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "allowAllOutbound": true
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addIngressRule": [
+          {
+            "canInlineRule": true,
+            "connections": "*",
+            "uniqueId": "*"
+          },
+          {},
+          "*",
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addIngressRule": [
+          {
+            "canInlineRule": true,
+            "connections": "*",
+            "uniqueId": "*"
+          },
+          {},
+          "*",
+          false
+        ]
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/lamtsb-deployVpc/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/LambdaFunctionServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/ReplaceDefaultSecurityGroup-security-group": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "allowAllOutbound": true
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/LambdaFunction": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "role": "*",
+        "tracing": "Active",
+        "runtime": "*",
+        "handler": "*",
+        "code": "*",
+        "securityGroups": [
+          "*"
+        ],
+        "vpc": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*",
+          {
+            "removeInEdge": true
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/test-lambda-transcribe-vpc-source-bucketS3LoggingBucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "retain",
+        "enforceSSL": true
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/test-lambda-transcribe-vpc-source-bucketS3Bucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "retain",
+        "enforceSSL": true,
+        "lifecycleRules": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          }
+        ],
+        "serverAccessLogsBucket": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addLifecycleRule": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          },
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/test-lambda-transcribe-vpc-destination-bucketS3LoggingBucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "retain",
+        "enforceSSL": true
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/test-lambda-transcribe-vpc-destination-bucketS3Bucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "retain",
+        "enforceSSL": true,
+        "lifecycleRules": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          }
+        ],
+        "serverAccessLogsBucket": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addLifecycleRule": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          },
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Vpc8378EB38"
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/isolatedSubnet1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/isolatedSubnet2": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/RestrictDefaultSecurityGroupCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/FlowLog": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "resourceType": "*"
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/TRANSCRIBE": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "service": {
+          "name": "*",
+          "port": "*",
+          "privateDnsDefault": true
+        },
+        "securityGroups": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/S3": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "service": {
+          "name": "*"
+        }
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+    }
+  ],
+  "/lamtsb-deployVpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+    }
+  ],
+  "/lamtsb-deployVpc/lamtsb-deployVpc-TRANSCRIBE-security-group/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lamtsbdeployVpcTRANSCRIBEsecuritygroup28EB241A"
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/LambdaFunctionServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdatranscribevpcLambdaFunctionServiceRole8DA30E9A"
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/LambdaFunctionServiceRole/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/ReplaceDefaultSecurityGroup-security-group/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdatranscribevpcReplaceDefaultSecurityGroupsecuritygroup392E16B9"
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/LambdaFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdatranscribevpcLambdaFunction37B027A7"
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/LambdaFunction/inlinePolicyAddedToExecutionRole-1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/test-lambda-transcribe-vpc-source-bucketS3LoggingBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdatranscribevpctestlambdatranscribevpcsourcebucketS3LoggingBucket3CCF4AB6"
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/test-lambda-transcribe-vpc-source-bucketS3LoggingBucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/test-lambda-transcribe-vpc-source-bucketS3Bucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdatranscribevpctestlambdatranscribevpcsourcebucketS3Bucket5A774E58"
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/test-lambda-transcribe-vpc-source-bucketS3Bucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/test-lambda-transcribe-vpc-destination-bucketS3LoggingBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdatranscribevpctestlambdatranscribevpcdestinationbucketS3LoggingBucketC5CD844C"
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/test-lambda-transcribe-vpc-destination-bucketS3LoggingBucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/test-lambda-transcribe-vpc-destination-bucketS3Bucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdatranscribevpctestlambdatranscribevpcdestinationbucketS3Bucket2A8E60BA"
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/test-lambda-transcribe-vpc-destination-bucketS3Bucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/isolatedSubnet1/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet1SubnetE62B1B9B"
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/isolatedSubnet1/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet1RouteTableE442650B"
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/isolatedSubnet1/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet1RouteTableAssociationD259E31A"
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/isolatedSubnet2/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet2Subnet39217055"
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/isolatedSubnet2/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet2RouteTable334F9764"
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/isolatedSubnet2/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcisolatedSubnet2RouteTableAssociation25A4716F"
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/FlowLog/IAMRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "roleName": "*",
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/FlowLog/LogGroup": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/FlowLog/FlowLog": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcFlowLog8FF33A73"
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/TRANSCRIBE/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcTRANSCRIBE44F242F8"
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/S3/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcS3A5408339"
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdatranscribevpcLambdaFunctionServiceRoleDefaultPolicy57785FDA"
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdatranscribevpcLambdaFunctioninlinePolicyAddedToExecutionRole0CD559ABB"
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/LambdaFunction/inlinePolicyAddedToExecutionRole-1/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdatranscribevpcLambdaFunctioninlinePolicyAddedToExecutionRole16A285442"
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/test-lambda-transcribe-vpc-source-bucketS3LoggingBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdatranscribevpctestlambdatranscribevpcsourcebucketS3LoggingBucketPolicy1A20BCB2"
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/test-lambda-transcribe-vpc-source-bucketS3Bucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdatranscribevpctestlambdatranscribevpcsourcebucketS3BucketPolicyFB41508A"
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/test-lambda-transcribe-vpc-destination-bucketS3LoggingBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdatranscribevpctestlambdatranscribevpcdestinationbucketS3LoggingBucketPolicy448F99EB"
+    }
+  ],
+  "/lamtsb-deployVpc/test-lambda-transcribe-vpc/test-lambda-transcribe-vpc-destination-bucketS3Bucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdatranscribevpctestlambdatranscribevpcdestinationbucketS3BucketPolicy6538DD29"
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/FlowLog/IAMRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcFlowLogIAMRole6A475D41"
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/FlowLog/IAMRole/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/FlowLog/LogGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcFlowLogLogGroup7B5C56B9"
+    }
+  ],
+  "/lamtsb-deployVpc/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
+    }
+  ]
+}

@@ -1,0 +1,414 @@
+{
+  "/lamken-minimal-arguments/contentBucketLog": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "versioned": true,
+        "removalPolicy": "destroy",
+        "autoDeleteObjects": true,
+        "encryption": "S3_MANAGED",
+        "enforceSSL": true
+      }
+    }
+  ],
+  "/lamken-minimal-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/lamken-minimal-arguments/contentBucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "versioned": true,
+        "removalPolicy": "destroy",
+        "autoDeleteObjects": true,
+        "encryption": "S3_MANAGED",
+        "enforceSSL": true,
+        "serverAccessLogsBucket": "*"
+      }
+    }
+  ],
+  "/lamken-minimal-arguments/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/lamken-minimal-arguments/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/lamken-minimal-arguments/contentBucketLog/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "contentBucketLog5B9803A6"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/lamken-minimal-arguments/contentBucketLog/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/lamken-minimal-arguments/contentBucketLog/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/lamken-minimal-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+    }
+  ],
+  "/lamken-minimal-arguments/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+    }
+  ],
+  "/lamken-minimal-arguments/contentBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "contentBucket356CF7A5"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/lamken-minimal-arguments/contentBucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/lamken-minimal-arguments/contentBucket/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/lamken-minimal-arguments/minimal-arguments/LambdaFunctionServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamken-minimal-arguments/minimal-arguments/LambdaFunction": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "role": "*",
+        "tracing": "Active",
+        "code": "*",
+        "runtime": "*",
+        "handler": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*",
+          {
+            "removeInEdge": true
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamken-minimal-arguments/minimal-arguments/kendra-index-role-minimal-arguments": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "description": "*",
+        "inlinePolicies": "*"
+      }
+    }
+  ],
+  "/lamken-minimal-arguments/minimal-arguments/kendra-index-minimal-arguments": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "minimalargumentskendraindexminimalarguments5CBDD236"
+    }
+  ],
+  "/lamken-minimal-arguments/minimal-arguments/data-source-role-minimal-arguments0": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "description": "*",
+        "inlinePolicies": "*"
+      }
+    }
+  ],
+  "/lamken-minimal-arguments/minimal-arguments/data-source-minimal-arguments0": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "minimalargumentsdatasourceminimalarguments05A02FF3B"
+    }
+  ],
+  "/lamken-minimal-arguments/contentBucketLog/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "contentBucketLogPolicy52155F9C"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/lamken-minimal-arguments/contentBucketLog/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "contentBucketLogAutoDeleteObjectsCustomResource533B8207"
+    }
+  ],
+  "/lamken-minimal-arguments/contentBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "contentBucketPolicy71256B1B"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/lamken-minimal-arguments/contentBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "contentBucketAutoDeleteObjectsCustomResourceD6F9707E"
+    }
+  ],
+  "/lamken-minimal-arguments/minimal-arguments/LambdaFunctionServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "minimalargumentsLambdaFunctionServiceRole73B77FF7"
+    }
+  ],
+  "/lamken-minimal-arguments/minimal-arguments/LambdaFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "minimalargumentsLambdaFunctionC19CFAAC"
+    }
+  ],
+  "/lamken-minimal-arguments/minimal-arguments/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamken-minimal-arguments/minimal-arguments/LambdaFunction/inlinePolicyAddedToExecutionRole-1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamken-minimal-arguments/minimal-arguments/LambdaFunction/inlinePolicyAddedToExecutionRole-2": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamken-minimal-arguments/minimal-arguments/kendra-index-role-minimal-arguments/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "minimalargumentskendraindexroleminimalargumentsB1DBDF7D"
+    }
+  ],
+  "/lamken-minimal-arguments/minimal-arguments/data-source-role-minimal-arguments0/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "minimalargumentsdatasourceroleminimalarguments00EAC5006"
+    }
+  ],
+  "/lamken-minimal-arguments/minimal-arguments/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole0F2C1CE4B"
+    }
+  ],
+  "/lamken-minimal-arguments/minimal-arguments/LambdaFunction/inlinePolicyAddedToExecutionRole-1/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole13B87ED37"
+    }
+  ],
+  "/lamken-minimal-arguments/minimal-arguments/LambdaFunction/inlinePolicyAddedToExecutionRole-2/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "minimalargumentsLambdaFunctioninlinePolicyAddedToExecutionRole2FA23AF8F"
+    }
+  ]
+}

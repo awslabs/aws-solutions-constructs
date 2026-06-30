@@ -1,0 +1,27 @@
+{
+  "version": "54.0.0",
+  "title": "Validation Report",
+  "pluginReports": [
+    {
+      "pluginName": "Construct Annotations",
+      "conclusion": "success",
+      "violations": [
+        {
+          "ruleName": "@aws-cdk/aws-ecs:shouldUseCircuitBreaker",
+          "description": "Enable the 'circuitBreaker' property to trigger a quicker deployment failure if tasks are failing to come start (without this setting deployments may take up to 3 hours to fail). [ack: @aws-cdk/aws-ecs:shouldUseCircuitBreaker]",
+          "severity": "warning",
+          "violatingConstructs": [
+            {
+              "constructPath": "fars3-new-resources/test-construct-service",
+              "constructFqn": "aws-cdk-lib.aws_ecs.FargateService",
+              "libraryVersion": "2.259.0",
+              "stackTraces": [
+                "Run with '--debug' to include location info\nRun with '--debug' to include location info"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

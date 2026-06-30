@@ -1,13 +1,4 @@
 {
-  "/s3sns-existingS3Bucket": [
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/test/integ.s3sns-existingS3Bucket.js:24:15)",
-        "...node internals..."
-      ]
-    }
-  ],
   "/s3sns-existingS3Bucket/scrapBucketLog": [
     {
       "type": "aws:cdk:analytics:construct",
@@ -43,41 +34,18 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "BootstrapVersion"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...aws-cdk-lib, node internals...",
-        "(no user code in 9007199254740991 frames, use --stack-trace-limit to capture more)"
-      ]
     }
   ],
   "/s3sns-existingS3Bucket/CheckBootstrapVersion": [
     {
       "type": "aws:cdk:logicalId",
       "data": "CheckBootstrapVersion"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...aws-cdk-lib, node internals...",
-        "(no user code in 9007199254740991 frames, use --stack-trace-limit to capture more)"
-      ]
     }
   ],
   "/s3sns-existingS3Bucket/scrapBucketLog/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "scrapBucketLog7B53B25C"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:63:23)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/test/integ.s3sns-existingS3Bucket.js:28:53)",
-        "...node internals..."
-      ]
     },
     {
       "type": "aws:cdk:analytics:mixin",
@@ -104,45 +72,18 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:63:23)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/test/integ.s3sns-existingS3Bucket.js:28:53)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sns-existingS3Bucket/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
     {
       "type": "aws:cdk:logicalId",
       "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:63:23)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/test/integ.s3sns-existingS3Bucket.js:28:53)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sns-existingS3Bucket/scrapBucket/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "scrapBucketB11863B7"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:74:26)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/test/integ.s3sns-existingS3Bucket.js:28:53)",
-        "...node internals..."
-      ]
     },
     {
       "type": "aws:cdk:analytics:mixin",
@@ -222,32 +163,12 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...WrappedClass.addEventNotification in aws-cdk-lib...",
-        "/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/lib/index.js:78: (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/lib/index.js:78:3)",
-        "Array.forEach (:)",
-        "new S3ToSns (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/lib/index.js:76:22)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/test/integ.s3sns-existingS3Bucket.js:27:1)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sns-existingS3Bucket/scrapBucketLog/Policy/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "scrapBucketLogPolicy2972C573"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:63:23)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/test/integ.s3sns-existingS3Bucket.js:28:53)",
-        "...node internals..."
-      ]
     },
     {
       "type": "aws:cdk:analytics:mixin",
@@ -260,30 +181,12 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "scrapBucketLogAutoDeleteObjectsCustomResource307F3D47"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:63:23)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/test/integ.s3sns-existingS3Bucket.js:28:53)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sns-existingS3Bucket/scrapBucket/Policy/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "scrapBucketPolicy189B0607"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:74:26)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/test/integ.s3sns-existingS3Bucket.js:28:53)",
-        "...node internals..."
-      ]
     },
     {
       "type": "aws:cdk:analytics:mixin",
@@ -296,15 +199,6 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "scrapBucketAutoDeleteObjectsCustomResourceFFFC3275"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Bucket2 in aws-cdk-lib...",
-        "CreateScrapBucket (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/test/test-helper.js:74:26)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/test/integ.s3sns-existingS3Bucket.js:28:53)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sns-existingS3Bucket/scrapBucket/Notifications/HandlerPolicy": [
@@ -343,50 +237,18 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "scrapBucketNotifications065035E3"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...WrappedClass.addEventNotification in aws-cdk-lib...",
-        "/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/lib/index.js:78: (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/lib/index.js:78:3)",
-        "Array.forEach (:)",
-        "new S3ToSns (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/lib/index.js:76:22)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/test/integ.s3sns-existingS3Bucket.js:27:1)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sns-existingS3Bucket/test-s3-sns/'test-s3-snsKey'/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3snstests3snsKey1D741F34"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Key2 in aws-cdk-lib...",
-        "buildEncryptionKey (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/kms-helper.js:30:12)",
-        "Object.buildTopic (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sns-helper.js:96:75)",
-        "new S3ToSns (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/lib/index.js:61:45)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/test/integ.s3sns-existingS3Bucket.js:27:1)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sns-existingS3Bucket/test-s3-sns/SnsTopic/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3snsSnsTopicF02F6BD0"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...new Topic2 in aws-cdk-lib...",
-        "Object.buildTopic (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sns-helper.js:105:23)",
-        "new S3ToSns (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/lib/index.js:61:45)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/test/integ.s3sns-existingS3Bucket.js:27:1)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sns-existingS3Bucket/test-s3-sns/SnsTopic/Policy": [
@@ -403,51 +265,18 @@
     {
       "type": "aws:cdk:logicalId",
       "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...WrappedClass.addEventNotification in aws-cdk-lib...",
-        "/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/lib/index.js:78: (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/lib/index.js:78:3)",
-        "Array.forEach (:)",
-        "new S3ToSns (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/lib/index.js:76:22)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/test/integ.s3sns-existingS3Bucket.js:27:1)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sns-existingS3Bucket/scrapBucket/Notifications/HandlerPolicy/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "scrapBucketNotificationsHandlerPolicy732AB18C"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...WrappedClass.addEventNotification in aws-cdk-lib...",
-        "/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/lib/index.js:78: (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/lib/index.js:78:3)",
-        "Array.forEach (:)",
-        "new S3ToSns (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/lib/index.js:76:22)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/test/integ.s3sns-existingS3Bucket.js:27:1)",
-        "...node internals..."
-      ]
     }
   ],
   "/s3sns-existingS3Bucket/test-s3-sns/SnsTopic/Policy/Resource": [
     {
       "type": "aws:cdk:logicalId",
       "data": "tests3snsSnsTopicPolicyBB44DF16"
-    },
-    {
-      "type": "aws:cdk:creationStack",
-      "data": [
-        "...WrappedClass.addToResourcePolicy in aws-cdk-lib...",
-        "applySecureTopicPolicy (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sns-helper.js:31:11)",
-        "Object.buildTopic (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/sns-helper.js:106:9)",
-        "new S3ToSns (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/lib/index.js:61:45)",
-        "<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/Issue1477/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-s3-sns/test/integ.s3sns-existingS3Bucket.js:27:1)",
-        "...node internals..."
-      ]
     }
   ]
 }

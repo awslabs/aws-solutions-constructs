@@ -1,0 +1,332 @@
+{
+  "/evtfhss3-existing-eventbus/evtfhss3test-existing-eventbus": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {}
+    }
+  ],
+  "/evtfhss3-existing-eventbus/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/evtfhss3-existing-eventbus/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/evtfhss3-existing-eventbus/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3test-existing-eventbus/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "evtfhss3testexistingeventbus5123D540"
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/EventsRuleInvokeKinesisFirehoseRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "description": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/EventsRuleInvokeKinesisFirehosePolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/EventsRule": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "targets": "*",
+        "eventBus": "*",
+        "eventPattern": {
+          "source": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEventPattern": [
+          {
+            "source": "*"
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addTarget": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/evtfhss3-existing-eventbus/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+    }
+  ],
+  "/evtfhss3-existing-eventbus/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/KinesisFirehoseToS3/S3Bucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "destroy",
+        "enforceSSL": true,
+        "lifecycleRules": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          }
+        ],
+        "autoDeleteObjects": true
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addLifecycleRule": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          },
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/KinesisFirehoseToS3/firehose-log-group": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "retention": 9999,
+        "removalPolicy": "destroy"
+      }
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/KinesisFirehoseToS3/KinesisFirehoseRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/KinesisFirehoseToS3/KinesisFirehosePolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/KinesisFirehoseToS3/KinesisFirehose": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "evtfhss3existingbusKinesisFirehoseToS3KinesisFirehoseA77AB0B2"
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/EventsRuleInvokeKinesisFirehoseRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "evtfhss3existingbusEventsRuleInvokeKinesisFirehoseRole7D7DF871"
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/EventsRuleInvokeKinesisFirehosePolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "evtfhss3existingbusEventsRuleInvokeKinesisFirehosePolicyE307173A"
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/EventsRule/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "evtfhss3existingbusEventsRule7E0DBD3A"
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/KinesisFirehoseToS3/S3Bucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "evtfhss3existingbusKinesisFirehoseToS3S3BucketD340337D"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/KinesisFirehoseToS3/S3Bucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/KinesisFirehoseToS3/S3Bucket/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/KinesisFirehoseToS3/firehose-log-group/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "evtfhss3existingbusKinesisFirehoseToS3firehoseloggroup796118EE"
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/KinesisFirehoseToS3/firehose-log-group/firehose-log-stream": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "logGroup": "*"
+      }
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/KinesisFirehoseToS3/KinesisFirehoseRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "evtfhss3existingbusKinesisFirehoseToS3KinesisFirehoseRole505D9C33"
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/KinesisFirehoseToS3/KinesisFirehosePolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "evtfhss3existingbusKinesisFirehoseToS3KinesisFirehosePolicyFD6C4ECA"
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/KinesisFirehoseToS3/S3Bucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "evtfhss3existingbusKinesisFirehoseToS3S3BucketPolicyAE39B235"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/KinesisFirehoseToS3/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "evtfhss3existingbusKinesisFirehoseToS3S3BucketAutoDeleteObjectsCustomResource770CF930"
+    }
+  ],
+  "/evtfhss3-existing-eventbus/evtfhss3-existing-bus/KinesisFirehoseToS3/firehose-log-group/firehose-log-stream/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "evtfhss3existingbusKinesisFirehoseToS3firehoseloggroupfirehoselogstream93EC9AD0"
+    }
+  ]
+}

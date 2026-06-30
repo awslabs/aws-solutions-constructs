@@ -25,7 +25,7 @@ export NODE_OPTIONS="--max-old-space-size=4096 ${NODE_OPTIONS:-}"
 
 echo "============================================================================================="
 echo "building..."
-npx nx run-many -t blt --parallel=12 --output-style=static
+npx nx run-many -t blt --parallel=10 --output-style=static
 
 echo "============================================================================================="
 echo "running cfn-guard..."
