@@ -1,6 +1,6 @@
 {
   "name": "@aws-solutions-constructs/aws-kinesisstreams-kinesisfirehose-s3",
-  "version": "2.102.0",
+  "version": "0.0.0",
   "description": "CDK constructs for defining an interaction between an Amazon Kinesis Data Stream (KDS), Amazon Kinesis Data Firehose (KDF) delivery stream and an Amazon S3 bucket.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -54,16 +54,16 @@
     }
   },
   "dependencies": {
-    "@aws-solutions-constructs/core": "2.102.0",
-    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "2.102.0",
-    "@aws-solutions-constructs/aws-kinesisstreams-lambda": "2.102.0",
+    "@aws-solutions-constructs/core": "0.0.0",
+    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "0.0.0",
+    "@aws-solutions-constructs/aws-kinesisstreams-lambda": "0.0.0",
     "constructs": "^10.0.0"
   },
   "devDependencies": {
-    "@aws-cdk/integ-tests-alpha": "2.260.0-alpha.0",
+    "@aws-cdk/integ-tests-alpha": "0.0.0-alpha.0",
     "@types/node": "^20.0.0",
     "constructs": "^10.0.0",
-    "aws-cdk-lib": "2.260.0"
+    "aws-cdk-lib": "0.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -80,11 +80,11 @@
     ]
   },
   "peerDependencies": {
-    "@aws-solutions-constructs/core": "2.102.0",
+    "@aws-solutions-constructs/core": "0.0.0",
     "constructs": "^10.0.0",
     "aws-cdk-lib": "^2.260.0",
-    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "2.102.0",
-    "@aws-solutions-constructs/aws-kinesisstreams-lambda": "2.102.0"
+    "@aws-solutions-constructs/aws-kinesisfirehose-s3": "0.0.0",
+    "@aws-solutions-constructs/aws-kinesisstreams-lambda": "0.0.0"
   },
   "keywords": [
     "aws",
