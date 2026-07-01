@@ -1,0 +1,469 @@
+{
+  "/lamply-async-defaults/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/lamply-async-defaults/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/lamply-async-defaults/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/SnsTopic": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "masterKey": "*"
+      }
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/test-lambda-polly-async-defaults-output-bucketS3LoggingBucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "destroy",
+        "enforceSSL": true,
+        "autoDeleteObjects": true
+      }
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/test-lambda-polly-async-defaults-output-bucketS3Bucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "destroy",
+        "enforceSSL": true,
+        "lifecycleRules": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          }
+        ],
+        "serverAccessLogsBucket": "*",
+        "autoDeleteObjects": true
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addLifecycleRule": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          },
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/LambdaFunctionServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/LambdaFunction": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "role": "*",
+        "tracing": "Active",
+        "timeout": "*",
+        "code": "*",
+        "runtime": "*",
+        "handler": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*",
+          {
+            "removeInEdge": true
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamply-async-defaults/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+    }
+  ],
+  "/lamply-async-defaults/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/SnsTopic/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollyasyncdefaultsSnsTopic41BC428E"
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/SnsTopic/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "topics": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/test-lambda-polly-async-defaults-output-bucketS3LoggingBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollyasyncdefaultstestlambdapollyasyncdefaultsoutputbucketS3LoggingBucketC1998316"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/test-lambda-polly-async-defaults-output-bucketS3LoggingBucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/test-lambda-polly-async-defaults-output-bucketS3LoggingBucket/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/test-lambda-polly-async-defaults-output-bucketS3Bucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollyasyncdefaultstestlambdapollyasyncdefaultsoutputbucketS3BucketEB6BEFF7"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/test-lambda-polly-async-defaults-output-bucketS3Bucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/test-lambda-polly-async-defaults-output-bucketS3Bucket/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/LambdaFunctionServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollyasyncdefaultsLambdaFunctionServiceRole8D307252"
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/LambdaFunctionServiceRole/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/LambdaFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollyasyncdefaultsLambdaFunctionACB69F39"
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/LambdaFunction/inlinePolicyAddedToExecutionRole-1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/SnsTopic/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollyasyncdefaultsSnsTopicPolicy4E445758"
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/test-lambda-polly-async-defaults-output-bucketS3LoggingBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollyasyncdefaultstestlambdapollyasyncdefaultsoutputbucketS3LoggingBucketPolicy68D87CB4"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/test-lambda-polly-async-defaults-output-bucketS3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollyasyncdefaultstestlambdapollyasyncdefaultsoutputbucketS3LoggingBucketAutoDeleteObjectsCustomResource5C91AC84"
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/test-lambda-polly-async-defaults-output-bucketS3Bucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollyasyncdefaultstestlambdapollyasyncdefaultsoutputbucketS3BucketPolicy19C6AA1C"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/test-lambda-polly-async-defaults-output-bucketS3Bucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollyasyncdefaultstestlambdapollyasyncdefaultsoutputbucketS3BucketAutoDeleteObjectsCustomResource98EF913B"
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollyasyncdefaultsLambdaFunctionServiceRoleDefaultPolicy5DF381C7"
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollyasyncdefaultsLambdaFunctioninlinePolicyAddedToExecutionRole083BC5D79"
+    }
+  ],
+  "/lamply-async-defaults/test-lambda-polly-async-defaults/LambdaFunction/inlinePolicyAddedToExecutionRole-1/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testlambdapollyasyncdefaultsLambdaFunctioninlinePolicyAddedToExecutionRole1D2DE2991"
+    }
+  ]
+}

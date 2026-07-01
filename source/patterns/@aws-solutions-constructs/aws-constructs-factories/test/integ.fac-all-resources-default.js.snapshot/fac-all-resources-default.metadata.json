@@ -1,0 +1,455 @@
+{
+  "/fac-all-resources-default/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/fac-all-resources-default/lambdatest": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "code": "*",
+        "runtime": "*",
+        "handler": "*"
+      }
+    }
+  ],
+  "/fac-all-resources-default/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/fac-all-resources-default/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/fac-all-resources-default/integ-test/testS3LoggingBucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "destroy",
+        "enforceSSL": true,
+        "autoDeleteObjects": true
+      }
+    }
+  ],
+  "/fac-all-resources-default/integ-test/testS3Bucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "destroy",
+        "enforceSSL": true,
+        "lifecycleRules": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          }
+        ],
+        "serverAccessLogsBucket": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addLifecycleRule": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          },
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/fac-all-resources-default/integ-test/test-dlq": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "KMS_MANAGED",
+        "fifo": "*"
+      }
+    }
+  ],
+  "/fac-all-resources-default/integ-test/test": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "KMS_MANAGED",
+        "deadLetterQueue": {
+          "maxReceiveCount": "*",
+          "queue": "*"
+        }
+      }
+    }
+  ],
+  "/fac-all-resources-default/integ-test/StateMachineLogGrouptestsm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "retention": 9999,
+        "logGroupName": "*"
+      }
+    }
+  ],
+  "/fac-all-resources-default/integ-test/StateMachinetestsm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "logs": {
+          "destination": "*",
+          "level": "ERROR"
+        },
+        "definitionBody": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToRolePolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToRolePolicy": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/fac-all-resources-default/integ-test/ExecutionFailedAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/fac-all-resources-default/integ-test/ExecutionThrottledAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/fac-all-resources-default/integ-test/ExecutionAbortedAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/fac-all-resources-default/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+    }
+  ],
+  "/fac-all-resources-default/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+    }
+  ],
+  "/fac-all-resources-default/lambdatest/ServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "managedPolicies": [
+          {
+            "managedPolicyArn": "*"
+          }
+        ]
+      }
+    }
+  ],
+  "/fac-all-resources-default/lambdatest/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lambdatest8B679D7F"
+    }
+  ],
+  "/fac-all-resources-default/integ-test/testS3LoggingBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtesttestS3LoggingBucket91D581BF"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/fac-all-resources-default/integ-test/testS3LoggingBucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/fac-all-resources-default/integ-test/testS3LoggingBucket/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/fac-all-resources-default/integ-test/testS3Bucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtesttestS3Bucket42B91B48"
+    }
+  ],
+  "/fac-all-resources-default/integ-test/testS3Bucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/fac-all-resources-default/integ-test/test-dlq/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtesttestdlqF73DF092"
+    }
+  ],
+  "/fac-all-resources-default/integ-test/test-dlq/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "queues": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/fac-all-resources-default/integ-test/test/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtest1192C30B"
+    }
+  ],
+  "/fac-all-resources-default/integ-test/test/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "queues": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/fac-all-resources-default/integ-test/StateMachineLogGrouptestsm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestStateMachineLogGrouptestsmA7D771BD"
+    }
+  ],
+  "/fac-all-resources-default/integ-test/StateMachinetestsm/Role": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/fac-all-resources-default/integ-test/StateMachinetestsm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestStateMachinetestsm53990095"
+    }
+  ],
+  "/fac-all-resources-default/integ-test/ExecutionFailedAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestExecutionFailedAlarm8C10A26F"
+    }
+  ],
+  "/fac-all-resources-default/integ-test/ExecutionThrottledAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestExecutionThrottledAlarmD80EEBFB"
+    }
+  ],
+  "/fac-all-resources-default/integ-test/ExecutionAbortedAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestExecutionAbortedAlarm5571D1F6"
+    }
+  ],
+  "/fac-all-resources-default/lambdatest/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lambdatestServiceRoleF3BDB8FC"
+    }
+  ],
+  "/fac-all-resources-default/integ-test/testS3LoggingBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtesttestS3LoggingBucketPolicy8C3AC577"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/fac-all-resources-default/integ-test/testS3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtesttestS3LoggingBucketAutoDeleteObjectsCustomResourceA4C82217"
+    }
+  ],
+  "/fac-all-resources-default/integ-test/testS3Bucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtesttestS3BucketPolicy54E2DE38"
+    }
+  ],
+  "/fac-all-resources-default/integ-test/test-dlq/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtesttestdlqPolicy2740E59D"
+    }
+  ],
+  "/fac-all-resources-default/integ-test/test/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestPolicyF29A0B8B"
+    }
+  ],
+  "/fac-all-resources-default/integ-test/StateMachinetestsm/Role/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestStateMachinetestsmRoleD1F9CE9B"
+    }
+  ],
+  "/fac-all-resources-default/integ-test/StateMachinetestsm/Role/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/fac-all-resources-default/integ-test/StateMachinetestsm/Role/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestStateMachinetestsmRoleDefaultPolicy7DBA7025"
+    }
+  ]
+}

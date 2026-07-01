@@ -1,5 +1,5 @@
 {
-  "version": "52.0.0",
+  "version": "54.0.0",
   "artifacts": {
     "lamopndisabledzoneawarenessIntegDefaultTestDeployAssert7E083B68.assets": {
       "type": "cdk:asset-manifest",
@@ -33,20 +33,7 @@
       "dependencies": [
         "lamopndisabledzoneawarenessIntegDefaultTestDeployAssert7E083B68.assets"
       ],
-      "metadata": {
-        "/lamopn-disabled-zone-awareness/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "lamopndisabledzoneawarenessIntegDefaultTestDeployAssert7E083B68.metadata.json",
       "displayName": "lamopn-disabled-zone-awareness/Integ/DefaultTest/DeployAssert"
     },
     "lamopn-disabled-zone-awareness.assets": {
@@ -66,7 +53,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/052c8c9451c4c7b6934e350c4d55332cf0d7d231e6042d32c654e3bdd53db181.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fba62b06e9201bcb469cc7aa6f9227598bb27f5770349d09c53f2770a13a7022.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -81,746 +68,7 @@
       "dependencies": [
         "lamopn-disabled-zone-awareness.assets"
       ],
-      "metadata": {
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/LambdaFunctionServiceRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              },
-              "inlinePolicies": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/LambdaFunctionServiceRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchLambdaFunctionServiceRole4722AB8A"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/LambdaFunctionServiceRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchLambdaFunctionServiceRoleDefaultPolicy78C56359"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/ReplaceDefaultSecurityGroup-security-group": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "vpc": "*",
-              "allowAllOutbound": true
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/ReplaceDefaultSecurityGroup-security-group/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchReplaceDefaultSecurityGroupsecuritygroupB44718EC"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/LambdaFunction": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "role": "*",
-              "tracing": "Active",
-              "code": "*",
-              "runtime": "*",
-              "handler": "*",
-              "securityGroups": [
-                "*"
-              ],
-              "vpc": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addEnvironment": [
-                "*",
-                "*",
-                {
-                  "removeInEdge": true
-                }
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addEnvironment": [
-                "*",
-                "*"
-              ]
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/LambdaFunction/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchLambdaFunction93FD38F7"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchLambdaFunctioninlinePolicyAddedToExecutionRole09B870594"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/CognitoUserPool": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/CognitoUserPool/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchCognitoUserPoolA09096F9"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/CognitoUserPoolClient": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "userPool": "*"
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/CognitoUserPoolClient/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchCognitoUserPoolClient39C21D94"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/CognitoIdentityPool": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchCognitoIdentityPool0B1FB311"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/UserPoolDomain": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchUserPoolDomain98864920"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/CognitoAuthorizedRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              },
-              "inlinePolicies": "*"
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/CognitoAuthorizedRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchCognitoAuthorizedRole58A1ED44"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/IdentityPoolRoleMapping": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchIdentityPoolRoleMappingD8C765B1"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/CognitoDashboardConfigureRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/CognitoDashboardConfigureRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchCognitoDashboardConfigureRole1F2B7B7A"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/CognitoDashboardConfigureRolePolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/CognitoDashboardConfigureRolePolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchCognitoDashboardConfigureRolePolicyC9C6A6A2"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/OpenSearchDomain": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchOpenSearchDomainF9CCC3D3"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/StatusRedAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/StatusRedAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchStatusRedAlarm1627144D"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/StatusYellowAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/StatusYellowAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchStatusYellowAlarm57139CF0"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/FreeStorageSpaceTooLowAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/FreeStorageSpaceTooLowAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchFreeStorageSpaceTooLowAlarm6A5E1E96"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/IndexWritesBlockedTooHighAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/IndexWritesBlockedTooHighAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchIndexWritesBlockedTooHighAlarmD2E041A3"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/AutomatedSnapshotFailureTooHighAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/AutomatedSnapshotFailureTooHighAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchAutomatedSnapshotFailureTooHighAlarm9A4D0B1F"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/CPUUtilizationTooHighAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/CPUUtilizationTooHighAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchCPUUtilizationTooHighAlarmC4850758"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/JVMMemoryPressureTooHighAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/JVMMemoryPressureTooHighAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchJVMMemoryPressureTooHighAlarmEFB09A7C"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/MasterCPUUtilizationTooHighAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/MasterCPUUtilizationTooHighAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchMasterCPUUtilizationTooHighAlarm124D5748"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/MasterJVMMemoryPressureTooHighAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/test-lambda-opensearch/MasterJVMMemoryPressureTooHighAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testlambdaopensearchMasterJVMMemoryPressureTooHighAlarmBC9524D3"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Vpc": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "natGateways": "*",
-              "subnetConfiguration": [
-                {
-                  "cidrMask": "*",
-                  "name": "*",
-                  "subnetType": "Isolated"
-                }
-              ],
-              "maxAzs": "*",
-              "enableDnsHostnames": true,
-              "enableDnsSupport": true
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Vpc/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "Vpc8378EB38"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Vpc/isolatedSubnet1": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "availabilityZone": "*",
-              "vpcId": "*",
-              "cidrBlock": "*",
-              "mapPublicIpOnLaunch": false,
-              "ipv6CidrBlock": "*",
-              "assignIpv6AddressOnCreation": "*"
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Vpc/isolatedSubnet1/Subnet": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcisolatedSubnet1SubnetE62B1B9B"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Vpc/isolatedSubnet1/RouteTable": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcisolatedSubnet1RouteTableE442650B"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Vpc/isolatedSubnet1/RouteTableAssociation": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcisolatedSubnet1RouteTableAssociationD259E31A"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Vpc/RestrictDefaultSecurityGroupCustomResource": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcRestrictDefaultSecurityGroupCustomResourceC73DA2BE"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Vpc/FlowLog": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "resourceType": "*"
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Vpc/FlowLog/IAMRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "roleName": "*",
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Vpc/FlowLog/IAMRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLogIAMRole6A475D41"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Vpc/FlowLog/IAMRole/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLogIAMRoleDefaultPolicy406FB995"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Vpc/FlowLog/LogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Vpc/FlowLog/LogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLogLogGroup7B5C56B9"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Vpc/FlowLog/FlowLog": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "VpcFlowLog8FF33A73"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
-          {
-            "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
-            "data": true
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/lamopn-disabled-zone-awareness/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "lamopn-disabled-zone-awareness.metadata.json",
       "displayName": "lamopn-disabled-zone-awareness"
     },
     "Tree": {
@@ -1121,6 +369,7 @@
             "explanation": "When enabled, nodegroupName attribute of the provisioned EKS NodeGroup will not have the cluster name prefix."
           },
           "@aws-cdk/aws-eks:useNativeOidcProvider": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, EKS V2 clusters will use the native OIDC provider resource AWS::IAM::OIDCProvider instead of creating the OIDCProvider with a custom resource (iam.OpenIDConnectProvider)."
           },
@@ -1322,16 +571,47 @@
             "recommendedValue": true,
             "explanation": "Use the `Distribution` resource instead of `CloudFrontWebDistribution`"
           },
+          "@aws-cdk/aws-cloudfront:defaultFunctionRuntimeV2_0": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use cloudfront-js-2.0 as the default runtime for CloudFront Functions"
+          },
+          "@aws-cdk/aws-elasticloadbalancingv2:usePostQuantumTlsPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, HTTPS/TLS listeners use post-quantum TLS policy by default"
+          },
           "@aws-cdk/core:automaticL1Traits": {
             "recommendedValue": true,
             "explanation": "Automatically use the default L1 traits for L1 constructs`",
             "unconfiguredBehavesLike": {
               "v2": true
             }
+          },
+          "@aws-cdk/aws-batch:defaultToAL2023": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default imageType for EC2 Batch compute environments instead of the deprecated AL2"
+          },
+          "@aws-cdk/aws-eks:defaultToAL2023": {
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default AMI type for EKS managed node groups using non-GPU instance types instead of the deprecated AL2"
+          },
+          "@aws-cdk/core:annotationsInValidationReport": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Include construct annotations (warnings and errors) in the policy validation report"
+          },
+          "@aws-cdk/core:defaultCrossStackReferences": {
+            "recommendedValue": "weak",
+            "explanation": "Controls whether cross-region stack references are strong, weak, or both",
+            "unconfiguredBehavesLike": {
+              "v2": "strong"
+            }
           }
         }
       }
     }
   },
-  "minimumCliVersion": "2.1106.1"
+  "minimumCliVersion": "2.1128.1"
 }

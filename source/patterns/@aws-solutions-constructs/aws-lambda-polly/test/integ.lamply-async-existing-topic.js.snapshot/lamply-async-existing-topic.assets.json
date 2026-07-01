@@ -1,5 +1,5 @@
 {
-  "version": "48.0.0",
+  "version": "54.0.0",
   "files": {
     "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6": {
       "displayName": "lamply-async-existing-topic/Custom::S3AutoDeleteObjectsCustomResourceProvider Code",
@@ -15,16 +15,16 @@
         }
       }
     },
-    "e3248804dca1db709e63c62964522aa1a4d696c0ded45a7ea2b7f53899c698ce": {
+    "2d2c4f559523305439689c02c42c2ed4496488ac1ecb47fd9b57cc50914039c6": {
       "displayName": "lamply-async-existing-topic Template",
       "source": {
         "path": "lamply-async-existing-topic.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-23808333": {
+        "current_account-current_region-f6961d54": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "e3248804dca1db709e63c62964522aa1a4d696c0ded45a7ea2b7f53899c698ce.json",
+          "objectKey": "2d2c4f559523305439689c02c42c2ed4496488ac1ecb47fd9b57cc50914039c6.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

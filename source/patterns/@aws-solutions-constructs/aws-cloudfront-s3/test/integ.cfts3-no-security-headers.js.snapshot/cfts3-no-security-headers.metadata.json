@@ -1,0 +1,314 @@
+{
+  "/cfts3-no-security-headers/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/cfts3-no-security-headers/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/cfts3-no-security-headers/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/S3LoggingBucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "destroy",
+        "enforceSSL": true,
+        "autoDeleteObjects": true
+      }
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/S3Bucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "destroy",
+        "enforceSSL": true,
+        "lifecycleRules": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          }
+        ],
+        "serverAccessLogsBucket": "*",
+        "autoDeleteObjects": true
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addLifecycleRule": [
+          {
+            "noncurrentVersionTransitions": [
+              {
+                "storageClass": "*"
+              }
+            ]
+          },
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/CloudfrontLoggingBucketAccessLog": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "destroy",
+        "enforceSSL": true,
+        "autoDeleteObjects": true
+      }
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/CloudfrontLoggingBucket": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "S3_MANAGED",
+        "versioned": true,
+        "blockPublicAccess": "*",
+        "removalPolicy": "destroy",
+        "enforceSSL": true,
+        "autoDeleteObjects": true,
+        "objectOwnership": "ObjectWriter",
+        "serverAccessLogsBucket": "*"
+      }
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/CloudFrontOac": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfronts3nosecurityheadersCloudFrontOac7954FB73"
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/CloudFrontDistribution": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "defaultBehavior": {
+          "origin": "*",
+          "viewerProtocolPolicy": "redirect-to-https"
+        },
+        "enableLogging": true,
+        "logBucket": "*",
+        "defaultRootObject": "*"
+      }
+    }
+  ],
+  "/cfts3-no-security-headers/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+    }
+  ],
+  "/cfts3-no-security-headers/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/S3LoggingBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfronts3nosecurityheadersS3LoggingBucketF644B35F"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/S3LoggingBucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/S3LoggingBucket/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/S3Bucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfronts3nosecurityheadersS3Bucket4D06173D"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/S3Bucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/S3Bucket/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/CloudfrontLoggingBucketAccessLog/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfronts3nosecurityheadersCloudfrontLoggingBucketAccessLogA3FF51B1"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/CloudfrontLoggingBucketAccessLog/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/CloudfrontLoggingBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfronts3nosecurityheadersCloudfrontLoggingBucket92A5E2A5"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/CloudfrontLoggingBucket/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "bucket": "*"
+      }
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/CloudFrontDistribution/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfronts3nosecurityheadersCloudFrontDistribution3BC8CDED"
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/S3LoggingBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfronts3nosecurityheadersS3LoggingBucketPolicy264DE8B6"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/S3LoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfronts3nosecurityheadersS3LoggingBucketAutoDeleteObjectsCustomResourceB6D397D3"
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/S3Bucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfronts3nosecurityheadersS3BucketPolicy99D27ED1"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfronts3nosecurityheadersS3BucketAutoDeleteObjectsCustomResource7011F955"
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/CloudfrontLoggingBucketAccessLog/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfronts3nosecurityheadersCloudfrontLoggingBucketAccessLogPolicy3DF5F522"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/CloudfrontLoggingBucketAccessLog/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfronts3nosecurityheadersCloudfrontLoggingBucketAccessLogAutoDeleteObjectsCustomResource20738403"
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/CloudfrontLoggingBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfronts3nosecurityheadersCloudfrontLoggingBucketPolicy7D709982"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/cfts3-no-security-headers/test-cloudfront-s3-no-security-headers/CloudfrontLoggingBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testcloudfronts3nosecurityheadersCloudfrontLoggingBucketAutoDeleteObjectsCustomResource5BEC5CA0"
+    }
+  ]
+}

@@ -1,0 +1,542 @@
+{
+  "/iotlamddb-with-vpc/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/iotlamddb-with-vpc/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/iotlamddb-with-vpc/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "natGateways": "*",
+        "subnetConfiguration": [
+          {
+            "cidrMask": "*",
+            "name": "*",
+            "subnetType": "Isolated"
+          }
+        ],
+        "enableDnsHostnames": true,
+        "enableDnsSupport": true
+      }
+    }
+  ],
+  "/iotlamddb-with-vpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+    }
+  ],
+  "/iotlamddb-with-vpc/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunctionServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/ReplaceDefaultSecurityGroup-security-group": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "allowAllOutbound": true
+      }
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "role": "*",
+        "tracing": "Active",
+        "code": "*",
+        "runtime": "*",
+        "handler": "*",
+        "securityGroups": [
+          "*"
+        ],
+        "vpc": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*",
+          {
+            "removeInEdge": true
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/DynamoTable": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "billingMode": "PAY_PER_REQUEST",
+        "encryption": "AWS_MANAGED",
+        "partitionKey": {
+          "name": "*",
+          "type": "S"
+        },
+        "pointInTimeRecoverySpecification": {
+          "pointInTimeRecoveryEnabled": true
+        }
+      }
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackVpc1986A4BB"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/isolatedSubnet1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/isolatedSubnet2": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/RestrictDefaultSecurityGroupCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/FlowLog": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "resourceType": "*"
+      }
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/DDB": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "vpc": "*",
+        "service": {
+          "name": "*"
+        }
+      }
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/IotToLambda/IotTopic": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackIotToLambdaIotTopic74F5E3BB"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunctionServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionServiceRole31915E05"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunctionServiceRole/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/ReplaceDefaultSecurityGroup-security-group/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackLambdaToDynamoDBReplaceDefaultSecurityGroupsecuritygroup7D851D3B"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunction5165A7EE"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/AwsIotLambdaInvokePermission-1": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionAwsIotLambdaInvokePermission13FCFED39"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/DynamoTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackLambdaToDynamoDBDynamoTableE17E5733"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/DynamoTable/ScalingRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/isolatedSubnet1/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackVpcisolatedSubnet1Subnet3AB7ADA5"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/isolatedSubnet1/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackVpcisolatedSubnet1RouteTableE28AAAB5"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/isolatedSubnet1/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackVpcisolatedSubnet1RouteTableAssociationFAA18521"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/isolatedSubnet2/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackVpcisolatedSubnet2SubnetBDEE1FAE"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/isolatedSubnet2/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackVpcisolatedSubnet2RouteTableAF607A65"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/isolatedSubnet2/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackVpcisolatedSubnet2RouteTableAssociation80ECEB84"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/RestrictDefaultSecurityGroupCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackVpcRestrictDefaultSecurityGroupCustomResource3F99D6F0"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/FlowLog/IAMRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "roleName": "*",
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/FlowLog/LogGroup": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/FlowLog/FlowLog": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackVpcFlowLogC88B17DB"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/DDB/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackVpcDDBD215AB1B"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctionServiceRoleDefaultPolicy2B35234F"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/LambdaToDynamoDB/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackLambdaToDynamoDBLambdaFunctioninlinePolicyAddedToExecutionRole0B0FADEBF"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/FlowLog/IAMRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackVpcFlowLogIAMRole84CD262B"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/FlowLog/IAMRole/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/FlowLog/LogGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackVpcFlowLogLogGroup0BA54CDB"
+    }
+  ],
+  "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/FlowLog/IAMRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testiotlambdadynamodbstackVpcFlowLogIAMRoleDefaultPolicy8C209270"
+    }
+  ]
+}

@@ -137,6 +137,7 @@ export const validFargateServiceProps: Set<string> = new Set([
   'desiredCount',
   'enableECSManagedTags',
   'enableExecuteCommand',
+  'forceNewDeployment',
   'healthCheckGracePeriod',
   'lifecycleHooks',
   'linearConfiguration',

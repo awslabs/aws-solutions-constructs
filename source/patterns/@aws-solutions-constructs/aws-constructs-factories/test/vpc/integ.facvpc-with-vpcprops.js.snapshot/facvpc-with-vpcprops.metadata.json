@@ -1,0 +1,522 @@
+{
+  "/facvpc-with-vpcprops/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/facvpc-with-vpcprops/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/facvpc-with-vpcprops/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "subnetConfiguration": [
+          {
+            "name": "*",
+            "subnetType": "Isolated",
+            "cidrMask": "*"
+          },
+          {
+            "name": "*",
+            "subnetType": "Public",
+            "cidrMask": "*"
+          },
+          {
+            "name": "*",
+            "subnetType": "Private",
+            "cidrMask": "*"
+          }
+        ]
+      }
+    }
+  ],
+  "/facvpc-with-vpcprops/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+    }
+  ],
+  "/facvpc-with-vpcprops/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestC226BCDB"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/isolated-oneSubnet1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/isolated-oneSubnet2": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/public-oneSubnet1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": true,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": true,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {}
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addNatGateway": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/public-oneSubnet2": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": true,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": true,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {}
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addNatGateway": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/egress-oneSubnet1": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {}
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/egress-oneSubnet2": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "availabilityZone": "*",
+        "vpcId": "*",
+        "cidrBlock": "*",
+        "mapPublicIpOnLaunch": false,
+        "ipv6CidrBlock": "*",
+        "assignIpv6AddressOnCreation": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {}
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/IGW": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestIGW1F2CC9DF"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/VPCGW": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestVPCGW9C4EB92A"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/RestrictDefaultSecurityGroupCustomResource": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/flowlog-test": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "resourceType": "*"
+      }
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/isolated-oneSubnet1/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestisolatedoneSubnet1Subnet661DF86B"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/isolated-oneSubnet1/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestisolatedoneSubnet1RouteTable81D23AD8"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/isolated-oneSubnet1/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestisolatedoneSubnet1RouteTableAssociationABF54B60"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/isolated-oneSubnet2/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestisolatedoneSubnet2Subnet65D91D9D"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/isolated-oneSubnet2/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestisolatedoneSubnet2RouteTable0DD13065"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/isolated-oneSubnet2/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestisolatedoneSubnet2RouteTableAssociation6C9FBAE0"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/public-oneSubnet1/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestpubliconeSubnet1SubnetCD47DD65"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/public-oneSubnet1/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestpubliconeSubnet1RouteTableD646E3CB"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/public-oneSubnet1/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestpubliconeSubnet1RouteTableAssociationEE5A3EE1"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/public-oneSubnet1/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestpubliconeSubnet1DefaultRouteCE1354DC"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/public-oneSubnet1/EIP": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestpubliconeSubnet1EIP4DCCA3A4"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/public-oneSubnet1/NATGateway": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestpubliconeSubnet1NATGateway66F9BC97"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/public-oneSubnet2/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestpubliconeSubnet2Subnet45EAC2D7"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/public-oneSubnet2/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestpubliconeSubnet2RouteTable52C42C85"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/public-oneSubnet2/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestpubliconeSubnet2RouteTableAssociationBC071392"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/public-oneSubnet2/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestpubliconeSubnet2DefaultRouteBDA80793"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/public-oneSubnet2/EIP": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestpubliconeSubnet2EIPDF2EDDEF"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/public-oneSubnet2/NATGateway": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestpubliconeSubnet2NATGateway63CCCB4B"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/egress-oneSubnet1/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestegressoneSubnet1Subnet16AC0380"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/egress-oneSubnet1/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestegressoneSubnet1RouteTable432C3332"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/egress-oneSubnet1/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestegressoneSubnet1RouteTableAssociationF86B24B7"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/egress-oneSubnet1/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestegressoneSubnet1DefaultRouteD6BC76B4"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/egress-oneSubnet2/Subnet": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestegressoneSubnet2SubnetC986C0D3"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/egress-oneSubnet2/RouteTable": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestegressoneSubnet2RouteTable232663D6"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/egress-oneSubnet2/RouteTableAssociation": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestegressoneSubnet2RouteTableAssociation3C7F45AD"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/egress-oneSubnet2/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestegressoneSubnet2DefaultRoute5562F090"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/RestrictDefaultSecurityGroupCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestRestrictDefaultSecurityGroupCustomResourceAF1F4DBD"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/flowlog-test/IAMRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "roleName": "*",
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/flowlog-test/LogGroup": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/flowlog-test/FlowLog": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestflowlogtestFlowLogE4CFB5D7"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/flowlog-test/IAMRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestflowlogtestIAMRole890D5973"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/flowlog-test/IAMRole/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/flowlog-test/LogGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestflowlogtestLogGroupF847B474"
+    }
+  ],
+  "/facvpc-with-vpcprops/integ-test/vpc-test/flowlog-test/IAMRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "integtestvpctestflowlogtestIAMRoleDefaultPolicyD28F6B03"
+    }
+  ]
+}

@@ -151,9 +151,9 @@ new IotToLambdaToDynamoDB(this, "test-iot-lambda-dynamodb-stack", new IotToLambd
 |Optional user provided props to override the default props for the DynamoDB Table. Providing both this and
 `existingTableInterface` causes an error.
 
-|tablePermissions? |`string` |Optional table permissions to grant to the
-Lambda function. One of the following may be specified: `All`, `Read`,
-`ReadWrite`, `Write`.
+|tablePermissions? |
+|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.TableProps.html[`dynamodb.TableProps`]
+|Optional table permissions to grant to the Lambda function. One of the following may be specified: `All`, `Read`, `ReadWrite`, `Write`.
 
 |existingTableObj?
 |https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.Table.html[`dynamodb.Table`]

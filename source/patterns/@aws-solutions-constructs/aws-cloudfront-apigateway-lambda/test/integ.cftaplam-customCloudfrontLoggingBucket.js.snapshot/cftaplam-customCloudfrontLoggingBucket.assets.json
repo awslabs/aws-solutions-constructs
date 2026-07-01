@@ -1,5 +1,5 @@
 {
-  "version": "53.0.0",
+  "version": "54.0.0",
   "files": {
     "0772ffe05bd3b2e012dc5086ab3b6dd03c8a0268fc1c81326f5e72b0a4c6b51e": {
       "displayName": "cftaplam-customCloudfrontLoggingBucket-authorizerAuthFunction/Code",
@@ -29,16 +29,16 @@
         }
       }
     },
-    "09261c71d895f8299b95d2720ff12f89a3ce3e192d9fe6c0b0b082e41faa55c0": {
+    "e536eef0f1475a02c02c0b84b659953c6101868b29c2a7064b8a7d3c96309267": {
       "displayName": "cftaplam-customCloudfrontLoggingBucket Template",
       "source": {
         "path": "cftaplam-customCloudfrontLoggingBucket.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-97d3b129": {
+        "current_account-current_region-72686b16": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "09261c71d895f8299b95d2720ff12f89a3ce3e192d9fe6c0b0b082e41faa55c0.json",
+          "objectKey": "e536eef0f1475a02c02c0b84b659953c6101868b29c2a7064b8a7d3c96309267.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
