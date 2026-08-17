@@ -99,7 +99,8 @@ export enum ServiceEndpointTypes {
   TRANSCRIBE = "TRANSCRIBE",
   TRANSLATE = "TRANSLATE",
   TEXTRACT = "TEXTRACT",
-  POLLY = "POLLY"
+  POLLY = "POLLY",
+  COMPREHEND = "COMPREHEND"
 }
 
 enum EndpointTypes {
@@ -214,6 +215,11 @@ const endpointSettings: EndpointDefinition[] = [
     endpointName: ServiceEndpointTypes.POLLY,
     endpointType: EndpointTypes.INTERFACE,
     endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.POLLY
+  },
+  {
+    endpointName: ServiceEndpointTypes.COMPREHEND,
+    endpointType: EndpointTypes.INTERFACE,
+    endpointInterfaceService: ec2.InterfaceVpcEndpointAwsService.COMPREHEND
   }
 ];
 

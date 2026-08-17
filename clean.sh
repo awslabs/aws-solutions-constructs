@@ -2,6 +2,7 @@
 
 rm -rf source/node_modules
 rm -rf source/patterns/@aws-solutions-constructs/core/node_modules
+rm -f source/patterns/@aws-solutions-constructs/core/index.js source/patterns/@aws-solutions-constructs/core/index.d.ts source/patterns/@aws-solutions-constructs/core/tsconfig.tsbuildinfo
 
 CONSTRUCTS_DIR="source/patterns/@aws-solutions-constructs"
 
@@ -23,4 +24,6 @@ for dir in "$CONSTRUCTS_DIR"/*/; do
 
   # Remove cdk-integ temporary folders
   find "${dir}" -maxdepth 2 -type d -name "cdk-integ*" -exec rm -rf {} + 2>/dev/null
+
 done
+
