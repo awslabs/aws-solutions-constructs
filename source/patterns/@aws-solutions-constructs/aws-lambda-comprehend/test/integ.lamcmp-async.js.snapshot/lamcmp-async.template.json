@@ -1,0 +1,1183 @@
+{
+ "Description": "Integration Test for aws-lambda-comprehend with asynchronous jobs and construct-created buckets",
+ "Resources": {
+  "testlambdacomprehendasyncLambdaFunctionServiceRole4452ADCC": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":logs:",
+            {
+             "Ref": "AWS::Region"
+            },
+            ":",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":log-group:/aws/lambda/*"
+           ]
+          ]
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "LambdaFunctionServiceRolePolicy"
+     }
+    ]
+   },
+   "Metadata": {
+    "guard": {
+     "SuppressedRules": [
+      "IAM_NO_INLINE_POLICY_CHECK"
+     ]
+    }
+   }
+  },
+  "testlambdacomprehendasyncLambdaFunctionServiceRoleDefaultPolicy26BCE7EF": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3BucketBF00123A",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3BucketBF00123A",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3Bucket3A64E92B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3Bucket3A64E92B",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "iam:PassRole",
+       "Condition": {
+        "StringEquals": {
+         "iam:PassedToService": "comprehend.amazonaws.com"
+        }
+       },
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "testlambdacomprehendasynctestlambdacomprehendasynccomprehenddataaccessrole90E7FE98",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testlambdacomprehendasyncLambdaFunctionServiceRoleDefaultPolicy26BCE7EF",
+    "Roles": [
+     {
+      "Ref": "testlambdacomprehendasyncLambdaFunctionServiceRole4452ADCC"
+     }
+    ]
+   }
+  },
+  "testlambdacomprehendasyncLambdaFunction2BB09323": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "ZipFile": "exports.handler = async (event) => { console.log(event); return {'statusCode': 200, 'body': ''}; }"
+    },
+    "Environment": {
+     "Variables": {
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+      "SOURCE_BUCKET_NAME": {
+       "Ref": "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3BucketBF00123A"
+      },
+      "DESTINATION_BUCKET_NAME": {
+       "Ref": "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3Bucket3A64E92B"
+      },
+      "DATA_ACCESS_ROLE_ARN": {
+       "Fn::GetAtt": [
+        "testlambdacomprehendasynctestlambdacomprehendasynccomprehenddataaccessrole90E7FE98",
+        "Arn"
+       ]
+      }
+     }
+    },
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "testlambdacomprehendasyncLambdaFunctionServiceRole4452ADCC",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Timeout": 30,
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "testlambdacomprehendasyncLambdaFunctionServiceRoleDefaultPolicy26BCE7EF",
+    "testlambdacomprehendasyncLambdaFunctionServiceRole4452ADCC"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "Lambda functions has the required permission to write CloudWatch Logs. It uses custom policy instead of arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole with tighter permissions."
+      },
+      {
+       "id": "W89",
+       "reason": "This is not a rule for the general case, just for specific use cases/industries"
+      },
+      {
+       "id": "W92",
+       "reason": "Impossible for us to define the correct concurrency for clients"
+      }
+     ]
+    }
+   }
+  },
+  "testlambdacomprehendasyncLambdaFunctioninlinePolicyAddedToExecutionRole0475F59ED": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testlambdacomprehendasyncLambdaFunctioninlinePolicyAddedToExecutionRole0475F59ED",
+    "Roles": [
+     {
+      "Ref": "testlambdacomprehendasyncLambdaFunctionServiceRole4452ADCC"
+     }
+    ]
+   }
+  },
+  "testlambdacomprehendasyncLambdaFunctioninlinePolicyAddedToExecutionRole1D353C492": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "comprehend:DescribeDominantLanguageDetectionJob",
+        "comprehend:DescribeEntitiesDetectionJob",
+        "comprehend:DescribeKeyPhrasesDetectionJob",
+        "comprehend:DescribePiiEntitiesDetectionJob",
+        "comprehend:DescribeSentimentDetectionJob",
+        "comprehend:DescribeTargetedSentimentDetectionJob",
+        "comprehend:ListDominantLanguageDetectionJobs",
+        "comprehend:ListEntitiesDetectionJobs",
+        "comprehend:ListKeyPhrasesDetectionJobs",
+        "comprehend:ListPiiEntitiesDetectionJobs",
+        "comprehend:ListSentimentDetectionJobs",
+        "comprehend:ListTargetedSentimentDetectionJobs",
+        "comprehend:StartDominantLanguageDetectionJob",
+        "comprehend:StartEntitiesDetectionJob",
+        "comprehend:StartKeyPhrasesDetectionJob",
+        "comprehend:StartPiiEntitiesDetectionJob",
+        "comprehend:StartSentimentDetectionJob",
+        "comprehend:StartTargetedSentimentDetectionJob",
+        "comprehend:StopDominantLanguageDetectionJob",
+        "comprehend:StopEntitiesDetectionJob",
+        "comprehend:StopKeyPhrasesDetectionJob",
+        "comprehend:StopPiiEntitiesDetectionJob",
+        "comprehend:StopSentimentDetectionJob",
+        "comprehend:StopTargetedSentimentDetectionJob"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testlambdacomprehendasyncLambdaFunctioninlinePolicyAddedToExecutionRole1D353C492",
+    "Roles": [
+     {
+      "Ref": "testlambdacomprehendasyncLambdaFunctionServiceRole4452ADCC"
+     }
+    ]
+   }
+  },
+  "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3LoggingBucket81E19454": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"
+       }
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     }
+    ],
+    "VersioningConfiguration": {
+     "Status": "Enabled"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W35",
+       "reason": "This S3 bucket is used as the access logging bucket for another bucket"
+      }
+     ]
+    }
+   }
+  },
+  "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3LoggingBucketPolicyFF46E533": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3LoggingBucket81E19454"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3LoggingBucket81E19454",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3LoggingBucket81E19454",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:PutBucketPolicy"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3LoggingBucket81E19454",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3LoggingBucket81E19454",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "s3:PutObject",
+       "Condition": {
+        "ArnLike": {
+         "aws:SourceArn": {
+          "Fn::GetAtt": [
+           "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3BucketBF00123A",
+           "Arn"
+          ]
+         }
+        },
+        "StringEquals": {
+         "aws:SourceAccount": {
+          "Ref": "AWS::AccountId"
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "logging.s3.amazonaws.com"
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3LoggingBucket81E19454",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3LoggingBucketAutoDeleteObjectsCustomResource07AD3409": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3LoggingBucket81E19454"
+    }
+   },
+   "DependsOn": [
+    "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3LoggingBucketPolicyFF46E533"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3BucketBF00123A": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"
+       }
+      }
+     ]
+    },
+    "LifecycleConfiguration": {
+     "Rules": [
+      {
+       "NoncurrentVersionTransitions": [
+        {
+         "StorageClass": "GLACIER",
+         "TransitionInDays": 90
+        }
+       ],
+       "Status": "Enabled"
+      }
+     ]
+    },
+    "LoggingConfiguration": {
+     "DestinationBucketName": {
+      "Ref": "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3LoggingBucket81E19454"
+     }
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     }
+    ],
+    "VersioningConfiguration": {
+     "Status": "Enabled"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3BucketPolicy369EBECC": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3BucketBF00123A"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3BucketBF00123A",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3BucketBF00123A",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:PutBucketPolicy"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3BucketBF00123A",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3BucketBF00123A",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3BucketAutoDeleteObjectsCustomResource06E901E9": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3BucketBF00123A"
+    }
+   },
+   "DependsOn": [
+    "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3BucketPolicy369EBECC"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3LoggingBucket3DC8909F": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"
+       }
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     }
+    ],
+    "VersioningConfiguration": {
+     "Status": "Enabled"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W35",
+       "reason": "This S3 bucket is used as the access logging bucket for another bucket"
+      }
+     ]
+    }
+   }
+  },
+  "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3LoggingBucketPolicyC06248D2": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3LoggingBucket3DC8909F"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3LoggingBucket3DC8909F",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3LoggingBucket3DC8909F",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:PutBucketPolicy"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3LoggingBucket3DC8909F",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3LoggingBucket3DC8909F",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "s3:PutObject",
+       "Condition": {
+        "ArnLike": {
+         "aws:SourceArn": {
+          "Fn::GetAtt": [
+           "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3Bucket3A64E92B",
+           "Arn"
+          ]
+         }
+        },
+        "StringEquals": {
+         "aws:SourceAccount": {
+          "Ref": "AWS::AccountId"
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "logging.s3.amazonaws.com"
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3LoggingBucket3DC8909F",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3LoggingBucketAutoDeleteObjectsCustomResourceBD84BE60": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3LoggingBucket3DC8909F"
+    }
+   },
+   "DependsOn": [
+    "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3LoggingBucketPolicyC06248D2"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3Bucket3A64E92B": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"
+       }
+      }
+     ]
+    },
+    "LifecycleConfiguration": {
+     "Rules": [
+      {
+       "NoncurrentVersionTransitions": [
+        {
+         "StorageClass": "GLACIER",
+         "TransitionInDays": 90
+        }
+       ],
+       "Status": "Enabled"
+      }
+     ]
+    },
+    "LoggingConfiguration": {
+     "DestinationBucketName": {
+      "Ref": "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3LoggingBucket3DC8909F"
+     }
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     }
+    ],
+    "VersioningConfiguration": {
+     "Status": "Enabled"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3BucketPolicy9938714A": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3Bucket3A64E92B"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3Bucket3A64E92B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3Bucket3A64E92B",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:PutBucketPolicy"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3Bucket3A64E92B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3Bucket3A64E92B",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3BucketAutoDeleteObjectsCustomResource3DB7493B": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3Bucket3A64E92B"
+    }
+   },
+   "DependsOn": [
+    "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3BucketPolicy9938714A"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "testlambdacomprehendasynctestlambdacomprehendasynccomprehenddataaccessrole90E7FE98": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Condition": {
+        "StringEquals": {
+         "aws:SourceAccount": {
+          "Ref": "AWS::AccountId"
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "comprehend.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "testlambdacomprehendasynctestlambdacomprehendasynccomprehenddataaccessroleDefaultPolicyD7F19FE2": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3BucketBF00123A",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3BucketBF00123A",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3Bucket3A64E92B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "testlambdacomprehendasynctestlambdacomprehendasyncdestinationbucketS3Bucket3A64E92B",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "testlambdacomprehendasynctestlambdacomprehendasynccomprehenddataaccessroleDefaultPolicyD7F19FE2",
+    "Roles": [
+     {
+      "Ref": "testlambdacomprehendasynctestlambdacomprehendasynccomprehenddataaccessrole90E7FE98"
+     }
+    ]
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ]
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs24.x",
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Lambda function for auto-deleting objects in ",
+       {
+        "Ref": "testlambdacomprehendasynctestlambdacomprehendasyncsourcebucketS3LoggingBucket81E19454"
+       },
+       " S3 bucket."
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+   ],
+   "Metadata": {
+    "cfn_nag": {
+     "rules_to_suppress": [
+      {
+       "id": "W58",
+       "reason": "CDK generated custom resource"
+      },
+      {
+       "id": "W89",
+       "reason": "CDK generated custom resource"
+      },
+      {
+       "id": "W92",
+       "reason": "CDK generated custom resource"
+      }
+     ]
+    }
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

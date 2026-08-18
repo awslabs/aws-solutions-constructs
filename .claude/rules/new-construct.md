@@ -14,6 +14,7 @@ You are tasked with implementing a new AWS Solutions Construct based on the spec
 2. **Review the existing README.adoc** in the construct directory to ensure alignment with documented behavior
 
 3. **Create the directory structure** following the pattern:
+
    ```
    source/patterns/@aws-solutions-constructs/aws-{service1}-{service2}/
    ├── lib/
@@ -86,15 +87,18 @@ You are tasked with implementing a new AWS Solutions Construct based on the spec
 ## Reference Documentation
 
 Refer to the steering files for detailed guidance:
-- `.kiro/steering/structure.md` - Repository structure and patterns
-- `.kiro/steering/product.md` - Product requirements and best practices
-- `.kiro/steering/tech.md` - Technical implementation details
-- `.kiro/steering/test.md` - Testing requirements and patterns
-- `.kiro/steering/exceptions.md` - Known exceptions to standard patterns
+.claude/rules/new-readme.md
+
+- `.claude/rules/structure.md` - Repository structure and patterns
+- `.claude/rules/product.md` - Product requirements and best practices
+- `.claude/rules/tech.md` - Technical implementation details
+- `.claude/rules/test.md` - Testing requirements and patterns
+- `.claude/rules/exceptions.md` - Known exceptions to standard patterns
 
 ## Output
 
 Provide a complete, working implementation that:
+
 - Compiles without errors
 - Passes all linting checks
 - Has comprehensive test coverage

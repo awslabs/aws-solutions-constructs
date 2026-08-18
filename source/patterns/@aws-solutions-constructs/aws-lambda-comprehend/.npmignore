@@ -1,0 +1,34 @@
+# The basics
+*.ts
+*.tsx
+!*.d.ts
+!*.js
+*.map
+.jsii
+.nyc_output
+coverage
+node_modules
+*.tgz
+*.snk
+tsconfig.json
+.eslintrc.js
+# Runtime dependencies (we bundle them)
+/node_modules/
+
+# Test .js files
+test/
+!*.d.ts
+*.tsbuildinfo
+
+# exclude cdk artifacts
+**/cdk.out
+junit.xml
+test-reports/
+
+
+# Exclude jsii outdir
+dist
+
+# Include .jsii and .jsii.gz
+!.jsii
+!.jsii.gz
