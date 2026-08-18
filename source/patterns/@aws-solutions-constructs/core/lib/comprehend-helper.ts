@@ -23,6 +23,7 @@ import { Construct } from 'constructs';
 import { buildS3Bucket } from './s3-bucket-helper';
 import { EnvironmentVariableDefinition } from './polly-helper';
 import { BucketDetails } from './translate-helper';
+import { CheckListValues } from './utils';
 
 /**
  * The Amazon Comprehend processing modes a Lambda function may use. The actions granted to the
@@ -334,6 +335,16 @@ export function ConfigureComprehendSupport(scope: Construct, id: string, props: 
 export function CheckComprehendProps(props: ComprehendProps): void {
   let errorMessages = '';
   let errorFound = false;
+
+  // Members that are not values of the enum are rejected before anything else, because every check
+  // below is meaningless for a value the service does not recognize - and the COMPREHEND_ACTIONS
+  // lookup would read undefined for it. These two checks throw on the first bad value rather than
+  // accumulating, so a client cannot reach the rest of the function with one. Empty arrays pass
+  // through here and are reported by the two checks that follow. Typescript, Java and .NET clients
+  // are already protected by the enum types, so this guards Javascript clients and values that
+  // reach the props from configuration
+  CheckListValues(Object.values(ComprehendUseCase), props.comprehendUseCases ?? [], 'comprehendUseCases value');
+  CheckListValues(Object.values(ComprehendAnalysisType), props.analysisTypes ?? [], 'analysisTypes value');
 
   if (props.comprehendUseCases && props.comprehendUseCases.length === 0) {
     errorMessages += 'Error - comprehendUseCases cannot be an empty array. Omit the property to accept the default, '

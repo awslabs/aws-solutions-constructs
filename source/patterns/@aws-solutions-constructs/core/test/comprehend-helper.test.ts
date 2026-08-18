@@ -540,12 +540,13 @@ test('Test existing buckets are used and receive grants against the bucket inter
   const stack = new Stack(app, "test-stack");
   const existingSourceBucket = CreateScrapBucket(stack, 'existing-source');
   const existingDestinationBucket = CreateScrapBucket(stack, 'existing-destination');
+  const grantee = createGrantee(stack, 'grantee');
 
   const configuration = defaults.ConfigureComprehendSupport(stack, 'test', {
     comprehendUseCases: [ComprehendUseCase.ASYNC_BATCH],
     existingSourceBucketObj: existingSourceBucket,
     existingDestinationBucketObj: existingDestinationBucket
-  }, createGrantee(stack, 'grantee'));
+  }, grantee);
 
   expect(configuration.sourceBucket?.bucket).toBeUndefined();
   expect(configuration.sourceBucket?.bucketInterface).toBe(existingSourceBucket);
@@ -558,20 +559,46 @@ test('Test existing buckets are used and receive grants against the bucket inter
   // Only the two scrap buckets and their log buckets - the helper created none
   template.resourceCountIs('AWS::S3::Bucket', 4);
 
-  // The grantee received a policy naming the existing source bucket
+  const sourceArn = { 'Fn::GetAtt': [logicalIdOf(stack, existingSourceBucket), 'Arn'] };
+  const destinationArn = { 'Fn::GetAtt': [logicalIdOf(stack, existingDestinationBucket), 'Arn'] };
+
+  // Both principals are pinned by role, because an unpinned assertion is satisfied by whichever
+  // policy happens to match - here the data access role's, which would let the grantee's grants be
+  // dropped altogether without failing. The two roles receive mirrored directions
   template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: Match.arrayWith([
         Match.objectLike({
           Effect: 'Allow',
-          Resource: Match.arrayWith([
-            Match.objectLike({
-              'Fn::GetAtt': Match.arrayWith([Match.stringLikeRegexp('existingsource.*')])
-            })
-          ])
+          Action: Match.arrayWith(['s3:GetObject*']),
+          Resource: Match.arrayWith([sourceArn])
+        }),
+        Match.objectLike({
+          Effect: 'Allow',
+          Action: Match.arrayWith(['s3:PutObject']),
+          Resource: Match.arrayWith([destinationArn])
         })
       ])
-    }
+    },
+    Roles: [{ Ref: logicalIdOf(stack, configuration.dataAccessRole!) }]
+  });
+
+  template.hasResourceProperties('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Effect: 'Allow',
+          Action: Match.arrayWith(['s3:GetObject*', 's3:PutObject']),
+          Resource: Match.arrayWith([sourceArn])
+        }),
+        Match.objectLike({
+          Effect: 'Allow',
+          Action: Match.not(Match.arrayWith(['s3:PutObject'])),
+          Resource: Match.arrayWith([destinationArn])
+        })
+      ])
+    },
+    Roles: [{ Ref: logicalIdOf(stack, grantee) }]
   });
 });
 
@@ -657,6 +684,36 @@ test('Test fail Comprehend check with an empty analysisTypes array', () => {
 
   expect(app).toThrow('Error - analysisTypes cannot be an empty array. Omit the property to accept the default, '
     + 'or supply at least one ComprehendAnalysisType.\n');
+});
+
+test('Test fail Comprehend check with an unrecognized comprehendUseCases value', () => {
+  const app = () => {
+    defaults.CheckComprehendProps({ comprehendUseCases: ['BOGUS' as ComprehendUseCase] });
+  };
+
+  expect(app).toThrow('Invalid comprehendUseCases value submitted - BOGUS');
+});
+
+// Without the member check, an unrecognized analysis type reaches the COMPREHEND_ACTIONS lookup in
+// actionsForCombination and the productivity loop dereferences undefined. Asserting the message
+// rather than merely that something was thrown is what distinguishes the named error from the
+// TypeError that used to surface here
+test('Test fail Comprehend check with an unrecognized analysisTypes value', () => {
+  const app = () => {
+    defaults.CheckComprehendProps({ analysisTypes: ['KEY_PHRASES_TYPO' as ComprehendAnalysisType] });
+  };
+
+  expect(app).toThrow('Invalid analysisTypes value submitted - KEY_PHRASES_TYPO');
+});
+
+// The enum values are the strings Amazon Comprehend expects, so a value differing only in case is
+// as invalid as a misspelled one - it would otherwise match nothing and produce an empty policy
+test('Test fail Comprehend check with a mis-cased use case value', () => {
+  const app = () => {
+    defaults.CheckComprehendProps({ comprehendUseCases: ['async_batch' as ComprehendUseCase] });
+  };
+
+  expect(app).toThrow('Invalid comprehendUseCases value submitted - async_batch');
 });
 
 test('Test fail Comprehend check with MULTI_DOCUMENT_SYNC and PII - there is no batch PII action', () => {

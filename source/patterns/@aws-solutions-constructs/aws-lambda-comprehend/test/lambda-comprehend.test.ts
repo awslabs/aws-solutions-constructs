@@ -605,21 +605,46 @@ test('Test client supplied existing buckets receive the grants', () => {
   // The two scrap buckets and their two logging buckets, all created by the test
   template.resourceCountIs('AWS::S3::Bucket', 4);
 
-  // Grants are applied to the bucket interface, so existing buckets are covered too
+  const sourceArn = { 'Fn::GetAtt': [logicalIdOf(stack, existingSourceBucket), 'Arn'] };
+  const destinationArn = { 'Fn::GetAtt': [logicalIdOf(stack, existingDestinationBucket), 'Arn'] };
+
+  // Grants are applied to the bucket interface, so existing buckets are covered too. Comprehend
+  // reads the source and writes the destination
   template.hasResourceProperties('AWS::IAM::Policy', {
     PolicyDocument: {
       Statement: Match.arrayWith([
         Match.objectLike({
           Action: Match.arrayWith(['s3:GetObject*']),
-          Resource: Match.arrayWith([{ 'Fn::GetAtt': [logicalIdOf(stack, existingSourceBucket), 'Arn'] }])
+          Resource: Match.arrayWith([sourceArn])
         }),
         Match.objectLike({
           Action: Match.arrayWith(['s3:PutObject']),
-          Resource: Match.arrayWith([{ 'Fn::GetAtt': [logicalIdOf(stack, existingDestinationBucket), 'Arn'] }])
+          Resource: Match.arrayWith([destinationArn])
         })
       ])
     },
     Roles: [{ Ref: logicalIdOf(stack, construct.dataAccessRole!) }]
+  });
+
+  // The Lambda function's own role must be pinned separately. Without this the data access role's
+  // statements satisfy the assertion above on their own, and dropping the grantee grants entirely
+  // leaves the suite green - the aws-lambda-textract defect DS5 exists to prevent. The directions
+  // are the mirror of Comprehend's: the function stages documents into the source bucket and reads
+  // results out of the destination, so the absence of write on the destination is asserted too
+  template.hasResourceProperties('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Action: Match.arrayWith(['s3:GetObject*', 's3:PutObject']),
+          Resource: Match.arrayWith([sourceArn])
+        }),
+        Match.objectLike({
+          Action: Match.not(Match.arrayWith(['s3:PutObject'])),
+          Resource: Match.arrayWith([destinationArn])
+        })
+      ])
+    },
+    Roles: [{ Ref: logicalIdOf(stack, construct.lambdaFunction.role!) }]
   });
 
   const variables = environmentVariablesOf(stack, construct.lambdaFunction);
@@ -895,6 +920,25 @@ test('Test the construct calls CheckComprehendProps', () => {
 
   expect(app).toThrow('Error - comprehendUseCases cannot be an empty array. Omit the property to accept the default, '
     + 'or supply at least one ComprehendUseCase.\n');
+});
+
+// An unrecognized value used to survive validation: a bad analysis type surfaced as a TypeError
+// from inside the validator, and a bad use case passed validation entirely and only failed at
+// synthesis time with a CDK message naming a policy object rather than the prop at fault
+test('Test unrecognized enum values are rejected before any resource is created', () => {
+  const useCaseStack = new Stack(new App(), 'test-stack');
+  const useCaseApp = () => {
+    deployTestConstruct(useCaseStack, { comprehendUseCases: ['BOGUS'] });
+  };
+  expect(useCaseApp).toThrow('Invalid comprehendUseCases value submitted - BOGUS');
+  Template.fromStack(useCaseStack).resourceCountIs('AWS::IAM::Role', 0);
+
+  const analysisTypeStack = new Stack(new App(), 'test-stack');
+  const analysisTypeApp = () => {
+    deployTestConstruct(analysisTypeStack, { analysisTypes: ['KEY_PHRASES_TYPO'] });
+  };
+  expect(analysisTypeApp).toThrow('Invalid analysisTypes value submitted - KEY_PHRASES_TYPO');
+  Template.fromStack(analysisTypeStack).resourceCountIs('AWS::IAM::Role', 0);
 });
 
 test('Test an empty analysisTypes array is rejected', () => {

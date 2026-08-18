@@ -152,7 +152,7 @@ new IotToLambdaToDynamoDB(this, "test-iot-lambda-dynamodb-stack", new IotToLambd
 `existingTableInterface` causes an error.
 
 |tablePermissions? |
-|https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.TableProps.html[`dynamodb.TableProps`]
+|string
 |Optional table permissions to grant to the Lambda function. One of the following may be specified: `All`, `Read`, `ReadWrite`, `Write`.
 
 |existingTableObj?
