@@ -505,6 +505,7 @@ export const validCfnWebACLProps: Set<string> = new Set([
   'dataProtectionConfig',
   'defaultAction',
   'description',
+  'monetizationConfig',
   'name',
   'onSourceDDoSProtectionConfig',
   'rules',
