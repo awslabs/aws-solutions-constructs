@@ -1,7 +1,6 @@
 packagess="
 deep-diff
 deepmerge
-npmlog
 "
 
 if [ ! -d "node_modules" ]; then
