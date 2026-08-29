@@ -48,7 +48,17 @@ export interface KinesisFirehoseToS3Props {
    *
    * @default - Default props are used
    */
-  readonly kinesisFirehoseProps?: kinesisfirehose.CfnDeliveryStreamProps | any;
+  readonly kinesisFirehoseProps?: Omit<
+    kinesisfirehose.CfnDeliveryStreamProps,
+    "extendedS3DestinationConfiguration"
+  > & {
+    extendedS3DestinationConfiguration:
+    | Omit<
+      kinesisfirehose.CfnDeliveryStream.ExtendedS3DestinationConfigurationProperty,
+      "bucketArn" | "roleArn"
+    >
+    | cdk.IResolvable;
+  };
   /**
    * Optional user provided props to override the default props for the CloudWatchLogs LogGroup.
    *
