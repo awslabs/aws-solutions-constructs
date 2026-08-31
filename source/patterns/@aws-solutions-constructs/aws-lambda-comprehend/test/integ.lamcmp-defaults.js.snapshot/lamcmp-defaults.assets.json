@@ -1,0 +1,20 @@
+{
+  "version": "54.0.0",
+  "files": {
+    "3861f0a122b5dc32fea5e27794e546ff8a41472c831683d2a40bc8413e1e5925": {
+      "displayName": "lamcmp-defaults Template",
+      "source": {
+        "path": "lamcmp-defaults.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region-b8e96a7b": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "3861f0a122b5dc32fea5e27794e546ff8a41472c831683d2a40bc8413e1e5925.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
