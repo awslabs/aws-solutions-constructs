@@ -40,7 +40,8 @@ export interface ApiGatewayV2WebSocketToSqsProps {
 
   /**
    * Optional - user provided properties to override the default properties for the SQS queue.
-   * Providing both this and `existingQueueObj` will cause an error.
+   * Providing both this and `existingQueueObj` will cause an error. The visibilityTimeout defaults
+   * to 15 minutes and can be overridden here (it should be at least as long as the timeout of any consumer).
    *
    * @default - Default props are used
    */
@@ -157,7 +158,10 @@ export class ApiGatewayV2WebSocketToSqs extends Construct {
       redriveAllowPolicy: {
         redrivePermission: sqs.RedrivePermission.DENY_ALL,
       },
-      visibilityTimeout: cdk.Duration.minutes(15),
+      // There was a bug that forced this to 15 minutes. This line now
+      // allows other values, but keeps consistent behavior for clients who did
+      // not specify a value
+      visibilityTimeout: props.queueProps?.visibilityTimeout ?? cdk.Duration.minutes(15),
     };
 
     // Setup the queue
