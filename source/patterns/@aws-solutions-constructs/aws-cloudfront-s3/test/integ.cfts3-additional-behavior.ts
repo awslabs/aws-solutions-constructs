@@ -12,7 +12,8 @@
  */
 
 // Imports
-import { App, Stack, RemovalPolicy } from "aws-cdk-lib";
+import { App, Stack, RemovalPolicy, Aws } from "aws-cdk-lib";
+import * as iam from "aws-cdk-lib/aws-iam";
 import { CloudFrontToS3 } from "../lib";
 import { generateIntegStackName, SetConsistentFeatureFlags } from '@aws-solutions-constructs/core';
 import { IntegTest } from '@aws-cdk/integ-tests-alpha';
@@ -75,6 +76,21 @@ const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {
     }
   }
 });
+
+// The additional bucket is not managed by the construct, so grant the distribution read access ourselves
+additionalBucket.addToResourcePolicy(
+  new iam.PolicyStatement({
+    effect: iam.Effect.ALLOW,
+    actions: ['s3:GetObject'],
+    principals: [new iam.ServicePrincipal('cloudfront.amazonaws.com')],
+    resources: [additionalBucket.arnForObjects('*')],
+    conditions: {
+      StringEquals: {
+        'AWS:SourceArn': `arn:${Aws.PARTITION}:cloudfront::${Aws.ACCOUNT_ID}:distribution/${construct.cloudFrontWebDistribution.distributionId}`
+      }
+    }
+  })
+);
 
 const s3Bucket = construct.s3Bucket as s3.Bucket;
 
