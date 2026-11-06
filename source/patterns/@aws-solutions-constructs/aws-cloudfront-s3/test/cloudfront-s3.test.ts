@@ -987,10 +987,13 @@ test('default origin OAC is an L1 origin property, not a raw override', () => {
   const stack = new cdk.Stack();
   const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {});
 
+  // The OAC must be a property of the L1 origin itself (what cdk-nag and other L1 inspectors read),
+  // not something patched into the template with a raw override
   const l1Distribution = construct.cloudFrontWebDistribution.node.defaultChild as cloudfront.CfnDistribution;
-  // The OAC must come from the origin itself, not from a raw property override on the L1 distribution
-  const rawOverrides = (l1Distribution as any).rawOverrides;
-  expect(JSON.stringify(rawOverrides)).not.toContain('OriginAccessControlId');
+  const distributionConfig = stack.resolve(l1Distribution.distributionConfig);
+
+  expect(distributionConfig.origins).toHaveLength(1);
+  expect(distributionConfig.origins[0].originAccessControlId).toEqual(stack.resolve(construct.originAccessControl?.attrId));
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::CloudFront::Distribution', {
