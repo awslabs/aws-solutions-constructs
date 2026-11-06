@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.106.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.105.0...v2.106.0) (2026-11-06)
+
+Built on CDK 2.272.0
+
+### Bug Fixes
+
+- **aws-cloudfront-s3:** Issue 1496 - S3 OAC origin behavior ([#1498](https://github.com/awslabs/aws-solutions-constructs/issues/1498)), closes [#1496](https://github.com/awslabs/aws-solutions-constructs/issues/1496)
+
+- **aws-apigatewayv2websocket-sqs:** Allow override of 15 minute visibility timeout default ([#1497](https://github.com/awslabs/aws-solutions-constructs/issues/1497)), closes [#1495](https://github.com/awslabs/aws-solutions-constructs/issues/1495)
+
 ## [2.105.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.104.0...v2.105.0) (2026-10-07)
 
 Built on CDK 2.272.0
