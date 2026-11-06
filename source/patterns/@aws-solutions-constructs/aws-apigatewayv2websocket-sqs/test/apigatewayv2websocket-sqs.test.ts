@@ -559,3 +559,30 @@ describe("When neither existingWebSocketApi nor webSocketApiProps are provided",
     });
   });
 });
+
+describe("Queue visibilityTimeout", () => {
+  const props = { createDefaultRoute: true, defaultIamAuthorization: false };
+
+  it("defaults to 15 minutes", () => {
+    const stack = new cdk.Stack(new cdk.App(), "TestStack");
+    new ApiGatewayV2WebSocketToSqs(stack, "ApiGatewayV2WebSocketToSqs", props);
+
+    Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
+      FifoQueue: true,
+      VisibilityTimeout: 900,
+    });
+  });
+
+  it("can be overridden with queueProps", () => {
+    const stack = new cdk.Stack(new cdk.App(), "TestStack");
+    new ApiGatewayV2WebSocketToSqs(stack, "ApiGatewayV2WebSocketToSqs", {
+      ...props,
+      queueProps: { visibilityTimeout: cdk.Duration.seconds(60) },
+    });
+
+    Template.fromStack(stack).hasResourceProperties("AWS::SQS::Queue", {
+      FifoQueue: true,
+      VisibilityTimeout: 60,
+    });
+  });
+});

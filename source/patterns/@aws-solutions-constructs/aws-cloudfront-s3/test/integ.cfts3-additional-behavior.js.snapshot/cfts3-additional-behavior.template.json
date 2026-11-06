@@ -363,6 +363,50 @@
          ]
         }
        ]
+      },
+      {
+       "Action": "s3:GetObject",
+       "Condition": {
+        "StringEquals": {
+         "AWS:SourceArn": {
+          "Fn::Join": [
+           "",
+           [
+            "arn:",
+            {
+             "Ref": "AWS::Partition"
+            },
+            ":cloudfront::",
+            {
+             "Ref": "AWS::AccountId"
+            },
+            ":distribution/",
+            {
+             "Ref": "testcloudfronts3CloudFrontDistribution0565DEE8"
+            }
+           ]
+          ]
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "cloudfront.amazonaws.com"
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "scrapBucketB11863B7",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
       }
      ],
      "Version": "2012-10-17"
@@ -1307,6 +1351,12 @@
         ]
        },
        "Id": "cfts3additionalbehaviortestcloudfronts3CloudFrontDistributionOrigin2C22ED426",
+       "OriginAccessControlId": {
+        "Fn::GetAtt": [
+         "CloudFrontOac",
+         "Id"
+        ]
+       },
        "S3OriginConfig": {
         "OriginAccessIdentity": ""
        }

@@ -20,6 +20,7 @@ import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import * as defaults from '@aws-solutions-constructs/core';
 import { Key } from "aws-cdk-lib/aws-kms";
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
+import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import { CachePolicy, CfnOriginAccessControl } from "aws-cdk-lib/aws-cloudfront";
 
 function deploy(stack: cdk.Stack, props?: CloudFrontToS3Props) {
@@ -980,4 +981,68 @@ test('Test that ValidateDistributionProps() is being called', () => {
   };
 
   expect(app).toThrow(/ERROR - invalidProperty is not a valid property of DistributionProps/);
+});
+
+test('default origin OAC is an L1 origin property, not a raw override', () => {
+  const stack = new cdk.Stack();
+  const construct = new CloudFrontToS3(stack, 'test-cloudfront-s3', {});
+
+  // The OAC must be a property of the L1 origin itself (what cdk-nag and other L1 inspectors read),
+  // not something patched into the template with a raw override
+  const l1Distribution = construct.cloudFrontWebDistribution.node.defaultChild as cloudfront.CfnDistribution;
+  const distributionConfig = stack.resolve(l1Distribution.distributionConfig);
+
+  expect(distributionConfig.origins).toHaveLength(1);
+  expect(distributionConfig.origins[0].originAccessControlId).toEqual(stack.resolve(construct.originAccessControl?.attrId));
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::CloudFront::Distribution', {
+    DistributionConfig: {
+      Origins: [
+        Match.objectLike({
+          OriginAccessControlId: { 'Fn::GetAtt': [Match.stringLikeRegexp('.*Oac.*'), 'Id'] }
+        })
+      ]
+    }
+  });
+});
+
+test('additional S3OacOrigin gets its own OAC', () => {
+  const stack = new cdk.Stack();
+
+  const additionalBucket = defaults.CreateScrapBucket(stack, "scrapBucket", {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
+  });
+
+  const additionalOac = new CfnOriginAccessControl(stack, 'AdditionalOac', {
+    originAccessControlConfig: {
+      name: defaults.generatePhysicalOacName('aws-cloudfront-s3-', ['additional']),
+      originAccessControlOriginType: 's3',
+      signingBehavior: 'always',
+      signingProtocol: 'sigv4',
+      description: 'Origin access control for the additional origin'
+    }
+  });
+
+  new CloudFrontToS3(stack, 'test-cloudfront-s3', {
+    cloudFrontDistributionProps: {
+      additionalBehaviors: {
+        '/assets/public/*': {
+          origin: new defaults.S3OacOrigin(additionalBucket, { originAccessControl: additionalOac }),
+          cachePolicy: CachePolicy.CACHING_DISABLED,
+        }
+      }
+    }
+  });
+
+  const template = Template.fromStack(stack);
+  const distributions = template.findResources('AWS::CloudFront::Distribution');
+  const distOrigins = Object.values(distributions)[0].Properties.DistributionConfig.Origins;
+
+  expect(distOrigins).toHaveLength(2);
+  const oacIds = distOrigins.map((o: any) => o.OriginAccessControlId['Fn::GetAtt'][0]);
+  expect(oacIds).toContain('AdditionalOac');
+  expect(oacIds.filter((id: string) => id !== 'AdditionalOac')).toHaveLength(1);
+  expect(new Set(oacIds).size).toBe(2);
 });

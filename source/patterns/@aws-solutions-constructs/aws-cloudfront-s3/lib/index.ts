@@ -189,7 +189,6 @@ export class CloudFrontToS3 extends Construct {
 
     // Attach the OriginAccessControl to the CloudFront Distribution, and remove the OriginAccessIdentity
     const l1CloudFrontDistribution = this.cloudFrontWebDistribution.node.defaultChild as cloudfront.CfnDistribution;
-    l1CloudFrontDistribution.addPropertyOverride('DistributionConfig.Origins.0.OriginAccessControlId', this.originAccessControl?.attrId);
     if (props.originPath) {
       l1CloudFrontDistribution.addPropertyOverride('DistributionConfig.Origins.0.OriginPath', props.originPath);
     }

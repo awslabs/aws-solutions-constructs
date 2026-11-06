@@ -34,8 +34,9 @@ export interface S3OacOriginProps extends cloudfront.OriginProps {
 }
 
 /**
- * A custom implementation of S3Origin that allows an origin access control (OAC) to be used instead of
- * an origin access identity (OAI), which is currently the only option supported by default CDK.
+ * A custom implementation of S3Origin that attaches an origin access control (OAC) to the origin
+ * (rather than an origin access identity, OAI). The OAC ID is emitted on every origin this class creates,
+ * so it can be used for the default origin or any additional origin.
  */
 export class S3OacOrigin implements cloudfront.IOrigin {
   private readonly origin: cloudfront.IOrigin;
@@ -74,7 +75,7 @@ class S3OacBucketOrigin extends cloudfront.OriginBase {
   public originAccessControl!: cloudfront.CfnOriginAccessControl;
 
   constructor(bucket: s3.IBucket, originAccessControl: cloudfront.CfnOriginAccessControl) {
-    super(bucket.bucketRegionalDomainName);
+    super(bucket.bucketRegionalDomainName, { originAccessControlId: originAccessControl.attrId });
     this.originAccessControl = originAccessControl;
   }
 
