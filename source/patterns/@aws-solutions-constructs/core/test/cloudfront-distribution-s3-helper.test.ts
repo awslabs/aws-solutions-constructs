@@ -533,6 +533,70 @@ test('check default and custom origins for additional behaviors', () => {
   });
 });
 
+test('S3OacOrigin renders its OAC as an origin property', () => {
+  const stack = new Stack();
+  const bucket = defaults.CreateScrapBucket(stack, "oac-bucket", {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
+  });
+
+  const originAccessControl = new cloudfront.CfnOriginAccessControl(stack, 'oac', {
+    originAccessControlConfig: {
+      name: defaults.generatePhysicalOacName('aws-cloudfront-s3-', [__filename]),
+      originAccessControlOriginType: 's3',
+      signingBehavior: 'always',
+      signingProtocol: 'sigv4',
+      description: 'Origin access control provisioned by aws-cloudfront-s3'
+    }
+  });
+
+  const origin = new defaults.S3OacOrigin(bucket, { originAccessControl });
+  const bindConfig = origin.bind(stack, { originId: 'test-origin-id' });
+
+  // The OAC ID is part of the origin's own L1 configuration, so it applies to any origin built this way
+  expect(stack.resolve(bindConfig.originProperty?.originAccessControlId)).toEqual(stack.resolve(originAccessControl.attrId));
+});
+
+test('each S3OacOrigin renders its own OAC in the distribution', () => {
+  const stack = new Stack();
+  const buildS3BucketResponse = buildS3Bucket(stack, {});
+
+  const additionalBucket = defaults.CreateScrapBucket(stack, "second-bucket", {
+    removalPolicy: RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
+  });
+
+  const secondOac = new cloudfront.CfnOriginAccessControl(stack, 'secondOac', {
+    originAccessControlConfig: {
+      name: defaults.generatePhysicalOacName('aws-cloudfront-s3-', [__filename]),
+      originAccessControlOriginType: 's3',
+      signingBehavior: 'always',
+      signingProtocol: 'sigv4',
+      description: 'Origin access control provisioned by aws-cloudfront-s3'
+    }
+  });
+
+  createCloudFrontDistributionForS3(stack, 'sample-cf-distro', {
+    sourceBucket: buildS3BucketResponse.bucket,
+    cloudFrontDistributionProps: {
+      additionalBehaviors: {
+        '/assets/public/*': {
+          origin: new defaults.S3OacOrigin(additionalBucket, { originAccessControl: secondOac }),
+          cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
+        }
+      }
+    }
+  });
+
+  const template = Template.fromStack(stack);
+  const distribution = Object.values(template.findResources("AWS::CloudFront::Distribution"))[0];
+  const oacRefs = distribution.Properties.DistributionConfig.Origins.map((o: any) => o.OriginAccessControlId['Fn::GetAtt'][0]);
+
+  expect(oacRefs).toHaveLength(2);
+  expect(oacRefs).toContain('secondOac');
+  expect(oacRefs).toContain('CloudFrontOac');
+});
+
 // ---------------------------
 // Duplicate tests for createCloudFrontOaiDistributinForS3
 // ---------------------------
