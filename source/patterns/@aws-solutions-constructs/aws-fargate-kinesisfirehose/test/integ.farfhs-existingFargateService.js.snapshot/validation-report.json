@@ -3,21 +3,46 @@
   "title": "Validation Report",
   "pluginReports": [
     {
-      "pluginName": "Construct Annotations",
+      "pluginName": "CloudFormation Validate",
+      "pluginVersion": "1.12.1",
       "conclusion": "success",
       "violations": [
         {
-          "ruleName": "@aws-cdk/aws-ecs:shouldUseCircuitBreaker",
-          "description": "Enable the 'circuitBreaker' property to trigger a quicker deployment failure if tasks are failing to come start (without this setting deployments may take up to 3 hours to fail). [ack: @aws-cdk/aws-ecs:shouldUseCircuitBreaker]",
+          "ruleName": "F0001",
+          "description": "Resources section must exist and be non-empty",
           "severity": "warning",
+          "ruleMetadata": {
+            "category": "Structure"
+          },
+          "violatingConstructs": [
+            {
+              "constructPath": "farfhs-existingFargateService/Integ/DefaultTest/DeployAssert",
+              "constructFqn": "aws-cdk-lib.Stack",
+              "libraryVersion": "2.272.0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "pluginName": "Construct Annotations",
+      "conclusion": "success",
+      "metadata": {
+        "cdk:annotations": "true"
+      },
+      "violations": [
+        {
+          "ruleName": "Annotation::@aws-cdk/aws-ecs:shouldUseCircuitBreaker",
+          "description": "Enable the 'circuitBreaker' property to trigger a quicker deployment failure if tasks are failing to start up (without this setting deployments may take up to 3 hours to fail).",
+          "severity": "warning",
+          "ruleMetadata": {
+            "cdk:annotation": "true"
+          },
           "violatingConstructs": [
             {
               "constructPath": "farfhs-existingFargateService/test-service",
               "constructFqn": "aws-cdk-lib.aws_ecs.FargateService",
-              "libraryVersion": "2.259.0",
-              "stackTraces": [
-                "Run with '--debug' to include location info\nRun with '--debug' to include location info"
-              ]
+              "libraryVersion": "2.272.0"
             }
           ]
         }

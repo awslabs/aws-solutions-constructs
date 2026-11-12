@@ -53,7 +53,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8e378bf10a453ab52a12f083156169e737375387bf5afca2b0a03a95656af0ec.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e24066457e05a7c227639d00271cee7941d750c2cdba99061985449270c575a1.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -604,10 +604,18 @@
           },
           "@aws-cdk/core:defaultCrossStackReferences": {
             "recommendedValue": "weak",
-            "explanation": "Controls whether cross-region stack references are strong, weak, or both",
+            "explanation": "Controls whether cross-stack references are strong, weak, or both",
             "unconfiguredBehavesLike": {
               "v2": "strong"
             }
+          },
+          "@aws-cdk/core:validateAgainstDefaultRules": {
+            "recommendedValue": true,
+            "explanation": "Treat CloudFormation Validate findings as errors"
+          },
+          "@aws-cdk/aws-ecs:removeEmptyLoadBalancers": {
+            "recommendedValue": true,
+            "explanation": "Render an empty `LoadBalancers` array on an ECS service that has no target groups"
           }
         }
       }

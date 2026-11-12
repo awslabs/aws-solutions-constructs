@@ -474,6 +474,33 @@
          "Arn"
         ]
        }
+      },
+      {
+       "Action": "logs:DescribeLogStreams",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":logs:",
+          {
+           "Ref": "AWS::Region"
+          },
+          ":",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":log-group:",
+          {
+           "Ref": "VpcFlowLogLogGroup7B5C56B9"
+          }
+         ]
+        ]
+       }
       }
      ],
      "Version": "2012-10-17"
@@ -1436,7 +1463,8 @@
     }
    },
    "DependsOn": [
-    "testlambdaelasticsearchkibana4CognitoKibanaConfigureRole6A058B80"
+    "testlambdaelasticsearchkibana4CognitoKibanaConfigureRole6A058B80",
+    "testlambdaelasticsearchkibana4CognitoKibanaConfigureRolePolicy1615E937"
    ],
    "Metadata": {
     "cfn_nag": {

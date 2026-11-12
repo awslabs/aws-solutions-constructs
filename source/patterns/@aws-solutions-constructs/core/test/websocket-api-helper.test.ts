@@ -89,18 +89,20 @@ test("creates API Gateway role and grants permissions and apigateway stage setup
           },
         },
         {
-          Action: [
-            "logs:CreateLogGroup",
-            "logs:CreateLogStream",
-            "logs:DescribeLogGroups",
-            "logs:DescribeLogStreams",
-            "logs:PutLogEvents",
-            "logs:GetLogEvents",
-            "logs:FilterLogEvents",
-          ],
+          Action: ["logs:CreateLogStream", "logs:PutLogEvents", "logs:GetLogEvents"],
           Effect: "Allow",
           Resource: {
             "Fn::GetAtt": [Match.stringLikeRegexp("LogGroup*"), "Arn"],
+          },
+        },
+        {
+          Action: ["logs:CreateLogGroup", "logs:DescribeLogGroups", "logs:DescribeLogStreams", "logs:FilterLogEvents"],
+          Effect: "Allow",
+          Resource: {
+            "Fn::Join": ["", Match.arrayWith([
+              Match.stringLikeRegexp(":log-group:$"),
+              { Ref: Match.stringLikeRegexp("LogGroup*") },
+            ])],
           },
         },
       ],

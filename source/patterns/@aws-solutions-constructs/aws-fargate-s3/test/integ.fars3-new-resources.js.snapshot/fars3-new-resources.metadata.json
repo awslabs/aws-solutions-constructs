@@ -1,4 +1,12 @@
 {
+  "/fars3-new-resources": [
+    {
+      "type": "aws:cdk:acknowledged-rules",
+      "data": {
+        "CloudFormation-Validate::W3010": "Literal AZs in template are the result of accessing stack.availabilityZones, this is expected and safe"
+      }
+    }
+  ],
   "/fars3-new-resources/Vpc": [
     {
       "type": "aws:cdk:analytics:construct",
@@ -128,23 +136,22 @@
   "/fars3-new-resources/test-construct-service": [
     {
       "type": "aws:cdk:warning",
-      "data": "Enable the 'circuitBreaker' property to trigger a quicker deployment failure if tasks are failing to come start (without this setting deployments may take up to 3 hours to fail). [ack: @aws-cdk/aws-ecs:shouldUseCircuitBreaker]",
+      "data": "Enable the 'circuitBreaker' property to trigger a quicker deployment failure if tasks are failing to start up (without this setting deployments may take up to 3 hours to fail). [ack: @aws-cdk/aws-ecs:shouldUseCircuitBreaker]",
       "trace": [
-        "Annotations.addMessage (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:3441)",
-        "Annotations.addWarningV2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:2129)",
-        "new BaseService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/aws-ecs/lib/base/base-service.js:1:14671)",
-        "new BaseService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/no-box-stack-traces.js:1:345)",
-        "new FargateService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/aws-ecs/lib/fargate/fargate-service.js:1:7829)",
-        "new FargateService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/prop-injectable.js:1:855)",
-        "Object.CreateFargateService (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/fargate-helper.js:83:24)",
-        "new FargateToS3 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-fargate-s3/lib/index.js:38:59)",
-        "Object.<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-fargate-s3/test/integ.fars3-new-resources.js:43:1)",
-        "Module._compile (node:internal/modules/cjs/loader:1706:14)",
-        "Object..js (node:internal/modules/cjs/loader:1839:10)",
-        "Module.load (node:internal/modules/cjs/loader:1441:32)",
-        "Function._load (node:internal/modules/cjs/loader:1263:12)",
-        "TracingChannel.traceSync (node:diagnostics_channel:328:14)",
-        "wrapModuleLoad (node:internal/modules/cjs/loader:237:24)",
+        "Annotations.addMessage (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:3506)",
+        "Annotations.addWarningV2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:2194)",
+        "new BaseService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/aws-ecs/lib/base/base-service.js:1:14814)",
+        "new BaseService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/no-box-stack-traces.js:1:349)",
+        "new FargateService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/aws-ecs/lib/fargate/fargate-service.js:1:8083)",
+        "new FargateService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/prop-injectable.js:1:861)",
+        "Object.CreateFargateService (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/fargate-helper.js:83:24)",
+        "new FargateToS3 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-fargate-s3/lib/index.js:38:59)",
+        "Object.<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-fargate-s3/test/integ.fars3-new-resources.js:43:1)",
+        "Module._compile (node:internal/modules/cjs/loader:1781:14)",
+        "Object..js (node:internal/modules/cjs/loader:1913:10)",
+        "Module.load (node:internal/modules/cjs/loader:1505:32)",
+        "Function._load (node:internal/modules/cjs/loader:1309:12)",
+        "wrapModuleLoad (node:internal/modules/cjs/loader:254:19)",
         "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)",
         "node:internal/main/run_main_module:36:49"
       ]
@@ -261,7 +268,10 @@
       "type": "aws:cdk:analytics:method",
       "data": {
         "addNatGateway": [
-          "*"
+          "*",
+          {
+            "maxDrainDuration": "*"
+          }
         ]
       }
     }
@@ -297,7 +307,10 @@
       "type": "aws:cdk:analytics:method",
       "data": {
         "addNatGateway": [
-          "*"
+          "*",
+          {
+            "maxDrainDuration": "*"
+          }
         ]
       }
     }
@@ -381,6 +394,18 @@
       "type": "aws:cdk:analytics:construct",
       "data": {
         "resourceType": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:acknowledged-rules",
+      "data": {
+        "CloudFormation-Validate::F3002": "AWS::EC2::FlowLog DestinationOptions accepts properties in camelCase, even they are listed as PascalCase in the spec"
+      }
+    },
+    {
+      "type": "aws:cdk:acknowledged-rules",
+      "data": {
+        "CloudFormation-Validate::F3003": "AWS::EC2::FlowLog DestinationOptions accepts properties in camelCase, even they are listed as PascalCase in the spec"
       }
     }
   ],
@@ -734,6 +759,14 @@
           "*"
         ]
       }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
     }
   ],
   "/fars3-new-resources/Vpc/FlowLog/LogGroup": [
@@ -862,6 +895,14 @@
       "data": {
         "attachToRole": [
           "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
         ]
       }
     },

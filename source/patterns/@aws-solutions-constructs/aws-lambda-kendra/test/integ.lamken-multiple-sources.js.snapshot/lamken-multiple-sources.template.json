@@ -963,7 +963,10 @@
          }
         },
         {
-         "Action": "logs:DescribeLogGroups",
+         "Action": [
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams"
+         ],
          "Effect": "Allow",
          "Resource": {
           "Fn::Join": [
@@ -989,7 +992,6 @@
         {
          "Action": [
           "logs:CreateLogStream",
-          "logs:DescribeLogStream",
           "logs:PutLogEvents"
          ],
          "Effect": "Allow",

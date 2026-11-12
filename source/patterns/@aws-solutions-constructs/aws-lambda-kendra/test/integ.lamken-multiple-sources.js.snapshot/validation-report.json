@@ -1,0 +1,74 @@
+{
+  "version": "54.0.0",
+  "title": "Validation Report",
+  "pluginReports": [
+    {
+      "pluginName": "CloudFormation Validate",
+      "pluginVersion": "1.12.1",
+      "conclusion": "success",
+      "violations": [
+        {
+          "ruleName": "W9009",
+          "description": "DataSourceConfiguration.S3Configuration: Property 'DataSourceConfiguration.S3Configuration' is deprecated",
+          "severity": "warning",
+          "ruleMetadata": {
+            "category": "Deprecation"
+          },
+          "violatingConstructs": [
+            {
+              "constructPath": "lamken-multiple-sources/multiple-sources/data-source-multiple-sources0",
+              "constructFqn": "aws-cdk-lib.aws_kendra.CfnDataSource",
+              "libraryVersion": "2.272.0",
+              "cloudFormationResource": {
+                "templatePath": "lamken-multiple-sources.template.json",
+                "logicalId": "multiplesourcesdatasourcemultiplesources0EC508371",
+                "propertyPaths": [
+                  "Properties.DataSourceConfiguration.S3Configuration"
+                ]
+              }
+            },
+            {
+              "constructPath": "lamken-multiple-sources/multiple-sources/data-source-multiple-sources1",
+              "constructFqn": "aws-cdk-lib.aws_kendra.CfnDataSource",
+              "libraryVersion": "2.272.0",
+              "cloudFormationResource": {
+                "templatePath": "lamken-multiple-sources.template.json",
+                "logicalId": "multiplesourcesdatasourcemultiplesources1996FC378",
+                "propertyPaths": [
+                  "Properties.DataSourceConfiguration.S3Configuration"
+                ]
+              }
+            },
+            {
+              "constructPath": "lamken-multiple-sources/multiple-sources/kendra-data-source-multiple-sources2",
+              "constructFqn": "aws-cdk-lib.aws_kendra.CfnDataSource",
+              "libraryVersion": "2.272.0",
+              "cloudFormationResource": {
+                "templatePath": "lamken-multiple-sources.template.json",
+                "logicalId": "multiplesourceskendradatasourcemultiplesources220F30209",
+                "propertyPaths": [
+                  "Properties.DataSourceConfiguration.WebCrawlerConfiguration"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "ruleName": "F0001",
+          "description": "Resources section must exist and be non-empty",
+          "severity": "warning",
+          "ruleMetadata": {
+            "category": "Structure"
+          },
+          "violatingConstructs": [
+            {
+              "constructPath": "lamken-multiple-sources/Integ/DefaultTest/DeployAssert",
+              "constructFqn": "aws-cdk-lib.Stack",
+              "libraryVersion": "2.272.0"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

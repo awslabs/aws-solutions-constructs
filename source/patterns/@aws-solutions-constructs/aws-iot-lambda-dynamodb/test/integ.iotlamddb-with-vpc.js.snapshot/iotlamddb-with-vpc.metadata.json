@@ -1,4 +1,12 @@
 {
+  "/iotlamddb-with-vpc": [
+    {
+      "type": "aws:cdk:acknowledged-rules",
+      "data": {
+        "CloudFormation-Validate::W3010": "Literal AZs in template are the result of accessing stack.availabilityZones, this is expected and safe"
+      }
+    }
+  ],
   "/iotlamddb-with-vpc/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
     {
       "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -250,6 +258,18 @@
       "data": {
         "resourceType": "*"
       }
+    },
+    {
+      "type": "aws:cdk:acknowledged-rules",
+      "data": {
+        "CloudFormation-Validate::F3002": "AWS::EC2::FlowLog DestinationOptions accepts properties in camelCase, even they are listed as PascalCase in the spec"
+      }
+    },
+    {
+      "type": "aws:cdk:acknowledged-rules",
+      "data": {
+        "CloudFormation-Validate::F3003": "AWS::EC2::FlowLog DestinationOptions accepts properties in camelCase, even they are listed as PascalCase in the spec"
+      }
     }
   ],
   "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/DDB": [
@@ -459,6 +479,14 @@
           "*"
         ]
       }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
     }
   ],
   "/iotlamddb-with-vpc/test-iot-lambda-dynamodb-stack/Vpc/FlowLog/LogGroup": [
@@ -515,6 +543,14 @@
       "data": {
         "attachToRole": [
           "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
         ]
       }
     },

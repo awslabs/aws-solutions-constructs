@@ -1,4 +1,12 @@
 {
+  "/facvpc-with-cidr-mask-and-endpoints": [
+    {
+      "type": "aws:cdk:acknowledged-rules",
+      "data": {
+        "CloudFormation-Validate::W3010": "Literal AZs in template are the result of accessing stack.availabilityZones, this is expected and safe"
+      }
+    }
+  ],
   "/facvpc-with-cidr-mask-and-endpoints/Custom::VpcRestrictDefaultSGCustomResourceProvider": [
     {
       "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
@@ -187,6 +195,18 @@
       "data": {
         "resourceType": "*"
       }
+    },
+    {
+      "type": "aws:cdk:acknowledged-rules",
+      "data": {
+        "CloudFormation-Validate::F3002": "AWS::EC2::FlowLog DestinationOptions accepts properties in camelCase, even they are listed as PascalCase in the spec"
+      }
+    },
+    {
+      "type": "aws:cdk:acknowledged-rules",
+      "data": {
+        "CloudFormation-Validate::F3003": "AWS::EC2::FlowLog DestinationOptions accepts properties in camelCase, even they are listed as PascalCase in the spec"
+      }
     }
   ],
   "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/BEDROCK": [
@@ -309,6 +329,14 @@
           "*"
         ]
       }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
     }
   ],
   "/facvpc-with-cidr-mask-and-endpoints/integ-test/vpc-test/flowlog-test/LogGroup": [
@@ -359,6 +387,14 @@
       "data": {
         "attachToRole": [
           "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
         ]
       }
     },

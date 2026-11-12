@@ -1,4 +1,12 @@
 {
+  "/lambed-with-vpc": [
+    {
+      "type": "aws:cdk:acknowledged-rules",
+      "data": {
+        "CloudFormation-Validate::W3010": "Literal AZs in template are the result of accessing stack.availabilityZones, this is expected and safe"
+      }
+    }
+  ],
   "/lambed-with-vpc/Vpc": [
     {
       "type": "aws:cdk:analytics:construct",
@@ -281,19 +289,20 @@
       "type": "aws:cdk:info",
       "data": "Consider making this CfnMapping a lazy mapping by providing `lazy: true`: either no findInMap was called or every findInMap could be immediately resolved without using Fn::FindInMap",
       "trace": [
-        "Annotations.addMessage (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:3441)",
-        "Annotations.addInfo (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:2588)",
-        "CfnMapping.informLazyUse (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/cfn-mapping.js:1:2757)",
-        "CfnMapping._toCloudFormation (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/cfn-mapping.js:1:2584)",
-        "/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/refs.js:1:11028",
-        "findTokens (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:6454)",
-        "findAllReferences (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/refs.js:1:11005)",
-        "resolveReferences (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/refs.js:1:4626)",
-        "prepareApp (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/prepare-app.js:1:1514)",
-        "synthesize (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/synthesis.js:1:3580)",
-        "App.synth (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/stage.js:1:4636)",
-        "App.synth (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/app.js:1:4814)",
-        "process.<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/RefreshCdk/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/app.js:1:3773)",
+        "Annotations.addMessage (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:3506)",
+        "Annotations.addInfo (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:2653)",
+        "CfnMapping.informLazyUse (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/cfn-mapping.js:1:2816)",
+        "CfnMapping._toCloudFormation (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/cfn-mapping.js:1:2643)",
+        "/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/refs.js:1:11326",
+        "findTokens (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/resolve.js:1:6454)",
+        "findAllReferences (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/refs.js:1:11303)",
+        "resolveReferencesInElements (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/refs.js:1:4870)",
+        "resolveReferences (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/refs.js:1:4718)",
+        "prepareApp (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/prepare-app.js:1:1240)",
+        "synthesize (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/private/synthesis.js:1:2625)",
+        "App.synth (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/stage.js:1:5061)",
+        "App.synth (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/app.js:1:5126)",
+        "process.<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/app.js:1:4036)",
         "Object.onceWrapper (node:events:634:26)",
         "process.emit (node:events:519:28)"
       ]
@@ -364,6 +373,18 @@
       "type": "aws:cdk:analytics:construct",
       "data": {
         "resourceType": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:acknowledged-rules",
+      "data": {
+        "CloudFormation-Validate::F3002": "AWS::EC2::FlowLog DestinationOptions accepts properties in camelCase, even they are listed as PascalCase in the spec"
+      }
+    },
+    {
+      "type": "aws:cdk:acknowledged-rules",
+      "data": {
+        "CloudFormation-Validate::F3003": "AWS::EC2::FlowLog DestinationOptions accepts properties in camelCase, even they are listed as PascalCase in the spec"
       }
     }
   ],
@@ -643,6 +664,14 @@
           "*"
         ]
       }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
     }
   ],
   "/lambed-with-vpc/Vpc/FlowLog/LogGroup": [
@@ -717,6 +746,14 @@
       "data": {
         "attachToRole": [
           "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
         ]
       }
     },

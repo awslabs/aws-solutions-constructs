@@ -17,6 +17,7 @@
  */
 
 import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as iam from "aws-cdk-lib/aws-iam";
 import { CfnLogGroup } from "aws-cdk-lib/aws-logs";
 import { Construct } from "constructs";
 import { buildSecurityGroup } from "./security-group-helper";
@@ -71,6 +72,15 @@ export function buildVpc(scope: Construct, props: BuildVpcProps, id?: string): e
   // TODO: we need a unit test for an id argument
   const flowLogId = id ? `flowlog-${id}` : "FlowLog";
   const flowLog: ec2.FlowLog = vpc.addFlowLog(flowLogId);
+
+  // CDK grants DescribeLogStreams on the log group ARN with a trailing ":*" (the log stream ARN format).
+  // CloudWatch Logs will require the plain log group ARN for log group level actions, so grant it explicitly.
+  if (flowLog.logGroup) {
+    flowLog.iamRole?.addToPrincipalPolicy(new iam.PolicyStatement({
+      actions: ["logs:DescribeLogStreams"],
+      resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:${flowLog.logGroup.logGroupName}`],
+    }));
+  }
 
   SuppressMapPublicIpWarnings(vpc);
   SuppressEncryptedLogWarnings(flowLog);

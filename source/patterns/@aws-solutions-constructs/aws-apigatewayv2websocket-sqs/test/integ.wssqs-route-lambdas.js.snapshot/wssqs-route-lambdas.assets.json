@@ -1,16 +1,16 @@
 {
-  "version": "50.0.0",
+  "version": "54.0.0",
   "files": {
-    "d85388fe5737a2a86bdea9fd71aa9f3a3b53410364b4f4c743eba1890cdb7390": {
+    "bb4b52cd7462c94ab3aa70e6f9d6bb75a62df9fe1b62cecadf75346c7915531f": {
       "displayName": "wssqs-route-lambdas Template",
       "source": {
         "path": "wssqs-route-lambdas.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-81ce98f7": {
+        "current_account-current_region-70da78bc": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "d85388fe5737a2a86bdea9fd71aa9f3a3b53410364b4f4c743eba1890cdb7390.json",
+          "objectKey": "bb4b52cd7462c94ab3aa70e6f9d6bb75a62df9fe1b62cecadf75346c7915531f.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

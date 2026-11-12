@@ -112,7 +112,7 @@ test('Launch with minimal code and check  structure', () => {
               }
             },
             {
-              Action: "logs:DescribeLogGroups",
+              Action: ["logs:DescribeLogGroups", "logs:DescribeLogStreams"],
               Effect: "Allow",
               Resource: {
                 "Fn::Join": [
@@ -138,8 +138,7 @@ test('Launch with minimal code and check  structure', () => {
             {
               Action: [
                 "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "logs:DescribeLogStream"
+                "logs:PutLogEvents"
               ],
               Effect: "Allow",
               Resource: {
@@ -1237,7 +1236,7 @@ test('Launch with non default index type', () => {
               }
             },
             {
-              Action: "logs:DescribeLogGroups",
+              Action: ["logs:DescribeLogGroups", "logs:DescribeLogStreams"],
               Effect: "Allow",
               Resource: {
                 "Fn::Join": [
@@ -1263,8 +1262,7 @@ test('Launch with non default index type', () => {
             {
               Action: [
                 "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "logs:DescribeLogStream"
+                "logs:PutLogEvents"
               ],
               Effect: "Allow",
               Resource: {
