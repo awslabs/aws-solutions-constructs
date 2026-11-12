@@ -849,7 +849,8 @@
     }
    },
    "DependsOn": [
-    "testddbstreamslambdaeskLambdaToElasticSearchCognitoKibanaConfigureRole9DE845CD"
+    "testddbstreamslambdaeskLambdaToElasticSearchCognitoKibanaConfigureRole9DE845CD",
+    "testddbstreamslambdaeskLambdaToElasticSearchCognitoKibanaConfigureRolePolicy62E429A3"
    ],
    "Metadata": {
     "cfn_nag": {
@@ -1178,6 +1179,33 @@
         "Fn::GetAtt": [
          "testddbstreamslambdaeskVpcFlowLogLogGroup4DB5270C",
          "Arn"
+        ]
+       }
+      },
+      {
+       "Action": "logs:DescribeLogStreams",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":logs:",
+          {
+           "Ref": "AWS::Region"
+          },
+          ":",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":log-group:",
+          {
+           "Ref": "testddbstreamslambdaeskVpcFlowLogLogGroup4DB5270C"
+          }
+         ]
         ]
        }
       }

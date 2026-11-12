@@ -54,6 +54,21 @@ function deployES(stack: Stack, domainName: string, clientDomainProps?: elastics
   }
 }
 
+test('ES domain depends on the Cognito configure role policy', () => {
+  const stack = new Stack(undefined, undefined, {
+    env: { account: "123456789012", region: 'us-east-1' },
+  });
+
+  deployES(stack, 'test-domain');
+
+  const template = Template.fromStack(stack);
+  const policies = Object.keys(template.findResources('AWS::IAM::Policy'))
+    .filter((id) => id.includes('CognitoKibanaConfigureRolePolicy'));
+  expect(policies).toHaveLength(1);
+  const domains = Object.values(template.findResources('AWS::Elasticsearch::Domain'));
+  expect(domains[0].DependsOn).toContain(policies[0]);
+});
+
 test('Test override SnapshotOptions for buildElasticSearch', () => {
   const stack = new Stack(undefined, undefined, {
     env: { account: "123456789012", region: 'us-east-1' },

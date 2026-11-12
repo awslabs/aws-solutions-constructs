@@ -66,6 +66,17 @@ test('all defaults', () => {
               "Arn"
             ]
           }
+        },
+        // Log group level actions need the plain log group ARN (no trailing ":*")
+        {
+          Action: "logs:DescribeLogStreams",
+          Effect: "Allow",
+          Resource: {
+            "Fn::Join": ["", Match.arrayWith([
+              Match.stringLikeRegexp(":log-group:$"),
+              { Ref: Match.stringLikeRegexp("targetvpctestflowlogtestLogGroup") }
+            ])]
+          }
         }
       ],
     },

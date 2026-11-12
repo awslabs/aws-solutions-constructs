@@ -130,18 +130,20 @@ describe("When instantiating the ApiGatewayV2WebSocketToSqs construct with WebSo
             },
           },
           {
-            Action: [
-              "logs:CreateLogGroup",
-              "logs:CreateLogStream",
-              "logs:DescribeLogGroups",
-              "logs:DescribeLogStreams",
-              "logs:PutLogEvents",
-              "logs:GetLogEvents",
-              "logs:FilterLogEvents",
-            ],
+            Action: ["logs:CreateLogStream", "logs:PutLogEvents", "logs:GetLogEvents"],
             Effect: "Allow",
             Resource: {
               "Fn::GetAtt": [Match.anyValue(), "Arn"],
+            },
+          },
+          {
+            Action: ["logs:CreateLogGroup", "logs:DescribeLogGroups", "logs:DescribeLogStreams", "logs:FilterLogEvents"],
+            Effect: "Allow",
+            Resource: {
+              "Fn::Join": ["", Match.arrayWith([
+                Match.stringLikeRegexp(":log-group:$"),
+                { Ref: Match.stringLikeRegexp("LogGroup") },
+              ])],
             },
           },
         ],
