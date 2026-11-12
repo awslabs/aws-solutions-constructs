@@ -109,6 +109,7 @@ test('confirm cidr mask is applied correctly', () => {
     CidrBlock: "10.0.0.0/25",
     MapPublicIpOnLaunch: false,
   });
+
   template.hasResourceProperties("AWS::EC2::Subnet", {
     CidrBlock: "10.0.0.128/25",
     MapPublicIpOnLaunch: false,
