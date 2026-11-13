@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [2.107.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.106.0...v2.107.0) (2026-11-13)
 
+Built on CDK 2.276.0
+
+- **iam:** address upcoming IAM changes requiring more specific principals to write to CloudWatch Logs ([#1501](https://github.com/awslabs/aws-solutions-constructs/pull/1501)), closes [#1494](https://github.com/awslabs/aws-solutions-constructs/issues/1494)
+
 ## [2.106.0](https://github.com/awslabs/aws-solutions-constructs/compare/v2.105.0...v2.106.0) (2026-11-06)
 
 Built on CDK 2.272.0
