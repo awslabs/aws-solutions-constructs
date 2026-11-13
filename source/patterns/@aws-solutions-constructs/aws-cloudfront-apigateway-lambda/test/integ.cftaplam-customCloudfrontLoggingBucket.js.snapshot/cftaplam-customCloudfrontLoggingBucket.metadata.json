@@ -1,4 +1,10 @@
 {
+  "/cftaplam-customCloudfrontLoggingBucket": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "cftaplam-customCloudfrontLoggingBucket.template.json"
+    }
+  ],
   "/cftaplam-customCloudfrontLoggingBucket/cftaplam-customCloudfrontLoggingBucket-authorizerAuthFunction": [
     {
       "type": "aws:cdk:analytics:construct",

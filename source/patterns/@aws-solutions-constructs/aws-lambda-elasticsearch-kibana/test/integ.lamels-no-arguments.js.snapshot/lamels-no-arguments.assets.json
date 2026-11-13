@@ -1,16 +1,16 @@
 {
-  "version": "50.0.0",
+  "version": "54.0.0",
   "files": {
-    "6a6a17b26edc2a9a2e757f9d86cec1dbf3557da008e866bf8662cbb88adcdf32": {
+    "3af8b9b9e1d6c6af706e486eb638dd0d755623d8e4c2f6a928372342f53025c4": {
       "displayName": "lamels-no-arguments Template",
       "source": {
         "path": "lamels-no-arguments.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-e78b22f6": {
+        "current_account-current_region-732b1499": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "6a6a17b26edc2a9a2e757f9d86cec1dbf3557da008e866bf8662cbb88adcdf32.json",
+          "objectKey": "3af8b9b9e1d6c6af706e486eb638dd0d755623d8e4c2f6a928372342f53025c4.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

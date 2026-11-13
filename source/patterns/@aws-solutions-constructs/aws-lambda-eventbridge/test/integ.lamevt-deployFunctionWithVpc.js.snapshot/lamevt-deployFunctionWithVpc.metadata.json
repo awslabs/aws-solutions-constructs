@@ -1,4 +1,12 @@
 {
+  "/lamevt-deployFunctionWithVpc": [
+    {
+      "type": "aws:cdk:acknowledged-rules",
+      "data": {
+        "CloudFormation-Validate::W3010": "Literal AZs in template are the result of accessing stack.availabilityZones, this is expected and safe"
+      }
+    }
+  ],
   "/lamevt-deployFunctionWithVpc/Vpc": [
     {
       "type": "aws:cdk:analytics:construct",
@@ -259,6 +267,18 @@
       "data": {
         "resourceType": "*"
       }
+    },
+    {
+      "type": "aws:cdk:acknowledged-rules",
+      "data": {
+        "CloudFormation-Validate::F3002": "AWS::EC2::FlowLog DestinationOptions accepts properties in camelCase, even they are listed as PascalCase in the spec"
+      }
+    },
+    {
+      "type": "aws:cdk:acknowledged-rules",
+      "data": {
+        "CloudFormation-Validate::F3003": "AWS::EC2::FlowLog DestinationOptions accepts properties in camelCase, even they are listed as PascalCase in the spec"
+      }
     }
   ],
   "/lamevt-deployFunctionWithVpc/Vpc/CLOUDWATCH_EVENTS": [
@@ -459,6 +479,14 @@
           "*"
         ]
       }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
     }
   ],
   "/lamevt-deployFunctionWithVpc/Vpc/FlowLog/LogGroup": [
@@ -515,6 +543,14 @@
       "data": {
         "attachToRole": [
           "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
         ]
       }
     },

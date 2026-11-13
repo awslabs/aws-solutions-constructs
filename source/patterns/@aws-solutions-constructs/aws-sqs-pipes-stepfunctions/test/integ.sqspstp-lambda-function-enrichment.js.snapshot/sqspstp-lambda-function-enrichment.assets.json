@@ -1,16 +1,16 @@
 {
-  "version": "50.0.0",
+  "version": "55.0.0",
   "files": {
-    "0a283c464f09cb6a65498d30464dae5a789c577435f57c02edeeefbd3584f857": {
+    "1f51cfc3e2dcc3ab76bedb06001f20a53076f1f758e78065987b135155c132b8": {
       "displayName": "sqspstp-lambda-function-enrichment Template",
       "source": {
         "path": "sqspstp-lambda-function-enrichment.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-0aef3735": {
+        "current_account-current_region-ea3948d0": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "0a283c464f09cb6a65498d30464dae5a789c577435f57c02edeeefbd3584f857.json",
+          "objectKey": "1f51cfc3e2dcc3ab76bedb06001f20a53076f1f758e78065987b135155c132b8.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

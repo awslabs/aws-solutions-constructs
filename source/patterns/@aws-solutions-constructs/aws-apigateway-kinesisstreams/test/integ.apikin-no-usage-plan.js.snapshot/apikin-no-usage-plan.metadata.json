@@ -1,0 +1,573 @@
+{
+  "/apikin-no-usage-plan": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "apikin-no-usage-plan.template.json"
+    }
+  ],
+  "/apikin-no-usage-plan/KinesisStream": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "MANAGED"
+      }
+    }
+  ],
+  "/apikin-no-usage-plan/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/apikin-no-usage-plan/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/ApiAccessLogGroup": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "retention": 9999
+      }
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "endpointConfiguration": {
+          "types": [
+            "EDGE"
+          ]
+        },
+        "cloudWatchRole": false,
+        "deployOptions": {
+          "accessLogDestination": "*",
+          "accessLogFormat": "*",
+          "loggingLevel": "INFO",
+          "dataTraceEnabled": false,
+          "tracingEnabled": true
+        },
+        "defaultMethodOptions": {
+          "authorizationType": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addRequestValidator": [
+          "*",
+          {
+            "requestValidatorName": "*",
+            "validateRequestBody": true
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addModel": [
+          "*",
+          {
+            "contentType": "*",
+            "modelName": "*",
+            "description": "*",
+            "schema": {
+              "schema": "http://json-schema.org/draft-04/schema#",
+              "title": "*",
+              "type": "object",
+              "required": "*",
+              "properties": "*"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addModel": [
+          "*",
+          {
+            "contentType": "*",
+            "modelName": "*",
+            "description": "*",
+            "schema": {
+              "schema": "http://json-schema.org/draft-04/schema#",
+              "title": "*",
+              "type": "object",
+              "required": "*",
+              "properties": "*"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/LambdaRestApiCloudWatchRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/LambdaRestApiAccount": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultLambdaRestApiAccountD40371B7"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/api-gateway-role": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/KinesisStreamGetRecordsIteratorAgeAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/KinesisStreamReadProvisionedThroughputExceededAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/apikin-no-usage-plan/KinesisStream/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KinesisStream46752A3E"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/ApiAccessLogGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultApiAccessLogGroup51BF9616"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultRestApi68CBA18C"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/Deployment": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "description": "*",
+        "api": "*",
+        "retainDeployments": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToLogicalId": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToLogicalId": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToLogicalId": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToLogicalId": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToLogicalId": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToLogicalId": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToLogicalId": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/DeploymentStage.prod": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "deployment": "*",
+        "accessLogDestination": "*",
+        "accessLogFormat": "*",
+        "loggingLevel": "INFO",
+        "dataTraceEnabled": false,
+        "tracingEnabled": true
+      }
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/Endpoint": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultRestApiEndpoint70DAF21B"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/Default": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/request-validator": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "requestValidatorName": "*",
+        "validateRequestBody": true,
+        "restApi": "*"
+      }
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/PutRecordModel": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "contentType": "*",
+        "modelName": "*",
+        "description": "*",
+        "schema": {
+          "schema": "http://json-schema.org/draft-04/schema#",
+          "title": "*",
+          "type": "object",
+          "required": "*",
+          "properties": "*"
+        },
+        "restApi": "*"
+      }
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/PutRecordsModel": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "contentType": "*",
+        "modelName": "*",
+        "description": "*",
+        "schema": {
+          "schema": "http://json-schema.org/draft-04/schema#",
+          "title": "*",
+          "type": "object",
+          "required": "*",
+          "properties": "*"
+        },
+        "restApi": "*"
+      }
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/LambdaRestApiCloudWatchRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultLambdaRestApiCloudWatchRole319C8324"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/api-gateway-role/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultapigatewayroleAD430BE2"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/api-gateway-role/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/KinesisStreamGetRecordsIteratorAgeAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultKinesisStreamGetRecordsIteratorAgeAlarm0638BB32"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/KinesisStreamReadProvisionedThroughputExceededAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultKinesisStreamReadProvisionedThroughputExceededAlarmE7251F6A"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/Deployment/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultRestApiDeployment2852F1AA4ff693d376d46550825ad1d0025f9ef5"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/DeploymentStage.prod/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultRestApiDeploymentStageprodB6206494"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/Default/record": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "parent": "*",
+        "pathPart": "*"
+      }
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/Default/records": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "parent": "*",
+        "pathPart": "*"
+      }
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/request-validator/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultRestApirequestvalidator5901C267"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/PutRecordModel/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultRestApiPutRecordModel06DC611F"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/PutRecordsModel/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultRestApiPutRecordsModelA7CA8D6D"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/api-gateway-role/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultapigatewayroleDefaultPolicy65F728A5"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/Default/record/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultRestApirecord500DDD57"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/Default/record/POST": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "resource": "*",
+        "httpMethod": "*",
+        "integration": "*",
+        "options": {
+          "methodResponses": [
+            {
+              "statusCode": "*",
+              "responseParameters": "*"
+            },
+            {
+              "statusCode": "*",
+              "responseParameters": "*"
+            }
+          ],
+          "requestValidator": "*",
+          "requestModels": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addMethodResponse": [
+          {
+            "statusCode": "*",
+            "responseParameters": "*"
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addMethodResponse": [
+          {
+            "statusCode": "*",
+            "responseParameters": "*"
+          }
+        ]
+      }
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/Default/records/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultRestApirecords972EAFEA"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/Default/records/POST": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "resource": "*",
+        "httpMethod": "*",
+        "integration": "*",
+        "options": {
+          "methodResponses": [
+            {
+              "statusCode": "*",
+              "responseParameters": "*"
+            },
+            {
+              "statusCode": "*",
+              "responseParameters": "*"
+            }
+          ],
+          "requestValidator": "*",
+          "requestModels": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addMethodResponse": [
+          {
+            "statusCode": "*",
+            "responseParameters": "*"
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addMethodResponse": [
+          {
+            "statusCode": "*",
+            "responseParameters": "*"
+          }
+        ]
+      }
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/Default/record/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultRestApirecordPOST731165E8"
+    }
+  ],
+  "/apikin-no-usage-plan/test-apigateway-kinesis-default/RestApi/Default/records/POST/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaykinesisdefaultRestApirecordsPOST165BE933"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "55.0.0",
   "testCases": {
     "wafcft-partial-arguments/Integ/DefaultTest": {
       "stacks": [
@@ -8,5 +8,7 @@
       "assertionStack": "wafcft-partial-arguments/Integ/DefaultTest/DeployAssert",
       "assertionStackName": "wafcftpartialargumentsIntegDefaultTestDeployAssert894D6CC5"
     }
-  }
+  },
+  "enableLookups": true,
+  "minimumCliVersion": "2.1148.1"
 }

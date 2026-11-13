@@ -55,7 +55,8 @@ export function buildElasticSearch(scope: Construct, props: BuildElasticSearchPr
   const constructDrivenProps: any = {};
 
   // Setup the IAM Role & policy for ES to configure Cognito User pool and Identity pool
-  const cognitoKibanaConfigureRole = createKibanaCognitoRole(scope, props.userpool, props.identitypool, props.domainName);
+  const { role: cognitoKibanaConfigureRole, policy: cognitoKibanaConfigureRolePolicy } =
+    createKibanaCognitoRole(scope, props.userpool, props.identitypool, props.domainName);
 
   if (props.vpc) {
     subnetIds = retrievePrivateSubnetIds(props.vpc);
@@ -88,6 +89,9 @@ export function buildElasticSearch(scope: Construct, props: BuildElasticSearchPr
   // This is confirmed by the 'Check that TLS 1.2 is the default' test in aws-lambda-elasticsearch
   const esDomain = new elasticsearch.CfnDomain(scope, `ElasticsearchDomain`, finalCfnDomainProps); // NOSONAR
   esDomain.node.addDependency(cognitoKibanaConfigureRole);
+  // The permissions are in a separate policy attached to the role. Without this dependency the domain can be
+  // created before the policy exists, and ES fails validating the role (e.g. "must authorize Amazon Elasticsearch to describeUserPool")
+  esDomain.node.addDependency(cognitoKibanaConfigureRolePolicy);
 
   addCfnSuppressRules(esDomain, [
     {
@@ -258,7 +262,7 @@ function createKibanaCognitoRole(
   userPool: cognito.UserPool,
   identitypool: cognito.CfnIdentityPool,
   domainName: string
-): iam.Role {
+): { role: iam.Role, policy: iam.Policy } {
   // Setup the IAM Role & policy for ES to configure Cognito User pool and Identity pool
   const cognitoKibanaConfigureRole = new iam.Role(
     scope,
@@ -308,5 +312,5 @@ function createKibanaCognitoRole(
   );
 
   cognitoKibanaConfigureRolePolicy.attachToRole(cognitoKibanaConfigureRole);
-  return cognitoKibanaConfigureRole;
+  return { role: cognitoKibanaConfigureRole, policy: cognitoKibanaConfigureRolePolicy };
 }

@@ -1,5 +1,5 @@
 {
-  "version": "36.0.0",
+  "version": "55.0.0",
   "testCases": {
     "wafcft-existing-waf-to-multiple-cloudfront/Integ/DefaultTest": {
       "stacks": [
@@ -8,5 +8,7 @@
       "assertionStack": "wafcft-existing-waf-to-multiple-cloudfront/Integ/DefaultTest/DeployAssert",
       "assertionStackName": "wafcftexistingwaftomultiplecloudfrontIntegDefaultTestDeployAssert118FBD28"
     }
-  }
+  },
+  "enableLookups": true,
+  "minimumCliVersion": "2.1148.1"
 }

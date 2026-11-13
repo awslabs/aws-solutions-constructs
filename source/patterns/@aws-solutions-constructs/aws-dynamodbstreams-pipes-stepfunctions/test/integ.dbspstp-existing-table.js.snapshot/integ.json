@@ -1,5 +1,5 @@
 {
-  "version": "48.0.0",
+  "version": "55.0.0",
   "testCases": {
     "dbspstp-existing-table/Integ/DefaultTest": {
       "stacks": [
@@ -9,5 +9,6 @@
       "assertionStackName": "dbspstpexistingtableIntegDefaultTestDeployAssert512B3A26"
     }
   },
-  "minimumCliVersion": "2.1029.2"
+  "enableLookups": true,
+  "minimumCliVersion": "2.1148.1"
 }

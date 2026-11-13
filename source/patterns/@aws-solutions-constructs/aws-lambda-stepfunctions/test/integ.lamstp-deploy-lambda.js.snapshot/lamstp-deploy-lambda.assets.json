@@ -1,16 +1,16 @@
 {
-  "version": "50.0.0",
+  "version": "55.0.0",
   "files": {
-    "cb9e26aa7494888cdfba0f7d998652764c55d6b80c77250da7936bf1c99743c8": {
+    "9c2a5edb11469c906f073a49f9f59d6ee1c426a778331fe13df8619765de247f": {
       "displayName": "lamstp-deploy-lambda Template",
       "source": {
         "path": "lamstp-deploy-lambda.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-88fe11fd": {
+        "current_account-current_region-a0e81245": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "cb9e26aa7494888cdfba0f7d998652764c55d6b80c77250da7936bf1c99743c8.json",
+          "objectKey": "9c2a5edb11469c906f073a49f9f59d6ee1c426a778331fe13df8619765de247f.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

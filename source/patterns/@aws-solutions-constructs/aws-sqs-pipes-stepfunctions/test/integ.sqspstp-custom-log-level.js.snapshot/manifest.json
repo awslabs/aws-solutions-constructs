@@ -1,5 +1,5 @@
 {
-  "version": "48.0.0",
+  "version": "55.0.0",
   "artifacts": {
     "sqspstpcustomloglevelIntegDefaultTestDeployAssertD542618D.assets": {
       "type": "cdk:asset-manifest",
@@ -33,20 +33,7 @@
       "dependencies": [
         "sqspstpcustomloglevelIntegDefaultTestDeployAssertD542618D.assets"
       ],
-      "metadata": {
-        "/sqspstp-custom-log-level/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/sqspstp-custom-log-level/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "sqspstpcustomloglevelIntegDefaultTestDeployAssertD542618D.metadata.json",
       "displayName": "sqspstp-custom-log-level/Integ/DefaultTest/DeployAssert"
     },
     "sqspstp-custom-log-level.assets": {
@@ -66,7 +53,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1bfaa23627338447d084a277aa407b277c1ac6b29ceb73dae84d1f50135ea614.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/99c970859850719c562b77064b3a070fbe7eb48e262844cfd01f06afc3d1047b.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -81,385 +68,7 @@
       "dependencies": [
         "sqspstp-custom-log-level.assets"
       ],
-      "metadata": {
-        "/sqspstp-custom-log-level/lambdas3stp-test": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "code": "*",
-              "runtime": "*",
-              "handler": "*"
-            }
-          }
-        ],
-        "/sqspstp-custom-log-level/lambdas3stp-test/ServiceRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              },
-              "managedPolicies": [
-                {
-                  "managedPolicyArn": "*"
-                }
-              ]
-            }
-          }
-        ],
-        "/sqspstp-custom-log-level/lambdas3stp-test/ServiceRole/ImportServiceRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/sqspstp-custom-log-level/lambdas3stp-test/ServiceRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lambdas3stptestServiceRoleF17BB6C7"
-          }
-        ],
-        "/sqspstp-custom-log-level/lambdas3stp-test/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lambdas3stptest9FBDC6CE"
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/queue-dlq": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "KMS_MANAGED",
-              "fifo": "*"
-            }
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/queue-dlq/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructqueuedlq420A82FD"
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/queue-dlq/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "queues": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/queue-dlq/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructqueuedlqPolicyB1D70483"
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/queue": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "KMS_MANAGED",
-              "deadLetterQueue": {
-                "maxReceiveCount": "*",
-                "queue": "*"
-              }
-            }
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/queue/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructqueueA7C76715"
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/queue/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "queues": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/queue/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructqueuePolicyFD32B562"
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/StateMachineLogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "retention": 9999,
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/StateMachineLogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructStateMachineLogGroupADE94F1D"
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/StateMachine": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logs": {
-                "destination": "*",
-                "level": "ERROR"
-              },
-              "definitionBody": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToRolePolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToRolePolicy": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/StateMachine/Role": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/StateMachine/Role/ImportRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/StateMachine/Role/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructStateMachineRoleBF97BFC0"
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/StateMachine/Role/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/StateMachine/Role/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructStateMachineRoleDefaultPolicyD1BA2BF2"
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/StateMachine/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructStateMachine29272AA9"
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/ExecutionFailedAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/ExecutionFailedAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructExecutionFailedAlarm1002FF55"
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/ExecutionThrottledAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/ExecutionThrottledAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructExecutionThrottledAlarm0242B01A"
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/ExecutionAbortedAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/ExecutionAbortedAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructExecutionAbortedAlarm14349A7B"
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/PipeRole--test-sqs-pipes-states-construct": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              },
-              "inlinePolicies": "*"
-            }
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/PipeRole--test-sqs-pipes-states-construct/ImportPipeRole--test-sqs-pipes-states-construct": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/PipeRole--test-sqs-pipes-states-construct/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructPipeRoletestsqspipesstatesconstruct2CC9A13C"
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/LogGroup-test-sqs-pipes-states-construct": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "retention": 9999,
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/LogGroup-test-sqs-pipes-states-construct/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructLogGrouptestsqspipesstatesconstructF827FE15"
-          }
-        ],
-        "/sqspstp-custom-log-level/test-sqs-pipes-states-construct/pipe-test-sqs-pipes-states-construct": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructpipetestsqspipesstatesconstruct71A64A15"
-          }
-        ],
-        "/sqspstp-custom-log-level/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/sqspstp-custom-log-level/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "sqspstp-custom-log-level.metadata.json",
       "displayName": "sqspstp-custom-log-level"
     },
     "Tree": {
@@ -474,6 +83,7 @@
         "module": "aws-cdk-lib",
         "flags": {
           "@aws-cdk/aws-signer:signingProfileNamePassedToCfn": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "Pass signingProfileName to CfnSigningProfile"
           },
@@ -492,6 +102,7 @@
             }
           },
           "@aws-cdk/aws-ecs-patterns:secGroupsDisablesImplicitOpenListener": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "Disable implicit openListener when custom security groups are provided"
           },
@@ -757,6 +368,11 @@
             "recommendedValue": true,
             "explanation": "When enabled, nodegroupName attribute of the provisioned EKS NodeGroup will not have the cluster name prefix."
           },
+          "@aws-cdk/aws-eks:useNativeOidcProvider": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, EKS V2 clusters will use the native OIDC provider resource AWS::IAM::OIDCProvider instead of creating the OIDCProvider with a custom resource (iam.OpenIDConnectProvider)."
+          },
           "@aws-cdk/aws-ec2:ebsDefaultGp3Volume": {
             "userValue": true,
             "recommendedValue": true,
@@ -788,16 +404,6 @@
             "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, stack tags need to be assigned explicitly on a Stack."
-          },
-          "@aws-cdk/aws-ecs:enableImdsBlockingDeprecatedFeature": {
-            "userValue": false,
-            "recommendedValue": false,
-            "explanation": "When set to true along with canContainersAccessInstanceRole=false in ECS cluster, new updated commands will be added to UserData to block container accessing IMDS. **Applicable to Linux only. IMPORTANT: See [details.](#aws-cdkaws-ecsenableImdsBlockingDeprecatedFeature)**"
-          },
-          "@aws-cdk/aws-ecs:disableEcsImdsBlocking": {
-            "userValue": true,
-            "recommendedValue": true,
-            "explanation": "When set to true, CDK synth will throw exception if canContainersAccessInstanceRole is false. **IMPORTANT: See [details.](#aws-cdkaws-ecsdisableEcsImdsBlocking)**"
           },
           "@aws-cdk/aws-ecs:reduceEc2FargateCloudWatchPermissions": {
             "userValue": true,
@@ -944,6 +550,7 @@
             "explanation": "When enabled, CDK creates and manages loggroup for the lambda function"
           },
           "@aws-cdk/aws-elasticloadbalancingv2:networkLoadBalancerWithSecurityGroupByDefault": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, Network Load Balancer will be created with a security group by default."
           },
@@ -955,12 +562,85 @@
             }
           },
           "@aws-cdk/aws-ecs-patterns:uniqueTargetGroupId": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, ECS patterns will generate unique target group IDs to prevent conflicts during load balancer replacement"
+          },
+          "@aws-cdk/aws-route53-patterns:useDistribution": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use the `Distribution` resource instead of `CloudFrontWebDistribution`"
+          },
+          "@aws-cdk/aws-cloudfront:defaultFunctionRuntimeV2_0": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use cloudfront-js-2.0 as the default runtime for CloudFront Functions"
+          },
+          "@aws-cdk/aws-elasticloadbalancingv2:usePostQuantumTlsPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, HTTPS/TLS listeners use post-quantum TLS policy by default"
+          },
+          "@aws-cdk/core:automaticL1Traits": {
+            "recommendedValue": true,
+            "explanation": "Automatically use the default L1 traits for L1 constructs`",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-batch:defaultToAL2023": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default imageType for EC2 Batch compute environments instead of the deprecated AL2"
+          },
+          "@aws-cdk/aws-eks:defaultToAL2023": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default AMI type for EKS managed node groups using non-GPU instance types instead of the deprecated AL2"
+          },
+          "@aws-cdk/core:annotationsInValidationReport": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Include construct annotations (warnings and errors) in the policy validation report"
+          },
+          "@aws-cdk/core:defaultCrossStackReferences": {
+            "userValue": "weak",
+            "recommendedValue": "weak",
+            "explanation": "Controls whether cross-stack references are strong, weak, or both",
+            "unconfiguredBehavesLike": {
+              "v2": "strong"
+            }
+          },
+          "@aws-cdk/core:validateAgainstDefaultRules": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Treat CloudFormation Validate findings as errors"
+          },
+          "@aws-cdk/aws-ecs:removeEmptyLoadBalancers": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Render an empty `LoadBalancers` array on an ECS service that has no target groups"
+          },
+          "@aws-cdk/aws-cloudfront:defaultViewerProtocolPolicyRedirectToHttps": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Default Distribution cache behaviors to redirect HTTP viewer requests to HTTPS"
+          },
+          "@aws-cdk/aws-apigateway:logGroupDestinationArnWithoutWildcard": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Render the API Gateway access log destination ARN without the trailing `:*`"
+          },
+          "@aws-cdk/aws-stepfunctions-tasks:evaluateExpressionDedicatedFunction": {
+            "recommendedValue": true,
+            "explanation": "When enabled, each EvaluateExpression task gets its own Lambda function",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
           }
         }
       }
     }
   },
-  "minimumCliVersion": "2.1021.0"
+  "minimumCliVersion": "2.1148.1"
 }

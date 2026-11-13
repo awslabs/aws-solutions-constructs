@@ -787,7 +787,8 @@
     }
    },
    "DependsOn": [
-    "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleD2E8341A"
+    "testlambdaelasticsearchkibana5CognitoKibanaConfigureRoleD2E8341A",
+    "testlambdaelasticsearchkibana5CognitoKibanaConfigureRolePolicy11560205"
    ],
    "Metadata": {
     "cfn_nag": {
@@ -1116,6 +1117,33 @@
         "Fn::GetAtt": [
          "VpcFlowLogLogGroup7B5C56B9",
          "Arn"
+        ]
+       }
+      },
+      {
+       "Action": "logs:DescribeLogStreams",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":logs:",
+          {
+           "Ref": "AWS::Region"
+          },
+          ":",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":log-group:",
+          {
+           "Ref": "VpcFlowLogLogGroup7B5C56B9"
+          }
+         ]
         ]
        }
       }

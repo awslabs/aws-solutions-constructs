@@ -1,4 +1,10 @@
 {
+  "/s3stp-customLoggingBucket": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "s3stp-customLoggingBucket.template.json"
+    }
+  ],
   "/s3stp-customLoggingBucket/lambdas3stp-test": [
     {
       "type": "aws:cdk:analytics:construct",

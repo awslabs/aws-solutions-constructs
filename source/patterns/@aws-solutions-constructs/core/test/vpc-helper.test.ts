@@ -14,7 +14,7 @@
 import { Stack } from 'aws-cdk-lib';
 import * as defaults from '../';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
-import { Template } from 'aws-cdk-lib/assertions';
+import { Match, Template } from 'aws-cdk-lib/assertions';
 import { AddAwsServiceEndpoint, ServiceEndpointTypes } from '../lib/vpc-helper';
 import { DefaultPublicPrivateVpcProps, DefaultIsolatedVpcProps } from '../lib/vpc-defaults';
 import { calculateIpMaskSize } from '../lib/vpc-helper';
@@ -35,6 +35,31 @@ test("Test minimal deployment with no properties", () => {
 
   template.resourceCountIs('AWS::EC2::Subnet', 2);
   template.resourceCountIs('AWS::EC2::InternetGateway', 0);
+});
+
+test('Flow log role grants DescribeLogStreams on the log group ARN', () => {
+  const stack = new Stack();
+  defaults.buildVpc(stack, {
+    defaultVpcProps: DefaultIsolatedVpcProps(),
+  });
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Action: 'logs:DescribeLogStreams',
+          Effect: 'Allow',
+          Resource: {
+            'Fn::Join': ['', Match.arrayWith([
+              Match.stringLikeRegexp(':log-group:$'),
+              { Ref: Match.stringLikeRegexp('VpcFlowLogLogGroup') },
+            ])],
+          },
+        }),
+      ]),
+    },
+  });
 });
 
 test('Test deployment w/ user provided custom properties', () => {

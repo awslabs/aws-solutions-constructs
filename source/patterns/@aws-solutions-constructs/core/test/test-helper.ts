@@ -385,4 +385,8 @@ export function SetConsistentFeatureFlags(stack: Stack) {
   stack.node.setContext("@aws-cdk/aws-ec2:requirePrivateSubnetsForEgressOnlyInternetGateway", true);
   stack.node.setContext("@aws-cdk/aws-s3:publicAccessBlockedByDefault", true);
   stack.node.setContext("@aws-cdk/aws-lambda:useCdkManagedLogGroup", false);
+  stack.node.setContext("@aws-cdk/aws-cloudfront:defaultViewerProtocolPolicyRedirectToHttps", true);
+  stack.node.setContext("@aws-cdk/aws-apigateway:logGroupDestinationArnWithoutWildcard", true);
+  stack.node.setContext("@aws-cdk/aws-stepfunctions-tasks:evaluateExpressionDedicatedFunction", true);
+  stack.node.setContext("@aws-cdk/aws-ecs:removeEmptyLoadBalancers", true);
 }

@@ -1,0 +1,674 @@
+{
+  "/dbslamels-no-arguments": [
+    {
+      "type": "aws:cdk:acknowledged-rules",
+      "data": {
+        "CloudFormation-Validate::W3010": "Literal AZs in template are the result of accessing stack.availabilityZones, this is expected and safe"
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/dbslamels-no-arguments/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunctionServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "role": "*",
+        "tracing": "Active",
+        "code": "*",
+        "runtime": "*",
+        "handler": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*",
+          {
+            "removeInEdge": true
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addEnvironment": [
+          "*",
+          "*"
+        ]
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CognitoUserPool": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CognitoUserPoolClient": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "userPool": "*"
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CognitoIdentityPool": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchCognitoIdentityPoolFAA4D969"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/UserPoolDomain": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchUserPoolDomainA6C84014"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CognitoAuthorizedRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/IdentityPoolRoleMapping": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchIdentityPoolRoleMapping508D4D41"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CognitoKibanaConfigureRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CognitoKibanaConfigureRolePolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/ElasticsearchDomain": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchElasticsearchDomain96DEE173"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/StatusRedAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/StatusYellowAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/FreeStorageSpaceTooLowAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/IndexWritesBlockedTooHighAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/AutomatedSnapshotFailureTooHighAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CPUUtilizationTooHighAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/JVMMemoryPressureTooHighAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/MasterCPUUtilizationTooHighAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/MasterJVMMemoryPressureTooHighAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/DynamoDBStreamsToLambda/DynamoTable": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "billingMode": "PAY_PER_REQUEST",
+        "encryption": "AWS_MANAGED",
+        "partitionKey": {
+          "name": "*",
+          "type": "S"
+        },
+        "stream": "NEW_AND_OLD_IMAGES",
+        "pointInTimeRecoverySpecification": {
+          "pointInTimeRecoveryEnabled": true
+        }
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/DynamoDBStreamsToLambda/SqsDlqQueue": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "KMS_MANAGED"
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunctionServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleEC11512B"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunctionServiceRole/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionB70B7296"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/inlinePolicyAddedToExecutionRole-0": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/DynamoDBEventSource:dbslamelsnoargumentstestddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableE5DA3737": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "target": "*",
+        "eventSourceArn": "*",
+        "metricsConfig": "*",
+        "supportS3OnFailureDestination": true,
+        "batchSize": "*",
+        "bisectBatchOnError": true,
+        "startingPosition": "TRIM_HORIZON",
+        "reportBatchItemFailures": "*",
+        "maxBatchingWindow": "*",
+        "maxRecordAge": "*",
+        "retryAttempts": "*",
+        "parallelizationFactor": "*",
+        "onFailure": "*",
+        "tumblingWindow": "*",
+        "enabled": "*",
+        "filters": "*",
+        "filterEncryption": "*"
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CognitoUserPool/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPool97EA2952"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CognitoUserPoolClient/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchCognitoUserPoolClient25D50E3D"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CognitoAuthorizedRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchCognitoAuthorizedRoleB096BF2F"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CognitoKibanaConfigureRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchCognitoKibanaConfigureRole9DE845CD"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CognitoKibanaConfigureRolePolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchCognitoKibanaConfigureRolePolicy62E429A3"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/StatusRedAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchStatusRedAlarmAFFE3439"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/StatusYellowAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchStatusYellowAlarm44E1DC4E"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/FreeStorageSpaceTooLowAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchFreeStorageSpaceTooLowAlarm65BF7F2F"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/IndexWritesBlockedTooHighAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchIndexWritesBlockedTooHighAlarmCE3D0C51"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/AutomatedSnapshotFailureTooHighAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchAutomatedSnapshotFailureTooHighAlarmFD8E066E"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/CPUUtilizationTooHighAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchCPUUtilizationTooHighAlarm274094A6"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/JVMMemoryPressureTooHighAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchJVMMemoryPressureTooHighAlarm2E49D5CC"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/MasterCPUUtilizationTooHighAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchMasterCPUUtilizationTooHighAlarm05E1EBEF"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/MasterJVMMemoryPressureTooHighAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchMasterJVMMemoryPressureTooHighAlarm1090161B"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/DynamoDBStreamsToLambda/DynamoTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableDD18004A"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/DynamoDBStreamsToLambda/DynamoTable/ScalingRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/DynamoDBStreamsToLambda/SqsDlqQueue/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskDynamoDBStreamsToLambdaSqsDlqQueue82B4D17B"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/DynamoDBStreamsToLambda/SqsDlqQueue/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "queues": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunctionServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionServiceRoleDefaultPolicyA7EEDEDA"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/inlinePolicyAddedToExecutionRole-0/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctioninlinePolicyAddedToExecutionRole05D4F2798"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/LambdaToElasticSearch/LambdaFunction/DynamoDBEventSource:dbslamelsnoargumentstestddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableE5DA3737/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskLambdaToElasticSearchLambdaFunctionDynamoDBEventSourcedbslamelsnoargumentstestddbstreamslambdaeskDynamoDBStreamsToLambdaDynamoTableE5DA3737A0F8E1D7"
+    }
+  ],
+  "/dbslamels-no-arguments/test-ddbstreams-lambda-esk/DynamoDBStreamsToLambda/SqsDlqQueue/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testddbstreamslambdaeskDynamoDBStreamsToLambdaSqsDlqQueuePolicyD4864CD5"
+    }
+  ]
+}

@@ -1,4 +1,10 @@
 {
+  "/s3stp-pre-existing-bucket": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "s3stp-pre-existing-bucket.template.json"
+    }
+  ],
   "/s3stp-pre-existing-bucket/scrapBucketLog": [
     {
       "type": "aws:cdk:analytics:construct",

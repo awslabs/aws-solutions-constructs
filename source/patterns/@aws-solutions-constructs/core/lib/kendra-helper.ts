@@ -209,7 +209,8 @@ function CreateKendraIndexLoggingRole(scope: Construct, id: string): string {
       new iam.PolicyStatement({
         resources: [`arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/kendra/*`],
         actions: [
-          "logs:DescribeLogGroups"
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams"
         ],
         effect: iam.Effect.ALLOW,
       }),
@@ -218,7 +219,6 @@ function CreateKendraIndexLoggingRole(scope: Construct, id: string): string {
         actions: [
           'logs:CreateLogStream',
           'logs:PutLogEvents',
-          'logs:DescribeLogStream',
         ],
         effect: iam.Effect.ALLOW,
       }),

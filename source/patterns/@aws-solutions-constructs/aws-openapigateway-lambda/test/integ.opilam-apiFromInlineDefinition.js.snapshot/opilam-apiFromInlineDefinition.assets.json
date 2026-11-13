@@ -1,16 +1,16 @@
 {
-  "version": "50.0.0",
+  "version": "55.0.0",
   "files": {
-    "93abadcaff5aada973e6b917bc1454dcf1285ad40a850fbddcab915d67e08cf2": {
+    "fd6e81d57e8e300a88414003d5a03330994dcfb3fbfb5b745d83709cb23e180c": {
       "displayName": "opilam-apiFromInlineDefinition Template",
       "source": {
         "path": "opilam-apiFromInlineDefinition.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-f39157eb": {
+        "current_account-current_region-6ec65180": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "93abadcaff5aada973e6b917bc1454dcf1285ad40a850fbddcab915d67e08cf2.json",
+          "objectKey": "fd6e81d57e8e300a88414003d5a03330994dcfb3fbfb5b745d83709cb23e180c.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

@@ -1,0 +1,42 @@
+{
+  "/wafcft-partial-arguments": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "wafcft-partial-arguments.template.json"
+    }
+  ],
+  "/wafcft-partial-arguments/distro": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "defaultBehavior": {
+          "origin": "*"
+        }
+      }
+    }
+  ],
+  "/wafcft-partial-arguments/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/wafcft-partial-arguments/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/wafcft-partial-arguments/distro/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "distro40218A07"
+    }
+  ],
+  "/wafcft-partial-arguments/test-wafwebacl-cloudfront-s3/test-wafwebacl-cloudfront-s3-WebACL": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testwafwebaclcloudfronts3testwafwebaclcloudfronts3WebACLC6A34449"
+    }
+  ]
+}

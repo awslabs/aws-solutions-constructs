@@ -1,16 +1,16 @@
 {
-  "version": "50.0.0",
+  "version": "55.0.0",
   "files": {
-    "3e9c4ade7c9c2af39ad001192c59a315e13a6c9e1e231a60b321e7f1da245da1": {
+    "0b32f418428dc8e00f0ad4605a767ae372752eff6cb4c35824ce3db71b4374ed": {
       "displayName": "cogapilam-no-arguments Template",
       "source": {
         "path": "cogapilam-no-arguments.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-9550a7f9": {
+        "current_account-current_region-44755cc2": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "3e9c4ade7c9c2af39ad001192c59a315e13a6c9e1e231a60b321e7f1da245da1.json",
+          "objectKey": "0b32f418428dc8e00f0ad4605a767ae372752eff6cb4c35824ce3db71b4374ed.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

@@ -1,0 +1,58 @@
+{
+  "/wafcft-existing-waf-to-multiple-cloudfront": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "wafcft-existing-waf-to-multiple-cloudfront.template.json"
+    }
+  ],
+  "/wafcft-existing-waf-to-multiple-cloudfront/distroOne": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "defaultBehavior": {
+          "origin": "*"
+        }
+      }
+    }
+  ],
+  "/wafcft-existing-waf-to-multiple-cloudfront/distroTwo": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "defaultBehavior": {
+          "origin": "*"
+        }
+      }
+    }
+  ],
+  "/wafcft-existing-waf-to-multiple-cloudfront/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/wafcft-existing-waf-to-multiple-cloudfront/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/wafcft-existing-waf-to-multiple-cloudfront/distroOne/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "distroOneBA9A3958"
+    }
+  ],
+  "/wafcft-existing-waf-to-multiple-cloudfront/distroTwo/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "distroTwo0B353343"
+    }
+  ],
+  "/wafcft-existing-waf-to-multiple-cloudfront/first-construct/first-construct-WebACL": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "firstconstructfirstconstructWebACLCB39A850"
+    }
+  ]
+}

@@ -1,4 +1,10 @@
 {
+  "/cftaplam-override-behavior": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "cftaplam-override-behavior.template.json"
+    }
+  ],
   "/cftaplam-override-behavior/SomeCachePolicy": [
     {
       "type": "aws:cdk:analytics:construct",

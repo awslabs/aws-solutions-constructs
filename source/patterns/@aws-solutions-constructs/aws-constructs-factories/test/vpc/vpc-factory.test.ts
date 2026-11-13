@@ -66,6 +66,17 @@ test('all defaults', () => {
               "Arn"
             ]
           }
+        },
+        // Log group level actions need the plain log group ARN (no trailing ":*")
+        {
+          Action: "logs:DescribeLogStreams",
+          Effect: "Allow",
+          Resource: {
+            "Fn::Join": ["", Match.arrayWith([
+              Match.stringLikeRegexp(":log-group:$"),
+              { Ref: Match.stringLikeRegexp("targetvpctestflowlogtestLogGroup") }
+            ])]
+          }
         }
       ],
     },
@@ -98,6 +109,7 @@ test('confirm cidr mask is applied correctly', () => {
     CidrBlock: "10.0.0.0/25",
     MapPublicIpOnLaunch: false,
   });
+
   template.hasResourceProperties("AWS::EC2::Subnet", {
     CidrBlock: "10.0.0.128/25",
     MapPublicIpOnLaunch: false,

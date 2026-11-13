@@ -111,16 +111,23 @@ export function buildWebSocketQueueApi(
   addCfnGuardSuppressRules(webSocketStage, ["API_GW_CACHE_ENABLED_AND_ENCRYPTED"]);
 
   const apiGatewayLogGroup = buildLogGroup(scope, "LogGroup", props.logGroupProps);
+  // Log stream actions are authorized against the log stream ARN (log group ARN with ":*")
   apiGatewayLogGroup.grant(
     apiGatewayRole,
-    "logs:CreateLogGroup",
     "logs:CreateLogStream",
-    "logs:DescribeLogGroups",
-    "logs:DescribeLogStreams",
     "logs:PutLogEvents",
-    "logs:GetLogEvents",
-    "logs:FilterLogEvents"
+    "logs:GetLogEvents"
   );
+  // Log group actions must be authorized against the plain log group ARN
+  apiGatewayRole.addToPrincipalPolicy(new iam.PolicyStatement({
+    actions: [
+      "logs:CreateLogGroup",
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams",
+      "logs:FilterLogEvents"
+    ],
+    resources: [`arn:${cdk.Aws.PARTITION}:logs:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:log-group:${apiGatewayLogGroup.logGroupName}`],
+  }));
 
   const cfnStage: apigwv2.CfnStage = webSocketStage.node.defaultChild as apigwv2.CfnStage;
   cfnStage.addPropertyOverride("AccessLogSettings", {

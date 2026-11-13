@@ -73,7 +73,7 @@ test('Confirm kendra has log writing privileges', () => {
               }
             },
             {
-              Action: "logs:DescribeLogGroups",
+              Action: ["logs:DescribeLogGroups", "logs:DescribeLogStreams"],
               Effect: "Allow",
               Resource: {
                 "Fn::Join": [
@@ -99,8 +99,7 @@ test('Confirm kendra has log writing privileges', () => {
             {
               Action: [
                 "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "logs:DescribeLogStream"
+                "logs:PutLogEvents"
               ],
               Effect: "Allow",
               Resource: {

@@ -130,18 +130,21 @@ describe("When instantiating the ApiGatewayV2WebSocketToSqs construct with WebSo
             },
           },
           {
-            Action: [
-              "logs:CreateLogGroup",
-              "logs:CreateLogStream",
-              "logs:DescribeLogGroups",
-              "logs:DescribeLogStreams",
-              "logs:PutLogEvents",
-              "logs:GetLogEvents",
-              "logs:FilterLogEvents",
-            ],
+            Action: ["logs:CreateLogStream", "logs:PutLogEvents", "logs:GetLogEvents"],
+            Effect: "Allow",
+            // aws-cdk-lib 2.276.0+ grants on both the plain log group ARN and the ":*" ARN
+            Resource: Match.arrayWith([
+              { "Fn::GetAtt": [Match.anyValue(), "Arn"] },
+            ]),
+          },
+          {
+            Action: ["logs:CreateLogGroup", "logs:DescribeLogGroups", "logs:DescribeLogStreams", "logs:FilterLogEvents"],
             Effect: "Allow",
             Resource: {
-              "Fn::GetAtt": [Match.anyValue(), "Arn"],
+              "Fn::Join": ["", Match.arrayWith([
+                Match.stringLikeRegexp(":log-group:$"),
+                { Ref: Match.stringLikeRegexp("LogGroup") },
+              ])],
             },
           },
         ],
